@@ -12,6 +12,7 @@ import { request } from './client';
 import { fixtureDiff, fixtureRepo, fixtureSet } from './fixture';
 import { layout } from './graph';
 import { DiffView } from './DiffView';
+import { CommitActions, type CommitMenu } from './CommitActions';
 import './styles.css';
 const demo = !window.orca;
 const scenario = demo
@@ -47,6 +48,8 @@ function App() {
   const [data, setData] = useState<FileDiff | null>(null);
   const [error, setError] = useState('');
   const [busy, setBusy] = useState(false);
+  const [actionBusy, setActionBusy] = useState(false);
+  const [commitMenu, setCommitMenu] = useState<CommitMenu | null>(null);
   const [loadingFiles, setLoadingFiles] = useState(false);
   const [loadingDiff, setLoadingDiff] = useState(false);
   const [generation, setGeneration] = useState(0);
@@ -55,6 +58,20 @@ function App() {
   const [workspace, setWorkspace] = useState('');
   const logSeq = useRef(0);
   const pendingPath = useRef('');
+  const currentRoot = useRef(repo?.root);
+  currentRoot.current = repo?.root;
+  useEffect(() => {
+    setCommitMenu(null);
+  }, [repo?.root, workspace]);
+  async function operationChanged() {
+    if (!repo) return;
+    const root = repo.root;
+    const updated = await request('log', { repo: root, all });
+    if (currentRoot.current !== root) return;
+    setRepo((current) => (current?.root === root ? updated : current));
+    setComparison({ kind: 'working' });
+    setGeneration((n) => n + 1);
+  }
   useEffect(() => {
     if (!editorMode) return;
     if (typeof window.orca?.document?.session !== 'function') {
@@ -393,10 +410,12 @@ function App() {
         <div>
           <span className="brand">⑂</span>
           <h1>{editorMode ? 'Git Diff' : 'Git Logs'}</h1>
-          <span className="subtle">LOCAL / READ ONLY</span>
+          <span className="subtle">
+            {editorMode ? 'READ ONLY DIFF' : 'LOCAL GIT'}
+          </span>
         </div>
         <button
-          disabled={busy}
+          disabled={busy || actionBusy}
           onClick={() =>
             editorMode
               ? (comparison.kind === 'working' &&
@@ -426,7 +445,7 @@ function App() {
                   <select
                     aria-label="연결할 워크트리"
                     value=""
-                    disabled={busy}
+                    disabled={busy || actionBusy}
                     onChange={(e) => connectActive.current(e.target.value)}
                   >
                     <option value="">워크트리 선택</option>
@@ -450,7 +469,7 @@ function App() {
                     aria-label="브랜치 범위"
                     value={all ? 'all' : 'current'}
                     onChange={(e) => setAll(e.target.value === 'all')}
-                    disabled={busy}
+                    disabled={busy || actionBusy}
                   >
                     <option value="current">현재 브랜치</option>
                     <option value="all">전체 브랜치</option>
@@ -485,6 +504,35 @@ function App() {
                         })
                       }
                       aria-pressed={selected?.hash === commit.hash}
+                      aria-haspopup="menu"
+                      onContextMenu={(event) => {
+                        event.preventDefault();
+                        if (busy || actionBusy) return;
+                        const rect =
+                          event.currentTarget.getBoundingClientRect();
+                        setCommitMenu({
+                          commit,
+                          x: event.clientX || rect.left + 24,
+                          y: event.clientY || rect.top + 20,
+                        });
+                      }}
+                      onKeyDown={(event) => {
+                        if (
+                          event.key === 'F10' &&
+                          event.shiftKey &&
+                          !busy &&
+                          !actionBusy
+                        ) {
+                          event.preventDefault();
+                          const rect =
+                            event.currentTarget.getBoundingClientRect();
+                          setCommitMenu({
+                            commit,
+                            x: rect.left + 24,
+                            y: rect.top + 20,
+                          });
+                        }
+                      }}
                     >
                       {!search && (
                         <svg
@@ -696,14 +744,29 @@ function App() {
             ? 'Git 조회 중…'
             : demo
               ? 'FIXTURE PREVIEW'
-              : 'LOCAL GIT · 읽기 전용'}
+              : actionBusy
+                ? 'Git 변경 명령 실행 중…'
+                : editorMode
+                  ? 'LOCAL GIT · 읽기 전용 비교'
+                  : 'LOCAL GIT'}
         </span>
         <span>
           {editorMode
             ? '문서에 기록된 기준으로 비교 · 동기 스크롤'
-            : '체크아웃 · staging · commit 기능 없음'}
+            : '커밋 우클릭 · 작업 메뉴 (Shift+F10)'}
         </span>
       </footer>
+      {!editorMode && repo && (
+        <CommitActions
+          key={`${repo.root}:${workspace}`}
+          repo={repo}
+          workspaceId={workspace}
+          menu={commitMenu}
+          closeMenu={() => setCommitMenu(null)}
+          changed={operationChanged}
+          running={setActionBusy}
+        />
+      )}
     </main>
   );
 }

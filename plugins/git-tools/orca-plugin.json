@@ -3,7 +3,7 @@
   "id": "git-tools",
   "name": "Git Logs",
   "version": "0.1.0",
-  "description": "Read-only local Git commit graph and aligned side-by-side diff viewer.",
+  "description": "Local Git commit graph, confirmed commit actions and a read-only side-by-side diff viewer.",
   "engines": {
     "orca": ">=1.4.248"
   },

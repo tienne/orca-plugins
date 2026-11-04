@@ -654,3 +654,118 @@ footer span {
 .workspace-connect small {
   overflow-wrap: anywhere;
 }
+
+.context-dismiss {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+}
+.commit-menu {
+  position: fixed;
+  z-index: 41;
+  width: min(250px, calc(100vw - 16px));
+  padding: 5px;
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  background: var(--orca-popover, var(--card));
+  color: var(--orca-popover-foreground, var(--fg));
+  box-shadow: 0 8px 28px #0003;
+}
+.commit-menu small {
+  display: block;
+  padding: 5px 8px;
+}
+.commit-menu button {
+  display: block;
+  width: 100%;
+  text-align: left;
+  border: 0;
+  padding: 7px 8px;
+}
+.operation-dialog {
+  width: min(520px, calc(100vw - 24px));
+  max-height: calc(100vh - 32px);
+  overflow: auto;
+  background: var(--orca-popover, var(--card));
+  color: var(--orca-popover-foreground, var(--fg));
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 18px;
+}
+.operation-dialog::backdrop {
+  background: #0007;
+}
+.operation-dialog h2 {
+  margin: 0 0 10px;
+  font-size: 16px;
+}
+.operation-subject {
+  overflow-wrap: anywhere;
+}
+.operation-dialog dl {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 6px 12px;
+  font-size: 11px;
+}
+.operation-dialog dt {
+  color: var(--muted);
+}
+.operation-dialog dd {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+.operation-dialog label {
+  display: block;
+  margin: 14px 0;
+}
+.operation-dialog input,
+.operation-dialog select {
+  display: block;
+  width: 100%;
+  margin: 6px 0;
+}
+.operation-note {
+  color: var(--muted);
+  overflow-wrap: anywhere;
+}
+.operation-warning {
+  color: var(--danger);
+  overflow-wrap: anywhere;
+}
+.operation-command {
+  background: var(--field);
+  padding: 10px;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+.operation-buttons {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+  margin-top: 18px;
+}
+.operation-result {
+  padding: 12px;
+  margin: 0;
+  border-bottom: 1px solid var(--line);
+  background: var(--field);
+  overflow: auto;
+  max-height: 220px;
+  flex-shrink: 0;
+}
+.operation-result > button {
+  float: right;
+}
+.operation-result pre {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  font: inherit;
+}
+.operation-result code {
+  overflow-wrap: anywhere;
+}
+.operation-conflict b,
+.operation-failed b {
+  color: var(--danger);
+}

@@ -411,3 +411,442 @@ test('active workspace connects uniquely, rejects remote/forged selection and re
       /로컬 Git 워크트리/,
     );
   }));
+
+// Mutations are exercised only in disposable local repositories.
+import { createOperations } from './operations';
+import type { OperationInput } from '../protocol';
+async function runOperation(root: string, operation: OperationInput) {
+  const service = createOperations();
+  const plan = await service.prepare(root, operation);
+  const result = await service.execute(root, plan.token, plan.confirmation);
+  assert.equal(result.status, 'success', result.message);
+  return { plan, result };
+}
+test('commit actions create slash-named branches and checkout local/detached targets', () =>
+  fixture(async (root, commit) => {
+    const base = await commit('base');
+    await runOperation(root, {
+      action: 'branch',
+      commit: base,
+      branch: 'feature/from-log',
+    });
+    assert.equal((await log(root)).branch, 'main');
+    assert.ok(
+      (await log(root)).localBranches?.some(
+        (b) => b.name === 'feature/from-log',
+      ),
+    );
+    await runOperation(root, {
+      action: 'checkout',
+      commit: base,
+      branch: 'feature/from-log',
+    });
+    assert.equal((await log(root)).branch, 'feature/from-log');
+    await runOperation(root, { action: 'checkout', commit: base });
+    assert.equal((await log(root)).branch, 'Detached HEAD');
+    await assert.rejects(
+      createOperations().prepare(root, {
+        action: 'reset',
+        commit: base,
+        resetMode: 'hard',
+      }),
+      /Detached/,
+    );
+    await assert.rejects(
+      createOperations().prepare(root, {
+        action: 'branch',
+        commit: base,
+        branch: '--force',
+      }),
+      /브랜치/,
+    );
+  }));
+test('checkout respects another worktree and rejects moved branch plans', () =>
+  fixture(async (root, commit) => {
+    const base = await commit('base');
+    await git(root, ['branch', 'other', base]);
+    const service = createOperations();
+    const plan = await service.prepare(root, {
+      action: 'checkout',
+      commit: base,
+      branch: 'other',
+    });
+    const next = await commit('next');
+    await git(root, ['update-ref', 'refs/heads/other', next]);
+    await git(root, ['reset', '--hard', base]);
+    await assert.rejects(
+      service.execute(root, plan.token, ''),
+      /브랜치가 변경/,
+    );
+    const worktree = join(root, 'linked');
+    await git(root, ['worktree', 'add', worktree, 'other']);
+    // Hide only the linked worktree directory from status, as a typical external worktree would be.
+    await writeFile(join(root, '.git', 'info', 'exclude'), 'linked/\n');
+    const plan2 = await service.prepare(root, {
+      action: 'checkout',
+      commit: next,
+      branch: 'other',
+    });
+    const result = await service.execute(root, plan2.token, '');
+    assert.equal(result.status, 'failed');
+    assert.equal((await log(root)).branch, 'main');
+  }));
+test('merge ignores configured squash/no-commit and creates an actual merge commit', () =>
+  fixture(async (root, commit) => {
+    await writeFile(join(root, 'base'), 'base');
+    const base = await commit('base');
+    await git(root, ['switch', '-c', 'feature']);
+    await writeFile(join(root, 'feature'), 'feature');
+    const feature = await commit('feature');
+    await git(root, ['switch', 'main']);
+    await writeFile(join(root, 'main'), 'main');
+    await commit('main');
+    await git(root, [
+      'config',
+      'branch.main.mergeOptions',
+      '--squash --no-commit',
+    ]);
+    await runOperation(root, { action: 'merge', commit: feature });
+    const current = await log(root);
+    assert.equal(current.commits[0].parents.length, 2);
+    assert.equal((await git(root, ['status', '--porcelain'])).length, 0);
+    await git(root, ['reset', '--hard', base]);
+    await runOperation(root, { action: 'merge', commit: feature });
+    assert.equal((await log(root)).head, feature); // fast-forward
+  }));
+test('cherry-pick and revert create new commits, with merge mainline explicitly checked', () =>
+  fixture(async (root, commit) => {
+    const base = await commit('base');
+    await git(root, ['switch', '-c', 'feature']);
+    await writeFile(join(root, 'feature'), 'hello');
+    const feature = await commit('feature');
+    await git(root, ['switch', 'main']);
+    await writeFile(join(root, 'main'), 'main');
+    await commit('main');
+    await runOperation(root, { action: 'cherry-pick', commit: feature });
+    assert.equal(await readFile(join(root, 'feature'), 'utf8'), 'hello');
+    await runOperation(root, {
+      action: 'revert',
+      commit: (await log(root)).head!,
+    });
+    await assert.rejects(readFile(join(root, 'feature')), /ENOENT/);
+    await git(root, ['reset', '--hard', base]);
+    await writeFile(join(root, 'main'), 'main');
+    await commit('diverge');
+    await git(root, ['merge', '--no-edit', 'feature']);
+    const merge = (await log(root)).head!;
+    const service = createOperations();
+    for (const action of ['cherry-pick', 'revert'] as const) {
+      await assert.rejects(
+        service.prepare(root, { action, commit: merge }),
+        /기준 부모/,
+      );
+      await assert.rejects(
+        service.prepare(root, { action, commit: merge, mainline: 3 }),
+        /기준 부모/,
+      );
+    }
+    await runOperation(root, { action: 'revert', commit: merge, mainline: 1 });
+    await assert.rejects(readFile(join(root, 'feature')), /ENOENT/);
+    await git(root, ['reset', '--hard', base]);
+    await runOperation(root, {
+      action: 'cherry-pick',
+      commit: merge,
+      mainline: 1,
+    });
+    assert.equal(await readFile(join(root, 'feature'), 'utf8'), 'hello');
+  }));
+for (const resetMode of ['soft', 'mixed', 'hard'] as const) {
+  test(`reset ${resetMode} preserves a backup and has correct index/worktree semantics`, () =>
+    fixture(async (root, commit) => {
+      await writeFile(join(root, 'file'), 'base');
+      const base = await commit('base');
+      await writeFile(join(root, 'file'), 'next');
+      const next = await commit('next');
+      const { plan } = await runOperation(root, {
+        action: 'reset',
+        commit: base,
+        resetMode,
+      });
+      assert.equal((await log(root)).head, base);
+      assert.equal(
+        (await git(root, ['rev-parse', plan.backupRef!])).toString().trim(),
+        next,
+      );
+      assert.equal(
+        await readFile(join(root, 'file'), 'utf8'),
+        resetMode === 'hard' ? 'base' : 'next',
+      );
+      const staged = (await git(root, ['diff', '--cached', '--name-only']))
+        .toString()
+        .trim();
+      const unstaged = (await git(root, ['diff', '--name-only']))
+        .toString()
+        .trim();
+      assert.equal(staged, resetMode === 'soft' ? 'file' : '');
+      assert.equal(unstaged, resetMode === 'mixed' ? 'file' : '');
+    }));
+}
+test('confirmation tokens reject changed state, dirty/untracked, unknown actions, mismatched hashes and replay', () =>
+  fixture(async (root, commit) => {
+    const base = await commit('base');
+    const service = createOperations();
+    const plan = await service.prepare(root, {
+      action: 'reset',
+      commit: base,
+      resetMode: 'hard',
+    });
+    await assert.rejects(service.execute(root, plan.token, 'wrong'), /일치/);
+    await service.execute(root, plan.token, plan.confirmation);
+    await assert.rejects(
+      service.execute(root, plan.token, plan.confirmation),
+      /만료/,
+    );
+    await assert.rejects(
+      service.prepare(root, { action: 'push' as never, commit: base }),
+      /지원하지/,
+    );
+    await assert.rejects(
+      service.prepare(root, { action: 'merge', commit: '--help' }),
+      /전체 커밋/,
+    );
+    const stale = await service.prepare(root, {
+      action: 'branch',
+      commit: base,
+      branch: 'new',
+    });
+    await commit('external change');
+    await assert.rejects(service.execute(root, stale.token, ''), /HEAD/);
+    const changed = await service.prepare(root, {
+      action: 'checkout',
+      commit: base,
+    });
+    await writeFile(join(root, 'untracked'), 'do not lose');
+    await assert.rejects(service.execute(root, changed.token, ''), /untracked/);
+    await assert.rejects(
+      service.prepare(root, {
+        action: 'reset',
+        commit: base,
+        resetMode: 'hard',
+      }),
+      /untracked/,
+    );
+    assert.equal(
+      await readFile(join(root, 'untracked'), 'utf8'),
+      'do not lose',
+    );
+  }));
+test('assume-unchanged, sparse index flags and ignored path obstructions cannot be overwritten', () =>
+  fixture(async (root, commit) => {
+    await writeFile(join(root, 'tracked'), 'base');
+    const base = await commit('base');
+    await git(root, ['update-index', '--assume-unchanged', 'tracked']);
+    await writeFile(join(root, 'tracked'), 'hidden edit');
+    await assert.rejects(
+      createOperations().prepare(root, {
+        action: 'reset',
+        commit: base,
+        resetMode: 'hard',
+      }),
+      /assume-unchanged/,
+    );
+    await git(root, ['update-index', '--no-assume-unchanged', 'tracked']);
+    await git(root, ['reset', '--hard', base]);
+    await git(root, ['update-index', '--skip-worktree', 'tracked']);
+    await assert.rejects(
+      createOperations().prepare(root, { action: 'checkout', commit: base }),
+      /skip-worktree/,
+    );
+    await git(root, ['update-index', '--no-skip-worktree', 'tracked']);
+    await writeFile(join(root, 'future'), 'committed');
+    const future = await commit('future');
+    await git(root, ['reset', '--hard', base]);
+    await writeFile(join(root, '.git', 'info', 'exclude'), 'future\n');
+    const service = createOperations();
+    const plan = await service.prepare(root, {
+      action: 'reset',
+      commit: future,
+      resetMode: 'hard',
+    });
+    await writeFile(join(root, 'future'), 'ignored precious');
+    await assert.rejects(
+      service.execute(root, plan.token, plan.confirmation),
+      /ignored/,
+    );
+    assert.equal(
+      await readFile(join(root, 'future'), 'utf8'),
+      'ignored precious',
+    );
+  }));
+test('merge conflicts remain visible and subsequent actions are blocked until externally resolved/aborted', () =>
+  fixture(async (root, commit) => {
+    await writeFile(join(root, 'file'), 'base\n');
+    await commit('base');
+    await git(root, ['switch', '-c', 'feature']);
+    await writeFile(join(root, 'file'), 'feature\n');
+    const feature = await commit('feature');
+    await git(root, ['switch', 'main']);
+    await writeFile(join(root, 'file'), 'main\n');
+    const main = await commit('main');
+    const service = createOperations();
+    const plan = await service.prepare(root, {
+      action: 'merge',
+      commit: feature,
+    });
+    const result = await service.execute(root, plan.token, '');
+    assert.equal(result.status, 'conflict');
+    assert.deepEqual(result.conflicts, ['file']);
+    assert.equal((await log(root)).head, main);
+    await assert.rejects(
+      service.prepare(root, {
+        action: 'reset',
+        commit: feature,
+        resetMode: 'hard',
+      }),
+      /진행 중/,
+    );
+    await git(root, ['merge', '--abort']);
+    await assert.rejects(service.execute(root, plan.token, ''), /만료/);
+  }));
+test('rebase rewrites only current branch onto target and preserves a recovery ref', () =>
+  fixture(async (root, commit) => {
+    await commit('base');
+    await git(root, ['switch', '-c', 'feature']);
+    await writeFile(join(root, 'feature'), 'feature');
+    const original = await commit('feature');
+    await git(root, ['branch', 'keep-original']);
+    await git(root, ['switch', 'main']);
+    await writeFile(join(root, 'main'), 'main');
+    const target = await commit('main');
+    await git(root, ['switch', 'feature']);
+    await git(root, ['config', 'rebase.updateRefs', 'true']);
+    await git(root, ['config', 'rebase.rebaseMerges', 'true']);
+    const { plan } = await runOperation(root, {
+      action: 'rebase',
+      commit: target,
+    });
+    const result = await log(root);
+    assert.equal(result.branch, 'feature');
+    assert.notEqual(result.head, original);
+    assert.equal(result.commits[0].parents[0], target);
+    assert.equal(
+      (await git(root, ['rev-parse', plan.backupRef!])).toString().trim(),
+      original,
+    );
+    assert.equal(
+      (await git(root, ['rev-parse', 'keep-original'])).toString().trim(),
+      original,
+    );
+    assert.equal(await readFile(join(root, 'feature'), 'utf8'), 'feature');
+    assert.equal(await readFile(join(root, 'main'), 'utf8'), 'main');
+  }));
+test('rebase conflicts are reported without losing original branch backup', () =>
+  fixture(async (root, commit) => {
+    await writeFile(join(root, 'file'), 'base\n');
+    await commit('base');
+    await git(root, ['switch', '-c', 'feature']);
+    await writeFile(join(root, 'file'), 'feature\n');
+    const original = await commit('feature');
+    await git(root, ['switch', 'main']);
+    await writeFile(join(root, 'file'), 'main\n');
+    const target = await commit('main');
+    await git(root, ['switch', 'feature']);
+    const service = createOperations();
+    const plan = await service.prepare(root, {
+      action: 'rebase',
+      commit: target,
+    });
+    const result = await service.execute(root, plan.token, '');
+    assert.equal(result.status, 'conflict');
+    assert.deepEqual(result.conflicts, ['file']);
+    assert.equal(
+      (await git(root, ['rev-parse', plan.backupRef!])).toString().trim(),
+      original,
+    );
+    await assert.rejects(
+      service.prepare(root, { action: 'checkout', commit: target }),
+      /진행 중/,
+    );
+    await git(root, ['rebase', '--abort']);
+    assert.equal((await log(root)).head, original);
+  }));
+test('worker mutations require the uniquely active local workspace at prepare and execute', () =>
+  fixture(async (root, commit) => {
+    const head = await commit('base');
+    const handlers = new Map<string, (input: unknown) => unknown>();
+    let context = { displayName: 'Fixture', branch: 'main', terminals: [] };
+    const w = {
+      id: 'fixture',
+      kind: 'worktree',
+      name: 'Fixture',
+      branch: 'main',
+      path: root,
+      hostId: 'local',
+    };
+    let workspaces = [w];
+    activate({
+      api: { major: 1, minor: 3 },
+      panels: {
+        handle: (name, handler) => {
+          handlers.set(name, handler);
+        },
+      },
+      log() {},
+      host: {
+        has: () => true,
+        async call(name) {
+          if (name === 'workspace.readContext') return context;
+          if (name === 'workspace.list')
+            return { workspaces, truncated: false };
+          throw new Error('unexpected host method');
+        },
+      },
+    });
+    const prepare = () =>
+      Promise.resolve(
+        handlers.get('prepare')!({
+          repo: root,
+          workspaceId: w.id,
+          operation: { action: 'branch', commit: head, branch: 'new' },
+        }),
+      );
+    await assert.rejects(prepare(), /연결/);
+    await handlers.get('active')!({});
+    const plan = (await prepare()) as { token: string };
+    context = { ...context, displayName: 'Elsewhere' };
+    const execute = () =>
+      Promise.resolve(
+        handlers.get('execute')!({
+          repo: root,
+          workspaceId: w.id,
+          token: plan.token,
+          confirmation: '',
+        }),
+      );
+    await assert.rejects(execute(), /대상이 다릅니다/);
+    context = { ...context, displayName: 'Fixture' };
+    workspaces = [w, { ...w, id: 'duplicate' }];
+    await assert.rejects(execute(), /대상이 다릅니다/);
+    workspaces = [w];
+    const result = (await execute()) as { status: string };
+    assert.equal(result.status, 'success');
+  }));
+test('rebase protects ignored files created by intermediate commits that are absent at both tips', () =>
+  fixture(async (root, commit) => {
+    const base = await commit('base');
+    await git(root, ['switch', '-c', 'feature']);
+    await writeFile(join(root, 'intermediate'), 'tracked temporarily');
+    await commit('add temporary file');
+    await rm(join(root, 'intermediate'));
+    await commit('remove temporary file');
+    await writeFile(join(root, '.git', 'info', 'exclude'), 'intermediate\n');
+    await writeFile(join(root, 'intermediate'), 'precious ignored content');
+    await assert.rejects(
+      createOperations().prepare(root, { action: 'rebase', commit: base }),
+      /ignored/,
+    );
+    assert.equal(
+      await readFile(join(root, 'intermediate'), 'utf8'),
+      'precious ignored content',
+    );
+  }));

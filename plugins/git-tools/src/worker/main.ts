@@ -9,6 +9,7 @@ import type {
   WorkspaceChoice,
 } from '../protocol';
 import { changes, diff, log, repository } from './git';
+import { createOperations } from './operations';
 export default function activate(orca: WorkerApi): void {
   function requireHost(name: string) {
     if (orca.api?.major !== 1 || orca.api.minor < 3 || !orca.host.has(name))
@@ -17,6 +18,40 @@ export default function activate(orca: WorkerApi): void {
       );
   }
   const connected = new Set<string>();
+  const operations = createOperations();
+  async function mutationRoot(root: string, workspaceId: string) {
+    check(root);
+    requireHost('workspace.list');
+    requireHost('workspace.readContext');
+    const context = (await orca.host.call(
+      'workspace.readContext',
+      {},
+    )) as WorkspaceContext | null;
+    const result = (await orca.host.call('workspace.list', {})) as {
+      workspaces: (WorkspaceChoice & { kind: string; hostId: string | null })[];
+      truncated: boolean;
+    };
+    const w = result.workspaces.find((w) => w.id === workspaceId);
+    const matches = result.workspaces.filter(
+      (candidate) =>
+        candidate.name === context?.displayName &&
+        (candidate.branch ?? '') === context?.branch,
+    );
+    if (
+      result.truncated ||
+      matches.length !== 1 ||
+      !w ||
+      w.kind !== 'worktree' ||
+      (w.hostId !== null && w.hostId !== 'local') ||
+      w.name !== context?.displayName ||
+      (w.branch ?? '') !== context?.branch ||
+      (await repository(w.path)) !== root
+    )
+      throw new Error(
+        '현재 열린 로컬 워크트리와 명령 대상이 다릅니다. 새로고침 후 다시 확인하세요.',
+      );
+    return root;
+  }
   const check = (root: string) => {
     if (!connected.has(root))
       throw new Error(
@@ -97,6 +132,16 @@ export default function activate(orca: WorkerApi): void {
     };
   });
   handle('log', async ({ repo, all }) => log(check(repo), all === true));
+  handle('prepare', async ({ repo, workspaceId, operation }) =>
+    operations.prepare(await mutationRoot(repo, workspaceId), operation),
+  );
+  handle('execute', async ({ repo, workspaceId, token, confirmation }) =>
+    operations.execute(
+      await mutationRoot(repo, workspaceId),
+      token,
+      confirmation,
+    ),
+  );
   handle('changes', async ({ repo, comparison }) =>
     changes(check(repo), comparison),
   );
@@ -174,5 +219,5 @@ export default function activate(orca: WorkerApi): void {
       opened: true;
     };
   });
-  orca.log('Git Logs read-only worker ready');
+  orca.log('Git Logs worker ready (mutations require a prepared confirmation)');
 }

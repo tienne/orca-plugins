@@ -1,6 +1,6 @@
 # Tienne Orca Plugins
 
-pnpm + Nx 기반 Orca 플러그인 모노레포입니다. `git-tools`는 로컬 Git 커밋 그래프와 중앙 읽기 전용 좌우 diff를 제공합니다. Git 변경 명령은 제공하지 않습니다.
+pnpm + Nx 기반 Orca 플러그인 모노레포입니다. `git-tools`는 로컬 Git 커밋 그래프와 중앙 읽기 전용 좌우 diff를 제공합니다. 커밋 우클릭 메뉴에서 로컬 Git 변경 명령도 제공합니다.
 
 ## 개발 / 검증
 
@@ -32,6 +32,29 @@ pnpm dev
 
 중앙 뷰어는 파일 탐색, 좌우 정렬, 줄/단어 내 강조, 동기 스크롤, 이전/다음 변경, 동일 영역 접기, 줄 앞뒤 공백 무시를 제공합니다. 좁은 화면에서도 좌우 비교를 유지하며 코드 영역 내부를 가로 스크롤합니다. 소스 수정·변경 적용 버튼은 없습니다.
 
+## 커밋 우클릭 작업
+
+커밋을 우클릭하거나 포커스 후 `Shift+F10`을 누릅니다. 메뉴의 작업은 **선택 커밋을 대상으로 현재 열린 로컬 워크트리에서** 실행됩니다.
+
+- 체크아웃: 선택 커밋을 가리키는 로컬 브랜치로 전환하거나 Detached HEAD로 이동합니다. 다른 워크트리에서 사용 중인 브랜치를 강제로 가져오지 않습니다.
+- 브랜치 생성: 선택 커밋에 새 로컬 브랜치를 만들며 자동 전환하지 않습니다. `/`가 포함된 브랜치 이름도 지원합니다.
+- 병합: 선택 커밋을 현재 브랜치로 merge합니다. 가능한 경우 fast-forward, 아니면 merge 커밋을 만듭니다.
+- 리베이스: 현재 브랜치의 커밋을 선택 커밋 위에 다시 쌓는 일반 rebase입니다. merge 커밋을 보존하지 않으며 다른 브랜치 ref를 자동 갱신하지 않습니다. interactive rebase/squash는 제공하지 않습니다.
+- 체리픽 / 리버트: 선택 커밋을 적용하거나 취소하는 새 커밋을 만듭니다. merge 커밋은 기준 부모(mainline)를 반드시 선택합니다. merge revert는 이후 재병합 결과에도 영향을 줍니다.
+- 리셋: soft(index·파일 유지), mixed(파일 유지·index 갱신), hard(index·파일 교체)를 선택합니다. hard는 대상 짧은 해시를 직접 입력해야 실행할 수 있습니다.
+
+**확인 흐름:** 옵션 선택 → 작업 상태 검사 → 저장소/현재 브랜치/HEAD/대상/영향 확인 → 실행. 확인은 5분 동안 유효한 일회성 worker token이며 실행 직전 HEAD·브랜치·작업 상태·체크아웃 대상 ref를 다시 검사합니다. 현재 workspace를 이름/브랜치로 유일하게 확인할 수 없는 경우 변경 명령은 거절합니다. 실행 후 그래프·작업 트리 파일 목록을 갱신합니다. 브라우저 DEMO에서는 확인 화면만 재현하며 Git을 실행하지 않습니다.
+
+첫 버전은 clean index/작업 트리와 untracked 파일이 없는 상태만 지원합니다. 자동 stash/변경 폐기/강제 체크아웃은 하지 않습니다. assume-unchanged/skip-worktree/sparse checkout과 진행 중인 merge/rebase/cherry-pick/revert/bisect를 거절하며, ignored 파일이 대상 경로를 막는 경우에도 거절합니다. `.orcadiff`가 untracked라면 먼저 문서를 정리하거나 사용자가 직접 ignore 규칙을 정해야 합니다.
+
+reset/rebase 전 HEAD를 `refs/git-tools/backups/<timestamp>-<uuid>`로 보관하고 결과에 표시합니다. 이 참조는 커밋만 보존하며 미커밋 파일의 백업이 아닙니다. 자동 삭제하지 않습니다. 복구 전에는 `git show <백업 ref>`로 확인하세요. 공유 브랜치의 reset/rebase는 이력을 바꿀 수 있으며 push/force push는 제공하지 않습니다.
+
+충돌·실패는 출력과 충돌 파일을 표시하고 자동 롤백/재시도하지 않습니다. Git이 진행 중인 상태를 남겼다면 터미널에서 해결·`git add` 후 해당 `git merge --continue`, `git rebase --continue`, `git cherry-pick --continue`, `git revert --continue`를 사용하거나 해당 명령의 `--abort`로 중단하세요. 빈 cherry-pick 등 충돌 파일 없는 중단도 실패로 표시합니다. 충돌 해결용 editor와 staging UI는 범위 밖입니다.
+
+Git hooks와 커밋 서명은 이 UI 명령에서 비활성화하고 자동 stash/rerere 적용/submodule 재귀 갱신도 하지 않습니다. 일반 Git에 설정된 filters/merge driver는 동작할 수 있습니다. 플러그인 내부의 같은 common Git directory 변경 명령은 직렬화하지만 외부 터미널/다른 앱과의 완전한 원자성은 보장하지 않습니다. 실행 중에는 다른 곳에서 같은 저장소의 Git 명령을 실행하지 마세요. 명령 제한 시간은 120초이며 중단 시 상태를 직접 확인해야 합니다. 이 기능은 로컬 Git 2.41.0에서 검증했습니다.
+
+동작 근거: [merge](https://git-scm.com/docs/git-merge), [rebase](https://git-scm.com/docs/git-rebase), [cherry-pick](https://git-scm.com/docs/git-cherry-pick), [revert](https://git-scm.com/docs/git-revert), [reset](https://git-scm.com/docs/git-reset).
+
 ## 접근 권한 / Orca 연결
 
 빌드 결과는 `dist/plugins/git-tools`입니다. source manifest는 패키징된 `ui/index.html`, `ui/editor.html`, `worker.js`를 가리키므로 **검증은 dist 폴더에** 실행합니다. UI·Monaco·editor worker·라이선스는 모두 로컬 번들에 포함됩니다.
@@ -55,27 +78,29 @@ Orca가 `approval_required`를 반환하면 표시된 접근 범위와 fingerpri
 
 ## 검증 상태와 제한
 
-2026-11-04 로컬 검증: Nx build/typecheck, Git/worker fixture 테스트 12개, 패키징 검사 테스트 2개, packaged UI 테스트 12개, Orca manifest validation 통과. 라이트·다크·360px PNG를 직접 확인했습니다.
+2026-11-04 로컬 검증: Nx build/typecheck, Git/worker fixture 테스트 26개, 패키징 검사 테스트 2개, packaged UI 테스트 15개, Orca manifest validation 통과. 라이트·다크·360px PNG를 직접 확인했습니다.
 
 - 실제 임시 Git 저장소 테스트: 최초 커밋 전, 최초 커밋, 200개 제한, 현재/전체 브랜치, merge 부모, 메시지 전문, 특수 파일명, rename, 삭제, staged+unstaged, 상쇄 변경, staged 삭제 후 재생성, 바이너리·비 UTF-8·큰 파일, symlink, 충돌, 경계·해시 검사, worker bridge를 검증합니다.
 - 패키징 UI는 Orca 일반 브라우저와 Playwright에서 렌더합니다. Monaco worker는 상대 경로의 로컬 JS로 제공하고 네트워크 CDN·blob worker에 의존하지 않습니다.
 - **Orca 1.4.248 실호스트 검증 완료:** 승인된 dev plugin에서 실제 저장소 연결·커밋 그래프·workspace 선택·중앙 탭 열기·document.session 구독·Monaco diff 렌더를 확인했습니다. 1300×900 다크/라이트 editor shot은 각각 `themeApplied: true`, `subscribed: true`, `errors: []`였습니다. 로컬 worker/폰트 렌더에 CSP 차단은 보고되지 않았습니다. `plugin check`의 custom editor 정적 검사도 issues/warnings 없이 통과했습니다. 다른 Orca 버전·OS·원격 호스트까지 검증한 것은 아닙니다.
 - 텍스트는 UTF-8, 파일당 768 KiB까지입니다. 바이너리·큰 파일·symlink·submodule·unmerged 충돌은 별도 상태로 표시하며 잘못된 텍스트 diff를 만들지 않습니다. 빈 파일과 없는 파일을 구분합니다. 실행 비트만 바뀐 경우 내용 diff가 0개일 수 있습니다.
 - 작업 트리는 디스크 기준이며 편집기의 저장되지 않은 내용은 포함하지 않습니다. 조회는 원자적 snapshot이 아닙니다. HEAD가 달라지면 재조회 오류를 표시하고 새로고침을 요구합니다. 커밋 비교는 전체 hash에 고정됩니다. 갱신은 수동입니다.
-- 원격 ref는 로컬에 이미 있는 것만 읽습니다. fetch, SSH/원격 파일 접근, Git LFS 다운로드, checkout/staging/revert/commit/push는 없습니다. shallow history는 로컬에 있는 만큼만 보입니다. 자동 객체 fetch를 피하기 위해 partial clone은 연결을 거절합니다. 변경 파일이 2,000개를 넘으면 명시적 오류를 냅니다.
+- 원격 ref는 로컬에 이미 있는 것만 읽습니다. fetch, SSH/원격 파일 접근, Git LFS 다운로드, staging/일반 commit/push는 없습니다. shallow history는 로컬에 있는 만큼만 보입니다. 자동 객체 fetch를 피하기 위해 partial clone은 연결을 거절합니다. 변경 파일이 2,000개를 넘으면 명시적 오류를 냅니다.
 - 연결 목록은 worker 메모리에만 있으며 재시작 시 사이드바가 열린 workspace에 다시 자동 연결합니다. 설명 문서는 저장소 내부 `.orca/git-tools/`에 유지되며 자동 삭제하지 않습니다. 사용하지 않는 설명 문서는 직접 정리할 수 있습니다. 이 폴더의 symlink는 거절하고 Git ignore 설정은 자동 변경하지 않습니다. 외부 비교 문서는 저장소를 자동으로 신뢰하지 않습니다. 문서의 저장소를 Orca에서 열어 사이드바에 연결한 후 새로고침하세요. 기존 중앙 diff는 workspace 전환에도 문서에 기록된 저장소/비교 기준을 유지합니다.
+
+추가 변경 명령 검증: disposable Git 저장소에서 체크아웃/슬래시 브랜치/다른 worktree 점유/merge 설정/일반·merge 커밋 체리픽·리버트/reset 3모드·백업/rebase·충돌/만료된 상태·중복 실행/활성 workspace 경계/숨겨진 index 변경·ignored 충돌을 확인했습니다. 실제 Orca에서는 우클릭 메뉴와 병합 확인창을 렌더하고 실행 없이 닫았습니다. 실제 사용자 저장소의 변경 명령은 시험 실행하지 않았습니다. 독립 검토 3회에서 발견한 숨겨진 변경 검사·merge 설정 문제를 수정했고 마지막 rebase 검토에 추가 차단 지적은 없었습니다.
 
 ## 구조 / 배포
 
 - `plugins/git-tools/src/ui`: React 그래프·파일 탐색·Monaco diff·브라우저 fixture
-- `plugins/git-tools/src/worker`: 인자 배열로 실행하는 Git 조회, 경계 검사, 문서 생성과 탭 연결
+- `plugins/git-tools/src/worker`: 인자 배열로 실행하는 Git 조회·변경, 경계 검사, 문서 생성과 탭 연결
 - `plugins/git-tools/src/protocol.ts`: UI/worker 데이터 계약과 확인된 최소 Orca 타입
 - `scripts/build-plugin.mjs`: self-contained 패키징
 - `orca-catalog.json`: 첫 릴리스 전이므로 빈 카탈로그
 
 공통 패키지는 실제 재사용이 생기면 추출합니다. 원격 저장소 생성, GitHub push, 공개 배포, main 자동 병합은 하지 않았습니다. `dist/`는 Git에서 제외됩니다. 공개 릴리스에는 별도의 요청과 검증이 필요합니다.
 
-설계 참고: [Orca plugin authoring](https://github.com/stablyai/orca/blob/main/docs/reference/plugin-authoring.md), [host API](https://github.com/stablyai/orca/blob/main/docs/reference/plugin-host-api.md), [IntelliJ Diff Viewer](https://www.jetbrains.com/help/idea/differences-viewer.html). IntelliJ의 명확한 좌우 비교·변경 이동·동일 영역 접기를 참고했으며 읽기 전용 UX로 구성했습니다.
+설계 참고: [Orca plugin authoring](https://github.com/stablyai/orca/blob/main/docs/reference/plugin-authoring.md), [host API](https://github.com/stablyai/orca/blob/main/docs/reference/plugin-host-api.md), [IntelliJ Diff Viewer](https://www.jetbrains.com/help/idea/differences-viewer.html). IntelliJ의 명확한 좌우 비교·변경 이동·동일 영역 접기를 참고했으며 중앙 diff는 읽기 전용이며 Git 변경은 별도 확인창으로 분리했습니다.
 
 ## 공식 정책과 이후 개발 규칙
 

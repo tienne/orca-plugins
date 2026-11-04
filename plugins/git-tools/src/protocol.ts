@@ -39,6 +39,7 @@ export interface Repository {
   branch: string;
   head: string | null;
   commits: Commit[];
+  localBranches?: { name: string; hash: string }[];
 }
 export interface Descriptor {
   version: 1;
@@ -57,6 +58,39 @@ export interface WorkspaceChoice {
   path: string;
   branch: string | null;
 }
+export type GitAction =
+  | 'checkout'
+  | 'branch'
+  | 'merge'
+  | 'rebase'
+  | 'cherry-pick'
+  | 'revert'
+  | 'reset';
+export interface OperationInput {
+  action: GitAction;
+  commit: string;
+  branch?: string;
+  resetMode?: 'soft' | 'mixed' | 'hard';
+  mainline?: number;
+}
+export interface OperationPlan {
+  token: string;
+  action: GitAction;
+  root: string;
+  head: string;
+  currentBranch: string;
+  target: string;
+  command: string[];
+  summary: string;
+  confirmation: string;
+  backupRef?: string;
+}
+export interface OperationResult {
+  status: 'success' | 'conflict' | 'failed';
+  message: string;
+  conflicts: string[];
+  backupRef?: string;
+}
 export type ActiveConnection =
   | { status: 'connected'; repository: Repository; workspace: WorkspaceChoice }
   | {
@@ -65,6 +99,19 @@ export type ActiveConnection =
       message: string;
     };
 export interface Requests {
+  prepare: {
+    input: { repo: string; workspaceId: string; operation: OperationInput };
+    output: OperationPlan;
+  };
+  execute: {
+    input: {
+      repo: string;
+      workspaceId: string;
+      token: string;
+      confirmation: string;
+    };
+    output: OperationResult;
+  };
   active: {
     input: { all?: boolean; workspaceId?: string };
     output: ActiveConnection;

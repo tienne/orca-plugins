@@ -1,6 +1,6 @@
 # Git Logs 0.1.0
 
-로컬 Git 커밋 그래프 + 읽기 전용 Monaco 좌우 diff를 제공하는 Orca 플러그인입니다. Git 변경 명령은 없습니다. 최소 Orca 버전은 1.4.248입니다.
+로컬 Git 커밋 그래프 + 읽기 전용 Monaco 좌우 diff를 제공하는 Orca 플러그인입니다. 커밋 우클릭으로 체크아웃·브랜치 생성·병합·리베이스·체리픽·리버트·리셋을 제공합니다. 최소 Orca 버전은 1.4.248입니다.
 
 ## 사용
 
@@ -10,6 +10,29 @@ Git Logs 사이드바를 열면 현재 열린 Orca 로컬 Git 워크트리에 �
 - 커밋: 선택 커밋 → 직접 부모 기준 비교. 좌측은 부모, 우측은 선택 커밋입니다. Merge는 부모를 선택하며 최초 커밋의 좌측은 빈 트리입니다.
 
 파일을 선택하고 **중앙 Diff 탭 열기**를 누릅니다. 연결된 workspace를 중앙 탭의 대상으로 사용합니다. 저장소의 `.orca/git-tools/<id>.orcadiff`에 저장소·비교 기준·선택 파일을 담아 대상 workspace의 custom editor로 엽니다. 이 폴더가 Git에서 무시되지 않으면 문서가 untracked로 표시되며 ignore 설정은 자동 변경하지 않습니다. 소스 파일과 index는 수정하지 않습니다. 중앙 뷰어는 좌우 정렬, 줄/단어 내 강조, 동기 스크롤, 이전/다음 변경, 동일 영역 접기, 줄 앞뒤 공백 무시를 지원합니다.
+
+## 커밋 우클릭 작업
+
+커밋을 우클릭하거나 포커스 후 `Shift+F10`을 누릅니다. 메뉴의 작업은 **선택 커밋을 대상으로 현재 열린 로컬 워크트리에서** 실행됩니다.
+
+- 체크아웃: 선택 커밋을 가리키는 로컬 브랜치로 전환하거나 Detached HEAD로 이동합니다. 다른 워크트리에서 사용 중인 브랜치를 강제로 가져오지 않습니다.
+- 브랜치 생성: 선택 커밋에 새 로컬 브랜치를 만들며 자동 전환하지 않습니다. `/`가 포함된 브랜치 이름도 지원합니다.
+- 병합: 선택 커밋을 현재 브랜치로 merge합니다. 가능한 경우 fast-forward, 아니면 merge 커밋을 만듭니다.
+- 리베이스: 현재 브랜치의 커밋을 선택 커밋 위에 다시 쌓는 일반 rebase입니다. merge 커밋을 보존하지 않으며 다른 브랜치 ref를 자동 갱신하지 않습니다. interactive rebase/squash는 제공하지 않습니다.
+- 체리픽 / 리버트: 선택 커밋을 적용하거나 취소하는 새 커밋을 만듭니다. merge 커밋은 기준 부모(mainline)를 반드시 선택합니다. merge revert는 이후 재병합 결과에도 영향을 줍니다.
+- 리셋: soft(index·파일 유지), mixed(파일 유지·index 갱신), hard(index·파일 교체)를 선택합니다. hard는 대상 짧은 해시를 직접 입력해야 실행할 수 있습니다.
+
+**확인 흐름:** 옵션 선택 → 작업 상태 검사 → 저장소/현재 브랜치/HEAD/대상/영향 확인 → 실행. 확인은 5분 동안 유효한 일회성 worker token이며 실행 직전 HEAD·브랜치·작업 상태·체크아웃 대상 ref를 다시 검사합니다. 현재 workspace를 이름/브랜치로 유일하게 확인할 수 없는 경우 변경 명령은 거절합니다. 실행 후 그래프·작업 트리 파일 목록을 갱신합니다. 브라우저 DEMO에서는 확인 화면만 재현하며 Git을 실행하지 않습니다.
+
+첫 버전은 clean index/작업 트리와 untracked 파일이 없는 상태만 지원합니다. 자동 stash/변경 폐기/강제 체크아웃은 하지 않습니다. assume-unchanged/skip-worktree/sparse checkout과 진행 중인 merge/rebase/cherry-pick/revert/bisect를 거절하며, ignored 파일이 대상 경로를 막는 경우에도 거절합니다. `.orcadiff`가 untracked라면 먼저 문서를 정리하거나 사용자가 직접 ignore 규칙을 정해야 합니다.
+
+reset/rebase 전 HEAD를 `refs/git-tools/backups/<timestamp>-<uuid>`로 보관하고 결과에 표시합니다. 이 참조는 커밋만 보존하며 미커밋 파일의 백업이 아닙니다. 자동 삭제하지 않습니다. 복구 전에는 `git show <백업 ref>`로 확인하세요. 공유 브랜치의 reset/rebase는 이력을 바꿀 수 있으며 push/force push는 제공하지 않습니다.
+
+충돌·실패는 출력과 충돌 파일을 표시하고 자동 롤백/재시도하지 않습니다. Git이 진행 중인 상태를 남겼다면 터미널에서 해결·`git add` 후 해당 `git merge --continue`, `git rebase --continue`, `git cherry-pick --continue`, `git revert --continue`를 사용하거나 해당 명령의 `--abort`로 중단하세요. 빈 cherry-pick 등 충돌 파일 없는 중단도 실패로 표시합니다. 충돌 해결용 editor와 staging UI는 범위 밖입니다.
+
+Git hooks와 커밋 서명은 이 UI 명령에서 비활성화하고 자동 stash/rerere 적용/submodule 재귀 갱신도 하지 않습니다. 일반 Git에 설정된 filters/merge driver는 동작할 수 있습니다. 플러그인 내부의 같은 common Git directory 변경 명령은 직렬화하지만 외부 터미널/다른 앱과의 완전한 원자성은 보장하지 않습니다. 실행 중에는 다른 곳에서 같은 저장소의 Git 명령을 실행하지 마세요. 명령 제한 시간은 120초이며 중단 시 상태를 직접 확인해야 합니다. 이 기능은 로컬 Git 2.41.0에서 검증했습니다.
+
+동작 근거: [merge](https://git-scm.com/docs/git-merge), [rebase](https://git-scm.com/docs/git-rebase), [cherry-pick](https://git-scm.com/docs/git-cherry-pick), [revert](https://git-scm.com/docs/git-revert), [reset](https://git-scm.com/docs/git-reset).
 
 ## 접근과 제한
 
@@ -21,7 +44,9 @@ UTF-8 파일당 768 KiB까지 텍스트 비교합니다. 바이너리·비 UTF-8
 
 UI/Monaco/editor worker는 모두 로컬 번들입니다. 일반 브라우저 preview는 명확히 표시된 **DEMO fixture**입니다. Git 데이터로 오인하지 마세요. 상단에서 로딩/오류/빈 상태와 테마도 확인할 수 있습니다.
 
-**검증 상태:** build/typecheck, Git·worker·패키징 테스트 14개, 브라우저 UI 테스트 12개, manifest validation과 plugin check가 통과했습니다. 사용자 승인 후 Orca 1.4.248의 실제 사이드바 연결·커밋 그래프·중앙 editor.open·document.session·Monaco diff를 확인했습니다. 다크/라이트 editor shot은 themeApplied/subscribed가 true이고 프레임 오류가 없었습니다. 다른 OS/버전/원격 호스트는 미검증입니다. 호스트 타입 생성은 설치본 선언 파일 누락으로 실패해 확인된 API 타입만 수동 관리합니다.
+**검증 상태:** build/typecheck, Git·worker·패키징 테스트 28개, 브라우저 UI 테스트 15개, manifest validation과 plugin check가 통과했습니다. 사용자 승인 후 Orca 1.4.248의 실제 사이드바 연결·커밋 그래프·중앙 editor.open·document.session·Monaco diff를 확인했습니다. 다크/라이트 editor shot은 themeApplied/subscribed가 true이고 프레임 오류가 없었습니다. 다른 OS/버전/원격 호스트는 미검증입니다. 호스트 타입 생성은 설치본 선언 파일 누락으로 실패해 확인된 API 타입만 수동 관리합니다.
+
+추가 변경 명령 검증: disposable Git 저장소에서 체크아웃/슬래시 브랜치/다른 worktree 점유/merge 설정/일반·merge 커밋 체리픽·리버트/reset 3모드·백업/rebase·충돌/만료된 상태·중복 실행/활성 workspace 경계/숨겨진 index 변경·ignored 충돌을 확인했습니다. 실제 Orca에서는 우클릭 메뉴와 병합 확인창을 렌더하고 실행 없이 닫았습니다. 실제 사용자 저장소의 변경 명령은 시험 실행하지 않았습니다. 독립 검토 3회에서 발견한 숨겨진 변경 검사·merge 설정 문제를 수정했고 마지막 rebase 검토에 추가 차단 지적은 없었습니다.
 
 ## 소스 개발
 

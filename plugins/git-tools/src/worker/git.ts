@@ -14,7 +14,11 @@ import type {
 } from '../protocol';
 const exec = promisify(execFile);
 const LIMIT = 768 * 1024;
-export async function git(root: string, args: string[]): Promise<Buffer> {
+export async function git(
+  root: string,
+  args: string[],
+  timeout = 15000,
+): Promise<Buffer> {
   const env = { ...process.env };
   for (const key of Object.keys(env))
     if (key.startsWith('GIT_')) delete env[key];
@@ -24,6 +28,8 @@ export async function git(root: string, args: string[]): Promise<Buffer> {
       '--no-pager',
       '-c',
       'core.fsmonitor=false',
+      '-c',
+      'color.ui=false',
       '-c',
       'log.showSignature=false',
       '-c',
@@ -36,7 +42,7 @@ export async function git(root: string, args: string[]): Promise<Buffer> {
       cwd: root,
       encoding: 'buffer',
       maxBuffer: 8 * 1024 * 1024,
-      timeout: 15000,
+      timeout,
       env: {
         ...env,
         GIT_OPTIONAL_LOCKS: '0',
@@ -93,7 +99,7 @@ function validPath(path: string) {
   )
     throw new Error('잘못된 저장소 상대 경로입니다.');
 }
-async function commitHash(root: string, ref: string): Promise<string> {
+export async function commitHash(root: string, ref: string): Promise<string> {
   if (typeof ref !== 'string' || !/^[a-f0-9]{40,64}$/.test(ref))
     throw new Error('전체 커밋 해시가 필요합니다.');
   const hash = (await git(root, ['rev-parse', '--verify', `${ref}^{commit}`]))
@@ -111,6 +117,7 @@ export async function log(root: string, all = false): Promise<Repository> {
     'HEAD',
   ]);
   const refs = new Map<string, string[]>();
+  const localBranches: { name: string; hash: string }[] = [];
   for (const line of (
     await git(root, [
       'for-each-ref',
@@ -123,6 +130,8 @@ export async function log(root: string, all = false): Promise<Repository> {
     .trim()
     .split('\n')) {
     const [hash, name] = line.split('\t');
+    if (name?.startsWith('refs/heads/'))
+      localBranches.push({ name: name.slice(11), hash });
     if (name)
       refs.set(hash, [
         ...(refs.get(hash) ?? []),
@@ -161,6 +170,7 @@ export async function log(root: string, all = false): Promise<Repository> {
     branch: branch || 'Detached HEAD',
     head: head || null,
     commits,
+    localBranches,
   };
 }
 export function parseNames(raw: Buffer): ChangedFile[] {

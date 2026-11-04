@@ -14,6 +14,6 @@ export async function request<K extends keyof Requests>(
       '이 Orca에서 plugin.request를 지원하지 않습니다. Host API 1.2 이상이 필요합니다.',
     );
   return window.orca.plugin.request<Requests[K]['output']>(name, input, {
-    timeoutMs: 60000,
+    timeoutMs: name === 'execute' ? 180000 : 60000,
   });
 }

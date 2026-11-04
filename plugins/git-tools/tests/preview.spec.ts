@@ -404,3 +404,142 @@ test('ambiguous active workspace uses a workspace picker instead of guessing a r
   await page.getByLabel('연결할 워크트리').selectOption('two');
   await expect(page.locator('.repo-heading b')).toHaveText('two');
 });
+
+test('commit context menu supports keyboard navigation and a safe demo hard reset confirmation', async ({
+  page,
+}, info) => {
+  await page.goto('/');
+  const commit = page.getByRole('button', { name: /^Merge branch/ });
+  await commit.click({ button: 'right' });
+  await expect(page.getByRole('menu', { name: '커밋 작업' })).toBeVisible();
+  await expect(page.getByRole('menuitem')).toHaveCount(7);
+  await page.screenshot({ path: info.outputPath('commit-menu.png') });
+  await page.keyboard.press('Escape');
+  await expect(page.getByRole('menu')).toHaveCount(0);
+  await commit.focus();
+  await page.keyboard.press('Shift+F10');
+  await page.keyboard.press('End');
+  await page.keyboard.press('Enter');
+  await expect(page.getByRole('dialog')).toContainText('DEMO');
+  await page.getByLabel('리셋 모드').selectOption('hard');
+  await page.getByRole('button', { name: '대상과 영향 확인' }).click();
+  await expect(page.getByRole('button', { name: 'DEMO 실행' })).toBeDisabled();
+  await page.getByLabel('Hard reset 확인 해시').fill('wrong');
+  await expect(page.getByRole('button', { name: 'DEMO 실행' })).toBeDisabled();
+  await page.getByLabel('Hard reset 확인 해시').fill('8a4f19c');
+  await page.getByRole('button', { name: 'DEMO 실행' }).click();
+  await expect(page.locator('.operation-result')).toContainText(
+    '실제 Git 명령을 실행하지 않았습니다',
+  );
+  await expect(page.getByRole('dialog')).not.toBeVisible();
+});
+test('merge parent action requires an explicit mainline and dialogs fit narrow light/dark frames', async ({
+  page,
+}, info) => {
+  await page.setViewportSize({ width: 360, height: 740 });
+  await page.goto('/');
+  for (const theme of ['light', 'dark']) {
+    await page.getByLabel('미리보기 테마').selectOption(theme);
+    await page
+      .getByRole('button', { name: /^Merge branch/ })
+      .click({ button: 'right' });
+    await page.getByRole('menuitem', { name: '리버트…', exact: true }).click();
+    await expect(
+      page.getByRole('button', { name: '대상과 영향 확인' }),
+    ).toBeDisabled();
+    await page.getByLabel('merge 기준 부모').selectOption('2');
+    await expect(
+      page.getByRole('button', { name: '대상과 영향 확인' }),
+    ).toBeEnabled();
+    const box = await page.getByRole('dialog').boundingBox();
+    expect(box!.x).toBeGreaterThanOrEqual(0);
+    expect(box!.x + box!.width).toBeLessThanOrEqual(360);
+    await page.screenshot({
+      path: info.outputPath(`commit-action-${theme}.png`),
+    });
+    await page.getByRole('button', { name: '취소', exact: true }).click();
+  }
+});
+test('host action executes a prepared token once and displays conflicts after refreshing graph', async ({
+  page,
+}) => {
+  const { fixtureRepo } = await import('../src/ui/fixture');
+  await page.addInitScript((repo) => {
+    let prepared = 0;
+    let executed = 0;
+    window.orca = {
+      api: { major: 1, minor: 3 },
+      host: { has: () => true },
+      plugin: {
+        request: async <T>(name: string, raw: unknown) => {
+          const input = raw as {
+            token?: string;
+            operation?: { action: string; commit: string };
+          };
+          if (name === 'active')
+            return {
+              status: 'connected',
+              repository: repo,
+              workspace: {
+                id: 'fixture',
+                name: 'Fixture',
+                path: repo.root,
+                branch: repo.branch,
+              },
+            } as T;
+          if (name === 'changes')
+            return {
+              comparison: { kind: 'working' },
+              files: [],
+              left: 'HEAD',
+              right: '디스크',
+            } as T;
+          if (name === 'log') return repo as T;
+          if (name === 'prepare') {
+            prepared++;
+            return {
+              token: 'one-shot',
+              action: input.operation!.action,
+              root: repo.root,
+              head: repo.head,
+              currentBranch: repo.branch,
+              target: input.operation!.commit,
+              command: ['merge', input.operation!.commit],
+              summary: '現在ブランチに merge'.replace(
+                '現在ブランチに',
+                '현재 브랜치로',
+              ),
+              confirmation: '',
+            } as T;
+          }
+          if (name === 'execute') {
+            executed++;
+            if (prepared !== 1 || executed !== 1 || input.token !== 'one-shot')
+              throw new Error('unexpected execution');
+            return {
+              status: 'conflict',
+              message: '충돌: 터미널에서 해결하거나 git merge --abort 하세요.',
+              conflicts: ['src/conflict.ts'],
+            } as T;
+          }
+          throw new Error(`Unexpected request: ${name}`);
+        },
+      },
+    };
+  }, fixtureRepo);
+  await page.goto('/');
+  await page
+    .getByRole('button', { name: /^Merge branch/ })
+    .click({ button: 'right' });
+  await page.getByRole('menuitem', { name: '현재 브랜치로 병합…' }).click();
+  await page.getByRole('button', { name: '대상과 영향 확인' }).click();
+  await expect(page.getByRole('dialog')).toContainText('현재 브랜치로 merge');
+  await page.getByRole('button', { name: '확인하고 실행' }).click();
+  await expect(page.locator('.operation-result')).toContainText('Git 충돌');
+  await expect(page.locator('.operation-result')).toContainText(
+    'src/conflict.ts',
+  );
+  await expect(page.locator('.commit-row')).toHaveCount(
+    fixtureRepo.commits.length,
+  );
+});
