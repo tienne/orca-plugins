@@ -1,6 +1,6 @@
 import * as monaco from 'monaco-editor/editor/editor.api.js';
 
-const themeName = 'orca-git-tools';
+const themeName = 'orca-git-logs';
 // Resolve CSS variables through the browser: Orca themes may use hex, rgb,
 // oklch or color-mix, while Monaco requires normalized hex colors.
 function palette() {

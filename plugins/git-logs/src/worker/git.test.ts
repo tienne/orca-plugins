@@ -22,7 +22,7 @@ async function fixture(
   ) => Promise<void>,
 ) {
   const root = await realpath(
-    await mkdtemp(join(tmpdir(), 'git-tools-fixture-')),
+    await mkdtemp(join(tmpdir(), 'git-logs-fixture-')),
   );
   try {
     await git(root, ['init', '-b', 'main']);
@@ -305,7 +305,7 @@ test('worker requires an Orca workspace connection and validates workspace befor
       JSON.parse(await readFile(join(root, opened), 'utf8')).repo,
       descriptor.repo,
     );
-    assert.ok(opened.startsWith('.orca/git-tools/'));
+    assert.ok(opened.startsWith('.orca/git-logs/'));
     await rm(join(root, '.orca'), { recursive: true, force: true });
     await symlink('/tmp', join(root, '.orca'));
     await assert.rejects(

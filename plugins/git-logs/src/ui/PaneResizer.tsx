@@ -3,8 +3,9 @@ import { t, useLocale } from './i18n';
 type Heights = { details: number; files: number };
 type Pane = keyof Heights;
 const memory = new Map<string, Heights>();
-const changeEvent = 'git-tools:pane-layout';
+const changeEvent = 'git-logs:pane-layout';
 function storageKey(root: HTMLElement) {
+  // Retain the pre-rename key so existing pane sizes remain available.
   return `git-tools.panes.v1.${root.dataset.layoutKind ?? 'panel'}`;
 }
 function read(root: HTMLElement): Heights | undefined {

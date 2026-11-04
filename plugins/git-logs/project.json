@@ -1,27 +1,27 @@
 {
-  "name": "git-tools",
+  "name": "git-logs",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "plugins/git-tools/src",
+  "sourceRoot": "plugins/git-logs/src",
   "projectType": "application",
   "tags": ["type:plugin", "scope:git"],
   "targets": {
     "build": {
       "executor": "nx:run-commands",
-      "outputs": ["{workspaceRoot}/dist/plugins/git-tools"],
+      "outputs": ["{workspaceRoot}/dist/plugins/git-logs"],
       "options": {
-        "command": "node scripts/build-plugin.mjs git-tools"
+        "command": "node scripts/build-plugin.mjs git-logs"
       }
     },
     "typecheck": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "tsc -p plugins/git-tools/tsconfig.json"
+        "command": "tsc -p plugins/git-logs/tsconfig.json"
       }
     },
     "validate-plugin": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "orca plugin validate dist/plugins/git-tools --json"
+        "command": "orca plugin validate dist/plugins/git-logs --json"
       }
     },
     "dev": {
@@ -29,14 +29,14 @@
       "cache": false,
       "continuous": true,
       "options": {
-        "command": "vite --config plugins/git-tools/vite.config.ts"
+        "command": "vite --config plugins/git-logs/vite.config.ts"
       }
     },
     "test": {
       "executor": "nx:run-commands",
       "cache": true,
       "options": {
-        "command": "node scripts/test-git-tools.mjs"
+        "command": "node scripts/test-git-logs.mjs"
       }
     },
     "preview": {
@@ -45,7 +45,7 @@
       "continuous": true,
       "dependsOn": ["build"],
       "options": {
-        "command": "vite preview --config plugins/git-tools/vite.config.ts --host 127.0.0.1 --port 4173"
+        "command": "vite preview --config plugins/git-logs/vite.config.ts --host 127.0.0.1 --port 4173"
       }
     },
     "ui-test": {
@@ -53,7 +53,7 @@
       "cache": false,
       "dependsOn": ["build"],
       "options": {
-        "command": "playwright test --config plugins/git-tools/playwright.config.ts"
+        "command": "playwright test --config plugins/git-logs/playwright.config.ts"
       }
     }
   }

@@ -3,7 +3,7 @@ import { mkdtemp, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { spawnSync } from 'node:child_process';
-const dir = await mkdtemp(join(tmpdir(), 'git-tools-tests-'));
+const dir = await mkdtemp(join(tmpdir(), 'git-logs-tests-'));
 try {
   const suites = ['worker/git', 'i18n/messages'];
   const outfiles = suites.map((suite) =>
@@ -12,7 +12,7 @@ try {
   await Promise.all(
     suites.map((suite, index) =>
       build({
-        entryPoints: [`plugins/git-tools/src/${suite}.test.ts`],
+        entryPoints: [`plugins/git-logs/src/${suite}.test.ts`],
         outfile: outfiles[index],
         bundle: true,
         platform: 'node',

@@ -5,7 +5,7 @@ import { resolve } from 'node:path';
 import { isBuiltin } from 'node:module';
 import { validateArtifact } from './validate-plugin-artifact.mjs';
 const plugin = process.argv[2];
-if (plugin !== 'git-tools') throw new Error(`Unknown plugin: ${plugin}`);
+if (plugin !== 'git-logs') throw new Error(`Unknown plugin: ${plugin}`);
 const source = resolve('plugins', plugin);
 const output = resolve('dist/plugins', plugin);
 await rm(output, { recursive: true, force: true });

@@ -7,7 +7,7 @@ export default defineConfig({
   // Monaco 0.57 exports JS subpaths only; resolve its bundled font stylesheet explicitly.
   resolve: {
     alias: {
-      '@git-tools/codicons.css': fileURLToPath(
+      '@git-logs/codicons.css': fileURLToPath(
         new URL(
           './node_modules/monaco-editor/esm/vs/base/browser/ui/codicons/codicon/codicon.css',
           import.meta.url,
@@ -17,7 +17,7 @@ export default defineConfig({
   },
   plugins: [react()],
   build: {
-    outDir: '../../dist/plugins/git-tools/ui',
+    outDir: '../../dist/plugins/git-logs/ui',
     emptyOutDir: true,
     rolldownOptions: {
       input: {

@@ -304,7 +304,7 @@ export function createOperations() {
               : '',
           ...(['reset', 'rebase'].includes(input.action)
             ? {
-                backupRef: `refs/git-tools/backups/${Date.now()}-${randomUUID()}`,
+                backupRef: `refs/git-logs/backups/${Date.now()}-${randomUUID()}`,
               }
             : {}),
         };

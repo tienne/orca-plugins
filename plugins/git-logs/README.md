@@ -77,11 +77,17 @@ Orca의 라이트·다크 테마와 공개된 컬러 토큰에 맞춰 패널, �
 
 하단 영역은 내용이 늘어나도 높이를 유지하고 내부에서 스크롤합니다. 가운데 핸들은 드래그 또는 방향키로 조절하며, 더블클릭하면 기본 높이로 돌아갑니다. 높이는 프레임의 로컬 저장소에 보관하고, 저장소 접근이 제한된 환경에서는 현재 프레임 안에서만 유지합니다.
 
+## 이름 변경 안내
+
+플러그인 ID와 개발 명령은 `git-tools`에서 `git-logs`로 변경됐습니다. 로컬 설치 ID는 `local.git-logs`이며 향후 tienne 소유 저장소의 설치 ID는 `tienne.git-logs`입니다. 기존 `.orca/git-tools/`의 `.orcadiff` 문서는 계속 열 수 있고 새 문서는 `.orca/git-logs/`에 생성됩니다. 이전 `refs/git-tools/backups/`의 백업 ref는 그대로 남으며 새 백업은 `refs/git-logs/backups/`에 생성됩니다.
+
+Orca는 새 ID를 별도 플러그인으로 인식하므로 개발 폴더를 다시 연결하고 실행 권한을 승인해야 합니다. 새 플러그인이 준비되면 이전 `local.git-tools` 개발 폴더 연결을 해제해 패널과 편집기가 중복 등록되지 않도록 합니다.
+
 ## 접근 권한과 로컬 파일
 
 Git Logs는 `trusted-worker` 플러그인으로 **사용자 계정 권한의 Node 프로세스에서 Git과 파일에 접근**합니다. 설치·실행 시 이 접근에 대한 승인이 필요합니다. Orca 권한은 작업 공간을 확인하는 `workspace:read`와 Diff 탭을 여는 `workspace:write`를 사용합니다.
 
-Diff 탭을 열 때 저장소 안에 `.orca/git-tools/*.orcadiff` 비교 문서를 만듭니다. 이 JSON 문서에는 저장소·비교 기준·선택 파일이 기록됩니다. 자동으로 삭제하거나 Git ignore 설정을 바꾸지 않습니다. `.orca/`가 무시되지 않으면 문서가 untracked 파일로 표시되므로, 필요에 따라 직접 정리하거나 ignore 규칙을 설정하세요.
+Diff 탭을 열 때 저장소 안에 `.orca/git-logs/*.orcadiff` 비교 문서를 만듭니다. 이 JSON 문서에는 저장소·비교 기준·선택 파일이 기록됩니다. 자동으로 삭제하거나 Git ignore 설정을 바꾸지 않습니다. `.orca/`가 무시되지 않으면 문서가 untracked 파일로 표시되므로, 필요에 따라 직접 정리하거나 ignore 규칙을 설정하세요.
 
 UI, Monaco, 폰트, editor worker는 로컬 번들에 포함됩니다. 플러그인에 telemetry, analytics, 외부 번역 요청은 없습니다.
 
@@ -103,31 +109,31 @@ Node.js 22.12 이상 또는 24 이상, pnpm 10, Git, Orca CLI를 준비하고 �
 
 ```sh
 pnpm install
-pnpm nx run git-tools:build
-pnpm nx run git-tools:typecheck
-pnpm nx run git-tools:test
-pnpm nx run git-tools:ui-test
+pnpm nx run git-logs:build
+pnpm nx run git-logs:typecheck
+pnpm nx run git-logs:test
+pnpm nx run git-logs:ui-test
 pnpm validate
 ```
 
-빌드 결과는 `dist/plugins/git-tools`이며, 설치에 필요한 파일과 의존 라이선스를 포함합니다. 별도 node_modules 없이 사용할 수 있습니다. 플러그인 접근 범위를 검토한 뒤 Orca의 승인 절차에 따라 개발 폴더를 연결합니다.
+빌드 결과는 `dist/plugins/git-logs`이며, 설치에 필요한 파일과 의존 라이선스를 포함합니다. 별도 node_modules 없이 사용할 수 있습니다. 플러그인 접근 범위를 검토한 뒤 Orca의 승인 절차에 따라 개발 폴더를 연결합니다.
 
 ```sh
-orca plugin inspect ./dist/plugins/git-tools --json
-orca plugin dev load ./dist/plugins/git-tools --json
+orca plugin inspect ./dist/plugins/git-logs --json
+orca plugin dev load ./dist/plugins/git-logs --json
 ```
 
 브라우저에서 화면을 확인하려면 먼저 빌드한 뒤 실행합니다.
 
 ```sh
-pnpm nx run git-tools:preview
+pnpm nx run git-logs:preview
 # 소스 변경을 바로 확인하려면
 pnpm dev
 ```
 
 일반 브라우저에서는 **DEMO · 실제 Git 데이터 아님** 표시와 샘플 데이터가 나타납니다. 실제 Git 명령을 실행하지 않으며 라이트·다크, 좁은 화면, 로딩·오류·빈 상태를 확인할 수 있습니다.
 
-UI 테스트는 설치된 Google Chrome을 사용합니다. Chromium을 사용하려면 `pnpm exec playwright install chromium` 후 `PW_CHANNEL=chromium pnpm nx run git-tools:ui-test`를 실행합니다.
+UI 테스트는 설치된 Google Chrome을 사용합니다. Chromium을 사용하려면 `pnpm exec playwright install chromium` 후 `PW_CHANNEL=chromium pnpm nx run git-logs:ui-test`를 실행합니다.
 
 ## 라이선스
 

@@ -1,7 +1,7 @@
 import { defineConfig } from '@playwright/test';
 export default defineConfig({
   testDir: './tests',
-  outputDir: '../../test-results/git-tools',
+  outputDir: '../../test-results/git-logs',
   fullyParallel: false,
   use: {
     locale: 'ko-KR',
@@ -12,7 +12,7 @@ export default defineConfig({
     trace: 'retain-on-failure',
   },
   webServer: {
-    command: 'pnpm nx run git-tools:preview --output-style=static',
+    command: 'pnpm nx run git-logs:preview --output-style=static',
     cwd: '../..',
     url: 'http://127.0.0.1:4173',
     reuseExistingServer: true,

@@ -477,7 +477,7 @@ function App() {
         <small
           className="file-open-hint"
           title={t(
-            '저장소의 .orca/git-tools/에 비교 문서를 생성합니다. Git에서 무시되지 않으면 untracked로 표시됩니다.',
+            '저장소의 .orca/git-logs/에 비교 문서를 생성합니다. Git에서 무시되지 않으면 untracked로 표시됩니다.',
           )}
         >
           {t('더블클릭 또는 Enter로 Diff 열기')}

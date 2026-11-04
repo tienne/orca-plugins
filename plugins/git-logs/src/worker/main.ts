@@ -194,7 +194,7 @@ export default function activate(orca: WorkerApi): void {
     };
     // Only generated descriptors are written, never source/index/config files.
     let directory = root;
-    for (const part of ['.orca', 'git-tools']) {
+    for (const part of ['.orca', 'git-logs']) {
       directory = join(directory, part);
       try {
         await mkdir(directory, { mode: 0o700 });
@@ -211,7 +211,7 @@ export default function activate(orca: WorkerApi): void {
           '비교 문서 폴더는 저장소 내부의 실제 디렉터리여야 합니다.',
         );
     }
-    const path = `.orca/git-tools/${randomUUID()}.orcadiff`;
+    const path = `.orca/git-logs/${randomUUID()}.orcadiff`;
     await writeFile(join(root, path), JSON.stringify(safe, null, 2), {
       mode: 0o600,
       flag: 'wx',

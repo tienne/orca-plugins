@@ -26,11 +26,11 @@ function subscribe(listener: () => void) {
     // without subscribing to an undocumented bridge event or internal messages.
     const timer = window.setInterval(check, 500);
     window.addEventListener('focus', check);
-    window.addEventListener('git-tools:preview-locale', check);
+    window.addEventListener('git-logs:preview-locale', check);
     cleanup = () => {
       clearInterval(timer);
       window.removeEventListener('focus', check);
-      window.removeEventListener('git-tools:preview-locale', check);
+      window.removeEventListener('git-logs:preview-locale', check);
     };
   }
   return () => {
@@ -63,5 +63,5 @@ export function setPreviewLocale(locale: string) {
   const url = new URL(location.href);
   url.searchParams.set('lang', locale);
   history.replaceState(null, '', url);
-  window.dispatchEvent(new Event('git-tools:preview-locale'));
+  window.dispatchEvent(new Event('git-logs:preview-locale'));
 }

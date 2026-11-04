@@ -1,6 +1,6 @@
 import { t, useLocale, changesLabel, formatNumber } from './i18n';
 import { useEffect, useRef, useState } from 'react';
-import '@git-tools/codicons.css';
+import '@git-logs/codicons.css';
 import * as monaco from 'monaco-editor/editor/editor.api.js';
 import EditorWorker from 'monaco-editor/editor/editor.worker.js?worker';
 import 'monaco-editor/languages/definitions/typescript/register.js';
@@ -66,7 +66,7 @@ export function DiffView({
           minimumLineCount: 8,
           revealLineCount: 10,
         },
-        theme: 'orca-git-tools',
+        theme: 'orca-git-logs',
         fontSize: 13,
         fontFamily: 'Menlo, Consolas, monospace',
         minimap: { enabled: false },

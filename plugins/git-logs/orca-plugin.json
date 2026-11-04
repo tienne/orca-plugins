@@ -1,6 +1,6 @@
 {
   "manifestVersion": 2,
-  "id": "git-tools",
+  "id": "git-logs",
   "name": "Git Logs",
   "version": "0.1.0",
   "description": "Local Git commit graph, confirmed commit actions and a read-only side-by-side diff viewer.",
@@ -12,7 +12,7 @@
   "contributes": {
     "panels": [
       {
-        "id": "git-tools",
+        "id": "git-logs",
         "title": "Git Logs",
         "icon": "branch",
         "entry": "ui/index.html"
