@@ -166,9 +166,12 @@ test('panel remains a panel when Orca supplies a document API on every surface',
       api: { major: 1, minor: 3 },
       host: { has: () => true },
       plugin: {
-        request: async () => {
-          throw new Error('No worker request expected before connect');
-        },
+        request: async <T>() =>
+          ({
+            status: 'unavailable',
+            choices: [],
+            message: '열린 workspace 없음',
+          }) as T,
       },
       document: {
         session: async () => {
@@ -181,6 +184,8 @@ test('panel remains a panel when Orca supplies a document API on every surface',
   await expect(
     page.getByRole('heading', { name: 'Git Tools', exact: true }),
   ).toBeVisible();
+  await expect(page.getByLabel('열린 워크트리에 자동 연결')).toBeChecked();
+  await page.getByText('다른 저장소 경로로 연결', { exact: true }).click();
   await expect(page.getByLabel('로컬 Git 저장소 절대 경로')).toBeVisible();
   await expect(page.getByRole('alert')).toHaveCount(0);
 });
@@ -226,4 +231,110 @@ test('dedicated editor entry subscribes to descriptor and renders a worker compa
   await expect(page.getByText('2개 변경', { exact: true })).toBeVisible();
   await expect(page.getByLabel('로컬 Git 저장소 절대 경로')).toHaveCount(0);
   await expect(page.locator('.monaco-editor[role=code]')).toHaveCount(2);
+});
+
+test('sidebar auto-connects and follows workspace switches without asking for a path', async ({
+  page,
+}) => {
+  const { fixtureRepo } = await import('../src/ui/fixture');
+  await page.addInitScript((initial) => {
+    let current = initial;
+    const listeners = new Set<() => void>();
+    window.addEventListener('test-workspace', (event) => {
+      current = (event as CustomEvent).detail;
+      for (const fn of listeners) fn();
+    });
+    window.orca = {
+      api: { major: 1, minor: 3 },
+      host: { has: () => true },
+      on: (event, handler) => {
+        const listener = () => handler(undefined as never);
+        if (event === 'workspace.changed') listeners.add(listener);
+        return () => listeners.delete(listener);
+      },
+      plugin: {
+        request: async <T>(name: string) => {
+          if (name === 'active')
+            return {
+              status: 'connected',
+              repository: current,
+              workspace: {
+                id: current.root,
+                name: current.root.split('/').pop(),
+                path: current.root,
+                branch: current.branch,
+              },
+            } as T;
+          if (name === 'changes')
+            return {
+              comparison: { kind: 'working' },
+              files: [],
+              left: 'HEAD',
+              right: '디스크',
+            } as T;
+          throw new Error(`Unexpected request: ${name}`);
+        },
+      },
+    };
+  }, fixtureRepo);
+  await page.goto('/');
+  await expect(page.locator('.repo-heading b')).toHaveText('atlas');
+  await expect(page.getByLabel('로컬 Git 저장소 절대 경로')).not.toBeVisible();
+  await page.evaluate(
+    (next) =>
+      window.dispatchEvent(new CustomEvent('test-workspace', { detail: next })),
+    { ...fixtureRepo, root: '/demo/other', branch: 'feature', commits: [] },
+  );
+  await expect(page.locator('.repo-heading b')).toHaveText('other');
+  await expect(page.locator('.repo-heading')).toContainText('feature');
+  await expect(page.getByRole('alert')).toHaveCount(0);
+});
+
+test('ambiguous active workspace uses a workspace picker instead of guessing a repository', async ({
+  page,
+}) => {
+  const { fixtureRepo } = await import('../src/ui/fixture');
+  await page.addInitScript((repo) => {
+    window.orca = {
+      api: { major: 1, minor: 3 },
+      host: { has: () => true },
+      plugin: {
+        request: async <T>(name: string, input: unknown) => {
+          if (name === 'active') {
+            const choices = ['one', 'two'].map((id) => ({
+              id,
+              name: 'Same name',
+              path: `/demo/${id}`,
+              branch: 'main',
+            }));
+            return (
+              (input as { workspaceId?: string }).workspaceId
+                ? {
+                    status: 'connected',
+                    repository: { ...repo, root: '/demo/two' },
+                    workspace: choices[1],
+                  }
+                : {
+                    status: 'choose',
+                    choices,
+                    message: '이름과 브랜치가 같은 workspace가 여러 개입니다.',
+                  }
+            ) as T;
+          }
+          if (name === 'changes')
+            return {
+              files: [],
+              comparison: { kind: 'working' },
+              left: 'HEAD',
+              right: '디스크',
+            } as T;
+          throw new Error(name);
+        },
+      },
+    };
+  }, fixtureRepo);
+  await page.goto('/');
+  await expect(page.locator('.repo-heading')).toHaveCount(0);
+  await page.getByLabel('연결할 워크트리').selectOption('two');
+  await expect(page.locator('.repo-heading b')).toHaveText('two');
 });

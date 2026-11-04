@@ -320,3 +320,77 @@ test('partial clone repositories are refused without fetching objects', () =>
     await git(root, ['config', 'remote.origin.promisor', 'true']);
     await assert.rejects(repository(root), /부분 clone/);
   }));
+
+test('active workspace connects uniquely, rejects remote/forged selection and requires a choice for ambiguous or truncated context', () =>
+  fixture(async (root, commit) => {
+    await commit('active repository');
+    const handlers = new Map<string, (input: unknown) => unknown>();
+    const local = {
+      id: 'here',
+      kind: 'worktree',
+      name: 'Current',
+      path: root,
+      branch: 'main',
+      hostId: 'local',
+    };
+    let context: {
+      displayName: string;
+      branch: string;
+      terminals: never[];
+    } | null = { displayName: 'Current', branch: 'main', terminals: [] };
+    let rows = [local];
+    let truncated = false;
+    activate({
+      api: { major: 1, minor: 3 },
+      log() {},
+      panels: {
+        handle: (name, fn) => {
+          handlers.set(name, fn);
+        },
+      },
+      host: {
+        has: () => true,
+        async call(name) {
+          if (name === 'workspace.readContext') return context;
+          if (name === 'workspace.list') return { workspaces: rows, truncated };
+          throw new Error(name);
+        },
+      },
+    });
+    const active = (input = {}) =>
+      handlers.get('active')!(input) as Promise<
+        import('../protocol').ActiveConnection
+      >;
+    const initial = await active();
+    assert.equal(initial.status, 'connected');
+    if (initial.status === 'connected') {
+      assert.equal(initial.repository.root, root);
+      assert.equal(initial.workspace.id, 'here');
+    }
+    rows = [
+      local,
+      { ...local, id: 'duplicate', path: '/must-not-read-this-ambiguous-path' },
+    ];
+    assert.equal((await active()).status, 'choose');
+    rows = [local, { ...local, id: 'ssh', hostId: 'remote-host' }];
+    assert.equal(
+      (await active()).status,
+      'choose',
+      'local + SSH collisions must never auto-connect to local',
+    );
+    await assert.rejects(active({ workspaceId: 'ssh' }), /로컬 Git 워크트리/);
+    const chosen = await active({ workspaceId: 'here' });
+    assert.equal(chosen.status, 'connected');
+    rows = [{ ...local, hostId: 'remote-host' }];
+    assert.equal((await active()).status, 'unavailable');
+    rows = [local];
+    truncated = true;
+    assert.equal((await active()).status, 'choose');
+    truncated = false;
+    context = null;
+    assert.equal((await active()).status, 'choose');
+    await assert.rejects(
+      active({ workspaceId: 'forged' }),
+      /로컬 Git 워크트리/,
+    );
+  }));

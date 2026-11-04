@@ -1,7 +1,13 @@
 import { mkdir, lstat, writeFile, realpath } from 'node:fs/promises';
 import { randomUUID } from 'node:crypto';
 import { join } from 'node:path';
-import type { Descriptor, Requests, WorkerApi } from '../protocol';
+import type {
+  Descriptor,
+  Requests,
+  WorkerApi,
+  WorkspaceContext,
+  WorkspaceChoice,
+} from '../protocol';
 import { changes, diff, log, repository } from './git';
 export default function activate(orca: WorkerApi): void {
   function requireHost(name: string) {
@@ -14,7 +20,7 @@ export default function activate(orca: WorkerApi): void {
   const check = (root: string) => {
     if (!connected.has(root))
       throw new Error(
-        'Git Tools 사이드바에서 이 로컬 저장소 경로에 먼저 연결하세요.',
+        'Git Tools 사이드바에서 이 저장소의 워크트리를 열어 연결하세요.',
       );
     return root;
   };
@@ -28,6 +34,68 @@ export default function activate(orca: WorkerApi): void {
       return fn(raw as Requests[K]['input']);
     });
   }
+  handle('active', async ({ all, workspaceId }) => {
+    requireHost('workspace.list');
+    requireHost('workspace.readContext');
+    const context = (await orca.host.call(
+      'workspace.readContext',
+      {},
+    )) as WorkspaceContext | null;
+    const result = (await orca.host.call('workspace.list', {})) as {
+      workspaces: (WorkspaceChoice & { kind: string; hostId: string | null })[];
+      truncated: boolean;
+    };
+    const local = result.workspaces.filter(
+      (w) =>
+        w.kind === 'worktree' && (w.hostId === null || w.hostId === 'local'),
+    );
+    const choice = (w: WorkspaceChoice): WorkspaceChoice => ({
+      id: w.id,
+      name: w.name,
+      path: w.path,
+      branch: w.branch,
+    });
+    // readContext intentionally has no id/path. Never guess when labels collide,
+    // including a local and SSH workspace sharing the same name and branch.
+    const matches = context
+      ? result.workspaces.filter(
+          (w) =>
+            w.name === context.displayName &&
+            (w.branch ?? '') === context.branch,
+        )
+      : [];
+    const selected = workspaceId
+      ? local.find((w) => w.id === workspaceId)
+      : matches.length === 1 && !result.truncated
+        ? local.find((w) => w.id === matches[0].id)
+        : undefined;
+    if (workspaceId && !selected)
+      throw new Error('선택한 로컬 Git 워크트리를 찾을 수 없습니다.');
+    if (selected) {
+      const root = await repository(selected.path);
+      connected.add(root);
+      return {
+        status: 'connected',
+        repository: await log(root, all === true),
+        workspace: choice(selected),
+      };
+    }
+    const candidates =
+      matches.length > 1
+        ? local.filter((w) => matches.some((m) => m.id === w.id))
+        : local;
+    return {
+      status: candidates.length ? 'choose' : 'unavailable',
+      choices: candidates.map(choice),
+      message: result.truncated
+        ? 'workspace 목록이 일부만 제공되어 자동 연결을 확정할 수 없습니다.'
+        : matches.length > 1
+          ? '이름과 브랜치가 같은 workspace가 여러 개입니다. 연결할 워크트리를 선택하세요.'
+          : matches.length === 1
+            ? '현재 workspace는 로컬 Git 워크트리가 아닙니다. SSH는 지원하지 않습니다.'
+            : '현재 workspace를 자동으로 식별하지 못했습니다. 로컬 워크트리를 선택하세요.',
+    };
+  });
   handle('connect', async ({ path, all }) => {
     const root = await repository(path);
     connected.add(root);

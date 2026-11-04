@@ -6,6 +6,7 @@ import type {
   Descriptor,
   FileDiff,
   Repository,
+  WorkspaceChoice,
 } from '../protocol';
 import { request } from './client';
 import { fixtureDiff, fixtureRepo, fixtureSet } from './fixture';
@@ -34,6 +35,12 @@ function App() {
       : null,
   );
   const [path, setPath] = useState('');
+  const [follow, setFollow] = useState(!demo && !editorMode);
+  const [autoTick, setAutoTick] = useState(0);
+  const [choices, setChoices] = useState<WorkspaceChoice[]>([]);
+  const [connectionNote, setConnectionNote] =
+    useState('열린 워크트리에 연결하는 중…');
+  const connectActive = useRef<(workspaceId?: string) => void>(() => {});
   const [all, setAll] = useState(false);
   const [search, setSearch] = useState('');
   const [comparison, setComparison] = useState<Comparison>({ kind: 'working' });
@@ -138,8 +145,67 @@ function App() {
     }
   }
   useEffect(() => {
-    if (repo && !editorMode) void refresh();
+    if (repo && !editorMode && (demo || !follow)) void refresh();
   }, [all]);
+  useEffect(() => {
+    if (demo || editorMode || !follow) return;
+    let active = true;
+    async function load(workspaceId?: string) {
+      if (!active) return;
+      const seq = ++logSeq.current;
+      setBusy(true);
+      setError('');
+      setRepo(null);
+      setSet(null);
+      setData(null);
+      setWorkspaces([]);
+      setWorkspace('');
+      setChoices([]);
+      setConnectionNote('열린 워크트리에 연결하는 중…');
+      try {
+        const result = await request('active', {
+          all,
+          ...(workspaceId ? { workspaceId } : {}),
+        });
+        if (!active || seq !== logSeq.current) return;
+        if (result.status === 'connected') {
+          setRepo(result.repository);
+          setPath(result.repository.root);
+          setWorkspaces([result.workspace]);
+          setWorkspace(result.workspace.id);
+          setComparison({ kind: 'working' });
+          setFileSearch('');
+          setSearch('');
+          setGeneration((n) => n + 1);
+          setConnectionNote(`열린 워크트리 · ${result.workspace.name}`);
+        } else {
+          setChoices(result.choices);
+          setConnectionNote(result.message);
+        }
+      } catch (e) {
+        if (active && seq === logSeq.current) {
+          setError(message(e));
+          setConnectionNote(
+            '자동 연결에 실패했습니다. 워크트리를 다시 선택하거나 경로로 연결하세요.',
+          );
+        }
+      } finally {
+        if (active && seq === logSeq.current) setBusy(false);
+      }
+    }
+    connectActive.current = (id) => {
+      void load(id);
+    };
+    const stop = window.orca?.on?.('workspace.changed', () => {
+      void load();
+    });
+    void load();
+    return () => {
+      active = false;
+      connectActive.current = () => {};
+      if (typeof stop === 'function') stop();
+    };
+  }, [follow, all, autoTick]);
   useEffect(() => {
     if (!repo) return;
     let active = true;
@@ -360,13 +426,15 @@ function App() {
           <span className="subtle">LOCAL / READ ONLY</span>
         </div>
         <button
-          disabled={busy || (!repo && !editorMode)}
+          disabled={busy || (!repo && !editorMode && !follow)}
           onClick={() =>
             editorMode
               ? (comparison.kind === 'working' &&
                   setComparison({ kind: 'working' }),
                 setGeneration((n) => n + 1))
-              : void refresh()
+              : follow && !demo
+                ? setAutoTick((n) => n + 1)
+                : void refresh()
           }
           title="새로고침"
         >
@@ -382,25 +450,61 @@ function App() {
         {!editorMode && (
           <aside className="history">
             {!demo && (
-              <form
-                className="connect"
-                onSubmit={(e) => {
-                  e.preventDefault();
-                  void refresh(true);
-                }}
-              >
-                <label htmlFor="repo">로컬 Git 저장소 절대 경로</label>
-                <div>
-                  <input
-                    id="repo"
-                    placeholder="/Users/me/project"
-                    value={path}
-                    onChange={(e) => setPath(e.target.value)}
-                    required
-                  />
-                  <button disabled={busy}>연결</button>
+              <>
+                <div className="workspace-connect">
+                  <label>
+                    <input
+                      type="checkbox"
+                      checked={follow}
+                      onChange={(e) => {
+                        setFollow(e.target.checked);
+                        setBusy(false);
+                      }}
+                    />
+                    열린 워크트리에 자동 연결
+                  </label>
+                  {follow && <small role="status">{connectionNote}</small>}
+                  {follow && choices.length > 0 && (
+                    <select
+                      aria-label="연결할 워크트리"
+                      value=""
+                      disabled={busy}
+                      onChange={(e) => connectActive.current(e.target.value)}
+                    >
+                      <option value="">워크트리 선택</option>
+                      {choices.map((w) => (
+                        <option key={w.id} value={w.id}>
+                          {w.name} · {w.branch ?? '브랜치 없음'} · {w.path}
+                        </option>
+                      ))}
+                    </select>
+                  )}
                 </div>
-              </form>
+                <details className="manual-connect">
+                  <summary>다른 저장소 경로로 연결</summary>
+                  <form
+                    className="connect"
+                    onSubmit={(e) => {
+                      e.preventDefault();
+                      setFollow(false);
+                      setChoices([]);
+                      void refresh(true);
+                    }}
+                  >
+                    <label htmlFor="repo">로컬 Git 저장소 절대 경로</label>
+                    <div>
+                      <input
+                        id="repo"
+                        placeholder="/Users/me/project"
+                        value={path}
+                        onChange={(e) => setPath(e.target.value)}
+                        required
+                      />
+                      <button disabled={busy}>연결</button>
+                    </div>
+                  </form>
+                </details>
+              </>
             )}
             {repo ? (
               <>
@@ -577,7 +681,9 @@ function App() {
               </>
             ) : (
               <div className="state">
-                <h2>로컬 저장소에 연결하세요</h2>
+                <h2>
+                  {follow ? '열린 워크트리 연결' : '로컬 저장소에 연결하세요'}
+                </h2>
                 <p>
                   Git 이력과 작업 트리를 읽기 전용으로 탐색합니다. SSH 저장소는
                   지원하지 않습니다.

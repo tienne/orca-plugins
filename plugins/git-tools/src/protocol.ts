@@ -46,7 +46,29 @@ export interface Descriptor {
   comparison: Comparison;
   path?: string;
 }
+export interface WorkspaceContext {
+  displayName: string;
+  branch: string;
+  terminals: { id: string }[];
+}
+export interface WorkspaceChoice {
+  id: string;
+  name: string;
+  path: string;
+  branch: string | null;
+}
+export type ActiveConnection =
+  | { status: 'connected'; repository: Repository; workspace: WorkspaceChoice }
+  | {
+      status: 'choose' | 'unavailable';
+      choices: WorkspaceChoice[];
+      message: string;
+    };
 export interface Requests {
+  active: {
+    input: { all?: boolean; workspaceId?: string };
+    output: ActiveConnection;
+  };
   connect: { input: { path: string; all?: boolean }; output: Repository };
   log: { input: { repo: string; all?: boolean }; output: Repository };
   changes: {
@@ -86,7 +108,14 @@ export interface DocumentSession {
 }
 // Narrow, manually maintained subset of the version-matched Orca authoring reference.
 export interface FrameApi {
-  on?(event: 'theme', handler: () => void): unknown;
+  on?<E extends 'theme' | 'workspace.changed'>(
+    event: E,
+    handler: (
+      payload: E extends 'workspace.changed'
+        ? { context: WorkspaceContext | null }
+        : unknown,
+    ) => void,
+  ): unknown;
   api: HostVersion;
   host: { has(name: string): boolean };
   plugin: {

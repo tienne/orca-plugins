@@ -24,11 +24,11 @@ pnpm dev
 
 ## Git Tools 사용
 
-1. 승인한 로컬 개발 플러그인의 Git Tools 사이드바에서 **로컬 저장소 절대 경로**를 입력하고 연결합니다. 현재 workspace의 이름을 경로로 추정하지 않습니다.
+1. Git Tools 사이드바를 열면 **현재 열린 Orca 로컬 Git 워크트리에 자동 연결**합니다. workspace가 바뀌면 연결도 따라갑니다. 이름·브랜치가 중복되거나 자동 식별이 불가능하면 워크트리 선택을 표시합니다. 직접 경로 연결은 접힌 **다른 저장소 경로로 연결**에서만 사용하며, 수동 연결 시 자동 따라가기가 해제됩니다.
 2. 최근 최대 200개 커밋의 부모 관계와 HEAD, 로컬·원격 브랜치를 탐색합니다. 현재/전체 브랜치 범위와 커밋·작성자·해시·브랜치 검색을 지원합니다. 검색 중에는 생략된 커밋을 잘못 연결하지 않도록 그래프를 숨깁니다.
 3. 커밋을 선택하면 메시지 전문, 작성자·날짜와 변경 파일이 나타납니다. Merge는 기본 첫 번째 부모와 비교하며 부모 선택으로 다른 직접 부모와 비교할 수 있습니다. 최초 커밋은 빈 트리와 비교합니다.
 4. 작업 트리는 **HEAD → 현재 디스크**의 최종 내용을 비교합니다. `staged`는 HEAD↔index, `unstaged`는 index↔디스크, `untracked`는 index에 없는 파일이라는 상태 표시입니다. 각각 별도의 staged/unstaged diff 모드를 뜻하지 않습니다. HEAD와 같은 내용으로 상쇄된 파일은 제외합니다. 무시된 untracked 파일은 포함하지 않습니다.
-5. 변경 파일을 선택한 뒤 동일 경로의 로컬 Orca workspace를 선택하고 **중앙 Diff 탭 열기**를 누릅니다. 저장소 내부 `.orca/git-tools/<id>.orcadiff`에 비교 설명 문서를 생성하고 대상 workspace를 연 뒤 custom editor로 엽니다. `editor.open`은 workspace 내부 상대 경로만 허용하므로 OS 임시 폴더를 사용하지 않습니다. `.orca/`가 Git에서 무시되지 않는 저장소에서는 문서가 untracked로 표시됩니다. 소스 파일과 Git index를 수정하지 않습니다.
+5. 변경 파일을 선택한 뒤 **중앙 Diff 탭 열기**를 누릅니다. 자동 연결된 workspace가 중앙 탭의 대상으로 미리 선택됩니다. 수동 경로 연결 시에는 동일 경로의 로컬 Orca workspace를 선택합니다. 저장소 내부 `.orca/git-tools/<id>.orcadiff`에 비교 설명 문서를 생성하고 대상 workspace를 연 뒤 custom editor로 엽니다. `editor.open`은 workspace 내부 상대 경로만 허용하므로 OS 임시 폴더를 사용하지 않습니다. `.orca/`가 Git에서 무시되지 않는 저장소에서는 문서가 untracked로 표시됩니다. 소스 파일과 Git index를 수정하지 않습니다.
 
 중앙 뷰어는 파일 탐색, 좌우 정렬, 줄/단어 내 강조, 동기 스크롤, 이전/다음 변경, 동일 영역 접기, 줄 앞뒤 공백 무시를 제공합니다. 좁은 화면에서도 좌우 비교를 유지하며 코드 영역 내부를 가로 스크롤합니다. 소스 수정·변경 적용 버튼은 없습니다.
 
@@ -38,7 +38,7 @@ pnpm dev
 
 이 플러그인은 `trusted-worker`이며 사용자 계정 권한으로 Node 코드를 실행할 수 있습니다. manifest는 다음 접근을 선언합니다.
 
-- `workspace:read`: 로컬 workspace 목록을 읽고 연결한 저장소와 같은 경로의 대상을 찾습니다.
+- `workspace:read`: 현재 workspace context와 목록을 읽고, workspace.changed 이벤트로 열린 워크트리를 따라갑니다.
 - `workspace:write`: `.orcadiff`를 중앙 editor 탭으로 엽니다. 이 Orca 권한 자체는 built-in command 실행도 허용하지만 Git Tools는 대상 workspace를 표시하는 `workspace.open`과 `editor.open`만 호출합니다.
 
 설치/실행은 사용자 승인 이후에만 진행합니다. 검토용 명령:
@@ -55,7 +55,7 @@ Orca가 `approval_required`를 반환하면 표시된 접근 범위와 fingerpri
 
 ## 검증 상태와 제한
 
-2026-11-04 로컬 검증: Nx build/typecheck, Git fixture 테스트 11개, 패키징 검사 테스트 2개, packaged UI 테스트 10개, Orca manifest validation 통과. 라이트·다크·360px PNG를 직접 확인했습니다.
+2026-11-04 로컬 검증: Nx build/typecheck, Git/worker fixture 테스트 12개, 패키징 검사 테스트 2개, packaged UI 테스트 12개, Orca manifest validation 통과. 라이트·다크·360px PNG를 직접 확인했습니다.
 
 - 실제 임시 Git 저장소 테스트: 최초 커밋 전, 최초 커밋, 200개 제한, 현재/전체 브랜치, merge 부모, 메시지 전문, 특수 파일명, rename, 삭제, staged+unstaged, 상쇄 변경, staged 삭제 후 재생성, 바이너리·비 UTF-8·큰 파일, symlink, 충돌, 경계·해시 검사, worker bridge를 검증합니다.
 - 패키징 UI는 Orca 일반 브라우저와 Playwright에서 렌더합니다. Monaco worker는 상대 경로의 로컬 JS로 제공하고 네트워크 CDN·blob worker에 의존하지 않습니다.
@@ -63,7 +63,7 @@ Orca가 `approval_required`를 반환하면 표시된 접근 범위와 fingerpri
 - 텍스트는 UTF-8, 파일당 768 KiB까지입니다. 바이너리·큰 파일·symlink·submodule·unmerged 충돌은 별도 상태로 표시하며 잘못된 텍스트 diff를 만들지 않습니다. 빈 파일과 없는 파일을 구분합니다. 실행 비트만 바뀐 경우 내용 diff가 0개일 수 있습니다.
 - 작업 트리는 디스크 기준이며 편집기의 저장되지 않은 내용은 포함하지 않습니다. 조회는 원자적 snapshot이 아닙니다. HEAD가 달라지면 재조회 오류를 표시하고 새로고침을 요구합니다. 커밋 비교는 전체 hash에 고정됩니다. 갱신은 수동입니다.
 - 원격 ref는 로컬에 이미 있는 것만 읽습니다. fetch, SSH/원격 파일 접근, Git LFS 다운로드, checkout/staging/revert/commit/push는 없습니다. shallow history는 로컬에 있는 만큼만 보입니다. 자동 객체 fetch를 피하기 위해 partial clone은 연결을 거절합니다. 변경 파일이 2,000개를 넘으면 명시적 오류를 냅니다.
-- 연결 목록은 worker 메모리에만 있으며 재시작 시 다시 연결해야 합니다. 설명 문서는 저장소 내부 `.orca/git-tools/`에 유지되며 자동 삭제하지 않습니다. 사용하지 않는 설명 문서는 직접 정리할 수 있습니다. 이 폴더의 symlink는 거절하고 Git ignore 설정은 자동 변경하지 않습니다. 문서를 외부에서 열었더라도 사이드바에서 해당 저장소에 먼저 연결해야 합니다.
+- 연결 목록은 worker 메모리에만 있으며 재시작 시 사이드바가 열린 workspace에 다시 자동 연결합니다. 설명 문서는 저장소 내부 `.orca/git-tools/`에 유지되며 자동 삭제하지 않습니다. 사용하지 않는 설명 문서는 직접 정리할 수 있습니다. 이 폴더의 symlink는 거절하고 Git ignore 설정은 자동 변경하지 않습니다. 외부 비교 문서는 저장소를 자동으로 신뢰하지 않습니다. 문서의 저장소를 Orca에서 열어 사이드바에 연결한 후 새로고침하세요. 기존 중앙 diff는 workspace 전환에도 문서에 기록된 저장소/비교 기준을 유지합니다.
 
 ## 구조 / 배포
 
@@ -98,3 +98,9 @@ Orca가 `approval_required`를 반환하면 표시된 접근 범위와 fingerpri
 - 번들에는 `type: module`을 선언한 독립 `package.json`을 포함해 worker.js를 ESM으로 실행합니다.
 - Monaco 크기 갱신은 ResizeObserver에서 직접 수행하지 않고 requestAnimationFrame에 예약합니다. 실호스트의 ResizeObserver 반복 경고를 재현한 뒤 이 경로로 해결했습니다.
 - 재검증용 descriptor와 PNG는 로컬 `.orca/git-tools/`, `.orca/validation/` 아래에 남깁니다. 배포 산출물에는 포함하지 않습니다.
+
+### 열린 workspace의 자동 연결
+
+설치본 `workspace.readContext`는 현재 workspace의 이름·브랜치·terminal 목록만 제공하며 경로/ID는 주지 않습니다. worker가 `workspace.list`와 이름·브랜치를 대조해 후보가 **정확히 하나이고 로컬 Git worktree일 때** 경로를 얻습니다. 이름을 파일 경로로 바꾸거나 worker의 cwd를 저장소 경로로 추정하지 않습니다.
+
+같은 이름/브랜치의 workspace가 여러 개이거나 목록이 truncated인 경우에는 자동 연결하지 않고 선택을 받습니다. 로컬/SSH 간 이름 충돌도 모호한 경우로 처리합니다. 현재 workspace가 없거나 폴더·SSH인 경우에는 로컬 워크트리 선택 또는 명시적 경로 연결을 제공합니다. `workspace.changed`를 구독해 새 workspace에 연결하며, 이전 요청의 늦은 응답은 새 연결을 덮어쓰지 못하게 합니다. 이 동작은 추가 capability 없이 기존 `workspace:read` 범위에서 수행합니다.
