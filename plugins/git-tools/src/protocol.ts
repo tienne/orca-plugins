@@ -69,7 +69,6 @@ export interface Requests {
     input: { all?: boolean; workspaceId?: string };
     output: ActiveConnection;
   };
-  connect: { input: { path: string; all?: boolean }; output: Repository };
   log: { input: { repo: string; all?: boolean }; output: Repository };
   changes: {
     input: { repo: string; comparison: Comparison };

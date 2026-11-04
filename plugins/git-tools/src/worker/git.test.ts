@@ -217,7 +217,7 @@ test('log bounds at 200 and current/all branch filters', () =>
     await git(root, ['update-ref', 'refs/heads/main', parent]);
     assert.equal((await log(root)).commits.length, 200);
   }));
-test('worker requires explicit connection and validates workspace before opening generated descriptor', () =>
+test('worker requires an Orca workspace connection and validates workspace before opening generated descriptor', () =>
   fixture(async (root, commit) => {
     await commit('base');
     await writeFile(join(root, 'new'), 'new');
@@ -226,6 +226,7 @@ test('worker requires explicit connection and validates workspace before opening
     const api = { major: 1, minor: 3 };
     const methods = new Set([
       'workspace.list',
+      'workspace.readContext',
       'workspace.open',
       'editor.open',
     ]);
@@ -240,11 +241,27 @@ test('worker requires explicit connection and validates workspace before opening
       host: {
         has: (name) => methods.has(name),
         async call(name, params) {
+          if (name === 'workspace.readContext')
+            return { displayName: 'Fixture', branch: 'main', terminals: [] };
           if (name === 'workspace.list')
             return {
               workspaces: [
-                { id: 'local', name: 'Fixture', path: root, hostId: 'local' },
-                { id: 'remote', name: 'SSH', path: root, hostId: 'ssh' },
+                {
+                  id: 'local',
+                  kind: 'worktree',
+                  name: 'Fixture',
+                  branch: 'main',
+                  path: root,
+                  hostId: 'local',
+                },
+                {
+                  id: 'remote',
+                  kind: 'worktree',
+                  name: 'SSH',
+                  branch: 'main',
+                  path: root,
+                  hostId: 'ssh',
+                },
               ],
             };
           if (name === 'workspace.open') return { opened: true };
@@ -259,7 +276,7 @@ test('worker requires explicit connection and validates workspace before opening
     await assert.rejects(async () =>
       handlers.get('changes')!({ repo: root, comparison: { kind: 'working' } }),
     );
-    await handlers.get('connect')!({ path: root });
+    await handlers.get('active')!({});
     const descriptor = {
       version: 1,
       repo: root,

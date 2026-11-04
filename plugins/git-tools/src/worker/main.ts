@@ -96,11 +96,6 @@ export default function activate(orca: WorkerApi): void {
             : '현재 workspace를 자동으로 식별하지 못했습니다. 로컬 워크트리를 선택하세요.',
     };
   });
-  handle('connect', async ({ path, all }) => {
-    const root = await repository(path);
-    connected.add(root);
-    return log(root, all === true);
-  });
   handle('log', async ({ repo, all }) => log(check(repo), all === true));
   handle('changes', async ({ repo, comparison }) =>
     changes(check(repo), comparison),

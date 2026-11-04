@@ -24,11 +24,11 @@ pnpm dev
 
 ## Git Logs 사용
 
-1. Git Logs 사이드바를 열면 **현재 열린 Orca 로컬 Git 워크트리에 자동 연결**합니다. workspace가 바뀌면 연결도 따라갑니다. 이름·브랜치가 중복되거나 자동 식별이 불가능하면 워크트리 선택을 표시합니다. 직접 경로 연결은 접힌 **다른 저장소 경로로 연결**에서만 사용하며, 수동 연결 시 자동 따라가기가 해제됩니다.
+1. Git Logs 사이드바를 열면 **현재 열린 Orca 로컬 Git 워크트리에 자동 연결**합니다. workspace가 바뀌면 연결도 따라갑니다. 이름·브랜치가 중복되거나 자동 식별이 불가능하면 워크트리 선택을 표시합니다. 연결 대상은 Orca가 관리하는 로컬 Git 워크트리이며, 경로 입력이나 자동 연결 on/off 설정 없이 이 흐름을 유지합니다.
 2. 최근 최대 200개 커밋의 부모 관계와 HEAD, 로컬·원격 브랜치를 탐색합니다. 현재/전체 브랜치 범위와 커밋·작성자·해시·브랜치 검색을 지원합니다. 검색 중에는 생략된 커밋을 잘못 연결하지 않도록 그래프를 숨깁니다.
 3. 커밋을 선택하면 메시지 전문, 작성자·날짜와 변경 파일이 나타납니다. Merge는 기본 첫 번째 부모와 비교하며 부모 선택으로 다른 직접 부모와 비교할 수 있습니다. 최초 커밋은 빈 트리와 비교합니다.
 4. 작업 트리는 **HEAD → 현재 디스크**의 최종 내용을 비교합니다. `staged`는 HEAD↔index, `unstaged`는 index↔디스크, `untracked`는 index에 없는 파일이라는 상태 표시입니다. 각각 별도의 staged/unstaged diff 모드를 뜻하지 않습니다. HEAD와 같은 내용으로 상쇄된 파일은 제외합니다. 무시된 untracked 파일은 포함하지 않습니다.
-5. 변경 파일을 선택한 뒤 **중앙 Diff 탭 열기**를 누릅니다. 자동 연결된 workspace가 중앙 탭의 대상으로 미리 선택됩니다. 수동 경로 연결 시에는 동일 경로의 로컬 Orca workspace를 선택합니다. 저장소 내부 `.orca/git-tools/<id>.orcadiff`에 비교 설명 문서를 생성하고 대상 workspace를 연 뒤 custom editor로 엽니다. `editor.open`은 workspace 내부 상대 경로만 허용하므로 OS 임시 폴더를 사용하지 않습니다. `.orca/`가 Git에서 무시되지 않는 저장소에서는 문서가 untracked로 표시됩니다. 소스 파일과 Git index를 수정하지 않습니다.
+5. 변경 파일을 선택한 뒤 **중앙 Diff 탭 열기**를 누릅니다. 연결된 workspace를 중앙 탭의 대상으로 사용합니다. 저장소 내부 `.orca/git-tools/<id>.orcadiff`에 비교 설명 문서를 생성하고 대상 workspace를 연 뒤 custom editor로 엽니다. `editor.open`은 workspace 내부 상대 경로만 허용하므로 OS 임시 폴더를 사용하지 않습니다. `.orca/`가 Git에서 무시되지 않는 저장소에서는 문서가 untracked로 표시됩니다. 소스 파일과 Git index를 수정하지 않습니다.
 
 중앙 뷰어는 파일 탐색, 좌우 정렬, 줄/단어 내 강조, 동기 스크롤, 이전/다음 변경, 동일 영역 접기, 줄 앞뒤 공백 무시를 제공합니다. 좁은 화면에서도 좌우 비교를 유지하며 코드 영역 내부를 가로 스크롤합니다. 소스 수정·변경 적용 버튼은 없습니다.
 
@@ -103,4 +103,4 @@ Orca가 `approval_required`를 반환하면 표시된 접근 범위와 fingerpri
 
 설치본 `workspace.readContext`는 현재 workspace의 이름·브랜치·terminal 목록만 제공하며 경로/ID는 주지 않습니다. worker가 `workspace.list`와 이름·브랜치를 대조해 후보가 **정확히 하나이고 로컬 Git worktree일 때** 경로를 얻습니다. 이름을 파일 경로로 바꾸거나 worker의 cwd를 저장소 경로로 추정하지 않습니다.
 
-같은 이름/브랜치의 workspace가 여러 개이거나 목록이 truncated인 경우에는 자동 연결하지 않고 선택을 받습니다. 로컬/SSH 간 이름 충돌도 모호한 경우로 처리합니다. 현재 workspace가 없거나 폴더·SSH인 경우에는 로컬 워크트리 선택 또는 명시적 경로 연결을 제공합니다. `workspace.changed`를 구독해 새 workspace에 연결하며, 이전 요청의 늦은 응답은 새 연결을 덮어쓰지 못하게 합니다. 이 동작은 추가 capability 없이 기존 `workspace:read` 범위에서 수행합니다.
+같은 이름/브랜치의 workspace가 여러 개이거나 목록이 truncated인 경우에는 자동 연결하지 않고 선택을 받습니다. 로컬/SSH 간 이름 충돌도 모호한 경우로 처리합니다. 현재 workspace가 없거나 폴더·SSH인 경우에도 Orca의 로컬 Git 워크트리 목록에서만 선택할 수 있습니다. 임의의 저장소 경로를 입력하는 UI/RPC는 제공하지 않습니다. `workspace.changed`를 구독해 새 workspace에 연결하며, 이전 요청의 늦은 응답은 새 연결을 덮어쓰지 못하게 합니다. 이 동작은 추가 capability 없이 기존 `workspace:read` 범위에서 수행합니다.
