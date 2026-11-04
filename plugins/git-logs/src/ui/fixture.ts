@@ -1,4 +1,11 @@
 import type { ChangeSet, FileDiff, Repository } from '../protocol';
+// English sample data is opt-in and available only in the browser demo.
+// Real commit messages, author names and file contents are never translated.
+const englishSample =
+  typeof window !== 'undefined' &&
+  !window.orca &&
+  new URLSearchParams(window.location.search).get('sample') === 'en';
+const sample = (ko: string, en: string) => (englishSample ? en : ko);
 const hash = (n: number) =>
   (n.toString(16) + 'a4f19c8e0b72d61f534eaa0982c7db6f1049abc').slice(0, 40);
 export const fixtureRepo: Repository = {
@@ -30,10 +37,12 @@ export const fixtureRepo: Repository = {
     {
       hash: hash(8),
       parents: [hash(7), hash(6)],
-      author: '서연',
+      author: sample('서연', 'Alex Morgan'),
       date: '2026-11-04T09:20:00+09:00',
-      message:
+      message: sample(
         'Merge branch feature/readable-diff\n\n좌우 비교와 변경 탐색을 하나의 흐름으로 연결합니다.',
+        'Merge branch feature/readable-diff\n\nBring aligned comparison and change navigation into one view.',
+      ),
       refs: ['HEAD', 'main', 'origin/main'],
     },
     {
@@ -47,10 +56,12 @@ export const fixtureRepo: Repository = {
     {
       hash: hash(6),
       parents: [hash(5)],
-      author: '지우',
+      author: sample('지우', 'Sam Taylor'),
       date: '2026-11-03T18:00:00+09:00',
-      message:
+      message: sample(
         'Add aligned side-by-side comparison\n\n공백 비교 옵션 및 동기 스크롤을 추가합니다.',
+        'Add aligned side-by-side comparison\n\nAdd whitespace options and synchronized scrolling.',
+      ),
       refs: ['feature/readable-diff', 'origin/feature/readable-diff'],
     },
     {
@@ -64,7 +75,7 @@ export const fixtureRepo: Repository = {
     {
       hash: hash(4),
       parents: [hash(3)],
-      author: '서연',
+      author: sample('서연', 'Alex Morgan'),
       date: '2026-11-02T11:10:00+09:00',
       message: 'Handle binary and renamed files',
       refs: [],
@@ -122,7 +133,10 @@ export function fixtureDiff(path: string): FileDiff {
       .replace('fontSize: 12', 'fontSize: 13,\n    scrollSync: true')
       .replace(
         '      options={options}',
-        '      options={options}\n      ariaLabel="읽기 전용 코드 비교"',
+        sample(
+          '      options={options}\n      ariaLabel="읽기 전용 코드 비교"',
+          '      options={options}\n      ariaLabel="Read-only code comparison"',
+        ),
       ),
     bytes: 490,
   };

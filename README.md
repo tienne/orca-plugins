@@ -6,6 +6,10 @@
 
 현재 버전은 **0.1.0 · 로컬 개발 버전**입니다. 공개 설치 링크는 아직 없습니다.
 
+![Git Logs: English demo showing the commit graph and side-by-side diff in dark mode](docs/screenshots/git-logs-dark.png)
+
+영문 샘플 데이터로 구성한 브라우저 DEMO입니다. [라이트 테마](docs/screenshots/git-logs-light.png) · [커밋 우클릭 메뉴](docs/screenshots/git-logs-commit-menu.png) · [스크린샷 다시 만들기](docs/screenshots/README.md)
+
 ## 주요 기능
 
 - **커밋 그래프** — 최근 최대 200개 커밋의 부모 관계와 HEAD, 로컬·원격 브랜치를 표시합니다. 메시지, 작성자, 날짜, 해시를 함께 확인할 수 있습니다.

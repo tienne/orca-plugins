@@ -55,6 +55,14 @@
       "options": {
         "command": "playwright test --config plugins/git-logs/playwright.config.ts"
       }
+    },
+    "screenshots": {
+      "executor": "nx:run-commands",
+      "cache": false,
+      "dependsOn": ["build"],
+      "options": {
+        "command": "playwright test --config plugins/git-logs/showcase.config.ts"
+      }
     }
   }
 }

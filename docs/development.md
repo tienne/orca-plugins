@@ -153,3 +153,7 @@ Orca가 `approval_required`를 반환하면 표시된 접근 범위와 fingerpri
 설치본 `workspace.readContext`는 현재 workspace의 이름·브랜치·terminal 목록만 제공하며 경로/ID는 주지 않습니다. worker가 `workspace.list`와 이름·브랜치를 대조해 후보가 **정확히 하나이고 로컬 Git worktree일 때** 경로를 얻습니다. 이름을 파일 경로로 바꾸거나 worker의 cwd를 저장소 경로로 추정하지 않습니다.
 
 같은 이름/브랜치의 workspace가 여러 개이거나 목록이 truncated인 경우에는 자동 연결하지 않고 선택을 받습니다. 로컬/SSH 간 이름 충돌도 모호한 경우로 처리합니다. 현재 workspace가 없거나 폴더·SSH인 경우에도 Orca의 로컬 Git 워크트리 목록에서만 선택할 수 있습니다. 임의의 저장소 경로를 입력하는 UI/RPC는 제공하지 않습니다. `workspace.changed`를 구독해 새 workspace에 연결하며, 이전 요청의 늦은 응답은 새 연결을 덮어쓰지 못하게 합니다. 이 동작은 추가 capability 없이 기존 `workspace:read` 범위에서 수행합니다.
+
+## 영문 소개용 스크린샷
+
+`pnpm nx run git-logs:screenshots`로 영문 샘플 데이터의 라이트·다크 및 커밋 우클릭 메뉴 화면을 생성합니다. 결과는 `docs/screenshots/`에 저장합니다. 캡처 시 Git 실행이나 Orca 플러그인 실행 승인은 필요하지 않습니다. `?lang=en&sample=en`은 일반 브라우저 DEMO에만 적용되고 실제 커밋·작성자·코드는 번역하지 않습니다.
