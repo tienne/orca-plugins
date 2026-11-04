@@ -4,7 +4,15 @@
 
 Git 로그, 트리, 커밋 그래프로 이력을 살펴보고 파일을 읽기 전용 좌우 Diff로 비교하는 Orca 플러그인입니다. 커밋 우클릭 메뉴에서 Git 변경 작업도 실행할 수 있습니다.
 
-0.1.0은 로컬 개발 버전이며 아직 공개 설치 주소는 없습니다. Orca 1.4.248 이상과 로컬 Git이 필요합니다.
+Git Logs 0.1.0은 Orca 1.4.248 이상과 로컬 Git이 필요합니다.
+
+## 설치
+
+1. Orca의 **설정 → 플러그인 → ⋯ → Catalog sources…**를 엽니다.
+2. Git URL에 `https://github.com/tienne/orca-plugins.git`, ref에 `release`를 입력해 카탈로그를 추가합니다.
+3. **Git Logs** (`tienne.git-logs`)를 설치하고 요청한 실행 권한을 확인합니다.
+
+플러그인은 로컬 Git과 파일을 읽고, 비교 문서와 로컬 제외 규칙을 기록합니다. 확인한 Git 변경 명령도 실행할 수 있습니다. Node 워커는 사용자 계정 권한으로 동작하며 `workspace:read`, `workspace:write`를 요청합니다. 설치에 Node.js나 pnpm은 필요하지 않습니다.
 
 ## Git Logs 사용하기
 

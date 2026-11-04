@@ -6,11 +6,11 @@ Orca plugins built with pnpm, Nx, TypeScript, React, Vite, and esbuild. Each dir
 
 ## Plugins
 
-| Plugin                                 | Features                                                                   | Status                    |
-| -------------------------------------- | -------------------------------------------------------------------------- | ------------------------- |
-| [Git Logs](plugins/git-logs/README.md) | Commit graph, branch and commit search, side-by-side diffs, commit actions | 0.1.0 — local development |
+| Plugin                                 | Features                                                                   | Status |
+| -------------------------------------- | -------------------------------------------------------------------------- | ------ |
+| [Git Logs](plugins/git-logs/README.md) | Commit graph, branch and commit search, side-by-side diffs, commit actions | 0.1.0  |
 
-There is no public release or installation URL yet. The source-branch catalog is an empty template; published entries will live in the catalog on `release`.
+The source-branch catalog is an empty template. The installable catalog and built plugins live on `release`. In Orca **Settings → Plugins → ⋯ → Catalog sources…**, add `https://github.com/tienne/orca-plugins.git` with ref `release`, then install Git Logs. See the [installation and usage guide](plugins/git-logs/README.md#install) for access and usage details.
 
 ## Git Logs
 
@@ -90,7 +90,7 @@ Git and file operations belong in workers. Plugin frames use bundled local asset
 
 Pull requests and main pushes run build, typecheck, Git, browser, and release tests on hosted Ubuntu runners. Manual release runs default to a preview. Publication uses a separately configured macOS Orca runner and production environment. See [Git branches and releases](docs/releases.md) for setup, permissions, and the main → release workflow.
 
-The source repository is public at [tienne/orca-plugins](https://github.com/tienne/orca-plugins). No plugin release has been published. A release must include the built plugin files in Git and pin the installable directory to an exact commit and `contentHash` in a catalog. See the [development guide](docs/development.md) for release requirements and the current validation record.
+The source repository is public at [tienne/orca-plugins](https://github.com/tienne/orca-plugins). A release must include the built plugin files in Git and pin the installable directory to an exact commit and `contentHash` in a catalog. See the [development guide](docs/development.md) for release requirements and the current validation record.
 
 ## License
 

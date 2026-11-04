@@ -4,7 +4,7 @@ English · [한국어](releases.ko.md)
 
 Source lives on `main`. The `release` branch contains installable plugin files and the catalog. The catalog in the source branch stays an empty template. GitHub Actions builds a candidate first; pushing it is a separate, explicit choice.
 
-Source is public at [tienne/orca-plugins](https://github.com/tienne/orca-plugins). The release runner and protected environments still need configuration; no public plugin release has been created. Orca supports a publishing ref and directory; this branch split is our repository convention, not an Orca requirement.
+Source is public at [tienne/orca-plugins](https://github.com/tienne/orca-plugins). The release runner and protected environments still need configuration for automated publication. Orca supports a publishing ref and directory; this branch split is our repository convention, not an Orca requirement.
 
 ## Branches and versioning
 
@@ -103,7 +103,7 @@ Tests push only to temporary local bare repositories. The second command uses th
 
 ## Installation and directory listing
 
-After the first publication, users add the Git URL of `tienne/orca-plugins` and ref `release` under Orca **Settings → Plugins → ⋯ → Catalog sources…**. The catalog installs only `plugins/git-logs` as `tienne.git-logs`. Users do not build the source or need pnpm. Git Logs still requires execution approval on installation.
+Users add the Git URL of `tienne/orca-plugins` and ref `release` under Orca **Settings → Plugins → ⋯ → Catalog sources…**. The catalog installs only `plugins/git-logs` as `tienne.git-logs`. Users do not build the source or need pnpm. Git Logs still requires execution approval on installation.
 
 This workflow publishes a catalog, not an automatic public-directory listing. The directory's root-manifest and version-tag requirements are a separate process; `git-logs/vX.Y.Z` source tags are not its `vX.Y.Z` discovery tags. Do not add an `orca-plugin` topic or claim directory registration until the chosen layout has been checked.
 

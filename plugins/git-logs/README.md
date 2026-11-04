@@ -4,7 +4,15 @@ English · [한국어](README.ko.md)
 
 Explore Git logs with a Git tree visualization and commit graph, then compare files in a read-only side-by-side diff. Commit actions are available from the graph's context menu.
 
-Version 0.1.0 is a local development build. There is no public installation URL yet. Orca 1.4.248 or later and local Git are required.
+Git Logs 0.1.0 requires Orca 1.4.248 or later and local Git.
+
+## Install
+
+1. Open Orca **Settings → Plugins → ⋯ → Catalog sources…**.
+2. Add the Git URL `https://github.com/tienne/orca-plugins.git` with ref `release`.
+3. Install **Git Logs** (`tienne.git-logs`) and review its execution access.
+
+The plugin reads local Git repositories and files, writes comparison documents and local exclude rules, and can run confirmed Git actions. Its Node worker runs with your user account's access and requests `workspace:read` and `workspace:write`. Installing the plugin does not require Node.js or pnpm.
 
 ## Use Git Logs
 

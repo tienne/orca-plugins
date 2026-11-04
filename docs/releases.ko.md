@@ -4,7 +4,7 @@
 
 `main`에서 소스를 관리하고 `release`에는 설치용 플러그인과 카탈로그를 둡니다. 소스 브랜치의 카탈로그는 빈 템플릿으로 유지합니다. GitHub Actions는 먼저 배포 후보를 만들며, 실제 push는 별도로 선택해야 합니다.
 
-소스는 [tienne/orca-plugins](https://github.com/tienne/orca-plugins)에 공개돼 있습니다. 릴리스 러너와 환경 보호 규칙은 별도로 설정해야 하며 공개 플러그인 릴리스는 아직 없습니다. Orca는 배포 ref와 하위 폴더 지정을 지원하며, 브랜치 분리는 이 저장소의 운영 규칙입니다.
+소스는 [tienne/orca-plugins](https://github.com/tienne/orca-plugins)에 공개돼 있습니다. 자동 배포를 위한 릴리스 러너와 환경 보호 규칙은 별도로 설정해야 합니다. Orca는 배포 ref와 하위 폴더 지정을 지원하며, 브랜치 분리는 이 저장소의 운영 규칙입니다.
 
 ## 브랜치와 버전
 
@@ -103,7 +103,7 @@ ORCA_RELEASE_INTEGRATION=1 ORCA_CLI_COMMAND=orca pnpm nx run git-logs:release-te
 
 ## 설치와 공개 디렉터리
 
-첫 공개 후 사용자는 Orca의 **Settings → Plugins → ⋯ → Catalog sources…**에서 `tienne/orca-plugins`의 Git URL과 `release` ref를 추가합니다. 카탈로그는 `plugins/git-logs`만 설치하며 ID는 `tienne.git-logs`입니다. 사용자가 소스를 빌드하거나 pnpm을 설치할 필요는 없지만 설치 시 실행 권한 승인은 필요합니다.
+사용자는 Orca의 **Settings → Plugins → ⋯ → Catalog sources…**에서 `tienne/orca-plugins`의 Git URL과 `release` ref를 추가합니다. 카탈로그는 `plugins/git-logs`만 설치하며 ID는 `tienne.git-logs`입니다. 사용자가 소스를 빌드하거나 pnpm을 설치할 필요는 없지만 설치 시 실행 권한 승인은 필요합니다.
 
 이 워크플로는 카탈로그를 배포하며 공개 디렉터리에 자동 등록하지 않습니다. 디렉터리의 루트 manifest와 버전 태그 요건은 별도로 확인해야 합니다. `git-logs/vX.Y.Z` 소스 태그는 디렉터리가 찾는 `vX.Y.Z` 태그와 다릅니다. 배포 구조를 확인하기 전에는 `orca-plugin` 토픽을 등록하거나 디렉터리에 등록됐다고 안내하지 않습니다.
 
