@@ -403,11 +403,16 @@ export function CommitActions({
               </p>
             )}
             <div className="operation-buttons">
-              <button disabled={busy} onClick={dismiss}>
+              <button className="secondary" disabled={busy} onClick={dismiss}>
                 {t('취소')}{' '}
               </button>
               {plan ? (
                 <button
+                  className={
+                    action === 'reset' && plan.confirmation
+                      ? 'destructive'
+                      : 'primary'
+                  }
                   disabled={busy || confirmation !== plan.confirmation}
                   onClick={() => void execute()}
                 >
@@ -419,6 +424,7 @@ export function CommitActions({
                 </button>
               ) : (
                 <button
+                  className="primary"
                   disabled={
                     busy ||
                     (action === 'branch' && !branch) ||

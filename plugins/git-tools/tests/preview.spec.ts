@@ -166,6 +166,13 @@ test('Orca color tokens update UI and Monaco without remounting editors', async 
       '--orca-background': 'rgb(20 32 51)',
       '--orca-foreground': '#e9eef8',
       '--orca-card': '#1a2943',
+      '--orca-card-foreground': '#dde8fb',
+      '--orca-popover': '#16233a',
+      '--orca-popover-foreground': '#f1d9ff',
+      '--orca-secondary': '#304864',
+      '--orca-secondary-foreground': '#d9fff5',
+      '--orca-radius': '0.875rem',
+      '--orca-input': '#7194b7',
       '--orca-muted': '#22344f',
       '--orca-muted-foreground': '#b2c0d6',
       '--orca-primary': '#caa3ff',
@@ -184,6 +191,15 @@ test('Orca color tokens update UI and Monaco without remounting editors', async 
     'rgb(26, 41, 67)',
   );
   await expect(page.locator('.brand')).toHaveCSS('color', 'rgb(202, 163, 255)');
+  await expect(page.locator('.app-header')).toHaveCSS(
+    'color',
+    'rgb(221, 232, 251)',
+  );
+  await expect(page.getByLabel('커밋 검색')).toHaveCSS('border-radius', '12px');
+  await expect(page.getByLabel('커밋 검색')).toHaveCSS(
+    'border-color',
+    'rgb(113, 148, 183)',
+  );
   await expect(page.locator('.monaco-editor-background').first()).toHaveCSS(
     'background-color',
     'rgb(20, 32, 51)',
@@ -218,6 +234,46 @@ test('Orca color tokens update UI and Monaco without remounting editors', async 
   );
   expect(await original!.evaluate((node) => node.isConnected)).toBe(true);
   await expect(page.getByText('2개 변경', { exact: true })).toBeVisible();
+  await page
+    .getByRole('button', { name: /^Merge branch/ })
+    .click({ button: 'right' });
+  const menu = page.getByRole('menu', { name: '커밋 작업' });
+  await expect(menu).toHaveCSS('background-color', 'rgb(22, 35, 58)');
+  await expect(menu).toHaveCSS('color', 'rgb(241, 217, 255)');
+  await expect(menu).toHaveCSS('border-radius', '12px');
+  await expect(
+    page.getByRole('menuitem', { name: '체크아웃…', exact: true }),
+  ).toHaveCSS('color', 'rgb(241, 217, 255)');
+  await page.keyboard.press('ArrowDown');
+  await expect(
+    page.getByRole('menuitem', { name: '여기서 브랜치 생성…' }),
+  ).toHaveCSS('color', 'rgb(244, 240, 255)');
+  await page.screenshot({ path: info.outputPath('orca-menu-tokens.png') });
+  await page.getByRole('menuitem', { name: '체크아웃…', exact: true }).click();
+  await page.mouse.move(0, 0);
+  const dialog = page.getByRole('dialog');
+  await expect(dialog).toHaveCSS('background-color', 'rgb(22, 35, 58)');
+  await expect(dialog).toHaveCSS('color', 'rgb(241, 217, 255)');
+  await expect(dialog).toHaveCSS('border-radius', '14px');
+  await expect(
+    dialog.getByRole('button', { name: '취소', exact: true }),
+  ).toHaveCSS('background-color', 'rgb(48, 72, 100)');
+  await expect(
+    dialog.getByRole('button', { name: '취소', exact: true }),
+  ).toHaveCSS('color', 'rgb(217, 255, 245)');
+  await expect(
+    dialog.getByRole('button', { name: '대상과 영향 확인' }),
+  ).toHaveCSS('background-color', 'rgb(202, 163, 255)');
+  await expect(
+    dialog.getByRole('button', { name: '대상과 영향 확인' }),
+  ).toHaveCSS('color', 'rgb(23, 16, 35)');
+  await page.screenshot({ path: info.outputPath('orca-dialog-tokens.png') });
+  await page.evaluate(() =>
+    document.documentElement.style.setProperty('--orca-radius', '0.25rem'),
+  );
+  await expect(dialog).toHaveCSS('border-radius', '4px');
+  expect(await original!.evaluate((node) => node.isConnected)).toBe(true);
+  await dialog.getByRole('button', { name: '취소', exact: true }).click();
 });
 
 test('panel remains a panel when Orca supplies a document API on every surface', async ({

@@ -27,11 +27,15 @@ function palette() {
       background: read('--bg'),
       foreground: read('--fg'),
       card: read('--card'),
+      cardForeground: read('--card-fg'),
+      popover: read('--popover'),
+      popoverForeground: read('--popover-fg'),
       muted: read('--muted'),
       border: read('--line'),
       accent: read('--accent'),
       primary: read('--primary'),
       primaryForeground: read('--primary-fg'),
+      primaryHover: read('--primary-hover'),
       focus: read('--focus'),
       field: read('--field'),
       added: read('--addition'),
@@ -88,16 +92,17 @@ export function syncMonacoTheme() {
         'editorIndentGuide.activeBackground1': p.muted,
         focusBorder: p.focus,
         'editorWidget.background': p.card,
-        'editorWidget.foreground': p.foreground,
+        'editorWidget.foreground': p.cardForeground,
         'editorWidget.border': p.border,
-        'editorHoverWidget.background': p.card,
-        'editorHoverWidget.foreground': p.foreground,
+        'editorHoverWidget.background': p.popover,
+        'editorHoverWidget.foreground': p.popoverForeground,
         'editorHoverWidget.border': p.border,
         'input.background': p.field,
         'input.foreground': p.foreground,
         'input.border': p.border,
         'button.background': p.primary,
         'button.foreground': p.primaryForeground,
+        'button.hoverBackground': p.primaryHover,
         'scrollbarSlider.background': alpha(p.muted, 0.3),
         'scrollbarSlider.hoverBackground': alpha(p.muted, 0.5),
         'scrollbarSlider.activeBackground': alpha(p.primary, 0.5),
@@ -139,5 +144,10 @@ export function syncMonacoTheme() {
     observer.disconnect();
     media.removeEventListener('change', update);
     if (typeof unsubscribe === 'function') unsubscribe();
+    else if (
+      unsubscribe &&
+      typeof (unsubscribe as { dispose?: unknown }).dispose === 'function'
+    )
+      (unsubscribe as { dispose(): void }).dispose();
   };
 }

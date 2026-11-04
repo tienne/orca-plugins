@@ -11,6 +11,12 @@ Git Logs 사이드바를 열면 현재 열린 Orca 로컬 Git 워크트리에 �
 
 파일을 선택하고 **중앙 Diff 탭 열기**를 누릅니다. 연결된 workspace를 중앙 탭의 대상으로 사용합니다. 저장소의 `.orca/git-tools/<id>.orcadiff`에 저장소·비교 기준·선택 파일을 담아 대상 workspace의 custom editor로 엽니다. 이 폴더가 Git에서 무시되지 않으면 문서가 untracked로 표시되며 ignore 설정은 자동 변경하지 않습니다. 소스 파일과 index는 수정하지 않습니다. 중앙 뷰어는 좌우 정렬, 줄/단어 내 강조, 동기 스크롤, 이전/다음 변경, 동일 영역 접기, 줄 앞뒤 공백 무시를 지원합니다.
 
+## 테마와 화면 스타일
+
+패널·메뉴·확인창·버튼·입력은 Orca 프레임에 공개된 background/foreground, card/card-foreground, popover/popover-foreground, primary/primary-foreground, secondary/secondary-foreground, accent/accent-foreground, border/input/ring, radius 토큰을 사용합니다. 선택·hover·포커스에도 대응하는 전경색을 적용합니다. root의 rem 기준은 16px로 유지해 전달받은 radius의 크기가 호스트와 어긋나지 않게 합니다. 패널 제목·버튼·여백은 Orca의 작은 도구 패널 형태에 맞췄고, 브라우저 fallback은 중립적인 라이트/다크 팔레트입니다.
+
+같은 다크/라이트 모드 안에서 토큰·모서리 반경이 바뀌어도 다시 로드하거나 Monaco 모델을 만들지 않습니다. 테스트는 전용 card/popover 글자색, primary/secondary 버튼, 메뉴 키보드 포커스, radius 변경과 Monaco 모델 유지를 검증합니다. 호스트의 폰트·밀도 설정, sidebar/chart/diff/syntax 전용 토큰은 현재 프레임 API에 공개되지 않으므로 앱 디자인과 완전히 동일하게 상속하는 것은 지원하지 않습니다. 그래프·추가/삭제의 의미색은 기존의 로컬 fallback을 유지합니다.
+
 ## 언어
 
 Orca의 공개 `window.orca.locale`(BCP-47)을 우선 사용합니다. 한국어(`ko`, `ko-KR`)와 영어(`en`, `en-US`, `en-GB` 등)를 지원하고 미지원/잘못된 locale은 영어(`en-US`)로 표시합니다. 날짜·시간·숫자는 지원 언어의 지역 태그를 `Intl`에 전달합니다. UI 언어가 영어여도 커밋 메시지·작성자·브랜치·경로와 원본 Git 출력은 번역하지 않습니다. 플러그인 메뉴·접근성 레이블·안내·확인창·알려진 worker 오류/결과 문구만 로컬 사전으로 번역하며 외부 번역 요청을 보내지 않습니다.
