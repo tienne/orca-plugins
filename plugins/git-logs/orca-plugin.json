@@ -10,6 +10,7 @@
   "execution": "trusted-worker",
   "pluginApi": 1,
   "contributes": {
+    "events": [{ "on": "workspace.created" }, { "on": "workspace.changed" }],
     "panels": [
       {
         "id": "git-logs",

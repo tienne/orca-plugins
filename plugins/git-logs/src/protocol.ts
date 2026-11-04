@@ -19,6 +19,7 @@ export interface ChangedFile {
   conflict?: boolean;
 }
 export interface ChangeSet {
+  setupWarning?: string;
   comparison: Comparison;
   files: ChangedFile[];
   left: string;
@@ -148,9 +149,24 @@ export interface HostVersion {
   major: number;
   minor: number;
 }
+export interface WorkerEvents {
+  'workspace.created': {
+    workspaceId: string;
+    kind: 'worktree' | 'folder';
+    path: string;
+    branch: string;
+  };
+  'workspace.changed': { context: WorkspaceContext | null };
+}
 export interface WorkerApi {
   api: HostVersion;
   panels: { handle(name: string, handler: (input: unknown) => unknown): void };
+  events?: {
+    on<E extends keyof WorkerEvents>(
+      event: E,
+      handler: (payload: WorkerEvents[E]) => void | Promise<void>,
+    ): { dispose(): void };
+  };
   host: {
     has(name: string): boolean;
     call(name: string, params: unknown): Promise<unknown>;

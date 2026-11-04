@@ -59,11 +59,21 @@ Subscribe to `workspace.changed` and prevent late results from a previous reques
 
 Custom editors receive document content, not a filesystem path. To open a diff, the worker writes `.orca/git-logs/<uuid>.orcadiff` containing the repository, comparison, and selected file. It then opens the matching workspace and passes a workspace-relative path to `editor.open`.
 
-The worker verifies each parent directory, rejects symlinks and paths outside the repository, and creates documents with `wx` and mode `0600`. It does not modify source files, the index, or ignore rules when opening a diff. Documents remain until removed by the user. If `.orca/` is not ignored, they appear as untracked files and block Git actions that require a clean repository.
+The worker verifies each parent directory, rejects symlinks and paths outside the repository, and creates documents with `wx` and mode `0600`. Before creating a document it confirms local Git exclusion. It does not modify source files, the index, or shared `.gitignore` files. Documents remain until removed by the user or the worktree directory is deleted.
 
 A descriptor does not grant access to a repository by itself. The sidebar must connect that repository before the document can read it. An open editor keeps the document's repository and comparison across workspace changes.
 
 The custom editor requires an isolated desktop frame. Do not intercept ordinary file clicks or assume an API exists to replace Orca's built-in diff.
+
+### Local exclude setup
+
+The worker subscribes to `workspace.created` and `workspace.changed`. Re-resolve created IDs through `workspace.list`, require a local worktree, and compare canonical paths before access. For workspace changes, re-read current context and reject ambiguous or truncated matches. Do not trust an event path or an SSH path on its own. These background checks do not authorize a comparison document's repository.
+
+Also check on sidebar connection, comparison loading, and before opening a Diff descriptor so an existing workspace or a missed event is repaired. Git resolves `--git-common-dir` and `--git-path info/exclude`. Ensure the exact `/.orca/git-logs/` rule is present once, preserving existing bytes and newline style. A shared ignore rule does not replace this local registration. Serialize updates to the same canonical exclude path across linked worktrees.
+
+Only an existing, small regular exclude file with one link is writable. Refuse symlinked metadata, hard links, unsafe paths, or missing metadata. Open without creation, compare device/inode before and after opening, and use append mode; a parent replacement must not create an outside file. Bound reads, warn when Git still reports actual untracked documents, and check the exact generated filename before writing it. Do not infer effective exclusion from a representative file or trailing-slash probe.
+
+Setup failure leaves read-only browsing available with a localized warning and blocks creation of new descriptors. Shared ignore negations are not overridden. The rule is local to the repository and shared by its linked worktrees; it is not removed when one workspace closes. Tracked documents and old `git-tools` paths are not changed. No worktree-specific configuration extension or global excludes setting is enabled.
 
 ## Git reads and comparisons
 
@@ -126,6 +136,8 @@ Browser preview uses `navigator.language` or the `lang` query and language picke
 On 2026-11-04, using local Git 2.41.0, checks covered build/typecheck, 27 Git/worker cases, 5 translation cases, 2 artifact cases, 21 browser UI cases, and 2 screenshot scenarios. Build and manifest validation passed. Screenshots covered light, dark, and narrow layouts.
 
 Temporary Git repositories cover root and merge commits, current/all branch histories, the 200-commit limit, full messages, special filenames, renames, deletions, staged/unstaged combinations, canceled changes, staged deletion with recreation, binary/large/non-UTF-8 files, symlinks, conflicts, boundary checks, and worker messages. Mutation cases cover each action, backup refs, stale confirmations, repeated execution, worktree occupancy, active workspace boundaries, hidden index flags, and ignored-file collisions.
+
+On 2026-11-05, local exclude checks added 14 temporary-repository cases, bringing the logic/translation/artifact suite to 48 cases. Browser coverage increased to 22 cases, including translated setup warnings that retain the graph. Workspace event delivery was exercised through fixture hosts; live delivery of the new subscriptions has not been verified.
 
 Before the rename, the approved development identity was tested on macOS with Orca 1.4.248 for repository connection, workspace selection, central tab opening, `document.session`, and Monaco rendering. Dark and light editor captures reported no frame errors or CSP blockage for local assets. Git action menus and confirmations were rendered without mutating a real user repository. **The renamed `local.git-logs` identity is still awaiting execution approval.** Other operating systems, host versions, and remote hosts remain unverified.
 

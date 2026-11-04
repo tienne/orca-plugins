@@ -1133,3 +1133,63 @@ test('bottom splitters resize, persist, cancel, clamp and reset without storage 
   expect((await heights()).details).toBe(184);
   expect(errors).toEqual([]);
 });
+
+test('local ignore setup warnings are translated without hiding the connected graph', async ({
+  page,
+}, info) => {
+  const { fixtureRepo, fixtureSet, fixtureDiff } =
+    await import('../src/ui/fixture');
+  await page.addInitScript(
+    ({ repo, set, diff }) => {
+      const warning =
+        'Git Logs의 로컬 제외 규칙을 설정하지 못했습니다. 저장소 권한과 ignore 규칙을 확인하세요.';
+      window.orca = {
+        locale: 'en-US',
+        api: { major: 1, minor: 3 },
+        host: { has: () => true },
+        plugin: {
+          request: async <T>(name: string) => {
+            if (name === 'active')
+              return {
+                status: 'connected',
+                repository: repo,
+                workspace: {
+                  id: 'fixture',
+                  name: 'Fixture',
+                  path: repo.root,
+                  branch: repo.branch,
+                },
+              } as T;
+            if (name === 'changes')
+              return { ...set, setupWarning: warning } as T;
+            if (name === 'diff') return diff as T;
+            if (name === 'open') throw new Error(warning);
+            throw new Error(name);
+          },
+        },
+      };
+    },
+    {
+      repo: fixtureRepo,
+      set: fixtureSet,
+      diff: fixtureDiff(fixtureSet.files[0].path),
+    },
+  );
+  await page.setViewportSize({ width: 420, height: 900 });
+  await page.goto('/');
+  await expect(page.locator('.commit-row')).toHaveCount(
+    fixtureRepo.commits.length,
+  );
+  await expect(page.locator('.file-row')).toHaveCount(fixtureSet.files.length);
+  await expect(page.getByRole('alert')).toContainText(
+    'Could not hide Git Logs files from Git.',
+  );
+  await page.locator('.file-row').first().dblclick();
+  await expect(page.getByRole('alert')).toContainText(
+    'Check repository permissions and ignore rules.',
+  );
+  await expect(page.locator('.commit-row')).toHaveCount(
+    fixtureRepo.commits.length,
+  );
+  await page.screenshot({ path: info.outputPath('local-ignore-warning.png') });
+});

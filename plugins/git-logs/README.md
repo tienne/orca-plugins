@@ -76,7 +76,11 @@ Drag the short handle to resize the commit details and file list. Arrow keys adj
 
 Git Logs is a `trusted-worker` plugin. **Its Node process runs with your user account's access to the machine**, including Git and file access. It requires approval before execution. `workspace:read` finds the current workspace, and `workspace:write` opens the workspace and Diff tab.
 
-Opening a Diff tab writes a JSON comparison document to `.orca/git-logs/*.orcadiff` inside the repository. It records the repository, comparison, and selected file. The plugin does not delete these documents or edit ignore rules. If `.orca/` is not ignored, the documents appear as untracked files and block commit actions. Remove unused documents or choose an ignore rule yourself.
+Opening a Diff tab writes a JSON comparison document to `.orca/git-logs/*.orcadiff` inside the worktree. It records the repository, comparison, and selected file. Documents remain while the worktree exists and are removed with its directory; closing a tab or removing only an Orca folder entry does not delete them.
+
+Git Logs checks local exclusion when a worktree is created, the active workspace changes, the sidebar connects, a comparison loads, or a Diff tab opens. It ensures `/.orca/git-logs/` is present once in the existing local `info/exclude` file found through Git. It preserves existing rules and does not edit tracked `.gitignore`, the index, or global Git configuration. Linked worktrees of the same local repository share this rule; other clones are unaffected. Already tracked documents are not untracked automatically, and legacy `.orca/git-tools/` files are outside this rule.
+
+Read-only views show a warning if setup fails. New comparison documents are not created until Git confirms they will be ignored. Missing or unsafe Git metadata, read-only permissions, or higher-priority unignore rules need to be resolved locally; the plugin does not create missing metadata or override shared rules. The worker subscribes to `workspace.created` and `workspace.changed`; Orca may request approval for those subscriptions.
 
 An external `.orcadiff` does not automatically authorize its repository. Connect that repository in the Git Logs sidebar before refreshing the document. An open Diff tab keeps the repository and comparison recorded in its document when the active workspace changes.
 

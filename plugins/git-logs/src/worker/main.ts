@@ -8,8 +8,9 @@ import type {
   WorkspaceContext,
   WorkspaceChoice,
 } from '../protocol';
-import { changes, diff, log, repository } from './git';
+import { changes, diff, log, repository, git } from './git';
 import { createOperations } from './operations';
+import { ensureLocalIgnore } from './local-ignore';
 export default function activate(orca: WorkerApi): void {
   function requireHost(name: string) {
     if (orca.api?.major !== 1 || orca.api.minor < 3 || !orca.host.has(name))
@@ -19,6 +20,78 @@ export default function activate(orca: WorkerApi): void {
   }
   const connected = new Set<string>();
   const operations = createOperations();
+  const setupWarning =
+    'Git Logs의 로컬 제외 규칙을 설정하지 못했습니다. 저장소 권한과 ignore 규칙을 확인하세요.';
+  async function setup(root: string) {
+    try {
+      await ensureLocalIgnore(root);
+    } catch (error) {
+      orca.log(
+        `Git Logs local exclude setup failed: ${error instanceof Error ? error.message : String(error)}`,
+      );
+      return setupWarning;
+    }
+  }
+  async function setupWorkspace(created?: {
+    workspaceId: string;
+    kind: string;
+    path: string;
+  }) {
+    if (created && created.kind !== 'worktree') return;
+    requireHost('workspace.list');
+    const result = (await orca.host.call('workspace.list', {})) as {
+      workspaces: (WorkspaceChoice & { kind: string; hostId: string | null })[];
+      truncated?: boolean;
+    };
+    let selected;
+    if (created) {
+      selected = result.workspaces.find(
+        (w) =>
+          w.id === created.workspaceId &&
+          w.kind === 'worktree' &&
+          (w.hostId === null || w.hostId === 'local'),
+      );
+      if (
+        !selected ||
+        (await realpath(selected.path)) !== (await realpath(created.path))
+      )
+        return;
+    } else {
+      requireHost('workspace.readContext');
+      const context = (await orca.host.call(
+        'workspace.readContext',
+        {},
+      )) as WorkspaceContext | null;
+      const matches = result.workspaces.filter(
+        (w) =>
+          w.name === context?.displayName &&
+          (w.branch ?? '') === context?.branch,
+      );
+      if (result.truncated || matches.length !== 1) return;
+      selected = matches[0];
+      if (
+        selected.kind !== 'worktree' ||
+        (selected.hostId !== null && selected.hostId !== 'local')
+      )
+        return;
+    }
+    await setup(await repository(selected.path));
+  }
+  const backgroundSetup = async (created?: {
+    workspaceId: string;
+    kind: string;
+    path: string;
+  }) => {
+    try {
+      await setupWorkspace(created);
+    } catch (error) {
+      orca.log(
+        `Git Logs workspace setup skipped: ${error instanceof Error ? error.message : String(error)}`,
+      );
+    }
+  };
+  orca.events?.on('workspace.created', (event) => backgroundSetup(event));
+  orca.events?.on('workspace.changed', () => backgroundSetup());
   async function mutationRoot(root: string, workspaceId: string) {
     check(root);
     requireHost('workspace.list');
@@ -108,6 +181,7 @@ export default function activate(orca: WorkerApi): void {
       throw new Error('선택한 로컬 Git 워크트리를 찾을 수 없습니다.');
     if (selected) {
       const root = await repository(selected.path);
+      await setup(root);
       connected.add(root);
       return {
         status: 'connected',
@@ -144,9 +218,20 @@ export default function activate(orca: WorkerApi): void {
       confirmation,
     ),
   );
-  handle('changes', async ({ repo, comparison }) =>
-    changes(check(repo), comparison),
-  );
+  handle('changes', async ({ repo, comparison }) => {
+    const root = check(repo);
+    const warning = await setup(root);
+    const result = await changes(root, comparison);
+    const visibleDocuments = result.files.some(
+      (file) => file.untracked && file.path.startsWith('.orca/git-logs/'),
+    );
+    return {
+      ...result,
+      ...(warning || visibleDocuments
+        ? { setupWarning: warning ?? setupWarning }
+        : {}),
+    };
+  });
   handle('diff', async ({ repo, comparison, path }) =>
     diff(check(repo), comparison, path),
   );
@@ -192,7 +277,7 @@ export default function activate(orca: WorkerApi): void {
       comparison: set.comparison,
       ...(descriptor.path ? { path: descriptor.path } : {}),
     };
-    // Only generated descriptors are written, never source/index/config files.
+    // Generated descriptors and local excludes are written; source/index/shared ignore files are not.
     let directory = root;
     for (const part of ['.orca', 'git-logs']) {
       directory = join(directory, part);
@@ -211,7 +296,14 @@ export default function activate(orca: WorkerApi): void {
           '비교 문서 폴더는 저장소 내부의 실제 디렉터리여야 합니다.',
         );
     }
+    const warning = await setup(root);
+    if (warning) throw new Error(warning);
     const path = `.orca/git-logs/${randomUUID()}.orcadiff`;
+    try {
+      await git(root, ['check-ignore', '--no-index', '--quiet', '--', path]);
+    } catch {
+      throw new Error(setupWarning);
+    }
     await writeFile(join(root, path), JSON.stringify(safe, null, 2), {
       mode: 0o600,
       flag: 'wx',

@@ -308,6 +308,7 @@ function App() {
       .then((result) => {
         if (active) {
           setSet(result);
+          if (result.setupWarning) setError(result.setupWarning);
           setFile(
             result.files.some((f) => f.path === pendingPath.current)
               ? pendingPath.current
