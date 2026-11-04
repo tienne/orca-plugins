@@ -20,6 +20,7 @@ import { fixtureDiff, fixtureRepo, fixtureSet, fixtureLog } from './fixture';
 import { layout } from './graph';
 import { DiffView } from './DiffView';
 import { BranchPicker } from './BranchPicker';
+import { PaneResizer, usePaneLayout } from './PaneResizer';
 import { CommitActions, type CommitMenu } from './CommitActions';
 import './styles.css';
 const demo = !window.orca;
@@ -44,6 +45,8 @@ function App() {
         : fixtureRepo
       : null,
   );
+  const historyRef = useRef<HTMLElement>(null);
+  usePaneLayout(historyRef, repo?.root);
   const [autoTick, setAutoTick] = useState(0);
   const [choices, setChoices] = useState<WorkspaceChoice[]>([]);
   const [connectionNote, setConnectionNote] =
@@ -401,7 +404,7 @@ function App() {
     }
   }
   const files = (
-    <section className="files">
+    <section className="files" id="changed-files">
       <div className="section-heading">
         <b>{t('변경 파일')}</b>
         <span>{formatNumber(set?.files.length ?? 0)}</span>
@@ -556,7 +559,11 @@ function App() {
       )}
       <div className="workspace-layout">
         {!editorMode && (
-          <aside className="history">
+          <aside
+            className="history"
+            ref={historyRef}
+            data-layout-kind={demo ? 'preview' : 'panel'}
+          >
             {!demo && (
               <div className="workspace-connect">
                 <small role="status">{t(connectionNote)}</small>
@@ -744,7 +751,8 @@ function App() {
                     </p>
                   )}
                 </div>
-                <section className="details">
+                <PaneResizer pane="details" />
+                <section className="details" id="commit-details">
                   {selected ? (
                     <>
                       <div className="section-heading">
@@ -802,7 +810,12 @@ function App() {
                 </p>
               </div>
             )}
-            {!demo && repo && files}
+            {!demo && repo && (
+              <>
+                <PaneResizer pane="files" />
+                {files}
+              </>
+            )}
           </aside>
         )}
         {(demo || editorMode) && (

@@ -359,8 +359,8 @@ main {
 .details {
   border-top: 1px solid var(--line);
   padding: 10px 13px;
-  height: clamp(96px, 18dvh, 144px);
-  flex: 0 0 clamp(96px, 18dvh, 144px);
+  height: var(--details-pane-height, clamp(96px, 18dvh, 144px));
+  flex: 0 0 var(--details-pane-height, clamp(96px, 18dvh, 144px));
   overflow: auto;
   flex-shrink: 0;
 }
@@ -501,8 +501,8 @@ main {
   width: 100%;
   border: 0;
   min-height: 0;
-  height: clamp(160px, 28dvh, 240px);
-  flex: 0 0 clamp(160px, 28dvh, 240px);
+  height: var(--files-pane-height, clamp(160px, 28dvh, 240px));
+  flex: 0 0 var(--files-pane-height, clamp(160px, 28dvh, 240px));
 }
 .panel-mode .commit-list {
   min-height: 0;
@@ -948,4 +948,36 @@ button.destructive:hover:not(:disabled) {
   padding: 8px;
   color: var(--muted);
   font-size: 11px;
+}
+
+.pane-resizer {
+  height: 6px;
+  flex: 0 0 6px;
+  cursor: row-resize;
+  touch-action: none;
+  position: relative;
+  background: transparent;
+}
+.pane-resizer::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 2px;
+  height: 2px;
+  background: var(--line);
+}
+.pane-resizer:hover::after,
+.pane-resizer:focus-visible::after,
+.pane-resizing .pane-resizer::after {
+  background: var(--focus);
+}
+.pane-resizer:focus-visible {
+  outline: 1px solid var(--focus);
+  outline-offset: -1px;
+}
+.pane-resizing,
+.pane-resizing * {
+  cursor: row-resize !important;
+  user-select: none !important;
 }

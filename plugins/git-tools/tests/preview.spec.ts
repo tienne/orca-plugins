@@ -1031,3 +1031,106 @@ test('sidebar bottom panes keep their height and files open a central diff on do
   expect(await heights()).toEqual(before);
   await page.screenshot({ path: info.outputPath('fixed-bottom-panes.png') });
 });
+
+test('bottom splitters resize, persist, cancel, clamp and reset without storage permission', async ({
+  page,
+}, info) => {
+  const { fixtureRepo, fixtureSet, fixtureDiff } =
+    await import('../src/ui/fixture');
+  await page.addInitScript(
+    ({ repo, set, diff }) => {
+      window.orca = {
+        locale: 'ko-KR',
+        api: { major: 1, minor: 3 },
+        host: { has: () => true },
+        plugin: {
+          request: async <T>(name: string) => {
+            if (name === 'active')
+              return {
+                status: 'connected',
+                repository: repo,
+                workspace: {
+                  id: 'fixture',
+                  name: 'Fixture',
+                  path: repo.root,
+                  branch: repo.branch,
+                },
+              } as T;
+            if (name === 'changes') return set as T;
+            if (name === 'diff') return diff as T;
+            throw new Error(name);
+          },
+        },
+      };
+    },
+    {
+      repo: fixtureRepo,
+      set: fixtureSet,
+      diff: fixtureDiff(fixtureSet.files[0].path),
+    },
+  );
+  await page.setViewportSize({ width: 380, height: 1000 });
+  await page.goto('/');
+  const details = page.getByRole('separator', { name: '커밋 정보 높이 조절' });
+  const files = page.getByRole('separator', { name: '변경 파일 높이 조절' });
+  const heights = () =>
+    page.evaluate(() => ({
+      details: document.querySelector('.details')!.getBoundingClientRect()
+        .height,
+      files: document.querySelector('.files')!.getBoundingClientRect().height,
+    }));
+  await expect(details).toHaveAttribute('aria-valuenow', '144');
+  async function drag(handle: typeof details, delta: number, cancel = false) {
+    const box = (await handle.boundingBox())!;
+    await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2);
+    await page.mouse.down();
+    await page.mouse.move(
+      box.x + box.width / 2,
+      box.y + box.height / 2 + delta,
+      { steps: 6 },
+    );
+    if (cancel) await page.keyboard.press('Escape');
+    await page.mouse.up();
+  }
+  await drag(details, -80);
+  expect(await heights()).toEqual({ details: 224, files: 240 });
+  await page.reload();
+  await expect(details).toHaveAttribute('aria-valuenow', '224');
+  await drag(files, -50);
+  expect(await heights()).toEqual({ details: 174, files: 290 });
+  await files.press('ArrowDown');
+  expect(await heights()).toEqual({ details: 184, files: 280 });
+  await drag(details, 30, true);
+  expect(await heights()).toEqual({ details: 184, files: 280 });
+  await page.reload();
+  await expect(details).toHaveAttribute('aria-valuenow', '184');
+  await page.setViewportSize({ width: 380, height: 600 });
+  await expect
+    .poll(async () => (await heights()).details + (await heights()).files)
+    .toBeLessThan(464);
+  await expect(page.locator('.commit-list')).toBeVisible();
+  await page.setViewportSize({ width: 380, height: 1000 });
+  await details.dblclick();
+  await expect(details).toHaveAttribute('aria-valuenow', '144');
+  expect(await heights()).toEqual({ details: 144, files: 240 });
+  await files.press('Home');
+  expect((await heights()).files).toBe(120);
+  await details.dblclick();
+  await page.screenshot({
+    path: info.outputPath('resizable-bottom-panes.png'),
+  });
+  await page.addInitScript(() => {
+    Object.defineProperty(window, 'localStorage', {
+      get() {
+        throw new DOMException('Unavailable', 'SecurityError');
+      },
+    });
+  });
+  const errors: string[] = [];
+  page.on('pageerror', (error) => errors.push(error.message));
+  await page.reload();
+  await expect(details).toHaveAttribute('aria-valuenow', '144');
+  await details.press('Shift+ArrowUp');
+  expect((await heights()).details).toBe(184);
+  expect(errors).toEqual([]);
+});
