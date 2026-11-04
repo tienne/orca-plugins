@@ -8,12 +8,14 @@ Source is public at [tienne/orca-plugins](https://github.com/tienne/orca-plugins
 
 ## Branches and versioning
 
-| Ref               | Contents                                                          |
-| ----------------- | ----------------------------------------------------------------- |
-| `main`            | Source, documentation, tests, and workflows                       |
-| `feat/*`, `fix/*` | Changes reviewed before merging into `main`                       |
-| `release`         | Built plugins, `orca-catalog.json`, and `release-provenance.json` |
-| `git-logs/vX.Y.Z` | Immutable tag on the source commit used for that version          |
+| Ref                  | Contents                                                          |
+| -------------------- | ----------------------------------------------------------------- |
+| `main`               | Source, documentation, tests, and workflows                       |
+| `feat/*`, `fix/*`    | Changes reviewed before merging into `main`                       |
+| `release`            | Built plugins, `orca-catalog.json`, and `release-provenance.json` |
+| `directory/git-logs` | Git Logs bundle at the repository root for directory discovery    |
+| `git-logs/vX.Y.Z`    | Immutable tag on the source commit used for that version          |
+| `vX.Y.Z`             | Tag on the root bundle commit used by the public directory        |
 
 Do not edit generated files on `release`. Fix the source and publish a newer version. The first release candidate starts an orphan history; later candidates retain that history and other plugin directories. There is no merge from `release` back into `main`.
 
@@ -105,6 +107,15 @@ Tests push only to temporary local bare repositories. The second command uses th
 
 Users add the Git URL of `tienne/orca-plugins` and ref `release` under Orca **Settings → Plugins → ⋯ → Catalog sources…**. The catalog installs only `plugins/git-logs` as `tienne.git-logs`. Users do not build the source or need pnpm. Git Logs still requires execution approval on installation.
 
-This workflow publishes a catalog, not an automatic public-directory listing. The directory's root-manifest and version-tag requirements are a separate process; `git-logs/vX.Y.Z` source tags are not its `vX.Y.Z` discovery tags. Do not add an `orca-plugin` topic or claim directory registration until the chosen layout has been checked.
+The automated release workflow publishes the custom catalog. Public-directory discovery uses a separate root export on `directory/git-logs`, tagged `vX.Y.Z`. The `git-logs/vX.Y.Z` tag continues to identify the source commit; do not move it. The repository's `orca-plugin` topic enables discovery. See the [directory status page](https://www.onorca.dev/plugins/tienne/orca-plugins) for indexing results; publishing the tag does not prove it is searchable yet.
+
+### Publish a directory export
+
+1. Start from the immutable artifact commit pinned by the published catalog. Export only `plugins/git-logs/` to the root of a separate Git checkout. Keep the installable files unchanged; provenance belongs in the commit message rather than extra package files.
+2. Run `orca plugin validate`, `orca plugin check`, and `orca plugin release-entry` on the exported root. Compare the resulting content hash with the existing catalog release and compare every committed blob with the validated package bytes.
+3. Publish `directory/git-logs` and its new `vX.Y.Z` tag atomically without rewriting existing refs. Later exports must extend the directory branch. The generic `vX.Y.Z` tags in this repository are reserved for Git Logs.
+4. Check the public status page. The directory indexes on its own schedule; do not report search availability before the listing appears.
+
+For 0.1.0, the directory tag points to `d957b8a6bbff132cac1b4e60e80d5bd518dd1a2e`, exported from artifact `c06f01b7c62909b4f8752e1e91a2f182b3dfd97e`. Both contain the same 18 files and Orca content hash `4e4723bf66e38ecee3807d05257019cd025074f6432921e6b70c41f26be14f41`. The root export passed local validation; the directory's own indexing result is tracked on its status page. Directory exports are currently a manual step and are not included in `Release Git Logs`.
 
 References: [Orca authoring](https://github.com/stablyai/orca/blob/main/docs/reference/plugin-authoring.md#5-publish-to-a-catalog), [catalog fields](https://github.com/stablyai/orca/blob/main/docs/reference/plugin-catalog.md), [public directory](https://www.onorca.dev/plugins/add).

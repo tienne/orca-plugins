@@ -8,12 +8,14 @@
 
 ## 브랜치와 버전
 
-| Ref               | 내용                                                            |
-| ----------------- | --------------------------------------------------------------- |
-| `main`            | 소스, 문서, 테스트, 워크플로                                    |
-| `feat/*`, `fix/*` | 리뷰 후 `main`에 병합할 변경                                    |
-| `release`         | 빌드한 플러그인, `orca-catalog.json`, `release-provenance.json` |
-| `git-logs/vX.Y.Z` | 해당 버전을 만든 소스 커밋의 변경 불가 태그                     |
+| Ref                  | 내용                                                            |
+| -------------------- | --------------------------------------------------------------- |
+| `main`               | 소스, 문서, 테스트, 워크플로                                    |
+| `feat/*`, `fix/*`    | 리뷰 후 `main`에 병합할 변경                                    |
+| `release`            | 빌드한 플러그인, `orca-catalog.json`, `release-provenance.json` |
+| `directory/git-logs` | 공개 디렉터리가 읽는 루트 배치의 Git Logs 번들                  |
+| `git-logs/vX.Y.Z`    | 해당 버전을 만든 소스 커밋의 변경 불가 태그                     |
+| `vX.Y.Z`             | 공개 디렉터리용 루트 번들 커밋의 태그                           |
 
 `release`의 생성 파일을 직접 수정하지 않습니다. 소스를 고쳐 새 버전으로 배포합니다. 첫 배포 후보는 orphan 이력으로 시작하고 이후 후보는 기존 이력과 다른 플러그인 폴더를 유지합니다. `release`를 `main`에 역으로 병합하지 않습니다.
 
@@ -105,6 +107,15 @@ ORCA_RELEASE_INTEGRATION=1 ORCA_CLI_COMMAND=orca pnpm nx run git-logs:release-te
 
 사용자는 Orca의 **Settings → Plugins → ⋯ → Catalog sources…**에서 `tienne/orca-plugins`의 Git URL과 `release` ref를 추가합니다. 카탈로그는 `plugins/git-logs`만 설치하며 ID는 `tienne.git-logs`입니다. 사용자가 소스를 빌드하거나 pnpm을 설치할 필요는 없지만 설치 시 실행 권한 승인은 필요합니다.
 
-이 워크플로는 카탈로그를 배포하며 공개 디렉터리에 자동 등록하지 않습니다. 디렉터리의 루트 manifest와 버전 태그 요건은 별도로 확인해야 합니다. `git-logs/vX.Y.Z` 소스 태그는 디렉터리가 찾는 `vX.Y.Z` 태그와 다릅니다. 배포 구조를 확인하기 전에는 `orca-plugin` 토픽을 등록하거나 디렉터리에 등록됐다고 안내하지 않습니다.
+자동 릴리스 워크플로는 사용자 지정 카탈로그를 배포합니다. 공개 디렉터리는 `directory/git-logs` 브랜치의 루트 배치 번들과 `vX.Y.Z` 태그로 등록합니다. `git-logs/vX.Y.Z`는 계속 소스 커밋을 가리키며 옮기지 않습니다. 저장소의 `orca-plugin` 토픽으로 탐색을 활성화합니다. 인덱싱 결과는 [디렉터리 상태 페이지](https://www.onorca.dev/plugins/tienne/orca-plugins)에서 확인하십시오. 태그를 공개했다고 검색 노출까지 완료된 것은 아닙니다.
+
+### 디렉터리용 번들 공개
+
+1. 공개한 카탈로그가 고정한 설치 파일 커밋에서 시작합니다. 별도 Git 체크아웃의 루트에 `plugins/git-logs/` 내용만 내보냅니다. 설치 파일은 바꾸지 않으며, 출처는 패키지 파일을 추가하는 대신 커밋 메시지에 기록합니다.
+2. 루트에서 `orca plugin validate`, `orca plugin check`, `orca plugin release-entry`를 실행합니다. 생성된 콘텐츠 해시가 기존 카탈로그 릴리스와 같은지 확인하고, 커밋한 각 blob이 검증한 패키지 바이트와 같은지도 대조합니다.
+3. 기존 ref를 다시 쓰지 않고 `directory/git-logs`와 새 `vX.Y.Z` 태그를 원자적으로 공개합니다. 이후 번들은 기존 디렉터리 브랜치 이력을 이어야 합니다. 이 저장소의 일반 `vX.Y.Z` 태그는 Git Logs용으로 사용합니다.
+4. 공개 상태 페이지를 확인합니다. 인덱싱은 디렉터리 자체 일정으로 실행되므로 실제 목록에 나타나기 전에는 검색할 수 있다고 안내하지 않습니다.
+
+0.1.0의 디렉터리 태그는 `d957b8a6bbff132cac1b4e60e80d5bd518dd1a2e`를 가리키며, 설치 파일 커밋 `c06f01b7c62909b4f8752e1e91a2f182b3dfd97e`에서 내보냈습니다. 두 경로는 같은 파일 18개와 Orca 콘텐츠 해시 `4e4723bf66e38ecee3807d05257019cd025074f6432921e6b70c41f26be14f41`을 갖습니다. 루트 번들은 로컬 검증을 통과했으며 실제 인덱싱 결과는 상태 페이지에서 확인합니다. 디렉터리용 번들 공개는 현재 수동 단계로, `Release Git Logs`에는 포함되지 않습니다.
 
 근거: [Orca 배포 가이드](https://github.com/stablyai/orca/blob/main/docs/reference/plugin-authoring.md#5-publish-to-a-catalog), [카탈로그 필드](https://github.com/stablyai/orca/blob/main/docs/reference/plugin-catalog.md), [공개 디렉터리](https://www.onorca.dev/plugins/add).
