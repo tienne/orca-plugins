@@ -538,12 +538,20 @@ function App() {
                             ))}
                           </span>
                         )}
-                        <small>
-                          {commit.author}{' '}
-                          <span>
-                            {new Date(commit.date).toLocaleDateString()} ·{' '}
-                            {commit.hash.slice(0, 7)}
+                        <small className="commit-meta">
+                          <span className="commit-author" title={commit.author}>
+                            {commit.author}
                           </span>
+                          <time
+                            className="commit-date"
+                            dateTime={commit.date}
+                            title={new Date(commit.date).toLocaleString()}
+                          >
+                            {new Date(commit.date).toLocaleDateString()}
+                          </time>
+                          <code className="commit-hash" title={commit.hash}>
+                            {commit.hash.slice(0, 7)}
+                          </code>
                         </small>
                       </span>
                     </button>

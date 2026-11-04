@@ -1,12 +1,20 @@
 :root {
   color-scheme: light dark;
-  /* Graph lanes need distinct hues even when Orca's primary is monochrome.
-     Plugin frames do not expose Orca chart palette tokens. */
-  --graph-blue: light-dark(#2864c7, #79adff);
-  --graph-purple: light-dark(#8250c4, #bf9aff);
-  --graph-teal: light-dark(#147d72, #58cbbb);
-  --graph-amber: light-dark(#a56612, #e8b65d);
-  --graph-pink: light-dark(#b54679, #ed8ab7);
+  /* Frame chart tokens are unavailable. Keep semantic hues distinct while
+     blending the host foreground into each lane to follow custom themes. */
+  --graph-blue: color-mix(in srgb, light-dark(#2864c7, #79adff) 85%, var(--fg));
+  --graph-purple: color-mix(
+    in srgb,
+    light-dark(#8250c4, #bf9aff) 85%,
+    var(--fg)
+  );
+  --graph-teal: color-mix(in srgb, light-dark(#147d72, #58cbbb) 85%, var(--fg));
+  --graph-amber: color-mix(
+    in srgb,
+    light-dark(#a56612, #e8b65d) 85%,
+    var(--fg)
+  );
+  --graph-pink: color-mix(in srgb, light-dark(#b54679, #ed8ab7) 85%, var(--fg));
   --bg: var(--orca-background, #f7f8fb);
   --fg: var(--orca-foreground, #252a35);
   --card: var(--orca-card, #fff);
@@ -282,16 +290,36 @@ main {
   overflow: hidden;
   text-overflow: ellipsis;
 }
-.commit-content > small {
-  display: flex;
-  gap: 5px;
-  justify-content: space-between;
-  font-size: 10px;
+.commit-meta {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  align-items: baseline;
+  gap: 8px;
+  font-size: 11px;
+  line-height: 17px;
 }
-.commit-content > small > span {
+.commit-author {
+  color: color-mix(in srgb, var(--fg) 80%, var(--muted));
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+.commit-date {
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.commit-hash {
+  color: color-mix(in srgb, var(--graph-blue) 75%, var(--fg));
+  background: color-mix(in srgb, var(--graph-blue) 8%, transparent);
+  border-radius: 3px;
+  padding: 0 3px;
+  font:
+    10px/17px ui-monospace,
+    SFMono-Regular,
+    Menlo,
+    monospace;
+  white-space: nowrap;
 }
 .refs {
   display: flex;
