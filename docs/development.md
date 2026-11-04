@@ -157,3 +157,15 @@ Orca가 `approval_required`를 반환하면 표시된 접근 범위와 fingerpri
 ## 영문 소개용 스크린샷
 
 `pnpm nx run git-logs:screenshots`로 영문 샘플 데이터의 라이트·다크 및 커밋 우클릭 메뉴 화면을 생성합니다. 결과는 `docs/screenshots/`에 저장합니다. 캡처 시 Git 실행이나 Orca 플러그인 실행 승인은 필요하지 않습니다. `?lang=en&sample=en`은 일반 브라우저 DEMO에만 적용되고 실제 커밋·작성자·코드는 번역하지 않습니다.
+
+## 검색용 소개 문구
+
+Manifest의 `description`과 README 소개에 `Git logs`, `Git tree`, `commit graph`, `side-by-side diff`를 포함합니다. 현재 manifest/catalog 명세에는 별도 `keywords`나 검색 별칭 필드가 없습니다. 카탈로그에 첫 릴리스를 등록할 때는 이 설명을 entry의 `description`에도 반영합니다. 카탈로그는 공개 릴리스 전까지 비워 둡니다.
+
+현재 배포용 설명:
+
+> Explore Git logs in a visual Git tree and commit graph. Compare changes in a read-only side-by-side diff and run confirmed Git actions in Orca.
+
+GitHub 저장소를 공개할 때 사용할 토픽 후보는 `orca-plugin`, `git-logs`, `git-tree`, `commit-graph`, `git-history`, `git-diff`입니다. 아직 원격 저장소 생성이나 토픽 등록은 하지 않았습니다. 이 문구와 토픽은 검색에 활용할 메타데이터이며 Orca·공개 디렉터리·GitHub 검색의 일치 방식이나 노출 순위를 보장하지 않습니다. 배포 후 각 검색 화면에서 확인해야 합니다.
+
+필드 근거: [Manifest](https://github.com/stablyai/orca/blob/main/docs/reference/plugin-manifest.md), [Catalog](https://github.com/stablyai/orca/blob/main/docs/reference/plugin-catalog.md).

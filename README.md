@@ -1,5 +1,7 @@
 # Git Logs
 
+Git logs, Git tree visualization, commit graph, and read-only side-by-side diffs for Orca.
+
 **Orca에서 커밋 이력을 살펴보고, 변경 내용을 좌우로 비교하는 Git 플러그인입니다.**
 
 사이드바의 커밋 그래프에서 이력을 탐색하고, 변경 파일을 더블클릭해 중앙 탭에서 Diff를 확인합니다. 커밋 우클릭 메뉴에서는 체크아웃, 브랜치 생성, 병합, 리베이스, 체리픽, 리버트, 리셋을 실행할 수 있습니다.
