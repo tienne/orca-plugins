@@ -86,6 +86,7 @@ export interface DocumentSession {
 }
 // Narrow, manually maintained subset of the version-matched Orca authoring reference.
 export interface FrameApi {
+  on?(event: 'theme', handler: () => void): unknown;
   api: HostVersion;
   host: { has(name: string): boolean };
   plugin: {

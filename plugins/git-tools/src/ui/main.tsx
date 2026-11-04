@@ -17,7 +17,13 @@ const scenario = demo
   ? (new URLSearchParams(location.search).get('fixture') ?? 'default')
   : 'default';
 const editorMode = !!window.orca?.document;
-const colors = ['#729eff', '#bd8cff', '#4dc5a4', '#e9b46c', '#e7829f'];
+const colors = [
+  'var(--primary)',
+  'color-mix(in srgb, var(--primary) 55%, var(--fg))',
+  'var(--addition)',
+  'var(--danger)',
+  'var(--muted)',
+];
 const message = (e: unknown) => (e instanceof Error ? e.message : String(e));
 function App() {
   const [repo, setRepo] = useState<Repository | null>(

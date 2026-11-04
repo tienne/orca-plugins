@@ -4,6 +4,7 @@ import * as monaco from 'monaco-editor/editor/editor.api.js';
 import EditorWorker from 'monaco-editor/editor/editor.worker.js?worker';
 import 'monaco-editor/languages/definitions/typescript/register.js';
 import type { FileDiff } from '../protocol';
+import { syncMonacoTheme } from './theme';
 (
   globalThis as typeof globalThis & { MonacoEnvironment: unknown }
 ).MonacoEnvironment = { getWorker: () => new EditorWorker() };
@@ -38,11 +39,9 @@ export function DiffView({
     if (!container.current || !supported) return;
     let instance: monaco.editor.IStandaloneDiffEditor | undefined;
     const models: monaco.editor.ITextModel[] = [];
+    let stopTheme: (() => void) | undefined;
     try {
-      const isDark = () =>
-        document.documentElement.classList.contains('dark') ||
-        (!document.documentElement.classList.contains('light') &&
-          matchMedia('(prefers-color-scheme: dark)').matches);
+      stopTheme = syncMonacoTheme();
       instance = monaco.editor.createDiffEditor(container.current, {
         readOnly: true,
         originalEditable: false,
@@ -63,7 +62,7 @@ export function DiffView({
           minimumLineCount: 8,
           revealLineCount: 10,
         },
-        theme: isDark() ? 'vs-dark' : 'vs',
+        theme: 'orca-git-tools',
         fontSize: 13,
         fontFamily: 'Menlo, Consolas, monospace',
         minimap: { enabled: false },
@@ -92,24 +91,14 @@ export function DiffView({
       instance.onDidUpdateDiff(() =>
         setCount(instance?.getLineChanges()?.length ?? 0),
       );
-      const observer = new MutationObserver(() =>
-        monaco.editor.setTheme(isDark() ? 'vs-dark' : 'vs'),
-      );
-      observer.observe(document.documentElement, {
-        attributes: true,
-        attributeFilter: ['class'],
-      });
-      const mq = matchMedia('(prefers-color-scheme: dark)');
-      const update = () => monaco.editor.setTheme(isDark() ? 'vs-dark' : 'vs');
-      mq.addEventListener('change', update);
       return () => {
-        observer.disconnect();
-        mq.removeEventListener('change', update);
+        stopTheme?.();
         editor.current = null;
         instance?.dispose();
         models.forEach((m) => m.dispose());
       };
     } catch (e) {
+      stopTheme?.();
       instance?.dispose();
       models.forEach((m) => m.dispose());
       setError(e instanceof Error ? e.message : 'Diff 렌더 실패');

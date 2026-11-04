@@ -6,7 +6,13 @@
   --muted: var(--orca-muted-foreground, #6d7482);
   --line: var(--orca-border, #dce0e8);
   --accent: var(--orca-accent, #e9efff);
-  --blue: #426cd5;
+  --primary: var(--orca-primary, #426cd5);
+  --primary-fg: var(--orca-primary-foreground, #fff);
+  --focus: var(--orca-ring, var(--primary));
+  --addition: #389577;
+  --danger: var(--orca-destructive, #c85858);
+  --accent-fg: var(--orca-accent-foreground, var(--fg));
+  --input-border: var(--orca-input, var(--line));
   --field: var(--orca-muted, #f0f2f6);
   font:
     12px/1.5 -apple-system,
@@ -16,6 +22,9 @@
   background: var(--bg);
   color: var(--fg);
 }
+:root.light {
+  color-scheme: light;
+}
 :root.dark {
   color-scheme: dark;
   --bg: var(--orca-background, #1d2028);
@@ -24,7 +33,9 @@
   --muted: var(--orca-muted-foreground, #99a3b5);
   --line: var(--orca-border, #363d4c);
   --accent: var(--orca-accent, #2e3c57);
-  --blue: #93b4ff;
+  --primary: var(--orca-primary, #93b4ff);
+  --primary-fg: var(--orca-primary-foreground, #1d2028);
+  --addition: #58b89b;
   --field: var(--orca-muted, #282e39);
 }
 @media (prefers-color-scheme: dark) {
@@ -35,7 +46,9 @@
     --muted: var(--orca-muted-foreground, #99a3b5);
     --line: var(--orca-border, #363d4c);
     --accent: var(--orca-accent, #2e3c57);
-    --blue: #93b4ff;
+    --primary: var(--orca-primary, #93b4ff);
+    --primary-fg: var(--orca-primary-foreground, #1d2028);
+    --addition: #58b89b;
     --field: var(--orca-muted, #282e39);
   }
 }
@@ -71,18 +84,18 @@ button:disabled {
 input,
 select {
   background: var(--field);
-  border: 1px solid var(--line);
+  border: 1px solid var(--input-border);
   border-radius: 5px;
   padding: 6px 8px;
   min-width: 0;
 }
 input[type='checkbox'] {
-  accent-color: var(--blue);
+  accent-color: var(--primary);
 }
 button:focus-visible,
 input:focus-visible,
 select:focus-visible {
-  outline: 2px solid var(--blue);
+  outline: 2px solid var(--focus);
   outline-offset: -2px;
 }
 h1,
@@ -133,7 +146,7 @@ main {
   gap: 10px;
 }
 .brand {
-  color: var(--blue);
+  color: var(--primary);
   font-size: 23px;
 }
 .subtle {
@@ -146,15 +159,15 @@ main {
   align-items: center;
   gap: 9px;
   padding: 6px 16px;
-  background: #735c201a;
+  background: var(--field);
   color: var(--fg);
-  border-bottom: 1px solid #bd9a4b66;
+  border-bottom: 1px solid var(--line);
   font-size: 11px;
   flex-shrink: 0;
 }
 .demo-banner b {
-  background: #ad7822;
-  color: white;
+  background: var(--primary);
+  color: var(--primary-fg);
   padding: 1px 5px;
   border-radius: 3px;
   letter-spacing: 0.7px;
@@ -198,7 +211,7 @@ main {
   white-space: nowrap;
 }
 .repo-heading span {
-  color: var(--blue);
+  color: var(--primary);
 }
 .history-controls {
   padding: 3px 12px 11px;
@@ -224,7 +237,7 @@ main {
 .working-row {
   margin: 0 12px 9px;
   text-align: left;
-  color: var(--blue);
+  color: var(--primary);
 }
 .working-row small {
   display: block;
@@ -232,6 +245,7 @@ main {
 }
 .selected {
   background: var(--accent) !important;
+  color: var(--accent-fg);
 }
 .section-heading {
   display: flex;
@@ -296,8 +310,8 @@ main {
 }
 .refs em {
   font-style: normal;
-  color: var(--blue);
-  border: 1px solid color-mix(in srgb, var(--blue) 35%, transparent);
+  color: var(--primary);
+  border: 1px solid color-mix(in srgb, var(--primary) 35%, transparent);
   padding: 0 4px;
   border-radius: 3px;
   font-size: 9px;
@@ -420,16 +434,16 @@ main {
   font:
     600 10px Menlo,
     monospace;
-  color: var(--blue);
+  color: var(--primary);
   flex-shrink: 0;
 }
 .status-A,
 .status-\? {
-  color: #389577;
+  color: var(--addition);
 }
 .status-D,
 .status-U {
-  color: #cf6c6c;
+  color: var(--danger);
 }
 .panel-mode .files {
   width: 100%;
@@ -445,7 +459,7 @@ main {
 }
 .primary {
   background: var(--accent);
-  color: var(--blue);
+  color: var(--primary);
   font-weight: 600;
 }
 .diff-content {
@@ -499,7 +513,7 @@ main {
 }
 .side-labels b {
   font-size: 10px;
-  color: var(--blue);
+  color: var(--primary);
   white-space: nowrap;
 }
 .side-labels span {
@@ -535,8 +549,8 @@ main {
 }
 .error {
   padding: 10px 14px;
-  background: #d65a5a1a;
-  border-bottom: 1px solid #d65a5a55;
+  background: color-mix(in srgb, var(--danger) 10%, var(--bg));
+  border-bottom: 1px solid color-mix(in srgb, var(--danger) 35%, var(--line));
   color: var(--fg);
   overflow-wrap: anywhere;
   flex-shrink: 0;

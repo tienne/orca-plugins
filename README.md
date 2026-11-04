@@ -55,7 +55,7 @@ Orca가 `approval_required`를 반환하면 표시된 접근 범위와 fingerpri
 
 ## 검증 상태와 제한
 
-2026-11-04 로컬 검증: Nx build/typecheck, Git fixture 테스트 11개, 패키징 검사 테스트 2개, packaged UI 테스트 7개, Orca manifest validation 통과. 라이트·다크·360px PNG를 직접 확인했습니다.
+2026-11-04 로컬 검증: Nx build/typecheck, Git fixture 테스트 11개, 패키징 검사 테스트 2개, packaged UI 테스트 8개, Orca manifest validation 통과. 라이트·다크·360px PNG를 직접 확인했습니다.
 
 - 실제 임시 Git 저장소 테스트: 최초 커밋 전, 최초 커밋, 200개 제한, 현재/전체 브랜치, merge 부모, 메시지 전문, 특수 파일명, rename, 삭제, staged+unstaged, 상쇄 변경, staged 삭제 후 재생성, 바이너리·비 UTF-8·큰 파일, symlink, 충돌, 경계·해시 검사, worker bridge를 검증합니다.
 - 패키징 UI는 Orca 일반 브라우저와 Playwright에서 렌더합니다. Monaco worker는 상대 경로의 로컬 JS로 제공하고 네트워크 CDN·blob worker에 의존하지 않습니다.
@@ -87,5 +87,5 @@ Orca가 `approval_required`를 반환하면 표시된 접근 범위와 fingerpri
 - 모노레포 `source.path`로 설치되는 **그 하위 폴더만** 자체 완결적이어야 합니다. 빌드는 worker의 외부 import가 Node 내장 모듈인지 확인하고, 산출물의 symlink·node_modules·실행 비트·네이티브 모듈·아카이브·미검토 형식을 거절합니다. 현재는 JS/HTML/CSS/JSON/문서/로컬 폰트 등 허용 목록만 패키징하며 WASM은 포함하지 않습니다. 폰트는 로컬 CLI validation을 통과했지만 공개 디렉터리 수락까지 확인한 것은 아닙니다. WASM 등 새 형식을 추가할 때는 그 시점의 validator와 공개 디렉터리 정책을 재검토해야 합니다. [Catalog](https://github.com/stablyai/orca/blob/main/docs/reference/plugin-catalog.md), [디렉터리의 제외 기준](https://www.onorca.dev/plugins/add)
 - 공개 릴리스는 정확한 Git commit과 `contentHash`로 고정하고 `release-entry`로 생성합니다. 현재 원격 저장소/릴리스가 없으므로 빈 카탈로그를 유지합니다. 임의 hash·릴리스·설치 링크를 만들지 않습니다. 로컬 `plugin validate` 통과는 공개 등록 승인과 다릅니다. [Catalog](https://github.com/stablyai/orca/blob/main/docs/reference/plugin-catalog.md)
 - Host API의 surface·capability·Since를 확인하고 `host.has`와 API major/minor로 사용 가능 여부를 검사합니다. 프레임의 worker 요청은 API 1.2, workspace 목록과 중앙 탭 열기는 API 1.3을 검사하며 없는 메서드에는 설명 가능한 오류를 표시합니다. `document.session`도 함수 존재를 검사합니다. installed CLI 1.4.248의 가이드/validation을 기준으로 `engines.orca >=1.4.248`을 유지하며, 문서 main의 신규 기능을 추가할 때는 그 Since까지 올립니다. `plugin check`는 worker 실행을 포함하므로 load/approve와 마찬가지로 명시적 실행 승인 이후에만 진행합니다. [개발 가이드](https://github.com/stablyai/orca/blob/main/docs/reference/plugin-authoring.md), [Host API](https://github.com/stablyai/orca/blob/main/docs/reference/plugin-host-api.md)
-- 프레임에서 공개된 `--orca-*` CSS 변수와 html light/dark 클래스를 사용합니다. app 전체 theme token을 프레임에서도 사용할 수 있다고 가정하지 않습니다. Monaco는 호스트 light/dark에 맞춰 표준 vs/vs-dark 팔레트를 선택하며 사용자 정의 앱 테마의 모든 token을 복제하지는 않습니다. [테마 토큰과 Frame CSS 변수](https://github.com/stablyai/orca/blob/main/docs/reference/plugin-theme-tokens.md)
+- 프레임에서 공개된 `--orca-*` CSS 변수와 html light/dark 클래스를 사용합니다. app 전체 theme token을 프레임에서도 사용할 수 있다고 가정하지 않습니다. Monaco의 배경·글자·줄 번호·선택·포커스·위젯·스크롤바·diff 강조도 공개된 Orca 토큰에서 생성합니다. 토큰 값·테마 스타일·light/dark 변경과 theme 이벤트를 감지해 모델/스크롤을 재생성하지 않고 갱신합니다. 프레임에 공개되지 않은 전용 diff/chart/syntax 토큰을 임의로 가정하지 않으며, 추가 표시 녹색은 의미색 fallback을 유지하고 삭제 색은 `--orca-destructive`를 사용합니다. 호스트 토큰이 없는 브라우저 fixture에서는 로컬 기본 팔레트를 사용합니다. [테마 토큰과 Frame CSS 변수](https://github.com/stablyai/orca/blob/main/docs/reference/plugin-theme-tokens.md)
 - 정책 위반은 등록 해제 사유이며 유해 플러그인은 kill list로 이미 설치된 사본도 비활성화될 수 있습니다. 공개 등록·배포·load/approve는 별도의 명시적 사용자 승인 범위를 지킵니다. [등록 정책](https://github.com/stablyai/orca/blob/main/docs/reference/plugin-listing-policy.md)

@@ -107,3 +107,53 @@ test('narrow layout keeps page within viewport and code comparison scrolls inter
     fullPage: true,
   });
 });
+
+test('Orca color tokens update UI and Monaco without remounting editors', async ({
+  page,
+}, info) => {
+  await page.goto('/');
+  await expect(page.getByText('2개 변경', { exact: true })).toBeVisible();
+  const original = await page
+    .locator('.monaco-editor[role=code]')
+    .first()
+    .elementHandle();
+  await page.evaluate(() => {
+    document.documentElement.classList.add('dark');
+    const tokens = {
+      '--orca-background': 'rgb(20 32 51)',
+      '--orca-foreground': '#e9eef8',
+      '--orca-card': '#1a2943',
+      '--orca-muted': '#22344f',
+      '--orca-muted-foreground': '#b2c0d6',
+      '--orca-primary': '#caa3ff',
+      '--orca-primary-foreground': '#171023',
+      '--orca-accent': '#394d72',
+      '--orca-accent-foreground': '#f4f0ff',
+      '--orca-border': '#506181',
+      '--orca-ring': '#e1b7ff',
+      '--orca-destructive': '#ff8092',
+    };
+    for (const [name, value] of Object.entries(tokens))
+      document.documentElement.style.setProperty(name, value);
+  });
+  await expect(page.locator('.app-header')).toHaveCSS(
+    'background-color',
+    'rgb(26, 41, 67)',
+  );
+  await expect(page.locator('.brand')).toHaveCSS('color', 'rgb(202, 163, 255)');
+  await expect(page.locator('.monaco-editor-background').first()).toHaveCSS(
+    'background-color',
+    'rgb(20, 32, 51)',
+  );
+  await page.screenshot({ path: info.outputPath('orca-tokens.png') });
+  // Update only the token stylesheet, leaving the theme class and models intact.
+  await page.evaluate(() =>
+    document.documentElement.style.setProperty('--orca-background', '#172b24'),
+  );
+  await expect(page.locator('.monaco-editor-background').first()).toHaveCSS(
+    'background-color',
+    'rgb(23, 43, 36)',
+  );
+  expect(await original!.evaluate((node) => node.isConnected)).toBe(true);
+  await expect(page.getByText('2개 변경', { exact: true })).toBeVisible();
+});
