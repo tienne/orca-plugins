@@ -166,7 +166,7 @@ Tienne 소유 저장소에서 설치할 때 공개 ID는 `tienne.git-logs`입니
 
 설치와 사용은 무료로 유지합니다. 유료 잠금, 라이선스 키, 체험판, telemetry, analytics, 추적, 외부 데이터 수집은 추가하지 않습니다. 공개 등록에는 소스를 공개하고 MIT와 의존 라이선스를 유지합니다. 동작을 숨기는 난독화는 넣지 않습니다. Orca, JetBrains 등 다른 제작사의 보증을 암시하지 마십시오. IntelliJ는 비교 UX의 참고 자료일 뿐 브랜드를 사용하지 않습니다. 정책을 위반하면 공개 목록에서 삭제될 수 있으며, Orca는 kill list로 유해한 릴리스의 실행을 차단할 수 있습니다.
 
-설명에는 `Git logs`, `Git tree`, `commit graph`, `side-by-side diff`를 포함합니다. 현재 manifest/catalog에는 별도 키워드나 검색 별칭 필드가 없습니다. 첫 카탈로그 항목을 만들 때 같은 설명을 넣으십시오. GitHub 토픽 후보는 `orca-plugin`, `git-logs`, `git-tree`, `commit-graph`, `git-history`, `git-diff`이며 아직 등록하지 않았습니다. 실제 검색 일치 방식과 노출 순위는 공개 후 확인해야 합니다.
+설명에는 `Git logs`, `Git tree`, `commit graph`, `side-by-side diff`를 포함합니다. 현재 manifest/catalog에는 별도 키워드나 검색 별칭 필드가 없습니다. 공개한 카탈로그는 같은 설명을 사용합니다. 등록한 GitHub 토픽에는 `orca-plugin`, `git-logs`, `git-tree`, `commit-graph`, `git-diff`가 있습니다. 공개 디렉터리 배포와 인덱싱 확인은 [배포 가이드](releases.ko.md#디렉터리용-번들-공개)를 참고하십시오. 토픽 등록이 검색 노출이나 순위를 보장하지는 않습니다.
 
 ## CI와 배포 자동화
 

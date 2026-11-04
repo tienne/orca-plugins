@@ -1,5 +1,8 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
+import { constants } from 'node:fs';
+import { execFile } from 'node:child_process';
+import { promisify } from 'node:util';
 import {
   mkdtemp,
   writeFile,
@@ -9,6 +12,7 @@ import {
   mkdir,
   readFile,
   realpath,
+  open,
 } from 'node:fs/promises';
 import { join } from 'node:path';
 import { tmpdir } from 'node:os';
@@ -173,6 +177,36 @@ test('binary, invalid UTF8, large, symlink and boundary validation', () =>
     await assert.rejects(diff(root, { kind: 'working' }, 'not-in-changes'));
     await assert.rejects(changes(root, { kind: 'commit', commit: '--all' }));
   }));
+test(
+  'tracked files replaced by FIFOs return special without waiting for a writer',
+  {
+    skip: process.platform === 'win32',
+  },
+  () =>
+    fixture(async (root, commit) => {
+      const path = join(root, 'pipe');
+      await writeFile(path, 'original\n');
+      await commit('base');
+      await rm(path);
+      await promisify(execFile)('mkfifo', [path]);
+      let waitedForWriter = false;
+      let rescue: ReturnType<typeof open> | undefined;
+      // Unblock the old implementation so a regression fails instead of hanging Node.
+      const timer = setTimeout(() => {
+        waitedForWriter = true;
+        rescue = open(path, constants.O_RDWR | constants.O_NONBLOCK);
+      }, 2000);
+      try {
+        const result = await diff(root, { kind: 'working' }, 'pipe');
+        assert.equal(waitedForWriter, false, 'Diff waited for a FIFO writer');
+        assert.equal(result.original.text, 'original\n');
+        assert.equal(result.modified.kind, 'special');
+      } finally {
+        clearTimeout(timer);
+        if (rescue) await (await rescue).close();
+      }
+    }),
+);
 test('conflicts are explicitly unsupported rather than a fake two-way resolution', () =>
   fixture(async (root, commit) => {
     await writeFile(join(root, 'a'), 'base');

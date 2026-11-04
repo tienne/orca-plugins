@@ -402,7 +402,7 @@ async function disk(root: string, path: string): Promise<FileSide> {
     for (const part of relative(root, full).split(sep)) {
       current = resolve(current, part);
       const s = await lstat(current);
-      if (s.isSymbolicLink())
+      if (s.isSymbolicLink() || (current === full && !s.isFile()))
         return { kind: 'special', text: '', bytes: s.size };
     }
     const actual = await realpath(full);
@@ -411,7 +411,7 @@ async function disk(root: string, path: string): Promise<FileSide> {
       throw new Error('저장소 경계를 벗어난 파일입니다.');
     const handle = await open(
       actual,
-      constants.O_RDONLY | constants.O_NOFOLLOW,
+      constants.O_RDONLY | constants.O_NOFOLLOW | constants.O_NONBLOCK,
     );
     try {
       const stat = await handle.stat();

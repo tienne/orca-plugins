@@ -166,7 +166,7 @@ The new local identity requires its own Orca approval. Once it is ready, unload 
 
 Keep installation and use free. Do not add paywalls, license keys, trials, telemetry, analytics, tracking, or external data collection. Keep the source available for public listing, preserve MIT and dependency notices, and do not add obfuscation intended to hide behavior. Do not imply endorsement by Orca, JetBrains, or another vendor. IntelliJ informed the comparison UX; its branding is not part of the plugin. Policy violations can lead to delisting; Orca can disable harmful releases through its kill list.
 
-The description includes `Git logs`, `Git tree`, `commit graph`, and `side-by-side diff`. Current manifest/catalog schemas have no separate keyword or search-alias field. Copy the release description into the first catalog entry. Candidate GitHub topics are `orca-plugin`, `git-logs`, `git-tree`, `commit-graph`, `git-history`, and `git-diff`; none have been registered yet. Search matching and ranking must be checked after publication.
+The description includes `Git logs`, `Git tree`, `commit graph`, and `side-by-side diff`. Current manifest/catalog schemas have no separate keyword or search-alias field. The published catalog uses the same description. Registered GitHub topics include `orca-plugin`, `git-logs`, `git-tree`, `commit-graph`, and `git-diff`. See the [release guide](releases.md#publish-a-directory-export) for public-directory publication and indexing checks. Topic registration does not confirm search availability or ranking.
 
 ## CI and release automation
 
