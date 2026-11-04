@@ -1163,7 +1163,10 @@ test('local ignore setup warnings are translated without hiding the connected gr
             if (name === 'changes')
               return { ...set, setupWarning: warning } as T;
             if (name === 'diff') return diff as T;
-            if (name === 'open') throw new Error(warning);
+            if (name === 'open') {
+              document.documentElement.dataset.diffOpened = 'true';
+              return { opened: true, setupWarning: warning } as T;
+            }
             throw new Error(name);
           },
         },
@@ -1185,6 +1188,10 @@ test('local ignore setup warnings are translated without hiding the connected gr
     'Could not hide Git Logs files from Git.',
   );
   await page.locator('.file-row').first().dblclick();
+  await expect(page.locator('html')).toHaveAttribute(
+    'data-diff-opened',
+    'true',
+  );
   await expect(page.getByRole('alert')).toContainText(
     'Check repository permissions and ignore rules.',
   );

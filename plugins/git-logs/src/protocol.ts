@@ -142,7 +142,7 @@ export interface Requests {
   };
   open: {
     input: { descriptor: Descriptor; workspaceId: string };
-    output: { opened: true };
+    output: { opened: true; setupWarning?: string };
   };
 }
 export interface HostVersion {

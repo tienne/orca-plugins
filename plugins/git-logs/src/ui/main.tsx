@@ -388,7 +388,7 @@ function App() {
     setBusy(true);
     setError('');
     try {
-      await request('open', {
+      const result = await request('open', {
         descriptor: {
           version: 1,
           repo: repo.root,
@@ -397,6 +397,7 @@ function App() {
         },
         workspaceId: workspace,
       });
+      if (result.setupWarning) setError(result.setupWarning);
     } catch (e) {
       setError(message(e));
     } finally {

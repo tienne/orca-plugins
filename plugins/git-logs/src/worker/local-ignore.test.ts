@@ -4,6 +4,7 @@ import {
   mkdtemp,
   mkdir,
   readFile,
+  readdir,
   writeFile,
   rm,
   realpath,
@@ -290,7 +291,7 @@ test('created and changed events verify local workspace identity; panel and diff
       },
     });
     assert.ok((await readFile(exclude(root), 'utf8')).includes(rule));
-    // Setup trouble must not hide the graph, but must prevent another generated file.
+    // Ignore setup is best effort; documents still open with a warning.
     await writeFile(
       join(root, '.gitignore'),
       '!/.orca/git-logs/\n!/.orca/git-logs/**\n',
@@ -300,19 +301,34 @@ test('created and changed events verify local workspace identity; panel and diff
       comparison: { kind: 'working' },
     })) as ChangeSet;
     assert.match(warning.setupWarning!, /로컬 제외 규칙/);
-    await assert.rejects(
-      async () =>
-        handlers.get('open')!({
-          workspaceId: 'local',
-          descriptor: {
-            version: 1,
-            repo: root,
-            comparison: { kind: 'working' },
-            path: 'new.txt',
-          },
-        }),
-      /로컬 제외 규칙/,
-    );
+    const openWithWarning = async () => {
+      const result = (await handlers.get('open')!({
+        workspaceId: 'local',
+        descriptor: {
+          version: 1,
+          repo: root,
+          comparison: { kind: 'working' },
+          path: 'new.txt',
+        },
+      })) as { opened: true; setupWarning?: string };
+      assert.equal(result.opened, true);
+      assert.match(result.setupWarning!, /로컬 제외 규칙/);
+    };
+    await openWithWarning();
+    // Missing exclude metadata also must not prevent document creation.
+    await rm(exclude(root));
+    await openWithWarning();
+    await assert.rejects(() => stat(exclude(root)), { code: 'ENOENT' });
+    const documents = await readdir(join(root, '.orca/git-logs'));
+    assert.equal(documents.length, 3);
+    for (const name of documents) {
+      assert.ok(name.endsWith('.orcadiff'));
+      const document = JSON.parse(
+        await readFile(join(root, '.orca/git-logs', name), 'utf8'),
+      );
+      assert.equal(document.repo, root);
+      assert.equal(document.path, 'new.txt');
+    }
   }));
 
 test('partial hidden-file patterns do not count as excluding descriptor files', () =>

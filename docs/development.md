@@ -59,7 +59,7 @@ Subscribe to `workspace.changed` and prevent late results from a previous reques
 
 Custom editors receive document content, not a filesystem path. To open a diff, the worker writes `.orca/git-logs/<uuid>.orcadiff` containing the repository, comparison, and selected file. It then opens the matching workspace and passes a workspace-relative path to `editor.open`.
 
-The worker verifies each parent directory, rejects symlinks and paths outside the repository, and creates documents with `wx` and mode `0600`. Before creating a document it confirms local Git exclusion. It does not modify source files, the index, or shared `.gitignore` files. Documents remain until removed by the user or the worktree directory is deleted.
+The worker verifies each parent directory, rejects symlinks and paths outside the repository, and creates documents with `wx` and mode `0600`. Before creating a document it checks local Git exclusion; a failed check produces a warning without preventing document creation. It does not modify source files, the index, or shared `.gitignore` files. Documents remain until removed by the user or the worktree directory is deleted.
 
 A descriptor does not grant access to a repository by itself. The sidebar must connect that repository before the document can read it. An open editor keeps the document's repository and comparison across workspace changes.
 
@@ -73,7 +73,7 @@ Also check on sidebar connection, comparison loading, and before opening a Diff 
 
 Only an existing, small regular exclude file with one link is writable. Refuse symlinked metadata, hard links, unsafe paths, or missing metadata. Open without creation, compare device/inode before and after opening, and use append mode; a parent replacement must not create an outside file. Bound reads, warn when Git still reports actual untracked documents, and check the exact generated filename before writing it. Do not infer effective exclusion from a representative file or trailing-slash probe.
 
-Setup failure leaves read-only browsing available with a localized warning and blocks creation of new descriptors. Shared ignore negations are not overridden. The rule is local to the repository and shared by its linked worktrees; it is not removed when one workspace closes. Tracked documents and old `git-tools` paths are not changed. No worktree-specific configuration extension or global excludes setting is enabled.
+Setup failure does not block descriptor creation or opening Diff. The open response carries an optional `setupWarning`, which the panel displays after a successful open. Documents may remain untracked and prevent actions that require a clean worktree. Repository authorization and path checks still block unsafe access. Shared ignore negations are not overridden. The rule is local to the repository and shared by its linked worktrees; it is not removed when one workspace closes. Tracked documents and old `git-tools` paths are not changed. No worktree-specific configuration extension or global excludes setting is enabled.
 
 ## Git reads and comparisons
 

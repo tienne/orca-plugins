@@ -296,22 +296,25 @@ export default function activate(orca: WorkerApi): void {
           '비교 문서 폴더는 저장소 내부의 실제 디렉터리여야 합니다.',
         );
     }
-    const warning = await setup(root);
-    if (warning) throw new Error(warning);
+    let warning = await setup(root);
     const path = `.orca/git-logs/${randomUUID()}.orcadiff`;
     try {
       await git(root, ['check-ignore', '--no-index', '--quiet', '--', path]);
     } catch {
-      throw new Error(setupWarning);
+      warning = setupWarning;
     }
     await writeFile(join(root, path), JSON.stringify(safe, null, 2), {
       mode: 0o600,
       flag: 'wx',
     });
     await orca.host.call('workspace.open', { workspaceId });
-    return (await orca.host.call('editor.open', { workspaceId, path })) as {
+    const result = (await orca.host.call('editor.open', {
+      workspaceId,
+      path,
+    })) as {
       opened: true;
     };
+    return { ...result, ...(warning ? { setupWarning: warning } : {}) };
   });
   orca.log('Git Logs worker ready (mutations require a prepared confirmation)');
 }
