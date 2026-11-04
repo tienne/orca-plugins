@@ -1,113 +1,102 @@
 # Git Logs
 
-Git logs, Git tree visualization, commit graph, and read-only side-by-side diffs for Orca.
+English · [한국어](README.ko.md)
 
-**Orca에서 커밋 이력을 살펴보고, 변경 내용을 좌우로 비교하는 Git 플러그인입니다.**
+Explore Git logs with a Git tree visualization and commit graph, then compare files in a read-only side-by-side diff. Commit actions are available from the graph's context menu.
 
-사이드바의 커밋 그래프에서 이력을 탐색하고, 변경 파일을 더블클릭해 중앙 탭에서 Diff를 확인합니다. 커밋 우클릭 메뉴에서는 체크아웃, 브랜치 생성, 병합, 리베이스, 체리픽, 리버트, 리셋을 실행할 수 있습니다.
+Version 0.1.0 is a local development build. There is no public installation URL yet. Orca 1.4.248 or later and local Git are required.
 
-현재 버전은 **0.1.0 · 로컬 개발 버전**입니다. 공개 설치 링크는 아직 없습니다.
+## Use Git Logs
 
-## 주요 기능
+1. Open a local Git workspace in Orca, then open the Git Logs sidebar.
+2. Git Logs connects to the current workspace. If it cannot identify one workspace, select it from the list.
+3. Select a commit to read its full message and changed files.
+4. Double-click a file to open the central Diff tab, or focus the file and press **Enter**. A single click selects the file.
 
-- **커밋 그래프** — 최근 최대 200개 커밋의 부모 관계와 HEAD, 로컬·원격 브랜치를 표시합니다. 메시지, 작성자, 날짜, 해시를 함께 확인할 수 있습니다.
-- **이력 검색** — 현재 브랜치, 전체 브랜치, 특정 브랜치의 이력을 탐색하고 커밋 메시지·작성자·해시를 검색합니다. 브랜치 검색은 로컬·원격 브랜치를 구분합니다.
-- **좌우 Diff** — Monaco 기반 읽기 전용 뷰어로 줄·단어 단위 변경을 강조합니다. 동기 스크롤, 이전·다음 변경 이동, 변경 없는 영역 접기, 줄 앞뒤 공백 무시를 지원합니다.
-- **커밋 작업** — 선택한 커밋을 대상으로 Git 작업을 실행합니다. 실행 전에 현재 브랜치와 대상, 작업의 영향을 확인합니다.
-- **Orca 테마·언어 연동** — Orca의 컬러 토큰을 사용하며 한국어와 영어를 지원합니다.
-- **크기 조절** — 하단의 짧은 핸들을 드래그해 커밋 정보와 변경 파일 영역의 높이를 조절합니다.
+The graph shows up to 200 recent commits with parent relationships, HEAD, branch labels, author, date, and hash. Use the branch picker to show the current branch, all branches, or a specific local or remote branch. Choosing a branch changes the history filter; it does not check out that branch.
 
-## 시작하기
+Search commits by message, author, or hash. Search applies to the loaded history. Graph lines are hidden during commit search to avoid drawing false connections across omitted commits. Branch search uses a separate ref list, shows up to 100 results, and excludes symbolic remote HEAD aliases. Add more text to narrow a long list.
 
-Orca **1.4.248 이상**과 로컬 Git이 필요합니다. 현재는 소스를 빌드한 뒤 개발 플러그인으로 연결해서 사용할 수 있습니다. 빌드 명령은 아래 개발 항목에 있습니다.
+**Refresh** reloads Git data. Switching Orca workspaces changes the connection and resets the branch filter. A refresh keeps the selected branch unless that ref has been deleted.
 
-1. Orca에서 로컬 Git 작업 공간을 엽니다.
-2. Git Logs 사이드바를 엽니다. 현재 작업 공간에 자동 연결되며, 연결할 대상을 구분할 수 없으면 목록에서 선택합니다.
-3. 커밋을 선택해 메시지 전문과 변경 파일을 확인합니다.
-4. 파일을 **더블클릭**하면 중앙 Diff 탭이 열립니다. 키보드에서는 파일에 포커스를 두고 **Enter**를 누릅니다.
+## Compare files
 
-브랜치 필터에서 다른 브랜치를 선택해도 체크아웃되지는 않습니다. 저장소 상태를 다시 읽으려면 **새로고침**을 누릅니다.
+| Selection    | Left                                 | Right                       |
+| ------------ | ------------------------------------ | --------------------------- |
+| Working tree | File at HEAD                         | File saved on disk          |
+| Commit       | File in the selected commit's parent | File in the selected commit |
+| First commit | Empty tree                           | File in the first commit    |
 
-## 무엇을 비교하나요?
+Merge commits use the first parent by default. Select another direct parent to change the comparison.
 
-| 선택      | 왼쪽                           | 오른쪽                    |
-| --------- | ------------------------------ | ------------------------- |
-| 작업 트리 | HEAD의 파일                    | 디스크에 저장된 현재 파일 |
-| 커밋      | 선택한 커밋의 부모에 있는 파일 | 선택한 커밋의 파일        |
-| 최초 커밋 | 빈 트리                        | 최초 커밋의 파일          |
+Working tree status labels describe where changes exist:
 
-Merge 커밋은 기본적으로 첫 번째 부모와 비교하며 다른 부모를 선택할 수 있습니다.
+- `staged`: HEAD differs from the Git index.
+- `unstaged`: the index differs from the file on disk.
+- `untracked`: the file is not in the index. Ignored files are excluded.
 
-파일 목록의 상태는 다음을 뜻합니다.
+These labels are not separate diff modes. **The working tree diff compares HEAD with the final saved contents on disk.** Changes that cancel out to the HEAD contents are omitted. Unsaved editor buffers are not included.
 
-- `staged`: HEAD와 Git index 사이에 변경이 있습니다.
-- `unstaged`: index와 디스크의 파일 사이에 변경이 있습니다.
-- `untracked`: index에 등록되지 않은 파일입니다. Git에서 무시한 파일은 제외합니다.
+The viewer aligns both sides and highlights changed lines and words. It supports synchronized scrolling, previous/next change, collapsed unchanged regions, and ignoring leading/trailing whitespace. Narrow views keep both panes and scroll code horizontally. Added, deleted, renamed, empty, and missing files are distinguished. Unsupported text comparisons show a file status instead of a misleading diff.
 
-이 표시는 파일 상태이며 별도의 staged/unstaged 비교 모드는 아닙니다. **작업 트리 Diff는 HEAD와 디스크의 최종 내용을 비교**합니다. 편집기에서 아직 저장하지 않은 내용은 포함하지 않습니다.
+## Run a commit action
 
-추가·삭제·이름 변경과 빈 파일을 구분합니다. 바이너리 등 텍스트로 비교할 수 없는 파일은 해당 상태를 표시합니다.
+Right-click a commit, or focus it and press **Shift+F10**.
 
-## 커밋에서 Git 작업 실행하기
+| Action      | Result                                                               |
+| ----------- | -------------------------------------------------------------------- |
+| Checkout    | Switch to a local branch at the selected commit, or detach HEAD      |
+| New branch  | Create a local branch at the selected commit without switching to it |
+| Merge       | Merge the selected commit into the current branch                    |
+| Rebase      | Replay the current branch's commits onto the selected commit         |
+| Cherry-pick | Apply the selected commit to the current branch                      |
+| Revert      | Create a commit that reverses the selected commit                    |
+| Reset       | Move HEAD to the selected commit with soft, mixed, or hard mode      |
 
-커밋을 **우클릭**하거나 키보드로 포커스를 두고 **Shift+F10**을 누릅니다.
+Choose the options, check the repository state, review the branch and target, then confirm execution. Actions require a clean index and working tree with no untracked files. Unsupported states and operations already in progress are rejected.
 
-| 작업        | 동작                                                      |
-| ----------- | --------------------------------------------------------- |
-| 체크아웃    | 선택 커밋의 로컬 브랜치로 전환하거나 Detached HEAD로 이동 |
-| 브랜치 생성 | 선택 커밋에서 새 로컬 브랜치 생성. 자동 전환하지 않음     |
-| 병합        | 선택 커밋을 현재 브랜치에 병합                            |
-| 리베이스    | 현재 브랜치의 커밋을 선택 커밋 위에 다시 적용             |
-| 체리픽      | 선택 커밋의 변경을 현재 브랜치에 적용                     |
-| 리버트      | 선택 커밋의 변경을 취소하는 새 커밋 생성                  |
-| 리셋        | 현재 HEAD를 선택 커밋으로 이동. soft / mixed / hard 선택  |
+- Hard reset requires typing the target's short hash.
+- Reset and rebase save the previous HEAD under `refs/git-logs/backups/<timestamp>-<uuid>`. These refs preserve commits, **not uncommitted files**. They are not deleted automatically.
+- Cherry-pick and revert of a merge commit require a mainline parent.
+- Rebase does not preserve merge commits, update other branch refs, or support interactive rebase or squash.
+- A branch checked out in another worktree is not taken over by force.
+- Conflicts and failures show Git output and conflicting paths. Resolve, continue, or abort the operation in a terminal. There is no automatic rollback or retry.
 
-작업은 **옵션 선택 → 상태 검사 → 대상과 영향 확인 → 실행** 순서로 진행합니다. 변경 명령은 index와 작업 트리가 깨끗하고 untracked 파일이 없을 때만 실행됩니다. 진행 중인 Git 작업이나 지원하지 않는 작업 상태가 있으면 실행을 거절합니다.
+Git hooks and commit signing are disabled for these UI actions. Automatic stash, rerere application, and recursive submodule updates are also disabled. Repository filters and merge drivers may still run. Avoid running other Git commands on the same repository while an action is executing. An action times out after 120 seconds; inspect the repository state if it is interrupted.
 
-- Hard reset은 대상 해시를 직접 입력해야 합니다.
-- Reset과 rebase 전에는 기존 HEAD를 백업 ref에 보관합니다. **미커밋 파일을 백업하는 기능은 아닙니다.**
-- Merge 커밋의 체리픽·리버트는 기준 부모를 선택해야 합니다.
-- Rebase는 일반 rebase이며 merge 커밋 보존, interactive rebase, squash는 지원하지 않습니다.
-- 충돌이 발생하면 출력과 충돌 파일을 표시합니다. 해결·계속·중단은 터미널에서 진행해야 합니다.
-- 이 UI에서 실행하는 Git 작업은 hooks와 커밋 서명을 비활성화합니다. Git filters와 merge driver는 실행될 수 있습니다.
+There is no staging, ordinary commit composer, fetch, push, force push, or automatic stash UI.
 
-Staging, 일반 커밋 작성, fetch, push, 자동 stash는 제공하지 않습니다.
+## Themes and language
 
-## 화면과 언어
+The plugin uses Orca's public theme colors for panels, menus, dialogs, and the diff. English and Korean follow Orca's language setting; other languages fall back to English. Commit messages, authors, branch names, paths, and raw Git output are not translated. Some built-in Monaco text remains in English. Reopen the panel or tab if an Orca language change has not reached it.
 
-Orca의 라이트·다크 테마와 공개된 컬러 토큰에 맞춰 패널, 메뉴, 확인창, Diff의 색상을 조정합니다. 한국어와 영어는 Orca 언어 설정을 따르며, 지원하지 않는 언어는 영어로 표시합니다. 커밋 메시지, 작성자, 브랜치 이름, 파일 경로와 원본 Git 출력은 번역하지 않습니다. Monaco의 일부 내장 문구는 영어입니다.
+Drag the short handle to resize the commit details and file list. Arrow keys adjust the height, Shift changes it in larger steps, and Home/End move to the limits. Double-click a handle to restore the default heights. The panes scroll internally. Heights are saved in frame-local storage when available; otherwise they last only within the current frame.
 
-하단 영역은 내용이 늘어나도 높이를 유지하고 내부에서 스크롤합니다. 가운데 핸들은 드래그 또는 방향키로 조절하며, 더블클릭하면 기본 높이로 돌아갑니다. 높이는 프레임의 로컬 저장소에 보관하고, 저장소 접근이 제한된 환경에서는 현재 프레임 안에서만 유지합니다.
+## Access and generated files
 
-## 이름 변경 안내
+Git Logs is a `trusted-worker` plugin. **Its Node process runs with your user account's access to the machine**, including Git and file access. It requires approval before execution. `workspace:read` finds the current workspace, and `workspace:write` opens the workspace and Diff tab.
 
-플러그인 ID와 개발 명령은 `git-tools`에서 `git-logs`로 변경됐습니다. 로컬 설치 ID는 `local.git-logs`이며 향후 tienne 소유 저장소의 설치 ID는 `tienne.git-logs`입니다. 기존 `.orca/git-tools/`의 `.orcadiff` 문서는 계속 열 수 있고 새 문서는 `.orca/git-logs/`에 생성됩니다. 이전 `refs/git-tools/backups/`의 백업 ref는 그대로 남으며 새 백업은 `refs/git-logs/backups/`에 생성됩니다.
+Opening a Diff tab writes a JSON comparison document to `.orca/git-logs/*.orcadiff` inside the repository. It records the repository, comparison, and selected file. The plugin does not delete these documents or edit ignore rules. If `.orca/` is not ignored, the documents appear as untracked files and block commit actions. Remove unused documents or choose an ignore rule yourself.
 
-Orca는 새 ID를 별도 플러그인으로 인식하므로 개발 폴더를 다시 연결하고 실행 권한을 승인해야 합니다. 새 플러그인이 준비되면 이전 `local.git-tools` 개발 폴더 연결을 해제해 패널과 편집기가 중복 등록되지 않도록 합니다.
+An external `.orcadiff` does not automatically authorize its repository. Connect that repository in the Git Logs sidebar before refreshing the document. An open Diff tab keeps the repository and comparison recorded in its document when the active workspace changes.
 
-## 접근 권한과 로컬 파일
+The UI, Monaco, fonts, and editor worker are bundled locally. There is no telemetry, analytics, or external translation service.
 
-Git Logs는 `trusted-worker` 플러그인으로 **사용자 계정 권한의 Node 프로세스에서 Git과 파일에 접근**합니다. 설치·실행 시 이 접근에 대한 승인이 필요합니다. Orca 권한은 작업 공간을 확인하는 `workspace:read`와 Diff 탭을 여는 `workspace:write`를 사용합니다.
+## Limits
 
-Diff 탭을 열 때 저장소 안에 `.orca/git-logs/*.orcadiff` 비교 문서를 만듭니다. 이 JSON 문서에는 저장소·비교 기준·선택 파일이 기록됩니다. 자동으로 삭제하거나 Git ignore 설정을 바꾸지 않습니다. `.orca/`가 무시되지 않으면 문서가 untracked 파일로 표시되므로, 필요에 따라 직접 정리하거나 ignore 규칙을 설정하세요.
+- Only local Git workspaces managed by Orca are supported. There is no SSH or arbitrary path connection.
+- Remote branches use refs already stored locally. The plugin does not fetch remote data or download Git LFS content.
+- UTF-8 text comparison is limited to **768 KiB per file** and **2,000 changed files**.
+- Binary, non-UTF-8, large files, symlinks, submodules, and unresolved conflicts are shown as separate states.
+- Shallow repositories show the history available locally. Partial clones are rejected to avoid implicit object downloads.
+- Git reads are not an atomic snapshot. Refresh after external changes; a changed HEAD can require a reload.
+- Commit actions reject assume-unchanged, skip-worktree, sparse checkout, and ongoing merge, rebase, cherry-pick, revert, or bisect states. Ignored files that obstruct target paths are also rejected.
 
-UI, Monaco, 폰트, editor worker는 로컬 번들에 포함됩니다. 플러그인에 telemetry, analytics, 외부 번역 요청은 없습니다.
+The earlier development identity was tested on macOS with Orca 1.4.248 for repository connection and the central Diff. Git actions were tested in temporary repositories. The renamed `local.git-logs` identity still awaits execution approval. Other operating systems and Orca versions have not been verified.
 
-## 지원 범위
+## Local installation
 
-- Orca가 관리하는 **로컬 Git 작업 공간**을 대상으로 합니다. SSH 작업 공간과 임의 경로 연결은 지원하지 않습니다.
-- 원격 브랜치는 로컬에 저장된 ref를 읽습니다. 원격 서버에서 최신 이력을 가져오지 않습니다.
-- 텍스트 비교는 UTF-8 파일당 **768 KiB**까지이며 변경 파일은 **2,000개**까지입니다.
-- 바이너리·비 UTF-8·큰 파일·symlink·submodule·미해결 충돌은 별도 상태로 표시합니다.
-- 커밋 검색은 불러온 최근 200개 이력에 적용됩니다. 검색 중에는 생략된 커밋을 잘못 연결하지 않도록 그래프 선을 숨깁니다.
-- Shallow 저장소는 로컬 이력만 표시하며 partial clone과 Git LFS 다운로드는 지원하지 않습니다.
-- Git 조회는 시점이 고정된 스냅샷이 아닙니다. 다른 앱에서 저장소가 변경되면 새로고침이 필요할 수 있습니다.
-
-macOS의 Orca 1.4.248에서 실제 저장소 연결과 중앙 Diff를 확인했습니다. Git 변경 명령은 임시 저장소에서 검증했으며 다른 OS와 Orca 버전은 아직 검증하지 않았습니다.
-
-## 개발
-
-Node.js 22.12 이상 또는 24 이상, pnpm 10, Git, Orca CLI를 준비하고 모노레포 루트에서 실행합니다.
+From the monorepo root, use Node.js 22.12+ or 24+, pnpm 10, Git, and Orca CLI:
 
 ```sh
 pnpm install
@@ -118,25 +107,33 @@ pnpm nx run git-logs:ui-test
 pnpm validate
 ```
 
-빌드 결과는 `dist/plugins/git-logs`이며, 설치에 필요한 파일과 의존 라이선스를 포함합니다. 별도 node_modules 없이 사용할 수 있습니다. 플러그인 접근 범위를 검토한 뒤 Orca의 승인 절차에 따라 개발 폴더를 연결합니다.
+The installable build is `dist/plugins/git-logs`. Review its access before loading it:
 
 ```sh
 orca plugin inspect ./dist/plugins/git-logs --json
 orca plugin dev load ./dist/plugins/git-logs --json
 ```
 
-브라우저에서 화면을 확인하려면 먼저 빌드한 뒤 실행합니다.
+If Orca returns `approval_required`, review the requested access and approve through Orca's flow. Once approved, a development folder's later code edits run under that approval; additional access requires another review.
+
+For a browser-only demo:
 
 ```sh
 pnpm nx run git-logs:preview
-# 소스 변경을 바로 확인하려면
+# Source editing with hot reload
 pnpm dev
 ```
 
-일반 브라우저에서는 **DEMO · 실제 Git 데이터 아님** 표시와 샘플 데이터가 나타납니다. 실제 Git 명령을 실행하지 않으며 라이트·다크, 좁은 화면, 로딩·오류·빈 상태를 확인할 수 있습니다.
+The demo is labeled **DEMO** and uses fixtures. It does not execute Git. Open `http://127.0.0.1:4173/?lang=en&sample=en` for English sample data.
 
-UI 테스트는 설치된 Google Chrome을 사용합니다. Chromium을 사용하려면 `pnpm exec playwright install chromium` 후 `PW_CHANNEL=chromium pnpm nx run git-logs:ui-test`를 실행합니다.
+Browser tests use Google Chrome. To use Chromium, run `pnpm exec playwright install chromium`, then run tests with `PW_CHANNEL=chromium`.
 
-## 라이선스
+## Renamed from git-tools
 
-[MIT](LICENSE). React, Monaco 등 함께 배포하는 의존성의 라이선스는 빌드 결과의 `licenses/`에 포함됩니다.
+The plugin ID, package paths, and Nx commands now use `git-logs`. The local install identity is `local.git-logs`; an installation from a repository owned by tienne will use `tienne.git-logs`.
+
+Existing `.orca/git-tools/*.orcadiff` documents remain readable. Existing `refs/git-tools/backups/` refs are left in place. New documents and backups use `git-logs`; there is no automatic migration. Orca treats the new identity as a separate plugin and requires approval. After the new plugin is ready, remove the old `local.git-tools` development connection to avoid duplicate panels and editors.
+
+## License
+
+MIT. The installable build includes `LICENSE` and dependency notices in `licenses/`.

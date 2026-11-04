@@ -24,7 +24,9 @@ await copyFile(
   resolve(source, 'orca-plugin.json'),
   resolve(output, 'orca-plugin.json'),
 );
-await copyFile(resolve(source, 'README.md'), resolve(output, 'README.md'));
+for (const file of ['README.md', 'README.ko.md']) {
+  await copyFile(resolve(source, file), resolve(output, file));
+}
 await copyFile(resolve('LICENSE'), resolve(output, 'LICENSE'));
 await writeFile(
   resolve(output, 'package.json'),

@@ -1,108 +1,95 @@
 # Tienne Orca Plugins
 
-Orca에서 사용하는 플러그인을 개발하고 관리하는 모노레포입니다. 각 플러그인은 독립적으로 빌드·설치할 수 있으며, 현재 **Git Logs**를 개발하고 있습니다.
+English · [한국어](README.ko.md)
 
-pnpm · Nx · TypeScript · React · Vite · esbuild
+Orca plugins built with pnpm, Nx, TypeScript, React, Vite, and esbuild. Each directory under `plugins/` is a separate plugin with its own installable build.
 
-## 플러그인
+## Plugins
 
-| 플러그인                               | 기능                                                       | 상태                   |
-| -------------------------------------- | ---------------------------------------------------------- | ---------------------- |
-| [Git Logs](plugins/git-logs/README.md) | 커밋 그래프, 브랜치·커밋 검색, 좌우 Diff, 커밋 우클릭 작업 | 0.1.0 · 로컬 개발 버전 |
+| Plugin                                 | Features                                                                   | Status                    |
+| -------------------------------------- | -------------------------------------------------------------------------- | ------------------------- |
+| [Git Logs](plugins/git-logs/README.md) | Commit graph, branch and commit search, side-by-side diffs, commit actions | 0.1.0 — local development |
 
-현재 공개 릴리스와 설치 주소는 없습니다. 첫 릴리스 전까지 루트 `orca-catalog.json`은 빈 상태로 유지합니다.
+There is no public release or installation URL yet. The root catalog remains empty until the first release.
 
 ## Git Logs
 
-Git logs, Git tree visualization, commit graph, and read-only side-by-side diffs for Orca.
+Explore Git logs through a Git tree visualization and commit graph. Open a changed file in a central tab to compare its contents side by side.
 
-현재 Orca 작업 공간의 Git 이력을 사이드바에서 탐색하고, 변경 파일을 더블클릭해 중앙 탭에서 좌우로 비교합니다.
+- View up to 200 recent commits, parent relationships, HEAD, and local and remote branch labels.
+- Filter by branch and search commit messages, authors, or hashes.
+- Compare changes with line and word highlights, synchronized scrolling, change navigation, and collapsed unchanged regions.
+- Checkout, create a branch, merge, rebase, cherry-pick, revert, or reset from a commit's context menu.
+- Use Orca theme colors and English or Korean UI text.
 
-- 최근 최대 200개 커밋의 부모 관계와 HEAD, 로컬·원격 브랜치 표시
-- 브랜치 필터와 메시지·작성자·해시 검색
-- 줄·단어 단위 변경 강조, 동기 스크롤, 변경 이동, 변경 없는 영역 접기
-- 체크아웃·브랜치 생성·병합·리베이스·체리픽·리버트·리셋
-- Orca 테마 토큰과 한국어·영어 지원
+Diffs are read-only. Git actions require a separate confirmation. Git Logs connects to local Git workspaces managed by Orca; SSH workspaces are not supported. See the [Git Logs guide](plugins/git-logs/README.md) for comparison rules, permissions, and action limits.
 
-Git 변경 작업은 대상과 영향을 확인한 뒤 실행합니다. Diff는 읽기 전용이며 SSH 작업 공간은 지원하지 않습니다. 비교 기준, 권한, 작업별 동작과 제한은 [Git Logs 사용 안내](plugins/git-logs/README.md)에 정리했습니다.
+![Git Logs English demo with a commit graph and side-by-side diff in dark mode](docs/screenshots/git-logs-dark.png)
 
-![Git Logs English demo: commit graph and side-by-side diff in dark mode](docs/screenshots/git-logs-dark.png)
+This is a browser demo with sample data, not a real repository or an Orca host screenshot.
 
-위 이미지는 영문 샘플 데이터를 사용하는 브라우저 DEMO입니다. 실제 저장소 정보나 Orca 호스트 화면이 아닙니다.
+[Light theme](docs/screenshots/git-logs-light.png) · [Commit menu](docs/screenshots/git-logs-commit-menu.png) · [Screenshot instructions](docs/screenshots/README.md)
 
-[라이트 테마](docs/screenshots/git-logs-light.png) · [커밋 우클릭 메뉴](docs/screenshots/git-logs-commit-menu.png) · [스크린샷 안내](docs/screenshots/README.md)
+## Develop locally
 
-## 로컬에서 시작하기
+Use Node.js 22.12+ or 24+, pnpm 10, and Git. Orca integration and manifest validation also require the Orca desktop app and CLI. Git Logs requires Orca 1.4.248 or later.
 
-Node.js 22.12 이상 또는 24 이상, pnpm 10, Git을 준비합니다. Orca 연결·플러그인 검증에는 Orca 데스크톱 앱과 CLI가 필요하며 Git Logs의 최소 Orca 버전은 **1.4.248**입니다.
-
-저장소 루트에서 의존성을 설치하고 빌드합니다.
+Run these commands from the repository root:
 
 ```sh
 pnpm install
 pnpm nx run git-logs:build
-```
-
-빌드 결과는 `dist/plugins/git-logs`입니다. UI, Monaco, 폰트, editor worker와 의존 라이선스를 포함하며 설치에 별도 node_modules가 필요하지 않습니다.
-
-브라우저에서 샘플 화면을 확인합니다.
-
-```sh
 pnpm nx run git-logs:preview
-# 소스 수정과 HMR
-pnpm dev
 ```
 
-미리보기 주소는 `http://127.0.0.1:4173`입니다. 영문 샘플은 `http://127.0.0.1:4173/?lang=en&sample=en`에서 볼 수 있습니다. 일반 브라우저에서는 fixture만 사용하며 실제 Git 명령을 실행하지 않습니다.
+The build is written to `dist/plugins/git-logs`. It includes the UI, Monaco, fonts, editor worker, both language guides, and dependency licenses. It does not need a separate `node_modules` directory after installation.
 
-Orca에서 사용하려면 빌드 폴더의 접근 범위를 검토한 뒤 개발 플러그인으로 연결합니다. Git Logs는 사용자 계정 권한으로 Node 코드를 실행하는 `trusted-worker`이며 `workspace:read`와 `workspace:write` 권한을 사용합니다. 연결·승인 절차는 [플러그인 사용 안내](plugins/git-logs/README.md#개발)를 참고하세요.
+Open `http://127.0.0.1:4173` for the browser demo, or `http://127.0.0.1:4173/?lang=en&sample=en` for English sample data. The demo does not run Git commands. Use `pnpm dev` for source editing with hot reload.
 
-## 검증
+To use the build in Orca, review its access and follow the [local installation steps](plugins/git-logs/README.md#local-installation). Git Logs runs a Node process with your user account's access and requests `workspace:read` and `workspace:write`.
 
-빌드와 검증은 Nx target으로 실행합니다.
+## Check a build
 
 ```sh
 pnpm nx run-many -t build typecheck test ui-test -p git-logs
 pnpm validate
 ```
 
-- `test`: 임시 Git 저장소의 조회·변경 로직, 다국어 문구, 패키징 검사
-- `ui-test`: 빌드된 UI의 그래프·Diff·언어·테마·키보드·레이아웃 검증
-- `validate-plugin`: 빌드 산출물의 Orca manifest 검증. `pnpm validate`로 전체 플러그인에 실행
-- `screenshots`: 영문 DEMO의 라이트·다크·커밋 메뉴 PNG 생성
+| Target            | Checks                                                                                     |
+| ----------------- | ------------------------------------------------------------------------------------------ |
+| `test`            | Git operations in temporary repositories, translations, and artifact rules                 |
+| `ui-test`         | Packaged graph, diff, themes, languages, keyboard controls, and layout                     |
+| `validate-plugin` | Orca manifest validation of the packaged plugin; `pnpm validate` runs this for all plugins |
+| `screenshots`     | English demo captures in light and dark themes, including the commit menu                  |
+
+Browser checks use an installed Google Chrome. To use Chromium, run `pnpm exec playwright install chromium`, then set `PW_CHANNEL=chromium`. Test output is written to `test-results/`.
+
+Generate the README images with:
 
 ```sh
 pnpm nx run git-logs:screenshots
 ```
 
-브라우저 테스트와 캡처는 설치된 Google Chrome을 사용합니다. Chromium을 사용하려면 `pnpm exec playwright install chromium` 후 `PW_CHANNEL=chromium`을 설정하세요. 테스트 결과는 `test-results/`, 소개용 이미지는 `docs/screenshots/`에 생성됩니다.
-
-## 저장소 구조
+## Repository layout
 
 ```text
-plugins/
-  git-logs/               # Git Logs 소스, manifest, 플러그인 README
-    src/ui/               # 커밋 그래프, Monaco Diff, 브라우저 fixture
-    src/worker/           # Git·파일 접근, 작업 확인과 실행
-    showcase/             # 영문 스크린샷 캡처
-scripts/                  # 독립 설치용 빌드, 테스트, 산출물 검사
-docs/
-  development.md          # API 연결, 검증 기록, 배포·등록 정책
-  screenshots/            # 영문 DEMO 이미지와 재생성 안내
-dist/plugins/git-logs/    # 빌드 결과 · Git에서 제외
-orca-catalog.json         # 플러그인 카탈로그 · 첫 릴리스 전에는 비어 있음
+plugins/git-logs/         # Plugin source, manifest, and user guides
+  src/ui/                # Graph, Monaco diff, and browser fixtures
+  src/worker/            # Git and file access, action preparation and execution
+  showcase/              # English screenshot captures
+scripts/                 # Build, test, and artifact checks
+docs/development.md      # Host integration, validation, and release details
+docs/screenshots/        # Demo images and capture instructions
+dist/plugins/git-logs/   # Generated build; not tracked by Git
+orca-catalog.json        # Empty until the first public release
 ```
 
-`plugins/*`는 각각 독립적인 Orca 플러그인입니다. Node·파일·Git 작업은 worker에서 처리하고 UI에는 로컬 번들 에셋만 사용합니다. 플러그인 manifest는 패키징된 경로를 가리키므로 검증 대상은 소스 폴더가 아닌 `dist/plugins/*`입니다.
+Git and file operations belong in workers. Plugin frames use bundled local assets. Source manifests point to packaged entries, so validate `dist/plugins/*`, not the source directories.
 
-## 배포 현황과 문서
+## Release status
 
-아직 공개 배포하지 않았습니다. 릴리스 시 빌드 결과물을 Git 저장소에 포함하고, 카탈로그에서 플러그인 하위 경로와 정확한 커밋·contentHash를 지정해야 합니다. 사용자는 배포된 카탈로그를 Orca에 추가해 설치하게 됩니다.
+No repository has been published or release pushed. A release must include the built plugin files in Git and pin the installable directory to an exact commit and `contentHash` in a catalog. See the [development guide](docs/development.md) for release requirements and the current validation record.
 
-- [Git Logs 기능·사용법·권한](plugins/git-logs/README.md)
-- [개발·검증 기록과 배포 정책](docs/development.md)
-- [영문 스크린샷과 재생성 방법](docs/screenshots/README.md)
+## License
 
-## 라이선스
-
-[MIT](LICENSE). 함께 배포하는 의존성의 라이선스는 각 플러그인 빌드 결과의 `licenses/`에 포함됩니다.
+[MIT](LICENSE). Dependency licenses are included in each plugin build's `licenses/` directory.

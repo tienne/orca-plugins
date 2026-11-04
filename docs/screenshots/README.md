@@ -1,27 +1,34 @@
 # Git Logs screenshots
 
-영어 UI와 가상 저장소 데이터로 캡처한 **브라우저 DEMO**입니다. 실제 저장소 정보나 Orca 호스트 화면이 아닙니다. 이미지 상단의 DEMO 표시를 유지합니다.
+English · [한국어](README.ko.md)
 
-| 파일                                                 | 내용                                                    |
-| ---------------------------------------------------- | ------------------------------------------------------- |
-| [git-logs-dark.png](git-logs-dark.png)               | 다크 테마: 커밋 그래프, 커밋 상세, 변경 파일, 좌우 Diff |
-| [git-logs-light.png](git-logs-light.png)             | 같은 화면의 라이트 테마                                 |
-| [git-logs-commit-menu.png](git-logs-commit-menu.png) | 다크 테마의 커밋 우클릭 메뉴                            |
+These images show the browser demo with English sample data. They do not contain real repository data and are not screenshots of the Orca host. Keep the DEMO label when using them.
 
-모두 PNG, 1600 × 1000입니다. 코드와 작성자·메시지는 fixture 데이터이며 실제 Git 명령은 실행하지 않습니다. 샘플 선택은 브라우저 DEMO에만 적용되며 실제 Orca 데이터의 번역·변경에는 관여하지 않습니다.
+| Image                                                | Contents                                                                        |
+| ---------------------------------------------------- | ------------------------------------------------------------------------------- |
+| [git-logs-dark.png](git-logs-dark.png)               | Commit graph, commit details, changed files, and side-by-side diff in dark mode |
+| [git-logs-light.png](git-logs-light.png)             | The same view in light mode                                                     |
+| [git-logs-commit-menu.png](git-logs-commit-menu.png) | Commit context menu in dark mode                                                |
 
-모노레포 루트에서 다시 생성합니다.
+All images are PNG files at 1600 × 1000 pixels. Authors, messages, paths, and code come from fixtures. Capturing them does not run Git commands or require Orca plugin execution approval.
+
+## Capture the images
+
+From the repository root, install dependencies and run:
 
 ```sh
+pnpm install
 pnpm nx run git-logs:screenshots
 ```
 
-설치된 Google Chrome을 사용합니다. Chromium 사용 시 먼저 `pnpm exec playwright install chromium`을 실행하고 `PW_CHANNEL=chromium`을 설정하세요.
+The target builds the plugin and writes these three images to `docs/screenshots/`. It uses an installed Google Chrome. To use Chromium, run `pnpm exec playwright install chromium`, then set `PW_CHANNEL=chromium`.
 
-직접 미리 보려면:
+## Open the demo
 
 ```sh
 pnpm nx run git-logs:preview
 ```
 
-`http://127.0.0.1:4173/?lang=en&sample=en`을 열고 상단에서 테마를 선택합니다.
+Open `http://127.0.0.1:4173/?lang=en&sample=en` and select a theme. `lang=en` chooses English UI text. `sample=en` chooses English fixture data only in the browser demo; it does not translate real Git data in Orca.
+
+See the [repository README](../../README.md) and [development guide](../development.md) for setup and validation details.
