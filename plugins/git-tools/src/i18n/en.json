@@ -217,5 +217,6 @@
   "검색 결과가 많습니다. 이름을 더 입력하세요.": "Too many matches. Type more of the branch name.",
   "선택한 브랜치가 없어 현재 브랜치를 표시합니다.": "The selected branch no longer exists. Showing the current branch.",
   "선택한 브랜치를 찾을 수 없습니다. 새로고침하세요.": "Could not find the selected branch. Refresh the list.",
-  "커밋 목록만 바뀝니다.": "Filters the commit list."
+  "커밋 목록만 바뀝니다.": "Filters the commit list.",
+  "커밋을 선택하면 상세 정보를 볼 수 있습니다.": "Select a commit to view its details."
 }

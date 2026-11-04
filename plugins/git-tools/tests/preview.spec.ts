@@ -15,6 +15,9 @@ test('packaged Monaco renders aligned read-only panes, local worker, navigation 
   await page.goto('/');
   await expect(page.getByText('DEMO', { exact: true })).toBeVisible();
   await expect(page.getByText('2개 변경', { exact: true })).toBeVisible();
+  await expect(page.locator('.details')).toHaveText(
+    '커밋을 선택하면 상세 정보를 볼 수 있습니다.',
+  );
   await expect(page.locator('.monaco-editor[role=code]')).toHaveCount(2);
   await expect
     .poll(() =>
@@ -629,7 +632,7 @@ test('preview language switches all plugin surfaces without replacing Monaco mod
   await expect(page.getByText('2 changes', { exact: true })).toBeVisible();
   await expect(page.getByLabel('Fold unchanged regions')).toBeChecked();
   await expect(
-    page.getByText('Comparing HEAD with saved files.', { exact: false }),
+    page.getByText('Select a commit to view its details.', { exact: true }),
   ).toBeVisible();
   await expect(
     page.getByText('Working tree · saved files', { exact: true }),

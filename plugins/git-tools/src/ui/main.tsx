@@ -755,16 +755,7 @@ function App() {
                       )}
                     </>
                   ) : (
-                    <p>
-                      {t('HEAD → 현재 디스크 최종 내용.')} <br />
-                      {t(
-                        'staged: HEAD↔index · unstaged: index↔디스크 · untracked: index에 없는 파일.',
-                      )}{' '}
-                      <br />
-                      {t(
-                        '서로 상쇄되어 HEAD와 같은 변경은 목록에서 제외됩니다.',
-                      )}{' '}
-                    </p>
+                    <p>{t('커밋을 선택하면 상세 정보를 볼 수 있습니다.')}</p>
                   )}
                 </section>
               </>
