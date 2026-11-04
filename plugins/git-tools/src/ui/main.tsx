@@ -530,7 +530,6 @@ function App() {
       )}
       <header className="app-header">
         <div>
-          <span className="brand">⑂</span>
           <h1>{editorMode ? 'Git Diff' : 'Git Logs'}</h1>
           <span className="subtle">
             {editorMode ? t('읽기 전용 비교') : t('로컬 Git')}

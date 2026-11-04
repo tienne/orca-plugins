@@ -193,7 +193,6 @@ test('Orca color tokens update UI and Monaco without remounting editors', async 
     'background-color',
     'rgb(26, 41, 67)',
   );
-  await expect(page.locator('.brand')).toHaveCSS('color', 'rgb(202, 163, 255)');
   await expect(page.locator('.app-header')).toHaveCSS(
     'color',
     'rgb(221, 232, 251)',
