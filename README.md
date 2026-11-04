@@ -1,152 +1,108 @@
-# Git Logs
+# Tienne Orca Plugins
+
+Orca에서 사용하는 플러그인을 개발하고 관리하는 모노레포입니다. 각 플러그인은 독립적으로 빌드·설치할 수 있으며, 현재 **Git Logs**를 개발하고 있습니다.
+
+pnpm · Nx · TypeScript · React · Vite · esbuild
+
+## 플러그인
+
+| 플러그인                               | 기능                                                       | 상태                   |
+| -------------------------------------- | ---------------------------------------------------------- | ---------------------- |
+| [Git Logs](plugins/git-logs/README.md) | 커밋 그래프, 브랜치·커밋 검색, 좌우 Diff, 커밋 우클릭 작업 | 0.1.0 · 로컬 개발 버전 |
+
+현재 공개 릴리스와 설치 주소는 없습니다. 첫 릴리스 전까지 루트 `orca-catalog.json`은 빈 상태로 유지합니다.
+
+## Git Logs
 
 Git logs, Git tree visualization, commit graph, and read-only side-by-side diffs for Orca.
 
-**Orca에서 커밋 이력을 살펴보고, 변경 내용을 좌우로 비교하는 Git 플러그인입니다.**
+현재 Orca 작업 공간의 Git 이력을 사이드바에서 탐색하고, 변경 파일을 더블클릭해 중앙 탭에서 좌우로 비교합니다.
 
-사이드바의 커밋 그래프에서 이력을 탐색하고, 변경 파일을 더블클릭해 중앙 탭에서 Diff를 확인합니다. 커밋 우클릭 메뉴에서는 체크아웃, 브랜치 생성, 병합, 리베이스, 체리픽, 리버트, 리셋을 실행할 수 있습니다.
+- 최근 최대 200개 커밋의 부모 관계와 HEAD, 로컬·원격 브랜치 표시
+- 브랜치 필터와 메시지·작성자·해시 검색
+- 줄·단어 단위 변경 강조, 동기 스크롤, 변경 이동, 변경 없는 영역 접기
+- 체크아웃·브랜치 생성·병합·리베이스·체리픽·리버트·리셋
+- Orca 테마 토큰과 한국어·영어 지원
 
-현재 버전은 **0.1.0 · 로컬 개발 버전**입니다. 공개 설치 링크는 아직 없습니다.
+Git 변경 작업은 대상과 영향을 확인한 뒤 실행합니다. Diff는 읽기 전용이며 SSH 작업 공간은 지원하지 않습니다. 비교 기준, 권한, 작업별 동작과 제한은 [Git Logs 사용 안내](plugins/git-logs/README.md)에 정리했습니다.
 
-![Git Logs: English demo showing the commit graph and side-by-side diff in dark mode](docs/screenshots/git-logs-dark.png)
+![Git Logs English demo: commit graph and side-by-side diff in dark mode](docs/screenshots/git-logs-dark.png)
 
-영문 샘플 데이터로 구성한 브라우저 DEMO입니다. [라이트 테마](docs/screenshots/git-logs-light.png) · [커밋 우클릭 메뉴](docs/screenshots/git-logs-commit-menu.png) · [스크린샷 다시 만들기](docs/screenshots/README.md)
+위 이미지는 영문 샘플 데이터를 사용하는 브라우저 DEMO입니다. 실제 저장소 정보나 Orca 호스트 화면이 아닙니다.
 
-## 주요 기능
+[라이트 테마](docs/screenshots/git-logs-light.png) · [커밋 우클릭 메뉴](docs/screenshots/git-logs-commit-menu.png) · [스크린샷 안내](docs/screenshots/README.md)
 
-- **커밋 그래프** — 최근 최대 200개 커밋의 부모 관계와 HEAD, 로컬·원격 브랜치를 표시합니다. 메시지, 작성자, 날짜, 해시를 함께 확인할 수 있습니다.
-- **이력 검색** — 현재 브랜치, 전체 브랜치, 특정 브랜치의 이력을 탐색하고 커밋 메시지·작성자·해시를 검색합니다. 브랜치 검색은 로컬·원격 브랜치를 구분합니다.
-- **좌우 Diff** — Monaco 기반 읽기 전용 뷰어로 줄·단어 단위 변경을 강조합니다. 동기 스크롤, 이전·다음 변경 이동, 변경 없는 영역 접기, 줄 앞뒤 공백 무시를 지원합니다.
-- **커밋 작업** — 선택한 커밋을 대상으로 Git 작업을 실행합니다. 실행 전에 현재 브랜치와 대상, 작업의 영향을 확인합니다.
-- **Orca 테마·언어 연동** — Orca의 컬러 토큰을 사용하며 한국어와 영어를 지원합니다.
-- **크기 조절** — 하단의 짧은 핸들을 드래그해 커밋 정보와 변경 파일 영역의 높이를 조절합니다.
+## 로컬에서 시작하기
 
-## 시작하기
+Node.js 22.12 이상 또는 24 이상, pnpm 10, Git을 준비합니다. Orca 연결·플러그인 검증에는 Orca 데스크톱 앱과 CLI가 필요하며 Git Logs의 최소 Orca 버전은 **1.4.248**입니다.
 
-Orca **1.4.248 이상**과 로컬 Git이 필요합니다. 현재는 소스를 빌드한 뒤 개발 플러그인으로 연결해서 사용할 수 있습니다. 빌드 명령은 아래 개발 항목에 있습니다.
-
-1. Orca에서 로컬 Git 작업 공간을 엽니다.
-2. Git Logs 사이드바를 엽니다. 현재 작업 공간에 자동 연결되며, 연결할 대상을 구분할 수 없으면 목록에서 선택합니다.
-3. 커밋을 선택해 메시지 전문과 변경 파일을 확인합니다.
-4. 파일을 **더블클릭**하면 중앙 Diff 탭이 열립니다. 키보드에서는 파일에 포커스를 두고 **Enter**를 누릅니다.
-
-브랜치 필터에서 다른 브랜치를 선택해도 체크아웃되지는 않습니다. 저장소 상태를 다시 읽으려면 **새로고침**을 누릅니다.
-
-## 무엇을 비교하나요?
-
-| 선택      | 왼쪽                           | 오른쪽                    |
-| --------- | ------------------------------ | ------------------------- |
-| 작업 트리 | HEAD의 파일                    | 디스크에 저장된 현재 파일 |
-| 커밋      | 선택한 커밋의 부모에 있는 파일 | 선택한 커밋의 파일        |
-| 최초 커밋 | 빈 트리                        | 최초 커밋의 파일          |
-
-Merge 커밋은 기본적으로 첫 번째 부모와 비교하며 다른 부모를 선택할 수 있습니다.
-
-파일 목록의 상태는 다음을 뜻합니다.
-
-- `staged`: HEAD와 Git index 사이에 변경이 있습니다.
-- `unstaged`: index와 디스크의 파일 사이에 변경이 있습니다.
-- `untracked`: index에 등록되지 않은 파일입니다. Git에서 무시한 파일은 제외합니다.
-
-이 표시는 파일 상태이며 별도의 staged/unstaged 비교 모드는 아닙니다. **작업 트리 Diff는 HEAD와 디스크의 최종 내용을 비교**합니다. 편집기에서 아직 저장하지 않은 내용은 포함하지 않습니다.
-
-추가·삭제·이름 변경과 빈 파일을 구분합니다. 바이너리 등 텍스트로 비교할 수 없는 파일은 해당 상태를 표시합니다.
-
-## 커밋에서 Git 작업 실행하기
-
-커밋을 **우클릭**하거나 키보드로 포커스를 두고 **Shift+F10**을 누릅니다.
-
-| 작업        | 동작                                                      |
-| ----------- | --------------------------------------------------------- |
-| 체크아웃    | 선택 커밋의 로컬 브랜치로 전환하거나 Detached HEAD로 이동 |
-| 브랜치 생성 | 선택 커밋에서 새 로컬 브랜치 생성. 자동 전환하지 않음     |
-| 병합        | 선택 커밋을 현재 브랜치에 병합                            |
-| 리베이스    | 현재 브랜치의 커밋을 선택 커밋 위에 다시 적용             |
-| 체리픽      | 선택 커밋의 변경을 현재 브랜치에 적용                     |
-| 리버트      | 선택 커밋의 변경을 취소하는 새 커밋 생성                  |
-| 리셋        | 현재 HEAD를 선택 커밋으로 이동. soft / mixed / hard 선택  |
-
-작업은 **옵션 선택 → 상태 검사 → 대상과 영향 확인 → 실행** 순서로 진행합니다. 변경 명령은 index와 작업 트리가 깨끗하고 untracked 파일이 없을 때만 실행됩니다. 진행 중인 Git 작업이나 지원하지 않는 작업 상태가 있으면 실행을 거절합니다.
-
-- Hard reset은 대상 해시를 직접 입력해야 합니다.
-- Reset과 rebase 전에는 기존 HEAD를 백업 ref에 보관합니다. **미커밋 파일을 백업하는 기능은 아닙니다.**
-- Merge 커밋의 체리픽·리버트는 기준 부모를 선택해야 합니다.
-- Rebase는 일반 rebase이며 merge 커밋 보존, interactive rebase, squash는 지원하지 않습니다.
-- 충돌이 발생하면 출력과 충돌 파일을 표시합니다. 해결·계속·중단은 터미널에서 진행해야 합니다.
-- 이 UI에서 실행하는 Git 작업은 hooks와 커밋 서명을 비활성화합니다. Git filters와 merge driver는 실행될 수 있습니다.
-
-Staging, 일반 커밋 작성, fetch, push, 자동 stash는 제공하지 않습니다.
-
-## 화면과 언어
-
-Orca의 라이트·다크 테마와 공개된 컬러 토큰에 맞춰 패널, 메뉴, 확인창, Diff의 색상을 조정합니다. 한국어와 영어는 Orca 언어 설정을 따르며, 지원하지 않는 언어는 영어로 표시합니다. 커밋 메시지, 작성자, 브랜치 이름, 파일 경로와 원본 Git 출력은 번역하지 않습니다. Monaco의 일부 내장 문구는 영어입니다.
-
-하단 영역은 내용이 늘어나도 높이를 유지하고 내부에서 스크롤합니다. 가운데 핸들은 드래그 또는 방향키로 조절하며, 더블클릭하면 기본 높이로 돌아갑니다. 높이는 프레임의 로컬 저장소에 보관하고, 저장소 접근이 제한된 환경에서는 현재 프레임 안에서만 유지합니다.
-
-## 이름 변경 안내
-
-플러그인 ID와 개발 명령은 `git-tools`에서 `git-logs`로 변경됐습니다. 로컬 설치 ID는 `local.git-logs`이며 향후 tienne 소유 저장소의 설치 ID는 `tienne.git-logs`입니다. 기존 `.orca/git-tools/`의 `.orcadiff` 문서는 계속 열 수 있고 새 문서는 `.orca/git-logs/`에 생성됩니다. 이전 `refs/git-tools/backups/`의 백업 ref는 그대로 남으며 새 백업은 `refs/git-logs/backups/`에 생성됩니다.
-
-Orca는 새 ID를 별도 플러그인으로 인식하므로 개발 폴더를 다시 연결하고 실행 권한을 승인해야 합니다. 새 플러그인이 준비되면 이전 `local.git-tools` 개발 폴더 연결을 해제해 패널과 편집기가 중복 등록되지 않도록 합니다.
-
-## 접근 권한과 로컬 파일
-
-Git Logs는 `trusted-worker` 플러그인으로 **사용자 계정 권한의 Node 프로세스에서 Git과 파일에 접근**합니다. 설치·실행 시 이 접근에 대한 승인이 필요합니다. Orca 권한은 작업 공간을 확인하는 `workspace:read`와 Diff 탭을 여는 `workspace:write`를 사용합니다.
-
-Diff 탭을 열 때 저장소 안에 `.orca/git-logs/*.orcadiff` 비교 문서를 만듭니다. 이 JSON 문서에는 저장소·비교 기준·선택 파일이 기록됩니다. 자동으로 삭제하거나 Git ignore 설정을 바꾸지 않습니다. `.orca/`가 무시되지 않으면 문서가 untracked 파일로 표시되므로, 필요에 따라 직접 정리하거나 ignore 규칙을 설정하세요.
-
-UI, Monaco, 폰트, editor worker는 로컬 번들에 포함됩니다. 플러그인에 telemetry, analytics, 외부 번역 요청은 없습니다.
-
-## 지원 범위
-
-- Orca가 관리하는 **로컬 Git 작업 공간**을 대상으로 합니다. SSH 작업 공간과 임의 경로 연결은 지원하지 않습니다.
-- 원격 브랜치는 로컬에 저장된 ref를 읽습니다. 원격 서버에서 최신 이력을 가져오지 않습니다.
-- 텍스트 비교는 UTF-8 파일당 **768 KiB**까지이며 변경 파일은 **2,000개**까지입니다.
-- 바이너리·비 UTF-8·큰 파일·symlink·submodule·미해결 충돌은 별도 상태로 표시합니다.
-- 커밋 검색은 불러온 최근 200개 이력에 적용됩니다. 검색 중에는 생략된 커밋을 잘못 연결하지 않도록 그래프 선을 숨깁니다.
-- Shallow 저장소는 로컬 이력만 표시하며 partial clone과 Git LFS 다운로드는 지원하지 않습니다.
-- Git 조회는 시점이 고정된 스냅샷이 아닙니다. 다른 앱에서 저장소가 변경되면 새로고침이 필요할 수 있습니다.
-
-macOS의 Orca 1.4.248에서 실제 저장소 연결과 중앙 Diff를 확인했습니다. Git 변경 명령은 임시 저장소에서 검증했으며 다른 OS와 Orca 버전은 아직 검증하지 않았습니다.
-
-## 개발
-
-Node.js 22.12 이상 또는 24 이상, pnpm 10, Git, Orca CLI를 준비하고 모노레포 루트에서 실행합니다.
+저장소 루트에서 의존성을 설치하고 빌드합니다.
 
 ```sh
 pnpm install
 pnpm nx run git-logs:build
-pnpm nx run git-logs:typecheck
-pnpm nx run git-logs:test
-pnpm nx run git-logs:ui-test
-pnpm validate
 ```
 
-빌드 결과는 `dist/plugins/git-logs`이며, 설치에 필요한 파일과 의존 라이선스를 포함합니다. 별도 node_modules 없이 사용할 수 있습니다. 플러그인 접근 범위를 검토한 뒤 Orca의 승인 절차에 따라 개발 폴더를 연결합니다.
+빌드 결과는 `dist/plugins/git-logs`입니다. UI, Monaco, 폰트, editor worker와 의존 라이선스를 포함하며 설치에 별도 node_modules가 필요하지 않습니다.
 
-```sh
-orca plugin inspect ./dist/plugins/git-logs --json
-orca plugin dev load ./dist/plugins/git-logs --json
-```
-
-브라우저에서 화면을 확인하려면 먼저 빌드한 뒤 실행합니다.
+브라우저에서 샘플 화면을 확인합니다.
 
 ```sh
 pnpm nx run git-logs:preview
-# 소스 변경을 바로 확인하려면
+# 소스 수정과 HMR
 pnpm dev
 ```
 
-일반 브라우저에서는 **DEMO · 실제 Git 데이터 아님** 표시와 샘플 데이터가 나타납니다. 실제 Git 명령을 실행하지 않으며 라이트·다크, 좁은 화면, 로딩·오류·빈 상태를 확인할 수 있습니다.
+미리보기 주소는 `http://127.0.0.1:4173`입니다. 영문 샘플은 `http://127.0.0.1:4173/?lang=en&sample=en`에서 볼 수 있습니다. 일반 브라우저에서는 fixture만 사용하며 실제 Git 명령을 실행하지 않습니다.
 
-UI 테스트는 설치된 Google Chrome을 사용합니다. Chromium을 사용하려면 `pnpm exec playwright install chromium` 후 `PW_CHANNEL=chromium pnpm nx run git-logs:ui-test`를 실행합니다.
+Orca에서 사용하려면 빌드 폴더의 접근 범위를 검토한 뒤 개발 플러그인으로 연결합니다. Git Logs는 사용자 계정 권한으로 Node 코드를 실행하는 `trusted-worker`이며 `workspace:read`와 `workspace:write` 권한을 사용합니다. 연결·승인 절차는 [플러그인 사용 안내](plugins/git-logs/README.md#개발)를 참고하세요.
 
-## 저장소 안내
+## 검증
 
-이 저장소는 pnpm + Nx 기반 Orca 플러그인 모노레포입니다. Git Logs 소스는 [plugins/git-logs](plugins/git-logs)에 있으며 플러그인 ID는 `git-logs`입니다. 현재 공개 릴리스가 없어 루트 카탈로그는 비어 있습니다.
+빌드와 검증은 Nx target으로 실행합니다.
 
-API 연결 방식, 테스트 범위, 배포 구조와 공식 정책은 [개발 및 검증 참고](docs/development.md)에 정리했습니다.
+```sh
+pnpm nx run-many -t build typecheck test ui-test -p git-logs
+pnpm validate
+```
+
+- `test`: 임시 Git 저장소의 조회·변경 로직, 다국어 문구, 패키징 검사
+- `ui-test`: 빌드된 UI의 그래프·Diff·언어·테마·키보드·레이아웃 검증
+- `validate-plugin`: 빌드 산출물의 Orca manifest 검증. `pnpm validate`로 전체 플러그인에 실행
+- `screenshots`: 영문 DEMO의 라이트·다크·커밋 메뉴 PNG 생성
+
+```sh
+pnpm nx run git-logs:screenshots
+```
+
+브라우저 테스트와 캡처는 설치된 Google Chrome을 사용합니다. Chromium을 사용하려면 `pnpm exec playwright install chromium` 후 `PW_CHANNEL=chromium`을 설정하세요. 테스트 결과는 `test-results/`, 소개용 이미지는 `docs/screenshots/`에 생성됩니다.
+
+## 저장소 구조
+
+```text
+plugins/
+  git-logs/               # Git Logs 소스, manifest, 플러그인 README
+    src/ui/               # 커밋 그래프, Monaco Diff, 브라우저 fixture
+    src/worker/           # Git·파일 접근, 작업 확인과 실행
+    showcase/             # 영문 스크린샷 캡처
+scripts/                  # 독립 설치용 빌드, 테스트, 산출물 검사
+docs/
+  development.md          # API 연결, 검증 기록, 배포·등록 정책
+  screenshots/            # 영문 DEMO 이미지와 재생성 안내
+dist/plugins/git-logs/    # 빌드 결과 · Git에서 제외
+orca-catalog.json         # 플러그인 카탈로그 · 첫 릴리스 전에는 비어 있음
+```
+
+`plugins/*`는 각각 독립적인 Orca 플러그인입니다. Node·파일·Git 작업은 worker에서 처리하고 UI에는 로컬 번들 에셋만 사용합니다. 플러그인 manifest는 패키징된 경로를 가리키므로 검증 대상은 소스 폴더가 아닌 `dist/plugins/*`입니다.
+
+## 배포 현황과 문서
+
+아직 공개 배포하지 않았습니다. 릴리스 시 빌드 결과물을 Git 저장소에 포함하고, 카탈로그에서 플러그인 하위 경로와 정확한 커밋·contentHash를 지정해야 합니다. 사용자는 배포된 카탈로그를 Orca에 추가해 설치하게 됩니다.
+
+- [Git Logs 기능·사용법·권한](plugins/git-logs/README.md)
+- [개발·검증 기록과 배포 정책](docs/development.md)
+- [영문 스크린샷과 재생성 방법](docs/screenshots/README.md)
 
 ## 라이선스
 
-[MIT](LICENSE). React, Monaco 등 함께 배포하는 의존성의 라이선스는 빌드 결과의 `licenses/`에 포함됩니다.
+[MIT](LICENSE). 함께 배포하는 의존성의 라이선스는 각 플러그인 빌드 결과의 `licenses/`에 포함됩니다.
