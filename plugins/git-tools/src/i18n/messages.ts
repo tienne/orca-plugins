@@ -1,5 +1,10 @@
 import english from './en.json';
-const messages: Record<string, string> = english;
+import korean from './ko.json';
+const catalogs: Record<'ko' | 'en', Record<string, string>> = {
+  ko: korean,
+  en: english,
+};
+const keys = [...new Set([...Object.keys(english), ...Object.keys(korean)])];
 export function resolveLocale(value: unknown): {
   locale: string;
   language: 'ko' | 'en';
@@ -14,7 +19,7 @@ export function resolveLocale(value: unknown): {
   }
   return { locale: 'en-US', language: 'en' };
 }
-const templates = Object.keys(messages)
+const templates = keys
   .filter((key) => /\{p\d+\}/.test(key))
   .map((key) => {
     const names: string[] = [];
@@ -30,7 +35,7 @@ const templates = Object.keys(messages)
       .join('');
     return { key, names, pattern: new RegExp(`^${pattern}$`) };
   });
-const compoundPrefixes = Object.keys(messages)
+const compoundPrefixes = keys
   .filter((key) => key.length > 30 && !key.includes('{'))
   .sort((a, b) => b.length - a.length);
 function interpolate(value: string, params: Record<string, string | number>) {
@@ -45,8 +50,7 @@ export function translate(
   locale: string,
   params: Record<string, string | number> = {},
 ): string {
-  if (resolveLocale(locale).language === 'ko')
-    return interpolate(source, params);
+  const messages = catalogs[resolveLocale(locale).language];
   if (Object.hasOwn(messages, source))
     return interpolate(messages[source], params);
   const trimmed = source.trim();
@@ -59,12 +63,12 @@ export function translate(
   for (const template of templates) {
     const match = template.pattern.exec(source);
     if (match)
-      return interpolate(
-        messages[template.key],
-        Object.fromEntries(
+      return interpolate(messages[template.key] ?? template.key, {
+        ...Object.fromEntries(
           template.names.map((name, i) => [name, match[i + 1]]),
         ),
-      );
+        ...params,
+      });
   }
   // Mutation results have one owned status line followed by verbatim Git output.
   const line = source.indexOf('\n');
@@ -74,11 +78,11 @@ export function translate(
   for (const prefix of compoundPrefixes)
     if (source.startsWith(prefix + ' '))
       return (
-        messages[prefix] +
+        (messages[prefix] ?? prefix) +
         ' ' +
         translate(source.slice(prefix.length + 1), locale)
       );
-  return source;
+  return interpolate(source, params);
 }
 export function formatDate(value: string, locale: string, full = false) {
   const date = new Date(value);

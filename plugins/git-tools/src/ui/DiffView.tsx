@@ -216,11 +216,6 @@ export function DiffView({
             {t('우:')} {t(kindLabel[data.modified.kind])} (
             {formatNumber(data.modified.bytes)} B)
           </p>
-          <p>
-            {t(
-              '이 파일의 내용을 텍스트로 추정하거나 병합 결과로 표시하지 않습니다.',
-            )}{' '}
-          </p>
         </div>
       ) : error ? (
         <div className="state error" role="alert">

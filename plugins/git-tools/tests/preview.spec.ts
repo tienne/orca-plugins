@@ -102,7 +102,7 @@ test('merge parent, search, long names, binary and empty file UX', async ({
       exact: false,
     }),
   ).toBeVisible();
-  await page.getByLabel('비교할 merge 부모').selectOption({ index: 1 });
+  await page.getByLabel('비교할 부모 커밋').selectOption({ index: 1 });
   await page.getByLabel('커밋 검색').fill('no-such-commit');
   await expect(page.getByText('일치하는 커밋이 없습니다.')).toBeVisible();
   await page.getByLabel('커밋 검색').fill('');
@@ -116,7 +116,7 @@ test('merge parent, search, long names, binary and empty file UX', async ({
     .getByRole('button', { name: /assets\/preview.png untracked/ })
     .click();
   await expect(
-    page.getByRole('heading', { name: '텍스트 비교를 표시할 수 없습니다' }),
+    page.getByRole('heading', { name: '텍스트로 비교할 수 없는 파일입니다' }),
   ).toBeVisible();
   await page.getByRole('button', { name: /src\/empty.ts staged/ }).click();
   await expect(page.getByText('빈 파일 · 0 B', { exact: true })).toBeVisible();
@@ -125,11 +125,11 @@ test('merge parent, search, long names, binary and empty file UX', async ({
 for (const [scenario, expected] of [
   [
     'empty',
-    '커밋이 없습니다. 최초 커밋 전에도 작업 트리를 비교할 수 있습니다.',
+    '아직 커밋이 없습니다. 커밋 전 파일은 작업 트리에서 확인할 수 있습니다.',
   ],
-  ['unchanged', '이 비교 기준에는 변경 파일이 없습니다.'],
+  ['unchanged', '변경된 파일이 없습니다.'],
   ['loading', '변경 파일을 읽는 중…'],
-  ['error', 'DEMO 오류 상태 · 저장소 조회 실패 fixture'],
+  ['error', '샘플 오류: 저장소를 불러오지 못했습니다.'],
 ]) {
   test(`explicit fixture state: ${scenario}`, async ({ page }) => {
     await page.goto(`/?fixture=${scenario}`);
@@ -245,9 +245,10 @@ test('Orca color tokens update UI and Monaco without remounting editors', async 
     page.getByRole('menuitem', { name: '체크아웃…', exact: true }),
   ).toHaveCSS('color', 'rgb(241, 217, 255)');
   await page.keyboard.press('ArrowDown');
-  await expect(
-    page.getByRole('menuitem', { name: '여기서 브랜치 생성…' }),
-  ).toHaveCSS('color', 'rgb(244, 240, 255)');
+  await expect(page.getByRole('menuitem', { name: '새 브랜치…' })).toHaveCSS(
+    'color',
+    'rgb(244, 240, 255)',
+  );
   await page.screenshot({ path: info.outputPath('orca-menu-tokens.png') });
   await page.getByRole('menuitem', { name: '체크아웃…', exact: true }).click();
   await page.mouse.move(0, 0);
@@ -262,10 +263,10 @@ test('Orca color tokens update UI and Monaco without remounting editors', async 
     dialog.getByRole('button', { name: '취소', exact: true }),
   ).toHaveCSS('color', 'rgb(217, 255, 245)');
   await expect(
-    dialog.getByRole('button', { name: '대상과 영향 확인' }),
+    dialog.getByRole('button', { name: '실행 내용 확인' }),
   ).toHaveCSS('background-color', 'rgb(202, 163, 255)');
   await expect(
-    dialog.getByRole('button', { name: '대상과 영향 확인' }),
+    dialog.getByRole('button', { name: '실행 내용 확인' }),
   ).toHaveCSS('color', 'rgb(23, 16, 35)');
   await page.screenshot({ path: info.outputPath('orca-dialog-tokens.png') });
   await page.evaluate(() =>
@@ -457,7 +458,7 @@ test('ambiguous active workspace uses a workspace picker instead of guessing a r
   }, fixtureRepo);
   await page.goto('/');
   await expect(page.locator('.repo-heading')).toHaveCount(0);
-  await page.getByLabel('연결할 워크트리').selectOption('two');
+  await page.getByLabel('연결할 작업 공간').selectOption('two');
   await expect(page.locator('.repo-heading b')).toHaveText('two');
 });
 
@@ -472,11 +473,11 @@ test('commit context menu supports keyboard navigation and a safe demo hard rese
   // Arrow navigation crosses visual group boundaries without stopping on labels.
   await page.keyboard.press('ArrowDown');
   await expect(
-    page.getByRole('menuitem', { name: '여기서 브랜치 생성…' }),
+    page.getByRole('menuitem', { name: '새 브랜치…' }),
   ).toBeFocused();
   await page.keyboard.press('ArrowDown');
   await expect(
-    page.getByRole('menuitem', { name: '현재 브랜치로 병합…' }),
+    page.getByRole('menuitem', { name: '현재 브랜치에 병합…' }),
   ).toBeFocused();
   await page.screenshot({ path: info.outputPath('commit-menu.png') });
   await page.keyboard.press('Escape');
@@ -486,15 +487,15 @@ test('commit context menu supports keyboard navigation and a safe demo hard rese
   await page.keyboard.press('End');
   await page.keyboard.press('Enter');
   await expect(page.getByRole('dialog')).toContainText('DEMO');
-  await page.getByLabel('리셋 모드').selectOption('hard');
-  await page.getByRole('button', { name: '대상과 영향 확인' }).click();
+  await page.getByLabel('리셋 방식').selectOption('hard');
+  await page.getByRole('button', { name: '실행 내용 확인' }).click();
   await expect(page.getByRole('button', { name: 'DEMO 실행' })).toBeDisabled();
-  await page.getByLabel('Hard reset 확인 해시').fill('wrong');
+  await page.getByLabel('확인용 커밋 해시').fill('wrong');
   await expect(page.getByRole('button', { name: 'DEMO 실행' })).toBeDisabled();
-  await page.getByLabel('Hard reset 확인 해시').fill('8a4f19c');
+  await page.getByLabel('확인용 커밋 해시').fill('8a4f19c');
   await page.getByRole('button', { name: 'DEMO 실행' }).click();
   await expect(page.locator('.operation-result')).toContainText(
-    '실제 Git 명령을 실행하지 않았습니다',
+    '샘플 실행을 마쳤습니다. 저장소는 변경하지 않았습니다.',
   );
   await expect(page.getByRole('dialog')).not.toBeVisible();
 });
@@ -510,11 +511,11 @@ test('merge parent action requires an explicit mainline and dialogs fit narrow l
       .click({ button: 'right' });
     await page.getByRole('menuitem', { name: '리버트…', exact: true }).click();
     await expect(
-      page.getByRole('button', { name: '대상과 영향 확인' }),
+      page.getByRole('button', { name: '실행 내용 확인' }),
     ).toBeDisabled();
-    await page.getByLabel('merge 기준 부모').selectOption('2');
+    await page.getByLabel('기준 부모 커밋').selectOption('2');
     await expect(
-      page.getByRole('button', { name: '대상과 영향 확인' }),
+      page.getByRole('button', { name: '실행 내용 확인' }),
     ).toBeEnabled();
     const box = await page.getByRole('dialog').boundingBox();
     expect(box!.x).toBeGreaterThanOrEqual(0);
@@ -596,11 +597,13 @@ test('host action executes a prepared token once and displays conflicts after re
   await page
     .getByRole('button', { name: /^Merge branch/ })
     .click({ button: 'right' });
-  await page.getByRole('menuitem', { name: '현재 브랜치로 병합…' }).click();
-  await page.getByRole('button', { name: '대상과 영향 확인' }).click();
+  await page.getByRole('menuitem', { name: '현재 브랜치에 병합…' }).click();
+  await page.getByRole('button', { name: '실행 내용 확인' }).click();
   await expect(page.getByRole('dialog')).toContainText('현재 브랜치로 merge');
-  await page.getByRole('button', { name: '확인하고 실행' }).click();
-  await expect(page.locator('.operation-result')).toContainText('Git 충돌');
+  await page.getByRole('button', { name: '실행' }).click();
+  await expect(page.locator('.operation-result')).toContainText(
+    '충돌을 해결해야 합니다',
+  );
   await expect(page.locator('.operation-result')).toContainText(
     'src/conflict.ts',
   );
@@ -626,27 +629,27 @@ test('preview language switches all plugin surfaces without replacing Monaco mod
   await expect(page.getByText('2 changes', { exact: true })).toBeVisible();
   await expect(page.getByLabel('Fold unchanged regions')).toBeChecked();
   await expect(
-    page.getByText('HEAD → current disk contents.', { exact: false }),
+    page.getByText('Comparing HEAD with saved files.', { exact: false }),
   ).toBeVisible();
   await expect(
-    page.getByText('Current working tree · disk', { exact: true }),
+    page.getByText('Working tree · saved files', { exact: true }),
   ).toHaveCount(1);
   for (const action of [
     'Checkout…',
-    'Create branch here…',
+    'New branch…',
     'Merge into current branch…',
-    'Rebase current branch onto here…',
+    'Rebase onto this commit…',
     'Cherry-pick…',
     'Revert…',
-    'Reset current branch to here…',
+    'Reset to this commit…',
   ]) {
     await page
       .getByRole('button', { name: /^Merge branch/ })
       .click({ button: 'right' });
     await page.getByRole('menuitem', { name: action, exact: true }).click();
-    await expect(page.getByRole('dialog')).toContainText('Target commit');
+    await expect(page.getByRole('dialog')).toContainText('Selected commit');
     await expect(page.getByRole('dialog')).toContainText(
-      'Requires no changed or untracked files.',
+      'Requires no uncommitted changes or untracked files.',
     );
     await page.getByRole('button', { name: 'Cancel', exact: true }).click();
   }
@@ -731,24 +734,20 @@ test('Orca locale takes precedence over navigator and preview overrides, includi
   await page
     .getByRole('button', { name: /^Merge branch/ })
     .click({ button: 'right' });
-  await page
-    .getByRole('menuitem', { name: 'Reset current branch to here…' })
-    .click();
+  await page.getByRole('menuitem', { name: 'Reset to this commit…' }).click();
   await page.getByLabel('Reset mode').selectOption('hard');
-  await page.getByRole('button', { name: 'Review target and impact' }).click();
+  await page.getByRole('button', { name: 'Review action' }).click();
   await expect(page.getByRole('alert')).toContainText(
     'There are uncommitted changes or untracked files.',
   );
-  await page.getByRole('button', { name: 'Review target and impact' }).click();
+  await page.getByRole('button', { name: 'Review action' }).click();
   await expect(page.getByRole('dialog')).toContainText(
     'Shared branch history may be rewritten',
   );
   await expect(page.getByRole('dialog')).toContainText(
     'untracked files may be deleted',
   );
-  await expect(
-    page.getByRole('button', { name: 'Confirm and run' }),
-  ).toBeDisabled();
+  await expect(page.getByRole('button', { name: 'Run' })).toBeDisabled();
   await page.screenshot({ path: info.outputPath('english-confirmation.png') });
   await page.getByRole('button', { name: 'Cancel', exact: true }).click();
   await page.evaluate(() =>

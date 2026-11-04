@@ -44,7 +44,7 @@ Orca의 공개 `window.orca.locale`(BCP-47)을 우선 사용합니다. 한국어
 
 언어 변경 전용 공개 이벤트는 없으므로 마운트 시점, 포커스 복귀 및 500ms 간격으로 공개 locale 값을 확인합니다. 호스트가 값을 갱신하면 코드 모델과 스크롤을 재생성하지 않고 UI/날짜/접근성 레이블이 바뀝니다. 설치본 1.4.248의 프레임 shell은 초기 연결에서 locale을 받으므로 Orca 설정 변경이 열린 프레임 값에 전달되지 않으면 패널/탭을 다시 열거나 플러그인을 reload해야 합니다. 내부 bridge 메시지나 앱 설정 파일에는 접근하지 않습니다. Monaco 자체의 기본 메뉴·접힌 줄 안내 등 라이브러리 내장 문구는 현재 영어로 남습니다.
 
-브라우저 DEMO는 `navigator.language`를 기본으로 사용하고 상단 언어 선택 또는 `?lang=ko` / `?lang=en`으로 미리 볼 수 있습니다. 실제 Orca에서는 이 query override와 언어 선택을 제공하지 않습니다. 번역은 `src/i18n/en.json`(플러그인 기준)에 관리하며 한국어 원문을 메시지 키로 사용합니다. 언어를 추가할 때는 사전과 `messages.ts`의 지원 locale/사전 선택을 함께 확장하고 UI 및 안전 확인 문구 테스트를 추가합니다.
+브라우저 DEMO는 `navigator.language`를 기본으로 사용하고 상단 언어 선택 또는 `?lang=ko` / `?lang=en`으로 미리 볼 수 있습니다. 실제 Orca에서는 이 query override와 언어 선택을 제공하지 않습니다. 번역은 `src/i18n/ko.json`과 `src/i18n/en.json`(플러그인 기준)에서 관리합니다. 기존 한국어 문장을 키로 유지하고, 화면에서 쓰는 한국어 표현은 `ko.json`에서 다듬습니다. Git 오류 처리와 사용자 데이터는 문구 편집의 영향을 받지 않습니다. 언어를 추가할 때는 사전과 `messages.ts`의 지원 locale/사전 선택을 함께 확장하고 UI 및 안전 확인 문구 테스트를 추가합니다.
 
 검증: 한국어 회귀, 영어의 7개 커밋 메뉴/확인창, 영어 worker 오류·hard reset 경고, `en-GB` 날짜, Orca locale 우선순위, 미지원 언어 fallback과 언어 전환 시 Monaco 모델 유지 여부를 브라우저에서 확인합니다. 실제 Orca의 언어 설정을 시험 목적으로 변경하지 않습니다.
 
@@ -94,7 +94,7 @@ Orca가 `approval_required`를 반환하면 표시된 접근 범위와 fingerpri
 
 ## 검증 상태와 제한
 
-2026-11-04 로컬 검증: Nx build/typecheck, Git/worker fixture 테스트 26개, 다국어 테스트 4개, 패키징 검사 테스트 2개, packaged UI 테스트 17개, Orca manifest validation 통과. 라이트·다크·360px PNG를 직접 확인했습니다.
+2026-11-04 로컬 검증: Nx build/typecheck, Git/worker fixture 테스트 26개, 다국어 테스트 5개, 패키징 검사 테스트 2개, packaged UI 테스트 17개, Orca manifest validation 통과. 라이트·다크·360px PNG를 직접 확인했습니다.
 
 - 실제 임시 Git 저장소 테스트: 최초 커밋 전, 최초 커밋, 200개 제한, 현재/전체 브랜치, merge 부모, 메시지 전문, 특수 파일명, rename, 삭제, staged+unstaged, 상쇄 변경, staged 삭제 후 재생성, 바이너리·비 UTF-8·큰 파일, symlink, 충돌, 경계·해시 검사, worker bridge를 검증합니다.
 - 패키징 UI는 Orca 일반 브라우저와 Playwright에서 렌더합니다. Monaco worker는 상대 경로의 로컬 JS로 제공하고 네트워크 CDN·blob worker에 의존하지 않습니다.
