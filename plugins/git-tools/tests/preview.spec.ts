@@ -3,6 +3,14 @@ test('packaged Monaco renders aligned read-only panes, local worker, navigation 
   page,
 }, info) => {
   const errors: string[] = [];
+  const externalRequests: string[] = [];
+  page.on('request', (request) => {
+    if (
+      !request.url().startsWith('http://127.0.0.1:4173/') &&
+      !request.url().startsWith('data:')
+    )
+      externalRequests.push(request.url());
+  });
   page.on('pageerror', (e) => errors.push(e.message));
   await page.goto('/');
   await expect(page.getByText('DEMO', { exact: true })).toBeVisible();
@@ -39,6 +47,7 @@ test('packaged Monaco renders aligned read-only panes, local worker, navigation 
   await page.screenshot({ path: info.outputPath('dark.png') });
   expect(before).toContain('readOnly');
   expect(errors).toEqual([]);
+  expect(externalRequests).toEqual([]);
 });
 test('merge parent, search, long names, binary and empty file UX', async ({
   page,

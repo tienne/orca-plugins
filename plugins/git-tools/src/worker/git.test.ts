@@ -223,7 +223,10 @@ test('worker requires explicit connection and validates workspace before opening
     await writeFile(join(root, 'new'), 'new');
     const handlers = new Map<string, (input: unknown) => unknown>();
     let opened = '';
+    const api = { major: 1, minor: 3 };
+    const methods = new Set(['workspace.list', 'editor.open']);
     activate({
+      api,
       panels: {
         handle: (name, fn) => {
           handlers.set(name, fn);
@@ -231,6 +234,7 @@ test('worker requires explicit connection and validates workspace before opening
       },
       log() {},
       host: {
+        has: (name) => methods.has(name),
         async call(name, params) {
           if (name === 'workspace.list')
             return {
@@ -260,6 +264,19 @@ test('worker requires explicit connection and validates workspace before opening
     await assert.rejects(async () =>
       handlers.get('open')!({ descriptor, workspaceId: 'remote' }),
     );
+    methods.delete('editor.open');
+    await assert.rejects(
+      async () => handlers.get('open')!({ descriptor, workspaceId: 'local' }),
+      /지원하지 않습니다/,
+    );
+    assert.equal(opened, '');
+    methods.add('editor.open');
+    api.minor = 2;
+    await assert.rejects(
+      async () => handlers.get('workspaces')!({ repo: root }),
+      /Host API 1.3/,
+    );
+    api.minor = 3;
     await handlers.get('open')!({ descriptor, workspaceId: 'local' });
     assert.ok(opened.endsWith('.orcadiff'));
     assert.equal(

@@ -4,6 +4,12 @@ import { join } from 'node:path';
 import type { Descriptor, Requests, WorkerApi } from '../protocol';
 import { changes, diff, log, repository } from './git';
 export default function activate(orca: WorkerApi): void {
+  function requireHost(name: string) {
+    if (orca.api?.major !== 1 || orca.api.minor < 3 || !orca.host.has(name))
+      throw new Error(
+        `이 Orca에서 ${name}을 지원하지 않습니다. Host API 1.3 이상이 필요합니다.`,
+      );
+  }
   const connected = new Set<string>();
   const check = (root: string) => {
     if (!connected.has(root))
@@ -35,6 +41,7 @@ export default function activate(orca: WorkerApi): void {
     diff(check(repo), comparison, path),
   );
   async function workspaces(root: string) {
+    requireHost('workspace.list');
     const result = (await orca.host.call('workspace.list', {})) as {
       workspaces: {
         id: string;
@@ -57,6 +64,7 @@ export default function activate(orca: WorkerApi): void {
   }
   handle('workspaces', async ({ repo }) => workspaces(check(repo)));
   handle('open', async ({ descriptor, workspaceId }) => {
+    requireHost('editor.open');
     if (descriptor?.version !== 1)
       throw new Error('지원하지 않는 비교 문서입니다.');
     const root = check(descriptor.repo);

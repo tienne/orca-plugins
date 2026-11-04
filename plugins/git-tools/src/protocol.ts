@@ -66,9 +66,17 @@ export interface Requests {
     output: { opened: true };
   };
 }
+export interface HostVersion {
+  major: number;
+  minor: number;
+}
 export interface WorkerApi {
+  api: HostVersion;
   panels: { handle(name: string, handler: (input: unknown) => unknown): void };
-  host: { call(name: string, params: unknown): Promise<unknown> };
+  host: {
+    has(name: string): boolean;
+    call(name: string, params: unknown): Promise<unknown>;
+  };
   log(message: string): void;
 }
 export interface DocumentSession {
@@ -78,6 +86,8 @@ export interface DocumentSession {
 }
 // Narrow, manually maintained subset of the version-matched Orca authoring reference.
 export interface FrameApi {
+  api: HostVersion;
+  host: { has(name: string): boolean };
   plugin: {
     request<T>(
       name: string,

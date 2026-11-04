@@ -38,3 +38,13 @@ pnpm nx run git-tools:preview
 ```
 
 `ui-test`는 설치된 Google Chrome을 사용합니다. Chromium 사용 시 `pnpm exec playwright install chromium` 후 `PW_CHANNEL=chromium`을 설정합니다. 배포 폴더는 `dist/plugins/git-tools`이며 독립 설치에 저장소의 node_modules가 필요하지 않습니다. 이 작업에서 plugin load/approve 또는 공개 배포는 실행하지 않았습니다.
+
+## 등록 정책을 적용하는 개발 기준
+
+무료 사용을 유지하며 paywall·라이선스 키·체험판·telemetry·analytics·추적·외부 데이터 수집을 넣지 않습니다. IntelliJ는 UX 참고이며 공식 제작/보증을 주장하거나 브랜드를 복제하지 않습니다. 공개 등록 전에는 소스를 공개하고 MIT 및 동봉한 의존 라이선스를 유지해야 합니다.
+
+로컬 identity는 `local.git-tools`입니다. 향후 tienne 소유 Git 저장소에서 설치할 때 `tienne.git-tools`가 됩니다. 최신 manifest/catalog 명세에 따라 deprecated `publisher`는 생략합니다. 공개 등록 안내의 publisher 설명과 차이가 있으므로 실제 릴리스 시 재확인합니다. 카탈로그는 릴리스 전까지 비워 두고 공개 시 `source.path`의 자체 완결적 산출물을 정확한 commit/contentHash로 고정해야 합니다.
+
+빌드는 symlink/node_modules/실행파일/네이티브 모듈/아카이브/미검토 형식을 거절하고 Node 내장 모듈 외 worker 의존성의 미번들링을 검사합니다. WASM은 포함하지 않습니다. 로컬 폰트는 CLI validator를 통과했으며 공개 디렉터리 수락은 아직 미확인입니다. 프레임에서만 공개된 `--orca-*` 변수를 사용하며 API는 `host.has`·minor와 문서 session 존재를 검사합니다. 로컬 validation은 공개 등록 또는 실호스트 실행 검증을 대체하지 않습니다.
+
+원문: [개발 가이드](https://github.com/stablyai/orca/blob/main/docs/reference/plugin-authoring.md), [Manifest](https://github.com/stablyai/orca/blob/main/docs/reference/plugin-manifest.md), [Host API](https://github.com/stablyai/orca/blob/main/docs/reference/plugin-host-api.md), [Catalog](https://github.com/stablyai/orca/blob/main/docs/reference/plugin-catalog.md), [Theme tokens](https://github.com/stablyai/orca/blob/main/docs/reference/plugin-theme-tokens.md), [Listing policy](https://github.com/stablyai/orca/blob/main/docs/reference/plugin-listing-policy.md), [공개 등록 안내](https://www.onorca.dev/plugins/add).

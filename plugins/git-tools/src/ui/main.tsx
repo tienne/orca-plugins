@@ -49,6 +49,12 @@ function App() {
   const pendingPath = useRef('');
   useEffect(() => {
     if (!editorMode) return;
+    if (typeof window.orca?.document?.session !== 'function') {
+      setError(
+        '이 Orca는 document.session을 지원하지 않습니다. Orca를 업데이트하세요.',
+      );
+      return;
+    }
     let disposed = false;
     let stop: (() => void) | undefined;
     let session:

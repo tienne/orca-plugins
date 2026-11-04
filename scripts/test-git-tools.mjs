@@ -14,9 +14,13 @@ try {
     format: 'esm',
     target: 'node22',
   });
-  const result = spawnSync(process.execPath, ['--test', outfile], {
-    stdio: 'inherit',
-  });
+  const result = spawnSync(
+    process.execPath,
+    ['--test', outfile, 'scripts/validate-plugin-artifact.test.mjs'],
+    {
+      stdio: 'inherit',
+    },
+  );
   process.exitCode = result.status ?? 1;
 } finally {
   await rm(dir, { recursive: true, force: true });
