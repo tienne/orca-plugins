@@ -1,7 +1,0 @@
-:root { color-scheme: light dark; font-family: system-ui, sans-serif; color: var(--orca-foreground, #e7eaf0); background: var(--orca-background, #15171c); }
-* { box-sizing: border-box; } body { margin: 0; } main { max-width: 760px; padding: 24px; margin: 0 auto; }
-.eyebrow { color: #8e9cab; font-size: 10px; letter-spacing: .14em; } h1 { font-size: 28px; margin: 16px 0 8px; } h2 { font-size: 15px; margin: 0 0 10px; }
-p { line-height: 1.7; } .intro, section p { color: #9da8b9; font-size: 13px; }
-.context { display: flex; flex-wrap: wrap; gap: 10px; justify-content: space-between; padding: 16px 0; font-size: 12px; }
-code { color: #9dc6ff; } section { margin-top: 14px; padding: 18px; border: 1px solid var(--orca-border, #303642); border-radius: 10px; }
-footer { margin-top: 24px; color: #8e9cab; font-size: 11px; }

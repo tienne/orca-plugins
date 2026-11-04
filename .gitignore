@@ -49,3 +49,9 @@ Thumbs.db
 .nx/self-healing
 .nx/migrate-runs
 .orca/
+
+/test-results/
+/playwright-report/
+
+# Local code graph cache
+.gestalt/

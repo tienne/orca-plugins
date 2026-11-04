@@ -1,0 +1,101 @@
+name: Validate and promote a plugin
+
+on:
+  workflow_call:
+    inputs:
+      version:
+        required: true
+        type: string
+      publish:
+        required: true
+        type: boolean
+
+jobs:
+  promote:
+    if: >-
+      github.event_name == 'workflow_dispatch' &&
+      github.ref == 'refs/heads/main' &&
+      github.repository == 'tienne/orca-plugins' &&
+      vars.ORCA_RELEASE_ENABLED == 'true'
+    runs-on: [self-hosted, macOS, orca-release]
+    environment: ${{ inputs.publish && 'production' || 'release-preview' }}
+    timeout-minutes: 15
+    env:
+      CI: 'true'
+      NX_DAEMON: 'false'
+      ORCA_CLI_COMMAND: orca
+      ORCA_RELEASE_INTEGRATION: '1'
+      RELEASE_VERSION: ${{ inputs.version }}
+      RELEASE_SOURCE_SHA: ${{ github.sha }}
+      RELEASE_REPOSITORY: https://github.com/${{ github.repository }}.git
+    steps:
+      - name: Set release report path
+        run: echo "RELEASE_REPORT=$RUNNER_TEMP/release-plan.json" >> "$GITHUB_ENV"
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+      - name: Check requested version
+        run: |
+          node --input-type=module <<'JS'
+          import { readFileSync } from 'node:fs';
+          const manifest = JSON.parse(readFileSync('plugins/git-logs/orca-plugin.json', 'utf8'));
+          if (!/^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)$/.test(process.env.RELEASE_VERSION) || manifest.version !== process.env.RELEASE_VERSION) {
+            throw new Error('Commit the requested stable manifest version to main first.');
+          }
+          JS
+      - uses: pnpm/action-setup@f40ffcd9367d9f12939873eb1018b921a783ffaa # v4
+      - uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
+        with:
+          node-version: 24
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          name: git-logs-${{ github.sha }}
+          path: dist/plugins/git-logs/
+      - name: Verify Orca CLI and run release integration tests
+        run: |
+          orca --version
+          pnpm nx run git-logs:release-test --output-style=static
+      - name: Fetch the current release base
+        run: |
+          if git ls-remote --exit-code --heads origin release > "$RUNNER_TEMP/release-ref.txt"; then
+            git fetch --no-tags origin refs/heads/release:refs/remotes/origin/release
+          else
+            status=$?
+            if [ "$status" -ne 2 ]; then exit "$status"; fi
+          fi
+      - name: Prepare and validate the candidate
+        run: pnpm nx run git-logs:release-prepare --output-style=static
+      - name: Summarize candidate
+        run: |
+          node --input-type=module <<'JS'
+          import { readFileSync, appendFileSync } from 'node:fs';
+          const plan = JSON.parse(readFileSync(process.env.RELEASE_REPORT, 'utf8'));
+          appendFileSync(process.env.GITHUB_STEP_SUMMARY, [
+            '## Git Logs release candidate',
+            '',
+            '- Version: ' + plan.version,
+            `- Source: ${plan.sourceCommit}`,
+            `- Artifact: ${plan.artifactCommit}`,
+            `- Catalog: ${plan.catalogCommit}`,
+            `- Content hash: ${plan.contentHash}`,
+            '',
+            'The catalog pins the artifact commit. A preview never pushes refs.',
+            '',
+          ].join('\n'));
+          JS
+      - name: Publish branch and source tag
+        if: inputs.publish
+        env:
+          RELEASE_PLAN: ${{ runner.temp }}/release-plan.json
+        run: pnpm nx run git-logs:release-publish --output-style=static
+      - name: Save release plan
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: release-plan-${{ github.sha }}
+          path: ${{ runner.temp }}/release-plan*.json
+          if-no-files-found: ignore
+          retention-days: 14

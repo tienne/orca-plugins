@@ -1,36 +1,97 @@
 # Tienne Orca Plugins
 
-pnpm + Nx 기반의 Orca 플러그인 모노레포입니다.
+English · [한국어](README.ko.md)
 
-## 시작
+Orca plugins built with pnpm, Nx, TypeScript, React, Vite, and esbuild. Each directory under `plugins/` is a separate plugin with its own installable build.
 
-- Node.js 22.12 이상 또는 24 이상과 pnpm 10을 사용합니다.
-- `pnpm install`
-- `pnpm build` — `dist/plugins/git-tools`에 독립 설치 가능한 폴더 생성
-- `pnpm typecheck`
-- `pnpm validate` — 빌드 후 Orca CLI로 배포 폴더 검증
-- `pnpm dev` — 일반 브라우저에서 UI 미리보기 (Orca bridge는 연결되지 않음)
+## Plugins
 
-## Orca 개발
+| Plugin                                 | Features                                                                   | Status                    |
+| -------------------------------------- | -------------------------------------------------------------------------- | ------------------------- |
+| [Git Logs](plugins/git-logs/README.md) | Commit graph, branch and commit search, side-by-side diffs, commit actions | 0.1.0 — local development |
 
-빌드한 뒤 `orca plugin dev load ./dist/plugins/git-tools --json`으로 개발 폴더를 등록합니다.
-코드를 실행하는 플러그인이므로 Orca가 표시하는 접근 범위를 확인하고 승인해야 합니다.
-현재 starter worker는 버전 정보만 반환하며 Git 명령은 아직 실행하지 않습니다.
-소스 변경 후 다시 빌드합니다. 필요하면 `orca plugin dev reload ./dist/plugins/git-tools --json`을 사용합니다.
+There is no public release or installation URL yet. The source-branch catalog is an empty template; published entries will live in the catalog on `release`.
 
-## 구조
+## Git Logs
 
-- `plugins/git-tools/src/ui`: React UI
-- `plugins/git-tools/src/worker`: Node.js worker
-- `plugins/git-tools/src/protocol.ts`: frame/worker 타입 경계
-- `scripts/build-plugin.mjs`: UI·worker 번들 및 배포 폴더 생성
-- `orca-catalog.json`: tienne용 카탈로그. 첫 릴리스 전이라 비어 있습니다.
+Explore Git logs through a Git tree visualization and commit graph. Open a changed file in a central tab to compare its contents side by side.
 
-공통 패키지는 실제 재사용이 생기면 `packages/*`에 추출합니다. Graph와 Diff는 하나의 `git-tools` 플러그인으로 개발합니다.
+- View up to 200 recent commits, parent relationships, HEAD, and local and remote branch labels.
+- Filter by branch and search commit messages, authors, or hashes.
+- Compare changes with line and word highlights, synchronized scrolling, change navigation, and collapsed unchanged regions.
+- Checkout, create a branch, merge, rebase, cherry-pick, revert, or reset from a commit's context menu.
+- Use Orca theme colors and English or Korean UI text.
 
-## 배포
+Diffs are read-only. Git actions require a separate confirmation. Git Logs connects to local Git workspaces managed by Orca; SSH workspaces are not supported. See the [Git Logs guide](plugins/git-logs/README.md) for comparison rules, permissions, and action limits.
 
-Orca는 카탈로그에 지정된 Git 커밋의 하위 폴더만 설치합니다. `dist/`는 로컬 빌드 산출물로 Git에서 제외되어 있으므로 현재 카탈로그는 설치용 릴리스를 포함하지 않습니다.
-공개 배포 전에는 생성한 독립 플러그인 폴더를 릴리스 브랜치의 고정 경로에 커밋하고 `orca plugin release-entry`로 해시·커밋을 생성해 카탈로그에 등록해야 합니다. 실제로 존재하지 않는 릴리스 항목은 등록하지 않습니다.
+![Git Logs English demo with a commit graph and side-by-side diff in dark mode](docs/screenshots/git-logs-dark.png)
 
-현재는 로컬 개발용이며 GitHub 저장소 생성·push·공개 배포는 하지 않았습니다.
+This is a browser demo with sample data, not a real repository or an Orca host screenshot.
+
+[Light theme](docs/screenshots/git-logs-light.png) · [Commit menu](docs/screenshots/git-logs-commit-menu.png) · [Screenshot instructions](docs/screenshots/README.md)
+
+## Develop locally
+
+Use Node.js 22.12+ or 24+, pnpm 10, and Git. Orca integration and manifest validation also require the Orca desktop app and CLI. Git Logs requires Orca 1.4.248 or later.
+
+Run these commands from the repository root:
+
+```sh
+pnpm install
+pnpm nx run git-logs:build
+pnpm nx run git-logs:preview
+```
+
+The build is written to `dist/plugins/git-logs`. It includes the UI, Monaco, fonts, editor worker, both language guides, and dependency licenses. It does not need a separate `node_modules` directory after installation.
+
+Open `http://127.0.0.1:4173` for the browser demo, or `http://127.0.0.1:4173/?lang=en&sample=en` for English sample data. The demo does not run Git commands. Use `pnpm dev` for source editing with hot reload.
+
+To use the build in Orca, review its access and follow the [local installation steps](plugins/git-logs/README.md#local-installation). Git Logs runs a Node process with your user account's access and requests `workspace:read` and `workspace:write`.
+
+## Check a build
+
+```sh
+pnpm nx run-many -t build typecheck test ui-test -p git-logs
+pnpm validate
+```
+
+| Target            | Checks                                                                                     |
+| ----------------- | ------------------------------------------------------------------------------------------ |
+| `test`            | Git operations in temporary repositories, translations, and artifact rules                 |
+| `ui-test`         | Packaged graph, diff, themes, languages, keyboard controls, and layout                     |
+| `validate-plugin` | Orca manifest validation of the packaged plugin; `pnpm validate` runs this for all plugins |
+| `screenshots`     | English demo captures in light and dark themes, including the commit menu                  |
+
+Browser checks use an installed Google Chrome. To use Chromium, run `pnpm exec playwright install chromium`, then set `PW_CHANNEL=chromium`. Test output is written to `test-results/`.
+
+Generate the README images with:
+
+```sh
+pnpm nx run git-logs:screenshots
+```
+
+## Repository layout
+
+```text
+plugins/git-logs/         # Plugin source, manifest, and user guides
+  src/ui/                # Graph, Monaco diff, and browser fixtures
+  src/worker/            # Git and file access, action preparation and execution
+  showcase/              # English screenshot captures
+scripts/                 # Build, test, and artifact checks
+docs/development.md      # Host integration, validation, and release details
+docs/screenshots/        # Demo images and capture instructions
+dist/plugins/git-logs/   # Generated build; not tracked by Git
+orca-catalog.json        # Source catalog template; installed releases live on release
+```
+
+Git and file operations belong in workers. Plugin frames use bundled local assets. Source manifests point to packaged entries, so validate `dist/plugins/*`, not the source directories.
+
+## CI and releases
+
+Pull requests and main pushes run build, typecheck, Git, browser, and release tests on hosted Ubuntu runners. Manual release runs default to a preview. Publication uses a separately configured macOS Orca runner and production environment. See [Git branches and releases](docs/releases.md) for setup, permissions, and the main → release workflow.
+
+The source repository is public at [tienne/orca-plugins](https://github.com/tienne/orca-plugins). No plugin release has been published. A release must include the built plugin files in Git and pin the installable directory to an exact commit and `contentHash` in a catalog. See the [development guide](docs/development.md) for release requirements and the current validation record.
+
+## License
+
+[MIT](LICENSE). Dependency licenses are included in each plugin build's `licenses/` directory.
