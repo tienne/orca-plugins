@@ -90,7 +90,7 @@ Git and file operations belong in workers. Plugin frames use bundled local asset
 
 Pull requests and main pushes run build, typecheck, Git, browser, and release tests on hosted Ubuntu runners. Manual release runs default to a preview. Publication uses a separately configured macOS Orca runner and production environment. See [Git branches and releases](docs/releases.md) for setup, permissions, and the main → release workflow.
 
-Nothing has been published yet. A release must include the built plugin files in Git and pin the installable directory to an exact commit and `contentHash` in a catalog. See the [development guide](docs/development.md) for release requirements and the current validation record.
+The source repository is public at [tienne/orca-plugins](https://github.com/tienne/orca-plugins). No plugin release has been published. A release must include the built plugin files in Git and pin the installable directory to an exact commit and `contentHash` in a catalog. See the [development guide](docs/development.md) for release requirements and the current validation record.
 
 ## License
 

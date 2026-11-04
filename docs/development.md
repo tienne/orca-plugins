@@ -147,7 +147,7 @@ The build rejects symlinks, `node_modules`, executables, native modules, archive
 
 The bundle declares `type: module` for `worker.js`. Generated comparison documents and local validation captures are not release assets. Both language guides and dependency licenses belong in the installable directory.
 
-There is no remote repository or public release yet, and `dist/` is not tracked. Do not create catalog entries with placeholder commits or hashes. A future release must:
+Source is hosted at [tienne/orca-plugins](https://github.com/tienne/orca-plugins). There is no public plugin release yet, and `dist/` is not tracked. Do not create catalog entries with placeholder commits or hashes. A future release must:
 
 1. Commit the installable artifact to its publishing repository.
 2. Generate release metadata with `orca plugin release-entry` for that committed directory.
@@ -170,7 +170,7 @@ The description includes `Git logs`, `Git tree`, `commit graph`, and `side-by-si
 
 ## CI and release automation
 
-The implemented workflows use hosted Ubuntu for PR checks and a trusted manual macOS job for Orca validation and publication. See [Git branches and releases](releases.md) for runner setup, preview and publish modes, source tags, provenance, and catalog pinning. `pnpm nx run git-logs:release-test` tests release orchestration with local bare remotes; set `ORCA_RELEASE_INTEGRATION=1` and the platform Orca CLI to repeat it with real validation and hashes. GitHub-hosted execution remains unverified until the repository is created and workflows are pushed.
+The implemented workflows use hosted Ubuntu for PR checks and a trusted manual macOS job for Orca validation and publication. See [Git branches and releases](releases.md) for runner setup, preview and publish modes, source tags, provenance, and catalog pinning. `pnpm nx run git-logs:release-test` tests release orchestration with local bare remotes; set `ORCA_RELEASE_INTEGRATION=1` and the platform Orca CLI to repeat it with real validation and hashes. GitHub-hosted results are recorded in the repository’s pull-request checks and Actions runs; local verification does not establish hosted CI success.
 
 ## References
 

@@ -4,7 +4,7 @@ English · [한국어](releases.ko.md)
 
 Source lives on `main`. The `release` branch contains installable plugin files and the catalog. The catalog in the source branch stays an empty template. GitHub Actions builds a candidate first; pushing it is a separate, explicit choice.
 
-The workflows and scripts are implemented, but no GitHub repository, runner, or public release has been created by this work. The source branch has not been merged into `main`. Orca supports a publishing ref and directory; this branch split is our repository convention, not an Orca requirement.
+Source is public at [tienne/orca-plugins](https://github.com/tienne/orca-plugins). The release runner and protected environments still need configuration; no public plugin release has been created. Orca supports a publishing ref and directory; this branch split is our repository convention, not an Orca requirement.
 
 ## Branches and versioning
 

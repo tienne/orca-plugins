@@ -90,7 +90,7 @@ Git과 파일 작업은 worker에서 처리합니다. 플러그인 프레임에�
 
 PR과 main push는 GitHub 호스팅 Ubuntu에서 빌드·타입·Git·브라우저·배포 테스트를 실행합니다. 수동 배포는 미리보기로 시작하며, 실제 공개에는 별도로 설정한 macOS Orca 러너와 production 환경을 사용합니다. 설정과 권한, main → release 흐름은 [Git 브랜치와 배포](docs/releases.ko.md)에 정리했습니다.
 
-아직 저장소를 원격에 공개하거나 릴리스를 푸시하지 않았습니다. 릴리스할 때는 빌드 결과물을 Git에 포함하고 카탈로그에서 설치할 폴더를 정확한 커밋과 `contentHash`로 고정해야 합니다. 배포 조건과 현재 검증 기록은 [개발 안내](docs/development.ko.md)에 정리했습니다.
+소스는 [tienne/orca-plugins](https://github.com/tienne/orca-plugins)에 공개돼 있습니다. 플러그인 릴리스는 아직 공개하지 않았습니다. 릴리스할 때는 빌드 결과물을 Git에 포함하고 카탈로그에서 설치할 폴더를 정확한 커밋과 `contentHash`로 고정해야 합니다. 배포 조건과 현재 검증 기록은 [개발 안내](docs/development.ko.md)에 정리했습니다.
 
 ## 라이선스
 

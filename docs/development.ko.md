@@ -147,7 +147,7 @@ Manifest와 카탈로그의 설명 필드는 언어별로 나뉘지 않으며 �
 
 번들은 `worker.js` 실행을 위해 `type: module`을 선언합니다. 비교 문서와 로컬 검증 캡처는 배포 에셋이 아닙니다. 설치용 폴더에는 두 언어의 안내와 의존 라이선스를 포함합니다.
 
-아직 원격 저장소나 공개 릴리스가 없고 `dist/`는 Git에서 제외돼 있습니다. 임의 커밋이나 해시로 카탈로그 항목을 만들지 마십시오. 릴리스할 때는 다음 순서를 따릅니다.
+소스는 [tienne/orca-plugins](https://github.com/tienne/orca-plugins)에 있습니다. 아직 공개 플러그인 릴리스는 없고 `dist/`는 Git에서 제외돼 있습니다. 임의 커밋이나 해시로 카탈로그 항목을 만들지 마십시오. 릴리스할 때는 다음 순서를 따릅니다.
 
 1. 설치용 산출물을 배포 저장소에 커밋합니다.
 2. 커밋한 폴더에 `orca plugin release-entry`를 실행해 메타데이터를 만듭니다.
@@ -170,7 +170,7 @@ Tienne 소유 저장소에서 설치할 때 공개 ID는 `tienne.git-logs`입니
 
 ## CI와 배포 자동화
 
-PR 검사는 GitHub 호스팅 Ubuntu에서, Orca 검증과 공개는 신뢰한 수동 macOS job에서 실행하도록 구성했습니다. 러너 설정, 미리보기·공개 모드, 소스 태그, 출처 기록과 카탈로그 고정은 [Git 브랜치와 배포](releases.ko.md)를 참고하십시오. `pnpm nx run git-logs:release-test`는 로컬 bare 저장소로 배포 로직을 검사합니다. `ORCA_RELEASE_INTEGRATION=1`과 운영체제에 맞는 Orca CLI를 지정하면 실제 검증·해시 생성으로 반복합니다. GitHub 호스팅 실행은 저장소를 만들고 워크플로를 push한 뒤 확인해야 합니다.
+PR 검사는 GitHub 호스팅 Ubuntu에서, Orca 검증과 공개는 신뢰한 수동 macOS job에서 실행하도록 구성했습니다. 러너 설정, 미리보기·공개 모드, 소스 태그, 출처 기록과 카탈로그 고정은 [Git 브랜치와 배포](releases.ko.md)를 참고하십시오. `pnpm nx run git-logs:release-test`는 로컬 bare 저장소로 배포 로직을 검사합니다. `ORCA_RELEASE_INTEGRATION=1`과 운영체제에 맞는 Orca CLI를 지정하면 실제 검증·해시 생성으로 반복합니다. GitHub 호스팅 결과는 저장소의 PR 검사와 Actions 실행 기록에서 확인하십시오. 로컬 검증 통과가 호스팅 CI 성공을 뜻하지는 않습니다.
 
 ## 참고 문서
 
