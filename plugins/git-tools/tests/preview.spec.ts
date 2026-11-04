@@ -906,3 +906,128 @@ test('selected branch refreshes through worker RPC, disappears cleanly and reset
     page.getByRole('button', { name: 'Branch scope' }),
   ).toContainText('Current branch');
 });
+
+test('sidebar bottom panes keep their height and files open a central diff on double-click or Enter', async ({
+  page,
+}, info) => {
+  const { fixtureRepo, fixtureSet, fixtureDiff } =
+    await import('../src/ui/fixture');
+  const files = Array.from({ length: 80 }, (_, index) => ({
+    path: `src/long-folder-name/file-${index}.ts`,
+    status: 'M',
+  }));
+  const repo = {
+    ...fixtureRepo,
+    commits: fixtureRepo.commits.map((commit, index) =>
+      index === 0
+        ? {
+            ...commit,
+            message: commit.message + '\n' + 'Long commit details\n'.repeat(60),
+          }
+        : commit,
+    ),
+  };
+  await page.addInitScript(
+    ({ repo, files, set, diff }) => {
+      const opens: unknown[] = [];
+      Object.defineProperty(window, 'testOpenRequests', { get: () => opens });
+      window.orca = {
+        locale: 'ko-KR',
+        api: { major: 1, minor: 3 },
+        host: { has: () => true },
+        plugin: {
+          request: async <T>(name: string, raw: unknown) => {
+            if (name === 'active')
+              return {
+                status: 'connected',
+                repository: repo,
+                workspace: {
+                  id: 'fixture',
+                  name: 'Fixture',
+                  path: repo.root,
+                  branch: repo.branch,
+                },
+              } as T;
+            if (name === 'changes') {
+              const input = raw as { comparison: { kind: string } };
+              return {
+                ...set,
+                comparison: input.comparison,
+                files:
+                  input.comparison.kind === 'commit'
+                    ? files.slice(0, 2)
+                    : files,
+              } as T;
+            }
+            if (name === 'diff') return diff as T;
+            if (name === 'open') {
+              opens.push(raw);
+              return { opened: true } as T;
+            }
+            throw new Error(`Unexpected request: ${name}`);
+          },
+        },
+      };
+    },
+    {
+      repo,
+      files,
+      set: fixtureSet,
+      diff: fixtureDiff(fixtureSet.files[0].path),
+    },
+  );
+  await page.setViewportSize({ width: 380, height: 900 });
+  await page.goto('/');
+  await expect(page.locator('.file-row')).toHaveCount(80);
+  const heights = async () =>
+    page.evaluate(() => ({
+      details: document.querySelector('.details')!.getBoundingClientRect()
+        .height,
+      files: document.querySelector('.files')!.getBoundingClientRect().height,
+    }));
+  const before = await heights();
+  expect(before).toEqual({ details: 144, files: 240 });
+  expect(
+    await page
+      .locator('.file-list')
+      .evaluate((node) => node.scrollHeight > node.clientHeight),
+  ).toBe(true);
+  await expect(page.locator('.open-editor')).toHaveCount(0);
+  await page.locator('.file-row').nth(1).click();
+  expect(
+    await page.evaluate(() => Reflect.get(window, 'testOpenRequests')),
+  ).toHaveLength(0);
+  await page.locator('.file-row').nth(1).dblclick();
+  await expect
+    .poll(() => page.evaluate(() => Reflect.get(window, 'testOpenRequests')))
+    .toHaveLength(1);
+  let opens = await page.evaluate(() =>
+    Reflect.get(window, 'testOpenRequests'),
+  );
+  expect(opens[0]).toMatchObject({
+    workspaceId: 'fixture',
+    descriptor: {
+      repo: repo.root,
+      path: files[1].path,
+      comparison: { kind: 'working' },
+    },
+  });
+  await page.locator('.file-row').nth(2).press('Enter');
+  await expect
+    .poll(() => page.evaluate(() => Reflect.get(window, 'testOpenRequests')))
+    .toHaveLength(2);
+  opens = await page.evaluate(() => Reflect.get(window, 'testOpenRequests'));
+  expect(opens[1].descriptor.path).toBe(files[2].path);
+  await page.getByRole('button', { name: /^Merge branch/ }).click();
+  await expect(page.locator('.file-row')).toHaveCount(2);
+  expect(await heights()).toEqual(before);
+  expect(
+    await page
+      .locator('.details')
+      .evaluate((node) => node.scrollHeight > node.clientHeight),
+  ).toBe(true);
+  await page.getByLabel('파일 검색').fill('does-not-exist');
+  await expect(page.getByText('검색 결과가 없습니다.')).toBeVisible();
+  expect(await heights()).toEqual(before);
+  await page.screenshot({ path: info.outputPath('fixed-bottom-panes.png') });
+});

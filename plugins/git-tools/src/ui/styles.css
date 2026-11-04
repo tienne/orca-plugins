@@ -359,7 +359,8 @@ main {
 .details {
   border-top: 1px solid var(--line);
   padding: 10px 13px;
-  max-height: 210px;
+  height: clamp(96px, 18dvh, 144px);
+  flex: 0 0 clamp(96px, 18dvh, 144px);
   overflow: auto;
   flex-shrink: 0;
 }
@@ -449,6 +450,17 @@ main {
   margin: 3px 10px 10px;
 }
 .file-list {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+}
+.files > .section-heading,
+.files > input {
+  flex-shrink: 0;
+}
+.files > .state {
+  flex: 1;
+  min-height: 0;
   overflow: auto;
 }
 .file-row {
@@ -488,14 +500,18 @@ main {
 .panel-mode .files {
   width: 100%;
   border: 0;
-  min-height: 120px;
-  max-height: 260px;
-  flex-shrink: 0;
+  min-height: 0;
+  height: clamp(160px, 28dvh, 240px);
+  flex: 0 0 clamp(160px, 28dvh, 240px);
 }
-.open-editor {
-  display: grid;
-  gap: 7px;
-  padding: 12px;
+.panel-mode .commit-list {
+  min-height: 0;
+}
+.file-open-hint {
+  flex-shrink: 0;
+  padding: 7px 12px;
+  border-top: 1px solid var(--line);
+  font-size: 10px;
 }
 button.primary {
   background: var(--primary);

@@ -28,9 +28,11 @@ pnpm dev
 2. 최근 최대 200개 커밋의 부모 관계와 HEAD, 로컬·원격 브랜치를 탐색합니다. 현재/전체 브랜치 범위와 커밋·작성자·해시·브랜치 검색을 지원합니다. 검색 중에는 생략된 커밋을 잘못 연결하지 않도록 그래프를 숨깁니다.
 3. 커밋을 선택하면 메시지 전문, 작성자·날짜와 변경 파일이 나타납니다. Merge는 기본 첫 번째 부모와 비교하며 부모 선택으로 다른 직접 부모와 비교할 수 있습니다. 최초 커밋은 빈 트리와 비교합니다.
 4. 작업 트리는 **HEAD → 현재 디스크**의 최종 내용을 비교합니다. `staged`는 HEAD↔index, `unstaged`는 index↔디스크, `untracked`는 index에 없는 파일이라는 상태 표시입니다. 각각 별도의 staged/unstaged diff 모드를 뜻하지 않습니다. HEAD와 같은 내용으로 상쇄된 파일은 제외합니다. 무시된 untracked 파일은 포함하지 않습니다.
-5. 변경 파일을 선택한 뒤 **중앙 Diff 탭 열기**를 누릅니다. 연결된 workspace를 중앙 탭의 대상으로 사용합니다. 저장소 내부 `.orca/git-tools/<id>.orcadiff`에 비교 설명 문서를 생성하고 대상 workspace를 연 뒤 custom editor로 엽니다. `editor.open`은 workspace 내부 상대 경로만 허용하므로 OS 임시 폴더를 사용하지 않습니다. `.orca/`가 Git에서 무시되지 않는 저장소에서는 문서가 untracked로 표시됩니다. 소스 파일과 Git index를 수정하지 않습니다.
+5. 변경 파일을 **더블클릭**하면 중앙 Diff 탭을 엽니다. 키보드에서는 파일에 포커스를 두고 **Enter**를 누릅니다. 한 번 클릭하면 파일만 선택합니다. 연결된 workspace를 중앙 탭의 대상으로 사용합니다. 저장소 내부 `.orca/git-tools/<id>.orcadiff`에 비교 설명 문서를 생성하고 대상 workspace를 연 뒤 custom editor로 엽니다. `editor.open`은 workspace 내부 상대 경로만 허용하므로 OS 임시 폴더를 사용하지 않습니다. `.orca/`가 Git에서 무시되지 않는 저장소에서는 문서가 untracked로 표시됩니다. 소스 파일과 Git index를 수정하지 않습니다.
 
 중앙 뷰어는 파일 탐색, 좌우 정렬, 줄/단어 내 강조, 동기 스크롤, 이전/다음 변경, 동일 영역 접기, 줄 앞뒤 공백 무시를 제공합니다. 좁은 화면에서도 좌우 비교를 유지하며 코드 영역 내부를 가로 스크롤합니다. 소스 수정·변경 적용 버튼은 없습니다.
+
+사이드바 하단의 커밋 정보와 변경 파일 영역은 내용 길이·파일 개수와 관계없이 높이를 유지하고 내부에서 스크롤합니다. 기본 높이는 각각 144px/240px이며 작은 창에서는 창 높이에 맞춰 줄어듭니다. 파일 목록을 검색해 결과가 없어져도 영역 크기는 유지됩니다. 중앙 Diff 내부의 파일 더블클릭은 새 탭을 열지 않습니다.
 
 ## 브랜치 검색
 
@@ -100,7 +102,7 @@ Orca가 `approval_required`를 반환하면 표시된 접근 범위와 fingerpri
 
 ## 검증 상태와 제한
 
-2026-11-04 로컬 검증: Nx build/typecheck, Git/worker fixture 테스트 27개, 다국어 테스트 5개, 패키징 검사 테스트 2개, packaged UI 테스트 19개, Orca manifest validation 통과. 라이트·다크·360px PNG를 직접 확인했습니다.
+2026-11-04 로컬 검증: Nx build/typecheck, Git/worker fixture 테스트 27개, 다국어 테스트 5개, 패키징 검사 테스트 2개, packaged UI 테스트 20개, Orca manifest validation 통과. 라이트·다크·360px PNG를 직접 확인했습니다.
 
 - 실제 임시 Git 저장소 테스트: 최초 커밋 전, 최초 커밋, 200개 제한, 현재/전체 브랜치, merge 부모, 메시지 전문, 특수 파일명, rename, 삭제, staged+unstaged, 상쇄 변경, staged 삭제 후 재생성, 바이너리·비 UTF-8·큰 파일, symlink, 충돌, 경계·해시 검사, worker bridge를 검증합니다.
 - 패키징 UI는 Orca 일반 브라우저와 Playwright에서 렌더합니다. Monaco worker는 상대 경로의 로컬 JS로 제공하고 네트워크 CDN·blob worker에 의존하지 않습니다.

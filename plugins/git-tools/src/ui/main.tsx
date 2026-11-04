@@ -69,6 +69,7 @@ function App() {
   const [theme, setTheme] = useState('system');
   const [workspace, setWorkspace] = useState('');
   const logSeq = useRef(0);
+  const openingEditor = useRef(false);
   const pendingPath = useRef('');
   const currentRoot = useRef(repo?.root);
   currentRoot.current = repo?.root;
@@ -368,8 +369,18 @@ function App() {
           .toLocaleLowerCase()
           .includes(search.toLocaleLowerCase()),
       ) ?? [];
-  async function openEditor() {
-    if (!repo || !set || !workspace) return;
+  async function openEditor(path: string) {
+    if (
+      !repo ||
+      !set ||
+      !workspace ||
+      loadingFiles ||
+      busy ||
+      actionBusy ||
+      openingEditor.current
+    )
+      return;
+    openingEditor.current = true;
     setBusy(true);
     setError('');
     try {
@@ -378,13 +389,14 @@ function App() {
           version: 1,
           repo: repo.root,
           comparison: set.comparison,
-          path: file,
+          path,
         },
         workspaceId: workspace,
       });
     } catch (e) {
       setError(message(e));
     } finally {
+      openingEditor.current = false;
       setBusy(false);
     }
   }
@@ -420,6 +432,17 @@ function App() {
                   setError('');
                   setFile(f.path);
                 }}
+                onDoubleClick={() => {
+                  if (!editorMode && !demo) void openEditor(f.path);
+                }}
+                onKeyDown={(event) => {
+                  if (event.key === 'Enter' && !editorMode && !demo) {
+                    event.preventDefault();
+                    setFile(f.path);
+                    void openEditor(f.path);
+                  }
+                }}
+                aria-keyshortcuts={!editorMode && !demo ? 'Enter' : undefined}
                 title={`${f.oldPath ? f.oldPath + ' → ' : ''}${f.path}`}
                 aria-pressed={file === f.path}
               >
@@ -446,6 +469,16 @@ function App() {
               f.path.toLowerCase().includes(fileSearch.toLowerCase()),
             ) && <p className="state">{t('검색 결과가 없습니다.')}</p>}
         </div>
+      )}
+      {!editorMode && !demo && (
+        <small
+          className="file-open-hint"
+          title={t(
+            '저장소의 .orca/git-tools/에 비교 문서를 생성합니다. Git에서 무시되지 않으면 untracked로 표시됩니다.',
+          )}
+        >
+          {t('더블클릭 또는 Enter로 Diff 열기')}
+        </small>
       )}
     </section>
   );
@@ -769,25 +802,7 @@ function App() {
                 </p>
               </div>
             )}
-            {!demo && repo && (
-              <>
-                {files}
-                <div className="open-editor">
-                  <button
-                    className="primary"
-                    disabled={!workspace || !set || busy}
-                    onClick={() => void openEditor()}
-                  >
-                    {t('중앙 Diff 탭 열기 ↗')}{' '}
-                  </button>
-                  <small>
-                    {t(
-                      '저장소의 .orca/git-tools/에 비교 문서를 생성합니다. Git에서 무시되지 않으면 untracked로 표시됩니다.',
-                    )}{' '}
-                  </small>
-                </div>
-              </>
-            )}
+            {!demo && repo && files}
           </aside>
         )}
         {(demo || editorMode) && (
