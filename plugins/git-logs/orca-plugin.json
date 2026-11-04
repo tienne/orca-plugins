@@ -1,0 +1,44 @@
+{
+  "manifestVersion": 2,
+  "id": "git-logs",
+  "name": "Git Logs",
+  "version": "0.1.0",
+  "description": "Explore Git logs in a visual Git tree and commit graph. Compare changes in a read-only side-by-side diff and run confirmed Git actions in Orca.",
+  "engines": {
+    "orca": ">=1.4.248"
+  },
+  "execution": "trusted-worker",
+  "pluginApi": 1,
+  "contributes": {
+    "events": [{ "on": "workspace.created" }, { "on": "workspace.changed" }],
+    "panels": [
+      {
+        "id": "git-logs",
+        "title": "Git Logs",
+        "icon": "branch",
+        "entry": "ui/index.html"
+      }
+    ],
+    "customEditors": [
+      {
+        "id": "git-diff",
+        "title": "Git Diff",
+        "icon": "ui/icons/diff.png",
+        "extensions": [".orcadiff"],
+        "entry": "ui/editor.html",
+        "priority": "default",
+        "frame": "isolated"
+      }
+    ]
+  },
+  "capabilities": [
+    {
+      "kind": "workspace:read"
+    },
+    {
+      "kind": "workspace:write"
+    }
+  ],
+  "license": "MIT",
+  "main": "worker.js"
+}
