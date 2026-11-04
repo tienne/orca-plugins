@@ -4,6 +4,8 @@ export default defineConfig({
   outputDir: '../../test-results/git-tools',
   fullyParallel: false,
   use: {
+    locale: 'ko-KR',
+    timezoneId: 'Asia/Seoul',
     baseURL: 'http://127.0.0.1:4173',
     channel: process.env.PW_CHANNEL ?? 'chrome',
     viewport: { width: 1440, height: 900 },

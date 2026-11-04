@@ -11,6 +11,16 @@ Git Logs 사이드바를 열면 현재 열린 Orca 로컬 Git 워크트리에 �
 
 파일을 선택하고 **중앙 Diff 탭 열기**를 누릅니다. 연결된 workspace를 중앙 탭의 대상으로 사용합니다. 저장소의 `.orca/git-tools/<id>.orcadiff`에 저장소·비교 기준·선택 파일을 담아 대상 workspace의 custom editor로 엽니다. 이 폴더가 Git에서 무시되지 않으면 문서가 untracked로 표시되며 ignore 설정은 자동 변경하지 않습니다. 소스 파일과 index는 수정하지 않습니다. 중앙 뷰어는 좌우 정렬, 줄/단어 내 강조, 동기 스크롤, 이전/다음 변경, 동일 영역 접기, 줄 앞뒤 공백 무시를 지원합니다.
 
+## 언어
+
+Orca의 공개 `window.orca.locale`(BCP-47)을 우선 사용합니다. 한국어(`ko`, `ko-KR`)와 영어(`en`, `en-US`, `en-GB` 등)를 지원하고 미지원/잘못된 locale은 영어(`en-US`)로 표시합니다. 날짜·시간·숫자는 지원 언어의 지역 태그를 `Intl`에 전달합니다. UI 언어가 영어여도 커밋 메시지·작성자·브랜치·경로와 원본 Git 출력은 번역하지 않습니다. 플러그인 메뉴·접근성 레이블·안내·확인창·알려진 worker 오류/결과 문구만 로컬 사전으로 번역하며 외부 번역 요청을 보내지 않습니다.
+
+언어 변경 전용 공개 이벤트는 없으므로 마운트 시점, 포커스 복귀 및 500ms 간격으로 공개 locale 값을 확인합니다. 호스트가 값을 갱신하면 코드 모델과 스크롤을 재생성하지 않고 UI/날짜/접근성 레이블이 바뀝니다. 설치본 1.4.248의 프레임 shell은 초기 연결에서 locale을 받으므로 Orca 설정 변경이 열린 프레임 값에 전달되지 않으면 패널/탭을 다시 열거나 플러그인을 reload해야 합니다. 내부 bridge 메시지나 앱 설정 파일에는 접근하지 않습니다. Monaco 자체의 기본 메뉴·접힌 줄 안내 등 라이브러리 내장 문구는 현재 영어로 남습니다.
+
+브라우저 DEMO는 `navigator.language`를 기본으로 사용하고 상단 언어 선택 또는 `?lang=ko` / `?lang=en`으로 미리 볼 수 있습니다. 실제 Orca에서는 이 query override와 언어 선택을 제공하지 않습니다. 번역은 `src/i18n/en.json`(플러그인 기준)에 관리하며 한국어 원문을 메시지 키로 사용합니다. 언어를 추가할 때는 사전과 `messages.ts`의 지원 locale/사전 선택을 함께 확장하고 UI 및 안전 확인 문구 테스트를 추가합니다.
+
+검증: 한국어 회귀, 영어의 7개 커밋 메뉴/확인창, 영어 worker 오류·hard reset 경고, `en-GB` 날짜, Orca locale 우선순위, 미지원 언어 fallback과 언어 전환 시 Monaco 모델 유지 여부를 브라우저에서 확인합니다. 실제 Orca의 언어 설정을 시험 목적으로 변경하지 않습니다.
+
 ## 커밋 우클릭 작업
 
 커밋을 우클릭하거나 포커스 후 `Shift+F10`을 누릅니다. 메뉴의 작업은 **선택 커밋을 대상으로 현재 열린 로컬 워크트리에서** 실행됩니다.
@@ -44,7 +54,7 @@ UTF-8 파일당 768 KiB까지 텍스트 비교합니다. 바이너리·비 UTF-8
 
 UI/Monaco/editor worker는 모두 로컬 번들입니다. 일반 브라우저 preview는 명확히 표시된 **DEMO fixture**입니다. Git 데이터로 오인하지 마세요. 상단에서 로딩/오류/빈 상태와 테마도 확인할 수 있습니다.
 
-**검증 상태:** build/typecheck, Git·worker·패키징 테스트 28개, 브라우저 UI 테스트 15개, manifest validation과 plugin check가 통과했습니다. 사용자 승인 후 Orca 1.4.248의 실제 사이드바 연결·커밋 그래프·중앙 editor.open·document.session·Monaco diff를 확인했습니다. 다크/라이트 editor shot은 themeApplied/subscribed가 true이고 프레임 오류가 없었습니다. 다른 OS/버전/원격 호스트는 미검증입니다. 호스트 타입 생성은 설치본 선언 파일 누락으로 실패해 확인된 API 타입만 수동 관리합니다.
+**검증 상태:** build/typecheck, Git·worker·다국어·패키징 테스트 32개, 브라우저 UI 테스트 17개, manifest validation과 plugin check가 통과했습니다. 사용자 승인 후 Orca 1.4.248의 실제 사이드바 연결·커밋 그래프·중앙 editor.open·document.session·Monaco diff를 확인했습니다. 다크/라이트 editor shot은 themeApplied/subscribed가 true이고 프레임 오류가 없었습니다. 다른 OS/버전/원격 호스트는 미검증입니다. 호스트 타입 생성은 설치본 선언 파일 누락으로 실패해 확인된 API 타입만 수동 관리합니다.
 
 추가 변경 명령 검증: disposable Git 저장소에서 체크아웃/슬래시 브랜치/다른 worktree 점유/merge 설정/일반·merge 커밋 체리픽·리버트/reset 3모드·백업/rebase·충돌/만료된 상태·중복 실행/활성 workspace 경계/숨겨진 index 변경·ignored 충돌을 확인했습니다. 실제 Orca에서는 우클릭 메뉴와 병합 확인창을 렌더하고 실행 없이 닫았습니다. 실제 사용자 저장소의 변경 명령은 시험 실행하지 않았습니다. 독립 검토 3회에서 발견한 숨겨진 변경 검사·merge 설정 문제를 수정했고 마지막 rebase 검토에 추가 차단 지적은 없었습니다.
 

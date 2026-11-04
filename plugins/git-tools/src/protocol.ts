@@ -154,6 +154,7 @@ export interface DocumentSession {
 }
 // Narrow, manually maintained subset of the version-matched Orca authoring reference.
 export interface FrameApi {
+  locale?: string;
   on?<E extends 'theme' | 'workspace.changed'>(
     event: E,
     handler: (

@@ -552,3 +552,157 @@ test('host action executes a prepared token once and displays conflicts after re
     fixtureRepo.commits.length,
   );
 });
+
+test('preview language switches all plugin surfaces without replacing Monaco models', async ({
+  page,
+}, info) => {
+  await page.goto('/');
+  await expect(page.getByText('2개 변경', { exact: true })).toBeVisible();
+  const original = await page
+    .locator('.monaco-editor[role=code]')
+    .first()
+    .elementHandle();
+  await page.getByLabel('미리보기 언어').selectOption('en');
+  await expect(page.locator('html')).toHaveAttribute('lang', 'en');
+  await expect(page.getByLabel('Search commits')).toBeVisible();
+  await expect(page.locator('.commit-author').first()).toHaveText('서연');
+  await page.getByLabel('Preview theme').selectOption('dark');
+  await expect(page.getByText('2 changes', { exact: true })).toBeVisible();
+  await expect(page.getByLabel('Fold unchanged regions')).toBeChecked();
+  await expect(
+    page.getByText('HEAD → current disk contents.', { exact: false }),
+  ).toBeVisible();
+  await expect(
+    page.getByText('Current working tree · disk', { exact: true }),
+  ).toHaveCount(1);
+  for (const action of [
+    'Checkout…',
+    'Create branch here…',
+    'Merge into current branch…',
+    'Rebase current branch onto here…',
+    'Cherry-pick…',
+    'Revert…',
+    'Reset current branch to here…',
+  ]) {
+    await page
+      .getByRole('button', { name: /^Merge branch/ })
+      .click({ button: 'right' });
+    await page.getByRole('menuitem', { name: action, exact: true }).click();
+    await expect(page.getByRole('dialog')).toContainText('Target commit');
+    await expect(page.getByRole('dialog')).toContainText(
+      'Requires no changed or untracked files.',
+    );
+    await page.getByRole('button', { name: 'Cancel', exact: true }).click();
+  }
+  await page.screenshot({ path: info.outputPath('english.png') });
+  expect(await original!.evaluate((node) => node.isConnected)).toBe(true);
+  await page.getByLabel('Preview language').selectOption('ko');
+  await expect(page.getByText('2개 변경', { exact: true })).toBeVisible();
+  expect(await original!.evaluate((node) => node.isConnected)).toBe(true);
+  await page.goto('/?lang=en&fixture=error');
+  await expect(page.getByRole('alert')).toContainText('DEMO error');
+});
+test('Orca locale takes precedence over navigator and preview overrides, including worker errors and confirmations', async ({
+  page,
+}, info) => {
+  const { fixtureRepo } = await import('../src/ui/fixture');
+  await page.addInitScript((repo) => {
+    let locale = 'en-GB';
+    let rejected = false;
+    window.addEventListener('test-locale', (e) => {
+      locale = (e as CustomEvent).detail;
+    });
+    window.orca = {
+      get locale() {
+        return locale;
+      },
+      api: { major: 1, minor: 3 },
+      host: { has: () => true },
+      plugin: {
+        request: async <T>(name: string, raw: unknown) => {
+          if (name === 'active')
+            return {
+              status: 'connected',
+              repository: repo,
+              workspace: {
+                id: 'fixture',
+                name: 'Fixture',
+                path: repo.root,
+                branch: repo.branch,
+              },
+            } as T;
+          if (name === 'changes')
+            return {
+              comparison: { kind: 'working' },
+              files: [],
+              left: 'HEAD',
+              right: '현재 작업 트리 · 디스크',
+            } as T;
+          if (name === 'prepare') {
+            if (!rejected) {
+              rejected = true;
+              throw new Error(
+                '커밋되지 않은 변경 또는 untracked 파일이 있습니다. 먼저 보관/커밋/정리하세요. 자동 stash나 변경 폐기는 하지 않습니다.',
+              );
+            }
+            const operation = (raw as { operation: { commit: string } })
+              .operation;
+            return {
+              token: 'preview-only',
+              action: 'reset',
+              root: repo.root,
+              head: repo.head,
+              currentBranch: repo.branch,
+              target: operation.commit,
+              command: ['reset', '--hard', operation.commit],
+              summary:
+                '현재 브랜치의 끝을 선택 커밋으로 옮깁니다. 공유한 브랜치의 이력을 바꿀 수 있습니다. Hard: index와 작업 트리를 선택 커밋 내용으로 바꿉니다. 경로를 막는 untracked 파일이 삭제될 수 있습니다.',
+              confirmation: operation.commit.slice(0, 7),
+            } as T;
+          }
+          throw new Error('Unexpected operation');
+        },
+      },
+    };
+  }, fixtureRepo);
+  await page.setViewportSize({ width: 360, height: 740 });
+  await page.goto('/?lang=ko');
+  await expect(page.getByLabel('Search commits')).toBeVisible();
+  await expect(page.locator('html')).toHaveAttribute('lang', 'en-GB');
+  await expect(page.getByLabel('Preview language')).toHaveCount(0);
+  const date = await page.locator('.commit-date').first().innerText();
+  expect(date).toMatch(/^04\/11\/2026$/);
+  await page
+    .getByRole('button', { name: /^Merge branch/ })
+    .click({ button: 'right' });
+  await page
+    .getByRole('menuitem', { name: 'Reset current branch to here…' })
+    .click();
+  await page.getByLabel('Reset mode').selectOption('hard');
+  await page.getByRole('button', { name: 'Review target and impact' }).click();
+  await expect(page.getByRole('alert')).toContainText(
+    'There are uncommitted changes or untracked files.',
+  );
+  await page.getByRole('button', { name: 'Review target and impact' }).click();
+  await expect(page.getByRole('dialog')).toContainText(
+    'Shared branch history may be rewritten',
+  );
+  await expect(page.getByRole('dialog')).toContainText(
+    'untracked files may be deleted',
+  );
+  await expect(
+    page.getByRole('button', { name: 'Confirm and run' }),
+  ).toBeDisabled();
+  await page.screenshot({ path: info.outputPath('english-confirmation.png') });
+  await page.getByRole('button', { name: 'Cancel', exact: true }).click();
+  await page.evaluate(() =>
+    window.dispatchEvent(new CustomEvent('test-locale', { detail: 'ko-KR' })),
+  );
+  await expect(page.getByLabel('커밋 검색')).toBeVisible();
+  await expect(page.locator('html')).toHaveAttribute('lang', 'ko-KR');
+  await page.evaluate(() =>
+    window.dispatchEvent(new CustomEvent('test-locale', { detail: 'fr-FR' })),
+  );
+  await expect(page.getByLabel('Search commits')).toBeVisible();
+  await expect(page.locator('html')).toHaveAttribute('lang', 'en-US');
+});

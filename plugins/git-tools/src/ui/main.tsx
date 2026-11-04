@@ -1,3 +1,10 @@
+import {
+  t,
+  useLocale,
+  formatDate,
+  formatNumber,
+  setPreviewLocale,
+} from './i18n';
 import { StrictMode, useEffect, useMemo, useRef, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import type {
@@ -28,6 +35,7 @@ const colors = [
 ];
 const message = (e: unknown) => (e instanceof Error ? e.message : String(e));
 function App() {
+  const locale = useLocale();
   const [repo, setRepo] = useState<Repository | null>(
     demo
       ? scenario === 'empty'
@@ -314,21 +322,21 @@ function App() {
   const files = (
     <section className="files">
       <div className="section-heading">
-        <b>변경 파일</b>
-        <span>{set?.files.length ?? 0}</span>
+        <b>{t('변경 파일')}</b>
+        <span>{formatNumber(set?.files.length ?? 0)}</span>
       </div>
       <input
-        aria-label="파일 검색"
-        placeholder="파일 이름으로 찾기"
+        aria-label={t('파일 검색')}
+        placeholder={t('파일 이름으로 찾기')}
         value={fileSearch}
         onChange={(e) => setFileSearch(e.target.value)}
       />
       {loadingFiles ? (
         <p className="state" role="status">
-          변경 파일을 읽는 중…
+          {t('변경 파일을 읽는 중…')}{' '}
         </p>
       ) : set?.files.length === 0 ? (
-        <p className="state">이 비교 기준에는 변경 파일이 없습니다.</p>
+        <p className="state">{t('이 비교 기준에는 변경 파일이 없습니다.')}</p>
       ) : (
         <div className="file-list">
           {set?.files
@@ -355,7 +363,7 @@ function App() {
                       f.staged && 'staged',
                       f.unstaged && 'unstaged',
                       f.untracked && 'untracked',
-                      f.conflict && '충돌',
+                      f.conflict && t('충돌'),
                     ]
                       .filter(Boolean)
                       .join(' · ')}
@@ -367,7 +375,7 @@ function App() {
             set.files.length > 0 &&
             !set.files.some((f) =>
               f.path.toLowerCase().includes(fileSearch.toLowerCase()),
-            ) && <p className="state">검색 결과가 없습니다.</p>}
+            ) && <p className="state">{t('검색 결과가 없습니다.')}</p>}
         </div>
       )}
     </section>
@@ -378,31 +386,40 @@ function App() {
     >
       {demo && (
         <div className="demo-banner">
-          <b>DEMO</b> 실제 Git 데이터 아님 · 브라우저 fixture
+          <b>DEMO</b> {t('실제 Git 데이터 아님 · 브라우저 fixture')}{' '}
           <select
-            aria-label="미리보기 상태"
+            aria-label={t('미리보기 상태')}
             value={scenario}
             onChange={(e) => {
-              location.search =
-                e.target.value === 'default'
-                  ? ''
-                  : `?fixture=${e.target.value}`;
+              const url = new URL(location.href);
+              if (e.target.value === 'default')
+                url.searchParams.delete('fixture');
+              else url.searchParams.set('fixture', e.target.value);
+              location.search = url.search;
             }}
           >
-            <option value="default">일반 변경</option>
-            <option value="empty">빈 저장소</option>
-            <option value="unchanged">변경 없음</option>
-            <option value="loading">로딩</option>
-            <option value="error">오류</option>
+            <option value="default">{t('일반 변경')}</option>
+            <option value="empty">{t('빈 저장소')}</option>
+            <option value="unchanged">{t('변경 없음')}</option>
+            <option value="loading">{t('로딩')}</option>
+            <option value="error">{t('오류')}</option>
           </select>
           <select
-            aria-label="미리보기 테마"
+            aria-label={t('미리보기 언어')}
+            value={locale.startsWith('ko') ? 'ko' : 'en'}
+            onChange={(e) => setPreviewLocale(e.target.value)}
+          >
+            <option value="ko">한국어</option>
+            <option value="en">English</option>
+          </select>
+          <select
+            aria-label={t('미리보기 테마')}
             value={theme}
             onChange={(e) => setTheme(e.target.value)}
           >
-            <option value="system">시스템 테마</option>
-            <option value="dark">다크</option>
-            <option value="light">라이트</option>
+            <option value="system">{t('시스템 테마')}</option>
+            <option value="dark">{t('다크')}</option>
+            <option value="light">{t('라이트')}</option>
           </select>
         </div>
       )}
@@ -411,7 +428,7 @@ function App() {
           <span className="brand">⑂</span>
           <h1>{editorMode ? 'Git Diff' : 'Git Logs'}</h1>
           <span className="subtle">
-            {editorMode ? 'READ ONLY DIFF' : 'LOCAL GIT'}
+            {editorMode ? t('읽기 전용 비교') : t('로컬 Git')}
           </span>
         </div>
         <button
@@ -425,14 +442,14 @@ function App() {
                 ? refreshDemo()
                 : setAutoTick((n) => n + 1)
           }
-          title="새로고침"
+          title={t('새로고침')}
         >
-          ↻ 새로고침
+          {t('↻ 새로고침')}{' '}
         </button>
       </header>
       {error && (
         <div className="error" role="alert">
-          {error}
+          {t(error)}
         </div>
       )}
       <div className="workspace-layout">
@@ -440,18 +457,18 @@ function App() {
           <aside className="history">
             {!demo && (
               <div className="workspace-connect">
-                <small role="status">{connectionNote}</small>
+                <small role="status">{t(connectionNote)}</small>
                 {choices.length > 0 && (
                   <select
-                    aria-label="연결할 워크트리"
+                    aria-label={t('연결할 워크트리')}
                     value=""
                     disabled={busy || actionBusy}
                     onChange={(e) => connectActive.current(e.target.value)}
                   >
-                    <option value="">워크트리 선택</option>
+                    <option value="">{t('워크트리 선택')}</option>
                     {choices.map((w) => (
                       <option key={w.id} value={w.id}>
-                        {w.name} · {w.branch ?? '브랜치 없음'} · {w.path}
+                        {w.name} · {w.branch ?? t('브랜치 없음')} · {w.path}
                       </option>
                     ))}
                   </select>
@@ -466,17 +483,17 @@ function App() {
                 </div>
                 <div className="history-controls">
                   <select
-                    aria-label="브랜치 범위"
+                    aria-label={t('브랜치 범위')}
                     value={all ? 'all' : 'current'}
                     onChange={(e) => setAll(e.target.value === 'all')}
                     disabled={busy || actionBusy}
                   >
-                    <option value="current">현재 브랜치</option>
-                    <option value="all">전체 브랜치</option>
+                    <option value="current">{t('현재 브랜치')}</option>
+                    <option value="all">{t('전체 브랜치')}</option>
                   </select>
                   <input
-                    aria-label="커밋 검색"
-                    placeholder="커밋 · 작성자 · 해시 검색"
+                    aria-label={t('커밋 검색')}
+                    placeholder={t('커밋 · 작성자 · 해시 검색')}
                     value={search}
                     onChange={(e) => setSearch(e.target.value)}
                   />
@@ -485,11 +502,15 @@ function App() {
                   className={`working-row ${comparison.kind === 'working' ? 'selected' : ''}`}
                   onClick={() => setComparison({ kind: 'working' })}
                 >
-                  ◉ 작업 트리 <small>HEAD ↔ 현재 디스크</small>
+                  {t('◉ 작업 트리')} <small>{t('HEAD ↔ 현재 디스크')}</small>
                 </button>
                 <div className="section-heading">
-                  <b>{search ? '검색 결과 · 그래프 생략' : '커밋 그래프'}</b>
-                  <span>{visible.length} / 최대 200</span>
+                  <b>
+                    {search ? t('검색 결과 · 그래프 생략') : t('커밋 그래프')}
+                  </b>
+                  <span>
+                    {formatNumber(visible.length)} {t('/ 최대 200')}
+                  </span>
                 </div>
                 <div className="commit-list">
                   {visible.map(({ commit, row }) => (
@@ -593,9 +614,9 @@ function App() {
                           <time
                             className="commit-date"
                             dateTime={commit.date}
-                            title={new Date(commit.date).toLocaleString()}
+                            title={formatDate(commit.date, true)}
                           >
-                            {new Date(commit.date).toLocaleDateString()}
+                            {formatDate(commit.date)}
                           </time>
                           <code className="commit-hash" title={commit.hash}>
                             {commit.hash.slice(0, 7)}
@@ -607,8 +628,10 @@ function App() {
                   {!visible.length && (
                     <p className="state">
                       {search
-                        ? '일치하는 커밋이 없습니다.'
-                        : '커밋이 없습니다. 최초 커밋 전에도 작업 트리를 비교할 수 있습니다.'}
+                        ? t('일치하는 커밋이 없습니다.')
+                        : t(
+                            '커밋이 없습니다. 최초 커밋 전에도 작업 트리를 비교할 수 있습니다.',
+                          )}
                     </p>
                   )}
                 </div>
@@ -616,20 +639,19 @@ function App() {
                   {selected ? (
                     <>
                       <div className="section-heading">
-                        <b>커밋 정보</b>
+                        <b>{t('커밋 정보')}</b>
                         <code>{selected.hash.slice(0, 7)}</code>
                       </div>
                       <pre>{selected.message}</pre>
                       <small>
-                        {selected.author} ·{' '}
-                        {new Date(selected.date).toLocaleString()}
+                        {selected.author} · {formatDate(selected.date, true)}
                       </small>
                       <code className="hash">{selected.hash}</code>
                       {selected.parents.length > 1 && (
                         <label>
-                          Merge 부모
+                          {t('Merge 부모')}{' '}
                           <select
-                            aria-label="비교할 merge 부모"
+                            aria-label={t('비교할 merge 부모')}
                             value={
                               comparison.kind === 'commit'
                                 ? comparison.parent
@@ -646,34 +668,37 @@ function App() {
                           >
                             {selected.parents.map((p, i) => (
                               <option key={p} value={p}>
-                                부모 {i + 1} · {p.slice(0, 7)}
+                                {t('부모')} {i + 1} · {p.slice(0, 7)}
                               </option>
                             ))}
                           </select>
                         </label>
                       )}
                       {selected.parents.length === 0 && (
-                        <p>최초 커밋 · 빈 트리와 비교</p>
+                        <p>{t('최초 커밋 · 빈 트리와 비교')}</p>
                       )}
                     </>
                   ) : (
                     <p>
-                      HEAD → 현재 디스크 최종 내용.
+                      {t('HEAD → 현재 디스크 최종 내용.')} <br />
+                      {t(
+                        'staged: HEAD↔index · unstaged: index↔디스크 · untracked: index에 없는 파일.',
+                      )}{' '}
                       <br />
-                      staged: HEAD↔index · unstaged: index↔디스크 · untracked:
-                      index에 없는 파일.
-                      <br />
-                      서로 상쇄되어 HEAD와 같은 변경은 목록에서 제외됩니다.
+                      {t(
+                        '서로 상쇄되어 HEAD와 같은 변경은 목록에서 제외됩니다.',
+                      )}{' '}
                     </p>
                   )}
                 </section>
               </>
             ) : (
               <div className="state">
-                <h2>열린 워크트리 연결</h2>
+                <h2>{t('열린 워크트리 연결')}</h2>
                 <p>
-                  Orca에서 로컬 Git 워크트리를 열면 자동으로 연결됩니다. SSH는
-                  지원하지 않습니다.
+                  {t(
+                    'Orca에서 로컬 Git 워크트리를 열면 자동으로 연결됩니다. SSH는 지원하지 않습니다.',
+                  )}{' '}
                 </p>
               </div>
             )}
@@ -686,11 +711,12 @@ function App() {
                     disabled={!workspace || !set || busy}
                     onClick={() => void openEditor()}
                   >
-                    중앙 Diff 탭 열기 ↗
+                    {t('중앙 Diff 탭 열기 ↗')}{' '}
                   </button>
                   <small>
-                    저장소의 .orca/git-tools/에 비교 문서를 생성합니다. Git에서
-                    무시되지 않으면 untracked로 표시됩니다.
+                    {t(
+                      '저장소의 .orca/git-tools/에 비교 문서를 생성합니다. Git에서 무시되지 않으면 untracked로 표시됩니다.',
+                    )}{' '}
                   </small>
                 </div>
               </>
@@ -701,20 +727,20 @@ function App() {
           <section className="comparison">
             <div className="comparison-heading">
               <div>
-                <span className="eyebrow">SIDE BY SIDE</span>
+                <span className="eyebrow">{t('좌우 비교')}</span>
                 <h2 title={file}>
-                  {file ? file.split('/').pop() : '변경 파일 비교'}
+                  {file ? file.split('/').pop() : t('변경 파일 비교')}
                 </h2>
                 <small title={file}>{file}</small>
               </div>
-              <span className="readonly">읽기 전용</span>
+              <span className="readonly">{t('읽기 전용')}</span>
             </div>
             <div className="diff-layout">
               {files}
               <div className="diff-content">
                 {loadingFiles || loadingDiff ? (
                   <div className="state" role="status">
-                    비교 내용을 읽는 중…
+                    {t('비교 내용을 읽는 중…')}{' '}
                   </div>
                 ) : data && set ? (
                   <DiffView data={data} left={set.left} right={set.right} />
@@ -722,13 +748,14 @@ function App() {
                   <div className="state">
                     <h3>
                       {error
-                        ? '비교를 불러올 수 없습니다'
-                        : '비교할 파일을 선택하세요'}
+                        ? t('비교를 불러올 수 없습니다')
+                        : t('비교할 파일을 선택하세요')}
                     </h3>
                     {editorMode && (
                       <p>
-                        사이드바에서 문서에 기록된 저장소에 연결한 후
-                        새로고침하세요.
+                        {t(
+                          '사이드바에서 문서에 기록된 저장소에 연결한 후 새로고침하세요.',
+                        )}{' '}
                       </p>
                     )}
                   </div>
@@ -741,19 +768,19 @@ function App() {
       <footer>
         <span>
           {busy
-            ? 'Git 조회 중…'
+            ? t('Git 조회 중…')
             : demo
-              ? 'FIXTURE PREVIEW'
+              ? t('브라우저 미리보기')
               : actionBusy
-                ? 'Git 변경 명령 실행 중…'
+                ? t('Git 변경 명령 실행 중…')
                 : editorMode
-                  ? 'LOCAL GIT · 읽기 전용 비교'
-                  : 'LOCAL GIT'}
+                  ? t('LOCAL GIT · 읽기 전용 비교')
+                  : t('로컬 Git')}
         </span>
         <span>
           {editorMode
-            ? '문서에 기록된 기준으로 비교 · 동기 스크롤'
-            : '커밋 우클릭 · 작업 메뉴 (Shift+F10)'}
+            ? t('문서에 기록된 기준으로 비교 · 동기 스크롤')
+            : t('커밋 우클릭 · 작업 메뉴 (Shift+F10)')}
         </span>
       </footer>
       {!editorMode && repo && (

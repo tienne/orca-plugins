@@ -5,18 +5,25 @@ import { join } from 'node:path';
 import { spawnSync } from 'node:child_process';
 const dir = await mkdtemp(join(tmpdir(), 'git-tools-tests-'));
 try {
-  const outfile = join(dir, 'tests.mjs');
-  await build({
-    entryPoints: ['plugins/git-tools/src/worker/git.test.ts'],
-    outfile,
-    bundle: true,
-    platform: 'node',
-    format: 'esm',
-    target: 'node22',
-  });
+  const suites = ['worker/git', 'i18n/messages'];
+  const outfiles = suites.map((suite) =>
+    join(dir, suite.replace('/', '-') + '.test.mjs'),
+  );
+  await Promise.all(
+    suites.map((suite, index) =>
+      build({
+        entryPoints: [`plugins/git-tools/src/${suite}.test.ts`],
+        outfile: outfiles[index],
+        bundle: true,
+        platform: 'node',
+        format: 'esm',
+        target: 'node22',
+      }),
+    ),
+  );
   const result = spawnSync(
     process.execPath,
-    ['--test', outfile, 'scripts/validate-plugin-artifact.test.mjs'],
+    ['--test', ...outfiles, 'scripts/validate-plugin-artifact.test.mjs'],
     {
       stdio: 'inherit',
     },

@@ -1,3 +1,4 @@
+import { t, useLocale, changesLabel, formatNumber } from './i18n';
 import { useEffect, useRef, useState } from 'react';
 import '@git-tools/codicons.css';
 import * as monaco from 'monaco-editor/editor/editor.api.js';
@@ -24,6 +25,7 @@ export function DiffView({
   left: string;
   right: string;
 }) {
+  const locale = useLocale();
   const container = useRef<HTMLDivElement>(null);
   const editor = useRef<monaco.editor.IStandaloneDiffEditor | null>(null);
   const [ignore, setIgnore] = useState(false);
@@ -72,8 +74,8 @@ export function DiffView({
         wordWrap: 'off',
         padding: { top: 14 },
         accessibilityVerbose: false,
-        originalAriaLabel: '이전 버전 · 읽기 전용',
-        modifiedAriaLabel: '이후 버전 · 읽기 전용',
+        originalAriaLabel: t('이전 버전 · 읽기 전용'),
+        modifiedAriaLabel: t('이후 버전 · 읽기 전용'),
       });
       const element = container.current;
       let lastWidth = -1;
@@ -96,10 +98,10 @@ export function DiffView({
       editor.current = instance;
       instance
         .getOriginalEditor()
-        .updateOptions({ ariaLabel: '이전 버전 · 읽기 전용' });
+        .updateOptions({ ariaLabel: t('이전 버전 · 읽기 전용') });
       instance
         .getModifiedEditor()
-        .updateOptions({ ariaLabel: '이후 버전 · 읽기 전용' });
+        .updateOptions({ ariaLabel: t('이후 버전 · 읽기 전용') });
       const lang = /\.[cm]?[jt]sx?$/.test(data.file.path)
         ? 'typescript'
         : 'plaintext';
@@ -135,24 +137,32 @@ export function DiffView({
       hideUnchangedRegions: { enabled: fold },
     });
   }, [ignore, fold]);
+  useEffect(() => {
+    editor.current
+      ?.getOriginalEditor()
+      .updateOptions({ ariaLabel: t('이전 버전 · 읽기 전용') });
+    editor.current
+      ?.getModifiedEditor()
+      .updateOptions({ ariaLabel: t('이후 버전 · 읽기 전용') });
+  }, [locale]);
   return (
-    <section className="diff-view" aria-label="좌우 코드 비교">
+    <section className="diff-view" aria-label={t('좌우 코드 비교')}>
       <div className="diff-toolbar">
-        <span className="readonly">읽기 전용</span>
-        <span>{count}개 변경</span>
+        <span className="readonly">{t('읽기 전용')}</span>
+        <span>{changesLabel(count)}</span>
         <button
           onClick={() => editor.current?.goToDiff('previous')}
           disabled={!count}
-          title="이전 변경"
+          title={t('이전 변경')}
         >
-          ↑ 이전
+          {t('↑ 이전')}{' '}
         </button>
         <button
           onClick={() => editor.current?.goToDiff('next')}
           disabled={!count}
-          title="다음 변경"
+          title={t('다음 변경')}
         >
-          ↓ 다음
+          {t('↓ 다음')}{' '}
         </button>
         <label>
           <input
@@ -160,7 +170,7 @@ export function DiffView({
             checked={fold}
             onChange={(e) => setFold(e.target.checked)}
           />
-          변경 없는 영역 접기
+          {t('변경 없는 영역 접기')}{' '}
         </label>
         <label>
           <input
@@ -168,26 +178,26 @@ export function DiffView({
             checked={ignore}
             onChange={(e) => setIgnore(e.target.checked)}
           />
-          줄 앞뒤 공백 무시
+          {t('줄 앞뒤 공백 무시')}{' '}
         </label>
       </div>
       <div className="side-labels">
         <div>
-          <b>이전</b>
-          <span title={left}>{left}</span>
+          <b>{t('이전')}</b>
+          <span title={t(left)}>{t(left)}</span>
           <small>
             {data.original.kind === 'text' && !data.original.bytes
-              ? '빈 파일 · 0 B'
-              : kindLabel[data.original.kind]}
+              ? t('빈 파일 · 0 B')
+              : t(kindLabel[data.original.kind])}
           </small>
         </div>
         <div>
-          <b>이후</b>
-          <span title={right}>{right}</span>
+          <b>{t('이후')}</b>
+          <span title={t(right)}>{t(right)}</span>
           <small>
             {data.modified.kind === 'text' && !data.modified.bytes
-              ? '빈 파일 · 0 B'
-              : kindLabel[data.modified.kind]}
+              ? t('빈 파일 · 0 B')
+              : t(kindLabel[data.modified.kind])}
           </small>
         </div>
       </div>
@@ -195,24 +205,26 @@ export function DiffView({
         <div className="state">
           <h3>
             {data.file.conflict
-              ? '해결되지 않은 충돌'
-              : '텍스트 비교를 표시할 수 없습니다'}
+              ? t('해결되지 않은 충돌')
+              : t('텍스트 비교를 표시할 수 없습니다')}
           </h3>
           <p>
-            좌: {kindLabel[data.original.kind]} (
-            {data.original.bytes.toLocaleString()} B)
+            {t('좌:')} {t(kindLabel[data.original.kind])} (
+            {formatNumber(data.original.bytes)} B)
           </p>
           <p>
-            우: {kindLabel[data.modified.kind]} (
-            {data.modified.bytes.toLocaleString()} B)
+            {t('우:')} {t(kindLabel[data.modified.kind])} (
+            {formatNumber(data.modified.bytes)} B)
           </p>
           <p>
-            이 파일의 내용을 텍스트로 추정하거나 병합 결과로 표시하지 않습니다.
+            {t(
+              '이 파일의 내용을 텍스트로 추정하거나 병합 결과로 표시하지 않습니다.',
+            )}{' '}
           </p>
         </div>
       ) : error ? (
         <div className="state error" role="alert">
-          Monaco 초기화 실패: {error}
+          {t('Monaco 초기화 실패:')} {t(error)}
         </div>
       ) : (
         <div className="monaco-container" ref={container} />

@@ -1,3 +1,4 @@
+import { t, useLocale } from './i18n';
 import { useEffect, useRef, useState } from 'react';
 import type {
   Commit,
@@ -42,6 +43,7 @@ export function CommitActions({
   changed: () => Promise<void>;
   running: (value: boolean) => void;
 }) {
+  useLocale();
   const demo = !window.orca;
   const [target, setTarget] = useState<Commit | null>(null);
   const [action, setAction] = useState<GitAction>('checkout');
@@ -54,6 +56,7 @@ export function CommitActions({
   const [confirmation, setConfirmation] = useState('');
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
+  const [refreshError, setRefreshError] = useState('');
   const [result, setResult] = useState<OperationResult | null>(null);
   const dialog = useRef<HTMLDialogElement>(null);
   const menuRef = useRef<HTMLDivElement>(null);
@@ -88,6 +91,7 @@ export function CommitActions({
     setConfirmation('');
     setError('');
     setResult(null);
+    setRefreshError('');
     closeMenu();
   }
   async function prepare() {
@@ -160,13 +164,7 @@ export function CommitActions({
         try {
           await changed();
         } catch (e) {
-          setResult({
-            ...response,
-            message:
-              response.message +
-              '\n그래프 새로고침 실패: ' +
-              (e instanceof Error ? e.message : String(e)),
-          });
+          setRefreshError(e instanceof Error ? e.message : String(e));
         }
       }
     } catch (e) {
@@ -186,7 +184,7 @@ export function CommitActions({
           <div
             ref={menuRef}
             role="menu"
-            aria-label="커밋 작업"
+            aria-label={t('커밋 작업')}
             className="commit-menu"
             style={{
               left: Math.max(8, Math.min(menu.x, window.innerWidth - 260)),
@@ -216,12 +214,14 @@ export function CommitActions({
               ]?.focus();
             }}
           >
-            <small>{menu.commit.hash.slice(0, 7)} · 커밋 작업</small>
+            <small>
+              {menu.commit.hash.slice(0, 7)} {t('· 커밋 작업')}
+            </small>
             {menuGroups.map((group) => (
               <div
                 key={group.label}
                 role="group"
-                aria-label={group.label}
+                aria-label={t(group.label)}
                 className="commit-menu-group"
               >
                 {group.actions.map((item) => (
@@ -230,7 +230,7 @@ export function CommitActions({
                     role="menuitem"
                     onClick={() => choose(item)}
                   >
-                    {labels[item]}
+                    {t(labels[item])}
                   </button>
                 ))}
               </div>
@@ -250,20 +250,20 @@ export function CommitActions({
         {target && (
           <>
             <h2 id="operation-title">
-              {labels[action].replace('…', '')}
+              {t(labels[action]).replace('…', '')}
               {demo ? ' · DEMO' : ''}
             </h2>
             <p className="operation-subject">{target.message.split('\n')[0]}</p>
             <dl>
-              <dt>저장소</dt>
+              <dt>{t('저장소')}</dt>
               <dd>{repo.root}</dd>
-              <dt>현재 브랜치</dt>
+              <dt>{t('현재 브랜치')}</dt>
               <dd>{plan?.currentBranch ?? repo.branch}</dd>
-              <dt>현재 HEAD</dt>
+              <dt>{t('현재 HEAD')}</dt>
               <dd>
                 <code>{plan?.head ?? repo.head}</code>
               </dd>
-              <dt>대상 커밋</dt>
+              <dt>{t('대상 커밋')}</dt>
               <dd>
                 <code>{target.hash}</code>
               </dd>
@@ -272,9 +272,9 @@ export function CommitActions({
               <>
                 {action === 'branch' && (
                   <label>
-                    새 브랜치 이름
+                    {t('새 브랜치 이름')}{' '}
                     <input
-                      aria-label="새 브랜치 이름"
+                      aria-label={t('새 브랜치 이름')}
                       value={branch}
                       onChange={(e) => setBranch(e.target.value)}
                       disabled={busy}
@@ -283,14 +283,14 @@ export function CommitActions({
                 )}
                 {action === 'checkout' && (
                   <label>
-                    체크아웃 대상
+                    {t('체크아웃 대상')}{' '}
                     <select
-                      aria-label="체크아웃 대상"
+                      aria-label={t('체크아웃 대상')}
                       value={branch}
                       onChange={(e) => setBranch(e.target.value)}
                       disabled={busy}
                     >
-                      <option value="">선택 커밋 · Detached HEAD</option>
+                      <option value="">{t('선택 커밋 · Detached HEAD')}</option>
                       {(repo.localBranches ?? [])
                         .filter((b) => b.hash === target.hash)
                         .map((b) => (
@@ -300,16 +300,17 @@ export function CommitActions({
                         ))}
                     </select>
                     <small>
-                      로컬 브랜치는 해당 커밋을 가리킬 때만 전환합니다. 원격
-                      브랜치 생성은 지원하지 않습니다.
+                      {t(
+                        '로컬 브랜치는 해당 커밋을 가리킬 때만 전환합니다. 원격 브랜치 생성은 지원하지 않습니다.',
+                      )}{' '}
                     </small>
                   </label>
                 )}
                 {action === 'reset' && (
                   <label>
-                    리셋 모드
+                    {t('리셋 모드')}{' '}
                     <select
-                      aria-label="리셋 모드"
+                      aria-label={t('리셋 모드')}
                       value={resetMode}
                       onChange={(e) =>
                         setResetMode(e.target.value as typeof resetMode)
@@ -317,13 +318,13 @@ export function CommitActions({
                       disabled={busy}
                     >
                       <option value="soft">
-                        Soft · index와 파일 유지 (staged)
+                        {t('Soft · index와 파일 유지 (staged)')}{' '}
                       </option>
                       <option value="mixed">
-                        Mixed · 파일 유지 (unstaged)
+                        {t('Mixed · 파일 유지 (unstaged)')}{' '}
                       </option>
                       <option value="hard">
-                        Hard · index와 작업 트리 교체
+                        {t('Hard · index와 작업 트리 교체')}{' '}
                       </option>
                     </select>
                   </label>
@@ -331,28 +332,31 @@ export function CommitActions({
                 {(action === 'cherry-pick' || action === 'revert') &&
                   target.parents.length > 1 && (
                     <label>
-                      merge 기준 부모
+                      {t('merge 기준 부모')}{' '}
                       <select
-                        aria-label="merge 기준 부모"
+                        aria-label={t('merge 기준 부모')}
                         value={mainline}
                         onChange={(e) => setMainline(e.target.value)}
                         disabled={busy}
                       >
-                        <option value="">부모를 선택하세요</option>
+                        <option value="">{t('부모를 선택하세요')}</option>
                         {target.parents.map((p, i) => (
                           <option key={p} value={i + 1}>
-                            부모 {i + 1} · {p.slice(0, 7)}
+                            {t('부모')} {i + 1} · {p.slice(0, 7)}
                           </option>
                         ))}
                       </select>
                       <small>
-                        선택한 부모에 대한 merge 변경을 적용/취소합니다.
+                        {t(
+                          '선택한 부모에 대한 merge 변경을 적용/취소합니다.',
+                        )}{' '}
                       </small>
                     </label>
                   )}
                 <p className="operation-note">
-                  변경 파일과 untracked 파일이 없는 상태에서만 실행합니다. 충돌
-                  해결·계속·중단은 터미널에서 처리합니다.
+                  {t(
+                    '변경 파일과 untracked 파일이 없는 상태에서만 실행합니다. 충돌 해결·계속·중단은 터미널에서 처리합니다.',
+                  )}{' '}
                 </p>
               </>
             ) : (
@@ -364,21 +368,21 @@ export function CommitActions({
                       : 'operation-note'
                   }
                 >
-                  {plan.summary}
+                  {t(plan.summary)}
                 </p>
                 <pre className="operation-command">
                   git {plan.command.join(' ')}
                 </pre>
                 {plan.backupRef && (
                   <p className="operation-note">
-                    이전 HEAD 백업: <code>{plan.backupRef}</code>
+                    {t('이전 HEAD 백업:')} <code>{plan.backupRef}</code>
                   </p>
                 )}
                 {plan.confirmation && (
                   <label>
-                    Hard reset 확인: <code>{plan.confirmation}</code> 입력
+                    {t('Hard reset 확인: {p0} 입력', { p0: plan.confirmation })}
                     <input
-                      aria-label="Hard reset 확인 해시"
+                      aria-label={t('Hard reset 확인 해시')}
                       autoComplete="off"
                       value={confirmation}
                       onChange={(e) => setConfirmation(e.target.value)}
@@ -387,26 +391,31 @@ export function CommitActions({
                   </label>
                 )}
                 <small>
-                  확인 이후 HEAD·브랜치·작업 파일이 바뀌면 거절합니다. Git
-                  hooks와 커밋 서명은 실행하지 않습니다.
+                  {t(
+                    '확인 이후 HEAD·브랜치·작업 파일이 바뀌면 거절합니다. Git hooks와 커밋 서명은 실행하지 않습니다.',
+                  )}{' '}
                 </small>
               </>
             )}
             {error && (
               <p role="alert" className="operation-warning">
-                {error}
+                {t(error)}
               </p>
             )}
             <div className="operation-buttons">
               <button disabled={busy} onClick={dismiss}>
-                취소
+                {t('취소')}{' '}
               </button>
               {plan ? (
                 <button
                   disabled={busy || confirmation !== plan.confirmation}
                   onClick={() => void execute()}
                 >
-                  {busy ? '실행 중…' : demo ? 'DEMO 실행' : '확인하고 실행'}
+                  {busy
+                    ? t('실행 중…')
+                    : demo
+                      ? t('DEMO 실행')
+                      : t('확인하고 실행')}
                 </button>
               ) : (
                 <button
@@ -419,7 +428,7 @@ export function CommitActions({
                   }
                   onClick={() => void prepare()}
                 >
-                  {busy ? '검사 중…' : '대상과 영향 확인'}
+                  {busy ? t('검사 중…') : t('대상과 영향 확인')}
                 </button>
               )}
             </div>
@@ -431,17 +440,25 @@ export function CommitActions({
           className={`operation-result operation-${result.status}`}
           role="status"
         >
-          <button aria-label="명령 결과 닫기" onClick={() => setResult(null)}>
+          <button
+            aria-label={t('명령 결과 닫기')}
+            onClick={() => setResult(null)}
+          >
             ×
           </button>
           <b>
             {result.status === 'success'
-              ? 'Git 작업 완료'
+              ? t('Git 작업 완료')
               : result.status === 'conflict'
-                ? 'Git 충돌 · 터미널 조치 필요'
-                : 'Git 작업 미완료'}
+                ? t('Git 충돌 · 터미널 조치 필요')
+                : t('Git 작업 미완료')}
           </b>
-          <pre>{result.message}</pre>
+          <pre>{t(result.message)}</pre>
+          {refreshError && (
+            <p role="alert">
+              {t('그래프 새로고침 실패:')} {t(refreshError)}
+            </p>
+          )}
           {result.conflicts.map((path) => (
             <code key={path}>
               {path}
@@ -450,7 +467,7 @@ export function CommitActions({
           ))}
           {result.backupRef && (
             <p>
-              이전 HEAD 백업: <code>{result.backupRef}</code>
+              {t('이전 HEAD 백업:')} <code>{result.backupRef}</code>
             </p>
           )}
         </section>
