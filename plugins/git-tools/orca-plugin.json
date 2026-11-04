@@ -23,7 +23,7 @@
         "id": "git-diff",
         "title": "Git Diff",
         "extensions": [".orcadiff"],
-        "entry": "ui/index.html",
+        "entry": "ui/editor.html",
         "priority": "default",
         "frame": "isolated"
       }

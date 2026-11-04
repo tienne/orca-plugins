@@ -224,7 +224,11 @@ test('worker requires explicit connection and validates workspace before opening
     const handlers = new Map<string, (input: unknown) => unknown>();
     let opened = '';
     const api = { major: 1, minor: 3 };
-    const methods = new Set(['workspace.list', 'editor.open']);
+    const methods = new Set([
+      'workspace.list',
+      'workspace.open',
+      'editor.open',
+    ]);
     activate({
       api,
       panels: {
@@ -239,10 +243,11 @@ test('worker requires explicit connection and validates workspace before opening
           if (name === 'workspace.list')
             return {
               workspaces: [
-                { id: 'local', name: 'Fixture', path: root, hostId: null },
+                { id: 'local', name: 'Fixture', path: root, hostId: 'local' },
                 { id: 'remote', name: 'SSH', path: root, hostId: 'ssh' },
               ],
             };
+          if (name === 'workspace.open') return { opened: true };
           if (name === 'editor.open') {
             opened = (params as { path: string }).path;
             return { opened: true };
@@ -280,10 +285,16 @@ test('worker requires explicit connection and validates workspace before opening
     await handlers.get('open')!({ descriptor, workspaceId: 'local' });
     assert.ok(opened.endsWith('.orcadiff'));
     assert.equal(
-      JSON.parse(await readFile(opened, 'utf8')).repo,
+      JSON.parse(await readFile(join(root, opened), 'utf8')).repo,
       descriptor.repo,
     );
-    await rm(join(opened, '..'), { recursive: true, force: true });
+    assert.ok(opened.startsWith('.orca/git-tools/'));
+    await rm(join(root, '.orca'), { recursive: true, force: true });
+    await symlink('/tmp', join(root, '.orca'));
+    await assert.rejects(
+      async () => handlers.get('open')!({ descriptor, workspaceId: 'local' }),
+      /실제 디렉터리/,
+    );
   }));
 
 test('staged deletion with recreated disk file uses HEAD baseline; stale HEAD is refused', () =>

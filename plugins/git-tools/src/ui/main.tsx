@@ -16,7 +16,7 @@ const demo = !window.orca;
 const scenario = demo
   ? (new URLSearchParams(location.search).get('fixture') ?? 'default')
   : 'default';
-const editorMode = !!window.orca?.document;
+const editorMode = document.body.dataset.surface === 'editor';
 const colors = [
   'var(--primary)',
   'color-mix(in srgb, var(--primary) 55%, var(--fg))',
@@ -607,6 +607,10 @@ function App() {
                   >
                     중앙 Diff 탭 열기 ↗
                   </button>
+                  <small>
+                    저장소의 .orca/git-tools/에 비교 문서를 생성합니다. Git에서
+                    무시되지 않으면 untracked로 표시됩니다.
+                  </small>
                   {workspaces.length === 0 && (
                     <small>
                       동일 경로의 Orca 로컬 워크스페이스가 필요합니다.

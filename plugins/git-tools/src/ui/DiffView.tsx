@@ -40,13 +40,15 @@ export function DiffView({
     let instance: monaco.editor.IStandaloneDiffEditor | undefined;
     const models: monaco.editor.ITextModel[] = [];
     let stopTheme: (() => void) | undefined;
+    let resizeObserver: ResizeObserver | undefined;
+    let layoutFrame = 0;
     try {
       stopTheme = syncMonacoTheme();
       instance = monaco.editor.createDiffEditor(container.current, {
         readOnly: true,
         originalEditable: false,
         domReadOnly: true,
-        automaticLayout: true,
+        automaticLayout: false,
         renderSideBySide: true,
         useInlineViewWhenSpaceIsLimited: false,
         renderSideBySideInlineBreakpoint: 0,
@@ -73,6 +75,24 @@ export function DiffView({
         originalAriaLabel: '이전 버전 · 읽기 전용',
         modifiedAriaLabel: '이후 버전 · 읽기 전용',
       });
+      const element = container.current;
+      let lastWidth = -1;
+      let lastHeight = -1;
+      const scheduleLayout = () => {
+        cancelAnimationFrame(layoutFrame);
+        layoutFrame = requestAnimationFrame(() => {
+          const width = element.clientWidth;
+          const height = element.clientHeight;
+          if (width !== lastWidth || height !== lastHeight) {
+            lastWidth = width;
+            lastHeight = height;
+            instance?.layout({ width, height });
+          }
+        });
+      };
+      resizeObserver = new ResizeObserver(scheduleLayout);
+      resizeObserver.observe(element);
+      scheduleLayout();
       editor.current = instance;
       instance
         .getOriginalEditor()
@@ -93,12 +113,16 @@ export function DiffView({
       );
       return () => {
         stopTheme?.();
+        resizeObserver?.disconnect();
+        cancelAnimationFrame(layoutFrame);
         editor.current = null;
         instance?.dispose();
         models.forEach((m) => m.dispose());
       };
     } catch (e) {
       stopTheme?.();
+      resizeObserver?.disconnect();
+      cancelAnimationFrame(layoutFrame);
       instance?.dispose();
       models.forEach((m) => m.dispose());
       setError(e instanceof Error ? e.message : 'Diff 렌더 실패');

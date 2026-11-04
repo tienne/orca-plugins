@@ -232,7 +232,11 @@ main {
   gap: 6px;
 }
 .connect input {
-  width: 100%;
+  flex: 1;
+  width: 0;
+}
+.connect button {
+  white-space: nowrap;
 }
 .working-row {
   margin: 0 12px 9px;

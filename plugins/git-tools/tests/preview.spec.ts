@@ -157,3 +157,73 @@ test('Orca color tokens update UI and Monaco without remounting editors', async 
   expect(await original!.evaluate((node) => node.isConnected)).toBe(true);
   await expect(page.getByText('2개 변경', { exact: true })).toBeVisible();
 });
+
+test('panel remains a panel when Orca supplies a document API on every surface', async ({
+  page,
+}) => {
+  await page.addInitScript(() => {
+    window.orca = {
+      api: { major: 1, minor: 3 },
+      host: { has: () => true },
+      plugin: {
+        request: async () => {
+          throw new Error('No worker request expected before connect');
+        },
+      },
+      document: {
+        session: async () => {
+          throw new Error('Panel must not subscribe to document');
+        },
+      },
+    };
+  });
+  await page.goto('/');
+  await expect(
+    page.getByRole('heading', { name: 'Git Tools', exact: true }),
+  ).toBeVisible();
+  await expect(page.getByLabel('로컬 Git 저장소 절대 경로')).toBeVisible();
+  await expect(page.getByRole('alert')).toHaveCount(0);
+});
+
+test('dedicated editor entry subscribes to descriptor and renders a worker comparison', async ({
+  page,
+}) => {
+  const { fixtureRepo, fixtureSet, fixtureDiff } =
+    await import('../src/ui/fixture');
+  await page.addInitScript(
+    ({ repo, set, diff }) => {
+      window.orca = {
+        api: { major: 1, minor: 3 },
+        host: { has: () => true },
+        plugin: {
+          request: async <T>(name: string) =>
+            (name === 'changes' ? set : diff) as T,
+        },
+        document: {
+          session: async () => ({
+            value: JSON.stringify({
+              version: 1,
+              repo: repo.root,
+              comparison: { kind: 'working' },
+              path: diff.file.path,
+            }),
+            onReplace: () => () => {},
+            dispose() {},
+          }),
+        },
+      };
+    },
+    {
+      repo: fixtureRepo,
+      set: fixtureSet,
+      diff: fixtureDiff(fixtureSet.files[0].path),
+    },
+  );
+  await page.goto('/editor.html');
+  await expect(
+    page.getByRole('heading', { name: 'Git Diff', exact: true }),
+  ).toBeVisible();
+  await expect(page.getByText('2개 변경', { exact: true })).toBeVisible();
+  await expect(page.getByLabel('로컬 Git 저장소 절대 경로')).toHaveCount(0);
+  await expect(page.locator('.monaco-editor[role=code]')).toHaveCount(2);
+});

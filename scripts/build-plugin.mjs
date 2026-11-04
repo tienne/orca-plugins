@@ -1,6 +1,6 @@
 import { build as viteBuild } from 'vite';
 import { build as esbuild } from 'esbuild';
-import { copyFile, mkdir, rm } from 'node:fs/promises';
+import { copyFile, mkdir, rm, writeFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import { isBuiltin } from 'node:module';
 import { validateArtifact } from './validate-plugin-artifact.mjs';
@@ -26,6 +26,10 @@ await copyFile(
 );
 await copyFile(resolve(source, 'README.md'), resolve(output, 'README.md'));
 await copyFile(resolve('LICENSE'), resolve(output, 'LICENSE'));
+await writeFile(
+  resolve(output, 'package.json'),
+  JSON.stringify({ private: true, type: 'module' }) + '\n',
+);
 for (const file of Object.values(worker.metafile.outputs)) {
   for (const dependency of file.imports)
     if (dependency.external && !isBuiltin(dependency.path))

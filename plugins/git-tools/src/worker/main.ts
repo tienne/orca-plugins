@@ -1,5 +1,5 @@
-import { mkdtemp, writeFile, realpath } from 'node:fs/promises';
-import { tmpdir } from 'node:os';
+import { mkdir, lstat, writeFile, realpath } from 'node:fs/promises';
+import { randomUUID } from 'node:crypto';
 import { join } from 'node:path';
 import type { Descriptor, Requests, WorkerApi } from '../protocol';
 import { changes, diff, log, repository } from './git';
@@ -52,7 +52,7 @@ export default function activate(orca: WorkerApi): void {
     };
     const matches: { id: string; name: string }[] = [];
     for (const w of result.workspaces)
-      if (w.hostId === null) {
+      if (w.hostId === null || w.hostId === 'local') {
         try {
           if ((await realpath(w.path)) === root)
             matches.push({ id: w.id, name: w.name });
@@ -65,6 +65,7 @@ export default function activate(orca: WorkerApi): void {
   handle('workspaces', async ({ repo }) => workspaces(check(repo)));
   handle('open', async ({ descriptor, workspaceId }) => {
     requireHost('editor.open');
+    requireHost('workspace.open');
     if (descriptor?.version !== 1)
       throw new Error('지원하지 않는 비교 문서입니다.');
     const root = check(descriptor.repo);
@@ -82,9 +83,30 @@ export default function activate(orca: WorkerApi): void {
       ...(descriptor.path ? { path: descriptor.path } : {}),
     };
     // Only generated descriptors are written, never source/index/config files.
-    const dir = await mkdtemp(join(tmpdir(), 'orca-git-tools-'));
-    const path = join(dir, 'comparison.orcadiff');
-    await writeFile(path, JSON.stringify(safe, null, 2), { mode: 0o600 });
+    let directory = root;
+    for (const part of ['.orca', 'git-tools']) {
+      directory = join(directory, part);
+      try {
+        await mkdir(directory, { mode: 0o700 });
+      } catch (error) {
+        if ((error as NodeJS.ErrnoException).code !== 'EEXIST') throw error;
+      }
+      const stat = await lstat(directory);
+      if (
+        stat.isSymbolicLink() ||
+        !stat.isDirectory() ||
+        (await realpath(directory)) !== directory
+      )
+        throw new Error(
+          '비교 문서 폴더는 저장소 내부의 실제 디렉터리여야 합니다.',
+        );
+    }
+    const path = `.orca/git-tools/${randomUUID()}.orcadiff`;
+    await writeFile(join(root, path), JSON.stringify(safe, null, 2), {
+      mode: 0o600,
+      flag: 'wx',
+    });
+    await orca.host.call('workspace.open', { workspaceId });
     return (await orca.host.call('editor.open', { workspaceId, path })) as {
       opened: true;
     };

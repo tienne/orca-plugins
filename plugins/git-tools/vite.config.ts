@@ -16,5 +16,14 @@ export default defineConfig({
     },
   },
   plugins: [react()],
-  build: { outDir: '../../dist/plugins/git-tools/ui', emptyOutDir: true },
+  build: {
+    outDir: '../../dist/plugins/git-tools/ui',
+    emptyOutDir: true,
+    rolldownOptions: {
+      input: {
+        panel: fileURLToPath(new URL('./index.html', import.meta.url)),
+        editor: fileURLToPath(new URL('./editor.html', import.meta.url)),
+      },
+    },
+  },
 });
