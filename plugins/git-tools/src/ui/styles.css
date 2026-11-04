@@ -682,12 +682,6 @@ footer span {
   margin-top: 5px;
   padding-top: 5px;
 }
-.commit-menu-label {
-  display: block;
-  padding: 3px 8px;
-  color: var(--muted);
-  font-size: 10px;
-}
 .commit-menu button {
   display: block;
   width: 100%;

@@ -224,9 +224,6 @@ export function CommitActions({
                 aria-label={group.label}
                 className="commit-menu-group"
               >
-                <span className="commit-menu-label" aria-hidden="true">
-                  {group.label}
-                </span>
                 {group.actions.map((item) => (
                   <button
                     key={item}
