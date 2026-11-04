@@ -22,6 +22,7 @@
       {
         "id": "git-diff",
         "title": "Git Diff",
+        "icon": "ui/icons/diff.png",
         "extensions": [".orcadiff"],
         "entry": "ui/editor.html",
         "priority": "default",
