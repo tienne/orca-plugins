@@ -1,5 +1,12 @@
 :root {
   color-scheme: light dark;
+  /* Graph lanes need distinct hues even when Orca's primary is monochrome.
+     Plugin frames do not expose Orca chart palette tokens. */
+  --graph-blue: light-dark(#2864c7, #79adff);
+  --graph-purple: light-dark(#8250c4, #bf9aff);
+  --graph-teal: light-dark(#147d72, #58cbbb);
+  --graph-amber: light-dark(#a56612, #e8b65d);
+  --graph-pink: light-dark(#b54679, #ed8ab7);
   --bg: var(--orca-background, #f7f8fb);
   --fg: var(--orca-foreground, #252a35);
   --card: var(--orca-card, #fff);

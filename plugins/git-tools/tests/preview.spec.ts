@@ -41,9 +41,30 @@ test('packaged Monaco renders aligned read-only panes, local worker, navigation 
   await page.getByLabel('변경 없는 영역 접기').check();
   await page.getByLabel('미리보기 테마').selectOption('light');
   await expect(page.locator('html')).toHaveClass(/light/);
+  // Host primary can equal foreground; graph lanes must remain visibly colored.
+  await page.evaluate(() => {
+    document.documentElement.style.setProperty('--orca-primary', '#252a35');
+    document.documentElement.style.setProperty('--orca-foreground', '#252a35');
+  });
+  await expect(page.locator('.commit-row circle').first()).toHaveCSS(
+    'fill', 'rgb(40, 100, 199)',
+  );
+  await expect(page.locator('.commit-row path').first()).toHaveCSS(
+    'stroke', 'rgb(40, 100, 199)',
+  );
   await page.screenshot({ path: info.outputPath('light.png') });
   await page.getByLabel('미리보기 테마').selectOption('dark');
   await expect(page.locator('html')).toHaveClass(/dark/);
+  await page.evaluate(() => {
+    document.documentElement.style.setProperty('--orca-primary', '#e0e4ed');
+    document.documentElement.style.setProperty('--orca-foreground', '#e0e4ed');
+  });
+  await expect(page.locator('.commit-row circle').first()).toHaveCSS(
+    'fill', 'rgb(121, 173, 255)',
+  );
+  await expect(page.locator('.commit-row path').first()).toHaveCSS(
+    'stroke', 'rgb(121, 173, 255)',
+  );
   await page.screenshot({ path: info.outputPath('dark.png') });
   expect(before).toContain('readOnly');
   expect(errors).toEqual([]);

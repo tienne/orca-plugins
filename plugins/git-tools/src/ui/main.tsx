@@ -19,11 +19,11 @@ const scenario = demo
   : 'default';
 const editorMode = document.body.dataset.surface === 'editor';
 const colors = [
-  'var(--primary)',
-  'color-mix(in srgb, var(--primary) 55%, var(--fg))',
-  'var(--addition)',
-  'var(--danger)',
-  'var(--muted)',
+  'var(--graph-blue)',
+  'var(--graph-purple)',
+  'var(--graph-teal)',
+  'var(--graph-amber)',
+  'var(--graph-pink)',
 ];
 const message = (e: unknown) => (e instanceof Error ? e.message : String(e));
 function App() {
