@@ -156,6 +156,10 @@ Tienne 소유 저장소에서 설치할 때 공개 ID는 `tienne.git-logs`입니
 
 설명에는 `Git logs`, `Git tree`, `commit graph`, `side-by-side diff`를 포함합니다. 현재 manifest/catalog에는 별도 키워드나 검색 별칭 필드가 없습니다. 첫 카탈로그 항목을 만들 때 같은 설명을 넣으십시오. GitHub 토픽 후보는 `orca-plugin`, `git-logs`, `git-tree`, `commit-graph`, `git-history`, `git-diff`이며 아직 등록하지 않았습니다. 실제 검색 일치 방식과 노출 순위는 공개 후 확인해야 합니다.
 
+## CI와 배포 자동화
+
+PR 검사는 GitHub 호스팅 Ubuntu에서, Orca 검증과 공개는 신뢰한 수동 macOS job에서 실행하도록 구성했습니다. 러너 설정, 미리보기·공개 모드, 소스 태그, 출처 기록과 카탈로그 고정은 [Git 브랜치와 배포](releases.ko.md)를 참고하십시오. `pnpm nx run git-logs:release-test`는 로컬 bare 저장소로 배포 로직을 검사합니다. `ORCA_RELEASE_INTEGRATION=1`과 운영체제에 맞는 Orca CLI를 지정하면 실제 검증·해시 생성으로 반복합니다. GitHub 호스팅 실행은 저장소를 만들고 워크플로를 push한 뒤 확인해야 합니다.
+
 ## 참고 문서
 
 - Orca: [개발 가이드](https://github.com/stablyai/orca/blob/main/docs/reference/plugin-authoring.md), [Manifest](https://github.com/stablyai/orca/blob/main/docs/reference/plugin-manifest.md), [Host API](https://github.com/stablyai/orca/blob/main/docs/reference/plugin-host-api.md), [Catalog](https://github.com/stablyai/orca/blob/main/docs/reference/plugin-catalog.md), [테마 토큰](https://github.com/stablyai/orca/blob/main/docs/reference/plugin-theme-tokens.md), [등록 정책](https://github.com/stablyai/orca/blob/main/docs/reference/plugin-listing-policy.md), [공개 등록](https://www.onorca.dev/plugins/add)

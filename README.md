@@ -10,7 +10,7 @@ Orca plugins built with pnpm, Nx, TypeScript, React, Vite, and esbuild. Each dir
 | -------------------------------------- | -------------------------------------------------------------------------- | ------------------------- |
 | [Git Logs](plugins/git-logs/README.md) | Commit graph, branch and commit search, side-by-side diffs, commit actions | 0.1.0 — local development |
 
-There is no public release or installation URL yet. The root catalog remains empty until the first release.
+There is no public release or installation URL yet. The source-branch catalog is an empty template; published entries will live in the catalog on `release`.
 
 ## Git Logs
 
@@ -81,14 +81,16 @@ scripts/                 # Build, test, and artifact checks
 docs/development.md      # Host integration, validation, and release details
 docs/screenshots/        # Demo images and capture instructions
 dist/plugins/git-logs/   # Generated build; not tracked by Git
-orca-catalog.json        # Empty until the first public release
+orca-catalog.json        # Source catalog template; installed releases live on release
 ```
 
 Git and file operations belong in workers. Plugin frames use bundled local assets. Source manifests point to packaged entries, so validate `dist/plugins/*`, not the source directories.
 
-## Release status
+## CI and releases
 
-No repository has been published or release pushed. A release must include the built plugin files in Git and pin the installable directory to an exact commit and `contentHash` in a catalog. See the [development guide](docs/development.md) for release requirements and the current validation record.
+Pull requests and main pushes run build, typecheck, Git, browser, and release tests on hosted Ubuntu runners. Manual release runs default to a preview. Publication uses a separately configured macOS Orca runner and production environment. See [Git branches and releases](docs/releases.md) for setup, permissions, and the main → release workflow.
+
+Nothing has been published yet. A release must include the built plugin files in Git and pin the installable directory to an exact commit and `contentHash` in a catalog. See the [development guide](docs/development.md) for release requirements and the current validation record.
 
 ## License
 

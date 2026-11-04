@@ -52,3 +52,6 @@ Thumbs.db
 
 /test-results/
 /playwright-report/
+
+# Local code graph cache
+.gestalt/

@@ -156,6 +156,10 @@ Keep installation and use free. Do not add paywalls, license keys, trials, telem
 
 The description includes `Git logs`, `Git tree`, `commit graph`, and `side-by-side diff`. Current manifest/catalog schemas have no separate keyword or search-alias field. Copy the release description into the first catalog entry. Candidate GitHub topics are `orca-plugin`, `git-logs`, `git-tree`, `commit-graph`, `git-history`, and `git-diff`; none have been registered yet. Search matching and ranking must be checked after publication.
 
+## CI and release automation
+
+The implemented workflows use hosted Ubuntu for PR checks and a trusted manual macOS job for Orca validation and publication. See [Git branches and releases](releases.md) for runner setup, preview and publish modes, source tags, provenance, and catalog pinning. `pnpm nx run git-logs:release-test` tests release orchestration with local bare remotes; set `ORCA_RELEASE_INTEGRATION=1` and the platform Orca CLI to repeat it with real validation and hashes. GitHub-hosted execution remains unverified until the repository is created and workflows are pushed.
+
 ## References
 
 - Orca: [authoring](https://github.com/stablyai/orca/blob/main/docs/reference/plugin-authoring.md), [manifest](https://github.com/stablyai/orca/blob/main/docs/reference/plugin-manifest.md), [host API](https://github.com/stablyai/orca/blob/main/docs/reference/plugin-host-api.md), [catalog](https://github.com/stablyai/orca/blob/main/docs/reference/plugin-catalog.md), [theme tokens](https://github.com/stablyai/orca/blob/main/docs/reference/plugin-theme-tokens.md), [listing policy](https://github.com/stablyai/orca/blob/main/docs/reference/plugin-listing-policy.md), [public registration](https://www.onorca.dev/plugins/add)

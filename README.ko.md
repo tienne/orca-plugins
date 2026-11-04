@@ -10,7 +10,7 @@ pnpm, Nx, TypeScript, React, Vite, esbuild를 사용하는 Orca 플러그인 저
 | ----------------------------------------- | ----------------------------------------------------- | ---------------------- |
 | [Git Logs](plugins/git-logs/README.ko.md) | 커밋 그래프, 브랜치와 커밋 검색, 좌우 Diff, 커밋 작업 | 0.1.0 — 로컬 개발 버전 |
 
-아직 공개 릴리스나 설치 주소는 없습니다. 첫 릴리스 전까지 루트 카탈로그는 비워 둡니다.
+아직 공개 릴리스나 설치 주소는 없습니다. 소스 브랜치의 카탈로그는 빈 템플릿이며, 공개한 버전은 `release` 브랜치의 카탈로그에서 관리합니다.
 
 ## Git Logs
 
@@ -81,12 +81,14 @@ scripts/                 # 빌드, 테스트, 산출물 검사
 docs/development.ko.md   # 호스트 연결, 검증, 릴리스 참고
 docs/screenshots/        # DEMO 이미지와 캡처 안내
 dist/plugins/git-logs/   # 빌드 결과. Git에서 제외
-orca-catalog.json        # 첫 공개 릴리스 전까지 빈 상태 유지
+orca-catalog.json        # 소스 카탈로그 템플릿 · 실제 릴리스는 release에서 관리
 ```
 
 Git과 파일 작업은 worker에서 처리합니다. 플러그인 프레임에는 로컬 번들 에셋만 사용합니다. 소스 manifest는 패키징된 파일을 가리키므로 소스 폴더가 아닌 `dist/plugins/*`를 검증하십시오.
 
-## 배포 현황
+## CI와 배포
+
+PR과 main push는 GitHub 호스팅 Ubuntu에서 빌드·타입·Git·브라우저·배포 테스트를 실행합니다. 수동 배포는 미리보기로 시작하며, 실제 공개에는 별도로 설정한 macOS Orca 러너와 production 환경을 사용합니다. 설정과 권한, main → release 흐름은 [Git 브랜치와 배포](docs/releases.ko.md)에 정리했습니다.
 
 아직 저장소를 원격에 공개하거나 릴리스를 푸시하지 않았습니다. 릴리스할 때는 빌드 결과물을 Git에 포함하고 카탈로그에서 설치할 폴더를 정확한 커밋과 `contentHash`로 고정해야 합니다. 배포 조건과 현재 검증 기록은 [개발 안내](docs/development.ko.md)에 정리했습니다.
 

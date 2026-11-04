@@ -1,0 +1,51 @@
+name: Release Git Logs
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Stable version already committed to main (for example 0.1.0)'
+        required: true
+        type: string
+      publish:
+        description: 'Push the release branch and source tag after validation'
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+concurrency:
+  group: orca-plugin-release
+  cancel-in-progress: false
+
+jobs:
+  checks:
+    if: github.ref == 'refs/heads/main'
+    uses: ./.github/workflows/checks.yml
+    permissions:
+      contents: read
+  preview:
+    needs: checks
+    if: >-
+      github.ref == 'refs/heads/main' &&
+      github.repository == 'tienne/orca-plugins' &&
+      vars.ORCA_RELEASE_ENABLED == 'true' && !inputs.publish
+    uses: ./.github/workflows/promote.yml
+    with:
+      version: ${{ inputs.version }}
+      publish: false
+    permissions:
+      contents: read
+  publish:
+    needs: checks
+    if: >-
+      github.ref == 'refs/heads/main' &&
+      github.repository == 'tienne/orca-plugins' &&
+      vars.ORCA_RELEASE_ENABLED == 'true' && inputs.publish
+    uses: ./.github/workflows/promote.yml
+    with:
+      version: ${{ inputs.version }}
+      publish: true
+    permissions:
+      contents: write

@@ -15,7 +15,7 @@ export default defineConfig({
     command: 'pnpm nx run git-logs:preview --output-style=static',
     cwd: '../..',
     url: 'http://127.0.0.1:4173',
-    reuseExistingServer: true,
+    reuseExistingServer: !process.env.CI,
     timeout: 60000,
   },
 });
