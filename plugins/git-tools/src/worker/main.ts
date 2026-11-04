@@ -131,7 +131,9 @@ export default function activate(orca: WorkerApi): void {
             : '현재 workspace를 자동으로 식별하지 못했습니다. 로컬 워크트리를 선택하세요.',
     };
   });
-  handle('log', async ({ repo, all }) => log(check(repo), all === true));
+  handle('log', async ({ repo, all, branchRef }) =>
+    log(check(repo), all === true, branchRef),
+  );
   handle('prepare', async ({ repo, workspaceId, operation }) =>
     operations.prepare(await mutationRoot(repo, workspaceId), operation),
   );

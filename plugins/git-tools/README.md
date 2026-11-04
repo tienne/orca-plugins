@@ -11,6 +11,12 @@ Git Logs 사이드바를 열면 현재 열린 Orca 로컬 Git 워크트리에 �
 
 파일을 선택하고 **중앙 Diff 탭 열기**를 누릅니다. 연결된 workspace를 중앙 탭의 대상으로 사용합니다. 저장소의 `.orca/git-tools/<id>.orcadiff`에 저장소·비교 기준·선택 파일을 담아 대상 workspace의 custom editor로 엽니다. 이 폴더가 Git에서 무시되지 않으면 문서가 untracked로 표시되며 ignore 설정은 자동 변경하지 않습니다. 소스 파일과 index는 수정하지 않습니다. 중앙 뷰어는 좌우 정렬, 줄/단어 내 강조, 동기 스크롤, 이전/다음 변경, 동일 영역 접기, 줄 앞뒤 공백 무시를 지원합니다.
 
+## 브랜치 검색
+
+커밋 목록 위의 **현재 브랜치 / 전체 브랜치** 버튼을 열고 브랜치 이름을 검색합니다. 로컬·원격 브랜치를 구분해 보여 주며, 선택한 브랜치의 부모 이력을 최근 200개까지 표시합니다. 브랜치 목록은 현재 그래프의 200개 커밋과 별도로 조회하므로 다른 브랜치도 찾을 수 있습니다. 원격 브랜치는 로컬에 저장된 ref만 사용하며 fetch하지 않습니다. 검색 결과는 최대 100개를 표시하고, 그보다 많으면 이름을 더 입력하라는 안내를 보여 줍니다. 원격 HEAD 별칭은 목록에서 제외합니다.
+
+검색어를 입력한 뒤 Enter로 첫 결과를 선택하거나 방향키로 이동할 수 있습니다. Escape/바깥 클릭은 선택을 바꾸지 않고 닫습니다. 브랜치를 골라도 체크아웃하지 않으며, 작업 트리와 HEAD는 바뀌지 않습니다. 커밋 검색과 함께 사용할 수 있고 커밋 검색 중에는 기존처럼 그래프 선을 숨깁니다. 새로고침하면 선택을 유지하고, 브랜치가 삭제됐다면 현재 브랜치로 돌아갑니다. Orca 작업 공간을 바꾸면 필터도 현재 브랜치로 초기화합니다. DEMO에서도 샘플 브랜치 검색과 이력 필터를 확인할 수 있습니다.
+
 ## 테마와 화면 스타일
 
 패널·메뉴·확인창·버튼·입력은 Orca 프레임에 공개된 background/foreground, card/card-foreground, popover/popover-foreground, primary/primary-foreground, secondary/secondary-foreground, accent/accent-foreground, border/input/ring, radius 토큰을 사용합니다. 선택·hover·포커스에도 대응하는 전경색을 적용합니다. root의 rem 기준은 16px로 유지해 전달받은 radius의 크기가 호스트와 어긋나지 않게 합니다. 패널 제목·버튼·여백은 Orca의 작은 도구 패널 형태에 맞췄고, 브라우저 fallback은 중립적인 라이트/다크 팔레트입니다.
@@ -60,7 +66,7 @@ UTF-8 파일당 768 KiB까지 텍스트 비교합니다. 바이너리·비 UTF-8
 
 UI/Monaco/editor worker는 모두 로컬 번들입니다. 일반 브라우저 preview는 명확히 표시된 **DEMO fixture**입니다. Git 데이터로 오인하지 마세요. 상단에서 로딩/오류/빈 상태와 테마도 확인할 수 있습니다.
 
-**검증 상태:** build/typecheck, Git·worker·다국어·패키징 테스트 33개, 브라우저 UI 테스트 17개, manifest validation과 plugin check가 통과했습니다. 사용자 승인 후 Orca 1.4.248의 실제 사이드바 연결·커밋 그래프·중앙 editor.open·document.session·Monaco diff를 확인했습니다. 다크/라이트 editor shot은 themeApplied/subscribed가 true이고 프레임 오류가 없었습니다. 다른 OS/버전/원격 호스트는 미검증입니다. 호스트 타입 생성은 설치본 선언 파일 누락으로 실패해 확인된 API 타입만 수동 관리합니다.
+**검증 상태:** build/typecheck, Git·worker·다국어·패키징 테스트 34개, 브라우저 UI 테스트 19개, manifest validation과 plugin check가 통과했습니다. 사용자 승인 후 Orca 1.4.248의 실제 사이드바 연결·커밋 그래프·중앙 editor.open·document.session·Monaco diff를 확인했습니다. 다크/라이트 editor shot은 themeApplied/subscribed가 true이고 프레임 오류가 없었습니다. 다른 OS/버전/원격 호스트는 미검증입니다. 호스트 타입 생성은 설치본 선언 파일 누락으로 실패해 확인된 API 타입만 수동 관리합니다.
 
 추가 변경 명령 검증: disposable Git 저장소에서 체크아웃/슬래시 브랜치/다른 worktree 점유/merge 설정/일반·merge 커밋 체리픽·리버트/reset 3모드·백업/rebase·충돌/만료된 상태·중복 실행/활성 workspace 경계/숨겨진 index 변경·ignored 충돌을 확인했습니다. 실제 Orca에서는 우클릭 메뉴와 병합 확인창을 렌더하고 실행 없이 닫았습니다. 실제 사용자 저장소의 변경 명령은 시험 실행하지 않았습니다. 독립 검토 3회에서 발견한 숨겨진 변경 검사·merge 설정 문제를 수정했고 마지막 rebase 검토에 추가 차단 지적은 없었습니다.
 

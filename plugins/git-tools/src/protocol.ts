@@ -34,12 +34,19 @@ export interface FileDiff {
   original: FileSide;
   modified: FileSide;
 }
+export interface BranchRef {
+  ref: string;
+  name: string;
+  hash: string;
+  kind: 'local' | 'remote';
+}
 export interface Repository {
   root: string;
   branch: string;
   head: string | null;
   commits: Commit[];
   localBranches?: { name: string; hash: string }[];
+  branches?: BranchRef[];
 }
 export interface Descriptor {
   version: 1;
@@ -116,7 +123,10 @@ export interface Requests {
     input: { all?: boolean; workspaceId?: string };
     output: ActiveConnection;
   };
-  log: { input: { repo: string; all?: boolean }; output: Repository };
+  log: {
+    input: { repo: string; all?: boolean; branchRef?: string };
+    output: Repository;
+  };
   changes: {
     input: { repo: string; comparison: Comparison };
     output: ChangeSet;

@@ -850,3 +850,63 @@ test('rebase protects ignored files created by intermediate commits that are abs
       'precious ignored content',
     );
   }));
+test('branch listing includes refs outside the recent graph and selected local/remote history stays read-only', () =>
+  fixture(async (root, commit) => {
+    const base = await commit('base');
+    await git(root, ['switch', '-c', 'feature/search-this-branch']);
+    const feature = await commit('feature-only');
+    await git(root, ['switch', 'main']);
+    await commit('main-only');
+    await git(root, [
+      'update-ref',
+      'refs/remotes/origin/feature/search-this-branch',
+      feature,
+    ]);
+    await git(root, [
+      'update-ref',
+      'refs/remotes/origin/main',
+      (await log(root)).head!,
+    ]);
+    await git(root, [
+      'symbolic-ref',
+      'refs/remotes/origin/HEAD',
+      'refs/remotes/origin/main',
+    ]);
+    const current = await log(root);
+    assert.ok(!current.commits.some((commit) => commit.hash === feature));
+    assert.ok(
+      current.branches?.some(
+        (branch) => branch.ref === 'refs/heads/feature/search-this-branch',
+      ),
+    );
+    assert.ok(
+      current.branches?.some(
+        (branch) =>
+          branch.ref === 'refs/remotes/origin/feature/search-this-branch' &&
+          branch.kind === 'remote',
+      ),
+    );
+    assert.ok(
+      !current.branches?.some((branch) => branch.name === 'origin/HEAD'),
+    );
+    for (const ref of [
+      'refs/heads/feature/search-this-branch',
+      'refs/remotes/origin/feature/search-this-branch',
+    ]) {
+      const selected = await log(root, false, ref);
+      assert.deepEqual(
+        selected.commits.map((commit) => commit.hash),
+        [feature, base],
+      );
+      assert.equal(selected.branch, 'main');
+      assert.equal(selected.head, current.head);
+      assert.equal((await git(root, ['status', '--porcelain'])).length, 0);
+    }
+    await assert.rejects(log(root, true, '--all'), /브랜치/);
+    await assert.rejects(log(root, false, base), /브랜치/);
+    await git(root, ['branch', '-D', 'feature/search-this-branch']);
+    await assert.rejects(
+      log(root, false, 'refs/heads/feature/search-this-branch'),
+      /브랜치/,
+    );
+  }));

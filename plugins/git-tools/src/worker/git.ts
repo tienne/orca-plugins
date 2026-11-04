@@ -11,6 +11,7 @@ import type {
   FileDiff,
   FileSide,
   Repository,
+  BranchRef,
 } from '../protocol';
 const exec = promisify(execFile);
 const LIMIT = 768 * 1024;
@@ -108,7 +109,11 @@ export async function commitHash(root: string, ref: string): Promise<string> {
   if (hash !== ref) throw new Error('커밋이 일치하지 않습니다.');
   return hash;
 }
-export async function log(root: string, all = false): Promise<Repository> {
+export async function log(
+  root: string,
+  all = false,
+  branchRef?: string,
+): Promise<Repository> {
   const head = await optional(root, ['rev-parse', '--verify', 'HEAD']);
   const branch = await optional(root, [
     'symbolic-ref',
@@ -118,10 +123,11 @@ export async function log(root: string, all = false): Promise<Repository> {
   ]);
   const refs = new Map<string, string[]>();
   const localBranches: { name: string; hash: string }[] = [];
+  const branches: BranchRef[] = [];
   for (const line of (
     await git(root, [
       'for-each-ref',
-      '--format=%(objectname)%09%(refname)',
+      '--format=%(objectname)%09%(refname)%09%(symref)',
       'refs/heads',
       'refs/remotes',
     ])
@@ -129,18 +135,34 @@ export async function log(root: string, all = false): Promise<Repository> {
     .toString()
     .trim()
     .split('\n')) {
-    const [hash, name] = line.split('\t');
+    const [hash, name, symbolic] = line.split('\t');
     if (name?.startsWith('refs/heads/'))
       localBranches.push({ name: name.slice(11), hash });
+    if (name && !symbolic)
+      branches.push({
+        ref: name,
+        name: name.replace(/^refs\/(heads|remotes)\//, ''),
+        hash,
+        kind: name.startsWith('refs/heads/') ? 'local' : 'remote',
+      });
     if (name)
       refs.set(hash, [
         ...(refs.get(hash) ?? []),
         name.replace(/^refs\/(heads|remotes)\//, ''),
       ]);
   }
+  const selected =
+    branchRef === undefined
+      ? undefined
+      : branches.find((b) => b.ref === branchRef);
+  if (branchRef !== undefined && !selected)
+    throw new Error('선택한 브랜치를 찾을 수 없습니다. 새로고침하세요.');
+  const selectedHash = selected
+    ? await commitHash(root, selected.hash)
+    : undefined;
   // NUL fields preserve tabs/newlines in messages. Git adds one LF between records.
   const raw =
-    !head && !all
+    !head && !all && !selectedHash
       ? ''
       : (
           await git(root, [
@@ -148,7 +170,11 @@ export async function log(root: string, all = false): Promise<Repository> {
             '--topo-order',
             '-200',
             '--format=%H%x00%P%x00%an%x00%aI%x00%B%x00',
-            ...(all ? ['--all', ...(head ? ['HEAD'] : [])] : ['HEAD']),
+            ...(selectedHash
+              ? [selectedHash]
+              : all
+                ? ['--all', ...(head ? ['HEAD'] : [])]
+                : ['HEAD']),
             '--',
           ])
         ).toString();
@@ -171,6 +197,7 @@ export async function log(root: string, all = false): Promise<Repository> {
     head: head || null,
     commits,
     localBranches,
+    branches,
   };
 }
 export function parseNames(raw: Buffer): ChangedFile[] {

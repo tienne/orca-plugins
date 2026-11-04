@@ -207,5 +207,15 @@
   "{count}개 변경": "{count} changes",
   "{count}개 변경 (단수)": "{count} change",
   "Hard reset 확인: {p0} 입력": "Type {p0} to confirm hard reset",
-  "그래프 새로고침 실패:": "Graph refresh failed:"
+  "그래프 새로고침 실패:": "Graph refresh failed:",
+  "브랜치 검색": "Search branches",
+  "브랜치 이름 검색": "Search branch names",
+  "브랜치 목록": "Branches",
+  "로컬": "Local",
+  "원격": "Remote",
+  "일치하는 브랜치가 없습니다.": "No matching branches.",
+  "검색 결과가 많습니다. 이름을 더 입력하세요.": "Too many matches. Type more of the branch name.",
+  "선택한 브랜치가 없어 현재 브랜치를 표시합니다.": "The selected branch no longer exists. Showing the current branch.",
+  "선택한 브랜치를 찾을 수 없습니다. 새로고침하세요.": "Could not find the selected branch. Refresh the list.",
+  "커밋 목록만 바뀝니다.": "Filters the commit list."
 }

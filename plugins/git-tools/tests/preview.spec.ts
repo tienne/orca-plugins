@@ -761,3 +761,145 @@ test('Orca locale takes precedence over navigator and preview overrides, includi
   await expect(page.getByLabel('Search commits')).toBeVisible();
   await expect(page.locator('html')).toHaveAttribute('lang', 'en-US');
 });
+
+test('branch search filters local and remote history, supports keyboard selection and keeps commit search separate', async ({
+  page,
+}, info) => {
+  await page.setViewportSize({ width: 360, height: 780 });
+  await page.goto('/');
+  await page.getByRole('button', { name: '브랜치 범위' }).click();
+  await page.getByLabel('브랜치 검색').fill('ORIGIN/FEATURE');
+  const remote = page.getByRole('option', {
+    name: 'origin/feature/readable-diff 원격',
+  });
+  await expect(remote).toBeVisible();
+  await expect(
+    page.getByRole('option', {
+      name: 'feature/readable-diff 로컬',
+      exact: true,
+    }),
+  ).toHaveCount(0);
+  await page.screenshot({ path: info.outputPath('branch-search-narrow.png') });
+  await page.getByLabel('브랜치 검색').press('Enter');
+  await expect(page.getByRole('button', { name: '브랜치 범위' })).toHaveText(
+    'origin/feature/readable-diff⌄',
+  );
+  await expect(page.locator('.commit-row')).toHaveCount(4);
+  await expect(page.getByRole('button', { name: /^Merge branch/ })).toHaveCount(
+    0,
+  );
+  await expect(page.locator('.repo-heading')).toContainText('main');
+  await page.getByRole('button', { name: '새로고침' }).click();
+  await expect(page.locator('.commit-row')).toHaveCount(4);
+  await page.getByRole('button', { name: '브랜치 범위' }).click();
+  await page.getByLabel('브랜치 검색').fill('no-such-branch');
+  await expect(page.getByText('일치하는 브랜치가 없습니다.')).toBeVisible();
+  await page.getByLabel('브랜치 검색').press('Escape');
+  await expect(page.getByLabel('브랜치 검색')).toHaveCount(0);
+  await expect(page.locator('.commit-row')).toHaveCount(4);
+  await page.getByRole('button', { name: '브랜치 범위' }).click();
+  await page.getByRole('option', { name: '전체 브랜치', exact: true }).click();
+  await expect(page.locator('.commit-row')).toHaveCount(6);
+  await page.getByLabel('커밋 검색').fill('David');
+  await expect(page.locator('.commit-row')).toHaveCount(3);
+});
+test('selected branch refreshes through worker RPC, disappears cleanly and resets on workspace change', async ({
+  page,
+}) => {
+  const { fixtureRepo, fixtureLog } = await import('../src/ui/fixture');
+  await page.addInitScript(
+    ({ repo, selected }) => {
+      let removed = false;
+      let other = false;
+      const listeners = new Set<() => void>();
+      window.addEventListener('test-remove-branch', () => {
+        removed = true;
+      });
+      window.addEventListener('test-switch-workspace', () => {
+        other = true;
+        for (const fn of listeners) fn();
+      });
+      window.orca = {
+        locale: 'en-US',
+        api: { major: 1, minor: 3 },
+        host: { has: () => true },
+        on: (_event, fn) => {
+          const callback = () => fn(undefined as never);
+          listeners.add(callback);
+          return () => listeners.delete(callback);
+        },
+        plugin: {
+          request: async <T>(name: string, raw: unknown) => {
+            if (name === 'active')
+              return {
+                status: 'connected',
+                repository: {
+                  ...repo,
+                  root: other ? '/demo/other' : repo.root,
+                  branches: removed || other ? [] : repo.branches,
+                },
+                workspace: {
+                  id: other ? 'other' : 'fixture',
+                  name: 'Fixture',
+                  path: repo.root,
+                  branch: repo.branch,
+                },
+              } as T;
+            if (name === 'changes')
+              return {
+                comparison: { kind: 'working' },
+                files: [],
+                left: 'HEAD',
+                right: '현재 작업 트리 · 디스크',
+              } as T;
+            if (name === 'log') {
+              const input = raw as { branchRef?: string; all?: boolean };
+              if (
+                input.branchRef ===
+                  'refs/remotes/origin/feature/readable-diff' &&
+                !removed &&
+                !other
+              )
+                return selected as T;
+              if (!input.branchRef) return repo as T;
+              throw new Error('Unexpected branch ref');
+            }
+            throw new Error(`Unexpected request: ${name}`);
+          },
+        },
+      };
+    },
+    {
+      repo: fixtureRepo,
+      selected: fixtureLog('refs/remotes/origin/feature/readable-diff'),
+    },
+  );
+  await page.goto('/');
+  await page.getByRole('button', { name: 'Branch scope' }).click();
+  await page.getByLabel('Search branches').fill('origin/feature');
+  await page.getByLabel('Search branches').press('ArrowDown');
+  await page.keyboard.press('Enter');
+  await expect(page.locator('.commit-row')).toHaveCount(4);
+  await page.getByRole('button', { name: '↻ Refresh' }).click();
+  await expect(page.locator('.commit-row')).toHaveCount(4);
+  await page.evaluate(() =>
+    window.dispatchEvent(new Event('test-remove-branch')),
+  );
+  await page.getByRole('button', { name: '↻ Refresh' }).click();
+  await expect(
+    page.getByRole('button', { name: 'Branch scope' }),
+  ).toContainText('Current branch');
+  await expect(
+    page.getByText(
+      'The selected branch no longer exists. Showing the current branch.',
+    ),
+  ).toBeVisible();
+  await expect(page.locator('.commit-row')).toHaveCount(6);
+  await page.evaluate(() =>
+    window.dispatchEvent(new Event('test-switch-workspace')),
+  );
+  await expect(page.locator('.repo-heading b')).toHaveText('other');
+  await expect(
+    page.getByRole('button', { name: 'Branch scope' }),
+  ).toContainText('Current branch');
+});

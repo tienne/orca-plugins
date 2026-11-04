@@ -32,6 +32,12 @@ pnpm dev
 
 중앙 뷰어는 파일 탐색, 좌우 정렬, 줄/단어 내 강조, 동기 스크롤, 이전/다음 변경, 동일 영역 접기, 줄 앞뒤 공백 무시를 제공합니다. 좁은 화면에서도 좌우 비교를 유지하며 코드 영역 내부를 가로 스크롤합니다. 소스 수정·변경 적용 버튼은 없습니다.
 
+## 브랜치 검색
+
+커밋 목록 위의 **현재 브랜치 / 전체 브랜치** 버튼을 열고 브랜치 이름을 검색합니다. 로컬·원격 브랜치를 구분해 보여 주며, 선택한 브랜치의 부모 이력을 최근 200개까지 표시합니다. 브랜치 목록은 현재 그래프의 200개 커밋과 별도로 조회하므로 다른 브랜치도 찾을 수 있습니다. 원격 브랜치는 로컬에 저장된 ref만 사용하며 fetch하지 않습니다. 검색 결과는 최대 100개를 표시하고, 그보다 많으면 이름을 더 입력하라는 안내를 보여 줍니다. 원격 HEAD 별칭은 목록에서 제외합니다.
+
+검색어를 입력한 뒤 Enter로 첫 결과를 선택하거나 방향키로 이동할 수 있습니다. Escape/바깥 클릭은 선택을 바꾸지 않고 닫습니다. 브랜치를 골라도 체크아웃하지 않으며, 작업 트리와 HEAD는 바뀌지 않습니다. 커밋 검색과 함께 사용할 수 있고 커밋 검색 중에는 기존처럼 그래프 선을 숨깁니다. 새로고침하면 선택을 유지하고, 브랜치가 삭제됐다면 현재 브랜치로 돌아갑니다. Orca 작업 공간을 바꾸면 필터도 현재 브랜치로 초기화합니다. DEMO에서도 샘플 브랜치 검색과 이력 필터를 확인할 수 있습니다.
+
 ## 테마와 화면 스타일
 
 패널·메뉴·확인창·버튼·입력은 Orca 프레임에 공개된 background/foreground, card/card-foreground, popover/popover-foreground, primary/primary-foreground, secondary/secondary-foreground, accent/accent-foreground, border/input/ring, radius 토큰을 사용합니다. 선택·hover·포커스에도 대응하는 전경색을 적용합니다. root의 rem 기준은 16px로 유지해 전달받은 radius의 크기가 호스트와 어긋나지 않게 합니다. 패널 제목·버튼·여백은 Orca의 작은 도구 패널 형태에 맞췄고, 브라우저 fallback은 중립적인 라이트/다크 팔레트입니다.
@@ -94,7 +100,7 @@ Orca가 `approval_required`를 반환하면 표시된 접근 범위와 fingerpri
 
 ## 검증 상태와 제한
 
-2026-11-04 로컬 검증: Nx build/typecheck, Git/worker fixture 테스트 26개, 다국어 테스트 5개, 패키징 검사 테스트 2개, packaged UI 테스트 17개, Orca manifest validation 통과. 라이트·다크·360px PNG를 직접 확인했습니다.
+2026-11-04 로컬 검증: Nx build/typecheck, Git/worker fixture 테스트 27개, 다국어 테스트 5개, 패키징 검사 테스트 2개, packaged UI 테스트 19개, Orca manifest validation 통과. 라이트·다크·360px PNG를 직접 확인했습니다.
 
 - 실제 임시 Git 저장소 테스트: 최초 커밋 전, 최초 커밋, 200개 제한, 현재/전체 브랜치, merge 부모, 메시지 전문, 특수 파일명, rename, 삭제, staged+unstaged, 상쇄 변경, staged 삭제 후 재생성, 바이너리·비 UTF-8·큰 파일, symlink, 충돌, 경계·해시 검사, worker bridge를 검증합니다.
 - 패키징 UI는 Orca 일반 브라우저와 Playwright에서 렌더합니다. Monaco worker는 상대 경로의 로컬 JS로 제공하고 네트워크 CDN·blob worker에 의존하지 않습니다.

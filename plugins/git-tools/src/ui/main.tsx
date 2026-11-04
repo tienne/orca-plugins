@@ -16,9 +16,10 @@ import type {
   WorkspaceChoice,
 } from '../protocol';
 import { request } from './client';
-import { fixtureDiff, fixtureRepo, fixtureSet } from './fixture';
+import { fixtureDiff, fixtureRepo, fixtureSet, fixtureLog } from './fixture';
 import { layout } from './graph';
 import { DiffView } from './DiffView';
+import { BranchPicker } from './BranchPicker';
 import { CommitActions, type CommitMenu } from './CommitActions';
 import './styles.css';
 const demo = !window.orca;
@@ -48,7 +49,10 @@ function App() {
   const [connectionNote, setConnectionNote] =
     useState('열린 워크트리에 연결하는 중…');
   const connectActive = useRef<(workspaceId?: string) => void>(() => {});
-  const [all, setAll] = useState(false);
+  const [scope, setScope] = useState('current');
+  const scopeRef = useRef('current');
+  const all = scope === 'all';
+  const [branchNote, setBranchNote] = useState('');
   const [search, setSearch] = useState('');
   const [comparison, setComparison] = useState<Comparison>({ kind: 'working' });
   const [set, setSet] = useState<ChangeSet | null>(null);
@@ -74,7 +78,11 @@ function App() {
   async function operationChanged() {
     if (!repo) return;
     const root = repo.root;
-    const updated = await request('log', { repo: root, all });
+    const updated = await request('log', {
+      repo: root,
+      all,
+      ...(scope !== 'current' && scope !== 'all' ? { branchRef: scope } : {}),
+    });
     if (currentRoot.current !== root) return;
     setRepo((current) => (current?.root === root ? updated : current));
     setComparison({ kind: 'working' });
@@ -137,20 +145,21 @@ function App() {
     setRepo(
       scenario === 'empty'
         ? { ...fixtureRepo, commits: [], head: null }
-        : fixtureRepo,
+        : fixtureLog(scopeRef.current),
     );
     setComparison({ kind: 'working' });
     setGeneration((n) => n + 1);
   }
   useEffect(() => {
     if (demo && !editorMode) refreshDemo();
-  }, [all]);
+  }, []);
   useEffect(() => {
     if (demo || editorMode) return;
     let active = true;
-    async function load(workspaceId?: string) {
+    async function load(workspaceId?: string, resetScope = !!workspaceId) {
       if (!active) return;
       const seq = ++logSeq.current;
+      const previousRoot = currentRoot.current;
       setBusy(true);
       setError('');
       setRepo(null);
@@ -161,12 +170,38 @@ function App() {
       setConnectionNote('열린 워크트리에 연결하는 중…');
       try {
         const result = await request('active', {
-          all,
+          all: false,
           ...(workspaceId ? { workspaceId } : {}),
         });
         if (!active || seq !== logSeq.current) return;
         if (result.status === 'connected') {
-          setRepo(result.repository);
+          let selection =
+            resetScope ||
+            (previousRoot && previousRoot !== result.repository.root)
+              ? 'current'
+              : scopeRef.current;
+          const missing =
+            selection !== 'current' &&
+            selection !== 'all' &&
+            !(result.repository.branches ?? []).some(
+              (branch) => branch.ref === selection,
+            );
+          if (missing) selection = 'current';
+          const repository =
+            selection === 'current'
+              ? result.repository
+              : await request('log', {
+                  repo: result.repository.root,
+                  all: selection === 'all',
+                  ...(selection !== 'all' ? { branchRef: selection } : {}),
+                });
+          if (!active || seq !== logSeq.current) return;
+          scopeRef.current = selection;
+          setScope(selection);
+          setBranchNote(
+            missing ? '선택한 브랜치가 없어 현재 브랜치를 표시합니다.' : '',
+          );
+          setRepo(repository);
           setWorkspace(result.workspace.id);
           setComparison({ kind: 'working' });
           setFileSearch('');
@@ -192,7 +227,7 @@ function App() {
       void load(id);
     };
     const stop = window.orca?.on?.('workspace.changed', () => {
-      void load();
+      void load(undefined, true);
     });
     void load();
     return () => {
@@ -200,7 +235,41 @@ function App() {
       connectActive.current = () => {};
       if (typeof stop === 'function') stop();
     };
-  }, [all, autoTick]);
+  }, [autoTick]);
+  async function selectScope(next: string) {
+    if (!repo || busy || actionBusy) return;
+    const previous = scopeRef.current;
+    const root = repo.root;
+    const seq = ++logSeq.current;
+    scopeRef.current = next;
+    setScope(next);
+    setBranchNote('');
+    if (demo) {
+      refreshDemo();
+      return;
+    }
+    setBusy(true);
+    setError('');
+    try {
+      const updated = await request('log', {
+        repo: root,
+        all: next === 'all',
+        ...(next !== 'current' && next !== 'all' ? { branchRef: next } : {}),
+      });
+      if (seq !== logSeq.current || currentRoot.current !== root) return;
+      setRepo(updated);
+      setComparison({ kind: 'working' });
+      setGeneration((n) => n + 1);
+    } catch (e) {
+      if (seq === logSeq.current && currentRoot.current === root) {
+        scopeRef.current = previous;
+        setScope(previous);
+        setError(message(e));
+      }
+    } finally {
+      if (seq === logSeq.current) setBusy(false);
+    }
+  }
   useEffect(() => {
     if (!repo) return;
     let active = true;
@@ -482,15 +551,13 @@ function App() {
                   <span>⑂ {repo.branch}</span>
                 </div>
                 <div className="history-controls">
-                  <select
-                    aria-label={t('브랜치 범위')}
-                    value={all ? 'all' : 'current'}
-                    onChange={(e) => setAll(e.target.value === 'all')}
+                  <BranchPicker
+                    branches={repo.branches ?? []}
+                    value={scope}
                     disabled={busy || actionBusy}
-                  >
-                    <option value="current">{t('현재 브랜치')}</option>
-                    <option value="all">{t('전체 브랜치')}</option>
-                  </select>
+                    onChange={(value) => void selectScope(value)}
+                  />
+                  {branchNote && <small role="status">{t(branchNote)}</small>}
                   <input
                     aria-label={t('커밋 검색')}
                     placeholder={t('커밋 · 작성자 · 해시 검색')}
@@ -512,120 +579,129 @@ function App() {
                     {formatNumber(visible.length)} {t('/ 최대 200')}
                   </span>
                 </div>
-                <div className="commit-list">
-                  {visible.map(({ commit, row }) => (
-                    <button
-                      key={commit.hash}
-                      className={`commit-row ${selected?.hash === commit.hash ? 'selected' : ''}`}
-                      onClick={() =>
-                        setComparison({
-                          kind: 'commit',
-                          commit: commit.hash,
-                          parent: commit.parents[0],
-                        })
-                      }
-                      aria-pressed={selected?.hash === commit.hash}
-                      aria-haspopup="menu"
-                      onContextMenu={(event) => {
-                        event.preventDefault();
-                        if (busy || actionBusy) return;
-                        const rect =
-                          event.currentTarget.getBoundingClientRect();
-                        setCommitMenu({
-                          commit,
-                          x: event.clientX || rect.left + 24,
-                          y: event.clientY || rect.top + 20,
-                        });
-                      }}
-                      onKeyDown={(event) => {
-                        if (
-                          event.key === 'F10' &&
-                          event.shiftKey &&
-                          !busy &&
-                          !actionBusy
-                        ) {
+                <div className="commit-list" aria-busy={busy}>
+                  {busy && (
+                    <p className="state" role="status">
+                      {t('Git 조회 중…')}
+                    </p>
+                  )}
+                  {!busy &&
+                    visible.map(({ commit, row }) => (
+                      <button
+                        key={commit.hash}
+                        className={`commit-row ${selected?.hash === commit.hash ? 'selected' : ''}`}
+                        onClick={() =>
+                          setComparison({
+                            kind: 'commit',
+                            commit: commit.hash,
+                            parent: commit.parents[0],
+                          })
+                        }
+                        aria-pressed={selected?.hash === commit.hash}
+                        aria-haspopup="menu"
+                        onContextMenu={(event) => {
                           event.preventDefault();
+                          if (busy || actionBusy) return;
                           const rect =
                             event.currentTarget.getBoundingClientRect();
                           setCommitMenu({
                             commit,
-                            x: rect.left + 24,
-                            y: rect.top + 20,
+                            x: event.clientX || rect.left + 24,
+                            y: event.clientY || rect.top + 20,
                           });
-                        }
-                      }}
-                    >
-                      {!search && (
-                        <svg
-                          width={Math.min(110, graphWidth)}
-                          viewBox={`0 0 ${graphWidth} 64`}
-                          preserveAspectRatio="none"
-                          height="64"
-                          aria-hidden="true"
-                        >
-                          <path
-                            d={`M${12 + row.lane * 14} 0 V32`}
-                            stroke={colors[row.lane % colors.length]}
-                            fill="none"
-                            strokeWidth="2"
-                          />
-                          {row.edges.map((edge, i) => (
+                        }}
+                        onKeyDown={(event) => {
+                          if (
+                            event.key === 'F10' &&
+                            event.shiftKey &&
+                            !busy &&
+                            !actionBusy
+                          ) {
+                            event.preventDefault();
+                            const rect =
+                              event.currentTarget.getBoundingClientRect();
+                            setCommitMenu({
+                              commit,
+                              x: rect.left + 24,
+                              y: rect.top + 20,
+                            });
+                          }
+                        }}
+                      >
+                        {!search && (
+                          <svg
+                            width={Math.min(110, graphWidth)}
+                            viewBox={`0 0 ${graphWidth} 64`}
+                            preserveAspectRatio="none"
+                            height="64"
+                            aria-hidden="true"
+                          >
                             <path
-                              key={i}
-                              d={`M${12 + edge.from * 14} ${edge.parent ? 32 : 0} C${12 + edge.from * 14} 48 ${12 + edge.to * 14} 48 ${12 + edge.to * 14} 64`}
+                              d={`M${12 + row.lane * 14} 0 V32`}
+                              stroke={colors[row.lane % colors.length]}
                               fill="none"
-                              stroke={
-                                colors[
-                                  (edge.parent ? edge.to : edge.from) %
-                                    colors.length
-                                ]
-                              }
                               strokeWidth="2"
                             />
-                          ))}
-                          <circle
-                            cx={12 + row.lane * 14}
-                            cy="32"
-                            r="4"
-                            fill={colors[row.lane % colors.length]}
-                          />
-                        </svg>
-                      )}
-                      <span className="commit-content">
-                        <span
-                          className="commit-subject"
-                          title={commit.message.split('\n')[0]}
-                        >
-                          {commit.message.split('\n')[0]}
-                        </span>
-                        {commit.refs.length > 0 && (
-                          <span className="refs">
-                            {commit.refs.map((ref) => (
-                              <em key={ref} title={ref}>
-                                {ref}
-                              </em>
+                            {row.edges.map((edge, i) => (
+                              <path
+                                key={i}
+                                d={`M${12 + edge.from * 14} ${edge.parent ? 32 : 0} C${12 + edge.from * 14} 48 ${12 + edge.to * 14} 48 ${12 + edge.to * 14} 64`}
+                                fill="none"
+                                stroke={
+                                  colors[
+                                    (edge.parent ? edge.to : edge.from) %
+                                      colors.length
+                                  ]
+                                }
+                                strokeWidth="2"
+                              />
                             ))}
-                          </span>
+                            <circle
+                              cx={12 + row.lane * 14}
+                              cy="32"
+                              r="4"
+                              fill={colors[row.lane % colors.length]}
+                            />
+                          </svg>
                         )}
-                        <small className="commit-meta">
-                          <span className="commit-author" title={commit.author}>
-                            {commit.author}
-                          </span>
-                          <time
-                            className="commit-date"
-                            dateTime={commit.date}
-                            title={formatDate(commit.date, true)}
+                        <span className="commit-content">
+                          <span
+                            className="commit-subject"
+                            title={commit.message.split('\n')[0]}
                           >
-                            {formatDate(commit.date)}
-                          </time>
-                          <code className="commit-hash" title={commit.hash}>
-                            {commit.hash.slice(0, 7)}
-                          </code>
-                        </small>
-                      </span>
-                    </button>
-                  ))}
-                  {!visible.length && (
+                            {commit.message.split('\n')[0]}
+                          </span>
+                          {commit.refs.length > 0 && (
+                            <span className="refs">
+                              {commit.refs.map((ref) => (
+                                <em key={ref} title={ref}>
+                                  {ref}
+                                </em>
+                              ))}
+                            </span>
+                          )}
+                          <small className="commit-meta">
+                            <span
+                              className="commit-author"
+                              title={commit.author}
+                            >
+                              {commit.author}
+                            </span>
+                            <time
+                              className="commit-date"
+                              dateTime={commit.date}
+                              title={formatDate(commit.date, true)}
+                            >
+                              {formatDate(commit.date)}
+                            </time>
+                            <code className="commit-hash" title={commit.hash}>
+                              {commit.hash.slice(0, 7)}
+                            </code>
+                          </small>
+                        </span>
+                      </button>
+                    ))}
+                  {!busy && !visible.length && (
                     <p className="state">
                       {search
                         ? t('일치하는 커밋이 없습니다.')

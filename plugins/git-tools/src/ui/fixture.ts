@@ -3,6 +3,27 @@ const hash = (n: number) =>
   (n.toString(16) + 'a4f19c8e0b72d61f534eaa0982c7db6f1049abc').slice(0, 40);
 export const fixtureRepo: Repository = {
   root: '/demo/atlas',
+  branches: [
+    { ref: 'refs/heads/main', name: 'main', hash: hash(8), kind: 'local' },
+    {
+      ref: 'refs/heads/feature/readable-diff',
+      name: 'feature/readable-diff',
+      hash: hash(6),
+      kind: 'local',
+    },
+    {
+      ref: 'refs/remotes/origin/main',
+      name: 'origin/main',
+      hash: hash(8),
+      kind: 'remote',
+    },
+    {
+      ref: 'refs/remotes/origin/feature/readable-diff',
+      name: 'origin/feature/readable-diff',
+      hash: hash(6),
+      kind: 'remote',
+    },
+  ],
   branch: 'main',
   head: hash(8),
   commits: [
@@ -124,4 +145,24 @@ export function fixtureDiff(path: string): FileDiff {
       modified: { kind: 'missing', text: '', bytes: 0 },
     };
   return { file, original, modified };
+}
+
+export function fixtureLog(scope: string): Repository {
+  const branch = fixtureRepo.branches?.find((branch) => branch.ref === scope);
+  if (!branch) return fixtureRepo;
+  const reachable = new Set<string>();
+  const pending = [branch.hash];
+  while (pending.length) {
+    const hash = pending.pop()!;
+    if (reachable.has(hash)) continue;
+    reachable.add(hash);
+    pending.push(
+      ...(fixtureRepo.commits.find((commit) => commit.hash === hash)?.parents ??
+        []),
+    );
+  }
+  return {
+    ...fixtureRepo,
+    commits: fixtureRepo.commits.filter((commit) => reachable.has(commit.hash)),
+  };
 }

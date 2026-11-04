@@ -855,3 +855,81 @@ button.destructive:hover:not(:disabled) {
   --surface-fg: var(--accent-fg);
   --muted: color-mix(in srgb, var(--accent-fg) 75%, var(--accent));
 }
+.branch-picker {
+  position: relative;
+  min-width: 0;
+}
+.branch-trigger {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  align-items: center;
+  width: 100%;
+  background: var(--field);
+  border-color: var(--input-border);
+  min-height: 30px;
+  text-align: left;
+}
+.branch-trigger > span:first-child {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.branch-popover {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  z-index: 30;
+  padding: 5px;
+  border: 1px solid var(--line);
+  border-radius: var(--control-radius);
+  background: var(--popover);
+  color: var(--popover-fg);
+  box-shadow: 0 4px 12px color-mix(in srgb, var(--fg) 10%, transparent);
+}
+.branch-popover > input {
+  width: 100%;
+  margin-bottom: 5px;
+}
+.branch-options {
+  max-height: min(270px, calc(100dvh - 200px));
+  overflow-y: auto;
+}
+.branch-options button {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  width: 100%;
+  border: 0;
+  text-align: left;
+  min-height: 28px;
+  padding: 5px 7px;
+  border-radius: var(--item-radius);
+}
+.branch-options button:focus-visible,
+.branch-options button[aria-selected='true'] {
+  background: var(--accent);
+  color: var(--accent-fg);
+}
+.branch-name {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.branch-options small {
+  flex-shrink: 0;
+  font-size: 10px;
+}
+.branch-matches {
+  margin-top: 4px;
+  padding-top: 4px;
+  border-top: 1px solid var(--line);
+}
+.branch-note {
+  padding: 8px;
+  color: var(--muted);
+  font-size: 11px;
+}
