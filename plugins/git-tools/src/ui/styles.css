@@ -961,20 +961,31 @@ button.destructive:hover:not(:disabled) {
 .pane-resizer::after {
   content: '';
   position: absolute;
-  left: 0;
-  right: 0;
+  left: 50%;
+  transform: translateX(-50%);
   top: 2px;
+  width: 28px;
   height: 2px;
-  background: var(--line);
+  border-radius: 999px;
+  background: var(--muted);
+  opacity: 0.45;
 }
 .pane-resizer:hover::after,
 .pane-resizer:focus-visible::after,
 .pane-resizing .pane-resizer::after {
   background: var(--focus);
+  opacity: 1;
 }
 .pane-resizer:focus-visible {
+  outline: none;
+}
+.pane-resizer:focus-visible::after {
   outline: 1px solid var(--focus);
-  outline-offset: -1px;
+  outline-offset: 2px;
+}
+.pane-resizer + .details,
+.pane-resizer + .files > .section-heading {
+  border-top: 0;
 }
 .pane-resizing,
 .pane-resizing * {
