@@ -3,9 +3,9 @@
   "id": "git-tools",
   "name": "Git Tools",
   "version": "0.1.0",
-  "description": "Git graph and diff viewer for Orca. Initial development scaffold.",
+  "description": "Read-only local Git commit graph and aligned side-by-side diff viewer.",
   "engines": {
-    "orca": ">=1.4.246"
+    "orca": ">=1.4.248"
   },
   "execution": "trusted-worker",
   "pluginApi": 1,
@@ -17,11 +17,24 @@
         "icon": "branch",
         "entry": "ui/index.html"
       }
+    ],
+    "customEditors": [
+      {
+        "id": "git-diff",
+        "title": "Git Diff",
+        "extensions": [".orcadiff"],
+        "entry": "ui/index.html",
+        "priority": "default",
+        "frame": "isolated"
+      }
     ]
   },
   "capabilities": [
     {
       "kind": "workspace:read"
+    },
+    {
+      "kind": "workspace:write"
     }
   ],
   "license": "MIT",

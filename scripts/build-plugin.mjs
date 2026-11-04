@@ -9,8 +9,30 @@ const output = resolve('dist/plugins', plugin);
 await rm(output, { recursive: true, force: true });
 await mkdir(output, { recursive: true });
 await viteBuild({ configFile: resolve(source, 'vite.config.ts') });
-await esbuild({ entryPoints: [resolve(source, 'src/worker/main.ts')], outfile: resolve(output, 'worker.js'), bundle: true, platform: 'node', format: 'esm', target: 'node22' });
-await copyFile(resolve(source, 'orca-plugin.json'), resolve(output, 'orca-plugin.json'));
+await esbuild({
+  entryPoints: [resolve(source, 'src/worker/main.ts')],
+  outfile: resolve(output, 'worker.js'),
+  bundle: true,
+  platform: 'node',
+  format: 'esm',
+  target: 'node22',
+});
+await copyFile(
+  resolve(source, 'orca-plugin.json'),
+  resolve(output, 'orca-plugin.json'),
+);
 await copyFile(resolve(source, 'README.md'), resolve(output, 'README.md'));
 await copyFile(resolve('LICENSE'), resolve(output, 'LICENSE'));
 console.log(`Packaged ${plugin}: ${output}`);
+
+await mkdir(resolve(output, 'licenses'), { recursive: true });
+for (const name of ['monaco-editor', 'react', 'react-dom']) {
+  await copyFile(
+    resolve(source, 'node_modules', name, 'LICENSE'),
+    resolve(output, 'licenses', `${name}.txt`),
+  );
+}
+await copyFile(
+  resolve(source, 'node_modules/monaco-editor/ThirdPartyNotices.txt'),
+  resolve(output, 'licenses/monaco-third-party.txt'),
+);

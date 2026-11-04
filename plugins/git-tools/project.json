@@ -3,16 +3,11 @@
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "plugins/git-tools/src",
   "projectType": "application",
-  "tags": [
-    "type:plugin",
-    "scope:git"
-  ],
+  "tags": ["type:plugin", "scope:git"],
   "targets": {
     "build": {
       "executor": "nx:run-commands",
-      "outputs": [
-        "{workspaceRoot}/dist/plugins/git-tools"
-      ],
+      "outputs": ["{workspaceRoot}/dist/plugins/git-tools"],
       "options": {
         "command": "node scripts/build-plugin.mjs git-tools"
       }
@@ -35,6 +30,30 @@
       "continuous": true,
       "options": {
         "command": "vite --config plugins/git-tools/vite.config.ts"
+      }
+    },
+    "test": {
+      "executor": "nx:run-commands",
+      "cache": true,
+      "options": {
+        "command": "node scripts/test-git-tools.mjs"
+      }
+    },
+    "preview": {
+      "executor": "nx:run-commands",
+      "cache": false,
+      "continuous": true,
+      "dependsOn": ["build"],
+      "options": {
+        "command": "vite preview --config plugins/git-tools/vite.config.ts --host 127.0.0.1 --port 4173"
+      }
+    },
+    "ui-test": {
+      "executor": "nx:run-commands",
+      "cache": false,
+      "dependsOn": ["build"],
+      "options": {
+        "command": "playwright test --config plugins/git-tools/playwright.config.ts"
       }
     }
   }

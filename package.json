@@ -13,6 +13,7 @@
   "private": true,
   "devDependencies": {
     "@nx/js": "24.0.0",
+    "@playwright/test": "^1.64.1",
     "@swc-node/register": "1.11.1",
     "@swc/core": "1.15.8",
     "@swc/helpers": "0.5.18",
@@ -27,6 +28,5 @@
     "typescript": "~6.0.3",
     "vite": "^8.3.5"
   },
-  "packageManager": "pnpm@10.28.0",
-  "dependencies": {}
+  "packageManager": "pnpm@10.28.0"
 }
