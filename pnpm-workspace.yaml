@@ -1,0 +1,7 @@
+packages:
+  - 'plugins/*'
+  - 'packages/*'
+onlyBuiltDependencies:
+  - '@swc/core'
+  - esbuild
+  - nx
