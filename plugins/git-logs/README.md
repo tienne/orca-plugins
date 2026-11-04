@@ -96,7 +96,7 @@ The UI, Monaco, fonts, and editor worker are bundled locally. There is no teleme
 - Git reads are not an atomic snapshot. Refresh after external changes; a changed HEAD can require a reload.
 - Commit actions reject assume-unchanged, skip-worktree, sparse checkout, and ongoing merge, rebase, cherry-pick, revert, or bisect states. Ignored files that obstruct target paths are also rejected.
 
-The earlier development identity was tested on macOS with Orca 1.4.248 for repository connection and the central Diff. Git actions were tested in temporary repositories. The renamed `local.git-logs` identity still awaits execution approval. Other operating systems and Orca versions have not been verified.
+The `local.git-logs` development build was approved and tested on macOS with Orca 1.4.248 for automatic repository connection, two open Diff tabs, Monaco rendering, and local Git exclusion of generated documents. The earlier identity was also checked in light and dark themes. Git actions were tested in temporary repositories. Other operating systems and Orca versions have not been verified.
 
 ## Local installation
 

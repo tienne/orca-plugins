@@ -96,7 +96,7 @@ UI, Monaco, 폰트, editor worker는 모두 로컬 번들에 포함됩니다. Te
 - Git 데이터는 모두 같은 시점에 조회되지 않습니다. 다른 앱에서 변경한 뒤에는 새로고침하십시오. HEAD가 바뀌면 다시 불러와야 할 수 있습니다.
 - 커밋 작업은 assume-unchanged, skip-worktree, sparse checkout과 진행 중인 merge, rebase, cherry-pick, revert, bisect 상태를 거절합니다. Ignored 파일이 대상 경로를 막아도 거절합니다.
 
-이름 변경 전 개발 플러그인으로 macOS의 Orca 1.4.248에서 저장소 연결과 중앙 Diff를 확인했습니다. Git 변경 명령은 임시 저장소에서 검증했습니다. 새 이름인 `local.git-logs`는 아직 실행 승인 대기 중입니다. 다른 OS와 Orca 버전은 검증하지 않았습니다.
+`local.git-logs` 개발 빌드를 승인하고 macOS의 Orca 1.4.248에서 저장소 자동 연결, Diff 탭 두 개, Monaco 렌더링, 생성 문서의 로컬 Git 제외를 확인했습니다. 이름 변경 전 플러그인으로는 라이트·다크 테마도 확인했습니다. Git 변경 명령은 임시 저장소에서 검증했습니다. 다른 OS와 Orca 버전은 검증하지 않았습니다.
 
 ## 로컬에서 설치하기
 
