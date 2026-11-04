@@ -422,7 +422,7 @@ function App() {
       <header className="app-header">
         <div>
           <span className="brand">⑂</span>
-          <h1>{editorMode ? 'Git Diff' : 'Git Tools'}</h1>
+          <h1>{editorMode ? 'Git Diff' : 'Git Logs'}</h1>
           <span className="subtle">LOCAL / READ ONLY</span>
         </div>
         <button

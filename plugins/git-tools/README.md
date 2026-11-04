@@ -1,10 +1,10 @@
-# Git Tools 0.1.0
+# Git Logs 0.1.0
 
 로컬 Git 커밋 그래프 + 읽기 전용 Monaco 좌우 diff를 제공하는 Orca 플러그인입니다. Git 변경 명령은 없습니다. 최소 Orca 버전은 1.4.248입니다.
 
 ## 사용
 
-Git Tools 사이드바를 열면 현재 열린 Orca 로컬 Git 워크트리에 자동 연결하며 workspace 전환을 따라갑니다. 자동 식별이 모호하면 워크트리를 선택합니다. 경로 직접 입력은 접힌 **다른 저장소 경로로 연결**에 있으며 사용 시 자동 따라가기를 해제합니다. 최근 200개 커밋의 부모 그래프, HEAD/로컬·원격 브랜치, 검색, 새로고침, 메시지 전문과 변경 파일을 탐색합니다.
+Git Logs 사이드바를 열면 현재 열린 Orca 로컬 Git 워크트리에 자동 연결하며 workspace 전환을 따라갑니다. 자동 식별이 모호하면 워크트리를 선택합니다. 경로 직접 입력은 접힌 **다른 저장소 경로로 연결**에 있으며 사용 시 자동 따라가기를 해제합니다. 최근 200개 커밋의 부모 그래프, HEAD/로컬·원격 브랜치, 검색, 새로고침, 메시지 전문과 변경 파일을 탐색합니다.
 
 - 작업 트리: HEAD → 현재 디스크 최종 내용. staged(HEAD↔index), unstaged(index↔디스크), untracked(index에 없음)는 상태 표시입니다. 별도의 index diff 모드는 없습니다. HEAD와 같아진 내용은 제외됩니다.
 - 커밋: 선택 커밋 → 직접 부모 기준 비교. 좌측은 부모, 우측은 선택 커밋입니다. Merge는 부모를 선택하며 최초 커밋의 좌측은 빈 트리입니다.
@@ -50,3 +50,9 @@ pnpm nx run git-tools:preview
 원문: [개발 가이드](https://github.com/stablyai/orca/blob/main/docs/reference/plugin-authoring.md), [Manifest](https://github.com/stablyai/orca/blob/main/docs/reference/plugin-manifest.md), [Host API](https://github.com/stablyai/orca/blob/main/docs/reference/plugin-host-api.md), [Catalog](https://github.com/stablyai/orca/blob/main/docs/reference/plugin-catalog.md), [Theme tokens](https://github.com/stablyai/orca/blob/main/docs/reference/plugin-theme-tokens.md), [Listing policy](https://github.com/stablyai/orca/blob/main/docs/reference/plugin-listing-policy.md), [공개 등록 안내](https://www.onorca.dev/plugins/add).
 
 현재 workspace API에는 경로/ID가 없어 이름·브랜치를 workspace 목록과 대조합니다. 로컬/SSH를 포함한 중복 이름·브랜치나 잘린 목록에서는 임의의 저장소로 자동 연결하지 않으며 선택을 받습니다. SSH Git은 지원하지 않습니다.
+
+## 표시 이름과 단축키
+
+툴과 사이드바의 표시 이름은 **Git Logs**입니다. 기존 설치와 문서의 호환성을 위해 manifest id/panel id `git-tools`, 설치 identity `local.git-tools` / `tienne.git-tools`, `.orcadiff` 확장자와 저장 경로는 유지합니다.
+
+Orca 1.4.248은 `contributes.commands`와 `contributes.keybindings`로 명령 단축키를 등록할 수 있습니다. 다만 현재 명세에는 특정 플러그인 패널을 여는 action/worker API가 없고 `sidebar.right.toggle`은 마지막 선택된 오른쪽 사이드바 전체만 토글합니다. 이를 Git Logs 전용 열기라고 표시하지 않으며 현재 추가된 단축키는 없습니다.

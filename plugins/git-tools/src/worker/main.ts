@@ -20,7 +20,7 @@ export default function activate(orca: WorkerApi): void {
   const check = (root: string) => {
     if (!connected.has(root))
       throw new Error(
-        'Git Tools 사이드바에서 이 저장소의 워크트리를 열어 연결하세요.',
+        'Git Logs 사이드바에서 이 저장소의 워크트리를 열어 연결하세요.',
       );
     return root;
   };
@@ -179,5 +179,5 @@ export default function activate(orca: WorkerApi): void {
       opened: true;
     };
   });
-  orca.log('Git Tools read-only worker ready');
+  orca.log('Git Logs read-only worker ready');
 }

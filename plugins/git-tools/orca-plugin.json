@@ -1,7 +1,7 @@
 {
   "manifestVersion": 2,
   "id": "git-tools",
-  "name": "Git Tools",
+  "name": "Git Logs",
   "version": "0.1.0",
   "description": "Read-only local Git commit graph and aligned side-by-side diff viewer.",
   "engines": {
@@ -13,7 +13,7 @@
     "panels": [
       {
         "id": "git-tools",
-        "title": "Git Tools",
+        "title": "Git Logs",
         "icon": "branch",
         "entry": "ui/index.html"
       }

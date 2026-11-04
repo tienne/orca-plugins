@@ -22,9 +22,9 @@ pnpm dev
 
 일반 브라우저에서는 **DEMO · 실제 Git 데이터 아님** 표시와 fixture만 나타납니다. 상단에서 일반 변경 / 빈 저장소 / 변경 없음 / 로딩 / 오류 및 테마를 선택할 수 있습니다. 실제 저장소를 웹 서버에 노출하지 않습니다.
 
-## Git Tools 사용
+## Git Logs 사용
 
-1. Git Tools 사이드바를 열면 **현재 열린 Orca 로컬 Git 워크트리에 자동 연결**합니다. workspace가 바뀌면 연결도 따라갑니다. 이름·브랜치가 중복되거나 자동 식별이 불가능하면 워크트리 선택을 표시합니다. 직접 경로 연결은 접힌 **다른 저장소 경로로 연결**에서만 사용하며, 수동 연결 시 자동 따라가기가 해제됩니다.
+1. Git Logs 사이드바를 열면 **현재 열린 Orca 로컬 Git 워크트리에 자동 연결**합니다. workspace가 바뀌면 연결도 따라갑니다. 이름·브랜치가 중복되거나 자동 식별이 불가능하면 워크트리 선택을 표시합니다. 직접 경로 연결은 접힌 **다른 저장소 경로로 연결**에서만 사용하며, 수동 연결 시 자동 따라가기가 해제됩니다.
 2. 최근 최대 200개 커밋의 부모 관계와 HEAD, 로컬·원격 브랜치를 탐색합니다. 현재/전체 브랜치 범위와 커밋·작성자·해시·브랜치 검색을 지원합니다. 검색 중에는 생략된 커밋을 잘못 연결하지 않도록 그래프를 숨깁니다.
 3. 커밋을 선택하면 메시지 전문, 작성자·날짜와 변경 파일이 나타납니다. Merge는 기본 첫 번째 부모와 비교하며 부모 선택으로 다른 직접 부모와 비교할 수 있습니다. 최초 커밋은 빈 트리와 비교합니다.
 4. 작업 트리는 **HEAD → 현재 디스크**의 최종 내용을 비교합니다. `staged`는 HEAD↔index, `unstaged`는 index↔디스크, `untracked`는 index에 없는 파일이라는 상태 표시입니다. 각각 별도의 staged/unstaged diff 모드를 뜻하지 않습니다. HEAD와 같은 내용으로 상쇄된 파일은 제외합니다. 무시된 untracked 파일은 포함하지 않습니다.
@@ -39,7 +39,7 @@ pnpm dev
 이 플러그인은 `trusted-worker`이며 사용자 계정 권한으로 Node 코드를 실행할 수 있습니다. manifest는 다음 접근을 선언합니다.
 
 - `workspace:read`: 현재 workspace context와 목록을 읽고, workspace.changed 이벤트로 열린 워크트리를 따라갑니다.
-- `workspace:write`: `.orcadiff`를 중앙 editor 탭으로 엽니다. 이 Orca 권한 자체는 built-in command 실행도 허용하지만 Git Tools는 대상 workspace를 표시하는 `workspace.open`과 `editor.open`만 호출합니다.
+- `workspace:write`: `.orcadiff`를 중앙 editor 탭으로 엽니다. 이 Orca 권한 자체는 built-in command 실행도 허용하지만 Git Logs는 대상 workspace를 표시하는 `workspace.open`과 `editor.open`만 호출합니다.
 
 설치/실행은 사용자 승인 이후에만 진행합니다. 검토용 명령:
 
@@ -81,8 +81,8 @@ Orca가 `approval_required`를 반환하면 표시된 접근 범위와 fingerpri
 
 2026-11-04 확인 기준입니다. 등록 정책은 공식/커뮤니티 카탈로그와 공개 디렉터리에 등록할 때 적용됩니다. 현재는 미공개 로컬 개발 단계이며 아래 규칙을 개발 기준으로 유지합니다.
 
-- 설치와 사용은 무료입니다. 유료 잠금·라이선스 키·체험판을 추가하지 않습니다. 추적·telemetry·analytics·사용자 데이터 수집/외부 전송도 추가하지 않습니다. Git 조회 결과는 요청한 로컬 화면에 표시하고, 연결 경로는 worker 메모리 및 사용자가 생성하는 로컬 비교 문서에만 둡니다. 정책상 사용자 소유 유료 API 서비스 연결은 가능하지만 현재 Git Tools는 그런 서비스를 사용하지 않습니다. [등록 정책](https://github.com/stablyai/orca/blob/main/docs/reference/plugin-listing-policy.md)
-- IntelliJ는 UX 참고이며 이름·로고·공식 제작/보증 표시를 복제하지 않습니다. Git Tools 소스의 MIT 라이선스와 React·React DOM·Monaco 라이선스 및 Monaco ThirdPartyNotices를 배포물에 유지합니다. 공개 등록 전에는 소스도 저장소에서 공개해야 합니다. Vite의 배포용 minification은 재현 가능한 번들 최적화이며 은폐용 난독화를 추가하지 않습니다. [등록 정책](https://github.com/stablyai/orca/blob/main/docs/reference/plugin-listing-policy.md)
+- 설치와 사용은 무료입니다. 유료 잠금·라이선스 키·체험판을 추가하지 않습니다. 추적·telemetry·analytics·사용자 데이터 수집/외부 전송도 추가하지 않습니다. Git 조회 결과는 요청한 로컬 화면에 표시하고, 연결 경로는 worker 메모리 및 사용자가 생성하는 로컬 비교 문서에만 둡니다. 정책상 사용자 소유 유료 API 서비스 연결은 가능하지만 현재 Git Logs는 그런 서비스를 사용하지 않습니다. [등록 정책](https://github.com/stablyai/orca/blob/main/docs/reference/plugin-listing-policy.md)
+- IntelliJ는 UX 참고이며 이름·로고·공식 제작/보증 표시를 복제하지 않습니다. Git Logs 소스의 MIT 라이선스와 React·React DOM·Monaco 라이선스 및 Monaco ThirdPartyNotices를 배포물에 유지합니다. 공개 등록 전에는 소스도 저장소에서 공개해야 합니다. Vite의 배포용 minification은 재현 가능한 번들 최적화이며 은폐용 난독화를 추가하지 않습니다. [등록 정책](https://github.com/stablyai/orca/blob/main/docs/reference/plugin-listing-policy.md)
 - manifest `id`는 `git-tools`입니다. 현재 로컬 폴더 설치 identity는 `local.git-tools`이며, 향후 **tienne 소유 저장소에서 설치할 때** `tienne.git-tools`가 됩니다. `orca-` id와 예약 publisher를 사용하지 않습니다. 최신 명세는 `publisher`를 저장소 소유자에서 유도하므로 생략합니다. 공개 등록 안내는 아직 `publisher` 기입을 설명하므로 실제 릴리스 시 최신 validator와 등록 절차의 차이를 다시 확인해야 합니다. [Manifest](https://github.com/stablyai/orca/blob/main/docs/reference/plugin-manifest.md), [Catalog](https://github.com/stablyai/orca/blob/main/docs/reference/plugin-catalog.md), [공개 등록 안내](https://www.onorca.dev/plugins/add)
 - 모노레포 `source.path`로 설치되는 **그 하위 폴더만** 자체 완결적이어야 합니다. 빌드는 worker의 외부 import가 Node 내장 모듈인지 확인하고, 산출물의 symlink·node_modules·실행 비트·네이티브 모듈·아카이브·미검토 형식을 거절합니다. 현재는 JS/HTML/CSS/JSON/문서/로컬 폰트 등 허용 목록만 패키징하며 WASM은 포함하지 않습니다. 폰트는 로컬 CLI validation을 통과했지만 공개 디렉터리 수락까지 확인한 것은 아닙니다. WASM 등 새 형식을 추가할 때는 그 시점의 validator와 공개 디렉터리 정책을 재검토해야 합니다. [Catalog](https://github.com/stablyai/orca/blob/main/docs/reference/plugin-catalog.md), [디렉터리의 제외 기준](https://www.onorca.dev/plugins/add)
 - 공개 릴리스는 정확한 Git commit과 `contentHash`로 고정하고 `release-entry`로 생성합니다. 현재 원격 저장소/릴리스가 없으므로 빈 카탈로그를 유지합니다. 임의 hash·릴리스·설치 링크를 만들지 않습니다. 로컬 `plugin validate` 통과는 공개 등록 승인과 다릅니다. [Catalog](https://github.com/stablyai/orca/blob/main/docs/reference/plugin-catalog.md)

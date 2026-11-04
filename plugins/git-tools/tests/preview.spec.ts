@@ -182,7 +182,7 @@ test('panel remains a panel when Orca supplies a document API on every surface',
   });
   await page.goto('/');
   await expect(
-    page.getByRole('heading', { name: 'Git Tools', exact: true }),
+    page.getByRole('heading', { name: 'Git Logs', exact: true }),
   ).toBeVisible();
   await expect(page.getByLabel('열린 워크트리에 자동 연결')).toBeChecked();
   await page.getByText('다른 저장소 경로로 연결', { exact: true }).click();
