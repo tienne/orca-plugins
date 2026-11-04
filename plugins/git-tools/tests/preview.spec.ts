@@ -413,6 +413,15 @@ test('commit context menu supports keyboard navigation and a safe demo hard rese
   await commit.click({ button: 'right' });
   await expect(page.getByRole('menu', { name: '커밋 작업' })).toBeVisible();
   await expect(page.getByRole('menuitem')).toHaveCount(7);
+  // Arrow navigation crosses visual group boundaries without stopping on labels.
+  await page.keyboard.press('ArrowDown');
+  await expect(
+    page.getByRole('menuitem', { name: '여기서 브랜치 생성…' }),
+  ).toBeFocused();
+  await page.keyboard.press('ArrowDown');
+  await expect(
+    page.getByRole('menuitem', { name: '현재 브랜치로 병합…' }),
+  ).toBeFocused();
   await page.screenshot({ path: info.outputPath('commit-menu.png') });
   await page.keyboard.press('Escape');
   await expect(page.getByRole('menu')).toHaveCount(0);

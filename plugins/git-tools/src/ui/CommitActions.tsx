@@ -22,6 +22,11 @@ const labels: Record<GitAction, string> = {
   revert: '리버트…',
   reset: '현재 브랜치를 여기로 리셋…',
 };
+const menuGroups: { label: string; actions: GitAction[] }[] = [
+  { label: '브랜치·이동', actions: ['checkout', 'branch'] },
+  { label: '변경 통합', actions: ['merge', 'rebase', 'cherry-pick'] },
+  { label: '취소·이력 변경', actions: ['revert', 'reset'] },
+];
 export function CommitActions({
   repo,
   workspaceId,
@@ -185,7 +190,7 @@ export function CommitActions({
             className="commit-menu"
             style={{
               left: Math.max(8, Math.min(menu.x, window.innerWidth - 260)),
-              top: Math.max(8, Math.min(menu.y, window.innerHeight - 330)),
+              top: Math.max(8, Math.min(menu.y, window.innerHeight - 380)),
             }}
             onKeyDown={(event) => {
               if (!['ArrowDown', 'ArrowUp', 'Home', 'End'].includes(event.key))
@@ -212,10 +217,26 @@ export function CommitActions({
             }}
           >
             <small>{menu.commit.hash.slice(0, 7)} · 커밋 작업</small>
-            {(Object.keys(labels) as GitAction[]).map((item) => (
-              <button key={item} role="menuitem" onClick={() => choose(item)}>
-                {labels[item]}
-              </button>
+            {menuGroups.map((group) => (
+              <div
+                key={group.label}
+                role="group"
+                aria-label={group.label}
+                className="commit-menu-group"
+              >
+                <span className="commit-menu-label" aria-hidden="true">
+                  {group.label}
+                </span>
+                {group.actions.map((item) => (
+                  <button
+                    key={item}
+                    role="menuitem"
+                    onClick={() => choose(item)}
+                  >
+                    {labels[item]}
+                  </button>
+                ))}
+              </div>
             ))}
           </div>
         </>
