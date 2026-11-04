@@ -6,11 +6,11 @@ pnpm, Nx, TypeScript, React, Vite, esbuild를 사용하는 Orca 플러그인 저
 
 ## 플러그인
 
-| 플러그인                                  | 기능                                                  | 상태                   |
-| ----------------------------------------- | ----------------------------------------------------- | ---------------------- |
-| [Git Logs](plugins/git-logs/README.ko.md) | 커밋 그래프, 브랜치와 커밋 검색, 좌우 Diff, 커밋 작업 | 0.1.0 — 로컬 개발 버전 |
+| 플러그인                                  | 기능                                                  | 상태  |
+| ----------------------------------------- | ----------------------------------------------------- | ----- |
+| [Git Logs](plugins/git-logs/README.ko.md) | 커밋 그래프, 브랜치와 커밋 검색, 좌우 Diff, 커밋 작업 | 0.1.0 |
 
-아직 공개 릴리스나 설치 주소는 없습니다. 소스 브랜치의 카탈로그는 빈 템플릿이며, 공개한 버전은 `release` 브랜치의 카탈로그에서 관리합니다.
+소스 브랜치의 카탈로그는 빈 템플릿입니다. 설치용 카탈로그와 빌드 파일은 `release` 브랜치에서 관리합니다. Orca의 **설정 → 플러그인 → ⋯ → Catalog sources…**에 `https://github.com/tienne/orca-plugins.git`과 ref `release`를 추가한 뒤 Git Logs를 설치하십시오. [설치·사용 안내](plugins/git-logs/README.ko.md#설치)에 권한과 사용 방법을 설명합니다.
 
 ## Git Logs
 
@@ -90,7 +90,7 @@ Git과 파일 작업은 worker에서 처리합니다. 플러그인 프레임에�
 
 PR과 main push는 GitHub 호스팅 Ubuntu에서 빌드·타입·Git·브라우저·배포 테스트를 실행합니다. 수동 배포는 미리보기로 시작하며, 실제 공개에는 별도로 설정한 macOS Orca 러너와 production 환경을 사용합니다. 설정과 권한, main → release 흐름은 [Git 브랜치와 배포](docs/releases.ko.md)에 정리했습니다.
 
-소스는 [tienne/orca-plugins](https://github.com/tienne/orca-plugins)에 공개돼 있습니다. 플러그인 릴리스는 아직 공개하지 않았습니다. 릴리스할 때는 빌드 결과물을 Git에 포함하고 카탈로그에서 설치할 폴더를 정확한 커밋과 `contentHash`로 고정해야 합니다. 배포 조건과 현재 검증 기록은 [개발 안내](docs/development.ko.md)에 정리했습니다.
+소스는 [tienne/orca-plugins](https://github.com/tienne/orca-plugins)에 공개돼 있습니다. 릴리스할 때는 빌드 결과물을 Git에 포함하고 카탈로그에서 설치할 폴더를 정확한 커밋과 `contentHash`로 고정해야 합니다. 배포 조건과 현재 검증 기록은 [개발 안내](docs/development.ko.md)에 정리했습니다.
 
 ## 라이선스
 

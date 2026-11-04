@@ -147,7 +147,7 @@ Manifest와 카탈로그의 설명 필드는 언어별로 나뉘지 않으며 �
 
 번들은 `worker.js` 실행을 위해 `type: module`을 선언합니다. 비교 문서와 로컬 검증 캡처는 배포 에셋이 아닙니다. 설치용 폴더에는 두 언어의 안내와 의존 라이선스를 포함합니다.
 
-소스는 [tienne/orca-plugins](https://github.com/tienne/orca-plugins)에 있습니다. 아직 공개 플러그인 릴리스는 없고 `dist/`는 Git에서 제외돼 있습니다. 임의 커밋이나 해시로 카탈로그 항목을 만들지 마십시오. 릴리스할 때는 다음 순서를 따릅니다.
+소스는 [tienne/orca-plugins](https://github.com/tienne/orca-plugins)에 있습니다. `dist/`는 소스 브랜치의 Git 추적 대상에서 제외돼 있습니다. 임의 커밋이나 해시로 카탈로그 항목을 만들지 마십시오. 릴리스할 때는 다음 순서를 따릅니다.
 
 1. 설치용 산출물을 배포 저장소에 커밋합니다.
 2. 커밋한 폴더에 `orca plugin release-entry`를 실행해 메타데이터를 만듭니다.
