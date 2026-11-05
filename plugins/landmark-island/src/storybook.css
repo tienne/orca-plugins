@@ -365,8 +365,9 @@ h2 small {
   border-left: 0;
 }
 .card svg {
-  width: 74px;
-  height: 74px;
+  width: 96px;
+  height: 96px;
+  max-width: 100%;
   margin-bottom: 6px;
 }
 .card strong {
@@ -383,8 +384,8 @@ h2 small {
   opacity: 1;
 }
 .card.locked svg {
-  opacity: 0.42;
-  filter: grayscale(0.85);
+  opacity: 0.62;
+  filter: grayscale(0.55);
 }
 .card.locked strong {
   opacity: 0.7;
@@ -687,8 +688,8 @@ footer {
   padding: 3px 12px;
 }
 .detail-art {
-  width: 130px;
-  height: 130px;
+  width: min(220px, 100%);
+  height: 200px;
   margin: 4px auto 20px;
 }
 .detail-art svg {
@@ -1015,11 +1016,11 @@ footer {
   )
   .wonder-shadow {
   animation: wonder-shadow 4s ease-in-out infinite;
-  transform-origin: 32px 59px;
+  transform-origin: 64px 118px;
 }
 .landmark-detail[data-owned='true'][data-tier='legendary'] .detail-art {
-  width: 170px;
-  height: 150px;
+  width: min(240px, 100%);
+  height: 210px;
   filter: drop-shadow(0 0 12px #e3b64d75);
 }
 .world-object.building[data-tier='legendary'] {

@@ -1510,3 +1510,84 @@ test('host backup export calls saveAs only from a fresh click and reports cancel
     'Could not save the backup',
   );
 });
+
+test('material artwork keeps local paint references isolated across collection, copies and details', async ({
+  page,
+}) => {
+  const ids = [
+    'eiffel',
+    'colosseum',
+    'stonehenge',
+    'liberty',
+    'opera',
+    'fuji',
+    'taj',
+    'petra',
+    'chichen',
+    'angkor',
+    'machu',
+    'giza',
+    'giza',
+  ];
+  const save = {
+    version: 2,
+    tickets: ids.map((_, i) => ({
+      workspaceId: `art-fixture-${i}`,
+      at: '2026-11-06',
+    })),
+    receipts: ids.map((landmark, i) => ({
+      workspaceId: `art-fixture-${i}`,
+      landmark,
+      at: '2026-11-06',
+    })),
+    placements: [
+      { landmark: 'giza', cell: 0 },
+      { landmark: 'giza', cell: 1 },
+    ],
+  };
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await page.goto('/');
+  await page.evaluate(
+    (s) => localStorage.setItem('landmark-island-demo-v1', JSON.stringify(s)),
+    save,
+  );
+  await page.reload();
+  await expect(page.locator('.collection .landmark-art')).toHaveCount(12);
+  await expect(page.locator('.building .landmark-art')).toHaveCount(2);
+  await page.setViewportSize({ width: 1200, height: 1000 });
+  await page
+    .locator('.collection-section')
+    .screenshot({
+      path: 'test-results/landmark-island/material-collection.png',
+    });
+  for (const id of ['taj', 'colosseum', 'giza']) {
+    await page.locator(`[data-info=${id}]`).click();
+    const result = await page.evaluate(() => {
+      const allIds = [...document.querySelectorAll('.landmark-art [id]')].map(
+        (e) => e.id,
+      );
+      const missing: string[] = [];
+      document.querySelectorAll('.landmark-art').forEach((svg) => {
+        svg.querySelectorAll('[fill],[stroke]').forEach((node) => {
+          for (const attribute of ['fill', 'stroke']) {
+            const ref = node
+              .getAttribute(attribute)
+              ?.match(/^url\(#(.+)\)$/)?.[1];
+            if (ref && !svg.querySelector(`[id="${ref}"]`)) missing.push(ref);
+          }
+        });
+      });
+      return { unique: new Set(allIds).size === allIds.length, missing };
+    });
+    expect(result).toEqual({ unique: true, missing: [] });
+    await page
+      .locator('.landmark-detail')
+      .screenshot({ path: `test-results/landmark-island/material-${id}.png` });
+    await page.keyboard.press('Escape');
+  }
+  expect(
+    await page.evaluate(() =>
+      JSON.parse(localStorage.getItem('landmark-island-demo-v1')!),
+    ),
+  ).toEqual(save);
+});
