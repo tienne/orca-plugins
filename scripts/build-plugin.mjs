@@ -5,7 +5,8 @@ import { resolve } from 'node:path';
 import { isBuiltin } from 'node:module';
 import { validateArtifact } from './validate-plugin-artifact.mjs';
 const plugin = process.argv[2];
-if (plugin !== 'git-logs') throw new Error(`Unknown plugin: ${plugin}`);
+if (!['git-logs', 'landmark-island'].includes(plugin))
+  throw new Error(`Unknown plugin: ${plugin}`);
 const source = resolve('plugins', plugin);
 const output = resolve('dist/plugins', plugin);
 await rm(output, { recursive: true, force: true });
@@ -39,16 +40,25 @@ for (const file of Object.values(worker.metafile.outputs)) {
 }
 
 await mkdir(resolve(output, 'licenses'), { recursive: true });
-for (const name of ['monaco-editor', 'react', 'react-dom']) {
+for (const name of plugin === 'git-logs'
+  ? ['monaco-editor', 'react', 'react-dom']
+  : []) {
   await copyFile(
     resolve(source, 'node_modules', name, 'LICENSE'),
     resolve(output, 'licenses', `${name}.txt`),
   );
 }
-await copyFile(
-  resolve(source, 'node_modules/monaco-editor/ThirdPartyNotices.txt'),
-  resolve(output, 'licenses/monaco-third-party.txt'),
-);
+if (plugin === 'git-logs')
+  await copyFile(
+    resolve(source, 'node_modules/monaco-editor/ThirdPartyNotices.txt'),
+    resolve(output, 'licenses/monaco-third-party.txt'),
+  );
+
+if (plugin === 'landmark-island')
+  await copyFile(
+    resolve(source, 'licenses/geography.txt'),
+    resolve(output, 'licenses/geography.txt'),
+  );
 
 const artifact = await validateArtifact(output);
 console.log(

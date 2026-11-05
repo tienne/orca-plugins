@@ -1,0 +1,51 @@
+# Landmark Island
+
+[English](README.md) · 한국어
+
+새 워크트리를 탐험으로 삼아 실제 랜드마크를 모으고 가상의 6 × 6 섬에 배치하는 미출시 Orca 플러그인 프로토타입입니다. Orca 1.4.248 이상이 필요합니다.
+
+## 플레이
+
+Landmark Island 패널에서 보유 랜드마크와 빈 칸을 선택해 배치합니다. 건물을 선택하고 빈 칸을 누르면 이동하며, **Return to collection**으로 배치를 해제합니다. 보유 수량만큼 배치할 수 있고 해제해도 소유권은 유지됩니다. **World Map**은 섬 배치와 무관하게 실제 위치와 국가별 고유 수집 수를 표시합니다. Refresh는 저장 데이터를 읽기만 합니다. 프로토타입 UI는 영어입니다.
+
+12종(일반 6, 희귀 3, 영웅 2, 전설 1)을 제공합니다. 등급 확률은 70/23/6/1%이고, 등급 내에서는 균등 추첨합니다. 보유 아이템도 항상 추첨 대상이며 중복은 수량을 늘립니다. 천장, 화폐, 구매, 완성 보장은 없습니다. 자체 제작 벡터 그림을 로컬에 포함합니다.
+
+`workspace.created`의 `kind: worktree`만 보상을 지급합니다. 폴더 생성, 대화, 새로고침, 작업공간 전환, 앱 시작은 지급하지 않습니다. 워커 큐가 획득 영수증과 배치 저장을 직렬화합니다. 버전이 있는 저장 상태에 워크트리 ID당 영수증 하나를 남겨 이벤트 재전달 및 워커 재시작 후 중복 지급을 방지합니다. 워크트리가 삭제돼도 보상은 유지됩니다. 이벤트 경로에 접근하거나 Git을 실행하지 않습니다.
+
+## 로컬 데모와 검증
+
+저장소 루트에서 실행합니다.
+
+```sh
+pnpm nx run-many -t build typecheck test ui-test -p landmark-island
+pnpm nx run landmark-island:preview
+pnpm validate
+```
+
+http://127.0.0.1:43187 에서 **DEMO** 표시와 **Demo expedition** 버튼으로 생성 이벤트를 체험합니다. 브라우저 localStorage의 `landmark-island-demo-v1`만 사용합니다. 호스트 모드에는 수동 보상 버튼이 없고 자체 워커를 통해서만 저장합니다. 데모는 Orca 저장 데이터를 건드리지 않습니다.
+
+패키지는 `dist/plugins/landmark-island`이며 실행 중 다운로드가 필요 없습니다. 빌드는 산출물 정책을, `pnpm validate`는 실제 Orca manifest 검증기를 사용합니다. Node 테스트는 동시/중복 이벤트, 재시작, 저장 실패, 수량 제한, 패널 없는 워커 전달을 모의 검증합니다. 브라우저 테스트는 획득/중복, 배치/이동/해제, 지도 수집 수, 재로드, 좁은 화면, 명암 테마를 확인합니다. 실제 호스트 검증과 구분되는 fixture 증거입니다.
+
+## 권한과 한계
+
+신뢰된 Node 워커는 사용자 OS 계정 권한으로 실행됩니다. 선언 권한은 `workspace:read`, `storage:own`이며 Git 쓰기, 터미널, 에이전트, 알림, 네트워크 서비스를 요청하지 않습니다. Git Logs 승인은 이 플러그인에 이전되지 않습니다.
+
+**Orca에 로드하거나 실행 승인하지 않았습니다.** 산출물을 검토하고 실행을 명시적으로 허용한 뒤 `orca plugin dev load dist/plugins/landmark-island --json` 결과의 정확한 승인 지문과 권한을 확인해야 합니다. 실제 호스트에서는 패널을 닫고 새 워크트리를 만든 뒤 보상 확인, 워커/앱 재시작 후 중복 미지급을 확인해야 합니다. 비활성 기간 이벤트 재생은 보장되지 않으며 누락 이벤트를 소급 지급하지 않습니다. 저장 실패도 재전달이 없다면 보상 누락으로 이어질 수 있습니다. 시작 시 기존 워크트리를 순회하지 않습니다.
+
+이 호스트의 저장소/워크트리 전체에서 하나의 플러그인 로컬 컬렉션을 공유합니다. 오프라인 저장이며 클라우드 계정이나 백업이 아닙니다. 플러그인 데이터 삭제 시 잃을 수 있습니다. 중복 방지를 위해 영수증을 계속 보존하므로 매우 큰 저장은 호스트 저장/응답 용량 제한에 도달할 수 있습니다. 영수증 보관 분리는 미구현입니다. 알 수 없는 저장 버전은 덮어쓰지 않고 거부합니다. Orca의 플러그인별 단일 워커를 전제로 하며 여러 독립 워커의 동시 저장, 여러 브라우저 데모 탭은 조율하지 않습니다.
+
+지도는 [Natural Earth](https://www.naturalearthdata.com/about/terms-of-use/) 공개 도메인 데이터를 사용합니다. 위치는 Wikidata CC0이며 개별 엔티티 링크를 번들 카탈로그에 포함합니다. [지리 데이터 출처](licenses/geography.txt)를 참고하세요. 일반화된 지도에서 작은 국가는 생략될 수 있습니다. 섬 좌표와 실제 위치는 독립적입니다.
+
+장식 경제, 확장, 클라우드 동기화, 거래, UI 번역, 120종 컬렉션은 미구현입니다. 배포하지 않았습니다.
+
+## 검증 기록 (2026-11-05)
+
+- `pnpm nx run landmark-island:typecheck`: 통과.
+- `pnpm nx run landmark-island:test`: 위 워커/상태 검증 통과.
+- `pnpm nx run landmark-island:ui-test --output-style=static`: 브라우저 테스트 4개 통과. 모바일에서 모든 셀이 바다 영역 안에 있는지 확인했고 `test-results/landmark-island/` 스크린샷을 직접 검사했습니다.
+- `pnpm nx run git-logs:build --skipNxCache --output-style=static`: 공유 빌더로 통과. Git Logs 소스는 변경하지 않았으며 타입 검사와 워커/산출물 테스트 49개도 통과했습니다.
+- Git Logs UI 회귀 테스트는 서버 시작 시간 초과로 완료하지 못했습니다. 다른 워크트리의 기존 preview가 4173 포트를 점유하고 HTTP 404를 반환하고 있었습니다. 해당 프로세스는 중단하거나 변경하지 않았습니다.
+- `pnpm validate`: 두 패키지 모두 설치된 Orca 검증기 통과. `orca plugin inspect dist/plugins/landmark-island --json`은 valid 및 `needsApproval: true`를 반환했습니다.
+- 실제 호스트 로드, 실행 승인, 백그라운드 수명주기 검증, push, merge, publish는 수행하지 않았습니다.
+
+Nx 생성기 탐색 결과 Orca 전용 생성기는 없었습니다. 설치된 Orca `worker-panel` 생성기는 번들 `orca.d.ts` 누락으로 실패했습니다. 기존 Nx run-command 빌드 패턴과 설치 버전의 authoring 문서에서 확인한 최소 API 계약으로 구현했습니다.

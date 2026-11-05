@@ -1,0 +1,57 @@
+{
+  "name": "landmark-island",
+  "projectType": "application",
+  "sourceRoot": "plugins/landmark-island/src",
+  "targets": {
+    "build": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "node scripts/build-plugin.mjs landmark-island"
+      },
+      "outputs": ["{workspaceRoot}/dist/plugins/landmark-island"]
+    },
+    "typecheck": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "tsc -p plugins/landmark-island/tsconfig.json"
+      }
+    },
+    "test": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "node scripts/test-landmark-island.mjs"
+      }
+    },
+    "validate-plugin": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "orca plugin validate dist/plugins/landmark-island --json"
+      }
+    },
+    "dev": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "vite --config plugins/landmark-island/vite.config.ts"
+      },
+      "cache": false,
+      "continuous": true
+    },
+    "preview": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "vite preview --config plugins/landmark-island/vite.config.ts --host 127.0.0.1 --port 43187"
+      },
+      "dependsOn": ["build"],
+      "cache": false,
+      "continuous": true
+    },
+    "ui-test": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "playwright test --config plugins/landmark-island/playwright.config.ts"
+      },
+      "dependsOn": ["build"],
+      "cache": false
+    }
+  }
+}

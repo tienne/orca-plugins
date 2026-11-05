@@ -1,0 +1,122 @@
+[
+  {
+    "id": "eiffel",
+    "name": "Eiffel Tower",
+    "country": "France",
+    "code": "FRA",
+    "tier": "common",
+    "lat": 48.858296,
+    "lon": 2.294479,
+    "source": "https://www.wikidata.org/wiki/Q243"
+  },
+  {
+    "id": "colosseum",
+    "name": "Colosseum",
+    "country": "Italy",
+    "code": "ITA",
+    "tier": "common",
+    "lat": 41.890277777778,
+    "lon": 12.492222222222,
+    "source": "https://www.wikidata.org/wiki/Q10285"
+  },
+  {
+    "id": "stonehenge",
+    "name": "Stonehenge",
+    "country": "United Kingdom",
+    "code": "GBR",
+    "tier": "common",
+    "lat": 51.17888888888889,
+    "lon": -1.826111111111111,
+    "source": "https://www.wikidata.org/wiki/Q39671"
+  },
+  {
+    "id": "liberty",
+    "name": "Statue of Liberty",
+    "country": "United States",
+    "code": "USA",
+    "tier": "common",
+    "lat": 40.689209166667,
+    "lon": -74.044425277778,
+    "source": "https://www.wikidata.org/wiki/Q9202"
+  },
+  {
+    "id": "opera",
+    "name": "Sydney Opera House",
+    "country": "Australia",
+    "code": "AUS",
+    "tier": "common",
+    "lat": -33.857058,
+    "lon": 151.214897,
+    "source": "https://www.wikidata.org/wiki/Q45178"
+  },
+  {
+    "id": "fuji",
+    "name": "Mount Fuji",
+    "country": "Japan",
+    "code": "JPN",
+    "tier": "common",
+    "lat": 35.36055555555556,
+    "lon": 138.7275,
+    "source": "https://www.wikidata.org/wiki/Q39231"
+  },
+  {
+    "id": "taj",
+    "name": "Taj Mahal",
+    "country": "India",
+    "code": "IND",
+    "tier": "rare",
+    "lat": 27.175,
+    "lon": 78.04194444444444,
+    "source": "https://www.wikidata.org/wiki/Q9141"
+  },
+  {
+    "id": "petra",
+    "name": "Petra",
+    "country": "Jordan",
+    "code": "JOR",
+    "tier": "rare",
+    "lat": 30.328888888889,
+    "lon": 35.440277777778,
+    "source": "https://www.wikidata.org/wiki/Q5788"
+  },
+  {
+    "id": "chichen",
+    "name": "Chichén Itzá",
+    "country": "Mexico",
+    "code": "MEX",
+    "tier": "rare",
+    "lat": 20.683055555556,
+    "lon": -88.568611111111,
+    "source": "https://www.wikidata.org/wiki/Q5859"
+  },
+  {
+    "id": "angkor",
+    "name": "Angkor Wat",
+    "country": "Cambodia",
+    "code": "KHM",
+    "tier": "epic",
+    "lat": 13.4125,
+    "lon": 103.86666666667,
+    "source": "https://www.wikidata.org/wiki/Q43473"
+  },
+  {
+    "id": "machu",
+    "name": "Machu Picchu",
+    "country": "Peru",
+    "code": "PER",
+    "tier": "epic",
+    "lat": -13.163333333333334,
+    "lon": -72.54555555555555,
+    "source": "https://www.wikidata.org/wiki/Q676203"
+  },
+  {
+    "id": "giza",
+    "name": "Great Pyramid of Giza",
+    "country": "Egypt",
+    "code": "EGY",
+    "tier": "legendary",
+    "lat": 29.97915,
+    "lon": 31.13422,
+    "source": "https://www.wikidata.org/wiki/Q37200"
+  }
+]

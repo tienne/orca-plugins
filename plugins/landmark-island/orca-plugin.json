@@ -1,0 +1,24 @@
+{
+  "manifestVersion": 2,
+  "id": "landmark-island",
+  "name": "Landmark Island",
+  "version": "0.1.0",
+  "description": "Collect world landmarks from new worktree expeditions and build your own island.",
+  "engines": { "orca": ">=1.4.248" },
+  "execution": "trusted-worker",
+  "pluginApi": 1,
+  "main": "worker.js",
+  "license": "MIT",
+  "capabilities": [{ "kind": "workspace:read" }, { "kind": "storage:own" }],
+  "contributes": {
+    "events": [{ "on": "workspace.created" }],
+    "panels": [
+      {
+        "id": "landmark-island",
+        "title": "Landmark Island",
+        "icon": "globe",
+        "entry": "ui/index.html"
+      }
+    ]
+  }
+}
