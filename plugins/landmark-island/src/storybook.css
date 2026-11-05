@@ -722,7 +722,7 @@ footer {
   }
 }
 
-/* Rarity uses words and distinct marks as well as color. */
+/* Ordinal numbers and a four-slot scale communicate rarity without color. */
 [data-tier='common'] {
   --rarity-ink: #46613d;
   --rarity-wash: #e0e7ce;
@@ -762,8 +762,57 @@ footer {
   white-space: nowrap;
 }
 .rarity-badge span {
-  font-size: 12px;
   opacity: 1;
+}
+.rarity-badge .rarity-number {
+  font:
+    bold 12px Georgia,
+    serif;
+  min-width: 13px;
+  text-align: center;
+}
+.rarity-badge .rarity-name {
+  font-size: 10px;
+}
+.rarity-scale {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  margin-left: 2px;
+}
+.rarity-scale i {
+  display: block;
+  width: 6px;
+  height: 9px;
+  border: 1px solid currentColor;
+  border-radius: 1px;
+  background: transparent;
+}
+.rarity-scale i.filled {
+  background: currentColor;
+}
+.rarity-guide {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px 12px;
+  margin: 16px 0 10px;
+  font-size: 12px;
+  font-weight: 600;
+}
+.rarity-guide span {
+  font-size: 11px;
+  font-weight: 400;
+}
+.rarity-filters .rarity-badge {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+}
+.rarity-filters button {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
 }
 .card {
   border-top: 2px solid var(--rarity-line);

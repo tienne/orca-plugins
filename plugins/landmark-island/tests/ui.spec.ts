@@ -470,8 +470,13 @@ test('rarity filters, discoveries and progress distinguish unique landmarks from
     'New discovery: Great Pyramid of Giza',
   );
   await expect(page.getByRole('status').locator('.rarity-badge')).toHaveText(
-    '♛ Legendary',
+    'IVWonder',
   );
+  await expect(
+    page
+      .getByRole('status')
+      .getByRole('img', { name: 'Wonder, rarity 4 of 4', exact: true }),
+  ).toBeVisible();
   await expect(page.locator('#discovery-progress')).toHaveAttribute(
     'value',
     '1',
@@ -483,6 +488,11 @@ test('rarity filters, discoveries and progress distinguish unique landmarks from
   await expect(page.locator('[data-landmark="giza"]')).toContainText(
     'Owned ×2',
   );
+  await expect(
+    page
+      .getByRole('status')
+      .getByRole('img', { name: 'Wonder, rarity 4 of 4', exact: true }),
+  ).toBeVisible();
   await expect(page.locator('#discovery-progress')).toHaveAttribute(
     'value',
     '1',
@@ -491,17 +501,34 @@ test('rarity filters, discoveries and progress distinguish unique landmarks from
     localStorage.getItem('landmark-island-demo-v1'),
   );
   const camera = await page.locator('.camera').getAttribute('style');
-  for (const [tier, visible, collected, chance] of [
-    ['common', 6, 0, 70],
-    ['rare', 3, 0, 23],
-    ['epic', 2, 0, 6],
-    ['legendary', 1, 1, 1],
+  for (const [tier, visible, collected, chance, rank, name] of [
+    ['common', 6, 0, 70, 1, 'Discovery'],
+    ['rare', 3, 0, 23, 2, 'Treasure'],
+    ['epic', 2, 0, 6, 3, 'Marvel'],
+    ['legendary', 1, 1, 1, 4, 'Wonder'],
   ] as const) {
     const filter = page.locator(`[data-tier-filter="${tier}"]`);
     await filter.click();
     await expect(filter).toHaveAttribute('aria-pressed', 'true');
     await expect(filter).toBeFocused();
     await expect(filter).toContainText(`${collected}/${visible}`);
+    await expect(
+      filter.getByRole('img', {
+        name: `${name}, rarity ${rank} of 4`,
+        exact: true,
+      }),
+    ).toBeVisible();
+    await expect(filter.locator('.rarity-scale i')).toHaveCount(4);
+    await expect(filter.locator('.rarity-scale .filled')).toHaveCount(rank);
+    for (const badge of await page
+      .locator(`.card[data-tier="${tier}"] .rarity-badge`)
+      .all()) {
+      await expect(badge).toHaveAttribute(
+        'aria-label',
+        `${name}, rarity ${rank} of 4`,
+      );
+      await expect(badge.locator('.rarity-scale .filled')).toHaveCount(rank);
+    }
     await expect(page.locator('.collection .card:visible')).toHaveCount(
       visible,
     );
@@ -519,18 +546,23 @@ test('rarity filters, discoveries and progress distinguish unique landmarks from
   await expect(page.locator('.ocean')).toHaveAttribute('data-mode', 'walk');
   await page.locator('[data-info="giza"]').click();
   await expect(page.getByRole('dialog').locator('.rarity-badge')).toContainText(
-    'Legendary',
+    'Wonder',
   );
   await expect(page.getByRole('dialog')).toContainText(
     '1% tier chance per expedition',
   );
+  await expect(
+    page
+      .getByRole('dialog')
+      .getByRole('img', { name: 'Wonder, rarity 4 of 4', exact: true }),
+  ).toBeVisible();
   await page.keyboard.press('Escape');
   await page.evaluate(() => {
     (window as typeof window & { fixtureRoll: number }).fixtureRoll = 0;
   });
   await page.getByRole('button', { name: 'Demo expedition' }).click();
   await expect(page.getByRole('status').locator('.rarity-badge')).toContainText(
-    'Common',
+    'Discovery',
   );
   await expect(page.locator('#discovery-progress')).toHaveAttribute(
     'value',
