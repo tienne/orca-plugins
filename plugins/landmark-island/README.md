@@ -2,7 +2,7 @@
 
 English · [한국어](README.ko.md)
 
-An unpublished Orca plugin prototype. New worktree creation earns an exploration ticket: use it in the panel to discover a real landmark, then place it on your fictional 24 × 24 island world with 318 land tiles. Requires Orca 1.4.248+.
+An unpublished Orca plugin prototype. New worktree creation earns an exploration ticket: use it in the panel to discover a real landmark, then place it on your fictional island, growing from 36 to 318 land tiles within a 24 × 24 world. Requires Orca 1.4.248+.
 
 ## Play
 
@@ -18,7 +18,7 @@ A sealed invitation opens into an illustrated atlas. The camera approaches as a 
 
 The worker serializes ticket earning, draws and placements. Ticket identity is the workspace ID. A draw saves its result and ticket consumption together before animation; retrying the same ticket returns the existing reward, including after a lost response or worker restart. A failed storage write does not consume a ticket unless storage actually committed; retry safely recovers that outcome. Reloading during animation keeps the reward in the collection. UI animation never determines randomness. No event paths are accessed and no Git operations occur.
 
-Schema v1 saves are validated and read as v2: existing receipts become already-redeemed tickets, preserving inventory, placements and worktree deduplication without extra tickets. The next successful mutation writes v2 under the existing storage key (`island-v1`, or `landmark-island-demo-v1` in the demo). Reads do not rewrite saves. Older builds cannot read the new schema.
+Schema v1/v2 saves are validated and read as v3. V1 receipts become already-redeemed tickets, preserving inventory and worktree deduplication without extra tickets. Existing landmark placements retain their exact cell IDs, with enough land kept open to contain them. Gifts and duplicate materials are derived from the complete existing collection, so older discoveries receive these benefits too, without a separate claim or repeat grant. The next successful mutation writes v3 under the existing key (`island-v1`, or `landmark-island-demo-v1` in the demo). Reads do not rewrite saves. Older builds cannot read v3 saves.
 
 ## Rarity and collection progress
 
@@ -34,11 +34,17 @@ Every collection entry shows its country separately from rarity. **About this la
 
 Descriptions are original English summaries checked against UNESCO, the Eiffel Tower operator, Rome tourism, APSARA and Egypt’s Ministry of Tourism and Antiquities on 2026-11-05. Reference URLs are stored separately from the existing Wikidata coordinate sources. Text is bundled for offline reading. In a plugin frame, clicking a reference calls the public `orca.shell.openExternal` API so Orca handles routing and consent; no external link opens on load. Browser demos use ordinary links. An unavailable host link shows an inline message.
 
-## Expanded land and existing saves
+## Garden workshop and growing land
 
-Original cell IDs 0–35 keep their identity and relative 6 × 6 layout at the center (columns/rows 9–14) of the larger map. New IDs address the surrounding terrain. Existing receipts and placements are read unchanged; there is no reset or coordinate migration. New land placements use the same serialized, versioned save and quantity checks. Water is rejected by the worker, not just hidden by the UI. Older plugin builds cannot read placements outside their 36-cell limit: use this build for expanded saves.
+New islands start with the central 36 land tiles. Each **different landmark owned** opens another connected portion of the coast: 0/1/2/4/8/12 unique landmarks give 36/59/83/130/224/318 tiles. Duplicates, ticket earning and placing/removing pieces do not expand land. The island heading shows the current area and the next collection threshold; the minimap and Whole island camera show the unlocked area. Locked land cannot be walked on or built on, with worker validation as well as UI filtering. Ownership, not the number currently placed, controls growth. There is no expansion purchase.
 
-At default zoom the camera shows a local area of the island; use the minimap for an overview, then follow the explorer again. Movement and camera state are still session-only. No expansion purchases or unlock requirements are implemented.
+The garden workshop below the island offers **Soft grass**, **Earth path** and **Garden oak** for unlimited free placement. Each of the 12 landmarks unlocks a themed pair of decorations (24 total): its first item is gifted once, and further copies cost 3 materials; the second costs 6 materials. Each duplicate landmark gives 3 materials while retaining the landmark copy. For example, the Eiffel Tower unlocks a Paris lantern and café bench; Giza unlocks an oasis palm and fountain. These are fictional garden interpretations, not historical reconstructions. Select a garden set to preview its locked pieces. All unlocked sets is the default filter.
+
+Choose **Craft** to make the exact piece shown, then **Place** and an empty unlocked cell. Select a placed decoration in Arrange landmarks to move it or **Return to collection**. Moving and returning are free; return keeps the owned decoration available and does not refund materials. Grass, paths and flowers are walkable; other decorations block movement. Placed decorations replace fixed scenery visually and for collision until returned. One landmark or decoration occupies each cell. Materials cannot buy tickets or landmarks. There are no timers, daily tasks, uploads or payments.
+
+Craft requests are serialized by the worker. A durable request ID makes retries safe after a lost response or restart; **Retry craft** recovers the same piece without paying again. Ownership and available materials come from acquisition and crafting ledgers, not editable UI counters. Backups include the crafting ledger, decoration placements and preserved land boundary along with the existing collection.
+
+Original cell IDs 0–35 keep their identity and relative 6 × 6 layout at the center (columns/rows 9–14). All surrounding cell IDs stay stable as land opens. Migrating an old save preserves any outer placements by keeping their required expansion stage open. If that stage exceeds the current unique collection count, growth resumes once the collection passes it. Moving or removing those old placements does not shrink the preserved area. No user placements are relocated or deleted. Movement and camera state remain session-only.
 
 ## A living island
 
@@ -46,7 +52,7 @@ The woodland-adventure presentation keeps a paper-textured journal and uses deep
 
 The fixed isometric world has a central landmark commons, woods, meadows, a lagoon and graded highland terraces. Tiles have visible side faces; the explorer, buildings and trees render in depth order so they can pass in front of or behind one another. The scene includes flowers, a sandy shoreline, drifting clouds and a bobbing boat. This is a local 2.5D vector scene, not a 3D physics engine. **Weather** offers Sunny, Cloudy, Rain and Snow. Auto cycles weather every 30 seconds and advances Day → Sunset → Night → Dawn every 60 seconds while the panel is visible. Select a manual weather option to stop automatic weather/time progression; the time-of-day button works in either mode. This is fictional weather, without location access, a forecast service, or runtime network calls.
 
-Walking, camera and climate are session-only visual state: reopening/reloading resets them, while inventory and landmark layout remain saved. Walking never awards items or changes placements. Buildings block routes; a completely filled island has no walking space until a building is returned. Trees and rocks block walking; flowers are passable. Placing a landmark on vegetation replaces that decoration visually; removing it restores the vegetation. Pan/zoom is limited and can be reset. Background panels pause climate advancement. Reduced-motion preferences disable ambient animation and movement transitions. There is no sound.
+Walking, camera and climate are session-only visual state: reopening/reloading resets them, while inventory and landmark layout remain saved. Walking never awards items or changes placements. Buildings block routes; a completely filled island has no walking space until an obstacle is returned. Trees and rocks block walking; flowers are passable. Placing a landmark on vegetation replaces that decoration visually; removing it restores the vegetation. Pan/zoom is limited and can be reset. Background panels pause climate advancement. Reduced-motion preferences disable ambient animation and movement transitions. There is no sound.
 
 ## Local preview and verification
 
@@ -66,13 +72,13 @@ For the standalone animation theatre, open [Reveal Preview](http://127.0.0.1:431
 
 ## File backups
 
-Open **Backups** in the panel navigation, then **Save backup file**. The dialog prepares a snapshot of unused and spent tickets, acquisition receipts and all island placements. In Orca, the Save button calls `orca.files.saveAs` directly from your click; you choose the destination and the plugin never receives its path. In the browser demo it downloads a JSON file containing only the demo save. Reopen Backups to prepare a newer snapshot. Walking, camera and weather are not included. No analytics or uploads are involved.
+Open **Backups** in the panel navigation, then **Save backup file**. The dialog prepares a snapshot of unused and spent tickets, acquisition receipts, crafting records, landmark/decoration placements and preserved land. Materials and gifts are reconstructed from those records. In Orca, the Save button calls `orca.files.saveAs` directly from your click; you choose the destination and the plugin never receives its path. In the browser demo it downloads a JSON file containing only the demo save. Reopen Backups to prepare a newer snapshot. Walking, camera and weather are not included. No analytics or uploads are involved.
 
-To restore or move to another computer, choose the JSON backup in **Choose a backup to restore**. The preview shows unused tickets, total/unique landmarks, placements and export time. Check **I want to replace my current island**, then choose **Replace island**. This replaces the complete save; it does not merge collections. Later progress is discarded, including ticket consumption after the snapshot. This is a personal offline backup, not an anti-cheat or multi-device synchronization system.
+To restore or move to another computer, choose the JSON backup in **Choose a backup to restore**. The preview shows unused tickets, total/unique landmarks, landmark and decoration placements, materials, land area and export time. Check **I want to replace my current island**, then choose **Replace island**. This replaces the complete save; it does not merge collections. Later progress is discarded, including ticket consumption after the snapshot. This is a personal offline backup, not an anti-cheat or multi-device synchronization system.
 
 The worker validates the file again and checks that the current save still matches the reviewed snapshot. If a new worktree or another action changed it, close Backups and review again. Before replacement, it stores one pre-restore copy under `island-before-restore-v1` (the demo uses `landmark-island-demo-v1-before-restore`). **Review pre-restore copy** uses the same preview and confirmation to recover it. Preparing a different restore replaces that one recovery slot before writing the new island; repeated restoration of the same state does not duplicate rewards or overwrite the slot. If saving the recovery copy fails, the current save is not replaced. A lost response may follow a successful save: refresh and check before retrying.
 
-Files use the `landmark-island-backup` envelope, format version 1, and are limited to 256 KiB. Unknown formats/versions, malformed JSON, duplicate IDs, unowned or invalid placements and rewards without tickets are rejected before writing. State schema v1 inside a valid envelope migrates using the existing no-extra-ticket rule. Import requires a readable current save for comparison; it does not repair an already corrupted local store. Files include workspace identifiers that may contain local paths, plus acquisition times; keep them private. Clearing plugin data also removes the internal recovery copy, so keep an exported file elsewhere.
+Files use the `landmark-island-backup` envelope, format version 1, and are limited to 256 KiB. Unknown formats/versions, malformed JSON, duplicate IDs, unowned or invalid placements and rewards without tickets are rejected before writing. State schemas v1/v2 inside a valid envelope migrate to v3 using the rules above, without extra tickets. Import requires a readable current save for comparison; it does not repair an already corrupted local store. Files include workspace identifiers that may contain local paths, plus acquisition times; keep them private. Clearing plugin data also removes the internal recovery copy, so keep an exported file elsewhere.
 
 ## Host access and limits
 
@@ -84,7 +90,7 @@ One plugin-local collection is shared across repositories/worktrees on this host
 
 Map data: [Natural Earth](https://www.naturalearthdata.com/about/terms-of-use/), public domain. Landmark coordinates: Wikidata CC0; entity source links are included in the bundled catalog. See [geography attribution](licenses/geography.txt). Geometry is generalized, and small countries may not appear. Fictional island cells are unrelated to geographic coordinates.
 
-Deferred: decoration economy, further terrain expansion, cloud sync, trading, localization and a 120-landmark collection. Nothing is published.
+Deferred: terrain beyond the 318-tile world, additional decoration sets, cloud sync, trading, localization and a 120-landmark collection. Nothing is published.
 
 ## Verification record (2026-11-05)
 
@@ -114,3 +120,7 @@ Nx generator discovery found no Orca-specific generator. The installed Orca `wor
 ## Material artwork update (2026-11-06)
 
 Typecheck, all 24 UI tests and packaged manifest validation passed. The material-art refresh is covered by the UI suite, including local SVG paint-reference isolation across collection cards, repeated island copies and detail dialogs. Gallery and close-up captures are saved under `test-results/landmark-island/material-*.png`. No external artwork, fonts or runtime downloads were added.
+
+## Garden and land progression verification (2026-11-06)
+
+`pnpm nx run-many -t typecheck test ui-test -p landmark-island --output-style=static` passed, including its build dependency and all 27 browser tests. Worker fixtures check every expansion stage for connected land, stable old placement addresses, locked cells/sets, retroactive gifts/materials, crafting cost and inventory conservation, concurrent requests, failed writes, lost responses across restart, shared occupancy and v3 backup round trips. Browser fixtures cover 36 → 59 → 83 growth, duplicate-only material rewards, selected crafting, gifted/free decoration placement, movement/return/reload, locked coastline and obstacle walking, retry without a second charge, and narrow light/dark workshop layouts. Captures are under `test-results/landmark-island/garden-*.png` and `growing-island.png`. These are isolated fixtures; no real user save was seeded or restored. Native Orca clicks remain deferred. Git Logs source and capabilities are unchanged; no execution approval, push or publication was performed in this update.

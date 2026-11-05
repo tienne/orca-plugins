@@ -125,3 +125,27 @@ export const solidProps = new Set(
     .filter((t) => t.prop === 'pine' || t.prop === 'oak' || t.prop === 'rock')
     .map((t) => t.id),
 );
+
+// Breadth-first coast growth keeps each unlocked prefix connected to the commons.
+// IDs and coordinates never move when the coastline expands.
+const expansionOrder = Array.from({ length: 36 }, (_, i) => i);
+const reached = new Set(expansionOrder);
+for (let i = 0; i < expansionOrder.length; i++) {
+  for (const id of neighbours(expansionOrder[i])) {
+    if (!reached.has(id)) {
+      reached.add(id);
+      expansionOrder.push(id);
+    }
+  }
+}
+export const expansionLevel = new Map(
+  expansionOrder.map((id, rank) => [
+    id,
+    rank < 36 ? 0 : Math.ceil(((rank - 35) * 12) / (landTiles.length - 36)),
+  ]),
+);
+export function landAtLevel(level: number) {
+  return landTiles.filter(
+    (t) => (expansionLevel.get(t.id) ?? Infinity) <= level,
+  );
+}

@@ -22,6 +22,12 @@ try {
   });
   const {
     Game,
+    empty,
+    landmarks,
+    islandLand,
+    islandLevel,
+    materials,
+    decorationQuantity,
     draw,
     validate,
     availableTickets,
@@ -113,7 +119,7 @@ try {
       landmark: 'eiffel',
     })),
   });
-  assert.equal(oldSave.version, 2);
+  assert.equal(oldSave.version, 3);
   assert.equal(availableTickets(oldSave).length, 0);
   assert.equal(oldSave.placements.length, 36);
   let legacy = {
@@ -130,7 +136,7 @@ try {
   await legacyGame.acquire({ workspaceId: 'w0', kind: 'worktree' });
   assert.equal(legacy.version, 1); // reads / duplicate delivery do not rewrite saves
   await legacyGame.acquire({ workspaceId: 'new-worktree', kind: 'worktree' });
-  assert.equal(legacy.version, 2);
+  assert.equal(legacy.version, 3);
   assert.equal(availableTickets(legacy).length, 1);
   assert.deepEqual(legacy.receipts, value.receipts);
   assert.deepEqual(legacy.placements, value.placements);
@@ -138,7 +144,7 @@ try {
     oldSave.placements.map((p) => p.cell),
     Array.from({ length: 36 }, (_, i) => i),
   );
-  const expanded = landTiles.find((t) => t.id >= 36 && t.kind === 'grass').id;
+  const expanded = islandLand(value).find((t) => t.id >= 36).id;
   await game.place({ cell: expanded, landmark: 'eiffel' });
   assert.ok(
     (await new Game(store).snapshot()).placements.some(
@@ -384,6 +390,8 @@ try {
     'island.backup',
     'island.restore',
     'island.draw',
+    'island.craft',
+    'island.decorate',
     'island.place',
   ]);
   await events['workspace.created']({
@@ -412,6 +420,146 @@ try {
   assert.deepEqual(
     decodeBackup(await handlers['island.backup']({ previous: true })).state,
     hostBefore,
+  );
+  // Progression, migration, material conservation, and durable craft request IDs.
+  const fixture = (ids) =>
+    validate({
+      version: 2,
+      tickets: ids.map((_, i) => ({
+        workspaceId: `garden-${i}`,
+        at: '2026-11-06',
+      })),
+      receipts: ids.map((landmark, i) => ({
+        workspaceId: `garden-${i}`,
+        landmark,
+        at: '2026-11-06',
+      })),
+      placements: [],
+    });
+  assert.equal(islandLand(empty()).length, 36);
+  let priorLand = new Set();
+  for (let count = 0; count <= 12; count++) {
+    const s = fixture(landmarks.slice(0, count).map((l) => l.id));
+    const land = new Set(islandLand(s).map((t) => t.id));
+    assert.ok([...priorLand].every((id) => land.has(id)));
+    assert.equal(land.size, 36 + Math.floor((count * 282) / 12));
+    const blocked = new Set(
+      landTiles.filter((t) => !land.has(t.id)).map((t) => t.id),
+    );
+    for (const id of land)
+      if (id !== 0)
+        assert.ok(
+          route(0, id, blocked).length,
+          `Disconnected stage ${count} cell ${id}`,
+        );
+    priorLand = land;
+  }
+  let garden = fixture(['eiffel', 'eiffel', 'eiffel', 'eiffel']);
+  assert.equal(islandLand(garden).length, 59);
+  assert.equal(materials(garden), 9);
+  assert.equal(decorationQuantity(garden, 'eiffel-gift'), 1);
+  assert.equal(decorationQuantity(garden, 'eiffel-special'), 0);
+  assert.equal(decorationQuantity(garden, 'giza-gift'), 0);
+  let gardenWrites = 0,
+    loseCraft = false,
+    failCraft = false;
+  const gardenStore = {
+    read: async () => structuredClone(garden),
+    write: async (s) => {
+      if (failCraft) throw Error('craft disk full');
+      garden = structuredClone(s);
+      gardenWrites++;
+      if (loseCraft) {
+        loseCraft = false;
+        throw Error('craft response lost');
+      }
+    },
+  };
+  let gardener = new Game(gardenStore);
+  const lockedCell = landTiles.find(
+    (t) => !islandLand(garden).some((u) => u.id === t.id),
+  ).id;
+  await assert.rejects(
+    gardener.place({ cell: lockedCell, landmark: 'eiffel' }),
+    /not unlocked/,
+  );
+  await assert.rejects(
+    gardener.decorate({ cell: lockedCell, decoration: 'grass' }),
+    /not unlocked/,
+  );
+  await assert.rejects(
+    gardener.craft({ id: 'locked', decoration: 'giza-gift' }),
+  );
+  await assert.rejects(gardener.craft({ id: 'free', decoration: 'oak' }));
+  await assert.rejects(
+    gardener.decorate({ cell: 0, decoration: 'eiffel-special' }),
+  );
+  assert.equal(gardenWrites, 0);
+  failCraft = true;
+  await assert.rejects(
+    gardener.craft({ id: 'first', decoration: 'eiffel-special' }),
+  );
+  assert.equal(materials(garden), 9);
+  failCraft = false;
+  loseCraft = true;
+  await assert.rejects(
+    gardener.craft({ id: 'first', decoration: 'eiffel-special' }),
+    /response lost/,
+  );
+  gardener = new Game(gardenStore);
+  await gardener.craft({ id: 'first', decoration: 'eiffel-special' });
+  assert.equal(materials(garden), 3);
+  assert.equal(decorationQuantity(garden, 'eiffel-special'), 1);
+  assert.equal(gardenWrites, 1);
+  await assert.rejects(
+    gardener.craft({ id: 'first', decoration: 'eiffel-gift' }),
+  );
+  const raced = await Promise.allSettled([
+    gardener.craft({ id: 'second', decoration: 'eiffel-gift' }),
+    gardener.craft({ id: 'third', decoration: 'eiffel-gift' }),
+  ]);
+  assert.equal(raced.filter((r) => r.status === 'fulfilled').length, 1);
+  assert.equal(materials(garden), 0);
+  assert.equal(decorationQuantity(garden, 'eiffel-gift'), 2);
+  await gardener.decorate({ cell: 0, decoration: 'eiffel-special' });
+  await assert.rejects(gardener.place({ cell: 0, landmark: 'eiffel' }));
+  await gardener.decorate({ cell: 1, from: 0 });
+  await gardener.decorate({ cell: 2, decoration: 'grass' });
+  await gardener.decorate({ cell: 3, decoration: 'grass' });
+  await gardener.place({ cell: 4, landmark: 'eiffel' });
+  await assert.rejects(gardener.decorate({ cell: 4, decoration: 'oak' }));
+  const fullBackup = encodeBackup(garden);
+  assert.deepEqual(decodeBackup(fullBackup).state, garden);
+  await gardener.decorate({ cell: 1 });
+  assert.equal(decorationQuantity(garden, 'eiffel-special'), 1);
+  assert.equal(materials(garden), 0);
+  await gardener.decorate({ cell: 5, decoration: 'eiffel-special' });
+  await assert.rejects(
+    gardener.decorate({ cell: 6, decoration: 'eiffel-special' }),
+  );
+  const oldOuter = {
+    version: 2,
+    tickets: garden.tickets,
+    receipts: garden.receipts,
+    placements: [{ landmark: 'eiffel', cell: landTiles.at(-1).id }],
+  };
+  const migratedOuter = validate(oldOuter);
+  assert.deepEqual(migratedOuter.placements, oldOuter.placements);
+  assert.ok(islandLevel(migratedOuter) > 1);
+  assert.deepEqual(validate(migratedOuter), migratedOuter);
+  assert.throws(() =>
+    validate({ ...garden, crafts: [...garden.crafts, garden.crafts[0]] }),
+  );
+  assert.throws(() => validate({ ...garden, landFloor: 13 }));
+  assert.throws(() =>
+    validate({
+      ...garden,
+      decorations: [{ decoration: 'oak', cell: lockedCell }],
+    }),
+  );
+  assert.equal(islandLand(garden).length, 59); // duplicates and decoration edits never grow land
+  console.log(
+    'PASS: connected progressive land, legacy settlement preservation, gifts, duplicate materials, locked cells/sets, craft retry/restart/concurrency, placement ownership/collisions and backup conservation',
   );
   console.log(
     'PASS: concurrent events, duplicates, restart deduplication, placement/movement/removal, validation, failed-save recovery, tier boundaries, worker wiring without panels, backup validation, restore conflicts/recovery/retry',

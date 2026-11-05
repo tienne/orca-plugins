@@ -8,7 +8,7 @@ export function revealDiscovery(
   count: number,
   badge: string,
   onPlace: () => void,
-  options: { preview?: boolean } = {},
+  options: { preview?: boolean; rewardNote?: string } = {},
 ) {
   const opener = document.activeElement as HTMLElement | null;
   const dialog = document.createElement('dialog');
@@ -43,7 +43,7 @@ export function revealDiscovery(
       <div class="discovery-orbit"><i></i><i></i><i></i></div>
     </div>
     <div class="discovery-flash" aria-hidden="true"></div><p class="journey-caption" role="status">Unsealing your invitation…</p>
-    <div class="discovery-result" hidden><div class="reveal-badge">${badge}</div><p class="reveal-country"></p><h2></h2><p class="reveal-quantity"></p><div class="reveal-actions" hidden><button class="reveal-place">Place on island</button><button class="reveal-keep">Keep exploring</button></div><small>Saved to your collection</small></div>`;
+    <div class="discovery-result" hidden><div class="reveal-badge">${badge}</div><p class="reveal-country"></p><h2></h2><p class="reveal-quantity"></p><p class="reveal-bonus"></p><div class="reveal-actions" hidden><button class="reveal-place">Place on island</button><button class="reveal-keep">Keep exploring</button></div><small>Saved to your collection</small></div>`;
   dialog.querySelector('.reveal-country')!.textContent =
     `${landmark.country} · ${landmark.region}`;
   dialog.querySelector('h2')!.textContent = landmark.name;
@@ -51,6 +51,7 @@ export function revealDiscovery(
     count > 1
       ? `Another piece of the world · Owned ×${count}`
       : 'A new page in your collection';
+  dialog.querySelector('.reveal-bonus')!.textContent = options.rewardNote ?? '';
   if (options.preview) {
     dialog.querySelector('.discovery-heading > span')!.textContent =
       'DEMO · ANIMATION PREVIEW';

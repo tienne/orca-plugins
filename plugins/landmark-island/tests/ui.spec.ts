@@ -1,5 +1,6 @@
 import { test, expect, type Page } from '@playwright/test';
-import { landTiles } from '../src/world';
+import { landTiles, landAtLevel } from '../src/world';
+import { validate } from '../src/game';
 async function demoDiscovery(page: Page) {
   await page.getByRole('button', { name: 'Demo worktree' }).click();
   await page.getByRole('button', { name: 'Use ticket · Discover' }).click();
@@ -68,7 +69,7 @@ for (const theme of ['light', 'dark'])
       theme,
     );
     await page.setViewportSize({ width: 360, height: 800 });
-    expect(await page.locator('.cell').count()).toBeGreaterThan(300);
+    expect(await page.locator('.cell').count()).toBe(36);
     await page.getByRole('button', { name: 'Show whole island' }).click();
     await expect(page.locator('.ocean')).toHaveAttribute(
       'data-follow',
@@ -243,9 +244,7 @@ test('expanded land keeps old cell addresses and persists new placements', async
   await demoDiscovery(page);
   await page.locator('[data-landmark=eiffel]').click();
   await page.getByRole('button', { name: 'Show whole island' }).click();
-  const destination = landTiles.find(
-    (t) => t.id >= 36 && t.kind === 'grass' && t.col > 16 && t.row > 15,
-  )!;
+  const destination = landAtLevel(1).find((t) => t.id >= 36 && !t.prop)!;
   await page
     .getByRole('button', {
       name: `Cell ${destination.id + 1}: empty`,
@@ -1292,7 +1291,7 @@ test('backup download, confirmed replacement, restart and pre-restore recovery',
   const chunks: Buffer[] = [];
   for await (const chunk of stream!) chunks.push(chunk);
   const exported = JSON.parse(Buffer.concat(chunks).toString());
-  expect(exported.state).toEqual(backupFixture);
+  expect(exported.state).toEqual(validate(backupFixture));
   const incoming = {
     ...backupFixture,
     receipts: [
@@ -1329,13 +1328,13 @@ test('backup download, confirmed replacement, restart and pre-restore recovery',
         localStorage.getItem('landmark-island-demo-v1-before-restore')!,
       ),
     ),
-  ).toEqual(backupFixture);
+  ).toEqual(validate(backupFixture));
   await page.reload();
   expect(
     await page.evaluate(() =>
       JSON.parse(localStorage.getItem('landmark-island-demo-v1')!),
     ),
-  ).toEqual(incoming);
+  ).toEqual(validate(incoming));
   await expect(page.locator('[data-landmark=giza]')).toContainText('Owned ×1');
   await page.getByRole('button', { name: 'Backups', exact: true }).click();
   await page.locator('#backup-previous').click();
@@ -1360,7 +1359,7 @@ test('backup download, confirmed replacement, restart and pre-restore recovery',
     await page.evaluate(() =>
       JSON.parse(localStorage.getItem('landmark-island-demo-v1')!),
     ),
-  ).toEqual(backupFixture);
+  ).toEqual(validate(backupFixture));
 });
 
 test('backup rejects damaged, future, oversized files and stale restore previews', async ({
@@ -1555,11 +1554,9 @@ test('material artwork keeps local paint references isolated across collection, 
   await expect(page.locator('.collection .landmark-art')).toHaveCount(12);
   await expect(page.locator('.building .landmark-art')).toHaveCount(2);
   await page.setViewportSize({ width: 1200, height: 1000 });
-  await page
-    .locator('.collection-section')
-    .screenshot({
-      path: 'test-results/landmark-island/material-collection.png',
-    });
+  await page.locator('.collection-section').screenshot({
+    path: 'test-results/landmark-island/material-collection.png',
+  });
   for (const id of ['taj', 'colosseum', 'giza']) {
     await page.locator(`[data-info=${id}]`).click();
     const result = await page.evaluate(() => {
@@ -1590,4 +1587,208 @@ test('material artwork keeps local paint references isolated across collection, 
       JSON.parse(localStorage.getItem('landmark-island-demo-v1')!),
     ),
   ).toEqual(save);
+});
+
+test('new discoveries grow land, gifts unlock sets, duplicates craft chosen decorations', async ({
+  page,
+}) => {
+  await page.addInitScript(() => {
+    Math.random = () =>
+      (window as unknown as { fixtureRoll?: number }).fixtureRoll ?? 0;
+  });
+  await page.goto('/');
+  await expect(page.locator('.cell')).toHaveCount(36);
+  await expect(page.locator('.material-balance')).toHaveText('0 materials');
+  await page.locator('#decor-theme').selectOption('eiffel');
+  await expect(page.locator('[data-craft=eiffel-special]')).toBeDisabled();
+  await expect(page.locator('[data-decor-place=eiffel-gift]')).toBeDisabled();
+  await page.locator('#decor-theme').selectOption('basics');
+  await page.locator('[data-decor-place=path]').click();
+  await page
+    .getByRole('button', { name: 'Cell 1: empty', exact: true })
+    .click();
+  await expect(
+    page.locator('[data-world-cell="0"] [data-decoration=path]'),
+  ).toHaveCount(1);
+  await page
+    .getByRole('button', { name: 'Cell 1: Earth path', exact: true })
+    .click();
+  await page.getByRole('button', { name: 'Return to collection' }).click();
+  await demoDiscovery(page);
+  await expect(page.locator('.cell')).toHaveCount(59);
+  await expect(page.locator('.notice')).toContainText('+23 land tiles');
+  await page.locator('#decor-theme').selectOption('eiffel');
+  await expect(page.locator('[data-decor-card=eiffel-gift]')).toContainText(
+    'Owned ×1 · 1 available',
+  );
+  await page.locator('[data-decor-place=eiffel-gift]').click();
+  await page
+    .getByRole('button', { name: 'Cell 1: empty', exact: true })
+    .click();
+  await page
+    .getByRole('button', { name: 'Cell 1: Paris lantern', exact: true })
+    .click();
+  await page
+    .getByRole('button', { name: 'Cell 2: empty', exact: true })
+    .click();
+  await expect(
+    page.locator('[data-world-cell="1"] [data-decoration=eiffel-gift]'),
+  ).toHaveCount(1);
+  await demoDiscovery(page);
+  await expect(page.locator('.cell')).toHaveCount(59);
+  await expect(page.locator('.material-balance')).toHaveText('3 materials');
+  await expect(page.locator('[data-craft=eiffel-special]')).toBeDisabled();
+  await demoDiscovery(page);
+  await expect(page.locator('.material-balance')).toHaveText('6 materials');
+  await page.locator('[data-craft=eiffel-special]').click();
+  await expect(page.locator('.material-balance')).toHaveText('0 materials');
+  await expect(page.locator('[data-landmark=eiffel]')).toContainText(
+    'Owned ×3',
+  );
+  await page.locator('[data-decor-place=eiffel-special]').click();
+  await page
+    .getByRole('button', { name: 'Cell 3: empty', exact: true })
+    .click();
+  await page.reload();
+  await expect(
+    page.locator('[data-world-cell="1"] [data-decoration=eiffel-gift]'),
+  ).toHaveCount(1);
+  await expect(
+    page.locator('[data-world-cell="2"] [data-decoration=eiffel-special]'),
+  ).toHaveCount(1);
+  await expect(page.locator('.material-balance')).toHaveText('0 materials');
+  await page.getByRole('button', { name: 'Arrange landmarks' }).click();
+  await page
+    .getByRole('button', { name: 'Cell 3: Café bench', exact: true })
+    .click();
+  await page.getByRole('button', { name: 'Return to collection' }).click();
+  await expect(page.locator('[data-decor-card=eiffel-special]')).toContainText(
+    'Owned ×1 · 1 available',
+  );
+  await expect(page.locator('.material-balance')).toHaveText('0 materials');
+  await page.evaluate(() => {
+    (window as unknown as { fixtureRoll: number }).fixtureRoll = 0.71;
+  });
+  await demoDiscovery(page);
+  await expect(page.locator('.cell')).toHaveCount(83);
+  await expect(page.locator('.notice')).toContainText('+24 land tiles');
+  await expect(page.locator('[data-decor-card=chichen-gift]')).toContainText(
+    'Owned ×1',
+  );
+  await page.getByRole('button', { name: 'Show whole island' }).click();
+  await page
+    .locator('.island-section')
+    .screenshot({ path: 'test-results/landmark-island/growing-island.png' });
+});
+
+test('garden workshop fits narrow themes and craft response-loss retry spends once', async ({
+  page,
+}) => {
+  await page.goto('/');
+  const ids = ['eiffel', 'eiffel', 'eiffel', 'giza', 'fuji'];
+  await page.evaluate((ids) => {
+    localStorage.setItem(
+      'landmark-island-demo-v1',
+      JSON.stringify({
+        version: 2,
+        tickets: ids.map((_, i) => ({
+          workspaceId: `garden${i}`,
+          at: '2026-11-06',
+        })),
+        receipts: ids.map((landmark, i) => ({
+          workspaceId: `garden${i}`,
+          landmark,
+          at: '2026-11-06',
+        })),
+        placements: [],
+      }),
+    );
+  }, ids);
+  await page.reload();
+  await page.evaluate(() => {
+    const original = Storage.prototype.setItem;
+    let lost = false;
+    Storage.prototype.setItem = function (key, value) {
+      original.call(this, key, value);
+      if (
+        !lost &&
+        key === 'landmark-island-demo-v1' &&
+        JSON.parse(value).crafts?.length
+      ) {
+        lost = true;
+        throw Error('Craft response lost');
+      }
+    };
+  });
+  await page.locator('[data-craft=eiffel-special]').click();
+  await expect(page.getByRole('alert')).toContainText('Craft response lost');
+  await page.locator('[data-craft=eiffel-special]').click();
+  await expect(page.locator('.material-balance')).toHaveText('0 materials');
+  await expect(page.locator('[data-decor-card=eiffel-special]')).toContainText(
+    'Owned ×1',
+  );
+  await page.reload();
+  await expect(page.locator('[data-decor-card=eiffel-special]')).toContainText(
+    'Owned ×1',
+  );
+  await page.setViewportSize({ width: 360, height: 800 });
+  for (const theme of ['light', 'dark']) {
+    await page.evaluate(
+      (theme) => (document.documentElement.className = theme),
+      theme,
+    );
+    await page.locator('#decor-theme').selectOption('giza');
+    expect(
+      await page.evaluate(() => document.documentElement.scrollWidth),
+    ).toBeLessThanOrEqual(360);
+    await page
+      .locator('.workshop')
+      .screenshot({ path: `test-results/landmark-island/garden-${theme}.png` });
+  }
+  await page.locator('#decor-theme').selectOption('angkor');
+  await expect(page.locator('[data-decor-card=angkor-gift]')).toContainText(
+    'Discover its landmark',
+  );
+  await expect(page.locator('[data-craft=angkor-special]')).toBeDisabled();
+});
+
+test('explorer respects the locked coast and decoration collisions', async ({
+  page,
+}) => {
+  await page.goto('/');
+  const walker = page.locator('.walker');
+  await expect(walker).toHaveAttribute('data-cell', '30');
+  await page.getByRole('button', { name: 'Walk south', exact: true }).click();
+  await expect(page.locator('.walk-hint')).toContainText('No clear path');
+  await expect(walker).toHaveAttribute('data-cell', '30');
+  await page.locator('[data-decor-place=oak]').click();
+  await page
+    .getByRole('button', { name: 'Cell 32: empty', exact: true })
+    .click();
+  await page
+    .getByRole('button', { name: 'Explore island', exact: true })
+    .click();
+  await page.getByRole('button', { name: 'Walk east', exact: true }).click();
+  await expect(page.locator('.walk-hint')).toContainText('No clear path');
+  await expect(walker).toHaveAttribute('data-cell', '30');
+  await page
+    .getByRole('button', { name: 'Arrange landmarks', exact: true })
+    .click();
+  await page
+    .getByRole('button', { name: 'Cell 32: Garden oak', exact: true })
+    .click();
+  await page
+    .getByRole('button', { name: 'Return to collection', exact: true })
+    .click();
+  await page.locator('[data-decor-place=path]').click();
+  await page
+    .getByRole('button', { name: 'Cell 32: empty', exact: true })
+    .click();
+  await page
+    .getByRole('button', { name: 'Explore island', exact: true })
+    .click();
+  await page.getByRole('button', { name: 'Walk east', exact: true }).click();
+  await expect(walker).toHaveAttribute('data-cell', '31');
+  await expect(page.locator('#ticket-count')).toHaveText('0');
+  await expect(page.locator('.material-balance')).toHaveText('0 materials');
 });

@@ -1,5 +1,10 @@
 import {
   Game,
+  validate,
+  islandLand,
+  islandLevel,
+  materials,
+  decorationQuantity,
   decodeBackup,
   MAX_BACKUP_BYTES,
   empty,
@@ -13,7 +18,13 @@ import { revealDiscovery } from './reveal';
 import { art } from './art';
 import { IslandScene } from './scene';
 import { terrain } from './terrain-art';
-import { landTiles } from './world';
+import { landTiles, landAtLevel } from './world';
+import {
+  decorations,
+  decorationById,
+  decorationArt,
+  DUPLICATE_MATERIALS,
+} from './decorations';
 const scene = new IslandScene();
 const rarities = [
   { id: 'common', name: 'Discovery', rank: 1, numeral: 'I' },
@@ -68,6 +79,7 @@ const game = new Game({
 let state: State = empty(),
   view = 'island',
   selected = '',
+  selectedDecor = '',
   from: number | undefined,
   busy = false,
   message =
@@ -134,13 +146,18 @@ function showDetails(id: string) {
   if (!detail.open) detail.showModal();
 }
 async function request(name: string, input: unknown = {}) {
-  return bridge
+  const result = await (bridge
     ? bridge.request(name, input)
     : name === 'island.read'
       ? game.snapshot()
       : name === 'island.draw'
         ? game.redeem(input)
-        : game.place(input);
+        : name === 'island.craft'
+          ? game.craft(input)
+          : name === 'island.decorate'
+            ? game.decorate(input)
+            : game.place(input));
+  return validate(result);
 }
 let loaded = false;
 let pendingTicket: string | undefined;
@@ -180,25 +197,63 @@ async function useTicket() {
       throw Error(
         'Draw result was not returned. Retry to recover this ticket.',
       );
+    const addedLand = islandLand(next).length - islandLand(state).length;
     state = next;
     pendingTicket = undefined;
     const landmark = landmarks.find((l) => l.id === reward.landmark)!;
     const count = quantity(state, landmark.id);
     message = `${count > 1 ? 'Duplicate discovered' : 'New discovery'}: ${landmark.name} · owned ×${count}`;
-    revealDiscovery(landmark, count, rarityBadge(landmark.tier), () => {
-      selected = landmark.id;
-      from = undefined;
-      scene.mode = 'build';
-      view = 'island';
-      render();
-      root.querySelector<HTMLElement>('.ocean')?.focus({ preventScroll: true });
-    });
+    const gift = decorations.find((d) => d.landmark === landmark.id && d.gift)!;
+    const rewardNote =
+      count > 1
+        ? `+${DUPLICATE_MATERIALS} materials · Your landmark is kept`
+        : `${gift.name} gifted · Theme unlocked${addedLand > 0 ? ` · +${addedLand} land tiles` : ''}`;
+    message += ` · ${rewardNote}`;
+    revealDiscovery(
+      landmark,
+      count,
+      rarityBadge(landmark.tier),
+      () => {
+        selected = landmark.id;
+        selectedDecor = '';
+        from = undefined;
+        scene.mode = 'build';
+        view = 'island';
+        render();
+        root
+          .querySelector<HTMLElement>('.ocean')
+          ?.focus({ preventScroll: true });
+      },
+      { rewardNote },
+    );
   } catch (e) {
     error = `${String(e)} · Retry discovery to recover the same ticket.`;
   } finally {
     busy = false;
     render();
   }
+}
+let decorTheme = 'unlocked';
+let pendingCraft: { id: string; decoration: string } | undefined;
+function workshop() {
+  const visible = decorations.filter((d) =>
+    decorTheme === 'unlocked'
+      ? !d.landmark || quantity(state, d.landmark) > 0
+      : decorTheme === 'basics'
+        ? !d.landmark
+        : d.landmark === decorTheme,
+  );
+  return `<section class="workshop" aria-label="Decoration workshop"><div class="section-title"><h2><small>The garden workshop</small>Make this place yours</h2><strong class="material-balance">${materials(state)} materials</strong></div><p>Basics are free. Every first discovery gifts one decoration and opens its set. Each duplicate brings ${DUPLICATE_MATERIALS} materials; your landmark stays yours.</p><label for="decor-theme">Garden set</label> <select id="decor-theme"><option value="unlocked">All unlocked sets</option><option value="basics">Free essentials</option>${landmarks.map((l) => `<option value="${l.id}">${l.country} · ${l.name}${quantity(state, l.id) ? '' : ' · Locked'}</option>`).join('')}</select><div class="decoration-shelf">${visible
+    .map((d) => {
+      const unlocked = !d.landmark || quantity(state, d.landmark) > 0;
+      const count = decorationQuantity(state, d.id);
+      const available =
+        count - state.decorations.filter((p) => p.decoration === d.id).length;
+      return `<article class="decoration-card" data-decor-card="${d.id}" ${!unlocked ? 'data-locked="true"' : ''}>${decorationArt(d.id)}<h3>${d.name}</h3><p>${d.landmark ? landmarks.find((l) => l.id === d.landmark)!.name : 'Free essentials'}</p><small>${!unlocked ? `Discover its landmark to unlock${d.gift ? ' · First copy is a gift' : ''}` : !d.landmark ? 'Unlimited · Free to place' : `Owned ×${count} · ${available} available`}</small><div><button data-decor-place="${d.id}" aria-pressed="${selectedDecor === d.id}" ${!unlocked || available < 1 ? 'disabled' : ''}>Place</button>${d.landmark ? `<button data-craft="${d.id}" ${!unlocked || (pendingCraft ? pendingCraft.decoration !== d.id : materials(state) < d.cost) ? 'disabled' : ''}>${pendingCraft?.decoration === d.id ? 'Retry craft' : `Craft · ${d.cost} materials`}</button>` : ''}</div></article>`;
+    })
+    .join(
+      '',
+    )}</div><p class="muted">Move or return decorations at no cost. Returned pieces stay in your inventory. Preview locked sets with the menu above.</p></section>`;
 }
 function render() {
   const tickets = availableTickets(state).length;
@@ -209,9 +264,10 @@ function render() {
   root.innerHTML = `<header><div class="book-title"><div class="eyebrow">A worktree travel journal ${demo ? '<b>DEMO · LOCAL FIXTURES</b>' : ''}</div><h1>Landmark Island</h1></div><div class="stats"><strong>${owned.length}<small> / 12 discovered</small></strong><strong>${state.receipts.length}<small> discoveries</small></strong><strong>${new Set(owned.map((l) => l.code)).size}<small> countries</small></strong></div></header><nav><button data-view="island" aria-pressed="${view === 'island'}">My Island</button><button data-view="map" aria-pressed="${view === 'map'}">World Map</button>${demo ? '<button id="expedition">＋ Demo worktree</button>' : ''}<button id="refresh">Refresh</button><button id="backups" aria-haspopup="dialog">Backups</button></nav><section class="ticket-desk" aria-label="Exploration tickets"><div class="ticket-stamp" aria-hidden="true">✦</div><div><small>YOUR NEXT CHAPTER</small><h2><span id="ticket-count">${tickets}</span> exploration ticket${tickets === 1 ? '' : 's'}</h2><p>Create a worktree, earn a ticket, discover somewhere new.</p></div><button id="draw-ticket" ${!loaded || (!tickets && !pendingTicket) ? 'disabled' : ''}>${pendingTicket ? 'Retry discovery' : 'Use ticket · Discover'}</button></section><p class="notice ${latest ? 'discovery-notice' : ''}" ${latest ? `data-tier="${latest.tier}"` : ''} role="status">${latest ? rarityBadge(latest.tier) : ''}<span>${escape(message)}</span></p>${error ? `<p role="alert">${escape(error)}</p>` : ''}
  ${
    view === 'island'
-     ? `<section class="island-section"><div class="section-title"><h2><small>Chapter I</small> A place to wander</h2><span>${landTiles.length} little places to call home</span></div><p>${from !== undefined ? 'Choose an empty cell to move the landmark.' : selected ? `Place ${escape(landmarks.find((l) => l.id === selected)!.name)} on an empty cell.` : scene.mode === 'walk' ? 'Take a stroll, watch the weather, and make yourself at home.' : 'Select a collected landmark below, then choose a cell.'}</p>${scene.markup()}<div class="ocean" tabindex="0" role="region" aria-label="Interactive island"><div class="camera"><div class="island">${terrain(state, from)}${scene.avatar()}</div><div class="sailboat" aria-hidden="true"><svg viewBox="0 0 90 90"><path d="M5 73q15-4 29 0m10 7q18-4 35 0" fill="none" stroke="#e7eedb" stroke-width="2"/><path d="M13 60q32 7 65-1L65 73H26z" fill="#ad7355" stroke="#655542" stroke-width="2"/><path d="M46 60V7" stroke="#655542" stroke-width="2"/><path d="M42 13Q26 29 20 50l22-3z" fill="#fcf3d8" stroke="#8c8268"/><path d="M50 21l20 29-20 2z" fill="#d9b07d" stroke="#8c8268"/><path d="M47 8l14 3-14 6" fill="#b76550"/></svg></div></div>${scene.layers()}</div>${from !== undefined ? '<div class="tools"><button id="remove">Return to collection</button><button id="cancel">Cancel move</button></div>' : ''}</section>`
+     ? `<section class="island-section"><div class="section-title"><h2><small>Chapter I</small> A place to wander</h2><span>${islandLand(state).length} / ${landTiles.length} land tiles</span></div><p class="land-progress">${islandLevel(state) >= 12 ? 'Your whole island is open.' : `At ${islandLevel(state) + 1} unique landmarks: +${landAtLevel(islandLevel(state) + 1).length - islandLand(state).length} land tiles · ${owned.length} unique discoveries`}${state.landFloor > owned.length ? ' · Existing settlement preserved; collection will catch up before further growth.' : ''}</p><p>${from !== undefined ? 'Choose an empty cell to move the selected piece.' : selectedDecor ? `Place ${decorationById(selectedDecor)!.name} on an empty cell.` : selected ? `Place ${escape(landmarks.find((l) => l.id === selected)!.name)} on an empty cell.` : scene.mode === 'walk' ? 'Take a stroll, watch the weather, and make yourself at home.' : 'Select a collected landmark below, then choose a cell.'}</p>${scene.markup()}<div class="ocean" tabindex="0" role="region" aria-label="Interactive island"><div class="camera"><div class="island">${terrain(state, from)}${scene.avatar()}</div><div class="sailboat" aria-hidden="true"><svg viewBox="0 0 90 90"><path d="M5 73q15-4 29 0m10 7q18-4 35 0" fill="none" stroke="#e7eedb" stroke-width="2"/><path d="M13 60q32 7 65-1L65 73H26z" fill="#ad7355" stroke="#655542" stroke-width="2"/><path d="M46 60V7" stroke="#655542" stroke-width="2"/><path d="M42 13Q26 29 20 50l22-3z" fill="#fcf3d8" stroke="#8c8268"/><path d="M50 21l20 29-20 2z" fill="#d9b07d" stroke="#8c8268"/><path d="M47 8l14 3-14 6" fill="#b76550"/></svg></div></div>${scene.layers(state)}</div>${from !== undefined ? '<div class="tools"><button id="remove">Return to collection</button><button id="cancel">Cancel move</button></div>' : ''}</section>`
      : `<section><div class="section-title"><h2><small>Chapter II</small> A world of discoveries</h2><span>${owned.length} real locations</span></div><svg class="world" viewBox="0 0 720 360" role="img" aria-label="World map of collected landmarks">${world.map((c) => `<path d="${c.path}" class="${owned.some((l) => l.code === c.code) ? 'acquired' : ''}"><title>${escape(c.name)}</title></path>`).join('')}${owned.map((l) => `<circle cx="${(l.lon + 180) * 2}" cy="${(90 - l.lat) * 2}" r="4"><title>${escape(l.name)} · ${escape(l.country)}</title></circle>`).join('')}</svg><p class="muted">Made with Natural Earth · approximate locations · equirectangular projection</p><div class="countries">${[...new Set(landmarks.map((l) => l.country))].map((c) => `<span>${escape(c)} <strong>${owned.filter((l) => l.country === c).length}/${landmarks.filter((l) => l.country === c).length}</strong></span>`).join('')}</div></section>`
  }
+ ${view === 'island' ? workshop() : ''}
  <section class="collection-section"><div class="section-title"><h2><small>Field notes</small> Your collection</h2><span>Souvenirs from faraway places</span></div><div class="collection-progress"><label for="discovery-progress"><strong>${owned.length} / ${landmarks.length}</strong> landmarks discovered${owned.length === landmarks.length ? ' · Collection complete' : ''}</label><progress id="discovery-progress" value="${owned.length}" max="${landmarks.length}"></progress></div><p class="rarity-guide">Rarity I → IV <span>More filled marks = rarer discoveries</span></p><div class="rarity-filters" role="group" aria-label="Collection rarity"><button data-tier-filter="all" aria-pressed="${rarityFilter === 'all'}">All <small>${owned.length}/${landmarks.length}</small></button>${rarities.map((r) => `<button data-tier-filter="${r.id}" data-tier="${r.id}" aria-pressed="${rarityFilter === r.id}">${rarityBadge(r.id)} <small>${owned.filter((l) => l.tier === r.id).length}/${landmarks.filter((l) => l.tier === r.id).length}</small></button>`).join('')}</div><p class="rarity-summary" aria-live="polite"></p><div class="collection">${landmarks
    .map((l) => {
      const count = quantity(state, l.id),
@@ -257,6 +313,7 @@ function render() {
       (b.onclick = () => {
         view = b.dataset.view!;
         selected = '';
+        selectedDecor = '';
         from = undefined;
         render();
       }),
@@ -265,6 +322,7 @@ function render() {
     (b) =>
       (b.onclick = () => {
         selected = b.dataset.landmark!;
+        selectedDecor = '';
         scene.mode = 'build';
         from = undefined;
         view = 'island';
@@ -275,17 +333,31 @@ function render() {
     (b) =>
       (b.onclick = () => {
         const cell = Number(b.dataset.cell ?? b.dataset.site);
-        const p = state.placements.find((p) => p.cell === cell);
+        const p =
+          state.placements.find((p) => p.cell === cell) ??
+          state.decorations.find((p) => p.cell === cell);
         if (p) {
           from = cell;
           selected = '';
+          selectedDecor = '';
           render();
           return;
         }
         if (from !== undefined) {
           const origin = from;
           from = undefined;
-          void run(() => request('island.place', { cell, from: origin }));
+          void run(() =>
+            request(
+              state.decorations.some((p) => p.cell === origin)
+                ? 'island.decorate'
+                : 'island.place',
+              { cell, from: origin },
+            ),
+          );
+        } else if (selectedDecor) {
+          const decoration = selectedDecor;
+          selectedDecor = '';
+          void run(() => request('island.decorate', { cell, decoration }));
         } else if (selected) {
           const landmark = selected;
           selected = '';
@@ -296,11 +368,52 @@ function render() {
   root.querySelectorAll<HTMLButtonElement>('[data-info]').forEach((button) => {
     button.onclick = () => showDetails(button.dataset.info!);
   });
+  const themeSelect = root.querySelector<HTMLSelectElement>('#decor-theme');
+  if (themeSelect) {
+    themeSelect.value = decorTheme;
+    themeSelect.disabled = busy;
+    themeSelect.onchange = () => {
+      decorTheme = themeSelect.value;
+      render();
+      root
+        .querySelector<HTMLElement>('#decor-theme')
+        ?.focus({ preventScroll: true });
+    };
+  }
+  root
+    .querySelectorAll<HTMLButtonElement>('[data-decor-place]')
+    .forEach((button) => {
+      button.onclick = () => {
+        selectedDecor = button.dataset.decorPlace!;
+        selected = '';
+        from = undefined;
+        scene.mode = 'build';
+        render();
+        root
+          .querySelector<HTMLElement>('.ocean')
+          ?.scrollIntoView({ block: 'center' });
+      };
+    });
+  root.querySelectorAll<HTMLButtonElement>('[data-craft]').forEach((button) => {
+    button.onclick = () => {
+      pendingCraft ??= {
+        id: crypto.randomUUID(),
+        decoration: button.dataset.craft!,
+      };
+      void run(async () => {
+        const result = await request('island.craft', pendingCraft);
+        message = `${decorationById(pendingCraft!.decoration)!.name} crafted. Ready to place on your island.`;
+        pendingCraft = undefined;
+        return result;
+      });
+    };
+  });
   scene.mount(
     root,
     state,
     () => {
       selected = '';
+      selectedDecor = '';
       from = undefined;
       render();
     },
@@ -312,7 +425,14 @@ function render() {
     remove.onclick = () => {
       const cell = from;
       from = undefined;
-      void run(() => request('island.place', { cell }));
+      void run(() =>
+        request(
+          state.decorations.some((p) => p.cell === cell)
+            ? 'island.decorate'
+            : 'island.place',
+          { cell },
+        ),
+      );
     };
   const cancel = root.querySelector<HTMLButtonElement>('#cancel');
   if (cancel)
@@ -353,11 +473,11 @@ const backupRequest = (previous = false) =>
     ? bridge.request<string>('island.backup', { previous })
     : game.exportBackup(previous);
 function saveSummary(s: State) {
-  return `${availableTickets(s).length} unused tickets · ${s.receipts.length} landmarks (${new Set(s.receipts.map((r) => r.landmark)).size} unique) · ${s.placements.length} placed`;
+  return `${availableTickets(s).length} unused tickets · ${s.receipts.length} landmarks (${new Set(s.receipts.map((r) => r.landmark)).size} unique) · ${s.placements.length} placed · ${s.decorations.length} decorations placed · ${materials(s)} materials · ${islandLand(s).length} land tiles`;
 }
 async function openBackups() {
   if (busy || backupDialog.open) return;
-  backupDialog.innerHTML = `<button class="backup-close" aria-label="Close backups" autofocus>×</button><h2 id="backup-title">Your island, safely kept</h2><p>Save a file to keep a backup or move your island to another computer. Nothing is uploaded.</p><p class="backup-current"></p><button id="backup-save" disabled>Save backup file</button><hr><label for="backup-file">Choose a backup to restore</label><input id="backup-file" type="file" accept=".json,application/json"><button id="backup-previous">Review pre-restore copy</button><div class="backup-review" hidden><h3>Restore this island?</h3><p class="backup-incoming"></p><p>This replaces all current tickets, landmarks and placements; it does not merge them. Progress after the backup will be lost. A copy of your current save is kept before replacement.</p><label><input id="backup-confirm" type="checkbox"> I want to replace my current island</label><button id="backup-restore" disabled>Replace island</button></div><p class="backup-status" role="status"></p><small>Files contain workspace identifiers, which may include local paths. Keep them private. Maximum file size: 256 KiB. Walking, weather and camera position are not saved.</small>`;
+  backupDialog.innerHTML = `<button class="backup-close" aria-label="Close backups" autofocus>×</button><h2 id="backup-title">Your island, safely kept</h2><p>Save a file to keep a backup or move your island to another computer. Nothing is uploaded.</p><p class="backup-current"></p><button id="backup-save" disabled>Save backup file</button><hr><label for="backup-file">Choose a backup to restore</label><input id="backup-file" type="file" accept=".json,application/json"><button id="backup-previous">Review pre-restore copy</button><div class="backup-review" hidden><h3>Restore this island?</h3><p class="backup-incoming"></p><p>This replaces all current tickets, landmarks, decorations, materials and land; it does not merge them. Progress after the backup will be lost. A copy of your current save is kept before replacement.</p><label><input id="backup-confirm" type="checkbox"> I want to replace my current island</label><button id="backup-restore" disabled>Replace island</button></div><p class="backup-status" role="status"></p><small>Files contain workspace identifiers, which may include local paths. Keep them private. Maximum file size: 256 KiB. Walking, weather and camera position are not saved.</small>`;
   backupDialog.showModal();
   const status = backupDialog.querySelector<HTMLElement>('.backup-status')!;
   const save = backupDialog.querySelector<HTMLButtonElement>('#backup-save')!;
@@ -475,11 +595,13 @@ async function openBackups() {
     try {
       const input = { text: incomingText, expected };
       state = bridge
-        ? await bridge.request('island.restore', input)
+        ? validate(await bridge.request('island.restore', input))
         : await game.restore(input);
       loaded = true;
       pendingTicket = undefined;
+      pendingCraft = undefined;
       selected = '';
+      selectedDecor = '';
       from = undefined;
       error = '';
       message = 'Island restored from backup.';

@@ -1175,3 +1175,98 @@ a:focus-visible,
 .backup-review label {
   display: block;
 }
+
+/* Garden inventory uses the same host theme as the journal. */
+.workshop {
+  margin-top: 28px;
+}
+.workshop > p {
+  max-width: 75ch;
+  line-height: 1.6;
+}
+.material-balance {
+  white-space: nowrap;
+  color: var(--accent);
+}
+#decor-theme {
+  max-width: 100%;
+  padding: 8px 12px;
+  background: var(--panel);
+  color: var(--orca-card-foreground, var(--ink));
+  border: 1px solid var(--orca-input, var(--line));
+  border-radius: var(--orca-radius, 8px);
+}
+.decoration-shelf {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(195px, 1fr));
+  gap: 12px;
+  margin-top: 16px;
+}
+.decoration-card {
+  padding: 16px;
+  border: 1px solid var(--line);
+  background: var(--panel);
+  color: var(--orca-card-foreground, var(--ink));
+  border-radius: var(--orca-radius, 12px);
+}
+.decoration-card > svg {
+  width: 80px;
+  height: 104px;
+  display: block;
+  margin: 0 auto;
+}
+.decoration-card h3 {
+  font-size: 15px;
+  margin: 8px 0;
+}
+.decoration-card p,
+.decoration-card small {
+  font-size: 12px;
+  line-height: 1.5;
+  display: block;
+}
+.decoration-card > div {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-top: 12px;
+}
+.decoration-card button {
+  font-size: 12px;
+  padding: 8px;
+}
+.decoration-card[data-locked] > svg {
+  filter: grayscale(0.7);
+  opacity: 0.65;
+}
+.land-progress {
+  font-size: 13px;
+  color: var(--orca-muted-foreground, var(--ink));
+}
+.world-object.garden-object {
+  width: 72px;
+  height: 94px;
+}
+.world-object.garden-object.low-object {
+  width: 80px;
+  height: 104px;
+  top: 30px;
+}
+.reveal-bonus {
+  font-size: 12px;
+  line-height: 1.4;
+  max-width: 42ch;
+  margin: 6px auto;
+}
+@media (max-width: 480px) {
+  .decoration-shelf {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+  }
+  .decoration-card {
+    padding: 10px;
+  }
+  .decoration-card button {
+    width: 100%;
+  }
+}

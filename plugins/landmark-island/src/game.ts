@@ -1,24 +1,58 @@
 import landmarks from './landmarks.json';
-import { isLand } from './world';
+import { isLand, expansionLevel, landAtLevel } from './world';
+import { decorationById, DUPLICATE_MATERIALS } from './decorations';
 export { landmarks };
 export const weights = { common: 70, rare: 23, epic: 6, legendary: 1 };
 export type Placement = { landmark: string; cell: number };
 export type Receipt = { workspaceId: string; landmark: string; at: string };
 export type Ticket = { workspaceId: string; at: string };
 export type State = {
-  version: 2;
+  version: 3;
+  landFloor: number;
+  crafts: { id: string; decoration: string }[];
+  decorations: { decoration: string; cell: number }[];
   tickets: Ticket[];
   receipts: Receipt[];
   placements: Placement[];
 };
 export const empty = (): State => ({
-  version: 2,
+  version: 3,
+  landFloor: 0,
+  crafts: [],
+  decorations: [],
   tickets: [],
   receipts: [],
   placements: [],
 });
 export function quantity(s: State, id: string) {
   return s.receipts.filter((r) => r.landmark === id).length;
+}
+export function islandLevel(s: State) {
+  return Math.max(s.landFloor, new Set(s.receipts.map((r) => r.landmark)).size);
+}
+export function islandLand(s: State) {
+  return landAtLevel(islandLevel(s));
+}
+export function unlockedCell(s: State, cell: number) {
+  return (
+    isLand(cell) && (expansionLevel.get(cell) ?? Infinity) <= islandLevel(s)
+  );
+}
+export function materials(s: State) {
+  return (
+    (s.receipts.length - new Set(s.receipts.map((r) => r.landmark)).size) *
+      DUPLICATE_MATERIALS -
+    s.crafts.reduce((sum, c) => sum + decorationById(c.decoration)!.cost, 0)
+  );
+}
+export function decorationQuantity(s: State, id: string) {
+  const d = decorationById(id);
+  if (!d) return 0;
+  if (!d.landmark) return Infinity;
+  return (
+    (d.gift && quantity(s, d.landmark) > 0 ? 1 : 0) +
+    s.crafts.filter((c) => c.decoration === id).length
+  );
 }
 export function availableTickets(s: State) {
   const spent = new Set(s.receipts.map((r) => r.workspaceId));
@@ -30,7 +64,7 @@ export function validate(value: unknown): State {
   const version = (value as { version?: number }).version;
   const s = raw;
   if (
-    (version !== 1 && version !== 2) ||
+    (version !== 1 && version !== 2 && version !== 3) ||
     !Array.isArray(s.receipts) ||
     !Array.isArray(s.placements)
   )
@@ -86,8 +120,60 @@ export function validate(value: unknown): State {
   }
   if (s.receipts.some((r) => !earned.has(r.workspaceId)))
     throw Error('Reward has no matching ticket');
+  const landFloor =
+    version === 3
+      ? s.landFloor
+      : Math.max(
+          0,
+          ...s.placements.map((p) => expansionLevel.get(p.cell) ?? 0),
+        );
+  const crafts = version === 3 ? s.crafts : [];
+  const decor = version === 3 ? s.decorations : [];
+  if (
+    !Number.isInteger(landFloor) ||
+    landFloor < 0 ||
+    landFloor > 12 ||
+    !Array.isArray(crafts) ||
+    !Array.isArray(decor)
+  )
+    throw Error('Invalid island progression');
+  const craftIds = new Set<string>();
+  for (const c of crafts) {
+    const d = c && decorationById(c.decoration);
+    if (
+      !d?.landmark ||
+      !owned.has(d.landmark) ||
+      typeof c.id !== 'string' ||
+      !c.id ||
+      c.id.length > 128 ||
+      craftIds.has(c.id)
+    )
+      throw Error('Invalid crafting ledger');
+    craftIds.add(c.id);
+  }
+  const next: State = { ...s, landFloor, crafts, decorations: decor };
+  if (materials(next) < 0) throw Error('Not enough materials');
+  for (const p of s.placements)
+    if (!unlockedCell(next, p.cell)) throw Error('Land is not unlocked');
+  const usedDecor = new Map<string, number>();
+  for (const p of decor) {
+    if (
+      !p ||
+      !decorationById(p.decoration) ||
+      !unlockedCell(next, p.cell) ||
+      cells.has(p.cell)
+    )
+      throw Error('Invalid decoration placement');
+    cells.add(p.cell);
+    usedDecor.set(p.decoration, (usedDecor.get(p.decoration) ?? 0) + 1);
+    if (usedDecor.get(p.decoration)! > decorationQuantity(next, p.decoration))
+      throw Error('Decoration placement exceeds ownership');
+  }
   return structuredClone({
-    version: 2,
+    version: 3,
+    landFloor,
+    crafts: crafts.map(({ id, decoration }) => ({ id, decoration })),
+    decorations: decor.map(({ decoration, cell }) => ({ decoration, cell })),
     tickets: tickets.map(({ workspaceId, at }) => ({ workspaceId, at })),
     receipts: s.receipts.map(({ workspaceId, landmark, at }) => ({
       workspaceId,
@@ -238,10 +324,66 @@ export class Game {
       return s;
     });
   }
+  craft(input: unknown) {
+    return this.queue(async (s) => {
+      const p = input as { id?: unknown; decoration?: unknown } | null;
+      if (
+        typeof p?.id !== 'string' ||
+        !p.id ||
+        p.id.length > 128 ||
+        typeof p.decoration !== 'string'
+      )
+        throw Error('Invalid craft request');
+      const prior = s.crafts.find((c) => c.id === p.id);
+      if (prior) {
+        if (prior.decoration !== p.decoration)
+          throw Error('Craft request was already used');
+        return s;
+      }
+      s.crafts.push({ id: p.id, decoration: p.decoration });
+      const next = validate(s);
+      await this.store.write(next);
+      return next;
+    });
+  }
+  decorate(input: unknown) {
+    return this.queue(async (s) => {
+      const p = input as {
+        cell: number;
+        decoration?: string;
+        from?: number;
+      } | null;
+      if (!p || !unlockedCell(s, p.cell)) throw Error('Land is not unlocked');
+      if (s.placements.some((x) => x.cell === p.cell))
+        throw Error('Cell is occupied by a landmark');
+      if (p.from !== undefined) {
+        if (!Number.isInteger(p.from) || p.from === p.cell)
+          throw Error('Choose another cell');
+        const old = s.decorations.find((x) => x.cell === p.from);
+        if (!old || s.decorations.some((x) => x.cell === p.cell))
+          throw Error('Move requires an empty destination');
+        old.cell = p.cell;
+      } else {
+        if (
+          p.decoration !== undefined &&
+          s.decorations.some((x) => x.cell === p.cell)
+        )
+          throw Error('Choose an empty cell');
+        s.decorations = s.decorations.filter((x) => x.cell !== p.cell);
+        if (p.decoration !== undefined)
+          s.decorations.push({ cell: p.cell, decoration: p.decoration });
+      }
+      const next = validate(s);
+      await this.store.write(next);
+      return next;
+    });
+  }
   place(input: unknown) {
     return this.queue(async (s) => {
       const p = input as { cell: number; landmark?: string; from?: number };
-      if (!p || !isLand(p.cell)) throw Error('Invalid island cell');
+      if (!p || !unlockedCell(s, p.cell)) throw Error('Land is not unlocked');
+      if (s.decorations.some((d) => d.cell === p.cell))
+        throw Error('Cell is occupied by a decoration');
       if (p.from !== undefined) {
         if (!Number.isInteger(p.from) || p.from === p.cell)
           throw Error('Choose another cell');
@@ -250,6 +392,11 @@ export class Game {
           throw Error('Move requires an empty destination');
         old.cell = p.cell;
       } else {
+        if (
+          p.landmark !== undefined &&
+          s.placements.some((x) => x.cell === p.cell)
+        )
+          throw Error('Choose an empty cell');
         s.placements = s.placements.filter((x) => x.cell !== p.cell);
         if (p.landmark !== undefined)
           s.placements.push({ cell: p.cell, landmark: p.landmark });

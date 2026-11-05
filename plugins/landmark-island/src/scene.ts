@@ -1,5 +1,6 @@
 import { route } from './walk';
-import type { State } from './game';
+import { islandLand, unlockedCell, type State } from './game';
+import { decorationById } from './decorations';
 import {
   at,
   tiles,
@@ -30,8 +31,8 @@ export class IslandScene {
   markup() {
     return `<div class="scene-controls"><div class="mode-controls" role="group" aria-label="Island mode"><button data-mode="walk" aria-pressed="${this.mode === 'walk'}">Explore island</button><button data-mode="build" aria-pressed="${this.mode === 'build'}">Arrange landmarks</button></div><div class="climate-controls"><label for="weather">Weather</label><select id="weather"><option value="auto" ${this.automatic ? 'selected' : ''}>Auto · island forecast</option>${weatherNames.map((w, i) => `<option value="${i}" ${!this.automatic && this.weather === i ? 'selected' : ''}>${w}</option>`).join('')}</select><button id="daylight" aria-label="Change time of day">${phases[this.phase]}</button></div></div>`;
   }
-  layers() {
-    return `<div class="atmosphere" aria-hidden="true"><div class="sunbeams"></div><div class="sun-moon"></div><div class="forest-motes">${Array.from({ length: 14 }, (_, i) => `<i style="--mx:${12 + ((i * 29) % 78)}%;--my:${26 + ((i * 17) % 55)}%;--md:-${i * 1.7}s"></i>`).join('')}</div><div class="stars">✦　　　·　　　　✧<br>　　✧　　　　✦　　　·</div><div class="cloud cloud-one"></div><div class="cloud cloud-two"></div><div class="cloud cloud-three"></div><div class="precipitation">${Array.from({ length: 32 }, (_, i) => `<i style="--x:${(i * 37) % 100}%;--delay:-${i * 0.31}s;--speed:${1 + (i % 5) * 0.25}s"></i>`).join('')}</div><div class="birds">⌁　⌁</div></div><div class="scene-hud"><span class="forecast"></span><span class="scene-location">YOUR LITTLE ESCAPE</span></div>${minimap()}<div class="camera-controls" role="group" aria-label="Island camera"><button id="zoom-out" aria-label="Zoom out">−</button><span id="zoom-value">100%</span><button id="zoom-in" aria-label="Zoom in">＋</button><button id="follow-player" aria-label="Follow explorer" aria-pressed="${this.follow}">◎</button><button id="camera-reset" aria-label="Reset camera">↺</button></div><div class="walk-controls" role="group" aria-label="Walk controls"><button data-step="north" aria-label="Walk north">↑</button><button data-step="west" aria-label="Walk west">←</button><button data-step="south" aria-label="Walk south">↓</button><button data-step="east" aria-label="Walk east">→</button></div><p class="walk-hint" aria-live="polite"></p>`;
+  layers(state: State) {
+    return `<div class="atmosphere" aria-hidden="true"><div class="sunbeams"></div><div class="sun-moon"></div><div class="forest-motes">${Array.from({ length: 14 }, (_, i) => `<i style="--mx:${12 + ((i * 29) % 78)}%;--my:${26 + ((i * 17) % 55)}%;--md:-${i * 1.7}s"></i>`).join('')}</div><div class="stars">✦　　　·　　　　✧<br>　　✧　　　　✦　　　·</div><div class="cloud cloud-one"></div><div class="cloud cloud-two"></div><div class="cloud cloud-three"></div><div class="precipitation">${Array.from({ length: 32 }, (_, i) => `<i style="--x:${(i * 37) % 100}%;--delay:-${i * 0.31}s;--speed:${1 + (i % 5) * 0.25}s"></i>`).join('')}</div><div class="birds">⌁　⌁</div></div><div class="scene-hud"><span class="forecast"></span><span class="scene-location">YOUR LITTLE ESCAPE</span></div>${minimap(state)}<div class="camera-controls" role="group" aria-label="Island camera"><button id="zoom-out" aria-label="Zoom out">−</button><span id="zoom-value">100%</span><button id="zoom-in" aria-label="Zoom in">＋</button><button id="follow-player" aria-label="Follow explorer" aria-pressed="${this.follow}">◎</button><button id="camera-reset" aria-label="Reset camera">↺</button></div><div class="walk-controls" role="group" aria-label="Walk controls"><button data-step="north" aria-label="Walk north">↑</button><button data-step="west" aria-label="Walk west">←</button><button data-step="south" aria-label="Walk south">↓</button><button data-step="east" aria-label="Walk east">→</button></div><p class="walk-hint" aria-live="polite"></p>`;
   }
   avatar() {
     return `<div class="walker" role="img" aria-label="Island explorer">${person}</div>`;
@@ -52,7 +53,15 @@ export class IslandScene {
       walker = ocean.querySelector<HTMLElement>('.walker')!,
       hint = ocean.querySelector<HTMLElement>('.walk-hint')!;
     const blocked = new Set([
-      ...solidProps,
+      ...landTiles.filter((t) => !unlockedCell(state, t.id)).map((t) => t.id),
+      ...[...solidProps].filter(
+        (cell) =>
+          !state.placements.some((p) => p.cell === cell) &&
+          !state.decorations.some((p) => p.cell === cell),
+      ),
+      ...state.decorations
+        .filter((p) => !decorationById(p.decoration)!.walkable)
+        .map((p) => p.cell),
       ...state.placements.map((p) => p.cell),
     ]);
     let stepTimer: ReturnType<typeof setTimeout> | undefined,
@@ -60,7 +69,7 @@ export class IslandScene {
     let walking = false;
     let wheelTimer: ReturnType<typeof setTimeout> | undefined;
     if (this.cell < 0 || blocked.has(this.cell))
-      this.cell = landTiles.find((t) => !blocked.has(t.id))?.id ?? -1;
+      this.cell = islandLand(state).find((t) => !blocked.has(t.id))?.id ?? -1;
     const updateCamera = () => {
       this.zoom = Math.max(0.12, Math.min(1.8, this.zoom));
       if (this.follow && this.cell >= 0) {
@@ -143,7 +152,7 @@ export class IslandScene {
         ? 'Island full — return a landmark to make room to walk.'
         : this.mode === 'walk'
           ? 'Click the grass to stroll · Arrow keys / WASD · Drag to pan · Scroll to zoom'
-          : 'Select a landmark, then a cell · Drag to pan · Scroll to zoom';
+          : 'Select a landmark or decoration, then a cell · Drag to pan · Scroll to zoom';
     position();
     updateCamera();
     climate();
@@ -185,12 +194,18 @@ export class IslandScene {
     };
     root.querySelector<HTMLButtonElement>('#overview')!.onclick = () => {
       this.follow = false;
-      this.focusX = WORLD_W / 2;
-      this.focusY = WORLD_H / 2 - 30;
+      const points = islandLand(state).map((t) => project(t.id));
+      const left = Math.min(...points.map((p) => p.x)) - 60;
+      const right = Math.max(...points.map((p) => p.x)) + 60;
+      const top = Math.min(...points.map((p) => p.y)) - 120;
+      const bottom = Math.max(...points.map((p) => p.y)) + 60;
+      this.focusX = (left + right) / 2;
+      this.focusY = (top + bottom) / 2;
       this.x = this.y = 0;
       this.zoom = Math.min(
-        (ocean.clientWidth - 45) / WORLD_W,
-        (ocean.clientHeight - 110) / WORLD_H,
+        1.8,
+        (ocean.clientWidth - 45) / (right - left),
+        (ocean.clientHeight - 110) / (bottom - top),
       );
       updateCamera();
     };
