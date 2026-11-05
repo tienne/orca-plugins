@@ -846,7 +846,6 @@ test('Treasure, Marvel and Wonder reveal distinct effects with accessible ranks'
           .locator('.wonder-body')
           .evaluate((e) => getComputedStyle(e).animationName),
       ).toBe('wonder-levitate');
-      await page.waitForTimeout(3300);
       expect(
         Number(
           await theatre
@@ -861,4 +860,97 @@ test('Treasure, Marvel and Wonder reveal distinct effects with accessible ranks'
     await page.getByRole('button', { name: 'Keep exploring' }).click();
     await expect(page.locator('#ticket-count')).toHaveText('0');
   }
+});
+
+test('cinematic discovery reveals rarity before artwork, then information and actions', async ({
+  page,
+}) => {
+  await page.clock.install();
+  await page.clock.pauseAt(new Date(Date.now() + 1000));
+  await page.addInitScript(() => {
+    Math.random = () => 0.999;
+  });
+  await page.goto('/');
+  await page.getByRole('button', { name: 'Demo worktree' }).click();
+  await page.locator('#draw-ticket').click();
+  const theatre = page.locator('.discovery-theatre');
+  const result = theatre.locator('.discovery-result');
+  const actions = theatre.locator('.reveal-actions');
+  const saved = await page.evaluate(() =>
+    localStorage.getItem('landmark-island-demo-v1'),
+  );
+  await expect(theatre).toHaveAttribute('data-phase', 'invitation');
+  await page.clock.runFor(900);
+  await expect(theatre).toHaveAttribute('data-phase', 'journey');
+  expect(
+    await theatre.evaluate((e) =>
+      getComputedStyle(e).getPropertyValue('--reveal-color').trim(),
+    ),
+  ).toBe('#dce9d3');
+  await expect(result).toBeHidden();
+  await expect(actions).toBeHidden();
+  await expect(theatre.locator('.discovery-monument')).toHaveCSS(
+    'opacity',
+    '0',
+  );
+  const cameraBefore = await theatre
+    .locator('.atlas-camera')
+    .evaluate((e) => getComputedStyle(e).transform);
+  await page.waitForTimeout(200);
+  expect(
+    await theatre
+      .locator('.atlas-camera')
+      .evaluate((e) => getComputedStyle(e).transform),
+  ).not.toBe(cameraBefore);
+  await page.clock.runFor(1300);
+  await expect(theatre).toHaveAttribute('data-phase', 'omen');
+  expect(
+    await theatre.evaluate((e) =>
+      getComputedStyle(e).getPropertyValue('--reveal-color').trim(),
+    ),
+  ).toBe('#ffdc77');
+  await expect(theatre.locator('.omen-label')).toContainText('Wonder');
+  await expect(theatre.getByRole('status')).toHaveText(
+    'Wonder on the horizon…',
+  );
+  await expect(result).toBeHidden();
+  await page.waitForTimeout(500);
+  await theatre.screenshot({
+    path: 'test-results/landmark-island/wonder-omen-demo.png',
+  });
+  await page.clock.runFor(1500);
+  await expect(theatre).toHaveAttribute('data-phase', 'burst');
+  await expect(actions).toBeHidden();
+  await page.clock.runFor(350);
+  await expect(theatre).toHaveAttribute('data-phase', 'monument');
+  await expect(result).toBeHidden();
+  await page.clock.runFor(650);
+  await expect(theatre).toHaveAttribute('data-phase', 'details');
+  await expect(result).toBeVisible();
+  await expect(actions).toBeHidden();
+  await page.clock.runFor(450);
+  await expect(theatre).toHaveAttribute('data-phase', 'complete');
+  await expect(actions).toBeVisible();
+  await expect(
+    theatre.getByRole('button', { name: 'Place on island' }),
+  ).toBeFocused();
+  expect(
+    await page.evaluate(() => localStorage.getItem('landmark-island-demo-v1')),
+  ).toBe(saved);
+  await page.waitForTimeout(1300);
+  await theatre.screenshot({
+    path: 'test-results/landmark-island/cinematic-result-demo.png',
+  });
+  await page.getByRole('button', { name: 'Keep exploring' }).click();
+  await page.getByRole('button', { name: 'Demo worktree' }).click();
+  await page.locator('#draw-ticket').click();
+  await page.clock.runFor(2200);
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await expect(theatre).toHaveAttribute('data-phase', 'complete');
+  await expect(actions).toBeVisible();
+  await expect(theatre.locator('.discovery-flash')).toBeHidden();
+  await page.clock.runFor(10000);
+  await expect(theatre).toHaveAttribute('data-phase', 'complete');
+  await page.keyboard.press('Escape');
+  await expect(theatre).toHaveCount(0);
 });
