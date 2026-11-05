@@ -322,7 +322,7 @@ async function disk(root, path) {
     for (const part of relative(root, full).split(sep)) {
       current = resolve(current, part);
       const s = await lstat(current);
-      if (s.isSymbolicLink())
+      if (s.isSymbolicLink() || current === full && !s.isFile())
         return { kind: "special", text: "", bytes: s.size };
     }
     const actual = await realpath(full);
@@ -331,7 +331,7 @@ async function disk(root, path) {
       throw new Error("\uC800\uC7A5\uC18C \uACBD\uACC4\uB97C \uBC97\uC5B4\uB09C \uD30C\uC77C\uC785\uB2C8\uB2E4.");
     const handle = await open(
       actual,
-      constants.O_RDONLY | constants.O_NOFOLLOW
+      constants.O_RDONLY | constants.O_NOFOLLOW | constants.O_NONBLOCK
     );
     try {
       const stat = await handle.stat();

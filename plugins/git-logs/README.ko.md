@@ -4,7 +4,7 @@
 
 Git 로그, 트리, 커밋 그래프로 이력을 살펴보고 파일을 읽기 전용 좌우 Diff로 비교하는 Orca 플러그인입니다. 커밋 우클릭 메뉴에서 Git 변경 작업도 실행할 수 있습니다.
 
-Git Logs 0.1.0은 Orca 1.4.248 이상과 로컬 Git이 필요합니다.
+Git Logs 0.1.1은 Orca 1.4.248 이상과 로컬 Git이 필요합니다.
 
 ## 설치
 
@@ -92,7 +92,7 @@ Diff 탭을 열면 워크트리 안에 `.orca/git-logs/*.orcadiff` JSON 문서�
 
 외부 `.orcadiff` 문서를 열어도 해당 저장소를 자동으로 신뢰하지 않습니다. Git Logs 사이드바에서 그 저장소에 연결한 뒤 문서를 새로고침하십시오. Diff 탭은 현재 작업 공간을 바꿔도 문서에 기록된 저장소와 비교 기준을 유지합니다.
 
-UI, Monaco, 폰트, editor worker는 모두 로컬 번들에 포함됩니다. Telemetry, analytics, 외부 번역 서비스는 사용하지 않습니다.
+UI, Monaco, SVG 아이콘, editor worker는 모두 로컬 번들에 포함됩니다. Telemetry, analytics, 외부 번역 서비스는 사용하지 않습니다.
 
 ## 지원 범위
 
