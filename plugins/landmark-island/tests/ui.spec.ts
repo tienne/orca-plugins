@@ -1244,3 +1244,269 @@ test('host source links use the public external-link API only on click', async (
   );
   await expect(page.locator('.landmark-detail')).toBeVisible();
 });
+
+const backupFixture = {
+  version: 2,
+  tickets: [
+    { workspaceId: 'saved-ticket', at: '2026-11-06' },
+    { workspaceId: 'unused-ticket', at: '2026-11-06' },
+  ],
+  receipts: [
+    { workspaceId: 'saved-ticket', landmark: 'eiffel', at: '2026-11-06' },
+  ],
+  placements: [{ landmark: 'eiffel', cell: 0 }],
+};
+const backupFile = (state: unknown) =>
+  JSON.stringify({
+    format: 'landmark-island-backup',
+    version: 1,
+    exportedAt: '2026-11-06T00:00:00.000Z',
+    state,
+  });
+const uploadBackup = (page: Page, text: string) =>
+  page.locator('#backup-file').setInputFiles({
+    name: 'island.json',
+    mimeType: 'application/json',
+    buffer: Buffer.from(text),
+  });
+async function seedBackup(page: Page) {
+  await page.goto('/');
+  await page.evaluate(
+    (s) => localStorage.setItem('landmark-island-demo-v1', JSON.stringify(s)),
+    backupFixture,
+  );
+  await page.reload();
+  await page.getByRole('button', { name: 'Backups', exact: true }).click();
+  await expect(page.locator('#backup-save')).toBeEnabled();
+}
+
+test('backup download, confirmed replacement, restart and pre-restore recovery', async ({
+  page,
+}) => {
+  await seedBackup(page);
+  const downloadEvent = page.waitForEvent('download');
+  await page.locator('#backup-save').click();
+  const download = await downloadEvent;
+  expect(download.suggestedFilename()).toMatch(/^landmark-island-.*\.json$/);
+  const stream = await download.createReadStream();
+  const chunks: Buffer[] = [];
+  for await (const chunk of stream!) chunks.push(chunk);
+  const exported = JSON.parse(Buffer.concat(chunks).toString());
+  expect(exported.state).toEqual(backupFixture);
+  const incoming = {
+    ...backupFixture,
+    receipts: [
+      { workspaceId: 'saved-ticket', landmark: 'giza', at: '2026-11-06' },
+    ],
+    placements: [
+      { landmark: 'giza', cell: landTiles.find((t) => t.id > 36)!.id },
+    ],
+  };
+  await uploadBackup(page, backupFile(incoming));
+  await expect(page.locator('.backup-incoming')).toContainText(
+    '1 unused tickets · 1 landmarks (1 unique) · 1 placed',
+  );
+  await expect(page.locator('#backup-restore')).toBeDisabled();
+  await page.keyboard.press('Escape');
+  expect(
+    await page.evaluate(() =>
+      JSON.parse(localStorage.getItem('landmark-island-demo-v1')!),
+    ),
+  ).toEqual(backupFixture);
+  await expect(
+    page.getByRole('button', { name: 'Backups', exact: true }),
+  ).toBeFocused();
+  await page.getByRole('button', { name: 'Backups', exact: true }).click();
+  await uploadBackup(page, backupFile(incoming));
+  await page.locator('#backup-confirm').check();
+  await page.locator('#backup-restore').click();
+  await expect(page.locator('.backup-status')).toContainText(
+    'Island restored.',
+  );
+  expect(
+    await page.evaluate(() =>
+      JSON.parse(
+        localStorage.getItem('landmark-island-demo-v1-before-restore')!,
+      ),
+    ),
+  ).toEqual(backupFixture);
+  await page.reload();
+  expect(
+    await page.evaluate(() =>
+      JSON.parse(localStorage.getItem('landmark-island-demo-v1')!),
+    ),
+  ).toEqual(incoming);
+  await expect(page.locator('[data-landmark=giza]')).toContainText('Owned ×1');
+  await page.getByRole('button', { name: 'Backups', exact: true }).click();
+  await page.locator('#backup-previous').click();
+  await page.setViewportSize({ width: 390, height: 844 });
+  for (const theme of ['light', 'dark']) {
+    await page.evaluate((t) => (document.documentElement.className = t), theme);
+    await page
+      .locator('.backup-dialog')
+      .screenshot({ path: `test-results/landmark-island/backup-${theme}.png` });
+    expect(
+      await page
+        .locator('.backup-dialog')
+        .evaluate((e) => e.scrollWidth <= e.clientWidth),
+    ).toBe(true);
+  }
+  await page.locator('#backup-confirm').check();
+  await page.locator('#backup-restore').click();
+  await expect(page.locator('.backup-status')).toContainText(
+    'Island restored.',
+  );
+  expect(
+    await page.evaluate(() =>
+      JSON.parse(localStorage.getItem('landmark-island-demo-v1')!),
+    ),
+  ).toEqual(backupFixture);
+});
+
+test('backup rejects damaged, future, oversized files and stale restore previews', async ({
+  page,
+}) => {
+  await seedBackup(page);
+  for (const text of [
+    '{',
+    'null',
+    backupFile(null),
+    backupFile({ ...backupFixture, version: 99 }),
+    backupFile({ ...backupFixture, tickets: [] }),
+    ' '.repeat(256 * 1024 + 1),
+  ]) {
+    await uploadBackup(page, text);
+    await expect(page.locator('.backup-status')).toHaveAttribute(
+      'role',
+      'alert',
+    );
+    await expect(page.locator('#backup-restore')).toBeDisabled();
+    expect(
+      await page.evaluate(() =>
+        JSON.parse(localStorage.getItem('landmark-island-demo-v1')!),
+      ),
+    ).toEqual(backupFixture);
+  }
+  await uploadBackup(
+    page,
+    backupFile({ version: 2, tickets: [], receipts: [], placements: [] }),
+  );
+  await page.locator('#backup-confirm').check();
+  const changed = {
+    ...backupFixture,
+    tickets: [
+      ...backupFixture.tickets,
+      { workspaceId: 'arrived-now', at: '2026-11-06' },
+    ],
+  };
+  await page.evaluate(
+    (s) => localStorage.setItem('landmark-island-demo-v1', JSON.stringify(s)),
+    changed,
+  );
+  await page.locator('#backup-restore').click();
+  await expect(page.locator('.backup-status')).toContainText(
+    'Your island changed',
+  );
+  expect(
+    await page.evaluate(() =>
+      JSON.parse(localStorage.getItem('landmark-island-demo-v1')!),
+    ),
+  ).toEqual(changed);
+  expect(
+    await page.evaluate(() =>
+      localStorage.getItem('landmark-island-demo-v1-before-restore'),
+    ),
+  ).toBeNull();
+});
+
+test('restore keeps the current island when recovery storage fails', async ({
+  page,
+}) => {
+  await seedBackup(page);
+  await page.evaluate(() => {
+    const set = Storage.prototype.setItem;
+    Storage.prototype.setItem = function (key, value) {
+      if (key.endsWith('-before-restore')) throw Error('Recovery storage full');
+      return set.call(this, key, value);
+    };
+  });
+  await uploadBackup(
+    page,
+    backupFile({ version: 2, tickets: [], receipts: [], placements: [] }),
+  );
+  await page.locator('#backup-confirm').check();
+  await page.locator('#backup-restore').click();
+  await expect(page.locator('.backup-status')).toContainText(
+    'Recovery storage full',
+  );
+  expect(
+    await page.evaluate(() =>
+      JSON.parse(localStorage.getItem('landmark-island-demo-v1')!),
+    ),
+  ).toEqual(backupFixture);
+});
+
+test('host backup export calls saveAs only from a fresh click and reports cancellation/errors', async ({
+  page,
+}) => {
+  await page.addInitScript(
+    ({ text }) => {
+      const fixture = window as unknown as {
+        orca: unknown;
+        saved: unknown[];
+        fail: boolean;
+      };
+      fixture.saved = [];
+      fixture.fail = false;
+      fixture.orca = {
+        plugin: {
+          request: async (name: string) =>
+            name === 'island.backup' ? text : JSON.parse(text).state,
+          on: () => {},
+        },
+        files: {
+          saveAs: async (options: unknown) => {
+            fixture.saved.push({
+              options,
+              active: navigator.userActivation.isActive,
+            });
+            if (fixture.fail) throw Error('Save dialog unavailable');
+            return { status: 'cancelled' };
+          },
+        },
+      };
+    },
+    { text: backupFile(backupFixture) },
+  );
+  await page.goto('/');
+  await page.getByRole('button', { name: 'Backups', exact: true }).click();
+  await expect(page.locator('#backup-save')).toBeEnabled();
+  expect(
+    await page.evaluate(
+      () => (window as unknown as { saved: unknown[] }).saved,
+    ),
+  ).toEqual([]);
+  await page.locator('#backup-save').click();
+  await expect(page.locator('.backup-status')).toContainText('Save cancelled');
+  const saved = await page.evaluate(
+    () =>
+      (
+        window as unknown as {
+          saved: {
+            active: boolean;
+            options: { data: string; mimeType: string };
+          }[];
+        }
+      ).saved,
+  );
+  expect(saved[0].active).toBe(true);
+  expect(saved[0].options.mimeType).toBe('application/json');
+  expect(JSON.parse(saved[0].options.data).state).toEqual(backupFixture);
+  await page.evaluate(
+    () => ((window as unknown as { fail: boolean }).fail = true),
+  );
+  await page.locator('#backup-save').click();
+  await expect(page.locator('.backup-status')).toContainText(
+    'Could not save the backup',
+  );
+});

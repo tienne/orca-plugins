@@ -20,9 +20,15 @@ try {
     format: 'esm',
     outExtension: { '.js': '.mjs' },
   });
-  const { Game, draw, validate, availableTickets } = await import(
-    pathToFileURL(join(dir, 'game.mjs'))
-  );
+  const {
+    Game,
+    draw,
+    validate,
+    availableTickets,
+    encodeBackup,
+    decodeBackup,
+    MAX_BACKUP_BYTES,
+  } = await import(pathToFileURL(join(dir, 'game.mjs')));
   const { route } = await import(pathToFileURL(join(dir, 'walk.mjs')));
   const { tiles, landTiles, neighbours, solidProps, isLand, project, at } =
     await import(pathToFileURL(join(dir, 'world.mjs')));
@@ -210,18 +216,158 @@ try {
   assert.throws(() =>
     validate({ ...value, receipts: [value.receipts[0], value.receipts[0]] }),
   );
+  // Backup round trips preserve all ledgers and expanded placement addresses.
+  let backupState = structuredClone(value),
+    previousState = null;
+  let failRecovery = false,
+    failRestore = false,
+    loseRestoreResponse = false;
+  let recoveryWrites = 0,
+    restoreWrites = 0;
+  const backupStore = {
+    read: async () => structuredClone(backupState),
+    readBackup: async () => structuredClone(previousState),
+    writeBackup: async (s) => {
+      if (failRecovery) throw Error('recovery disk full');
+      previousState = structuredClone(s);
+      recoveryWrites++;
+    },
+    write: async (s) => {
+      if (failRestore) throw Error('restore disk full');
+      backupState = structuredClone(s);
+      restoreWrites++;
+      if (loseRestoreResponse) {
+        loseRestoreResponse = false;
+        throw Error('lost restore response');
+      }
+    },
+  };
+  let backups = new Game(backupStore, () => 0);
+  await assert.rejects(backups.exportBackup(true), /No pre-restore/);
+  const baseline = structuredClone(backupState);
+  const exported = await backups.exportBackup();
+  assert.deepEqual(decodeBackup(exported).state, baseline);
+  assert.equal(restoreWrites, 0);
+  const incoming = validate({
+    version: 2,
+    tickets: [
+      { workspaceId: 'imported-spent', at: '2026-11-06' },
+      { workspaceId: 'imported-unused', at: '2026-11-06' },
+    ],
+    receipts: [
+      { workspaceId: 'imported-spent', landmark: 'giza', at: '2026-11-06' },
+    ],
+    placements: [{ landmark: 'giza', cell: expanded }],
+  });
+  const text = encodeBackup(incoming);
+  const envelope = JSON.parse(text);
+  for (const bad of [
+    '{',
+    'null',
+    JSON.stringify(incoming),
+    JSON.stringify({ ...envelope, version: 99 }),
+    JSON.stringify({ ...envelope, state: null }),
+    JSON.stringify({ ...envelope, state: { ...incoming, version: 99 } }),
+    JSON.stringify({ ...envelope, state: { ...incoming, tickets: [] } }),
+    JSON.stringify({
+      ...envelope,
+      state: { ...incoming, placements: [{ landmark: 'giza', cell: 36 }] },
+    }),
+    ' '.repeat(MAX_BACKUP_BYTES + 1),
+  ]) {
+    await assert.rejects(backups.restore({ text: bad, expected: baseline }));
+    assert.deepEqual(backupState, baseline);
+    assert.equal(recoveryWrites, 0);
+  }
+  failRecovery = true;
+  await assert.rejects(
+    backups.restore({ text, expected: baseline }),
+    /recovery disk full/,
+  );
+  assert.deepEqual(backupState, baseline);
+  failRecovery = false;
+  failRestore = true;
+  await assert.rejects(
+    backups.restore({ text, expected: baseline }),
+    /restore disk full/,
+  );
+  assert.deepEqual(backupState, baseline);
+  assert.deepEqual(previousState, baseline);
+  failRestore = false;
+  // A background event after preview must be preserved, not overwritten by import.
+  await backups.acquire({
+    workspaceId: 'arrived-during-preview',
+    kind: 'worktree',
+  });
+  await assert.rejects(
+    backups.restore({ text, expected: baseline }),
+    /island changed/,
+  );
+  const withEvent = structuredClone(backupState);
+  loseRestoreResponse = true;
+  await assert.rejects(
+    backups.restore({ text, expected: withEvent }),
+    /lost restore response/,
+  );
+  assert.deepEqual(backupState, incoming);
+  assert.deepEqual(previousState, withEvent);
+  const savedRecoveryWrites = recoveryWrites;
+  backups = new Game(backupStore);
+  assert.deepEqual(
+    await backups.restore({ text, expected: withEvent }),
+    incoming,
+  );
+  assert.equal(recoveryWrites, savedRecoveryWrites);
+  assert.deepEqual(
+    decodeBackup(await backups.exportBackup(true)).state,
+    withEvent,
+  );
+  // Repeat import cannot add copies or tickets; the retained copy can be restored.
+  await backups.restore({ text, expected: incoming });
+  assert.equal(availableTickets(backupState).length, 1);
+  const undoText = await backups.exportBackup(true);
+  await backups.restore({ text: undoText, expected: incoming });
+  assert.deepEqual(backupState, withEvent);
+  assert.deepEqual(previousState, incoming);
+  const legacyBackup = JSON.stringify({
+    ...envelope,
+    state: {
+      version: 1,
+      receipts: incoming.receipts,
+      placements: incoming.placements,
+    },
+  });
+  assert.equal(availableTickets(decodeBackup(legacyBackup).state).length, 0);
+  const sanitized = decodeBackup(
+    JSON.stringify({
+      ...envelope,
+      state: {
+        ...incoming,
+        extra: 'discard',
+        tickets: incoming.tickets.map((t) => ({ ...t, secret: 'discard' })),
+      },
+    }),
+  ).state;
+  assert.deepEqual(sanitized, incoming);
   const { default: activate } = await import(
     pathToFileURL(join(dir, 'worker/main.mjs'))
   );
   const handlers = {},
     events = {};
-  let posted = 0;
+  let posted = 0,
+    hostPrevious = null;
   activate({
     host: {
       call: async (name, input) =>
         name === 'storage.get'
-          ? { value }
-          : ((value = structuredClone(input.value)), { ok: true }),
+          ? {
+              value:
+                input.key === 'island-before-restore-v1' ? hostPrevious : value,
+            }
+          : (input.key === 'island-before-restore-v1'
+              ? (hostPrevious = structuredClone(input.value))
+              : (value = structuredClone(input.value)),
+            { ok: true }),
     },
     panels: {
       handle: (n, f) => (handlers[n] = f),
@@ -235,6 +381,8 @@ try {
   assert.deepEqual(Object.keys(events), ['workspace.created']);
   assert.deepEqual(Object.keys(handlers), [
     'island.read',
+    'island.backup',
+    'island.restore',
     'island.draw',
     'island.place',
   ]);
@@ -254,8 +402,19 @@ try {
   assert.equal((await handlers['island.read']()).receipts.length, 43);
   assert.equal(availableTickets(await handlers['island.read']()).length, 0);
   assert.ok(posted);
+  const hostBefore = await handlers['island.read']();
+  assert.deepEqual(
+    decodeBackup(await handlers['island.backup']({})).state,
+    hostBefore,
+  );
+  await handlers['island.restore']({ text, expected: hostBefore });
+  assert.deepEqual(await handlers['island.read'](), incoming);
+  assert.deepEqual(
+    decodeBackup(await handlers['island.backup']({ previous: true })).state,
+    hostBefore,
+  );
   console.log(
-    'PASS: concurrent events, duplicates, restart deduplication, placement/movement/removal, validation, failed-save recovery, tier boundaries, worker wiring without panels',
+    'PASS: concurrent events, duplicates, restart deduplication, placement/movement/removal, validation, failed-save recovery, tier boundaries, worker wiring without panels, backup validation, restore conflicts/recovery/retry',
   );
 } finally {
   await rm(dir, { recursive: true, force: true });

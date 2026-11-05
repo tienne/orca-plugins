@@ -37,6 +37,8 @@ export function validate(value: unknown): State {
     throw Error('Unsupported or damaged save. Save was not overwritten.');
   const ids = new Set<string>();
   const cells = new Set<number>();
+  const owned = new Map<string, number>();
+  const placed = new Map<string, number>();
   for (const r of s.receipts) {
     if (
       !r ||
@@ -48,6 +50,7 @@ export function validate(value: unknown): State {
     )
       throw Error('Invalid acquisition receipt');
     ids.add(r.workspaceId);
+    owned.set(r.landmark, (owned.get(r.landmark) ?? 0) + 1);
   }
   for (const p of s.placements) {
     if (
@@ -58,10 +61,8 @@ export function validate(value: unknown): State {
     )
       throw Error('Invalid placement');
     cells.add(p.cell);
-    if (
-      s.placements.filter((x) => x.landmark === p.landmark).length >
-      quantity(s, p.landmark)
-    )
+    placed.set(p.landmark, (placed.get(p.landmark) ?? 0) + 1);
+    if (placed.get(p.landmark)! > (owned.get(p.landmark) ?? 0))
       throw Error('Placement exceeds ownership');
   }
   // Legacy rewards are already redeemed tickets, never new free draws.
@@ -87,10 +88,57 @@ export function validate(value: unknown): State {
     throw Error('Reward has no matching ticket');
   return structuredClone({
     version: 2,
-    tickets,
-    receipts: s.receipts,
-    placements: s.placements,
+    tickets: tickets.map(({ workspaceId, at }) => ({ workspaceId, at })),
+    receipts: s.receipts.map(({ workspaceId, landmark, at }) => ({
+      workspaceId,
+      landmark,
+      at,
+    })),
+    placements: s.placements.map(({ landmark, cell }) => ({ landmark, cell })),
   });
+}
+export const MAX_BACKUP_BYTES = 256 * 1024;
+export function encodeBackup(state: State): string {
+  const text = JSON.stringify(
+    {
+      format: 'landmark-island-backup',
+      version: 1,
+      exportedAt: new Date().toISOString(),
+      state: validate(state),
+    },
+    null,
+    2,
+  );
+  if (new TextEncoder().encode(text).length > MAX_BACKUP_BYTES)
+    throw Error('Backup exceeds the 256 KiB file limit. Nothing was changed.');
+  return text;
+}
+export function decodeBackup(text: unknown): {
+  state: State;
+  exportedAt: string;
+} {
+  if (
+    typeof text !== 'string' ||
+    new TextEncoder().encode(text).length > MAX_BACKUP_BYTES
+  )
+    throw Error('Choose a Landmark Island backup of at most 256 KiB.');
+  let data;
+  try {
+    data = JSON.parse(text);
+  } catch {
+    throw Error('This file is not valid JSON.');
+  }
+  if (
+    !data ||
+    data.format !== 'landmark-island-backup' ||
+    data.version !== 1 ||
+    typeof data.exportedAt !== 'string' ||
+    !Number.isFinite(Date.parse(data.exportedAt)) ||
+    !data.state ||
+    typeof data.state !== 'object'
+  )
+    throw Error('Unsupported or damaged Landmark Island backup.');
+  return { state: validate(data.state), exportedAt: data.exportedAt };
 }
 export function draw(random: () => number): string {
   const roll = random() * 100;
@@ -107,6 +155,8 @@ export function draw(random: () => number): string {
 export interface Store {
   read(): Promise<unknown>;
   write(state: State): Promise<void>;
+  readBackup?(): Promise<unknown>;
+  writeBackup?(state: State): Promise<void>;
 }
 export class Game {
   private tail: Promise<unknown> = Promise.resolve();
@@ -123,6 +173,34 @@ export class Game {
   }
   snapshot() {
     return this.queue(async (s) => s);
+  }
+  exportBackup(previous = false) {
+    return this.queue(async (s) => {
+      if (!previous) return encodeBackup(s);
+      const old = await this.store.readBackup?.();
+      if (old == null) throw Error('No pre-restore backup is available yet.');
+      return encodeBackup(validate(old));
+    });
+  }
+  restore(input: unknown) {
+    return this.queue(async (s) => {
+      const data = input as { text?: unknown; expected?: unknown } | null;
+      const next = decodeBackup(data?.text).state;
+      // Response-loss retries must not overwrite the pre-restore copy.
+      if (JSON.stringify(next) === JSON.stringify(s)) return s;
+      if (
+        !data?.expected ||
+        JSON.stringify(validate(data.expected)) !== JSON.stringify(s)
+      )
+        throw Error(
+          'Your island changed. Close Backups and review the file again before restoring.',
+        );
+      if (!this.store.writeBackup)
+        throw Error('Recovery storage is unavailable. Nothing was changed.');
+      await this.store.writeBackup(s);
+      await this.store.write(next);
+      return next;
+    });
   }
   acquire(event: { workspaceId: string; kind: string }) {
     return this.queue(async (s) => {

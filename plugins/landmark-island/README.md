@@ -64,6 +64,16 @@ The packaged plugin is `dist/plugins/landmark-island`. It needs no runtime downl
 
 For the standalone animation theatre, open [Reveal Preview](http://127.0.0.1:43187/?preview=reveal&tier=legendary&autoplay=1). It starts with Wonder and offers all four rarity previews and replay. It uses the same reveal renderer, reads/writes no save, and replaces placement actions with replay/rarity selection. This route is browser-demo only; plugin frames continue to use their worker.
 
+## File backups
+
+Open **Backups** in the panel navigation, then **Save backup file**. The dialog prepares a snapshot of unused and spent tickets, acquisition receipts and all island placements. In Orca, the Save button calls `orca.files.saveAs` directly from your click; you choose the destination and the plugin never receives its path. In the browser demo it downloads a JSON file containing only the demo save. Reopen Backups to prepare a newer snapshot. Walking, camera and weather are not included. No analytics or uploads are involved.
+
+To restore or move to another computer, choose the JSON backup in **Choose a backup to restore**. The preview shows unused tickets, total/unique landmarks, placements and export time. Check **I want to replace my current island**, then choose **Replace island**. This replaces the complete save; it does not merge collections. Later progress is discarded, including ticket consumption after the snapshot. This is a personal offline backup, not an anti-cheat or multi-device synchronization system.
+
+The worker validates the file again and checks that the current save still matches the reviewed snapshot. If a new worktree or another action changed it, close Backups and review again. Before replacement, it stores one pre-restore copy under `island-before-restore-v1` (the demo uses `landmark-island-demo-v1-before-restore`). **Review pre-restore copy** uses the same preview and confirmation to recover it. Preparing a different restore replaces that one recovery slot before writing the new island; repeated restoration of the same state does not duplicate rewards or overwrite the slot. If saving the recovery copy fails, the current save is not replaced. A lost response may follow a successful save: refresh and check before retrying.
+
+Files use the `landmark-island-backup` envelope, format version 1, and are limited to 256 KiB. Unknown formats/versions, malformed JSON, duplicate IDs, unowned or invalid placements and rewards without tickets are rejected before writing. State schema v1 inside a valid envelope migrates using the existing no-extra-ticket rule. Import requires a readable current save for comparison; it does not repair an already corrupted local store. Files include workspace identifiers that may contain local paths, plus acquisition times; keep them private. Clearing plugin data also removes the internal recovery copy, so keep an exported file elsewhere.
+
 ## Host access and limits
 
 This is a trusted Node worker running with your OS account's access. Its declared capabilities are `workspace:read` and `storage:own`. It does not request Git writes, terminals, agents, notifications, or network services. Authorizing Git Logs does not authorize this identity.
@@ -96,3 +106,7 @@ Deferred: decoration economy, further terrain expansion, cloud sync, trading, lo
 - Persistence was checked across worker restarts, not a full Orca application restart. No push, merge or publication was performed.
 
 Nx generator discovery found no Orca-specific generator. The installed Orca `worker-panel` scaffolder failed because its bundled `orca.d.ts` resource was missing. This plugin follows the existing Nx run-command build pattern and narrow API contracts from the installed authoring references.
+
+## Backup verification (2026-11-06)
+
+`pnpm nx run landmark-island:typecheck` and `pnpm nx run landmark-island:test` passed. All 23 tests passed in `pnpm nx run landmark-island:ui-test --output-style=static`. Worker fixtures cover export/import, old schemas, invalid files, changed saves, recovery-write and restore-write failures, response-loss retries across restart, repeated import and recovery. Browser fixtures cover file download, preview/cancel/confirmation, restart persistence, recovery, narrow light/dark dialogs, invalid/oversized files, stale previews and the gesture-bound host Save API with cancellation/errors. The live Orca worker also returned a valid backup envelope through the read-only export handler without changing its save. `pnpm validate` passed for both packaged plugins. Native Orca file dialogs and clicks remain deferred at the user's request; live user data was not restored or replaced during these tests.

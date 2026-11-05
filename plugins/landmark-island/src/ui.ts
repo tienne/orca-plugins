@@ -1,5 +1,7 @@
 import {
   Game,
+  decodeBackup,
+  MAX_BACKUP_BYTES,
   empty,
   availableTickets,
   landmarks,
@@ -30,13 +32,20 @@ import './scene.css';
 import './world.css';
 import './storybook.css';
 type Bridge = {
-  request(name: string, input: unknown): Promise<State>;
+  request<T = State>(name: string, input: unknown): Promise<T>;
   on(name: string, fn: () => void): unknown;
 };
 const frame = (
   window as unknown as {
     orca?: {
       plugin: Bridge;
+      files: {
+        saveAs(options: {
+          suggestedName: string;
+          mimeType: string;
+          data: string;
+        }): Promise<{ status: 'saved' | 'cancelled' }>;
+      };
       shell: {
         openExternal(
           url: string,
@@ -51,6 +60,10 @@ const demoKey = 'landmark-island-demo-v1';
 const game = new Game({
   read: async () => JSON.parse(localStorage.getItem(demoKey) ?? 'null'),
   write: async (s) => localStorage.setItem(demoKey, JSON.stringify(s)),
+  readBackup: async () =>
+    JSON.parse(localStorage.getItem(`${demoKey}-before-restore`) ?? 'null'),
+  writeBackup: async (s) =>
+    localStorage.setItem(`${demoKey}-before-restore`, JSON.stringify(s)),
 });
 let state: State = empty(),
   view = 'island',
@@ -193,7 +206,7 @@ function render() {
   const latest = landmarks.find(
     (l) => l.id === state.receipts.at(-1)?.landmark,
   );
-  root.innerHTML = `<header><div class="book-title"><div class="eyebrow">A worktree travel journal ${demo ? '<b>DEMO · LOCAL FIXTURES</b>' : ''}</div><h1>Landmark Island</h1></div><div class="stats"><strong>${owned.length}<small> / 12 discovered</small></strong><strong>${state.receipts.length}<small> discoveries</small></strong><strong>${new Set(owned.map((l) => l.code)).size}<small> countries</small></strong></div></header><nav><button data-view="island" aria-pressed="${view === 'island'}">My Island</button><button data-view="map" aria-pressed="${view === 'map'}">World Map</button>${demo ? '<button id="expedition">＋ Demo worktree</button>' : ''}<button id="refresh">Refresh</button></nav><section class="ticket-desk" aria-label="Exploration tickets"><div class="ticket-stamp" aria-hidden="true">✦</div><div><small>YOUR NEXT CHAPTER</small><h2><span id="ticket-count">${tickets}</span> exploration ticket${tickets === 1 ? '' : 's'}</h2><p>Create a worktree, earn a ticket, discover somewhere new.</p></div><button id="draw-ticket" ${!loaded || (!tickets && !pendingTicket) ? 'disabled' : ''}>${pendingTicket ? 'Retry discovery' : 'Use ticket · Discover'}</button></section><p class="notice ${latest ? 'discovery-notice' : ''}" ${latest ? `data-tier="${latest.tier}"` : ''} role="status">${latest ? rarityBadge(latest.tier) : ''}<span>${escape(message)}</span></p>${error ? `<p role="alert">${escape(error)}</p>` : ''}
+  root.innerHTML = `<header><div class="book-title"><div class="eyebrow">A worktree travel journal ${demo ? '<b>DEMO · LOCAL FIXTURES</b>' : ''}</div><h1>Landmark Island</h1></div><div class="stats"><strong>${owned.length}<small> / 12 discovered</small></strong><strong>${state.receipts.length}<small> discoveries</small></strong><strong>${new Set(owned.map((l) => l.code)).size}<small> countries</small></strong></div></header><nav><button data-view="island" aria-pressed="${view === 'island'}">My Island</button><button data-view="map" aria-pressed="${view === 'map'}">World Map</button>${demo ? '<button id="expedition">＋ Demo worktree</button>' : ''}<button id="refresh">Refresh</button><button id="backups" aria-haspopup="dialog">Backups</button></nav><section class="ticket-desk" aria-label="Exploration tickets"><div class="ticket-stamp" aria-hidden="true">✦</div><div><small>YOUR NEXT CHAPTER</small><h2><span id="ticket-count">${tickets}</span> exploration ticket${tickets === 1 ? '' : 's'}</h2><p>Create a worktree, earn a ticket, discover somewhere new.</p></div><button id="draw-ticket" ${!loaded || (!tickets && !pendingTicket) ? 'disabled' : ''}>${pendingTicket ? 'Retry discovery' : 'Use ticket · Discover'}</button></section><p class="notice ${latest ? 'discovery-notice' : ''}" ${latest ? `data-tier="${latest.tier}"` : ''} role="status">${latest ? rarityBadge(latest.tier) : ''}<span>${escape(message)}</span></p>${error ? `<p role="alert">${escape(error)}</p>` : ''}
  ${
    view === 'island'
      ? `<section class="island-section"><div class="section-title"><h2><small>Chapter I</small> A place to wander</h2><span>${landTiles.length} little places to call home</span></div><p>${from !== undefined ? 'Choose an empty cell to move the landmark.' : selected ? `Place ${escape(landmarks.find((l) => l.id === selected)!.name)} on an empty cell.` : scene.mode === 'walk' ? 'Take a stroll, watch the weather, and make yourself at home.' : 'Select a collected landmark below, then choose a cell.'}</p>${scene.markup()}<div class="ocean" tabindex="0" role="region" aria-label="Interactive island"><div class="camera"><div class="island">${terrain(state, from)}${scene.avatar()}</div><div class="sailboat" aria-hidden="true"><svg viewBox="0 0 90 90"><path d="M5 73q15-4 29 0m10 7q18-4 35 0" fill="none" stroke="#e7eedb" stroke-width="2"/><path d="M13 60q32 7 65-1L65 73H26z" fill="#ad7355" stroke="#655542" stroke-width="2"/><path d="M46 60V7" stroke="#655542" stroke-width="2"/><path d="M42 13Q26 29 20 50l22-3z" fill="#fcf3d8" stroke="#8c8268"/><path d="M50 21l20 29-20 2z" fill="#d9b07d" stroke="#8c8268"/><path d="M47 8l14 3-14 6" fill="#b76550"/></svg></div></div>${scene.layers()}</div>${from !== undefined ? '<div class="tools"><button id="remove">Return to collection</button><button id="cancel">Cancel move</button></div>' : ''}</section>`
@@ -307,6 +320,8 @@ function render() {
       from = undefined;
       render();
     };
+  root.querySelector<HTMLButtonElement>('#backups')!.onclick = () =>
+    void openBackups();
   root.querySelector<HTMLButtonElement>('#refresh')!.onclick = () =>
     void run(() => request('island.read'));
   root.querySelector<HTMLButtonElement>('#draw-ticket')!.onclick = () =>
@@ -317,6 +332,191 @@ function render() {
       void run(() =>
         game.acquire({ workspaceId: crypto.randomUUID(), kind: 'worktree' }),
       );
+}
+// The host save API needs a fresh user gesture: prepare data before enabling Save.
+const backupDialog = document.createElement('dialog');
+backupDialog.className = 'backup-dialog';
+backupDialog.setAttribute('aria-labelledby', 'backup-title');
+document.body.append(backupDialog);
+let backupWorking = false;
+backupDialog.addEventListener('cancel', (event) => {
+  if (backupWorking) event.preventDefault();
+});
+backupDialog.addEventListener('close', () => {
+  backupDialog.replaceChildren();
+  root
+    .querySelector<HTMLButtonElement>('#backups')
+    ?.focus({ preventScroll: true });
+});
+const backupRequest = (previous = false) =>
+  bridge
+    ? bridge.request<string>('island.backup', { previous })
+    : game.exportBackup(previous);
+function saveSummary(s: State) {
+  return `${availableTickets(s).length} unused tickets · ${s.receipts.length} landmarks (${new Set(s.receipts.map((r) => r.landmark)).size} unique) · ${s.placements.length} placed`;
+}
+async function openBackups() {
+  if (busy || backupDialog.open) return;
+  backupDialog.innerHTML = `<button class="backup-close" aria-label="Close backups" autofocus>×</button><h2 id="backup-title">Your island, safely kept</h2><p>Save a file to keep a backup or move your island to another computer. Nothing is uploaded.</p><p class="backup-current"></p><button id="backup-save" disabled>Save backup file</button><hr><label for="backup-file">Choose a backup to restore</label><input id="backup-file" type="file" accept=".json,application/json"><button id="backup-previous">Review pre-restore copy</button><div class="backup-review" hidden><h3>Restore this island?</h3><p class="backup-incoming"></p><p>This replaces all current tickets, landmarks and placements; it does not merge them. Progress after the backup will be lost. A copy of your current save is kept before replacement.</p><label><input id="backup-confirm" type="checkbox"> I want to replace my current island</label><button id="backup-restore" disabled>Replace island</button></div><p class="backup-status" role="status"></p><small>Files contain workspace identifiers, which may include local paths. Keep them private. Maximum file size: 256 KiB. Walking, weather and camera position are not saved.</small>`;
+  backupDialog.showModal();
+  const status = backupDialog.querySelector<HTMLElement>('.backup-status')!;
+  const save = backupDialog.querySelector<HTMLButtonElement>('#backup-save')!;
+  const file = backupDialog.querySelector<HTMLInputElement>('#backup-file')!;
+  const previous =
+    backupDialog.querySelector<HTMLButtonElement>('#backup-previous')!;
+  const confirm =
+    backupDialog.querySelector<HTMLInputElement>('#backup-confirm')!;
+  const restore =
+    backupDialog.querySelector<HTMLButtonElement>('#backup-restore')!;
+  const review = backupDialog.querySelector<HTMLElement>('.backup-review')!;
+  const close = backupDialog.querySelector<HTMLButtonElement>('.backup-close')!;
+  let exportText = '',
+    incomingText = '',
+    expected: State;
+  const tell = (text: string, failed = false) => {
+    status.setAttribute('role', failed ? 'alert' : 'status');
+    status.textContent = text;
+  };
+  const controls = (working: boolean) => {
+    backupWorking = working;
+    close.disabled =
+      file.disabled =
+      previous.disabled =
+      confirm.disabled =
+        working;
+    save.disabled = working || !exportText;
+    restore.disabled = working || !incomingText || !confirm.checked;
+  };
+  const clearReview = () => {
+    incomingText = '';
+    confirm.checked = false;
+    review.hidden = true;
+    restore.disabled = true;
+  };
+  const preview = (text: string) => {
+    const parsed = decodeBackup(text);
+    incomingText = text;
+    backupDialog.querySelector('.backup-incoming')!.textContent =
+      `${saveSummary(parsed.state)} · Exported ${new Date(parsed.exportedAt).toLocaleString()}`;
+    review.hidden = false;
+    tell('Review the backup before replacing your island.');
+  };
+  close.onclick = () => {
+    if (!backupWorking) backupDialog.close();
+  };
+  confirm.onchange = () => controls(false);
+  file.onchange = async () => {
+    clearReview();
+    const chosen = file.files?.[0];
+    if (!chosen) return;
+    controls(true);
+    try {
+      if (chosen.size > MAX_BACKUP_BYTES)
+        throw Error('Choose a backup of at most 256 KiB.');
+      preview(await chosen.text());
+    } catch (e) {
+      tell(String(e), true);
+    } finally {
+      file.value = '';
+      controls(false);
+    }
+  };
+  previous.onclick = async () => {
+    clearReview();
+    controls(true);
+    try {
+      preview(await backupRequest(true));
+    } catch (e) {
+      tell(String(e), true);
+    } finally {
+      controls(false);
+    }
+  };
+  save.onclick = async () => {
+    if (backupWorking || !exportText) return;
+    controls(true);
+    try {
+      const suggestedName = `landmark-island-${new Date().toISOString().slice(0, 10)}.json`;
+      if (frame) {
+        // No asynchronous preparation before this gesture-bound call.
+        const result = await frame.files.saveAs({
+          suggestedName,
+          mimeType: 'application/json',
+          data: exportText,
+        });
+        tell(
+          result.status === 'saved'
+            ? 'Backup file saved.'
+            : 'Save cancelled. Your island is unchanged.',
+        );
+      } else {
+        const url = URL.createObjectURL(
+          new Blob([exportText], { type: 'application/json' }),
+        );
+        const anchor = document.createElement('a');
+        anchor.href = url;
+        anchor.download = suggestedName;
+        document.body.append(anchor);
+        anchor.click();
+        anchor.remove();
+        setTimeout(() => URL.revokeObjectURL(url), 1000);
+        tell('Backup download started.');
+      }
+    } catch (e) {
+      tell(`Could not save the backup: ${String(e)}`, true);
+    } finally {
+      controls(false);
+    }
+  };
+  restore.onclick = async () => {
+    if (backupWorking || !incomingText || !confirm.checked) return;
+    controls(true);
+    busy = true;
+    try {
+      const input = { text: incomingText, expected };
+      state = bridge
+        ? await bridge.request('island.restore', input)
+        : await game.restore(input);
+      loaded = true;
+      pendingTicket = undefined;
+      selected = '';
+      from = undefined;
+      error = '';
+      message = 'Island restored from backup.';
+      clearReview();
+      exportText = await backupRequest();
+      expected = decodeBackup(exportText).state;
+      backupDialog.querySelector('.backup-current')!.textContent =
+        `Current snapshot: ${saveSummary(expected)}`;
+      tell('Island restored. The pre-restore copy is available above.');
+    } catch (e) {
+      // The host may have committed before a response failed: do not claim it did not.
+      clearReview();
+      exportText = '';
+      tell(
+        `${String(e)} Close Backups and refresh to check the saved island before retrying.`,
+        true,
+      );
+    } finally {
+      busy = false;
+      controls(false);
+      render();
+    }
+  };
+  controls(true);
+  try {
+    exportText = await backupRequest();
+    expected = decodeBackup(exportText).state;
+    backupDialog.querySelector('.backup-current')!.textContent =
+      `Current snapshot: ${saveSummary(expected)}. Reopen Backups to refresh this snapshot.`;
+    tell('Ready to save a backup file.');
+  } catch (e) {
+    tell(String(e), true);
+  } finally {
+    controls(false);
+    // Never allow a restore without a successfully read current snapshot.
+    if (!exportText) file.disabled = previous.disabled = true;
+  }
 }
 function renderRevealPreview() {
   document.title = 'Landmark Island · Reveal Preview';

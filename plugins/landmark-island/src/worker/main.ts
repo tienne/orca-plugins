@@ -24,6 +24,18 @@ export default function activate(orca: Worker) {
       write: async (value: State) => {
         await orca.host.call('storage.set', { key: 'island-v1', value });
       },
+      readBackup: async () =>
+        (
+          await orca.host.call('storage.get', {
+            key: 'island-before-restore-v1',
+          })
+        ).value,
+      writeBackup: async (value: State) => {
+        await orca.host.call('storage.set', {
+          key: 'island-before-restore-v1',
+          value,
+        });
+      },
     },
     () => randomInt(0, 2 ** 32) / 2 ** 32,
   );
@@ -39,6 +51,16 @@ export default function activate(orca: Worker) {
     await notify();
   });
   orca.panels.handle('island.read', () => game.snapshot());
+  orca.panels.handle('island.backup', (input) =>
+    game.exportBackup(
+      (input as { previous?: unknown } | null)?.previous === true,
+    ),
+  );
+  orca.panels.handle('island.restore', async (input) => {
+    const state = await game.restore(input);
+    await notify();
+    return state;
+  });
   orca.panels.handle('island.draw', async (input) => {
     const state = await game.redeem(input);
     await notify();

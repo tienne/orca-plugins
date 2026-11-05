@@ -1116,3 +1116,61 @@ a:focus-visible,
   ) !important;
   box-shadow: inset 0 0 0 2px var(--orca-ring, #fff1ad);
 }
+
+.backup-dialog {
+  box-sizing: border-box;
+  width: min(560px, calc(100vw - 28px));
+  max-height: calc(100dvh - 28px);
+  overflow: auto;
+  padding: 24px;
+  background: var(--orca-popover, var(--panel));
+  color: var(--orca-popover-foreground, var(--ink));
+  border: 1px solid var(--orca-border, var(--line));
+  border-radius: var(--orca-radius, 12px);
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+}
+.backup-dialog::backdrop {
+  background: #0008;
+}
+.backup-dialog h2 {
+  margin: 0 35px 12px 0;
+}
+.backup-dialog button {
+  margin: 8px 0;
+}
+.backup-dialog .backup-close {
+  float: right;
+  margin: 0;
+}
+.backup-dialog input[type='file'] {
+  display: block;
+  max-width: 100%;
+  margin: 12px 0;
+}
+.backup-dialog input[type='checkbox'] {
+  accent-color: var(--orca-primary, var(--ink));
+}
+.backup-dialog hr {
+  border: 0;
+  border-top: 1px solid var(--orca-border, var(--line));
+  margin: 20px 0;
+}
+.backup-dialog small {
+  display: block;
+  color: var(--orca-muted-foreground, var(--muted));
+}
+.backup-dialog :focus-visible {
+  outline: 2px solid var(--orca-ring, var(--ink));
+  outline-offset: 3px;
+}
+.backup-dialog [role='alert'] {
+  color: var(--orca-destructive, #b54232);
+}
+.backup-review {
+  border-top: 1px solid var(--orca-border, var(--line));
+  margin-top: 16px;
+}
+.backup-review label {
+  display: block;
+}
