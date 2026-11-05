@@ -9,6 +9,7 @@ try {
   await build({
     entryPoints: [
       'plugins/landmark-island/src/game.ts',
+      'plugins/landmark-island/src/walk.ts',
       'plugins/landmark-island/src/worker/main.ts',
     ],
     outdir: dir,
@@ -21,6 +22,13 @@ try {
   const { Game, draw, validate } = await import(
     pathToFileURL(join(dir, 'game.mjs'))
   );
+  const { route } = await import(pathToFileURL(join(dir, 'walk.mjs')));
+  assert.deepEqual(route(0, 2, new Set([1])), [6, 7, 8, 2]);
+  assert.deepEqual(route(0, 35, new Set([1, 6])), []);
+  assert.deepEqual(route(5, 6, new Set()), [11, 10, 9, 8, 7, 6]);
+  assert.deepEqual(route(0, 1, new Set([1])), []);
+  assert.deepEqual(route(-1, 0, new Set()), []);
+  assert.deepEqual(route(0, 0, new Set()), []);
   let value = null,
     writes = 0,
     fail = false;

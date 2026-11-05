@@ -6,11 +6,19 @@ An unpublished Orca plugin prototype. New worktree creation is an expedition: co
 
 ## Play
 
-Open the Landmark Island panel. Select an owned landmark and an empty cell to place it. Select a placed landmark, then an empty cell to move it, or **Return to collection** to remove it. Copies use owned quantities. **World Map** shows real geographic locations and unique country totals, regardless of island placements. Refresh reads the save without awarding anything.
+Open the Landmark Island panel. In **Explore island**, click grass to walk around buildings, or focus the island and use Arrow keys / WASD. On-screen direction buttons also work. Drag the scene to pan; use + / −, Ctrl/Cmd + wheel, or a two-finger pinch to zoom (70–200%). Reset camera restores the starting view.
+
+**Arrange landmarks** switches to editing. Selecting a collection card also enters this mode. Select an owned landmark and an empty cell to place it. Select a placed landmark, then an empty cell to move it, or **Return to collection** to remove it. Copies use owned quantities. **World Map** shows real geographic locations and unique country totals, regardless of island placements. Refresh reads the save without awarding anything.
 
 There are 12 landmarks: 6 common, 3 rare, 2 epic and 1 legendary. Each draw first chooses a tier with 70/23/6/1 percent probabilities, then uniformly selects a landmark in that tier. Owned items always remain eligible; duplicates increase quantity. There is no pity, currency, purchase, or completion guarantee. Original miniature vector art is bundled locally.
 
 Only `workspace.created` with `kind: worktree` awards a reward. Folder creation, chats, refreshes, workspace switching and app launch do not. A single worker queue serializes receipts and placements. The schema-versioned save records one receipt per workspace ID, so repeated delivery and worker restarts do not award twice. Saved rewards survive worktree removal. No paths from events are accessed, and no Git operations occur.
+
+## A living island
+
+The local scene includes a walking explorer, trees, flowers, a sandy shoreline, drifting clouds and a bobbing boat. **Weather** offers Sunny, Cloudy, Rain and Snow. Auto cycles weather every 30 seconds and advances Day → Sunset → Night → Dawn every 60 seconds while the panel is visible. Select a manual weather option to stop automatic weather/time progression; the time-of-day button works in either mode. This is fictional weather, without location access, a forecast service, or runtime network calls.
+
+Walking, camera and climate are session-only visual state: reopening/reloading resets them, while inventory and landmark layout remain saved. Walking never awards items or changes placements. Buildings block routes; a completely filled island has no walking space until a building is returned. Decorative plants are passable. Pan/zoom is limited and can be reset. Background panels pause climate advancement. Reduced-motion preferences disable ambient animation and movement transitions. There is no sound.
 
 ## Local preview and verification
 
@@ -42,7 +50,7 @@ Deferred: decoration economy, expansion, cloud sync, trading, localization and a
 
 - `pnpm nx run landmark-island:typecheck`: passed.
 - `pnpm nx run landmark-island:test`: passed the worker/state assertions above.
-- `pnpm nx run landmark-island:ui-test --output-style=static`: 4 browser tests passed, including all cell bounds inside the mobile ocean; screenshots inspected under `test-results/landmark-island/`.
+- `pnpm nx run landmark-island:ui-test --output-style=static`: 6 browser tests passed, including walking around buildings, keyboard controls, camera pan/zoom/reset, automatic/manual climate, reduced motion, ownership isolation and all cell bounds inside the mobile ocean; screenshots inspected under `test-results/landmark-island/`.
 - `pnpm nx run git-logs:build --skipNxCache --output-style=static`: passed with the shared builder; Git Logs source is unchanged. Its typecheck passed and its worker/artifact suite passed 49 tests.
 - Git Logs UI regression run was attempted but its server timed out: port 4173 is occupied by an older preview in another worktree returning HTTP 404. That process was not stopped or changed.
 - `pnpm validate`: both packaged manifests passed the installed Orca validator. `orca plugin inspect dist/plugins/landmark-island --json` reports valid and `needsApproval: true`.

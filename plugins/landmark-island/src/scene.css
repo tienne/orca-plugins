@@ -1,0 +1,543 @@
+/* All island motion and weather are local visual simulation. */
+.scene-controls {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 14px;
+  margin: 18px 0 12px;
+  font-size: 12px;
+}
+.mode-controls,
+.climate-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.climate-controls label {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+.climate-controls select {
+  font: inherit;
+  color: inherit;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 9px;
+  padding: 10px;
+  max-width: 190px;
+}
+.ocean {
+  position: relative;
+  isolation: isolate;
+  min-height: 530px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 100px 20px 110px;
+  background: radial-gradient(
+    ellipse at 50% 55%,
+    #72c7b5 0%,
+    #3d9cab 42%,
+    #206b88 100%
+  );
+  touch-action: none;
+  outline-offset: 3px;
+  transition: background 2s;
+  cursor: grab;
+  border: 1px solid #8ac8c350;
+}
+.ocean:active {
+  cursor: grabbing;
+}
+.ocean:focus-visible {
+  outline: 2px solid var(--accent);
+}
+.camera {
+  width: 100%;
+  position: relative;
+  transform-origin: 50% 50%;
+  will-change: transform;
+  z-index: 3;
+  flex-shrink: 0;
+}
+.island {
+  width: 58%;
+  filter: none;
+  gap: 0;
+  isolation: isolate;
+  transition: filter 2s;
+}
+.island::before {
+  content: '';
+  position: absolute;
+  inset: -12px;
+  background: #dfc791;
+  border-radius: 16px;
+  z-index: -1;
+  box-shadow:
+    -2px 7px 0 #c9ad76,
+    -8px 16px 0 #b99a63,
+    -12px 22px 0 #388f9360,
+    0 0 0 10px #b6e5cc60,
+    0 0 0 17px #c6f2de28;
+  animation: shore 5s ease-in-out infinite;
+}
+.cell {
+  border: 1px solid #a8c88035;
+  border-radius: 2px;
+  background: #8cb56d;
+  overflow: visible;
+}
+.cell:nth-child(3n) {
+  background: #92ba72;
+}
+.cell:nth-child(5n) {
+  background: #85ae68;
+}
+.cell:nth-child(7n) {
+  background: #9bc17a;
+}
+.cell > span {
+  visibility: hidden;
+}
+.ocean[data-mode='build'] .cell {
+  border: 1px dashed #d9e6aa80;
+}
+.ocean[data-mode='build'] .cell > span {
+  visibility: visible;
+}
+.cell:hover:not(:disabled) {
+  background: #b3cf89;
+  outline: 2px solid #f3e4ab;
+  z-index: 5;
+}
+.cell.occupied {
+  z-index: 4;
+}
+.cell > svg {
+  height: 125%;
+  bottom: 8%;
+  color: #f9db9e;
+}
+.cell .scenery {
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  display: block;
+}
+.cell .tree svg {
+  height: 110%;
+  width: 110%;
+  bottom: 2%;
+  left: -5%;
+  color: inherit;
+}
+.cell .flowers {
+  font-style: normal;
+  font-size: 14px;
+  color: #f6df9f;
+  transform: skew(-12deg) rotate(25deg);
+  opacity: 0.8;
+  display: grid;
+  place-items: center;
+}
+.walker {
+  pointer-events: none;
+  position: absolute;
+  width: 9%;
+  aspect-ratio: 2/3;
+  z-index: 12;
+  transform: translate(-50%, -85%) skew(-12deg) rotate(25deg);
+  transition:
+    left 0.18s linear,
+    top 0.18s linear;
+  filter: drop-shadow(0 2px 1px #284b4550);
+}
+.walker[hidden] {
+  display: none;
+}
+.walker svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+.walker.walking .walker-body {
+  animation: stride 0.18s ease-in-out infinite alternate;
+  transform-origin: 50% 90%;
+}
+.walker.walking .left-leg {
+  animation: leg 0.18s linear infinite alternate;
+  transform-origin: 15px 40px;
+}
+.walker.walking .right-leg {
+  animation: leg 0.18s linear infinite alternate-reverse;
+  transform-origin: 25px 40px;
+}
+.sailboat {
+  position: absolute;
+  left: 13%;
+  bottom: -60px;
+  font-size: 36px;
+  filter: drop-shadow(0 4px 0 #b0f5e933);
+  animation: bob 4s ease-in-out infinite;
+}
+.atmosphere {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 8;
+  overflow: hidden;
+  border-radius: inherit;
+}
+.sun-moon {
+  position: absolute;
+  right: 11%;
+  top: 45px;
+  width: 38px;
+  height: 38px;
+  background: #fff0b0;
+  border-radius: 50%;
+  box-shadow: 0 0 40px #ffe6a580;
+  transition: all 2s;
+}
+.cloud {
+  position: absolute;
+  left: -20%;
+  top: 70px;
+  width: 100px;
+  height: 25px;
+  background: #f3fff0bc;
+  border-radius: 50px;
+  filter: blur(1px);
+  animation: drift 48s linear infinite;
+  opacity: 0.7;
+}
+.cloud:before,
+.cloud:after {
+  content: '';
+  position: absolute;
+  background: inherit;
+  border-radius: 50%;
+  width: 45px;
+  height: 45px;
+  bottom: 6px;
+  left: 15px;
+}
+.cloud:after {
+  width: 55px;
+  height: 55px;
+  left: 43px;
+  bottom: 0;
+}
+.cloud-two {
+  top: 120px;
+  animation-delay: -17s;
+  animation-duration: 65s;
+  transform: scale(0.7);
+}
+.cloud-three {
+  top: 45px;
+  animation-delay: -37s;
+  animation-duration: 80s;
+  transform: scale(1.25);
+}
+.birds {
+  position: absolute;
+  top: 35%;
+  left: 30%;
+  font-size: 25px;
+  letter-spacing: 7px;
+  color: #ecf5d9;
+  animation: drift 38s linear infinite;
+  opacity: 0.8;
+}
+.stars {
+  position: absolute;
+  inset: 35px 20%;
+  font-size: 25px;
+  line-height: 2;
+  color: #f6edc6;
+  opacity: 0;
+  transition: opacity 2s;
+}
+.precipitation {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 1s;
+}
+.precipitation i {
+  position: absolute;
+  top: -20px;
+  left: var(--x);
+  height: 18px;
+  width: 1.5px;
+  background: #deeff7a8;
+  border-radius: 4px;
+  animation: rain var(--speed) var(--delay) linear infinite;
+  animation-play-state: paused;
+}
+.ocean[data-weather='rain'] .precipitation,
+.ocean[data-weather='snow'] .precipitation {
+  opacity: 1;
+}
+.ocean[data-weather='rain'] .precipitation i,
+.ocean[data-weather='snow'] .precipitation i {
+  animation-play-state: running;
+}
+.ocean[data-weather='snow'] .precipitation i {
+  height: 5px;
+  width: 5px;
+  background: #ffffffe0;
+  animation-name: snow;
+  animation-duration: calc(var(--speed) * 4);
+}
+.ocean[data-weather='snow'] .cell {
+  background: #bbd6be;
+}
+.ocean[data-weather='cloudy'] .cloud,
+.ocean[data-weather='rain'] .cloud,
+.ocean[data-weather='snow'] .cloud {
+  opacity: 1;
+  background: #dbe5e7e0;
+}
+.ocean[data-weather='rain'] {
+  background: radial-gradient(ellipse at center, #639c9c, #345b75);
+}
+.ocean[data-weather='rain'] .sun-moon,
+.ocean[data-weather='cloudy'] .sun-moon {
+  opacity: 0.25;
+}
+.ocean[data-phase='sunset'] {
+  background: radial-gradient(
+    ellipse at 65% 10%,
+    #dca69b,
+    #6b8e9d 45%,
+    #385d78
+  );
+}
+.ocean[data-phase='dawn'] {
+  background: radial-gradient(
+    ellipse at 70% 10%,
+    #eac3a0,
+    #7fb8ba 45%,
+    #438b9d
+  );
+}
+.ocean[data-phase='night'] {
+  background: radial-gradient(ellipse at center, #284b68, #14283f);
+}
+.ocean[data-phase='night'] .island {
+  filter: brightness(0.7) saturate(0.75);
+}
+.ocean[data-phase='night'] .sun-moon {
+  background: #e8eed8;
+  box-shadow: 0 0 35px #b5e0f250;
+  opacity: 1;
+  width: 29px;
+  height: 29px;
+}
+.ocean[data-phase='night'] .stars {
+  opacity: 0.9;
+}
+.ocean[data-phase='night'] .cloud {
+  opacity: 0.25;
+}
+.ocean[data-phase='night'] .birds {
+  opacity: 0;
+}
+.scene-hud {
+  position: absolute;
+  left: 20px;
+  right: 20px;
+  top: 18px;
+  z-index: 10;
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  pointer-events: none;
+  color: #f2f7dc;
+}
+.forecast {
+  font-size: 12px;
+  padding: 8px 12px;
+  background: #123b4f85;
+  backdrop-filter: blur(8px);
+  border: 1px solid #f6ffe630;
+  border-radius: 20px;
+}
+.scene-location {
+  font-size: 9px;
+  letter-spacing: 2px;
+  align-self: center;
+  text-shadow: 0 1px 4px #163b4b;
+}
+.camera-controls {
+  position: absolute;
+  right: 16px;
+  bottom: 50px;
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  z-index: 15;
+  background: #123b4fc9;
+  border-radius: 12px;
+  padding: 4px;
+  color: #f1f4df;
+}
+.camera-controls button,
+.walk-controls button {
+  background: #235367;
+  color: #edf4dc;
+  border: 1px solid #d3e6d640;
+  padding: 6px 10px;
+  font-size: 14px;
+  border-radius: 7px;
+  min-height: 33px;
+  min-width: 33px;
+}
+.camera-controls #zoom-value {
+  font-size: 11px;
+  width: 38px;
+  text-align: center;
+}
+.walk-controls {
+  position: absolute;
+  bottom: 50px;
+  left: 16px;
+  z-index: 15;
+  display: grid;
+  grid-template-columns: repeat(3, 33px);
+  gap: 3px;
+}
+.walk-controls button:first-child {
+  grid-column: 2;
+}
+.walk-controls button:nth-child(2) {
+  grid-column: 1;
+}
+.ocean[data-mode='build'] .walk-controls {
+  display: none;
+}
+.walk-hint {
+  position: absolute;
+  bottom: 10px;
+  left: 14px;
+  right: 14px;
+  margin: 0;
+  text-align: center;
+  font-size: 10px;
+  line-height: 1.4;
+  color: #edf6e0;
+  z-index: 10;
+  pointer-events: none;
+  text-shadow: 0 1px 3px #16384b;
+}
+@keyframes drift {
+  from {
+    translate: 0 0;
+  }
+  to {
+    translate: 1200px 0;
+  }
+}
+@keyframes shore {
+  50% {
+    box-shadow:
+      -2px 7px 0 #c9ad76,
+      -8px 16px 0 #b99a63,
+      -12px 22px 0 #388f9360,
+      0 0 0 13px #b6e5cc40,
+      0 0 0 25px #c6f2de10;
+  }
+}
+@keyframes bob {
+  50% {
+    translate: 0 -6px;
+    rotate: 4deg;
+  }
+}
+@keyframes stride {
+  to {
+    translate: 0 -2px;
+  }
+}
+@keyframes leg {
+  to {
+    rotate: 16deg;
+  }
+}
+@keyframes rain {
+  to {
+    translate: -90px 650px;
+  }
+}
+@keyframes snow {
+  50% {
+    transform: translateX(12px);
+  }
+  to {
+    translate: -30px 650px;
+  }
+}
+@media (max-width: 600px) {
+  .ocean {
+    min-height: 410px;
+    padding: 95px 10px 120px;
+  }
+  .scene-location {
+    display: none;
+  }
+  .scene-controls {
+    gap: 10px;
+  }
+  .scene-controls button,
+  .climate-controls select {
+    padding: 9px;
+    font-size: 11px;
+  }
+  .island {
+    width: 55%;
+  }
+  .island::before {
+    inset: -8px;
+  }
+  .sailboat {
+    font-size: 27px;
+    bottom: -45px;
+  }
+  .camera-controls {
+    right: 10px;
+  }
+  .walk-controls {
+    left: 10px;
+  }
+  .walker {
+    width: 11%;
+  }
+  .walk-hint {
+    font-size: 9px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ocean *,
+  .ocean *::before,
+  .ocean *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+  .precipitation i {
+    top: calc(var(--x) * 0.7);
+  }
+  .cloud-one {
+    left: 10%;
+  }
+  .cloud-two {
+    left: 60%;
+  }
+  .cloud-three {
+    left: 35%;
+  }
+}
