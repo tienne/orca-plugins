@@ -6,7 +6,7 @@
 
 ## 플레이
 
-Landmark Island 패널의 **Explore island**에서 땅을 누르면 건물을 피해 걸어갑니다. 섬 화면에 포커스를 두고 방향키/WASD를 누르거나 화면의 방향 버튼으로도 이동합니다. 카메라가 탐험가를 따라갑니다. 화면을 드래그하면 자유롭게 이동하고 + / − 버튼·Ctrl/Cmd + 휠·두 손가락 핀치로 12~180% 확대/축소할 수 있습니다. 미니맵의 **Whole island**로 섬 전체를 보고 **Follow explorer**로 캐릭터를 다시 따라갑니다. 초기화 버튼은 100% 배율과 추적을 복원합니다.
+Landmark Island 패널의 **Explore island**에서 땅을 누르면 건물을 피해 걸어갑니다. 섬 화면에 포커스를 두고 방향키/WASD를 누르거나 화면의 방향 버튼으로도 이동합니다. 카메라가 탐험가를 따라갑니다. 화면을 드래그하면 자유롭게 이동합니다. 맵 위에 커서를 올리고 스크롤하면 클릭·포커스·보조키 없이 커서 위치를 기준으로 12~180% 확대/축소합니다. 맵 밖에서는 페이지가 스크롤됩니다. 휠 확대/축소는 키보드 포커스를 가져오지 않고 자유 카메라로 전환하며 **Follow explorer**로 추적을 재개할 수 있습니다. + / − 버튼과 두 손가락 핀치도 사용할 수 있습니다. 미니맵의 **Whole island**로 섬 전체를 보고 **Follow explorer**로 캐릭터를 다시 따라갑니다. 초기화 버튼은 100% 배율과 추적을 복원합니다.
 
 **Arrange landmarks**는 배치 모드입니다. 수집 카드를 선택해도 이 모드로 전환됩니다. 보유 랜드마크와 빈 칸을 선택해 배치합니다. 건물을 선택하고 빈 칸을 누르면 이동하며, **Return to collection**으로 배치를 해제합니다. 보유 수량만큼 배치할 수 있고 해제해도 소유권은 유지됩니다. **World Map**은 섬 배치와 무관하게 실제 위치와 국가별 고유 수집 수를 표시합니다. Refresh는 저장 데이터를 읽기만 합니다. 프로토타입 UI는 영어입니다.
 
@@ -56,7 +56,7 @@ http://127.0.0.1:43187 에서 **DEMO** 표시와 **Demo expedition** 버튼으�
 
 - `pnpm nx run landmark-island:typecheck`: 통과.
 - `pnpm nx run landmark-island:test`: 위 워커/상태 검증과 기존 셀 ID 보존, 물/경계 거부, 확장 구역 저장, 지형 장애물을 피해 모든 빈 땅에 도달할 수 있는지 검증 통과.
-- `pnpm nx run landmark-island:ui-test --output-style=static`: 브라우저 테스트 7개 통과. 건물 우회 산책, 깊이 순서, 키보드 이동, 카메라 추적/이동/확대/초기화, 모바일 전체 보기, 자동/수동 날씨, 동작 줄이기, 보유 수량 불변성과 기존/확장 구역의 배치 저장을 확인했고 `test-results/landmark-island/` 스크린샷을 직접 검사했습니다.
+- `pnpm nx run landmark-island:ui-test --output-style=static`: 브라우저 테스트 8개 통과. 포커스 없는 커서 기준 휠 확대/축소와 맵 밖 페이지 스크롤, 건물 우회 산책, 깊이 순서, 키보드 이동, 카메라 추적/이동/확대/초기화, 모바일 전체 보기, 자동/수동 날씨, 동작 줄이기, 보유 수량 불변성과 기존/확장 구역의 배치 저장을 확인했고 `test-results/landmark-island/` 스크린샷을 직접 검사했습니다.
 - `pnpm nx run git-logs:build --skipNxCache --output-style=static`: 공유 빌더로 통과. Git Logs 소스는 변경하지 않았으며 타입 검사와 워커/산출물 테스트 49개도 통과했습니다.
 - Git Logs UI 회귀 테스트는 서버 시작 시간 초과로 완료하지 못했습니다. 다른 워크트리의 기존 preview가 4173 포트를 점유하고 HTTP 404를 반환하고 있었습니다. 해당 프로세스는 중단하거나 변경하지 않았습니다.
 - `pnpm validate`: 두 패키지 모두 설치된 Orca 검증기 통과. `orca plugin inspect dist/plugins/landmark-island --json`은 valid 및 `needsApproval: true`를 반환했습니다.

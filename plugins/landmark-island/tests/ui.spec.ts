@@ -151,6 +151,7 @@ test('walk, camera and weather are independent from collection ownership', async
   await expect(page.locator('#zoom-value')).toHaveText('115%');
   const camera = page.locator('.camera');
   const before = await camera.getAttribute('style');
+  await ocean.scrollIntoViewIfNeeded();
   const box = (await ocean.boundingBox())!;
   await page.mouse.move(box.x + 30, box.y + 180);
   await page.mouse.down();
@@ -271,4 +272,71 @@ test('expanded land keeps old cell addresses and persists new placements', async
   });
   await page.getByRole('button', { name: 'Follow explorer' }).click();
   await expect(page.locator('.ocean')).toHaveAttribute('data-follow', 'true');
+});
+
+test('hover wheel zoom needs no focus or modifier, anchors the pointer and leaves outside scrolling alone', async ({
+  page,
+}) => {
+  await page.goto('/');
+  const ocean = page.locator('.ocean');
+  await page.getByLabel('Weather', { exact: true }).focus();
+  await ocean.scrollIntoViewIfNeeded();
+  await ocean.scrollIntoViewIfNeeded();
+  const box = (await ocean.boundingBox())!;
+  const point = { x: box.x + box.width * 0.35, y: box.y + box.height * 0.48 };
+  const sample = () =>
+    page.evaluate(({ x, y }) => {
+      const ocean = document.querySelector<HTMLElement>('.ocean')!,
+        rect = ocean.getBoundingClientRect();
+      const m = new DOMMatrixReadOnly(
+        getComputedStyle(document.querySelector('.camera')!).transform,
+      );
+      return {
+        zoom: m.a,
+        x: (x - rect.left - ocean.clientLeft - m.e) / m.a,
+        y: (y - rect.top - ocean.clientTop - m.f) / m.d,
+        scroll: window.scrollY,
+      };
+    }, point);
+  await page.mouse.move(point.x, point.y);
+  await expect
+    .poll(() =>
+      page
+        .locator('.camera')
+        .evaluate(
+          (el) =>
+            el.getAnimations().filter((a) => a.playState === 'running').length,
+        ),
+    )
+    .toBe(0);
+  const before = await sample();
+  await page.mouse.wheel(0, -120);
+  await expect
+    .poll(async () => (await sample()).zoom)
+    .toBeGreaterThan(before.zoom);
+  const after = await sample();
+  expect(Math.abs(after.x - before.x)).toBeLessThan(1);
+  expect(Math.abs(after.y - before.y)).toBeLessThan(1);
+  expect(after.scroll).toBe(before.scroll);
+  await expect(page.getByLabel('Weather', { exact: true })).toBeFocused();
+  await expect(ocean).toHaveAttribute('data-follow', 'false');
+  await page.mouse.wheel(0, 120);
+  await expect
+    .poll(async () => (await sample()).zoom)
+    .toBeCloseTo(before.zoom, 2);
+  await page.mouse.wheel(0, -10000);
+  await expect(page.locator('#zoom-value')).toHaveText('180%');
+  await page.mouse.wheel(0, 10000);
+  await expect(page.locator('#zoom-value')).toHaveText('12%');
+  await page.mouse.wheel(0, 120);
+  await expect(page.locator('#zoom-value')).toHaveText('12%');
+  expect((await sample()).scroll).toBe(before.scroll);
+  await page.mouse.move(5, 100);
+  await page.mouse.wheel(0, 200);
+  await expect
+    .poll(() => page.evaluate(() => window.scrollY))
+    .toBeGreaterThan(before.scroll);
+  await expect(page.locator('#zoom-value')).toHaveText('12%');
+  await page.getByRole('button', { name: 'Follow explorer' }).click();
+  await expect(ocean).toHaveAttribute('data-follow', 'true');
 });

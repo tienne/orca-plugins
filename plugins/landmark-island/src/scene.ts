@@ -51,6 +51,7 @@ export class IslandScene {
     let stepTimer: ReturnType<typeof setTimeout> | undefined,
       ticks = 0;
     let walking = false;
+    let wheelTimer: ReturnType<typeof setTimeout> | undefined;
     if (this.cell < 0 || blocked.has(this.cell))
       this.cell = landTiles.find((t) => !blocked.has(t.id))?.id ?? -1;
     const updateCamera = () => {
@@ -120,7 +121,7 @@ export class IslandScene {
         if (cell === undefined) {
           finish();
           hint.textContent =
-            'Click the grass to stroll · Arrow keys / WASD · Drag to look around';
+            'Click the grass to stroll · Arrow keys / WASD · Drag to pan · Scroll to zoom';
           return;
         }
         this.cell = cell;
@@ -134,8 +135,8 @@ export class IslandScene {
       this.cell < 0
         ? 'Island full — return a landmark to make room to walk.'
         : this.mode === 'walk'
-          ? 'Click the grass to stroll · Arrow keys / WASD · Drag to look around'
-          : 'Select a landmark, then a cell · Drag to look around';
+          ? 'Click the grass to stroll · Arrow keys / WASD · Drag to pan · Scroll to zoom'
+          : 'Select a landmark, then a cell · Drag to pan · Scroll to zoom';
     position();
     updateCamera();
     climate();
@@ -327,10 +328,35 @@ export class IslandScene {
     ocean.addEventListener(
       'wheel',
       (e) => {
-        if (!e.ctrlKey && !e.metaKey) return;
+        if (e.deltaY === 0) return;
         e.preventDefault();
-        this.zoom -= e.deltaY * 0.002;
+        // Anchor the rendered world point under the pointer, even mid-transition.
+        // Wheel input deliberately leaves keyboard focus where the user put it.
+        const rect = ocean.getBoundingClientRect();
+        const px = e.clientX - rect.left - ocean.clientLeft;
+        const py = e.clientY - rect.top - ocean.clientTop;
+        const matrix = new DOMMatrixReadOnly(
+          getComputedStyle(camera).transform,
+        );
+        const worldX = (px - matrix.e) / matrix.a;
+        const worldY = (py - matrix.f) / matrix.d;
+        const unit =
+          e.deltaMode === 1 ? 16 : e.deltaMode === 2 ? ocean.clientHeight : 1;
+        this.zoom = Math.max(
+          0.12,
+          Math.min(1.8, matrix.a * Math.exp(-e.deltaY * unit * 0.0015)),
+        );
+        this.follow = false;
+        this.focusX = worldX + (ocean.clientWidth / 2 - px) / this.zoom;
+        this.focusY = worldY + (ocean.clientHeight / 2 - py) / this.zoom;
+        this.x = this.y = 0;
+        camera.style.transition = 'none';
         updateCamera();
+        clearTimeout(wheelTimer);
+        wheelTimer = setTimeout(
+          () => camera.style.removeProperty('transition'),
+          150,
+        );
       },
       { passive: false, signal },
     );
@@ -354,6 +380,7 @@ export class IslandScene {
       controller.abort();
       clearTimeout(stepTimer);
       clearInterval(auto);
+      clearTimeout(wheelTimer);
       resize.disconnect();
     };
   }
