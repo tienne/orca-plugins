@@ -1,12 +1,12 @@
-/* A locally drawn picture-book scene; no remote fonts or image requests. */
+/* A locally drawn woodland-adventure scene; no remote fonts or image requests. */
 :root,
 html.light {
   color-scheme: light;
   --ink: #514c3c;
-  --paper: #f3eedc;
+  --paper: #ecebd7;
   --panel: #faf6e8;
   --line: #c9c2a8;
-  --accent: #8d5a43;
+  --accent: #426e4d;
   color: var(--ink);
   background: var(--paper);
   font-family: 'Avenir Next', 'Trebuchet MS', sans-serif;
@@ -168,13 +168,13 @@ h2 small {
   padding: 8px;
 }
 .ocean {
-  border: 1px solid #9fae98;
+  border: 1px solid #6a8764;
   border-radius: 48% 2% 2% 1% / 1% 1% 2% 2%;
   background: radial-gradient(
     ellipse at 50% 55%,
-    #b8d0b6,
-    #97bdb3 65%,
-    #87aca8
+    #a4d3ae,
+    #68aa9b 65%,
+    #488e8a
   );
   box-shadow:
     0 0 0 5px var(--paper),
@@ -194,7 +194,7 @@ h2 small {
 }
 .ocean::after {
   z-index: 9;
-  opacity: 0.13;
+  opacity: 0.07;
   mix-blend-mode: multiply;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.78' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Cpath fill='%23887c59' filter='url(%23n)' opacity='.5' d='M0 0h180v180H0z'/%3E%3C/svg%3E");
 }
@@ -266,12 +266,12 @@ h2 small {
   background: #f7f4dfad;
 }
 .scene-hud {
-  color: #4c5946;
+  color: #f4edc8;
 }
 .forecast {
   border-radius: 2px 8px 3px 5px;
-  background: #f5efdadf;
-  border: 1px solid #a6af92;
+  background: #243f35e8;
+  border: 1px solid #b6b681;
   backdrop-filter: none;
   font:
     italic 12px Georgia,
@@ -285,48 +285,48 @@ h2 small {
   text-transform: none;
   letter-spacing: 0;
   text-shadow: none;
-  color: #465642;
-  background: #f5efdadf;
+  color: #f4edc8;
+  background: #243f35e8;
   padding: 6px 9px;
   border-radius: 2px;
 }
 .minimap {
-  background: #f1ecd5;
-  border: 1px solid #a6a489;
+  background: #284b3c;
+  border: 1px solid #c6bc7c;
   border-radius: 2px 8px 3px 4px;
   backdrop-filter: none;
   box-shadow: 2px 3px 0 #586e4d22;
-  transform: rotate(2deg);
+  transform: none;
 }
 .minimap svg {
-  background: #a1beb2;
+  background: #70aa94;
   border-radius: 1px;
 }
 .minimap span {
-  color: #565c47;
+  color: #f1e6b4;
   font:
     italic 10px Georgia,
     serif;
 }
 .camera-controls {
-  background: #f3eedbe8;
-  border: 1px solid #b0b49a;
+  background: #254637ed;
+  border: 1px solid #b5ae74;
   border-radius: 3px 6px 4px 2px;
-  color: #4e5945;
+  color: #f3e9b9;
 }
 .camera-controls button,
 .walk-controls button {
-  background: #f3efd9;
-  border-color: #a6ac8f;
-  color: #4f5a45;
+  background: #385c42;
+  border-color: #9f9f6c;
+  color: #f3eac6;
   border-radius: 3px 6px 4px 2px;
 }
 .camera-controls button[aria-pressed='true'] {
-  background: #ced8af;
+  background: #697e45;
 }
 .walk-hint {
-  color: #3f503d;
-  background: #f3efdbe8;
+  color: #f1e9ca;
+  background: #244738e8;
   text-shadow: none;
   border-radius: 2px;
   padding: 5px 8px;
@@ -417,6 +417,102 @@ h2 small {
 }
 footer {
   opacity: 0.85;
+}
+/* Ambient layers share the scene's reduced-motion and weather controls. */
+.sunbeams {
+  position: absolute;
+  inset: -20%;
+  background: linear-gradient(
+    118deg,
+    transparent 30%,
+    #fff5b429 35%,
+    transparent 40%,
+    transparent 52%,
+    #fff4b51c 55%,
+    transparent 60%
+  );
+  mix-blend-mode: screen;
+  opacity: 0.7;
+  transition: opacity 2s;
+  animation: canopy-light 18s ease-in-out infinite alternate;
+}
+.ocean[data-phase='night'] .sunbeams,
+.ocean[data-weather='rain'] .sunbeams,
+.ocean[data-weather='snow'] .sunbeams,
+.ocean[data-weather='cloudy'] .sunbeams {
+  opacity: 0;
+}
+.forest-motes {
+  position: absolute;
+  inset: 0;
+  opacity: 0.55;
+  transition: opacity 2s;
+}
+.forest-motes i {
+  position: absolute;
+  left: var(--mx);
+  top: var(--my);
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: #fff5bc;
+  box-shadow: 0 0 8px 2px #f8eda459;
+  animation: woodland-mote 9s var(--md) ease-in-out infinite;
+}
+.ocean[data-phase='night'] .forest-motes {
+  opacity: 1;
+}
+.ocean[data-weather='rain'] .forest-motes,
+.ocean[data-weather='snow'] .forest-motes {
+  opacity: 0;
+}
+.world-object.ruin {
+  width: 72px;
+  height: 99px;
+}
+.ruin-rune {
+  filter: drop-shadow(0 0 2px #8fe3ad);
+}
+.trail-lantern {
+  position: absolute;
+  right: -14px;
+  top: 26px;
+  width: 12px;
+  height: 17px;
+  border: 2px solid #675d39;
+  border-radius: 3px;
+  background: #edcf78;
+}
+.trail-lantern::before {
+  content: '';
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  border: 1px solid #675d39;
+  border-radius: 50%;
+  top: -9px;
+  left: 0;
+}
+.ocean[data-phase='night'] .trail-lantern,
+.ocean[data-phase='sunset'] .trail-lantern {
+  background: #ffeaa0;
+  box-shadow: 0 0 18px 9px #ffe19b70;
+}
+@keyframes canopy-light {
+  to {
+    transform: translateX(4%);
+  }
+}
+@keyframes woodland-mote {
+  0%,
+  100% {
+    opacity: 0.15;
+    transform: translate(0, 8px);
+  }
+  50% {
+    opacity: 1;
+    transform: translate(12px, -14px);
+  }
 }
 @media (max-width: 900px) {
   #app {
