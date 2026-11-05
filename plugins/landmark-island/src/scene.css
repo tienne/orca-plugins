@@ -21,10 +21,10 @@
 }
 .climate-controls select {
   font: inherit;
-  color: inherit;
+  color: var(--orca-card-foreground, var(--ink));
   background: var(--panel);
-  border: 1px solid var(--line);
-  border-radius: 9px;
+  border: 1px solid var(--orca-input, var(--line));
+  border-radius: var(--orca-radius, 9px);
   padding: 10px;
   max-width: 190px;
 }

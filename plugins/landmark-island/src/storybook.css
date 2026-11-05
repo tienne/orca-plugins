@@ -2,22 +2,22 @@
 :root,
 html.light {
   color-scheme: light;
-  --ink: #514c3c;
-  --paper: #ecebd7;
-  --panel: #faf6e8;
-  --line: #c9c2a8;
-  --accent: #426e4d;
+  --ink: var(--orca-foreground, #514c3c);
+  --paper: var(--orca-background, #ecebd7);
+  --panel: var(--orca-card, #faf6e8);
+  --line: var(--orca-border, #c9c2a8);
+  --accent: var(--orca-primary, #426e4d);
   color: var(--ink);
   background: var(--paper);
   font-family: 'Avenir Next', 'Trebuchet MS', sans-serif;
 }
 html.dark {
   color-scheme: dark;
-  --ink: #e5dcc3;
-  --paper: #35372e;
-  --panel: #414439;
-  --line: #777860;
-  --accent: #dfb784;
+  --ink: var(--orca-foreground, #e5dcc3);
+  --paper: var(--orca-background, #35372e);
+  --panel: var(--orca-card, #414439);
+  --line: var(--orca-border, #777860);
+  --accent: var(--orca-primary, #dfb784);
 }
 body {
   /* Sparse fibers, fixed in page space rather than moving with the camera. */
@@ -83,7 +83,7 @@ nav {
 }
 button,
 .climate-controls select {
-  border-radius: 4px 7px 5px 3px;
+  border-radius: var(--orca-radius, 4px 7px 5px 3px);
   box-shadow: none;
   padding: 8px 12px;
 }
@@ -93,12 +93,13 @@ button:focus-visible {
 }
 button[aria-pressed='true'] {
   outline: none;
-  background: #d9dfbf;
-  color: #454f3c;
-  border-color: #909c72;
+  background: var(--orca-accent, #d9dfbf);
+  color: var(--orca-accent-foreground, #454f3c);
+  border-color: var(--orca-border, #909c72);
 }
 nav button {
   background: transparent;
+  color: var(--ink);
   border-color: transparent;
 }
 nav button[aria-pressed='true'] {
@@ -129,10 +130,10 @@ nav button[aria-pressed='true'] {
   color: var(--accent);
 }
 [role='alert'] {
-  color: #a33d35;
+  color: var(--orca-destructive, #a33d35);
 }
 html.dark [role='alert'] {
-  color: #ffc1a3;
+  color: var(--orca-destructive, #ffc1a3);
 }
 section {
   margin-top: 22px;
@@ -270,8 +271,9 @@ h2 small {
 }
 .forecast {
   border-radius: 2px 8px 3px 5px;
-  background: #243f35e8;
-  border: 1px solid #b6b681;
+  background: var(--orca-popover, #243f35e8);
+  color: var(--orca-popover-foreground, #f4edc8);
+  border: 1px solid var(--orca-border, #b6b681);
   backdrop-filter: none;
   font:
     italic 12px Georgia,
@@ -285,14 +287,15 @@ h2 small {
   text-transform: none;
   letter-spacing: 0;
   text-shadow: none;
-  color: #f4edc8;
-  background: #243f35e8;
+  color: var(--orca-popover-foreground, #f4edc8);
+  background: var(--orca-popover, #243f35e8);
   padding: 6px 9px;
   border-radius: 2px;
 }
 .minimap {
-  background: #284b3c;
-  border: 1px solid #c6bc7c;
+  background: var(--orca-popover, #284b3c);
+  color: var(--orca-popover-foreground, #f4edc8);
+  border: 1px solid var(--orca-border, #c6bc7c);
   border-radius: 2px 8px 3px 4px;
   backdrop-filter: none;
   box-shadow: 2px 3px 0 #586e4d22;
@@ -303,30 +306,31 @@ h2 small {
   border-radius: 1px;
 }
 .minimap span {
-  color: #f1e6b4;
+  color: var(--orca-popover-foreground, #f1e6b4);
   font:
     italic 10px Georgia,
     serif;
 }
 .camera-controls {
-  background: #254637ed;
-  border: 1px solid #b5ae74;
+  background: var(--orca-popover, #254637ed);
+  border: 1px solid var(--orca-border, #b5ae74);
   border-radius: 3px 6px 4px 2px;
-  color: #f3e9b9;
+  color: var(--orca-popover-foreground, #f3e9b9);
 }
 .camera-controls button,
 .walk-controls button {
-  background: #385c42;
-  border-color: #9f9f6c;
-  color: #f3eac6;
-  border-radius: 3px 6px 4px 2px;
+  background: var(--orca-secondary, #385c42);
+  border-color: var(--orca-border, #9f9f6c);
+  color: var(--orca-secondary-foreground, #f3eac6);
+  border-radius: var(--orca-radius, 3px 6px 4px 2px);
 }
 .camera-controls button[aria-pressed='true'] {
-  background: #697e45;
+  background: var(--orca-accent, #697e45);
+  color: var(--orca-accent-foreground, #f3eac6);
 }
 .walk-hint {
-  color: #f1e9ca;
-  background: #244738e8;
+  color: var(--orca-popover-foreground, #f1e9ca);
+  background: var(--orca-popover, #244738e8);
   text-shadow: none;
   border-radius: 2px;
   padding: 5px 8px;
@@ -610,6 +614,7 @@ footer {
   padding: 0;
   text-align: left;
   background: transparent;
+  color: inherit;
   border: 0;
   border-radius: 2px;
 }
@@ -620,7 +625,7 @@ footer {
   outline-offset: 5px;
 }
 .card .card-country {
-  color: var(--accent);
+  color: var(--orca-foreground, var(--accent));
   opacity: 1;
   font-weight: 600;
   font-size: 12px;
@@ -631,7 +636,7 @@ footer {
   border: 0;
   border-radius: 2px;
   background: transparent;
-  color: var(--accent);
+  color: var(--orca-foreground, var(--accent));
   font-size: 11px;
   text-align: left;
   text-decoration: underline;
@@ -653,7 +658,7 @@ footer {
   filter: brightness(1.12);
 }
 .building-select:focus-visible {
-  outline: 2px solid #f3e5a3;
+  outline: 2px solid var(--orca-ring, #f3e5a3) !important;
 }
 .world-tile:has(.building-select:hover) .building-label,
 .world-tile:has(.building-select:focus-visible) .building-label {
@@ -664,9 +669,9 @@ footer {
   max-height: calc(100dvh - 40px);
   padding: 30px;
   border: 1px solid var(--line);
-  border-radius: 6px;
-  background: var(--paper);
-  color: var(--ink);
+  border-radius: var(--orca-radius, 6px);
+  background: var(--orca-popover, var(--paper));
+  color: var(--orca-popover-foreground, var(--ink));
   box-shadow: 0 16px 65px #152d3655;
   overflow-y: auto;
   overscroll-behavior: contain;
@@ -691,7 +696,7 @@ footer {
   height: 100%;
 }
 .detail-country {
-  color: var(--accent);
+  color: var(--orca-foreground, var(--accent));
   font-weight: 600;
   font-size: 13px;
 }
@@ -709,7 +714,7 @@ footer {
   font-size: 11px;
 }
 .detail-source a {
-  color: var(--accent);
+  color: var(--orca-foreground, var(--accent));
   text-underline-offset: 3px;
   overflow-wrap: anywhere;
 }
@@ -1092,4 +1097,22 @@ footer {
 .world-object.building[data-tier='legendary'] {
   width: 110px;
   height: 124px;
+}
+
+/* Keyboard focus is a host UI cue, including selected controls and map cells. */
+button:focus-visible,
+button[aria-pressed='true']:focus-visible,
+select:focus-visible,
+a:focus-visible,
+.ocean:focus-visible {
+  outline: 2px solid var(--orca-ring, var(--accent));
+  outline-offset: 3px;
+}
+.world-tile .cell:focus-visible {
+  background: color-mix(
+    in srgb,
+    var(--orca-ring, #fff1ad) 45%,
+    transparent
+  ) !important;
+  box-shadow: inset 0 0 0 2px var(--orca-ring, #fff1ad);
 }

@@ -33,8 +33,19 @@ type Bridge = {
   request(name: string, input: unknown): Promise<State>;
   on(name: string, fn: () => void): unknown;
 };
-const bridge = (window as unknown as { orca?: { plugin: Bridge } }).orca
-  ?.plugin;
+const frame = (
+  window as unknown as {
+    orca?: {
+      plugin: Bridge;
+      shell: {
+        openExternal(
+          url: string,
+        ): Promise<{ opened: boolean; reason?: string }>;
+      };
+    };
+  }
+).orca;
+const bridge = frame?.plugin;
 const demo = !bridge;
 const demoKey = 'landmark-island-demo-v1';
 const game = new Game({
@@ -80,6 +91,33 @@ function showDetails(id: string) {
   detail.innerHTML = `<button class="detail-close" aria-label="Close landmark details" autofocus>×</button><div class="detail-art">${art(id)}</div><p class="detail-country">${escape(landmark.country)} · ${escape(landmark.region)}</p><h2 id="detail-title">${escape(landmark.name)}</h2><div class="detail-rarity">${rarityBadge(landmark.tier)}<p>${weights[rarity.id]}% tier chance per draw · ${landmarks.filter((l) => l.tier === rarity.id).length} landmarks in this tier</p></div><p id="detail-description">${escape(landmark.description)}</p><p class="detail-source">Read more: <a href="${escape(landmark.descriptionSource)}" target="_blank" rel="noopener noreferrer">${escape(landmark.descriptionSourceName)} ↗</a></p>`;
   detail.querySelector<HTMLButtonElement>('.detail-close')!.onclick = () =>
     detail.close();
+  if (!demo) {
+    const link = detail.querySelector<HTMLAnchorElement>('.detail-source a')!;
+    const status = document.createElement('p');
+    status.className = 'detail-link-status';
+    status.setAttribute('role', 'status');
+    status.hidden = true;
+    detail.append(status);
+    link.onclick = async (event) => {
+      event.preventDefault();
+      status.hidden = true;
+      try {
+        // Call inside the real click: the host owns external-link consent/routing.
+        const result = await frame!.shell.openExternal(
+          landmark.descriptionSource,
+        );
+        if (!result.opened) {
+          status.setAttribute('role', 'status');
+          status.textContent = 'The link was not opened.';
+          status.hidden = false;
+        }
+      } catch {
+        status.setAttribute('role', 'alert');
+        status.textContent = 'Could not open the source. Please try again.';
+        status.hidden = false;
+      }
+    };
+  }
   if (!detail.open) detail.showModal();
 }
 async function request(name: string, input: unknown = {}) {

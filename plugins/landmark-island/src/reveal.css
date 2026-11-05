@@ -4,11 +4,11 @@
   gap: 18px;
   padding: 20px 24px;
   margin: 18px 0;
-  background: linear-gradient(110deg, #eee3bd, #faf4df);
-  border: 1px solid #bca77b;
-  border-radius: 5px;
+  background: var(--orca-card, linear-gradient(110deg, #eee3bd, #faf4df));
+  border: 1px solid var(--orca-border, #bca77b);
+  border-radius: var(--orca-radius, 5px);
   box-shadow: 0 3px 0 #ae986433;
-  color: #344532;
+  color: var(--orca-card-foreground, #344532);
 }
 .ticket-desk h2 {
   font-size: 22px;
@@ -17,25 +17,25 @@
 .ticket-desk p {
   margin: 0;
   font-size: 13px;
-  color: #716747;
+  color: var(--orca-muted-foreground, #716747);
 }
 .ticket-desk small {
   font-size: 10px;
   letter-spacing: 2px;
-  color: #786746;
+  color: var(--orca-muted-foreground, #786746);
 }
 .ticket-stamp {
   font-size: 34px;
-  color: #886d35;
-  border: 1px dashed #a18c59;
+  color: var(--orca-card-foreground, #886d35);
+  border: 1px dashed var(--orca-border, #a18c59);
   padding: 8px 15px;
   transform: rotate(-8deg);
 }
 .ticket-desk #draw-ticket {
   margin-left: auto;
-  background: #304f3c;
-  color: #fff5d9;
-  border: 1px solid #304f3c;
+  background: var(--orca-primary, #304f3c);
+  color: var(--orca-primary-foreground, #fff5d9);
+  border: 1px solid var(--orca-primary, #304f3c);
   padding: 13px 20px;
   white-space: nowrap;
 }
@@ -50,10 +50,13 @@
   width: min(820px, calc(100vw - 24px));
   max-height: calc(100dvh - 24px);
   padding: 24px 28px 28px;
-  border: 1px solid #a18c59;
-  border-radius: 12px;
-  background: radial-gradient(ellipse at 50% 38%, #304c41, #112820 72%);
-  color: #f5e8c5;
+  border: 1px solid var(--orca-border, #a18c59);
+  border-radius: var(--orca-radius, 12px);
+  background: var(
+    --orca-popover,
+    radial-gradient(ellipse at 50% 38%, #304c41, #112820 72%)
+  );
+  color: var(--orca-popover-foreground, #f5e8c5);
   overflow: auto;
   box-shadow: 0 30px 100px #0009;
   text-align: center;
@@ -89,23 +92,23 @@
 .discovery-heading > span {
   font-size: 11px;
   letter-spacing: 3px;
-  color: #d8c69d;
+  color: var(--orca-muted-foreground, #d8c69d);
 }
 .discovery-theatre button {
-  color: #efe4c5;
-  border: 1px solid #a68f60;
-  background: #233f32;
-  border-radius: 4px;
+  color: var(--orca-secondary-foreground, #efe4c5);
+  border: 1px solid var(--orca-border, #a68f60);
+  background: var(--orca-secondary, #233f32);
+  border-radius: var(--orca-radius, 4px);
   padding: 10px 16px;
   cursor: pointer;
 }
 .discovery-theatre button:focus-visible {
-  outline: 3px solid #ffdf85;
+  outline: 3px solid var(--orca-ring, #ffdf85);
   outline-offset: 4px;
 }
 .discovery-theatre .reveal-skip {
   font-size: 12px;
-  background: #163125e8;
+  background: var(--orca-secondary, #163125e8);
 }
 .discovery-stage {
   height: 330px;
@@ -114,6 +117,8 @@
   position: relative;
   perspective: 900px;
   isolation: isolate;
+  /* The stage is artwork; surrounding reading and controls use host tokens. */
+  background: radial-gradient(ellipse at 50% 38%, #304c41, #112820 72%);
   overflow: clip;
   border-radius: 8px;
 }
@@ -531,7 +536,7 @@
   transition: transform 0.65s cubic-bezier(0.2, 0.7, 0.2, 1);
   font-family: Georgia, serif;
   font-style: italic;
-  color: #d0c29c;
+  color: var(--orca-popover-foreground, #d0c29c);
   min-height: 20px;
   font-size: 16px;
   margin: 8px 0 14px;
@@ -540,18 +545,18 @@
   font-family: Georgia, serif;
   font-size: 32px;
   font-weight: normal;
-  color: #fff2cf;
+  color: var(--orca-popover-foreground, #fff2cf);
   margin: 8px 0 12px;
 }
 .reveal-country {
   font-size: 12px;
-  color: #c6cbb1;
+  color: var(--orca-muted-foreground, #c6cbb1);
   letter-spacing: 1px;
   margin: 14px 0 0;
 }
 .reveal-quantity {
   font-size: 14px;
-  color: #d6c8a6;
+  color: var(--orca-popover-foreground, #d6c8a6);
 }
 .reveal-actions {
   display: flex;
@@ -560,13 +565,13 @@
   margin: 20px 0 14px;
 }
 .discovery-theatre .reveal-place {
-  background: #e4ca8b;
-  color: #293e2d;
-  border-color: #f6dfaa;
+  background: var(--orca-primary, #e4ca8b);
+  color: var(--orca-primary-foreground, #293e2d);
+  border-color: var(--orca-primary, #f6dfaa);
 }
 .discovery-result > small {
   font-size: 11px;
-  color: #a8b49a;
+  color: var(--orca-muted-foreground, #a8b49a);
 }
 .reveal-badge {
   display: flex;

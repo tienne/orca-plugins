@@ -1015,3 +1015,232 @@ test('standalone reveal preview replays every rarity without accessing the save'
     await page.evaluate(() => document.documentElement.scrollWidth),
   ).toBeLessThanOrEqual(360);
 });
+
+test('host theme tokens update reading and controls live while preserving game art and state', async ({
+  page,
+}) => {
+  await page.addInitScript(() => {
+    localStorage.setItem(
+      'landmark-island-demo-v1',
+      JSON.stringify({
+        version: 1,
+        receipts: [
+          { workspaceId: 'theme-fixture', landmark: 'taj', at: '2026-11-05' },
+        ],
+        placements: [{ landmark: 'taj', cell: 31 }],
+      }),
+    );
+  });
+  await page.goto('/');
+  const save = await page.evaluate(() =>
+    localStorage.getItem('landmark-island-demo-v1'),
+  );
+  const camera = await page.locator('.camera').getAttribute('style');
+  const art = await page.locator('.world-ground').innerHTML();
+  const water = await page
+    .locator('.ocean')
+    .evaluate((e) => getComputedStyle(e).backgroundImage);
+  for (const dark of [false, true]) {
+    const tokens = dark
+      ? {
+          background: '#111827',
+          foreground: '#e5e7eb',
+          card: '#1f2937',
+          'card-foreground': '#f9fafb',
+          popover: '#172033',
+          'popover-foreground': '#e0f2fe',
+          primary: '#67e8f9',
+          'primary-foreground': '#083344',
+          secondary: '#334155',
+          'secondary-foreground': '#f1f5f9',
+          accent: '#164e63',
+          'accent-foreground': '#cffafe',
+          border: '#64748b',
+          input: '#94a3b8',
+          ring: '#fbbf24',
+          'muted-foreground': '#cbd5e1',
+          radius: '10px',
+        }
+      : {
+          background: '#f6f4ef',
+          foreground: '#202a38',
+          card: '#ffffff',
+          'card-foreground': '#202a38',
+          popover: '#fffcf6',
+          'popover-foreground': '#2d252a',
+          primary: '#6f2c58',
+          'primary-foreground': '#ffffff',
+          secondary: '#e2e6eb',
+          'secondary-foreground': '#192635',
+          accent: '#eddaea',
+          'accent-foreground': '#491e40',
+          border: '#89808e',
+          input: '#706878',
+          ring: '#0070a6',
+          'muted-foreground': '#5b5f66',
+          radius: '10px',
+        };
+    await page.evaluate(
+      ({ tokens, dark }) => {
+        document.documentElement.className = dark ? 'dark' : 'light';
+        for (const [name, value] of Object.entries(tokens))
+          document.documentElement.style.setProperty(`--orca-${name}`, value);
+      },
+      { tokens, dark },
+    );
+    const rgb = (hex: string) =>
+      `rgb(${[1, 3, 5].map((offset) => parseInt(hex.slice(offset, offset + 2), 16)).join(', ')})`;
+    await expect(page.locator('html')).toHaveCSS(
+      'background-color',
+      rgb(tokens.background),
+    );
+    await expect(page.locator('html')).toHaveCSS(
+      'color',
+      rgb(tokens.foreground),
+    );
+    await expect(page.locator('html')).toHaveCSS('font-size', '16px');
+    await expect(page.locator('.ticket-desk')).toHaveCSS(
+      'background-color',
+      rgb(tokens.card),
+    );
+    await expect(page.locator('.ticket-desk')).toHaveCSS(
+      'color',
+      rgb(tokens['card-foreground']),
+    );
+    await expect(page.locator('#draw-ticket')).toHaveCSS(
+      'background-color',
+      rgb(tokens.primary),
+    );
+    await expect(page.locator('#draw-ticket')).toHaveCSS(
+      'color',
+      rgb(tokens['primary-foreground']),
+    );
+    await expect(page.locator('.climate-controls select')).toHaveCSS(
+      'border-top-color',
+      rgb(tokens.input),
+    );
+    await page.locator('[data-view=island]').focus();
+    await expect(page.locator('[data-view=island]')).toHaveCSS(
+      'outline-color',
+      rgb(tokens.ring),
+    );
+    await expect(page.locator('[data-view=island]')).toHaveCSS(
+      'outline-style',
+      'solid',
+    );
+    await expect(page.locator('.camera-controls')).toHaveCSS(
+      'background-color',
+      rgb(tokens.popover),
+    );
+    await expect(page.locator('.camera-controls button').first()).toHaveCSS(
+      'color',
+      rgb(tokens['secondary-foreground']),
+    );
+    expect(await page.locator('.camera').getAttribute('style')).toBe(camera);
+    expect(await page.locator('.world-ground').innerHTML()).toBe(art);
+    expect(
+      await page
+        .locator('.ocean')
+        .evaluate((e) => getComputedStyle(e).backgroundImage),
+    ).toBe(water);
+    await page.screenshot({
+      path: `test-results/landmark-island/host-theme-${dark ? 'dark' : 'light'}.png`,
+    });
+    await page.locator('[data-info=taj]').click();
+    await expect(page.locator('.landmark-detail')).toHaveCSS(
+      'background-color',
+      rgb(tokens.popover),
+    );
+    await expect(page.locator('.landmark-detail')).toHaveCSS(
+      'color',
+      rgb(tokens['popover-foreground']),
+    );
+    await expect(page.locator('.landmark-detail')).toHaveCSS(
+      'border-top-left-radius',
+      '10px',
+    );
+    await page.keyboard.press('Escape');
+  }
+  expect(
+    await page.evaluate(() => localStorage.getItem('landmark-island-demo-v1')),
+  ).toBe(save);
+  await page.getByRole('button', { name: 'Demo worktree' }).click();
+  await page.locator('#draw-ticket').click();
+  await page.getByRole('button', { name: 'Skip animation' }).click();
+  await expect(page.locator('.discovery-theatre')).toHaveCSS(
+    'background-color',
+    'rgb(23, 32, 51)',
+  );
+  await expect(page.locator('.discovery-result h2')).toHaveCSS(
+    'color',
+    'rgb(224, 242, 254)',
+  );
+  await expect(page.locator('.reveal-place')).toHaveCSS(
+    'background-color',
+    'rgb(103, 232, 249)',
+  );
+  await expect(page.locator('.reveal-place')).toHaveCSS(
+    'color',
+    'rgb(8, 51, 68)',
+  );
+  await page
+    .locator('.discovery-theatre')
+    .screenshot({ path: 'test-results/landmark-island/host-theme-reveal.png' });
+});
+
+test('host source links use the public external-link API only on click', async ({
+  page,
+  context,
+}) => {
+  await page.addInitScript(() => {
+    const fixture = window as unknown as {
+      externalLinks: string[];
+      refuseLink: boolean;
+      orca: unknown;
+    };
+    fixture.externalLinks = [];
+    fixture.refuseLink = false;
+    fixture.orca = {
+      plugin: {
+        request: async () => ({
+          version: 2,
+          tickets: [],
+          receipts: [],
+          placements: [],
+        }),
+        on: () => {},
+      },
+      shell: {
+        openExternal: async (url: string) => {
+          fixture.externalLinks.push(url);
+          if (fixture.refuseLink) throw Error('Fixture failure');
+          return { opened: true };
+        },
+      },
+    };
+  });
+  await page.goto('/');
+  await page.locator('[data-info=eiffel]').click();
+  expect(
+    await page.evaluate(
+      () => (window as unknown as { externalLinks: string[] }).externalLinks,
+    ),
+  ).toEqual([]);
+  const link = page.locator('.detail-source a');
+  const url = await link.getAttribute('href');
+  await link.click();
+  expect(
+    await page.evaluate(
+      () => (window as unknown as { externalLinks: string[] }).externalLinks,
+    ),
+  ).toEqual([url]);
+  expect(context.pages()).toHaveLength(1);
+  await page.evaluate(() => {
+    (window as unknown as { refuseLink: boolean }).refuseLink = true;
+  });
+  await link.click();
+  await expect(page.getByRole('alert')).toHaveText(
+    'Could not open the source. Please try again.',
+  );
+  await expect(page.locator('.landmark-detail')).toBeVisible();
+});

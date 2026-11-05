@@ -1,4 +1,5 @@
 :root {
+  font-size: 16px;
   font-family: ui-sans-serif, system-ui, sans-serif;
   color: var(--orca-foreground, #e2eee9);
   background: var(--orca-background, #102828);
@@ -75,11 +76,11 @@ header p {
 }
 button {
   font: inherit;
-  color: inherit;
+  color: var(--orca-card-foreground, var(--ink));
   cursor: pointer;
   border: 1px solid var(--line);
   background: var(--panel);
-  border-radius: 9px;
+  border-radius: var(--orca-radius, 9px);
   padding: 10px 14px;
 }
 button:hover:not(:disabled),
