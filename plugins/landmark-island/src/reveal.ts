@@ -8,7 +8,9 @@ export function revealDiscovery(
   count: number,
   badge: string,
   onPlace: () => void,
+  options: { preview?: boolean } = {},
 ) {
+  const opener = document.activeElement as HTMLElement | null;
   const dialog = document.createElement('dialog');
   dialog.className = 'discovery-theatre';
   dialog.dataset.tier = landmark.tier;
@@ -49,6 +51,16 @@ export function revealDiscovery(
     count > 1
       ? `Another piece of the world · Owned ×${count}`
       : 'A new page in your collection';
+  if (options.preview) {
+    dialog.querySelector('.discovery-heading > span')!.textContent =
+      'DEMO · ANIMATION PREVIEW';
+    dialog.querySelector('.reveal-quantity')!.textContent =
+      'Preview only · No ticket used';
+    dialog.querySelector('.reveal-place')!.textContent = 'Replay animation';
+    dialog.querySelector('.reveal-keep')!.textContent = 'Choose rarity';
+    dialog.querySelector('.discovery-result > small')!.textContent =
+      'Your collection is unchanged';
+  }
   document.body.append(dialog);
   let revealed = false;
   const timers: ReturnType<typeof setTimeout>[] = [];
@@ -100,11 +112,14 @@ export function revealDiscovery(
       timers.forEach(clearTimeout);
       preference.removeEventListener('change', reduce);
       dialog.remove();
-      document
-        .querySelector<HTMLButtonElement>(
-          '#draw-ticket:not(:disabled), #refresh',
-        )
-        ?.focus({ preventScroll: true });
+      const target =
+        opener?.isConnected &&
+        opener.matches('button:not(:disabled), a[href], [tabindex]')
+          ? opener
+          : document.querySelector<HTMLButtonElement>(
+              '#draw-ticket:not(:disabled), #refresh, #preview-play',
+            );
+      target?.focus({ preventScroll: true });
     },
     { once: true },
   );

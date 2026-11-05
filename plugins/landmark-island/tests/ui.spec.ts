@@ -954,3 +954,64 @@ test('cinematic discovery reveals rarity before artwork, then information and ac
   await page.keyboard.press('Escape');
   await expect(theatre).toHaveCount(0);
 });
+
+test('standalone reveal preview replays every rarity without accessing the save', async ({
+  page,
+}) => {
+  const errors: string[] = [];
+  page.on('pageerror', (error) => errors.push(error.message));
+  await page.addInitScript(() => {
+    localStorage.setItem('landmark-island-demo-v1', 'preserve-this-save');
+    const read = Storage.prototype.getItem;
+    let calls = 0;
+    Object.defineProperty(window, 'previewStorageCalls', { get: () => calls });
+    Storage.prototype.getItem = function (key) {
+      calls++;
+      return read.call(this, key);
+    };
+    Storage.prototype.setItem = () => {
+      throw Error('Preview must not write storage');
+    };
+  });
+  await page.goto('/?preview=reveal&tier=legendary&autoplay=1');
+  await expect(page).toHaveTitle('Landmark Island · Reveal Preview');
+  const theatre = page.locator('.discovery-theatre');
+  await expect(theatre).toHaveAttribute('data-tier', 'legendary');
+  await expect(page.locator('.ocean')).toHaveCount(0);
+  await page.getByRole('button', { name: 'Skip animation' }).click();
+  await expect(theatre).toContainText('Preview only · No ticket used');
+  await expect(
+    theatre.getByRole('button', { name: 'Place on island' }),
+  ).toHaveCount(0);
+  await page.getByRole('button', { name: 'Replay animation' }).click();
+  await expect(theatre).toHaveCount(1);
+  await expect(theatre).toHaveAttribute('data-phase', 'invitation');
+  await page.getByRole('button', { name: 'Skip animation' }).click();
+  await page.getByRole('button', { name: 'Choose rarity' }).click();
+  for (const tier of ['common', 'rare', 'epic', 'legendary']) {
+    await page.locator(`[data-preview-tier=${tier}]`).click();
+    await expect(theatre).toHaveAttribute('data-tier', tier);
+    await page.keyboard.press('Escape');
+    await expect(theatre).toHaveAttribute('data-phase', 'complete');
+    await page.keyboard.press('Escape');
+    await expect(page.locator(`[data-preview-tier=${tier}]`)).toBeFocused();
+  }
+  expect(
+    await page.evaluate(
+      () =>
+        (window as unknown as { previewStorageCalls: number })
+          .previewStorageCalls,
+    ),
+  ).toBe(0);
+  expect(
+    await page.evaluate(() => localStorage.getItem('landmark-island-demo-v1')),
+  ).toBe('preserve-this-save');
+  expect(errors).toEqual([]);
+  await page.setViewportSize({ width: 360, height: 800 });
+  await page.screenshot({
+    path: 'test-results/landmark-island/reveal-preview-mobile.png',
+  });
+  expect(
+    await page.evaluate(() => document.documentElement.scrollWidth),
+  ).toBeLessThanOrEqual(360);
+});

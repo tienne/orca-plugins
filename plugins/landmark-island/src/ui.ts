@@ -280,13 +280,47 @@ function render() {
         game.acquire({ workspaceId: crypto.randomUUID(), kind: 'worktree' }),
       );
 }
-bridge?.on('island.changed', () => {
+function renderRevealPreview() {
+  document.title = 'Landmark Island · Reveal Preview';
+  document.body.classList.add('reveal-preview-page');
+  const params = new URLSearchParams(location.search);
+  let tier =
+    rarities.find((r) => r.id === params.get('tier'))?.id ?? 'legendary';
+  root.innerHTML = `<main class="reveal-preview"><p class="preview-eyebrow">LANDMARK ISLAND · DEMO</p><h1>The discovery theatre</h1><p class="preview-intro">A little light. A distant place. A new story.</p><div class="preview-compass" aria-hidden="true">✦</div><div class="preview-tiers" role="group" aria-label="Preview rarity">${rarities.map((r) => `<button data-preview-tier="${r.id}" aria-pressed="${r.id === tier}">${rarityBadge(r.id)}</button>`).join('')}</div><button id="preview-play">Play animation</button><p class="preview-note">Animation preview only. No tickets used. Your collection stays as it is.</p><a href="./">Return to island</a></main>`;
+  const play = () => {
+    const landmark = landmarks.find((l) => l.tier === tier)!;
+    revealDiscovery(landmark, 1, rarityBadge(tier), play, { preview: true });
+  };
+  root
+    .querySelectorAll<HTMLButtonElement>('[data-preview-tier]')
+    .forEach((button) => {
+      button.onclick = () => {
+        tier = button.dataset.previewTier as typeof tier;
+        root
+          .querySelectorAll<HTMLButtonElement>('[data-preview-tier]')
+          .forEach((b) => b.setAttribute('aria-pressed', String(b === button)));
+        const url = new URL(location.href);
+        url.searchParams.set('tier', tier);
+        history.replaceState(null, '', url);
+        play();
+      };
+    });
+  root.querySelector<HTMLButtonElement>('#preview-play')!.onclick = play;
+  if (params.get('autoplay') === '1') play();
+}
+// A browser-only theatre reuses the real reveal without reading or writing a save.
+// Plugin frames always take the worker-backed application path.
+if (demo && new URLSearchParams(location.search).get('preview') === 'reveal') {
+  renderRevealPreview();
+} else {
+  bridge?.on('island.changed', () => {
+    void reload();
+  });
+  render();
   void reload();
-});
+}
 // Queue refreshes behind in-flight requests so an acquisition notification is not lost.
 async function reload() {
   while (busy) await new Promise((r) => setTimeout(r, 50));
   await run(() => request('island.read'));
 }
-render();
-void reload();
