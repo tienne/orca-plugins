@@ -10,6 +10,7 @@ try {
     entryPoints: [
       'plugins/landmark-island/src/game.ts',
       'plugins/landmark-island/src/walk.ts',
+      'plugins/landmark-island/src/world.ts',
       'plugins/landmark-island/src/worker/main.ts',
     ],
     outdir: dir,
@@ -23,12 +24,38 @@ try {
     pathToFileURL(join(dir, 'game.mjs'))
   );
   const { route } = await import(pathToFileURL(join(dir, 'walk.mjs')));
-  assert.deepEqual(route(0, 2, new Set([1])), [6, 7, 8, 2]);
-  assert.deepEqual(route(0, 35, new Set([1, 6])), []);
-  assert.deepEqual(route(5, 6, new Set()), [11, 10, 9, 8, 7, 6]);
+  const { tiles, landTiles, neighbours, solidProps, isLand, project, at } =
+    await import(pathToFileURL(join(dir, 'world.mjs')));
+  assert.equal(tiles.length, 576);
+  assert.equal(landTiles.length, 318);
+  assert.equal(new Set(tiles.map((t) => `${t.col},${t.row}`)).size, 576);
+  for (let id = 0; id < 36; id++) {
+    assert.equal(tiles[id].col, 9 + (id % 6));
+    assert.equal(tiles[id].row, 9 + Math.floor(id / 6));
+    assert.ok(isLand(id));
+  }
+  const detour = route(0, 2, new Set([1]));
+  assert.equal(detour.length, 4);
+  assert.equal(detour.at(-1), 2);
+  assert.ok(!detour.includes(1));
+  assert.deepEqual(route(0, 35, new Set(neighbours(0))), []);
   assert.deepEqual(route(0, 1, new Set([1])), []);
   assert.deepEqual(route(-1, 0, new Set()), []);
   assert.deepEqual(route(0, 0, new Set()), []);
+  // Every non-decorated piece of land can be reached from the original plaza.
+  for (const tile of landTiles.filter(
+    (t) => !solidProps.has(t.id) && t.id !== 30,
+  )) {
+    const path = route(30, tile.id, solidProps);
+    assert.ok(path.length, `Unreachable land ${tile.id}`);
+    let last = 30;
+    for (const step of path) {
+      assert.ok(neighbours(last).includes(step));
+      assert.ok(!solidProps.has(step));
+      last = step;
+    }
+  }
+  assert.ok(project(at(12, 13)).depth > project(at(12, 12)).depth);
   let value = null,
     writes = 0,
     fail = false;
@@ -58,6 +85,31 @@ try {
   await game.place({ cell: 0, landmark: 'eiffel' });
   await game.place({ cell: 1, from: 0 });
   assert.deepEqual(value.placements, [{ cell: 1, landmark: 'eiffel' }]);
+  const oldSave = validate({
+    version: 1,
+    receipts: value.receipts,
+    placements: Array.from({ length: 36 }, (_, cell) => ({
+      cell,
+      landmark: 'eiffel',
+    })),
+  });
+  assert.equal(oldSave.placements.length, 36);
+  assert.deepEqual(
+    oldSave.placements.map((p) => p.cell),
+    Array.from({ length: 36 }, (_, i) => i),
+  );
+  const expanded = landTiles.find((t) => t.id >= 36 && t.kind === 'grass').id;
+  await game.place({ cell: expanded, landmark: 'eiffel' });
+  assert.ok(
+    (await new Game(store).snapshot()).placements.some(
+      (p) => p.cell === expanded,
+    ),
+  );
+  await game.place({ cell: expanded });
+  await assert.rejects(
+    game.place({ cell: tiles.find((t) => !t.land).id, landmark: 'eiffel' }),
+  );
+  await assert.rejects(game.place({ cell: 576 }));
   await game.place({ cell: 1 });
   assert.equal(value.receipts.length, 40);
   assert.equal(value.placements.length, 0);

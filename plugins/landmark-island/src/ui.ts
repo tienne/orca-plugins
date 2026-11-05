@@ -1,10 +1,13 @@
 import { Game, empty, landmarks, quantity, type State } from './game';
 import { art } from './art';
-import { IslandScene, scenery } from './scene';
+import { IslandScene } from './scene';
+import { terrain } from './terrain-art';
+import { landTiles } from './world';
 const scene = new IslandScene();
 import world from './world.json';
 import './style.css';
 import './scene.css';
+import './world.css';
 type Bridge = {
   request(name: string, input: unknown): Promise<State>;
   on(name: string, fn: () => void): unknown;
@@ -63,16 +66,7 @@ function render() {
   root.innerHTML = `<header><div class="eyebrow">EXPEDITION JOURNAL ${demo ? '<b>DEMO · LOCAL FIXTURES</b>' : ''}</div><h1>Landmark Island<span>✦</span></h1><p>A little world, built one worktree at a time.</p><div class="stats"><strong>${owned.length}<small> / 12 discovered</small></strong><strong>${state.receipts.length}<small> expeditions</small></strong><strong>${new Set(owned.map((l) => l.code)).size}<small> countries</small></strong></div></header><nav><button data-view="island" aria-pressed="${view === 'island'}">My Island</button><button data-view="map" aria-pressed="${view === 'map'}">World Map</button>${demo ? '<button id="expedition">＋ Demo expedition</button>' : ''}<button id="refresh">Refresh</button></nav><p class="notice" role="status">${escape(message)}</p>${error ? `<p role="alert">${escape(error)}</p>` : ''}
  ${
    view === 'island'
-     ? `<section class="island-section"><div class="section-title"><h2>Your patch of possibility</h2><span>6 × 6 island</span></div><p>${from !== undefined ? 'Choose an empty cell to move the landmark.' : selected ? `Place ${escape(landmarks.find((l) => l.id === selected)!.name)} on an empty cell.` : scene.mode === 'walk' ? 'Take a stroll, watch the weather, and make yourself at home.' : 'Select a collected landmark below, then choose a cell.'}</p>${scene.markup()}<div class="ocean" tabindex="0" role="region" aria-label="Interactive island"><div class="camera"><div class="island">${Array.from(
-         { length: 36 },
-         (_, cell) => {
-           const p = state.placements.find((p) => p.cell === cell);
-           const l = landmarks.find((l) => l.id === p?.landmark);
-           return `<button class="cell ${p ? 'occupied' : ''} ${from === cell ? 'selected' : ''}" data-cell="${cell}" aria-label="Cell ${cell + 1}${l ? `: ${l.name}` : ': empty'}">${l ? art(l.id) : scenery(cell) + '<span>＋</span>'}</button>`;
-         },
-       ).join(
-         '',
-       )}${scene.avatar()}</div><div class="sailboat" aria-hidden="true">⛵</div></div>${scene.layers()}</div>${from !== undefined ? '<div class="tools"><button id="remove">Return to collection</button><button id="cancel">Cancel move</button></div>' : ''}</section>`
+     ? `<section class="island-section"><div class="section-title"><h2>An island of your own</h2><span>24 × 24 world · ${landTiles.length} land tiles</span></div><p>${from !== undefined ? 'Choose an empty cell to move the landmark.' : selected ? `Place ${escape(landmarks.find((l) => l.id === selected)!.name)} on an empty cell.` : scene.mode === 'walk' ? 'Take a stroll, watch the weather, and make yourself at home.' : 'Select a collected landmark below, then choose a cell.'}</p>${scene.markup()}<div class="ocean" tabindex="0" role="region" aria-label="Interactive island"><div class="camera"><div class="island">${terrain(state, from)}${scene.avatar()}</div><div class="sailboat" aria-hidden="true">⛵</div></div>${scene.layers()}</div>${from !== undefined ? '<div class="tools"><button id="remove">Return to collection</button><button id="cancel">Cancel move</button></div>' : ''}</section>`
      : `<section><div class="section-title"><h2>A world of discoveries</h2><span>${owned.length} real locations</span></div><svg class="world" viewBox="0 0 720 360" role="img" aria-label="World map of collected landmarks">${world.map((c) => `<path d="${c.path}" class="${owned.some((l) => l.code === c.code) ? 'acquired' : ''}"><title>${escape(c.name)}</title></path>`).join('')}${owned.map((l) => `<circle cx="${(l.lon + 180) * 2}" cy="${(90 - l.lat) * 2}" r="4"><title>${escape(l.name)} · ${escape(l.country)}</title></circle>`).join('')}</svg><p class="muted">Made with Natural Earth · approximate locations · equirectangular projection</p><div class="countries">${[...new Set(landmarks.map((l) => l.country))].map((c) => `<span>${escape(c)} <strong>${owned.filter((l) => l.country === c).length}/${landmarks.filter((l) => l.country === c).length}</strong></span>`).join('')}</div></section>`
  }
  <section><div class="section-title"><h2>Your collection</h2><span>Duplicates welcome</span></div><div class="collection">${landmarks

@@ -1,4 +1,5 @@
 import { test, expect } from '@playwright/test';
+import { landTiles } from '../src/world';
 test('demo acquisition, duplicate, placement, move, removal and persistent map', async ({
   page,
 }) => {
@@ -60,16 +61,34 @@ for (const theme of ['light', 'dark'])
       theme,
     );
     await page.setViewportSize({ width: 360, height: 800 });
-    await expect(page.locator('.cell')).toHaveCount(36);
+    expect(await page.locator('.cell').count()).toBeGreaterThan(300);
+    await page.getByRole('button', { name: 'Show whole island' }).click();
+    await expect(page.locator('.ocean')).toHaveAttribute(
+      'data-follow',
+      'false',
+    );
     expect(
       await page.evaluate(() => document.documentElement.scrollWidth),
     ).toBeLessThanOrEqual(360);
     const ocean = await page.locator('.ocean').boundingBox();
-    for (const cell of await page.locator('.cell').all()) {
-      const box = await cell.boundingBox();
-      expect(box!.x).toBeGreaterThanOrEqual(ocean!.x);
-      expect(box!.x + box!.width).toBeLessThanOrEqual(ocean!.x + ocean!.width);
-    }
+    await expect
+      .poll(async () =>
+        page.locator('.cell').evaluateAll((cells) => {
+          const ocean = document
+            .querySelector('.ocean')!
+            .getBoundingClientRect();
+          return cells.every((cell) => {
+            const b = cell.getBoundingClientRect();
+            return (
+              b.x >= ocean.x &&
+              b.right <= ocean.right &&
+              b.y >= ocean.y &&
+              b.bottom <= ocean.bottom
+            );
+          });
+        }),
+      )
+      .toBe(true);
 
     await page.screenshot({
       path: `test-results/landmark-island/${theme}-mobile-demo.png`,
@@ -103,10 +122,19 @@ test('walk, camera and weather are independent from collection ownership', async
   const ocean = page.getByRole('region', { name: 'Interactive island' }),
     walker = page.getByRole('img', { name: 'Island explorer' });
   await expect(walker).toHaveAttribute('data-cell', '30');
+  const buildingDepth = await page
+    .locator('[data-world-cell="31"]')
+    .evaluate((el) => Number(getComputedStyle(el).zIndex));
+  expect(
+    await walker.evaluate((el) => Number(getComputedStyle(el).zIndex)),
+  ).toBeLessThan(buildingDepth);
   await page
     .getByRole('button', { name: 'Cell 33: empty', exact: true })
     .click();
-  await expect(walker).toHaveAttribute('data-cell', '32'); // Takes a route around the building at 31.
+  await expect(walker).toHaveAttribute('data-cell', '32');
+  expect(
+    await walker.evaluate((el) => Number(getComputedStyle(el).zIndex)),
+  ).toBeGreaterThan(buildingDepth); // Takes a route around the building at 31.
   await ocean.focus();
   await page.keyboard.press('ArrowRight');
   await expect(walker).toHaveAttribute('data-cell', '33');
@@ -129,8 +157,10 @@ test('walk, camera and weather are independent from collection ownership', async
   await page.mouse.move(box.x + 90, box.y + 210, { steps: 8 });
   await page.mouse.up();
   expect(await camera.getAttribute('style')).not.toBe(before);
+  await expect(ocean).toHaveAttribute('data-follow', 'false');
   await page.getByRole('button', { name: 'Reset camera' }).click();
   await expect(page.locator('#zoom-value')).toHaveText('100%');
+  await expect(ocean).toHaveAttribute('data-follow', 'true');
   await page.getByLabel('Weather', { exact: true }).selectOption('2');
   await expect(ocean).toHaveAttribute('data-weather', 'rain');
   await page.getByRole('button', { name: 'Change time of day' }).click();
@@ -177,4 +207,68 @@ test('automatic climate cycles, manual override and reduced motion', async ({
     .click();
   await page.clock.runFor(1000);
   await expect(page.locator('.walker')).toHaveAttribute('data-cell', '25');
+});
+
+test('expanded land keeps old cell addresses and persists new placements', async ({
+  page,
+}) => {
+  await page.addInitScript(() => {
+    Math.random = () => 0;
+  });
+  await page.goto('/');
+  await page.evaluate(() =>
+    localStorage.setItem(
+      'landmark-island-demo-v1',
+      JSON.stringify({
+        version: 1,
+        receipts: [
+          { workspaceId: 'legacy', landmark: 'eiffel', at: '2026-11-05' },
+        ],
+        placements: [{ landmark: 'eiffel', cell: 0 }],
+      }),
+    ),
+  );
+  await page.reload();
+  await expect(
+    page.getByRole('button', { name: 'Cell 1: Eiffel Tower', exact: true }),
+  ).toBeAttached();
+  await page.getByRole('button', { name: 'Demo expedition' }).click();
+  await page.locator('[data-landmark=eiffel]').click();
+  await page.getByRole('button', { name: 'Show whole island' }).click();
+  const destination = landTiles.find(
+    (t) => t.id >= 36 && t.kind === 'grass' && t.col > 16 && t.row > 15,
+  )!;
+  await page
+    .getByRole('button', {
+      name: `Cell ${destination.id + 1}: empty`,
+      exact: true,
+    })
+    .click();
+  await expect(
+    page.getByRole('button', {
+      name: `Cell ${destination.id + 1}: Eiffel Tower`,
+      exact: true,
+    }),
+  ).toBeAttached();
+  await page.reload();
+  await expect(
+    page.getByRole('button', { name: 'Cell 1: Eiffel Tower', exact: true }),
+  ).toBeAttached();
+  await expect(
+    page.getByRole('button', {
+      name: `Cell ${destination.id + 1}: Eiffel Tower`,
+      exact: true,
+    }),
+  ).toBeAttached();
+  await expect(page.locator('[data-landmark=eiffel]')).toContainText(
+    'Owned ×2 · 0 available',
+  );
+  await page.getByRole('button', { name: 'Show whole island' }).click();
+  await page.screenshot({
+    path: 'test-results/landmark-island/large-island-demo.png',
+    animations: 'disabled',
+    fullPage: true,
+  });
+  await page.getByRole('button', { name: 'Follow explorer' }).click();
+  await expect(page.locator('.ocean')).toHaveAttribute('data-follow', 'true');
 });

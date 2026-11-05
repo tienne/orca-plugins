@@ -1,15 +1,18 @@
 import { route } from './walk';
 import type { State } from './game';
+import {
+  at,
+  tiles,
+  landTiles,
+  project,
+  solidProps,
+  WORLD_W,
+  WORLD_H,
+} from './world';
+import { minimap } from './terrain-art';
 const weatherNames = ['Sunny', 'Cloudy', 'Rain', 'Snow'] as const;
 const phases = ['Day', 'Sunset', 'Night', 'Dawn'] as const;
 const person = `<svg viewBox="0 0 40 60" aria-hidden="true"><ellipse cx="20" cy="55" rx="14" ry="4" fill="#153b4d55"/><g class="walker-body"><path class="leg left-leg" d="M15 40v12" stroke="#344e63" stroke-width="6" stroke-linecap="round"/><path class="leg right-leg" d="M25 40v12" stroke="#344e63" stroke-width="6" stroke-linecap="round"/><rect x="9" y="23" width="24" height="20" rx="6" fill="#b16a3d"/><rect x="11" y="23" width="18" height="20" rx="6" fill="#edb55d"/><path d="M9 29l-3 10M31 29l3 10" stroke="#edc1a1" stroke-width="5" stroke-linecap="round"/><circle cx="20" cy="17" r="10" fill="#edc1a1"/><path d="M10 14q0-13 10-13t10 13" fill="#4c8e79"/><path d="M5 14h30" stroke="#276f61" stroke-width="5" stroke-linecap="round"/><circle cx="17" cy="18" r="1" fill="#274955"/><circle cx="24" cy="18" r="1" fill="#274955"/><path d="M18 23q3 2 5-1" fill="none" stroke="#a46a53"/></g></svg>`;
-const tree = `<svg viewBox="0 0 48 64" aria-hidden="true"><path d="M23 53V29" stroke="#896844" stroke-width="5"/><path d="M24 2L8 28h8L3 43h42L32 28h8z" fill="#367d64"/><path d="M24 2v41H3l13-15H8z" fill="#4c9971"/><ellipse cx="24" cy="56" rx="17" ry="4" fill="#203e3433"/></svg>`;
-export const scenery = (cell: number) =>
-  [0, 5, 24, 35].includes(cell)
-    ? `<i class="scenery tree">${tree}</i>`
-    : [3, 8, 19, 26, 33].includes(cell)
-      ? '<i class="scenery flowers">✿</i>'
-      : '';
 export class IslandScene {
   mode: 'walk' | 'build' = 'walk';
   cell = 30;
@@ -19,12 +22,15 @@ export class IslandScene {
   zoom = 1;
   x = 0;
   y = 0;
+  follow = true;
+  private focusX = project(30).x;
+  private focusY = project(30).y;
   private cleanup = () => {};
   markup() {
     return `<div class="scene-controls"><div class="mode-controls" role="group" aria-label="Island mode"><button data-mode="walk" aria-pressed="${this.mode === 'walk'}">Explore island</button><button data-mode="build" aria-pressed="${this.mode === 'build'}">Arrange landmarks</button></div><div class="climate-controls"><label for="weather">Weather</label><select id="weather"><option value="auto" ${this.automatic ? 'selected' : ''}>Auto · island forecast</option>${weatherNames.map((w, i) => `<option value="${i}" ${!this.automatic && this.weather === i ? 'selected' : ''}>${w}</option>`).join('')}</select><button id="daylight" aria-label="Change time of day">${phases[this.phase]}</button></div></div>`;
   }
   layers() {
-    return `<div class="atmosphere" aria-hidden="true"><div class="sun-moon"></div><div class="stars">✦　　　·　　　　✧<br>　　✧　　　　✦　　　·</div><div class="cloud cloud-one"></div><div class="cloud cloud-two"></div><div class="cloud cloud-three"></div><div class="precipitation">${Array.from({ length: 32 }, (_, i) => `<i style="--x:${(i * 37) % 100}%;--delay:-${i * 0.31}s;--speed:${1 + (i % 5) * 0.25}s"></i>`).join('')}</div><div class="birds">⌁　⌁</div></div><div class="scene-hud"><span class="forecast"></span><span class="scene-location">YOUR LITTLE ESCAPE</span></div><div class="camera-controls" role="group" aria-label="Island camera"><button id="zoom-out" aria-label="Zoom out">−</button><span id="zoom-value">100%</span><button id="zoom-in" aria-label="Zoom in">＋</button><button id="camera-reset" aria-label="Reset camera">↺</button></div><div class="walk-controls" role="group" aria-label="Walk controls"><button data-step="-6" aria-label="Walk north">↑</button><button data-step="-1" aria-label="Walk west">←</button><button data-step="6" aria-label="Walk south">↓</button><button data-step="1" aria-label="Walk east">→</button></div><p class="walk-hint" aria-live="polite"></p>`;
+    return `<div class="atmosphere" aria-hidden="true"><div class="sun-moon"></div><div class="stars">✦　　　·　　　　✧<br>　　✧　　　　✦　　　·</div><div class="cloud cloud-one"></div><div class="cloud cloud-two"></div><div class="cloud cloud-three"></div><div class="precipitation">${Array.from({ length: 32 }, (_, i) => `<i style="--x:${(i * 37) % 100}%;--delay:-${i * 0.31}s;--speed:${1 + (i % 5) * 0.25}s"></i>`).join('')}</div><div class="birds">⌁　⌁</div></div><div class="scene-hud"><span class="forecast"></span><span class="scene-location">YOUR LITTLE ESCAPE</span></div>${minimap()}<div class="camera-controls" role="group" aria-label="Island camera"><button id="zoom-out" aria-label="Zoom out">−</button><span id="zoom-value">100%</span><button id="zoom-in" aria-label="Zoom in">＋</button><button id="follow-player" aria-label="Follow explorer" aria-pressed="${this.follow}">◎</button><button id="camera-reset" aria-label="Reset camera">↺</button></div><div class="walk-controls" role="group" aria-label="Walk controls"><button data-step="north" aria-label="Walk north">↑</button><button data-step="west" aria-label="Walk west">←</button><button data-step="south" aria-label="Walk south">↓</button><button data-step="east" aria-label="Walk east">→</button></div><p class="walk-hint" aria-live="polite"></p>`;
   }
   avatar() {
     return `<div class="walker" role="img" aria-label="Island explorer">${person}</div>`;
@@ -38,32 +44,50 @@ export class IslandScene {
     const camera = ocean.querySelector<HTMLElement>('.camera')!,
       walker = ocean.querySelector<HTMLElement>('.walker')!,
       hint = ocean.querySelector<HTMLElement>('.walk-hint')!;
-    const blocked = new Set(state.placements.map((p) => p.cell));
+    const blocked = new Set([
+      ...solidProps,
+      ...state.placements.map((p) => p.cell),
+    ]);
     let stepTimer: ReturnType<typeof setTimeout> | undefined,
       ticks = 0;
     let walking = false;
-    if (blocked.has(this.cell))
-      this.cell =
-        Array.from({ length: 36 }, (_, i) => i).find((c) => !blocked.has(c)) ??
-        -1;
-    if (this.cell < 0 && blocked.size < 36)
-      this.cell = Array.from({ length: 36 }, (_, i) => i).find(
-        (c) => !blocked.has(c),
-      )!;
+    if (this.cell < 0 || blocked.has(this.cell))
+      this.cell = landTiles.find((t) => !blocked.has(t.id))?.id ?? -1;
+    const updateCamera = () => {
+      this.zoom = Math.max(0.12, Math.min(1.8, this.zoom));
+      if (this.follow && this.cell >= 0) {
+        const p = project(this.cell);
+        this.focusX = p.x;
+        this.focusY = p.y;
+      }
+      const bound = WORLD_W * this.zoom * 0.6;
+      this.x = Math.max(-bound, Math.min(bound, this.x));
+      this.y = Math.max(
+        -WORLD_H * this.zoom * 0.6,
+        Math.min(WORLD_H * this.zoom * 0.6, this.y),
+      );
+      camera.style.transform = `translate(${ocean.clientWidth / 2 - this.focusX * this.zoom + this.x}px,${ocean.clientHeight * 0.5 - this.focusY * this.zoom + this.y}px) scale(${this.zoom})`;
+      root.querySelector('#zoom-value')!.textContent =
+        `${Math.round(this.zoom * 100)}%`;
+      root
+        .querySelector('#follow-player')!
+        .setAttribute('aria-pressed', String(this.follow));
+      ocean.dataset.follow = String(this.follow);
+    };
     const position = () => {
       walker.hidden = this.cell < 0;
       walker.dataset.cell = String(this.cell);
-      walker.style.left = `${(((this.cell % 6) + 0.5) * 100) / 6}%`;
-      walker.style.top = `${((Math.floor(this.cell / 6) + 0.5) * 100) / 6}%`;
-    };
-    const updateCamera = () => {
-      this.zoom = Math.max(0.7, Math.min(2, this.zoom));
-      const bound = ocean.clientWidth * 0.55;
-      this.x = Math.max(-bound, Math.min(bound, this.x));
-      this.y = Math.max(-160, Math.min(160, this.y));
-      camera.style.transform = `translate(${this.x}px,${this.y}px) scale(${this.zoom})`;
-      root.querySelector('#zoom-value')!.textContent =
-        `${Math.round(this.zoom * 100)}%`;
+      if (this.cell < 0) return;
+      const p = project(this.cell),
+        tile = tiles[this.cell];
+      walker.style.left = `${p.x}px`;
+      walker.style.top = `${p.y}px`;
+      walker.style.zIndex = String(p.depth + 1);
+      const dot = ocean.querySelector('.mini-player')!;
+      dot.setAttribute('cx', String(tile.col * 4 + 2));
+      dot.setAttribute('cy', String(tile.row * 4 + 2));
+      ocean.querySelector('.scene-location')!.textContent = tile.region;
+      updateCamera();
     };
     const climate = () => {
       ocean.dataset.weather = weatherNames[this.weather].toLowerCase();
@@ -143,40 +167,58 @@ export class IslandScene {
     root.querySelector<HTMLButtonElement>('#camera-reset')!.onclick = () => {
       this.zoom = 1;
       this.x = this.y = 0;
+      this.follow = true;
       updateCamera();
+    };
+    root.querySelector<HTMLButtonElement>('#follow-player')!.onclick = () => {
+      this.follow = true;
+      this.x = this.y = 0;
+      updateCamera();
+    };
+    root.querySelector<HTMLButtonElement>('#overview')!.onclick = () => {
+      this.follow = false;
+      this.focusX = WORLD_W / 2;
+      this.focusY = WORLD_H / 2 - 30;
+      this.x = this.y = 0;
+      this.zoom = Math.min(
+        (ocean.clientWidth - 45) / WORLD_W,
+        (ocean.clientHeight - 110) / WORLD_H,
+      );
+      updateCamera();
+    };
+    const step = (direction: string) => {
+      if (this.cell < 0) return;
+      const delta: Record<string, [number, number]> = {
+        north: [0, -1],
+        south: [0, 1],
+        west: [-1, 0],
+        east: [1, 0],
+      };
+      const [dx, dy] = delta[direction],
+        tile = tiles[this.cell],
+        goal = at(tile.col + dx, tile.row + dy);
+      if (goal !== undefined) walk(goal);
     };
     root
       .querySelectorAll<HTMLButtonElement>('[data-step]')
-      .forEach((b) => (b.onclick = () => step(Number(b.dataset.step))));
-    const step = (delta: number) => {
-      const goal = this.cell + delta;
-      if (
-        this.cell >= 0 &&
-        goal >= 0 &&
-        goal < 36 &&
-        Math.abs((this.cell % 6) - (goal % 6)) +
-          Math.abs(Math.floor(this.cell / 6) - Math.floor(goal / 6)) ===
-          1
-      )
-        walk(goal);
-    };
+      .forEach((b) => (b.onclick = () => step(b.dataset.step!)));
     ocean.addEventListener(
       'keydown',
       (e) => {
         if (e.target !== ocean) return;
-        const delta: Record<string, number> = {
-          ArrowUp: -6,
-          w: -6,
-          W: -6,
-          ArrowDown: 6,
-          s: 6,
-          S: 6,
-          ArrowLeft: -1,
-          a: -1,
-          A: -1,
-          ArrowRight: 1,
-          d: 1,
-          D: 1,
+        const delta: Record<string, string> = {
+          ArrowUp: 'north',
+          w: 'north',
+          W: 'north',
+          ArrowDown: 'south',
+          s: 'south',
+          S: 'south',
+          ArrowLeft: 'west',
+          a: 'west',
+          A: 'west',
+          ArrowRight: 'east',
+          d: 'east',
+          D: 'east',
         };
         if (e.key in delta && this.mode === 'walk') {
           e.preventDefault();
@@ -200,7 +242,9 @@ export class IslandScene {
       'pointerdown',
       (e) => {
         if (
-          (e.target as Element).closest('.camera-controls,.walk-controls') ||
+          (e.target as Element).closest(
+            '.camera-controls,.walk-controls,.minimap',
+          ) ||
           e.button !== 0
         )
           return;
@@ -233,6 +277,7 @@ export class IslandScene {
           }
         }
         if (dragged) {
+          this.follow = false;
           ocean.setPointerCapture(e.pointerId);
           updateCamera();
         }
@@ -258,14 +303,20 @@ export class IslandScene {
     ocean.addEventListener(
       'click',
       (e) => {
-        if ((e.target as Element).closest('.camera-controls,.walk-controls'))
+        if (
+          (e.target as Element).closest(
+            '.camera-controls,.walk-controls,.minimap',
+          )
+        )
           return;
         if (dragged) {
           e.stopImmediatePropagation();
           dragged = false;
           return;
         }
-        const cell = (e.target as Element).closest<HTMLElement>('[data-cell]');
+        const cell = (e.target as Element).closest<HTMLElement>(
+          'button[data-cell]',
+        );
         if (this.mode === 'walk' && cell) {
           e.stopImmediatePropagation();
           walk(Number(cell.dataset.cell));

@@ -1,4 +1,5 @@
 import landmarks from './landmarks.json';
+import { isLand } from './world';
 export { landmarks };
 export const weights = { common: 70, rare: 23, epic: 6, legendary: 1 };
 export type Placement = { landmark: string; cell: number };
@@ -42,9 +43,7 @@ export function validate(value: unknown): State {
   for (const p of s.placements) {
     if (
       !p ||
-      !Number.isInteger(p.cell) ||
-      p.cell < 0 ||
-      p.cell >= 36 ||
+      !isLand(p.cell) ||
       cells.has(p.cell) ||
       !landmarks.some((l) => l.id === p.landmark)
     )
@@ -112,8 +111,7 @@ export class Game {
   place(input: unknown) {
     return this.queue(async (s) => {
       const p = input as { cell: number; landmark?: string; from?: number };
-      if (!p || !Number.isInteger(p.cell) || p.cell < 0 || p.cell >= 36)
-        throw Error('Invalid island cell');
+      if (!p || !isLand(p.cell)) throw Error('Invalid island cell');
       if (p.from !== undefined) {
         if (!Number.isInteger(p.from) || p.from === p.cell)
           throw Error('Choose another cell');

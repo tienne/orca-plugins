@@ -2,11 +2,11 @@
 
 English · [한국어](README.ko.md)
 
-An unpublished Orca plugin prototype. New worktree creation is an expedition: collect a real landmark, then place it on your fictional 6 × 6 island. Requires Orca 1.4.248+.
+An unpublished Orca plugin prototype. New worktree creation is an expedition: collect a real landmark, then place it on your fictional 24 × 24 island world with 318 land tiles. Requires Orca 1.4.248+.
 
 ## Play
 
-Open the Landmark Island panel. In **Explore island**, click grass to walk around buildings, or focus the island and use Arrow keys / WASD. On-screen direction buttons also work. Drag the scene to pan; use + / −, Ctrl/Cmd + wheel, or a two-finger pinch to zoom (70–200%). Reset camera restores the starting view.
+Open the Landmark Island panel. In **Explore island**, click grass to walk around buildings, or focus the island and use Arrow keys / WASD. On-screen direction buttons also work. The camera follows the explorer. Drag to pan freely; use + / −, Ctrl/Cmd + wheel, or a two-finger pinch to zoom (12–180%). **Whole island** on the minimap fits the island into view; **Follow explorer** recenters on the character. Reset camera restores 100% zoom and following.
 
 **Arrange landmarks** switches to editing. Selecting a collection card also enters this mode. Select an owned landmark and an empty cell to place it. Select a placed landmark, then an empty cell to move it, or **Return to collection** to remove it. Copies use owned quantities. **World Map** shows real geographic locations and unique country totals, regardless of island placements. Refresh reads the save without awarding anything.
 
@@ -14,11 +14,17 @@ There are 12 landmarks: 6 common, 3 rare, 2 epic and 1 legendary. Each draw firs
 
 Only `workspace.created` with `kind: worktree` awards a reward. Folder creation, chats, refreshes, workspace switching and app launch do not. A single worker queue serializes receipts and placements. The schema-versioned save records one receipt per workspace ID, so repeated delivery and worker restarts do not award twice. Saved rewards survive worktree removal. No paths from events are accessed, and no Git operations occur.
 
+## Expanded land and existing saves
+
+Original cell IDs 0–35 keep their identity and relative 6 × 6 layout at the center (columns/rows 9–14) of the larger map. New IDs address the surrounding terrain. Existing receipts and placements are read unchanged; there is no reset or coordinate migration. New land placements use the same serialized, versioned save and quantity checks. Water is rejected by the worker, not just hidden by the UI. Older plugin builds cannot read placements outside their 36-cell limit: use this build for expanded saves.
+
+At default zoom the camera shows a local area of the island; use the minimap for an overview, then follow the explorer again. Movement and camera state are still session-only. No expansion purchases or unlock requirements are implemented.
+
 ## A living island
 
-The local scene includes a walking explorer, trees, flowers, a sandy shoreline, drifting clouds and a bobbing boat. **Weather** offers Sunny, Cloudy, Rain and Snow. Auto cycles weather every 30 seconds and advances Day → Sunset → Night → Dawn every 60 seconds while the panel is visible. Select a manual weather option to stop automatic weather/time progression; the time-of-day button works in either mode. This is fictional weather, without location access, a forecast service, or runtime network calls.
+The fixed isometric world has a central landmark commons, woods, meadows, a lagoon and graded highland terraces. Tiles have visible side faces; the explorer, buildings and trees render in depth order so they can pass in front of or behind one another. The scene includes flowers, a sandy shoreline, drifting clouds and a bobbing boat. This is a local 2.5D vector scene, not a 3D physics engine. **Weather** offers Sunny, Cloudy, Rain and Snow. Auto cycles weather every 30 seconds and advances Day → Sunset → Night → Dawn every 60 seconds while the panel is visible. Select a manual weather option to stop automatic weather/time progression; the time-of-day button works in either mode. This is fictional weather, without location access, a forecast service, or runtime network calls.
 
-Walking, camera and climate are session-only visual state: reopening/reloading resets them, while inventory and landmark layout remain saved. Walking never awards items or changes placements. Buildings block routes; a completely filled island has no walking space until a building is returned. Decorative plants are passable. Pan/zoom is limited and can be reset. Background panels pause climate advancement. Reduced-motion preferences disable ambient animation and movement transitions. There is no sound.
+Walking, camera and climate are session-only visual state: reopening/reloading resets them, while inventory and landmark layout remain saved. Walking never awards items or changes placements. Buildings block routes; a completely filled island has no walking space until a building is returned. Trees and rocks block walking; flowers are passable. Placing a landmark on vegetation replaces that decoration visually; removing it restores the vegetation. Pan/zoom is limited and can be reset. Background panels pause climate advancement. Reduced-motion preferences disable ambient animation and movement transitions. There is no sound.
 
 ## Local preview and verification
 
@@ -44,13 +50,13 @@ One plugin-local collection is shared across repositories/worktrees on this host
 
 Map data: [Natural Earth](https://www.naturalearthdata.com/about/terms-of-use/), public domain. Landmark coordinates: Wikidata CC0; entity source links are included in the bundled catalog. See [geography attribution](licenses/geography.txt). Geometry is generalized, and small countries may not appear. Fictional island cells are unrelated to geographic coordinates.
 
-Deferred: decoration economy, expansion, cloud sync, trading, localization and a 120-landmark collection. Nothing is published.
+Deferred: decoration economy, further terrain expansion, cloud sync, trading, localization and a 120-landmark collection. Nothing is published.
 
 ## Verification record (2026-11-05)
 
 - `pnpm nx run landmark-island:typecheck`: passed.
-- `pnpm nx run landmark-island:test`: passed the worker/state assertions above.
-- `pnpm nx run landmark-island:ui-test --output-style=static`: 6 browser tests passed, including walking around buildings, keyboard controls, camera pan/zoom/reset, automatic/manual climate, reduced motion, ownership isolation and all cell bounds inside the mobile ocean; screenshots inspected under `test-results/landmark-island/`.
+- `pnpm nx run landmark-island:test`: passed the worker/state assertions above, stable original cell addresses, water/boundary rejection, expanded placement persistence, and reachability of all unoccupied land around terrain obstacles.
+- `pnpm nx run landmark-island:ui-test --output-style=static`: 7 browser tests passed, including walking around buildings, depth order, keyboard controls, camera follow/pan/zoom/reset, minimap overview on narrow screens, automatic/manual climate, reduced motion, ownership isolation and persistence of both original and expanded land placements; screenshots inspected under `test-results/landmark-island/`.
 - `pnpm nx run git-logs:build --skipNxCache --output-style=static`: passed with the shared builder; Git Logs source is unchanged. Its typecheck passed and its worker/artifact suite passed 49 tests.
 - Git Logs UI regression run was attempted but its server timed out: port 4173 is occupied by an older preview in another worktree returning HTTP 404. That process was not stopped or changed.
 - `pnpm validate`: both packaged manifests passed the installed Orca validator. `orca plugin inspect dist/plugins/landmark-island --json` reports valid and `needsApproval: true`.
