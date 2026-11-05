@@ -20,7 +20,7 @@ try {
     format: 'esm',
     outExtension: { '.js': '.mjs' },
   });
-  const { Game, draw, validate } = await import(
+  const { Game, draw, validate, availableTickets } = await import(
     pathToFileURL(join(dir, 'game.mjs'))
   );
   const { route } = await import(pathToFileURL(join(dir, 'walk.mjs')));
@@ -76,12 +76,26 @@ try {
       game.acquire({ workspaceId: `w${i % 40}`, kind: 'worktree' }),
     ),
   );
-  assert.equal(value.receipts.length, 40);
+  assert.equal(value.tickets.length, 40);
+  assert.equal(value.receipts.length, 0);
+  assert.equal(availableTickets(value).length, 40);
   assert.equal(writes, 40);
+  await assert.rejects(game.redeem({ ticketId: 'missing' }));
+  await assert.rejects(game.redeem(null));
+  await Promise.all(
+    Array.from({ length: 80 }, (_, i) =>
+      game.redeem({ ticketId: `w${i % 40}` }),
+    ),
+  );
+  assert.equal(value.receipts.length, 40);
+  assert.equal(writes, 80);
+  assert.equal(availableTickets(value).length, 0);
   assert.ok(value.receipts.every((r) => r.landmark === 'eiffel'));
   game = new Game(store, () => 0.999);
   await game.acquire({ workspaceId: 'w0', kind: 'worktree' });
-  assert.equal(writes, 40);
+  await game.redeem({ ticketId: 'w0' });
+  assert.equal(value.receipts[0].landmark, 'eiffel');
+  assert.equal(writes, 80);
   await game.place({ cell: 0, landmark: 'eiffel' });
   await game.place({ cell: 1, from: 0 });
   assert.deepEqual(value.placements, [{ cell: 1, landmark: 'eiffel' }]);
@@ -93,7 +107,27 @@ try {
       landmark: 'eiffel',
     })),
   });
+  assert.equal(oldSave.version, 2);
+  assert.equal(availableTickets(oldSave).length, 0);
   assert.equal(oldSave.placements.length, 36);
+  let legacy = {
+    version: 1,
+    receipts: value.receipts,
+    placements: value.placements,
+  };
+  const legacyGame = new Game({
+    read: async () => legacy,
+    write: async (s) => {
+      legacy = structuredClone(s);
+    },
+  });
+  await legacyGame.acquire({ workspaceId: 'w0', kind: 'worktree' });
+  assert.equal(legacy.version, 1); // reads / duplicate delivery do not rewrite saves
+  await legacyGame.acquire({ workspaceId: 'new-worktree', kind: 'worktree' });
+  assert.equal(legacy.version, 2);
+  assert.equal(availableTickets(legacy).length, 1);
+  assert.deepEqual(legacy.receipts, value.receipts);
+  assert.deepEqual(legacy.placements, value.placements);
   assert.deepEqual(
     oldSave.placements.map((p) => p.cell),
     Array.from({ length: 36 }, (_, i) => i),
@@ -123,7 +157,43 @@ try {
   assert.equal(value.receipts.length, 40);
   fail = false;
   await game.acquire({ workspaceId: 'failed', kind: 'worktree' });
+  assert.equal(value.receipts.length, 40);
+  assert.equal(value.tickets.length, 41);
+  fail = true;
+  await assert.rejects(game.redeem({ ticketId: 'failed' }));
+  assert.equal(availableTickets(value).length, 1);
+  assert.equal(value.receipts.length, 40);
+  fail = false;
+  await game.redeem({ ticketId: 'failed' });
   assert.equal(value.receipts.length, 41);
+  assert.equal(availableTickets(value).length, 0);
+  // A lost response after storage committed is safe to retry after restart.
+  let responseLost = false;
+  const ambiguous = new Game(
+    {
+      read: store.read,
+      write: async (s) => {
+        await store.write(s);
+        if (
+          s.receipts.some((r) => r.workspaceId === 'ambiguous') &&
+          !responseLost
+        ) {
+          responseLost = true;
+          throw Error('response lost');
+        }
+      },
+    },
+    () => 0,
+  );
+  await ambiguous.acquire({ workspaceId: 'ambiguous', kind: 'worktree' });
+  await assert.rejects(ambiguous.redeem({ ticketId: 'ambiguous' }));
+  const committed = structuredClone(value);
+  await new Game(store, () => 0.999).redeem({ ticketId: 'ambiguous' });
+  assert.deepEqual(value, committed);
+  assert.throws(() => validate({ ...value, tickets: [] }));
+  assert.throws(() =>
+    validate({ ...value, tickets: [...value.tickets, value.tickets[0]] }),
+  );
   for (const [r, id] of [
     [0, 'eiffel'],
     [0.7, 'taj'],
@@ -163,7 +233,11 @@ try {
     log: () => {},
   });
   assert.deepEqual(Object.keys(events), ['workspace.created']);
-  assert.deepEqual(Object.keys(handlers), ['island.read', 'island.place']);
+  assert.deepEqual(Object.keys(handlers), [
+    'island.read',
+    'island.draw',
+    'island.place',
+  ]);
   await events['workspace.created']({
     workspaceId: 'background',
     kind: 'worktree',
@@ -174,6 +248,11 @@ try {
     kind: 'worktree',
   });
   assert.equal((await handlers['island.read']()).receipts.length, 42);
+  assert.equal(availableTickets(await handlers['island.read']()).length, 1);
+  await handlers['island.draw']({ ticketId: 'background' });
+  await handlers['island.draw']({ ticketId: 'background' });
+  assert.equal((await handlers['island.read']()).receipts.length, 43);
+  assert.equal(availableTickets(await handlers['island.read']()).length, 0);
   assert.ok(posted);
   console.log(
     'PASS: concurrent events, duplicates, restart deduplication, placement/movement/removal, validation, failed-save recovery, tier boundaries, worker wiring without panels',

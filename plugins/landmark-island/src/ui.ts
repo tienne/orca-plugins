@@ -1,4 +1,13 @@
-import { Game, empty, landmarks, quantity, weights, type State } from './game';
+import {
+  Game,
+  empty,
+  availableTickets,
+  landmarks,
+  quantity,
+  weights,
+  type State,
+} from './game';
+import { revealDiscovery } from './reveal';
 import { art } from './art';
 import { IslandScene } from './scene';
 import { terrain } from './terrain-art';
@@ -37,7 +46,8 @@ let state: State = empty(),
   selected = '',
   from: number | undefined,
   busy = false,
-  message = 'Every new worktree is a new expedition.',
+  message =
+    'New worktree → one exploration ticket. Use a ticket to discover a landmark.',
   error = '';
 const root = document.querySelector<HTMLDivElement>('#app')!;
 const escape = (s: string) =>
@@ -67,7 +77,7 @@ function showDetails(id: string) {
   const rarity = rarities.find((r) => r.id === landmark.tier)!;
   detail.dataset.tier = rarity.id;
   detail.dataset.owned = String(quantity(state, id) > 0);
-  detail.innerHTML = `<button class="detail-close" aria-label="Close landmark details" autofocus>×</button><div class="detail-art">${art(id)}</div><p class="detail-country">${escape(landmark.country)} · ${escape(landmark.region)}</p><h2 id="detail-title">${escape(landmark.name)}</h2><div class="detail-rarity">${rarityBadge(landmark.tier)}<p>${weights[rarity.id]}% tier chance per expedition · ${landmarks.filter((l) => l.tier === rarity.id).length} landmarks in this tier</p></div><p id="detail-description">${escape(landmark.description)}</p><p class="detail-source">Read more: <a href="${escape(landmark.descriptionSource)}" target="_blank" rel="noopener noreferrer">${escape(landmark.descriptionSourceName)} ↗</a></p>`;
+  detail.innerHTML = `<button class="detail-close" aria-label="Close landmark details" autofocus>×</button><div class="detail-art">${art(id)}</div><p class="detail-country">${escape(landmark.country)} · ${escape(landmark.region)}</p><h2 id="detail-title">${escape(landmark.name)}</h2><div class="detail-rarity">${rarityBadge(landmark.tier)}<p>${weights[rarity.id]}% tier chance per draw · ${landmarks.filter((l) => l.tier === rarity.id).length} landmarks in this tier</p></div><p id="detail-description">${escape(landmark.description)}</p><p class="detail-source">Read more: <a href="${escape(landmark.descriptionSource)}" target="_blank" rel="noopener noreferrer">${escape(landmark.descriptionSourceName)} ↗</a></p>`;
   detail.querySelector<HTMLButtonElement>('.detail-close')!.onclick = () =>
     detail.close();
   if (!detail.open) detail.showModal();
@@ -77,8 +87,12 @@ async function request(name: string, input: unknown = {}) {
     ? bridge.request(name, input)
     : name === 'island.read'
       ? game.snapshot()
-      : game.place(input);
+      : name === 'island.draw'
+        ? game.redeem(input)
+        : game.place(input);
 }
+let loaded = false;
+let pendingTicket: string | undefined;
 async function run(action: () => Promise<State>) {
   if (busy) return;
   busy = true;
@@ -87,9 +101,12 @@ async function run(action: () => Promise<State>) {
   try {
     const next = await action();
     const last = next.receipts.at(-1);
-    if (last && next.receipts.length > state.receipts.length)
+    if (loaded && last && next.receipts.length > state.receipts.length)
       message = `${quantity(next, last.landmark) > 1 ? 'Duplicate discovered' : 'New discovery'}: ${landmarks.find((l) => l.id === last.landmark)!.name} · owned ×${quantity(next, last.landmark)}`;
+    if (loaded && next.tickets.length > state.tickets.length)
+      message = 'Exploration ticket received. A new destination awaits.';
     state = next;
+    loaded = true;
   } catch (e) {
     error = String(e);
   } finally {
@@ -97,12 +114,48 @@ async function run(action: () => Promise<State>) {
     render();
   }
 }
+async function useTicket() {
+  if (busy) return;
+  const ticketId = pendingTicket ?? availableTickets(state)[0]?.workspaceId;
+  if (!ticketId) return;
+  pendingTicket = ticketId;
+  busy = true;
+  error = '';
+  render();
+  try {
+    const next = await request('island.draw', { ticketId });
+    const reward = next.receipts.find((r) => r.workspaceId === ticketId);
+    if (!reward)
+      throw Error(
+        'Draw result was not returned. Retry to recover this ticket.',
+      );
+    state = next;
+    pendingTicket = undefined;
+    const landmark = landmarks.find((l) => l.id === reward.landmark)!;
+    const count = quantity(state, landmark.id);
+    message = `${count > 1 ? 'Duplicate discovered' : 'New discovery'}: ${landmark.name} · owned ×${count}`;
+    revealDiscovery(landmark, count, rarityBadge(landmark.tier), () => {
+      selected = landmark.id;
+      from = undefined;
+      scene.mode = 'build';
+      view = 'island';
+      render();
+      root.querySelector<HTMLElement>('.ocean')?.focus({ preventScroll: true });
+    });
+  } catch (e) {
+    error = `${String(e)} · Retry discovery to recover the same ticket.`;
+  } finally {
+    busy = false;
+    render();
+  }
+}
 function render() {
+  const tickets = availableTickets(state).length;
   const owned = landmarks.filter((l) => quantity(state, l.id) > 0);
   const latest = landmarks.find(
     (l) => l.id === state.receipts.at(-1)?.landmark,
   );
-  root.innerHTML = `<header><div class="book-title"><div class="eyebrow">A worktree travel journal ${demo ? '<b>DEMO · LOCAL FIXTURES</b>' : ''}</div><h1>Landmark Island</h1></div><div class="stats"><strong>${owned.length}<small> / 12 discovered</small></strong><strong>${state.receipts.length}<small> expeditions</small></strong><strong>${new Set(owned.map((l) => l.code)).size}<small> countries</small></strong></div></header><nav><button data-view="island" aria-pressed="${view === 'island'}">My Island</button><button data-view="map" aria-pressed="${view === 'map'}">World Map</button>${demo ? '<button id="expedition">＋ Demo expedition</button>' : ''}<button id="refresh">Refresh</button></nav><p class="notice ${latest ? 'discovery-notice' : ''}" ${latest ? `data-tier="${latest.tier}"` : ''} role="status">${latest ? rarityBadge(latest.tier) : ''}<span>${escape(message)}</span></p>${error ? `<p role="alert">${escape(error)}</p>` : ''}
+  root.innerHTML = `<header><div class="book-title"><div class="eyebrow">A worktree travel journal ${demo ? '<b>DEMO · LOCAL FIXTURES</b>' : ''}</div><h1>Landmark Island</h1></div><div class="stats"><strong>${owned.length}<small> / 12 discovered</small></strong><strong>${state.receipts.length}<small> discoveries</small></strong><strong>${new Set(owned.map((l) => l.code)).size}<small> countries</small></strong></div></header><nav><button data-view="island" aria-pressed="${view === 'island'}">My Island</button><button data-view="map" aria-pressed="${view === 'map'}">World Map</button>${demo ? '<button id="expedition">＋ Demo worktree</button>' : ''}<button id="refresh">Refresh</button></nav><section class="ticket-desk" aria-label="Exploration tickets"><div class="ticket-stamp" aria-hidden="true">✦</div><div><small>YOUR NEXT CHAPTER</small><h2><span id="ticket-count">${tickets}</span> exploration ticket${tickets === 1 ? '' : 's'}</h2><p>Create a worktree, earn a ticket, discover somewhere new.</p></div><button id="draw-ticket" ${!loaded || (!tickets && !pendingTicket) ? 'disabled' : ''}>${pendingTicket ? 'Retry discovery' : 'Use ticket · Discover'}</button></section><p class="notice ${latest ? 'discovery-notice' : ''}" ${latest ? `data-tier="${latest.tier}"` : ''} role="status">${latest ? rarityBadge(latest.tier) : ''}<span>${escape(message)}</span></p>${error ? `<p role="alert">${escape(error)}</p>` : ''}
  ${
    view === 'island'
      ? `<section class="island-section"><div class="section-title"><h2><small>Chapter I</small> A place to wander</h2><span>${landTiles.length} little places to call home</span></div><p>${from !== undefined ? 'Choose an empty cell to move the landmark.' : selected ? `Place ${escape(landmarks.find((l) => l.id === selected)!.name)} on an empty cell.` : scene.mode === 'walk' ? 'Take a stroll, watch the weather, and make yourself at home.' : 'Select a collected landmark below, then choose a cell.'}</p>${scene.markup()}<div class="ocean" tabindex="0" role="region" aria-label="Interactive island"><div class="camera"><div class="island">${terrain(state, from)}${scene.avatar()}</div><div class="sailboat" aria-hidden="true"><svg viewBox="0 0 90 90"><path d="M5 73q15-4 29 0m10 7q18-4 35 0" fill="none" stroke="#e7eedb" stroke-width="2"/><path d="M13 60q32 7 65-1L65 73H26z" fill="#ad7355" stroke="#655542" stroke-width="2"/><path d="M46 60V7" stroke="#655542" stroke-width="2"/><path d="M42 13Q26 29 20 50l22-3z" fill="#fcf3d8" stroke="#8c8268"/><path d="M50 21l20 29-20 2z" fill="#d9b07d" stroke="#8c8268"/><path d="M47 8l14 3-14 6" fill="#b76550"/></svg></div></div>${scene.layers()}</div>${from !== undefined ? '<div class="tools"><button id="remove">Return to collection</button><button id="cancel">Cancel move</button></div>' : ''}</section>`
@@ -133,7 +186,7 @@ function render() {
       });
     const rarity = rarities.find((r) => r.id === rarityFilter);
     root.querySelector('.rarity-summary')!.textContent = rarity
-      ? `${rarity.numeral} ${rarity.name} · Rarity ${rarity.rank}/4 · ${weights[rarity.id]}% tier chance per expedition · ${owned.filter((l) => l.tier === rarity.id).length} of ${landmarks.filter((l) => l.tier === rarity.id).length} discovered`
+      ? `${rarity.numeral} ${rarity.name} · Rarity ${rarity.rank}/4 · ${weights[rarity.id]}% tier chance per draw · ${owned.filter((l) => l.tier === rarity.id).length} of ${landmarks.filter((l) => l.tier === rarity.id).length} discovered`
       : 'Four rarity tiers · Counts track unique landmarks, not duplicate copies.';
   };
   root
@@ -218,6 +271,8 @@ function render() {
     };
   root.querySelector<HTMLButtonElement>('#refresh')!.onclick = () =>
     void run(() => request('island.read'));
+  root.querySelector<HTMLButtonElement>('#draw-ticket')!.onclick = () =>
+    void useTicket();
   const expedition = root.querySelector<HTMLButtonElement>('#expedition');
   if (expedition)
     expedition.onclick = () =>

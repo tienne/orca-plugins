@@ -2,7 +2,7 @@
 
 English · [한국어](README.ko.md)
 
-An unpublished Orca plugin prototype. New worktree creation is an expedition: collect a real landmark, then place it on your fictional 24 × 24 island world with 318 land tiles. Requires Orca 1.4.248+.
+An unpublished Orca plugin prototype. New worktree creation earns an exploration ticket: use it in the panel to discover a real landmark, then place it on your fictional 24 × 24 island world with 318 land tiles. Requires Orca 1.4.248+.
 
 ## Play
 
@@ -10,9 +10,15 @@ Open the Landmark Island panel. In **Explore island**, click grass to walk aroun
 
 **Arrange landmarks** switches to editing. Selecting a collection card also enters this mode. Select an owned landmark and an empty cell to place it. Select a placed landmark, then an empty cell to move it, or **Return to collection** to remove it. Copies use owned quantities. **World Map** shows real geographic locations and unique country totals, regardless of island placements. Refresh reads the save without awarding anything.
 
-There are 12 landmarks: 6 common, 3 rare, 2 epic and 1 legendary. Each draw first chooses a tier with 70/23/6/1 percent probabilities, then uniformly selects a landmark in that tier. Owned items always remain eligible; duplicates increase quantity. There is no pity, currency, purchase, or completion guarantee. Original miniature vector art is bundled locally.
+There are 12 landmarks: 6 common, 3 rare, 2 epic and 1 legendary. Each draw first chooses a tier with 70/23/6/1 percent probabilities, then uniformly selects a landmark in that tier. Owned items always remain eligible; duplicates increase quantity. Tickets are earned only through worktree creation; there is no purchase, pity, or completion guarantee. Original miniature vector art is bundled locally.
 
-Only `workspace.created` with `kind: worktree` awards a reward. Folder creation, chats, refreshes, workspace switching and app launch do not. A single worker queue serializes receipts and placements. The schema-versioned save records one receipt per workspace ID, so repeated delivery and worker restarts do not award twice. Saved rewards survive worktree removal. No paths from events are accessed, and no Git operations occur.
+Only `workspace.created` with `kind: worktree` earns one ticket. It does not draw a landmark automatically. Folder creation, chats, refreshes, workspace switching and app launch do not earn tickets. Use **Use ticket · Discover** in the panel whenever you want to redeem one. Unused tickets accumulate and survive restarts and worktree removal.
+
+A sealed invitation opens into an illustrated atlas; a light traces a route and the landmark rises from the paper. Discovery / Treasure / Marvel / Wonder reveals take 3 / 3.4 / 4 / 4.6 seconds. Treasure adds blue light, Marvel violet mist, and Wonder golden orbiting stones and a moving miniature. **Skip animation** or Escape reveals the saved result immediately; reduced-motion preferences show it without waiting. The result shows country, rarity and owned quantity, with **Place on island** and **Keep exploring** actions. Escape closes the result.
+
+The worker serializes ticket earning, draws and placements. Ticket identity is the workspace ID. A draw saves its result and ticket consumption together before animation; retrying the same ticket returns the existing reward, including after a lost response or worker restart. A failed storage write does not consume a ticket unless storage actually committed; retry safely recovers that outcome. Reloading during animation keeps the reward in the collection. UI animation never determines randomness. No event paths are accessed and no Git operations occur.
+
+Schema v1 saves are validated and read as v2: existing receipts become already-redeemed tickets, preserving inventory, placements and worktree deduplication without extra tickets. The next successful mutation writes v2 under the existing storage key (`island-v1`, or `landmark-island-demo-v1` in the demo). Reads do not rewrite saves. Older builds cannot read the new schema.
 
 ## Rarity and collection progress
 
@@ -52,7 +58,7 @@ pnpm nx run landmark-island:preview
 pnpm validate
 ```
 
-Open http://127.0.0.1:43187. The browser is visibly labeled **DEMO**; **Demo expedition** simulates a creation event. It uses only `landmark-island-demo-v1` in browser localStorage. Host mode has no manual reward button and reads/writes only through its own worker. Browser demo storage does not touch the Orca save. UI text is English in this prototype.
+Open http://127.0.0.1:43187. The browser is visibly labeled **DEMO**; **Demo worktree** simulates a creation event and earns one ticket. Then choose **Use ticket · Discover**. It uses only `landmark-island-demo-v1` in browser localStorage. Host mode has no manual ticket-grant button and reads/writes only through its own worker. Browser demo storage does not touch the Orca save. UI text is English in this prototype.
 
 The packaged plugin is `dist/plugins/landmark-island`. It needs no runtime downloads. The build validates artifact policy; `pnpm validate` uses Orca's actual manifest validator. Node tests simulate concurrent and repeated events, restart persistence, failed storage, placement limits and worker delivery without panels. Browser tests exercise acquisition, duplicates, island edits, map counts, reloads, narrow layout and light/dark classes. These are fixtures, not live host evidence.
 
@@ -60,7 +66,7 @@ The packaged plugin is `dist/plugins/landmark-island`. It needs no runtime downl
 
 This is a trusted Node worker running with your OS account's access. Its declared capabilities are `workspace:read` and `storage:own`. It does not request Git writes, terminals, agents, notifications, or network services. Authorizing Git Logs does not authorize this identity.
 
-**The plugin has not been loaded or approved in Orca.** After reviewing the artifact and explicitly authorizing execution, use `orca plugin dev load dist/plugins/landmark-island --json` and review the exact approval fingerprint/access returned by Orca. No approval has been performed by this implementation. Live verification must still create a new worktree with the panel closed, open the panel, restart the worker/app, and check that no extra reward appears. Disabled-event replay is not documented: events missed while disabled are not backfilled, and storage failures may lose an event unless it is delivered again. No historical workspace scan runs on launch.
+**The plugin has not been loaded or approved in Orca.** After reviewing the artifact and explicitly authorizing execution, use `orca plugin dev load dist/plugins/landmark-island --json` and review the exact approval fingerprint/access returned by Orca. No approval has been performed by this implementation. Live verification must still create a new worktree with the panel closed, open the panel, restart the worker/app, and check that exactly one ticket appears, spend it in the panel, and confirm restart/repeated delivery does not add another ticket or draw. Disabled-event replay is not documented: events missed while disabled are not backfilled, and storage failures may lose an event unless it is delivered again. No historical workspace scan runs on launch.
 
 One plugin-local collection is shared across repositories/worktrees on this host. It is an offline save, not a cloud account or backup. Clearing plugin data can lose it. Receipts are retained indefinitely for deduplication, so very large saves will eventually encounter host storage/response limits; archiving receipts is not implemented. Future schemas are refused rather than silently overwritten. Multiple independent worker processes writing the same store are outside the prototype contract; the queue assumes Orca's single worker per plugin. Multiple browser demo tabs are not coordinated.
 
@@ -71,8 +77,8 @@ Deferred: decoration economy, further terrain expansion, cloud sync, trading, lo
 ## Verification record (2026-11-05)
 
 - `pnpm nx run landmark-island:typecheck`: passed.
-- `pnpm nx run landmark-island:test`: passed the worker/state assertions above, stable original cell addresses, water/boundary rejection, expanded placement persistence, and reachability of all unoccupied land around terrain obstacles.
-- `pnpm nx run landmark-island:ui-test --output-style=static`: 12 browser tests passed, including live Wonder motion in all three views, unowned/static reduced-motion alternatives, unchanged saves, rarity filters, Wonder/Discovery acquisition badges, all four ordinal scales and accessible rank labels, duplicate-safe collection progress, all 12 country/description pages, unowned reading, modal keyboard/focus/mobile behavior, inspection versus building edits, unfocused pointer-anchored wheel zoom and outside-page scrolling, walking around buildings, depth order, keyboard controls, camera follow/pan/zoom/reset, minimap overview on narrow screens, automatic/manual climate, reduced motion, ownership isolation and persistence of both original and expanded land placements; screenshots inspected under `test-results/landmark-island/`.
+- `pnpm nx run landmark-island:test`: passed ticket/reward atomicity, concurrent deduplication, response-loss recovery, v1 migration without extra tickets, worker draw handling, and the worker/state assertions above, stable original cell addresses, water/boundary rejection, expanded placement persistence, and reachability of all unoccupied land around terrain obstacles.
+- `pnpm nx run landmark-island:ui-test --output-style=static`: 15 browser tests passed, including ticket accumulation, explicit drawing, failed-save retry, repeated-click protection, animation skipping/reduced motion, reload during reveal, mobile results, direct placement, and live Wonder motion in all three views, unowned/static reduced-motion alternatives, unchanged saves, rarity filters, Wonder/Discovery acquisition badges, all four ordinal scales and accessible rank labels, duplicate-safe collection progress, all 12 country/description pages, unowned reading, modal keyboard/focus/mobile behavior, inspection versus building edits, unfocused pointer-anchored wheel zoom and outside-page scrolling, walking around buildings, depth order, keyboard controls, camera follow/pan/zoom/reset, minimap overview on narrow screens, automatic/manual climate, reduced motion, ownership isolation and persistence of both original and expanded land placements; screenshots inspected under `test-results/landmark-island/`.
 - `pnpm nx run git-logs:build --skipNxCache --output-style=static`: passed with the shared builder; Git Logs source is unchanged. Its typecheck passed and its worker/artifact suite passed 49 tests.
 - Git Logs UI regression run was attempted but its server timed out: port 4173 is occupied by an older preview in another worktree returning HTTP 404. That process was not stopped or changed.
 - `pnpm validate`: both packaged manifests passed the installed Orca validator. `orca plugin inspect dist/plugins/landmark-island --json` reports valid and `needsApproval: true`.

@@ -1,0 +1,510 @@
+.ticket-desk {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding: 20px 24px;
+  margin: 18px 0;
+  background: linear-gradient(110deg, #eee3bd, #faf4df);
+  border: 1px solid #bca77b;
+  border-radius: 5px;
+  box-shadow: 0 3px 0 #ae986433;
+  color: #344532;
+}
+.ticket-desk h2 {
+  font-size: 22px;
+  margin: 4px 0;
+}
+.ticket-desk p {
+  margin: 0;
+  font-size: 13px;
+  color: #716747;
+}
+.ticket-desk small {
+  font-size: 10px;
+  letter-spacing: 2px;
+  color: #786746;
+}
+.ticket-stamp {
+  font-size: 34px;
+  color: #886d35;
+  border: 1px dashed #a18c59;
+  padding: 8px 15px;
+  transform: rotate(-8deg);
+}
+.ticket-desk #draw-ticket {
+  margin-left: auto;
+  background: #304f3c;
+  color: #fff5d9;
+  border: 1px solid #304f3c;
+  padding: 13px 20px;
+  white-space: nowrap;
+}
+.ticket-desk #draw-ticket:disabled {
+  opacity: 0.45;
+}
+.discovery-theatre {
+  --reveal-color: #c0ad77;
+  box-sizing: border-box;
+  width: min(760px, calc(100vw - 24px));
+  max-height: calc(100dvh - 24px);
+  padding: 24px 28px 28px;
+  border: 1px solid #a18c59;
+  border-radius: 12px;
+  background: radial-gradient(ellipse at 50% 42%, #304c41, #152e27 72%);
+  color: #f5e8c5;
+  overflow: auto;
+  box-shadow: 0 30px 100px #0009;
+  text-align: center;
+}
+.discovery-theatre::backdrop {
+  background: #091b16d9;
+  backdrop-filter: blur(5px);
+}
+.discovery-theatre[data-tier='rare'] {
+  --reveal-color: #7ed4ed;
+}
+.discovery-theatre[data-tier='epic'] {
+  --reveal-color: #cbb0ff;
+}
+.discovery-theatre[data-tier='legendary'] {
+  --reveal-color: #ffdc77;
+}
+.discovery-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 34px;
+}
+.discovery-heading > span {
+  font-size: 11px;
+  letter-spacing: 3px;
+  color: #d8c69d;
+}
+.discovery-theatre button {
+  color: #efe4c5;
+  border: 1px solid #a68f60;
+  background: #233f32;
+  border-radius: 4px;
+  padding: 10px 16px;
+  cursor: pointer;
+}
+.discovery-theatre button:focus-visible {
+  outline: 3px solid #ffdf85;
+  outline-offset: 4px;
+}
+.discovery-theatre .reveal-skip {
+  font-size: 12px;
+  background: transparent;
+}
+.discovery-stage {
+  height: 330px;
+  position: relative;
+  perspective: 900px;
+  isolation: isolate;
+}
+.invitation {
+  position: absolute;
+  z-index: 6;
+  left: 50%;
+  top: 50%;
+  width: 240px;
+  height: 126px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  background: linear-gradient(30deg, #b8a174, #f7e9bf 55%, #d8c496);
+  color: #4b5036;
+  border: 1px solid #b9a377;
+  box-shadow: 0 14px 30px #0005;
+  transform: translate(-50%, -50%) rotate(-6deg);
+  animation: invitation-open 0.95s ease-in forwards;
+}
+.invitation span {
+  font-size: 10px;
+  letter-spacing: 3px;
+}
+.invitation small {
+  font-family: Georgia, serif;
+  font-style: italic;
+}
+.invitation i {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #934d3d;
+  color: #e4c38a;
+  border: 3px double #c78861;
+  font-style: normal;
+  font-size: 24px;
+}
+.atlas-map {
+  position: absolute;
+  width: 88%;
+  height: 80%;
+  left: 6%;
+  top: 18%;
+  background: linear-gradient(
+    100deg,
+    #c3ad7e,
+    #efdfac 22%,
+    #e0c994 49%,
+    #f1e1b7 72%,
+    #c7b182
+  );
+  border: 1px solid #aa9261;
+  box-shadow: 0 25px 20px #0004;
+  transform: rotateX(48deg) rotateZ(-7deg);
+  animation: atlas-unfold 1.25s 0.5s both;
+  clip-path: polygon(
+    1% 1%,
+    33% 3%,
+    66% 0,
+    98% 3%,
+    100% 96%,
+    68% 99%,
+    34% 97%,
+    0 100%
+  );
+}
+.atlas-ink {
+  width: 100%;
+  height: 100%;
+}
+.atlas-fold {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  width: 1px;
+  box-shadow: -8px 0 18px 4px #8a73492e;
+  background: #826e4a33;
+}
+.fold-left {
+  left: 33%;
+}
+.fold-right {
+  left: 66%;
+}
+.atlas-route {
+  fill: none;
+  stroke: #fff6d6;
+  stroke-width: 5;
+  stroke-linecap: round;
+  stroke-dasharray: 450;
+  stroke-dashoffset: 450;
+  filter: drop-shadow(0 0 5px var(--reveal-color));
+  animation: atlas-travel 1.2s 1.3s forwards;
+}
+.atlas-destination {
+  fill: #fff8cf;
+  opacity: 0;
+  animation: atlas-mark 0.4s 2.35s forwards;
+}
+.discovery-halo {
+  position: absolute;
+  inset: 8% 12% 0;
+  border-radius: 50%;
+  background: radial-gradient(ellipse, var(--reveal-color), transparent 65%);
+  opacity: 0;
+  transform: scale(0.4);
+  filter: blur(16px);
+  animation: atlas-light 0.8s calc(var(--journey-time) - 1000ms) forwards;
+  z-index: 1;
+}
+.discovery-monument {
+  position: absolute;
+  z-index: 3;
+  width: 240px;
+  height: 260px;
+  left: calc(50% - 120px);
+  bottom: 30px;
+  opacity: 0;
+  transform: translateY(85px) scale(0.2);
+  filter: drop-shadow(0 16px 12px #10271aa8);
+  animation: monument-rise 1s calc(var(--journey-time) - 1000ms)
+    cubic-bezier(0.2, 0.7, 0.25, 1) forwards;
+}
+.discovery-monument > svg {
+  width: 100%;
+  height: 100%;
+}
+.atlas-stars {
+  position: absolute;
+  inset: 24px 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  color: var(--reveal-color);
+  font-size: 26px;
+  opacity: 0;
+  animation: atlas-stars 1.2s calc(var(--journey-time) - 900ms) forwards;
+}
+.atlas-stars span {
+  align-self: flex-start;
+  margin-top: 35px;
+  font-size: 16px;
+}
+.journey-caption {
+  font-family: Georgia, serif;
+  font-style: italic;
+  color: #d0c29c;
+  min-height: 20px;
+  font-size: 16px;
+  margin: 8px 0 14px;
+}
+.discovery-result h2 {
+  font-family: Georgia, serif;
+  font-size: 32px;
+  font-weight: normal;
+  color: #fff2cf;
+  margin: 8px 0 12px;
+}
+.reveal-country {
+  font-size: 12px;
+  color: #c6cbb1;
+  letter-spacing: 1px;
+  margin: 14px 0 0;
+}
+.reveal-quantity {
+  font-size: 14px;
+  color: #d6c8a6;
+}
+.reveal-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin: 20px 0 14px;
+}
+.discovery-theatre .reveal-place {
+  background: #e4ca8b;
+  color: #293e2d;
+  border-color: #f6dfaa;
+}
+.discovery-result > small {
+  font-size: 11px;
+  color: #a8b49a;
+}
+.reveal-badge {
+  display: flex;
+  justify-content: center;
+}
+.revealed .discovery-result {
+  animation: result-appear 0.4s ease-out;
+}
+.discovery-result[hidden],
+.reveal-skip[hidden] {
+  display: block;
+  visibility: hidden;
+  pointer-events: none;
+}
+.discovery-mist {
+  position: absolute;
+  inset: 45% 5% 2%;
+  z-index: 2;
+  pointer-events: none;
+  opacity: 0;
+  background: radial-gradient(ellipse, #d8d0f177, transparent 65%);
+  filter: blur(15px);
+}
+[data-tier='epic'] .discovery-mist {
+  animation: mist-drift 3s 2s infinite alternate;
+}
+.discovery-orbit {
+  display: none;
+  position: absolute;
+  inset: 10% 18%;
+  z-index: 2;
+  border: 1px solid #efd18770;
+  border-radius: 50%;
+  transform: rotateX(60deg) rotate(-15deg);
+}
+[data-tier='legendary'] .discovery-orbit {
+  display: block;
+  opacity: 0;
+  animation:
+    orbit-appear 1s 3s forwards,
+    orbit-turn 12s 4s linear infinite;
+}
+.discovery-orbit i {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  background: #ddc17d;
+  box-shadow: 0 0 12px #ffe5a1;
+  transform: rotate(45deg);
+  top: 50%;
+  left: -6px;
+}
+.discovery-orbit i:nth-child(2) {
+  left: auto;
+  right: -6px;
+}
+.discovery-orbit i:nth-child(3) {
+  top: -6px;
+  left: 50%;
+}
+.revealed .invitation {
+  display: none;
+}
+.revealed .atlas-map {
+  animation: none;
+  transform: rotateX(48deg) rotateZ(-7deg);
+}
+.revealed .atlas-route {
+  animation: none;
+  stroke-dashoffset: 0;
+}
+.revealed .atlas-destination {
+  animation: none;
+  opacity: 1;
+}
+.revealed .discovery-monument {
+  animation: none;
+  opacity: 1;
+  transform: none;
+}
+.revealed .discovery-halo {
+  animation: none;
+  opacity: 0.32;
+  transform: scale(1);
+}
+.revealed .atlas-stars {
+  animation: none;
+  opacity: 0.8;
+}
+.revealed[data-tier='legendary'] .discovery-monument .wonder-body {
+  animation: wonder-levitate 4.8s ease-in-out infinite;
+}
+.revealed[data-tier='legendary'] .discovery-monument .wonder-orbit {
+  animation: wonder-orbit 9s linear infinite;
+}
+@keyframes invitation-open {
+  0%,
+  35% {
+    opacity: 1;
+    transform: translate(-50%, -50%) rotate(-6deg);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -90%) rotate(6deg) scale(1.3);
+  }
+}
+@keyframes atlas-unfold {
+  from {
+    opacity: 0;
+    transform: rotateX(60deg) rotateZ(-7deg) scaleX(0.08);
+  }
+  to {
+    opacity: 1;
+    transform: rotateX(48deg) rotateZ(-7deg) scaleX(1);
+  }
+}
+@keyframes atlas-travel {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+@keyframes atlas-mark {
+  to {
+    opacity: 1;
+  }
+}
+@keyframes atlas-light {
+  to {
+    opacity: 0.32;
+    transform: scale(1);
+  }
+}
+@keyframes monument-rise {
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+@keyframes atlas-stars {
+  to {
+    opacity: 0.8;
+  }
+}
+@keyframes result-appear {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes mist-drift {
+  from {
+    opacity: 0.15;
+    transform: translateX(-25px);
+  }
+  to {
+    opacity: 0.65;
+    transform: translateX(25px);
+  }
+}
+@keyframes orbit-appear {
+  to {
+    opacity: 1;
+  }
+}
+@keyframes orbit-turn {
+  to {
+    transform: rotateX(60deg) rotate(345deg);
+  }
+}
+@media (max-width: 600px) {
+  .ticket-desk {
+    gap: 10px;
+    padding: 16px;
+    flex-wrap: wrap;
+  }
+  .ticket-stamp {
+    display: none;
+  }
+  .ticket-desk #draw-ticket {
+    width: 100%;
+    margin: 4px 0 0;
+  }
+  .ticket-desk h2 {
+    font-size: 20px;
+  }
+  .discovery-theatre {
+    padding: 18px 14px;
+  }
+  .discovery-heading > span {
+    font-size: 9px;
+    letter-spacing: 1.5px;
+  }
+  .discovery-stage {
+    height: 260px;
+  }
+  .discovery-monument {
+    width: 190px;
+    height: 220px;
+    left: calc(50% - 95px);
+    bottom: 15px;
+  }
+  .discovery-result h2 {
+    font-size: 25px;
+  }
+  .reveal-actions {
+    flex-wrap: wrap;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .discovery-theatre * {
+    animation: none !important;
+    transition: none !important;
+  }
+  .discovery-orbit {
+    opacity: 1 !important;
+  }
+}

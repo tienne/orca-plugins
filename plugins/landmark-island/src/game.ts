@@ -4,24 +4,33 @@ export { landmarks };
 export const weights = { common: 70, rare: 23, epic: 6, legendary: 1 };
 export type Placement = { landmark: string; cell: number };
 export type Receipt = { workspaceId: string; landmark: string; at: string };
+export type Ticket = { workspaceId: string; at: string };
 export type State = {
-  version: 1;
+  version: 2;
+  tickets: Ticket[];
   receipts: Receipt[];
   placements: Placement[];
 };
 export const empty = (): State => ({
-  version: 1,
+  version: 2,
+  tickets: [],
   receipts: [],
   placements: [],
 });
 export function quantity(s: State, id: string) {
   return s.receipts.filter((r) => r.landmark === id).length;
 }
+export function availableTickets(s: State) {
+  const spent = new Set(s.receipts.map((r) => r.workspaceId));
+  return s.tickets.filter((t) => !spent.has(t.workspaceId));
+}
 export function validate(value: unknown): State {
   if (value == null) return empty();
-  const s = value as State;
+  const raw = value as State & { version: number };
+  const version = (value as { version?: number }).version;
+  const s = raw;
   if (
-    s.version !== 1 ||
+    (version !== 1 && version !== 2) ||
     !Array.isArray(s.receipts) ||
     !Array.isArray(s.placements)
   )
@@ -55,7 +64,33 @@ export function validate(value: unknown): State {
     )
       throw Error('Placement exceeds ownership');
   }
-  return structuredClone(s);
+  // Legacy rewards are already redeemed tickets, never new free draws.
+  const tickets =
+    version === 1
+      ? s.receipts.map(({ workspaceId, at }) => ({ workspaceId, at }))
+      : s.tickets;
+  if (!Array.isArray(tickets)) throw Error('Invalid ticket ledger');
+  const earned = new Set<string>();
+  for (const t of tickets) {
+    if (
+      !t ||
+      typeof t.workspaceId !== 'string' ||
+      !t.workspaceId ||
+      t.workspaceId.length > 256 ||
+      earned.has(t.workspaceId) ||
+      typeof t.at !== 'string'
+    )
+      throw Error('Invalid ticket ledger');
+    earned.add(t.workspaceId);
+  }
+  if (s.receipts.some((r) => !earned.has(r.workspaceId)))
+    throw Error('Reward has no matching ticket');
+  return structuredClone({
+    version: 2,
+    tickets,
+    receipts: s.receipts,
+    placements: s.placements,
+  });
 }
 export function draw(random: () => number): string {
   const roll = random() * 100;
@@ -98,9 +133,26 @@ export class Game {
         event.workspaceId.length > 256
       )
         throw Error('Invalid workspace ID');
-      if (s.receipts.some((r) => r.workspaceId === event.workspaceId)) return s;
-      s.receipts.push({
+      if (s.tickets.some((r) => r.workspaceId === event.workspaceId)) return s;
+      s.tickets.push({
         workspaceId: event.workspaceId,
+        at: new Date().toISOString(),
+      });
+      await this.store.write(s);
+      return s;
+    });
+  }
+  redeem(input: unknown) {
+    return this.queue(async (s) => {
+      const ticketId = (input as { ticketId?: unknown } | null)?.ticketId;
+      if (typeof ticketId !== 'string' || !ticketId || ticketId.length > 256)
+        throw Error('Invalid ticket ID');
+      if (!s.tickets.some((t) => t.workspaceId === ticketId))
+        throw Error('This ticket is not available');
+      // Replaying a request returns its committed reward, even after restart.
+      if (s.receipts.some((r) => r.workspaceId === ticketId)) return s;
+      s.receipts.push({
+        workspaceId: ticketId,
         landmark: draw(this.random),
         at: new Date().toISOString(),
       });

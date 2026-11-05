@@ -1,5 +1,12 @@
-import { test, expect } from '@playwright/test';
+import { test, expect, type Page } from '@playwright/test';
 import { landTiles } from '../src/world';
+async function demoDiscovery(page: Page) {
+  await page.getByRole('button', { name: 'Demo worktree' }).click();
+  await page.getByRole('button', { name: 'Use ticket · Discover' }).click();
+  await page.getByRole('button', { name: 'Skip animation' }).click();
+  await page.getByRole('button', { name: 'Keep exploring' }).click();
+}
+
 test('demo acquisition, duplicate, placement, move, removal and persistent map', async ({
   page,
 }) => {
@@ -8,11 +15,11 @@ test('demo acquisition, duplicate, placement, move, removal and persistent map',
   });
   await page.goto('/');
   await expect(page.getByText('DEMO · LOCAL FIXTURES')).toBeVisible();
-  await page.getByRole('button', { name: 'Demo expedition' }).click();
+  await demoDiscovery(page);
   await expect(page.getByRole('status')).toContainText(
     'New discovery: Eiffel Tower',
   );
-  await page.getByRole('button', { name: 'Demo expedition' }).click();
+  await demoDiscovery(page);
   await expect(page.getByRole('status')).toContainText(
     'Duplicate discovered: Eiffel Tower',
   );
@@ -233,7 +240,7 @@ test('expanded land keeps old cell addresses and persists new placements', async
   await expect(
     page.getByRole('button', { name: 'Cell 1: Eiffel Tower', exact: true }),
   ).toBeAttached();
-  await page.getByRole('button', { name: 'Demo expedition' }).click();
+  await demoDiscovery(page);
   await page.locator('[data-landmark=eiffel]').click();
   await page.getByRole('button', { name: 'Show whole island' }).click();
   const destination = landTiles.find(
@@ -465,7 +472,7 @@ test('rarity filters, discoveries and progress distinguish unique landmarks from
     Math.random = () => fixtureWindow.fixtureRoll;
   });
   await page.goto('/');
-  await page.getByRole('button', { name: 'Demo expedition' }).click();
+  await demoDiscovery(page);
   await expect(page.getByRole('status')).toContainText(
     'New discovery: Great Pyramid of Giza',
   );
@@ -481,7 +488,7 @@ test('rarity filters, discoveries and progress distinguish unique landmarks from
     'value',
     '1',
   );
-  await page.getByRole('button', { name: 'Demo expedition' }).click();
+  await demoDiscovery(page);
   await expect(page.getByRole('status')).toContainText(
     'Duplicate discovered: Great Pyramid of Giza',
   );
@@ -549,7 +556,7 @@ test('rarity filters, discoveries and progress distinguish unique landmarks from
     'Wonder',
   );
   await expect(page.getByRole('dialog')).toContainText(
-    '1% tier chance per expedition',
+    '1% tier chance per draw',
   );
   await expect(
     page
@@ -560,7 +567,7 @@ test('rarity filters, discoveries and progress distinguish unique landmarks from
   await page.evaluate(() => {
     (window as typeof window & { fixtureRoll: number }).fixtureRoll = 0;
   });
-  await page.getByRole('button', { name: 'Demo expedition' }).click();
+  await demoDiscovery(page);
   await expect(page.getByRole('status').locator('.rarity-badge')).toContainText(
     'Discovery',
   );
@@ -614,7 +621,7 @@ test('owned Wonder moves in the guide and on the island, with a static reduced-m
       .evaluate((el) => getComputedStyle(el).animationName),
   ).toBe('none');
   await page.keyboard.press('Escape');
-  await page.getByRole('button', { name: 'Demo expedition' }).click();
+  await demoDiscovery(page);
   await expect(page.locator('[data-landmark="giza"]')).toContainText(
     'Owned ×1',
   );
@@ -693,4 +700,165 @@ test('owned Wonder moves in the guide and on the island, with a static reduced-m
   expect(
     await page.evaluate(() => localStorage.getItem('landmark-island-demo-v1')),
   ).toBe(save);
+});
+
+test('tickets accumulate before drawing; map reveal commits once and survives reload', async ({
+  page,
+}) => {
+  await page.addInitScript(() => {
+    Math.random = () => 0;
+  });
+  await page.goto('/');
+  await expect(page.locator('#draw-ticket')).toBeDisabled();
+  for (let i = 0; i < 3; i++)
+    await page.getByRole('button', { name: 'Demo worktree' }).click();
+  await expect(page.locator('#ticket-count')).toHaveText('3');
+  await expect(page.locator('#discovery-progress')).toHaveAttribute(
+    'value',
+    '0',
+  );
+  await page.reload();
+  await expect(page.locator('#ticket-count')).toHaveText('3');
+  await page.locator('#draw-ticket').evaluate((button: HTMLButtonElement) => {
+    button.click();
+    button.click();
+  });
+  const theatre = page.locator('.discovery-theatre');
+  await expect(theatre).toBeVisible();
+  await expect(theatre.locator('.discovery-result')).toBeHidden();
+  const saved = await page.evaluate(() =>
+    JSON.parse(localStorage.getItem('landmark-island-demo-v1')!),
+  );
+  expect(saved.tickets).toHaveLength(3);
+  expect(saved.receipts).toHaveLength(1);
+  await page.waitForTimeout(1600);
+  await theatre.screenshot({
+    path: 'test-results/landmark-island/map-unfold-demo.png',
+  });
+  await expect(theatre.locator('.discovery-result')).toBeVisible();
+  await expect(theatre.getByRole('heading')).toHaveText('Eiffel Tower');
+  await theatre.screenshot({
+    path: 'test-results/landmark-island/discovery-result-demo.png',
+  });
+  await page.getByRole('button', { name: 'Place on island' }).click();
+  await expect(page.locator('.ocean')).toHaveAttribute('data-mode', 'build');
+  await page
+    .getByRole('button', { name: 'Cell 1: empty', exact: true })
+    .click();
+  await expect(
+    page.getByRole('button', { name: 'Cell 1: Eiffel Tower', exact: true }),
+  ).toBeVisible();
+  await page.locator('#draw-ticket').click();
+  await expect(theatre).toBeVisible();
+  await page.reload();
+  await expect(page.locator('#ticket-count')).toHaveText('1');
+  await expect(page.locator('[data-landmark=eiffel]')).toContainText(
+    'Owned ×2',
+  );
+  await expect(theatre).toHaveCount(0);
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await page.setViewportSize({ width: 360, height: 800 });
+  await page.locator('#draw-ticket').click();
+  await expect(theatre.locator('.discovery-result')).toBeVisible();
+  await expect(
+    theatre.getByRole('button', { name: 'Skip animation' }),
+  ).toBeHidden();
+  await expect(theatre.locator('.reveal-quantity')).toContainText('Owned ×3');
+  const box = await theatre.boundingBox();
+  expect(box!.x).toBeGreaterThanOrEqual(0);
+  expect(box!.x + box!.width).toBeLessThanOrEqual(360);
+  await theatre.screenshot({
+    path: 'test-results/landmark-island/discovery-mobile-demo.png',
+  });
+  await page.keyboard.press('Escape');
+  await expect(page.locator('#ticket-count')).toHaveText('0');
+  await expect(page.locator('#draw-ticket')).toBeDisabled();
+});
+
+test('failed save retains ticket; retry and Escape reveal without charging again', async ({
+  page,
+}) => {
+  await page.goto('/');
+  await page.getByRole('button', { name: 'Demo worktree' }).click();
+  await page.evaluate(() => {
+    const original = Storage.prototype.setItem;
+    Storage.prototype.setItem = function (key, value) {
+      Storage.prototype.setItem = original;
+      throw Error('Fixture storage failure');
+    };
+  });
+  await page.locator('#draw-ticket').click();
+  await expect(page.getByRole('alert')).toContainText(
+    'Fixture storage failure',
+  );
+  await expect(page.locator('.discovery-theatre')).toHaveCount(0);
+  await expect(page.locator('#ticket-count')).toHaveText('1');
+  await page.getByRole('button', { name: 'Retry discovery' }).click();
+  await expect(page.locator('.discovery-theatre')).toBeVisible();
+  await page.keyboard.press('Escape');
+  await expect(page.locator('.discovery-result')).toBeVisible();
+  await page.keyboard.press('Escape');
+  await expect(page.locator('#ticket-count')).toHaveText('0');
+  const saved = await page.evaluate(() =>
+    JSON.parse(localStorage.getItem('landmark-island-demo-v1')!),
+  );
+  expect(saved.receipts).toHaveLength(1);
+  expect(saved.tickets).toHaveLength(1);
+});
+
+test('Treasure, Marvel and Wonder reveal distinct effects with accessible ranks', async ({
+  page,
+}) => {
+  await page.addInitScript(() => {
+    const fixture = window as typeof window & { fixtureRoll: number };
+    fixture.fixtureRoll = 0.7;
+    Math.random = () => fixture.fixtureRoll;
+  });
+  await page.goto('/');
+  for (const [roll, tier, rank] of [
+    [0.7, 'rare', 2],
+    [0.93, 'epic', 3],
+    [0.999, 'legendary', 4],
+  ] as const) {
+    await page.evaluate((roll) => {
+      (window as typeof window & { fixtureRoll: number }).fixtureRoll = roll;
+    }, roll);
+    await page.getByRole('button', { name: 'Demo worktree' }).click();
+    await page.locator('#draw-ticket').click();
+    const theatre = page.locator('.discovery-theatre');
+    await expect(theatre).toHaveAttribute('data-tier', tier);
+    const before = await theatre.boundingBox();
+    await page.getByRole('button', { name: 'Skip animation' }).click();
+    const after = await theatre.boundingBox();
+    expect(Math.abs(before!.height - after!.height)).toBeLessThan(2);
+    await expect(
+      theatre.getByRole('img', { name: new RegExp(`rarity ${rank} of 4`) }),
+    ).toBeVisible();
+    if (tier === 'epic')
+      expect(
+        await theatre
+          .locator('.discovery-mist')
+          .evaluate((e) => getComputedStyle(e).animationName),
+      ).toBe('mist-drift');
+    if (tier === 'legendary') {
+      expect(
+        await theatre
+          .locator('.wonder-body')
+          .evaluate((e) => getComputedStyle(e).animationName),
+      ).toBe('wonder-levitate');
+      await page.waitForTimeout(3300);
+      expect(
+        Number(
+          await theatre
+            .locator('.discovery-orbit')
+            .evaluate((e) => getComputedStyle(e).opacity),
+        ),
+      ).toBeGreaterThan(0);
+      await theatre.screenshot({
+        path: 'test-results/landmark-island/wonder-reveal-demo.png',
+      });
+    }
+    await page.getByRole('button', { name: 'Keep exploring' }).click();
+    await expect(page.locator('#ticket-count')).toHaveText('0');
+  }
 });
