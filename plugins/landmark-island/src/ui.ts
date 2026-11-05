@@ -37,6 +37,27 @@ const escape = (s: string) =>
         c
       ]!,
   );
+const detail = document.createElement('dialog');
+detail.className = 'landmark-detail';
+detail.setAttribute('aria-labelledby', 'detail-title');
+detail.setAttribute('aria-describedby', 'detail-description');
+document.body.append(detail);
+let detailOpener: HTMLElement | null = null;
+detail.addEventListener('close', () => {
+  const target = detailOpener?.isConnected
+    ? detailOpener
+    : root.querySelector<HTMLElement>('.ocean, [data-info]');
+  target?.focus({ preventScroll: true });
+});
+function showDetails(id: string) {
+  const landmark = landmarks.find((l) => l.id === id);
+  if (!landmark) return;
+  detailOpener = document.activeElement as HTMLElement | null;
+  detail.innerHTML = `<button class="detail-close" aria-label="Close landmark details" autofocus>×</button><div class="detail-art">${art(id)}</div><p class="detail-country">${escape(landmark.country)} · ${escape(landmark.region)}</p><h2 id="detail-title">${escape(landmark.name)}</h2><p id="detail-description">${escape(landmark.description)}</p><p class="detail-source">Read more: <a href="${escape(landmark.descriptionSource)}" target="_blank" rel="noopener noreferrer">${escape(landmark.descriptionSourceName)} ↗</a></p>`;
+  detail.querySelector<HTMLButtonElement>('.detail-close')!.onclick = () =>
+    detail.close();
+  if (!detail.open) detail.showModal();
+}
 async function request(name: string, input: unknown = {}) {
   return bridge
     ? bridge.request(name, input)
@@ -75,7 +96,7 @@ function render() {
      const count = quantity(state, l.id),
        available =
          count - state.placements.filter((p) => p.landmark === l.id).length;
-     return `<button class="card ${!count ? 'locked' : ''}" data-landmark="${l.id}" aria-pressed="${selected === l.id}" ${available < 1 ? 'disabled' : ''}>${art(l.id)}<strong>${escape(l.name)}</strong><span>${escape(l.country)} · ${l.tier}</span><small>${count ? `Owned ×${count} · ${available} available` : 'Not discovered yet'}</small></button>`;
+     return `<article class="card ${!count ? 'locked' : ''}"><button class="collect-action" data-landmark="${l.id}" aria-pressed="${selected === l.id}" ${available < 1 ? 'disabled' : ''}>${art(l.id)}<strong>${escape(l.name)}</strong><span class="card-country">${escape(l.country)}</span><span>${l.tier} · ${escape(l.region)}</span><small>${count ? `Owned ×${count} · ${available} available` : 'Not discovered yet'}</small></button><button class="about-landmark" data-info="${l.id}" aria-label="About ${escape(l.name)}" aria-haspopup="dialog">About this landmark ↗</button></article>`;
    })
    .join(
      '',
@@ -102,10 +123,10 @@ function render() {
         render();
       }),
   );
-  root.querySelectorAll<HTMLButtonElement>('[data-cell]').forEach(
+  root.querySelectorAll<HTMLButtonElement>('[data-cell], [data-site]').forEach(
     (b) =>
       (b.onclick = () => {
-        const cell = Number(b.dataset.cell);
+        const cell = Number(b.dataset.cell ?? b.dataset.site);
         const p = state.placements.find((p) => p.cell === cell);
         if (p) {
           from = cell;
@@ -124,6 +145,9 @@ function render() {
         }
       }),
   );
+  root.querySelectorAll<HTMLButtonElement>('[data-info]').forEach((button) => {
+    button.onclick = () => showDetails(button.dataset.info!);
+  });
   scene.mount(
     root,
     state,
@@ -133,6 +157,7 @@ function render() {
       render();
     },
     busy,
+    showDetails,
   );
   const remove = root.querySelector<HTMLButtonElement>('#remove');
   if (remove)

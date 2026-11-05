@@ -7,7 +7,11 @@
     "tier": "common",
     "lat": 48.858296,
     "lon": 2.294479,
-    "source": "https://www.wikidata.org/wiki/Q243"
+    "source": "https://www.wikidata.org/wiki/Q243",
+    "region": "Paris",
+    "description": "Built for the 1889 Paris World’s Fair, this iron tower grew from an ambitious engineering project into a symbol of France. Its open lattice structure was assembled from more than 18,000 metal parts.",
+    "descriptionSourceName": "Eiffel Tower official site",
+    "descriptionSource": "https://www.toureiffel.paris/en/the-monument/history"
   },
   {
     "id": "colosseum",
@@ -17,7 +21,11 @@
     "tier": "common",
     "lat": 41.890277777778,
     "lon": 12.492222222222,
-    "source": "https://www.wikidata.org/wiki/Q10285"
+    "source": "https://www.wikidata.org/wiki/Q10285",
+    "region": "Rome",
+    "description": "The Flavian emperors built this vast amphitheatre in the first century CE. Crowds gathered here for gladiator contests and animal hunts, making it a major venue for public spectacles in ancient Rome.",
+    "descriptionSourceName": "Rome official tourism",
+    "descriptionSource": "https://www.turismoroma.it/en/places/parco-archeologico-del-colosseo"
   },
   {
     "id": "stonehenge",
@@ -27,7 +35,11 @@
     "tier": "common",
     "lat": 51.17888888888889,
     "lon": -1.826111111111111,
-    "source": "https://www.wikidata.org/wiki/Q39671"
+    "source": "https://www.wikidata.org/wiki/Q39671",
+    "region": "Wiltshire, England",
+    "description": "Raised in prehistoric times, these enormous stones form a circle in the Wiltshire landscape. Together with nearby ancient sites, they offer clues to the beliefs and astronomical knowledge of the people who built them.",
+    "descriptionSourceName": "UNESCO World Heritage Centre",
+    "descriptionSource": "https://whc.unesco.org/en/list/373/"
   },
   {
     "id": "liberty",
@@ -37,7 +49,11 @@
     "tier": "common",
     "lat": 40.689209166667,
     "lon": -74.044425277778,
-    "source": "https://www.wikidata.org/wiki/Q9202"
+    "source": "https://www.wikidata.org/wiki/Q9202",
+    "region": "New York Harbor",
+    "description": "France gave this monument to the United States, and it was dedicated in 1886. Standing at the entrance to New York Harbor, it became a symbol of liberty and a familiar sight for arriving immigrants.",
+    "descriptionSourceName": "UNESCO World Heritage Centre",
+    "descriptionSource": "https://whc.unesco.org/en/list/307/"
   },
   {
     "id": "opera",
@@ -47,7 +63,11 @@
     "tier": "common",
     "lat": -33.857058,
     "lon": 151.214897,
-    "source": "https://www.wikidata.org/wiki/Q45178"
+    "source": "https://www.wikidata.org/wiki/Q45178",
+    "region": "Sydney",
+    "description": "Opened in 1973, this performing arts landmark was designed by Danish architect Jørn Utzon. Its overlapping shell-shaped roofs turn the edge of Sydney Harbour into a striking architectural silhouette.",
+    "descriptionSourceName": "UNESCO World Heritage Centre",
+    "descriptionSource": "https://whc.unesco.org/en/list/166/"
   },
   {
     "id": "fuji",
@@ -57,7 +77,11 @@
     "tier": "common",
     "lat": 35.36055555555556,
     "lon": 138.7275,
-    "source": "https://www.wikidata.org/wiki/Q39231"
+    "source": "https://www.wikidata.org/wiki/Q39231",
+    "region": "Honshu",
+    "description": "This 3,776-metre volcano has inspired pilgrims, poets and artists for centuries. Its often snow-covered summit appears in celebrated Japanese woodblock prints, while shrines and pilgrimage routes connect the mountain to living traditions.",
+    "descriptionSourceName": "UNESCO World Heritage Centre",
+    "descriptionSource": "https://whc.unesco.org/en/list/1418/"
   },
   {
     "id": "taj",
@@ -67,7 +91,11 @@
     "tier": "rare",
     "lat": 27.175,
     "lon": 78.04194444444444,
-    "source": "https://www.wikidata.org/wiki/Q9141"
+    "source": "https://www.wikidata.org/wiki/Q9141",
+    "region": "Agra",
+    "description": "Emperor Shah Jahan commissioned this white-marble mausoleum in the seventeenth century in memory of Mumtaz Mahal. Its carefully balanced buildings and gardens stand beside the Yamuna River and reflect the craft of Mughal architecture.",
+    "descriptionSourceName": "UNESCO World Heritage Centre",
+    "descriptionSource": "https://whc.unesco.org/en/list/252/"
   },
   {
     "id": "petra",
@@ -77,7 +105,11 @@
     "tier": "rare",
     "lat": 30.328888888889,
     "lon": 35.440277777778,
-    "source": "https://www.wikidata.org/wiki/Q5788"
+    "source": "https://www.wikidata.org/wiki/Q5788",
+    "region": "Southern Jordan",
+    "description": "The Nabataeans made Petra a crossroads for caravan trade. Buildings carved into rock sit among mountains and narrow gorges, combining local traditions with architectural influences from the Hellenistic world.",
+    "descriptionSourceName": "UNESCO World Heritage Centre",
+    "descriptionSource": "https://whc.unesco.org/en/list/326/"
   },
   {
     "id": "chichen",
@@ -87,7 +119,11 @@
     "tier": "rare",
     "lat": 20.683055555556,
     "lon": -88.568611111111,
-    "source": "https://www.wikidata.org/wiki/Q5859"
+    "source": "https://www.wikidata.org/wiki/Q5859",
+    "region": "Yucatán Peninsula",
+    "description": "This ancient Maya city preserves temples and monuments shaped by both Maya traditions and influences from central Mexico. El Castillo and the round observatory El Caracol are among its best-known surviving buildings.",
+    "descriptionSourceName": "UNESCO World Heritage Centre",
+    "descriptionSource": "https://whc.unesco.org/en/list/483/"
   },
   {
     "id": "angkor",
@@ -97,7 +133,11 @@
     "tier": "epic",
     "lat": 13.4125,
     "lon": 103.86666666667,
-    "source": "https://www.wikidata.org/wiki/Q43473"
+    "source": "https://www.wikidata.org/wiki/Q43473",
+    "region": "Angkor",
+    "description": "Built in the twelfth century under King Suryavarman II, Angkor Wat began as a temple devoted to Vishnu and later became a Buddhist sacred site. Its carved galleries tell religious stories and record scenes from the Khmer kingdom.",
+    "descriptionSourceName": "APSARA National Authority",
+    "descriptionSource": "https://apsaraauthority.gov.kh/2021/06/14/angkor-wat/"
   },
   {
     "id": "machu",
@@ -107,7 +147,11 @@
     "tier": "epic",
     "lat": -13.163333333333334,
     "lon": -72.54555555555555,
-    "source": "https://www.wikidata.org/wiki/Q676203"
+    "source": "https://www.wikidata.org/wiki/Q676203",
+    "region": "Andes",
+    "description": "The Inca built this mountain settlement about 2,430 metres above sea level. Stone walls, terraces and ramps follow the steep terrain, linking remarkable engineering with the surrounding mountain forest.",
+    "descriptionSourceName": "UNESCO World Heritage Centre",
+    "descriptionSource": "https://whc.unesco.org/en/list/274/"
   },
   {
     "id": "giza",
@@ -117,6 +161,10 @@
     "tier": "legendary",
     "lat": 29.97915,
     "lon": 31.13422,
-    "source": "https://www.wikidata.org/wiki/Q37200"
+    "source": "https://www.wikidata.org/wiki/Q37200",
+    "region": "Giza Plateau",
+    "description": "Built as the tomb of King Khufu, the Great Pyramid once had a smooth outer covering of fine limestone. It is the only surviving wonder of the ancient world’s traditional Seven Wonders.",
+    "descriptionSourceName": "Egypt Ministry of Tourism and Antiquities",
+    "descriptionSource": "https://egymonuments.gov.eg/monuments/the-great-pyramid/"
   }
 ]

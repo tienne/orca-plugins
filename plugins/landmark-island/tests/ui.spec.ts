@@ -340,3 +340,118 @@ test('hover wheel zoom needs no focus or modifier, anchors the pointer and leave
   await page.getByRole('button', { name: 'Follow explorer' }).click();
   await expect(ocean).toHaveAttribute('data-follow', 'true');
 });
+
+test('field guide describes all landmarks, including unowned ones, without changing the save', async ({
+  page,
+}) => {
+  await page.goto('/');
+  const before = await page.evaluate(() =>
+    localStorage.getItem('landmark-island-demo-v1'),
+  );
+  const entries = [
+    ['eiffel', 'Eiffel Tower', 'France'],
+    ['colosseum', 'Colosseum', 'Italy'],
+    ['stonehenge', 'Stonehenge', 'United Kingdom'],
+    ['liberty', 'Statue of Liberty', 'United States'],
+    ['opera', 'Sydney Opera House', 'Australia'],
+    ['fuji', 'Mount Fuji', 'Japan'],
+    ['taj', 'Taj Mahal', 'India'],
+    ['petra', 'Petra', 'Jordan'],
+    ['chichen', 'Chichén Itzá', 'Mexico'],
+    ['angkor', 'Angkor Wat', 'Cambodia'],
+    ['machu', 'Machu Picchu', 'Peru'],
+    ['giza', 'Great Pyramid of Giza', 'Egypt'],
+  ];
+  for (const [id, name, country] of entries) {
+    const about = page.locator(`[data-info="${id}"]`);
+    await expect(page.locator(`[data-landmark="${id}"]`)).toBeDisabled();
+    await about.click();
+    const dialog = page.getByRole('dialog', { name, exact: true });
+    await expect(dialog).toBeVisible();
+    await expect(dialog.locator('.detail-country')).toContainText(country);
+    expect(
+      (await dialog.locator('#detail-description').innerText()).length,
+    ).toBeGreaterThan(100);
+    await expect(dialog.getByRole('link')).toHaveAttribute(
+      'href',
+      /^https:\/\//,
+    );
+    await expect(
+      dialog.getByRole('button', { name: 'Close landmark details' }),
+    ).toBeFocused();
+    await page.keyboard.press('Escape');
+    await expect(dialog).not.toBeVisible();
+    await expect(about).toBeFocused();
+  }
+  expect(
+    await page.evaluate(() => localStorage.getItem('landmark-island-demo-v1')),
+  ).toBe(before);
+  await expect(page.locator('.ocean')).toHaveAttribute('data-mode', 'walk');
+  await page.setViewportSize({ width: 360, height: 800 });
+  await page.locator('[data-info="giza"]').click();
+  const dialog = page.getByRole('dialog');
+  const bounds = (await dialog.boundingBox())!;
+  expect(bounds.x).toBeGreaterThanOrEqual(0);
+  expect(bounds.x + bounds.width).toBeLessThanOrEqual(360);
+  expect(bounds.height).toBeLessThanOrEqual(760);
+  await page.screenshot({
+    path: 'test-results/landmark-island/details-mobile-demo.png',
+  });
+  await dialog.getByRole('button', { name: 'Close landmark details' }).click();
+  await expect(dialog).not.toBeVisible();
+});
+
+test('a placed building opens its story during exploration and stays movable in arrange mode', async ({
+  page,
+}) => {
+  await page.addInitScript(() =>
+    localStorage.setItem(
+      'landmark-island-demo-v1',
+      JSON.stringify({
+        version: 1,
+        receipts: [
+          { workspaceId: 'story-fixture', landmark: 'taj', at: '2026-11-05' },
+        ],
+        placements: [{ landmark: 'taj', cell: 31 }],
+      }),
+    ),
+  );
+  await page.goto('/');
+  const saved = await page.evaluate(() =>
+    localStorage.getItem('landmark-island-demo-v1'),
+  );
+  await page
+    .getByRole('button', { name: 'Landmark: Taj Mahal', exact: true })
+    .click();
+  const dialog = page.getByRole('dialog', { name: 'Taj Mahal', exact: true });
+  await expect(dialog).toBeVisible();
+  await expect(dialog).toContainText('India · Agra');
+  await expect(dialog).toContainText('Mumtaz Mahal');
+  await expect(page.locator('.walker')).toHaveAttribute('data-cell', '30');
+  expect(
+    await page.evaluate(() => localStorage.getItem('landmark-island-demo-v1')),
+  ).toBe(saved);
+  await page.screenshot({
+    path: 'test-results/landmark-island/details-demo.png',
+  });
+  await page.keyboard.press('Escape');
+  await page.getByRole('button', { name: 'Arrange landmarks' }).click();
+  await page
+    .getByRole('button', { name: 'Landmark: Taj Mahal', exact: true })
+    .click();
+  await expect(dialog).not.toBeVisible();
+  await expect(
+    page.getByRole('button', { name: 'Return to collection' }),
+  ).toBeVisible();
+  await page
+    .getByRole('button', { name: 'Cell 33: empty', exact: true })
+    .click();
+  await expect(
+    page.getByRole('button', { name: 'Cell 33: Taj Mahal', exact: true }),
+  ).toBeVisible();
+  await page.getByRole('button', { name: 'Explore island' }).click();
+  await page
+    .getByRole('button', { name: 'Cell 33: Taj Mahal', exact: true })
+    .click();
+  await expect(dialog).toBeVisible();
+});

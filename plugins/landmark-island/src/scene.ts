@@ -36,7 +36,13 @@ export class IslandScene {
   avatar() {
     return `<div class="walker" role="img" aria-label="Island explorer">${person}</div>`;
   }
-  mount(root: HTMLElement, state: State, onMode: () => void, busy: boolean) {
+  mount(
+    root: HTMLElement,
+    state: State,
+    onMode: () => void,
+    busy: boolean,
+    onInspect: (id: string) => void,
+  ) {
     this.cleanup();
     const ocean = root.querySelector<HTMLElement>('.ocean');
     if (!ocean) return;
@@ -317,11 +323,18 @@ export class IslandScene {
           return;
         }
         const cell = (e.target as Element).closest<HTMLElement>(
-          'button[data-cell]',
+          'button[data-cell], button[data-site]',
         );
         if (this.mode === 'walk' && cell) {
           e.stopImmediatePropagation();
-          walk(Number(cell.dataset.cell));
+          if (busy) return;
+          const cellId = Number(cell.dataset.cell ?? cell.dataset.site);
+          const placed = state.placements.find((p) => p.cell === cellId);
+          if (placed) {
+            clearTimeout(stepTimer);
+            finish();
+            onInspect(placed.landmark);
+          } else walk(cellId);
         }
       },
       { capture: true, signal },

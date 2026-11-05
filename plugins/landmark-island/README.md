@@ -14,6 +14,12 @@ There are 12 landmarks: 6 common, 3 rare, 2 epic and 1 legendary. Each draw firs
 
 Only `workspace.created` with `kind: worktree` awards a reward. Folder creation, chats, refreshes, workspace switching and app launch do not. A single worker queue serializes receipts and placements. The schema-versioned save records one receipt per workspace ID, so repeated delivery and worker restarts do not award twice. Saved rewards survive worktree removal. No paths from events are accessed, and no Git operations occur.
 
+## Landmark field guide
+
+Every collection entry shows its country separately from rarity. **About this landmark** opens a field-guide page with the country, region, a short historical description and an official reference link. All 12 entries can be read before acquisition, even if no copies are available to place. In **Explore island**, click a placed building or its ground tile to read its story; in **Arrange landmarks**, the same click selects it for moving as before. Reading never awards an item or changes a placement. Close with the × button or Escape; keyboard focus returns to the opener.
+
+Descriptions are original English summaries checked against UNESCO, the Eiffel Tower operator, Rome tourism, APSARA and Egypt’s Ministry of Tourism and Antiquities on 2026-11-05. Reference URLs are stored separately from the existing Wikidata coordinate sources. Text is bundled for offline reading; opening a reference link requires a browser connection.
+
 ## Expanded land and existing saves
 
 Original cell IDs 0–35 keep their identity and relative 6 × 6 layout at the center (columns/rows 9–14) of the larger map. New IDs address the surrounding terrain. Existing receipts and placements are read unchanged; there is no reset or coordinate migration. New land placements use the same serialized, versioned save and quantity checks. Water is rejected by the worker, not just hidden by the UI. Older plugin builds cannot read placements outside their 36-cell limit: use this build for expanded saves.
@@ -58,7 +64,7 @@ Deferred: decoration economy, further terrain expansion, cloud sync, trading, lo
 
 - `pnpm nx run landmark-island:typecheck`: passed.
 - `pnpm nx run landmark-island:test`: passed the worker/state assertions above, stable original cell addresses, water/boundary rejection, expanded placement persistence, and reachability of all unoccupied land around terrain obstacles.
-- `pnpm nx run landmark-island:ui-test --output-style=static`: 8 browser tests passed, including unfocused pointer-anchored wheel zoom and outside-page scrolling, walking around buildings, depth order, keyboard controls, camera follow/pan/zoom/reset, minimap overview on narrow screens, automatic/manual climate, reduced motion, ownership isolation and persistence of both original and expanded land placements; screenshots inspected under `test-results/landmark-island/`.
+- `pnpm nx run landmark-island:ui-test --output-style=static`: 10 browser tests passed, including all 12 country/description pages, unowned reading, modal keyboard/focus/mobile behavior, inspection versus building edits, unfocused pointer-anchored wheel zoom and outside-page scrolling, walking around buildings, depth order, keyboard controls, camera follow/pan/zoom/reset, minimap overview on narrow screens, automatic/manual climate, reduced motion, ownership isolation and persistence of both original and expanded land placements; screenshots inspected under `test-results/landmark-island/`.
 - `pnpm nx run git-logs:build --skipNxCache --output-style=static`: passed with the shared builder; Git Logs source is unchanged. Its typecheck passed and its worker/artifact suite passed 49 tests.
 - Git Logs UI regression run was attempted but its server timed out: port 4173 is occupied by an older preview in another worktree returning HTTP 404. That process was not stopped or changed.
 - `pnpm validate`: both packaged manifests passed the installed Orca validator. `orca plugin inspect dist/plugins/landmark-island --json` reports valid and `needsApproval: true`.
