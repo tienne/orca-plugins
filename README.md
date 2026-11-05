@@ -4,7 +4,7 @@ English · [한국어](README.ko.md)
 
 Explore Git logs with a Git tree visualization and commit graph, then compare files in a read-only side-by-side diff. Commit actions are available from the graph's context menu.
 
-Git Logs 0.1.0 requires Orca 1.4.248 or later and local Git.
+Git Logs 0.1.1 requires Orca 1.4.248 or later and local Git.
 
 ## Install
 
@@ -92,7 +92,7 @@ If local exclusion fails, Git Logs still creates the comparison document and ope
 
 An external `.orcadiff` does not automatically authorize its repository. Connect that repository in the Git Logs sidebar before refreshing the document. An open Diff tab keeps the repository and comparison recorded in its document when the active workspace changes.
 
-The UI, Monaco, fonts, and editor worker are bundled locally. There is no telemetry, analytics, or external translation service.
+The UI, Monaco, SVG icons, and editor worker are bundled locally. There is no telemetry, analytics, or external translation service.
 
 ## Limits
 
