@@ -35,7 +35,7 @@ export function terrain(state: State, selectedCell?: number) {
         h = t.height + 14;
       const label = `Cell ${t.id + 1}: ${landmark ? landmark.name : 'empty'}`;
       const decoration = id
-        ? `<div class="world-object building" data-depth="${p.depth}"><button class="building-select" data-site="${t.id}" aria-label="Landmark: ${landmark!.name}" title="${landmark!.name} · ${landmark!.country}">${art(id)}</button><span class="building-label">${landmark!.name} · ${landmark!.country}</span></div>`
+        ? `<div class="world-object building" data-tier="${landmark!.tier}" data-depth="${p.depth}"><button class="building-select" data-site="${t.id}" aria-label="Landmark: ${landmark!.name}" title="${landmark!.name} · ${landmark!.country}">${art(id)}</button><span class="building-label">${landmark!.name} · ${landmark!.country}</span></div>`
         : t.prop
           ? `<div class="world-object ${t.prop}${t.prop === 'rock' && t.kind === 'rock' ? ' ruin' : ''}" aria-hidden="true">${t.prop === 'pine' ? tree(true) : t.prop === 'oak' ? tree(false) : t.prop === 'rock' ? (t.kind === 'rock' ? ruin : rock) : flowers}</div>`
           : '';

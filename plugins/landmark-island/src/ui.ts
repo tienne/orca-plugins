@@ -66,6 +66,7 @@ function showDetails(id: string) {
   detailOpener = document.activeElement as HTMLElement | null;
   const rarity = rarities.find((r) => r.id === landmark.tier)!;
   detail.dataset.tier = rarity.id;
+  detail.dataset.owned = String(quantity(state, id) > 0);
   detail.innerHTML = `<button class="detail-close" aria-label="Close landmark details" autofocus>×</button><div class="detail-art">${art(id)}</div><p class="detail-country">${escape(landmark.country)} · ${escape(landmark.region)}</p><h2 id="detail-title">${escape(landmark.name)}</h2><div class="detail-rarity">${rarityBadge(landmark.tier)}<p>${weights[rarity.id]}% tier chance per expedition · ${landmarks.filter((l) => l.tier === rarity.id).length} landmarks in this tier</p></div><p id="detail-description">${escape(landmark.description)}</p><p class="detail-source">Read more: <a href="${escape(landmark.descriptionSource)}" target="_blank" rel="noopener noreferrer">${escape(landmark.descriptionSourceName)} ↗</a></p>`;
   detail.querySelector<HTMLButtonElement>('.detail-close')!.onclick = () =>
     detail.close();

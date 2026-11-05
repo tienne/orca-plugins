@@ -595,3 +595,102 @@ test('rarity filters, discoveries and progress distinguish unique landmarks from
     path: 'test-results/landmark-island/rarity-mobile-demo.png',
   });
 });
+
+test('owned Wonder moves in the guide and on the island, with a static reduced-motion alternative', async ({
+  page,
+}) => {
+  await page.addInitScript(() => {
+    Math.random = () => 0.999;
+  });
+  await page.goto('/');
+  const cardBody = page.locator('[data-landmark="giza"] .wonder-body');
+  expect(
+    await cardBody.evaluate((el) => getComputedStyle(el).animationName),
+  ).toBe('none');
+  await page.locator('[data-info="giza"]').click();
+  expect(
+    await page
+      .locator('.detail-art .wonder-body')
+      .evaluate((el) => getComputedStyle(el).animationName),
+  ).toBe('none');
+  await page.keyboard.press('Escape');
+  await page.getByRole('button', { name: 'Demo expedition' }).click();
+  await expect(page.locator('[data-landmark="giza"]')).toContainText(
+    'Owned ×1',
+  );
+  const cardStart = await cardBody.evaluate(
+    (el) => getComputedStyle(el).transform,
+  );
+  await expect
+    .poll(() => cardBody.evaluate((el) => getComputedStyle(el).transform))
+    .not.toBe(cardStart);
+  await page.locator('[data-landmark="giza"]').click();
+  await page
+    .getByRole('button', { name: 'Cell 32: empty', exact: true })
+    .click();
+  await expect(
+    page.getByRole('button', {
+      name: 'Landmark: Great Pyramid of Giza',
+      exact: true,
+    }),
+  ).toBeVisible();
+  const islandBody = page.locator('.building .wonder-body');
+  const islandStart = await islandBody.evaluate(
+    (el) => getComputedStyle(el).transform,
+  );
+  await expect
+    .poll(() => islandBody.evaluate((el) => getComputedStyle(el).transform))
+    .not.toBe(islandStart);
+  const orbit = page.locator('.building .wonder-orbit');
+  const orbitStart = await orbit.evaluate(
+    (el) => getComputedStyle(el).transform,
+  );
+  await expect
+    .poll(() => orbit.evaluate((el) => getComputedStyle(el).transform))
+    .not.toBe(orbitStart);
+  const save = await page.evaluate(() =>
+    localStorage.getItem('landmark-island-demo-v1'),
+  );
+  await page.getByRole('button', { name: 'Explore island' }).click();
+  await page
+    .getByRole('button', {
+      name: 'Landmark: Great Pyramid of Giza',
+      exact: true,
+    })
+    .click();
+  const detailBody = page.locator('.detail-art .wonder-body');
+  const detailStart = await detailBody.evaluate(
+    (el) => getComputedStyle(el).transform,
+  );
+  await expect
+    .poll(() => detailBody.evaluate((el) => getComputedStyle(el).transform))
+    .not.toBe(detailStart);
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  for (const selector of [
+    '.wonder-body',
+    '.wonder-orbit',
+    '.wonder-spark',
+    '.wonder-shadow',
+  ]) {
+    expect(
+      await page
+        .locator(selector)
+        .evaluateAll((els) =>
+          els.every((el) => getComputedStyle(el).animationName === 'none'),
+        ),
+    ).toBe(true);
+  }
+  expect(
+    await detailBody.evaluate((el) => getComputedStyle(el).transform),
+  ).not.toBe('none');
+  await page.screenshot({
+    path: 'test-results/landmark-island/wonder-detail-demo.png',
+  });
+  await page.keyboard.press('Escape');
+  await page.locator('.ocean').screenshot({
+    path: 'test-results/landmark-island/wonder-island-demo.png',
+  });
+  expect(
+    await page.evaluate(() => localStorage.getItem('landmark-island-demo-v1')),
+  ).toBe(save);
+});
