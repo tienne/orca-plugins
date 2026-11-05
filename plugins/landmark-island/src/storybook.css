@@ -721,3 +721,142 @@ footer {
     font-size: 26px;
   }
 }
+
+/* Rarity uses words and distinct marks as well as color. */
+[data-tier='common'] {
+  --rarity-ink: #46613d;
+  --rarity-wash: #e0e7ce;
+  --rarity-line: #9eaf86;
+}
+[data-tier='rare'] {
+  --rarity-ink: #245e82;
+  --rarity-wash: #d8e8ee;
+  --rarity-line: #86afc1;
+}
+[data-tier='epic'] {
+  --rarity-ink: #754581;
+  --rarity-wash: #eaddf0;
+  --rarity-line: #b594c1;
+}
+[data-tier='legendary'] {
+  --rarity-ink: #825710;
+  --rarity-wash: #f4e5b7;
+  --rarity-line: #c1a35c;
+}
+.rarity-badge,
+.card .rarity-badge {
+  display: inline-flex;
+  align-items: center;
+  align-self: flex-start;
+  gap: 5px;
+  padding: 4px 8px;
+  border: 1px solid var(--rarity-line);
+  border-radius: 3px 7px 3px 3px;
+  color: var(--rarity-ink);
+  background: var(--rarity-wash);
+  font:
+    600 10px 'Avenir Next',
+    'Trebuchet MS',
+    sans-serif;
+  opacity: 1;
+  white-space: nowrap;
+}
+.rarity-badge span {
+  font-size: 12px;
+  opacity: 1;
+}
+.card {
+  border-top: 2px solid var(--rarity-line);
+}
+.card[hidden] {
+  display: none;
+}
+.card:not(.locked)[data-tier='epic'],
+.card:not(.locked)[data-tier='legendary'] {
+  background: linear-gradient(
+    160deg,
+    color-mix(in srgb, var(--rarity-wash) 20%, transparent),
+    transparent 70%
+  );
+}
+.card:not(.locked)[data-tier='legendary'] .collect-action svg {
+  filter: drop-shadow(0 3px 7px #d6b35a50);
+}
+.discovery-notice {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 9px 12px;
+  border-left: 3px solid var(--rarity-line);
+  background: color-mix(in srgb, var(--rarity-wash) 13%, transparent);
+}
+.discovery-notice::before {
+  content: none;
+}
+.collection-progress {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+  margin: 16px 0;
+  font-size: 12px;
+}
+.collection-progress strong {
+  font:
+    normal 22px Georgia,
+    serif;
+  margin-right: 5px;
+}
+.collection-progress progress {
+  width: 190px;
+  height: 7px;
+  border: 0;
+  border-radius: 5px;
+  background: var(--line);
+  accent-color: var(--accent);
+}
+.collection-progress progress::-webkit-progress-bar {
+  background: var(--line);
+  border-radius: 5px;
+}
+.collection-progress progress::-webkit-progress-value {
+  background: var(--accent);
+  border-radius: 5px;
+}
+.collection-progress progress::-moz-progress-bar {
+  background: var(--accent);
+  border-radius: 5px;
+}
+.rarity-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.rarity-filters button {
+  font-size: 12px;
+  border-bottom: 3px solid var(--rarity-line, var(--line));
+}
+.rarity-filters small {
+  margin-left: 4px;
+  font-size: 11px;
+}
+.rarity-filters button[data-tier][aria-pressed='true'] {
+  background: var(--rarity-wash);
+  color: var(--rarity-ink);
+  border-color: var(--rarity-line);
+}
+.rarity-filters button[aria-pressed='true'] {
+  box-shadow: inset 0 0 0 1px currentColor;
+}
+.rarity-summary {
+  font-size: 11px;
+  margin: 12px 0 0;
+}
+.landmark-detail {
+  border-top: 4px solid var(--rarity-line, var(--line));
+}
+.detail-rarity p {
+  font-size: 11px;
+  margin: 8px 0 16px;
+}

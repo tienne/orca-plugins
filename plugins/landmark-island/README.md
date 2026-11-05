@@ -14,6 +14,12 @@ There are 12 landmarks: 6 common, 3 rare, 2 epic and 1 legendary. Each draw firs
 
 Only `workspace.created` with `kind: worktree` awards a reward. Folder creation, chats, refreshes, workspace switching and app launch do not. A single worker queue serializes receipts and placements. The schema-versioned save records one receipt per workspace ID, so repeated delivery and worker restarts do not award twice. Saved rewards survive worktree removal. No paths from events are accessed, and no Git operations occur.
 
+## Rarity and collection progress
+
+Each landmark has a fixed rarity: **Common** (6 landmarks, 70% tier chance), **Rare** (3, 23%), **Epic** (2, 6%) or **Legendary** (1, 1%). Colored badges also use names and distinct symbols. The latest acquisition notice and field-guide page show the tier; the field guide explains its draw probability. These are tier probabilities, not the probability of each individual item: items within a tier remain equally likely.
+
+The collection has All / Common / Rare / Epic / Legendary filters and a progress bar. Counts track unique discoveries, so duplicates increase owned quantities without advancing completion. Filters only change the visible collection entries and do not alter island mode, camera, placements or draw odds. Unowned entries retain their rarity badge and remain readable. All existing tier assignments, probabilities and saved quantities are unchanged; no pity or guaranteed completion has been added.
+
 ## Landmark field guide
 
 Every collection entry shows its country separately from rarity. **About this landmark** opens a field-guide page with the country, region, a short historical description and an official reference link. All 12 entries can be read before acquisition, even if no copies are available to place. In **Explore island**, click a placed building or its ground tile to read its story; in **Arrange landmarks**, the same click selects it for moving as before. Reading never awards an item or changes a placement. Close with the × button or Escape; keyboard focus returns to the opener.
@@ -64,7 +70,7 @@ Deferred: decoration economy, further terrain expansion, cloud sync, trading, lo
 
 - `pnpm nx run landmark-island:typecheck`: passed.
 - `pnpm nx run landmark-island:test`: passed the worker/state assertions above, stable original cell addresses, water/boundary rejection, expanded placement persistence, and reachability of all unoccupied land around terrain obstacles.
-- `pnpm nx run landmark-island:ui-test --output-style=static`: 10 browser tests passed, including all 12 country/description pages, unowned reading, modal keyboard/focus/mobile behavior, inspection versus building edits, unfocused pointer-anchored wheel zoom and outside-page scrolling, walking around buildings, depth order, keyboard controls, camera follow/pan/zoom/reset, minimap overview on narrow screens, automatic/manual climate, reduced motion, ownership isolation and persistence of both original and expanded land placements; screenshots inspected under `test-results/landmark-island/`.
+- `pnpm nx run landmark-island:ui-test --output-style=static`: 11 browser tests passed, including rarity filters, legendary/common acquisition badges, duplicate-safe collection progress, all 12 country/description pages, unowned reading, modal keyboard/focus/mobile behavior, inspection versus building edits, unfocused pointer-anchored wheel zoom and outside-page scrolling, walking around buildings, depth order, keyboard controls, camera follow/pan/zoom/reset, minimap overview on narrow screens, automatic/manual climate, reduced motion, ownership isolation and persistence of both original and expanded land placements; screenshots inspected under `test-results/landmark-island/`.
 - `pnpm nx run git-logs:build --skipNxCache --output-style=static`: passed with the shared builder; Git Logs source is unchanged. Its typecheck passed and its worker/artifact suite passed 49 tests.
 - Git Logs UI regression run was attempted but its server timed out: port 4173 is occupied by an older preview in another worktree returning HTTP 404. That process was not stopped or changed.
 - `pnpm validate`: both packaged manifests passed the installed Orca validator. `orca plugin inspect dist/plugins/landmark-island --json` reports valid and `needsApproval: true`.

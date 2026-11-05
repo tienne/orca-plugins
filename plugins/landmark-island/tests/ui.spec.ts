@@ -455,3 +455,111 @@ test('a placed building opens its story during exploration and stays movable in 
     .click();
   await expect(dialog).toBeVisible();
 });
+
+test('rarity filters, discoveries and progress distinguish unique landmarks from duplicates', async ({
+  page,
+}) => {
+  await page.addInitScript(() => {
+    const fixtureWindow = window as typeof window & { fixtureRoll: number };
+    fixtureWindow.fixtureRoll = 0.999;
+    Math.random = () => fixtureWindow.fixtureRoll;
+  });
+  await page.goto('/');
+  await page.getByRole('button', { name: 'Demo expedition' }).click();
+  await expect(page.getByRole('status')).toContainText(
+    'New discovery: Great Pyramid of Giza',
+  );
+  await expect(page.getByRole('status').locator('.rarity-badge')).toHaveText(
+    '♛ Legendary',
+  );
+  await expect(page.locator('#discovery-progress')).toHaveAttribute(
+    'value',
+    '1',
+  );
+  await page.getByRole('button', { name: 'Demo expedition' }).click();
+  await expect(page.getByRole('status')).toContainText(
+    'Duplicate discovered: Great Pyramid of Giza',
+  );
+  await expect(page.locator('[data-landmark="giza"]')).toContainText(
+    'Owned ×2',
+  );
+  await expect(page.locator('#discovery-progress')).toHaveAttribute(
+    'value',
+    '1',
+  );
+  const before = await page.evaluate(() =>
+    localStorage.getItem('landmark-island-demo-v1'),
+  );
+  const camera = await page.locator('.camera').getAttribute('style');
+  for (const [tier, visible, collected, chance] of [
+    ['common', 6, 0, 70],
+    ['rare', 3, 0, 23],
+    ['epic', 2, 0, 6],
+    ['legendary', 1, 1, 1],
+  ] as const) {
+    const filter = page.locator(`[data-tier-filter="${tier}"]`);
+    await filter.click();
+    await expect(filter).toHaveAttribute('aria-pressed', 'true');
+    await expect(filter).toBeFocused();
+    await expect(filter).toContainText(`${collected}/${visible}`);
+    await expect(page.locator('.collection .card:visible')).toHaveCount(
+      visible,
+    );
+    await expect(page.locator('.rarity-summary')).toContainText(
+      `${chance}% tier chance`,
+    );
+    await expect(page.locator('.rarity-summary')).toContainText(
+      `${collected} of ${visible} discovered`,
+    );
+  }
+  expect(
+    await page.evaluate(() => localStorage.getItem('landmark-island-demo-v1')),
+  ).toBe(before);
+  expect(await page.locator('.camera').getAttribute('style')).toBe(camera);
+  await expect(page.locator('.ocean')).toHaveAttribute('data-mode', 'walk');
+  await page.locator('[data-info="giza"]').click();
+  await expect(page.getByRole('dialog').locator('.rarity-badge')).toContainText(
+    'Legendary',
+  );
+  await expect(page.getByRole('dialog')).toContainText(
+    '1% tier chance per expedition',
+  );
+  await page.keyboard.press('Escape');
+  await page.evaluate(() => {
+    (window as typeof window & { fixtureRoll: number }).fixtureRoll = 0;
+  });
+  await page.getByRole('button', { name: 'Demo expedition' }).click();
+  await expect(page.getByRole('status').locator('.rarity-badge')).toContainText(
+    'Common',
+  );
+  await expect(page.locator('#discovery-progress')).toHaveAttribute(
+    'value',
+    '2',
+  );
+  await expect(page.locator('[data-tier-filter="legendary"]')).toHaveAttribute(
+    'aria-pressed',
+    'true',
+  );
+  await page.locator('[data-tier-filter="all"]').click();
+  await expect(page.locator('.collection .card:visible')).toHaveCount(12);
+  await expect(page.locator('[data-tier-filter="all"]')).toContainText('2/12');
+  await page.locator('.collection-section').screenshot({
+    path: 'test-results/landmark-island/rarity-collection-demo.png',
+  });
+  await page.reload();
+  await expect(page.locator('#discovery-progress')).toHaveAttribute(
+    'value',
+    '2',
+  );
+  await page.setViewportSize({ width: 360, height: 800 });
+  await page.evaluate(() => {
+    document.documentElement.className = 'dark';
+  });
+  await page.locator('[data-tier-filter="legendary"]').click();
+  expect(
+    await page.evaluate(() => document.documentElement.scrollWidth),
+  ).toBeLessThanOrEqual(360);
+  await page.locator('.collection-section').screenshot({
+    path: 'test-results/landmark-island/rarity-mobile-demo.png',
+  });
+});
