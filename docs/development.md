@@ -14,7 +14,7 @@ pnpm nx run-many -t build typecheck test ui-test -p git-logs
 pnpm validate
 ```
 
-`build` bundles React, Monaco, the editor worker, fonts, the Git worker, and dependency licenses into `dist/plugins/git-logs`. The source manifest points to packaged entries; run Orca validation against that output directory. The installed plugin must not depend on sibling packages or a `node_modules` symlink.
+`build` bundles React, Monaco, the editor worker, SVG icons, the Git worker, and dependency licenses into `dist/plugins/git-logs`. The source manifest points to packaged entries; run Orca validation against that output directory. The installed plugin must not depend on sibling packages or a `node_modules` symlink.
 
 `test` runs Git cases in temporary repositories, translation checks, and artifact checks. `ui-test` exercises the packaged UI in a browser. Use [screenshot instructions](screenshots/README.md) to generate the English demo images.
 
@@ -143,7 +143,7 @@ Before the rename, the approved development identity was tested on macOS with Or
 
 ## Package and release
 
-The build rejects symlinks, `node_modules`, executables, native modules, archives, and unreviewed file types. Worker dependencies must be bundled unless they are Node built-ins. No WASM is shipped. Local fonts pass the installed validator; acceptance by the public directory has not been verified.
+The build rejects symlinks, `node_modules`, executables, native modules, archives, and unreviewed file types. Worker dependencies must be bundled unless they are Node built-ins. No WASM or font files are shipped. The public directory rejected the 0.1.0 Codicon font. Starting with 0.1.1, the build converts the installed Monaco glyphs into inline SVG masks; the editor icon registry resolves aliases and theme colors use currentColor. Font parsing runs only at build time. Artifact checks reject font files so they cannot be reintroduced into a release.
 
 The bundle declares `type: module` for `worker.js`. Generated comparison documents and local validation captures are not release assets. Both language guides and dependency licenses belong in the installable directory.
 

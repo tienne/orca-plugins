@@ -8,7 +8,7 @@ Orca plugins built with pnpm, Nx, TypeScript, React, Vite, and esbuild. Each dir
 
 | Plugin                                 | Features                                                                   | Status |
 | -------------------------------------- | -------------------------------------------------------------------------- | ------ |
-| [Git Logs](plugins/git-logs/README.md) | Commit graph, branch and commit search, side-by-side diffs, commit actions | 0.1.0  |
+| [Git Logs](plugins/git-logs/README.md) | Commit graph, branch and commit search, side-by-side diffs, commit actions | 0.1.1  |
 
 The source-branch catalog is an empty template. The installable catalog and built plugins live on `release`. In Orca **Settings → Plugins → ⋯ → Catalog sources…**, add `https://github.com/tienne/orca-plugins.git` with ref `release`, then install Git Logs. See the [installation and usage guide](plugins/git-logs/README.md#install) for access and usage details.
 
@@ -42,7 +42,7 @@ pnpm nx run git-logs:build
 pnpm nx run git-logs:preview
 ```
 
-The build is written to `dist/plugins/git-logs`. It includes the UI, Monaco, fonts, editor worker, both language guides, and dependency licenses. It does not need a separate `node_modules` directory after installation.
+The build is written to `dist/plugins/git-logs`. It includes the UI, Monaco, SVG icons, editor worker, both language guides, and dependency licenses. It does not need a separate `node_modules` directory after installation.
 
 Open `http://127.0.0.1:4173` for the browser demo, or `http://127.0.0.1:4173/?lang=en&sample=en` for English sample data. The demo does not run Git commands. Use `pnpm dev` for source editing with hot reload.
 

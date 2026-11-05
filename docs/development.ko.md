@@ -14,7 +14,7 @@ pnpm nx run-many -t build typecheck test ui-test -p git-logs
 pnpm validate
 ```
 
-`build`는 React, Monaco, editor worker, 폰트, Git worker, 의존 라이선스를 `dist/plugins/git-logs`에 묶습니다. 소스 manifest는 패키징된 파일을 가리키므로 Orca 검증은 이 폴더를 대상으로 실행하십시오. 설치한 플러그인이 다른 패키지나 `node_modules` symlink에 의존해서는 안 됩니다.
+`build`는 React, Monaco, editor worker, SVG 아이콘, Git worker, 의존 라이선스를 `dist/plugins/git-logs`에 묶습니다. 소스 manifest는 패키징된 파일을 가리키므로 Orca 검증은 이 폴더를 대상으로 실행하십시오. 설치한 플러그인이 다른 패키지나 `node_modules` symlink에 의존해서는 안 됩니다.
 
 `test`는 임시 저장소의 Git 작업, 번역, 산출물 규칙을 검사합니다. `ui-test`는 패키징한 UI를 브라우저에서 검증합니다. 영문 DEMO 이미지 생성은 [스크린샷 안내](screenshots/README.ko.md)를 참고하십시오.
 
@@ -143,7 +143,7 @@ Manifest와 카탈로그의 설명 필드는 언어별로 나뉘지 않으며 �
 
 ## 패키징과 릴리스
 
-빌드는 symlink, `node_modules`, 실행 파일, 네이티브 모듈, 아카이브, 검토하지 않은 파일 형식을 거절합니다. Worker의 Node 내장 모듈 외 의존성은 번들에 포함해야 합니다. WASM은 넣지 않았습니다. 로컬 폰트는 설치본 validator를 통과했지만 공개 디렉터리 수락 여부는 아직 확인하지 않았습니다.
+빌드는 symlink, `node_modules`, 실행 파일, 네이티브 모듈, 아카이브, 검토하지 않은 파일 형식을 거절합니다. Worker의 Node 내장 모듈 외 의존성은 번들에 포함해야 합니다. WASM과 폰트 파일은 배포하지 않습니다. 공개 디렉터리는 0.1.0의 Codicon 폰트를 거절했습니다. 0.1.1부터 빌드가 설치된 Monaco 글리프를 인라인 SVG 마스크로 변환합니다. 편집기 아이콘 레지스트리로 별칭을 해석하고 currentColor로 테마 색상을 따릅니다. 폰트 파싱은 빌드할 때만 실행하며 패키지 검사는 폰트 파일의 재유입을 거절합니다.
 
 번들은 `worker.js` 실행을 위해 `type: module`을 선언합니다. 비교 문서와 로컬 검증 캡처는 배포 에셋이 아닙니다. 설치용 폴더에는 두 언어의 안내와 의존 라이선스를 포함합니다.
 

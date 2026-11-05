@@ -4,9 +4,11 @@ test('packaged Monaco renders aligned read-only panes, local worker, navigation 
 }, info) => {
   const errors: string[] = [];
   const externalRequests: string[] = [];
+  const fontRequests: string[] = [];
   page.on('request', (request) => {
+    if (request.resourceType() === 'font') fontRequests.push(request.url());
     if (
-      !request.url().startsWith('http://127.0.0.1:4173/') &&
+      !request.url().startsWith(new URL('/', info.project.use.baseURL).href) &&
       !request.url().startsWith('data:')
     )
       externalRequests.push(request.url());
@@ -43,6 +45,26 @@ test('packaged Monaco renders aligned read-only panes, local worker, navigation 
   await page.getByLabel('변경 없는 영역 접기').uncheck();
   await page.getByLabel('변경 없는 영역 접기').check();
   async function verifyGraphAndMetadata() {
+    const icons = await page.locator('.codicon').evaluateAll((nodes) =>
+      nodes
+        .filter((node) => node.getBoundingClientRect().width > 0)
+        .map((node) => {
+          const icon = getComputedStyle(node, '::before');
+          return {
+            name: node.className,
+            mask: icon.maskImage,
+            color: icon.color,
+            background: icon.backgroundColor,
+          };
+        }),
+    );
+    expect(icons.some((icon) => icon.name.includes('codicon-unfold'))).toBe(
+      true,
+    );
+    for (const icon of icons) {
+      expect(icon.mask, icon.name).toContain('data:image/svg+xml');
+      expect(icon.background, icon.name).toBe(icon.color);
+    }
     const colors = await page
       .locator('.commit-row')
       .first()
@@ -94,6 +116,7 @@ test('packaged Monaco renders aligned read-only panes, local worker, navigation 
   expect(before).toContain('readOnly');
   expect(errors).toEqual([]);
   expect(externalRequests).toEqual([]);
+  expect(fontRequests).toEqual([]);
 });
 test('merge parent, search, long names, binary and empty file UX', async ({
   page,

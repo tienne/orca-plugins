@@ -8,7 +8,7 @@ pnpm, Nx, TypeScript, React, Vite, esbuild를 사용하는 Orca 플러그인 저
 
 | 플러그인                                  | 기능                                                  | 상태  |
 | ----------------------------------------- | ----------------------------------------------------- | ----- |
-| [Git Logs](plugins/git-logs/README.ko.md) | 커밋 그래프, 브랜치와 커밋 검색, 좌우 Diff, 커밋 작업 | 0.1.0 |
+| [Git Logs](plugins/git-logs/README.ko.md) | 커밋 그래프, 브랜치와 커밋 검색, 좌우 Diff, 커밋 작업 | 0.1.1 |
 
 소스 브랜치의 카탈로그는 빈 템플릿입니다. 설치용 카탈로그와 빌드 파일은 `release` 브랜치에서 관리합니다. Orca의 **설정 → 플러그인 → ⋯ → Catalog sources…**에 `https://github.com/tienne/orca-plugins.git`과 ref `release`를 추가한 뒤 Git Logs를 설치하십시오. [설치·사용 안내](plugins/git-logs/README.ko.md#설치)에 권한과 사용 방법을 설명합니다.
 
@@ -42,7 +42,7 @@ pnpm nx run git-logs:build
 pnpm nx run git-logs:preview
 ```
 
-빌드 결과는 `dist/plugins/git-logs`에 생성됩니다. UI, Monaco, 폰트, editor worker, 두 언어의 사용 안내와 의존 라이선스를 포함합니다. 설치 후에는 별도 `node_modules` 폴더가 필요하지 않습니다.
+빌드 결과는 `dist/plugins/git-logs`에 생성됩니다. UI, Monaco, SVG 아이콘, editor worker, 두 언어의 사용 안내와 의존 라이선스를 포함합니다. 설치 후에는 별도 `node_modules` 폴더가 필요하지 않습니다.
 
 브라우저에서 `http://127.0.0.1:4173`을 열어 보십시오. 영문 샘플 주소는 `http://127.0.0.1:4173/?lang=en&sample=en`입니다. DEMO는 Git 명령을 실행하지 않습니다. 소스를 수정하면서 확인하려면 `pnpm dev`를 사용하십시오.
 

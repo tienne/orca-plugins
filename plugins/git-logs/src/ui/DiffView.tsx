@@ -1,11 +1,11 @@
 import { t, useLocale, changesLabel, formatNumber } from './i18n';
 import { useEffect, useRef, useState } from 'react';
-import '@git-logs/codicons.css';
 import * as monaco from 'monaco-editor/editor/editor.api.js';
 import EditorWorker from 'monaco-editor/editor/editor.worker.js?worker';
 import 'monaco-editor/languages/definitions/typescript/register.js';
 import type { FileDiff } from '../protocol';
 import { syncMonacoTheme } from './theme';
+import { installSvgIcons } from './icons';
 (
   globalThis as typeof globalThis & { MonacoEnvironment: unknown }
 ).MonacoEnvironment = { getWorker: () => new EditorWorker() };
@@ -26,6 +26,7 @@ export function DiffView({
   right: string;
 }) {
   const locale = useLocale();
+  useEffect(installSvgIcons, []);
   const container = useRef<HTMLDivElement>(null);
   const editor = useRef<monaco.editor.IStandaloneDiffEditor | null>(null);
   const [ignore, setIgnore] = useState(false);

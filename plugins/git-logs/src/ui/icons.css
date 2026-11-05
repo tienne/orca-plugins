@@ -1,0 +1,19 @@
+.codicon[class*='codicon-'] {
+  display: inline-block;
+  font: normal normal normal 16px/1 sans-serif;
+  text-decoration: none;
+  text-align: center;
+  text-transform: none;
+  user-select: none;
+}
+
+.codicon[class*='codicon-']::before {
+  content: '' !important;
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  mask-repeat: no-repeat;
+  mask-position: center;
+  mask-size: contain;
+  vertical-align: middle;
+}

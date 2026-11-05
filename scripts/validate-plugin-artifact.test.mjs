@@ -19,25 +19,28 @@ async function fixture(run) {
     await rm(root, { recursive: true, force: true });
   }
 }
-test('artifact accepts self-contained JS, styles, local fonts and licenses', () =>
+test('artifact accepts self-contained JS, styles, images and licenses', () =>
   fixture(async (root) => {
     for (const name of [
       'worker.js',
       'index.html',
-      'font.ttf',
+      'icon.png',
       'LICENSE',
       'notice.txt',
     ])
       await writeFile(join(root, name), 'fixture');
     assert.deepEqual(await validateArtifact(root), { count: 5, bytes: 35 });
   }));
-test('artifact rejects links, executables, archives, native modules, unreviewed WASM and node_modules', async () => {
+test('artifact rejects links, executables, archives, native modules, fonts, unreviewed WASM and node_modules', async () => {
   for (const name of [
     'link.js',
     'executable.js',
     'native.node',
     'archive.zip',
     'runtime.wasm',
+    'font.ttf',
+    'font.woff',
+    'font.woff2',
     'node_modules',
   ])
     await fixture(async (root) => {
