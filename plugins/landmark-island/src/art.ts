@@ -22,6 +22,20 @@ const shapes: Record<string, string> = {
     'M3 35L16 14l15 22L43 5l18 30v23H3z M9 40h23v7H9z M18 48h28v7H18z M36 32h15v8H36z M5 57h55',
   giza: 'M3 56L28 9l33 47z M28 9l8 47 M3 56h58',
 };
+const washes: Record<string, string> = {
+  eiffel: '#b79470',
+  colosseum: '#c9ab7e',
+  stonehenge: '#9baf9c',
+  liberty: '#88aa94',
+  opera: '#efe3c4',
+  fuji: '#a4b2be',
+  taj: '#eee1bd',
+  petra: '#d59f80',
+  chichen: '#c5b580',
+  angkor: '#adb086',
+  machu: '#9bb28b',
+  giza: '#d9bd7c',
+};
 export function art(id: string) {
-  return `<svg viewBox="0 0 64 64" aria-hidden="true"><ellipse cx="32" cy="58" rx="28" ry="5" fill="#102c3540"/><path d="${shapes[id] ?? ''}" fill="currentColor" stroke="#284647" stroke-width="1.8" stroke-linejoin="round"/></svg>`;
+  return `<svg viewBox="0 0 64 64" aria-hidden="true"><ellipse cx="32" cy="58" rx="28" ry="5" fill="#685b3d20"/><path d="${shapes[id] ?? ''}" fill="${washes[id] ?? '#c9ab7e'}" stroke="#736a51" stroke-width="1.2" stroke-linejoin="round"/></svg>`;
 }

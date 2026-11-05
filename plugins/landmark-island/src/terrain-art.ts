@@ -9,17 +9,18 @@ import {
   type Tile,
 } from './world';
 import { landmarks, type State } from './game';
+// Original silhouettes with irregular ink contours and layered wash colors.
 const tree = (pine: boolean) =>
   pine
-    ? `<svg viewBox="0 0 80 120"><ellipse cx="43" cy="109" rx="29" ry="9" fill="#294f3f35"/><path d="M38 105V55" stroke="#74513c" stroke-width="9"/><path d="M40 3L17 43h11L7 70h15L0 98h80L58 70h15L52 43h11z" fill="#326650"/><path d="M40 3L17 43h11L7 70h15L0 98h40z" fill="#55956b"/><path d="M40 3v95l15-28h-9l9-27H44z" fill="#417e59"/></svg>`
-    : `<svg viewBox="0 0 100 116"><ellipse cx="53" cy="106" rx="37" ry="10" fill="#294f3f35"/><path d="M50 105V49m0 30L29 62m21 9 22-21" stroke="#806046" stroke-width="9" stroke-linecap="round"/><path d="M18 75C-9 62 1 34 20 29 18 1 53-6 68 12 99 5 111 39 91 55 106 79 76 97 54 80 37 97 21 88 18 75" fill="#4b8456"/><path d="M18 68C-2 52 10 36 28 34 21 12 46 4 61 20 78 12 94 28 84 44 91 66 64 75 49 60 40 78 25 78 18 68" fill="#79ab65"/><path d="M29 31Q30 15 49 21" fill="none" stroke="#a6c67d" stroke-width="6" stroke-linecap="round"/></svg>`;
+    ? `<svg viewBox="0 0 80 120"><ellipse cx="42" cy="110" rx="28" ry="7" fill="#56644925"/><path d="M37 109l2-55h6l2 55" fill="#92765b" stroke="#6e634b" stroke-width="1.3"/><path d="M40 4Q31 22 22 34l7-2Q19 49 12 55l12-1Q12 74 4 80l13-1L3 99q34 13 73-1L61 78l13 2-19-27 12 2-19-24 9 3z" fill="#6e9277" stroke="#526e5b" stroke-width="1.3" stroke-linejoin="round"/><path d="M40 6Q30 25 24 31l11-3-18 24 16-5L10 78l21-8L9 97q13 5 24 4l6-29-5 2 9-27-6 2 7-23z" fill="#9cad7f"/><path d="M46 30l8 3M43 51l14 3M42 79l19 4M19 94l7-3M24 67l5-3" stroke="#c5cf9b" stroke-width="1.5" fill="none" stroke-linecap="round"/><path d="M43 99v8" stroke="#c0a47a" stroke-width="2"/></svg>`
+    : `<svg viewBox="0 0 100 116"><ellipse cx="51" cy="108" rx="35" ry="8" fill="#56644925"/><path d="M44 107l3-49 7-1 3 50M48 83L29 61m24 15 18-20" fill="#a0845e" stroke="#6d684c" stroke-width="2" stroke-linecap="round"/><path d="M12 70Q0 64 7 51 0 40 15 33 11 17 30 17 34 2 48 9 59-2 70 12 87 9 88 27 103 31 94 47 104 60 88 69 86 84 69 80 60 92 45 81 25 93 20 79 8 81 12 70Z" fill="#98ab70" stroke="#6e8057" stroke-width="1.3"/><path d="M12 49Q6 38 22 35 17 20 34 23 38 7 49 16 64 6 70 22 85 15 85 33 95 40 84 49 76 44 69 52 60 44 54 57 42 49 33 58 20 54 12 60" fill="#bfca8c"/><path d="M16 69q9 5 17-1m6 9q8-8 16-1m12-11q9 4 16-3M28 35q7-7 14-2m13-10 7 4m8 13 8-2" fill="none" stroke="#dce0ad" stroke-width="2" stroke-linecap="round"/><path d="M28 48l3-3m22-6 3 4m20 16 3-3m-32 9 4-1" stroke="#718653" stroke-width="1.3" stroke-linecap="round"/><path d="M50 88v14" stroke="#d3ba86" stroke-width="2"/></svg>`;
 const rock = `<svg viewBox="0 0 70 60"><ellipse cx="36" cy="50" rx="32" ry="9" fill="#314d3430"/><path d="M5 44L17 15 43 5 62 25 64 47 36 57z" fill="#788c83"/><path d="M17 15L43 5 44 35 5 44z" fill="#b1b8a0"/><path d="M44 35L62 25 64 47 36 57z" fill="#5f786f"/></svg>`;
 const flowers = `<svg viewBox="0 0 80 40"><path d="M18 34l2-15m12 13 2-11m16 12 3-19m7 21 5-10" stroke="#678a4a" stroke-width="2"/><g fill="#f7dc7c"><circle cx="20" cy="16" r="5"/><circle cx="34" cy="20" r="4"/><circle cx="53" cy="12" r="5"/></g><g fill="#edac9e"><circle cx="64" cy="23" r="4"/><circle cx="42" cy="27" r="3"/></g></svg>`;
 const colors: Record<Tile['kind'], string[]> = {
-  grass: ['#9cb97a', '#a3bf80', '#94b176', '#a9c486'],
-  sand: ['#e7d29b', '#e0c88e', '#e9d6a4'],
-  path: ['#d4c3a0', '#d9c9a8', '#d0bf9a'],
-  rock: ['#a3b298', '#9baa90', '#b2bba3'],
+  grass: ['#b7c78c', '#bac98e', '#b5c58b', '#b9c88d'],
+  sand: ['#e5d4a3', '#e3d1a0', '#e7d6a7'],
+  path: ['#ddd0a7', '#dfd2aa', '#dccea5'],
+  rock: ['#b1baa1', '#adb79d', '#b6bfa6'],
 };
 export function terrain(state: State, selectedCell?: number) {
   const placements = new Map(state.placements.map((p) => [p.cell, p.landmark]));
@@ -36,11 +37,11 @@ export function terrain(state: State, selectedCell?: number) {
         : t.prop
           ? `<div class="world-object ${t.prop}" aria-hidden="true">${t.prop === 'pine' ? tree(true) : t.prop === 'oak' ? tree(false) : t.prop === 'rock' ? rock : flowers}</div>`
           : '';
-      return `<div class="world-tile" style="left:${p.x - 40}px;top:${p.y - 20}px;z-index:${p.depth}" data-world-cell="${t.id}"><svg class="tile-base" width="80" height="${40 + h}" viewBox="0 0 80 ${40 + h}" aria-hidden="true"><path d="M0 20L40 40V${40 + h}L0 ${20 + h}Z" fill="${t.kind === 'sand' ? '#c9ae79' : '#8a8b62'}"/><path d="M40 40L80 20V${20 + h}L40 ${40 + h}Z" fill="${t.kind === 'sand' ? '#b89d69' : '#6f7856'}"/><path d="M0 20L40 0 80 20 40 40Z" fill="${fill}"/>${t.kind === 'grass' && t.id % 3 === 0 ? '<path d="M18 21l2-4 1 4m38 1 3-4" stroke="#809d64" stroke-width="1" fill="none"/>' : ''}${t.kind === 'path' ? '<path d="M22 18l14-7m8 18 14-7" stroke="#b7a98a70" stroke-width="1"/>' : ''}</svg><button class="cell ${id ? 'occupied' : ''} ${selectedCell === t.id ? 'selected' : ''}" data-cell="${t.id}" aria-label="${label}" title="${landmark?.name ?? t.region}" tabindex="-1"></button>${decoration}</div>`;
+      return `<div class="world-tile" style="left:${p.x - 40}px;top:${p.y - 20}px;z-index:${p.depth}" data-world-cell="${t.id}"><svg class="tile-base" width="80" height="${40 + h}" viewBox="0 0 80 ${40 + h}" aria-hidden="true"><path d="M0 20L40 40V${40 + h}L0 ${20 + h}Z" fill="${t.kind === 'sand' ? '#cdb68a' : '#9c9d70'}"/><path d="M40 40L80 20V${20 + h}L40 ${40 + h}Z" fill="${t.kind === 'sand' ? '#bda880' : '#858a66'}"/><path d="M0 20L40 0 80 20 40 40Z" fill="${fill}"/>${t.kind === 'grass' && t.id % 3 === 0 ? '<path d="M18 21l2-4 1 4m38 1 3-4" stroke="#809d64" stroke-width="1" fill="none"/>' : ''}${t.kind === 'path' ? '<path d="M22 18l14-7m8 18 14-7" stroke="#b7a98a70" stroke-width="1"/>' : ''}</svg><button class="cell ${id ? 'occupied' : ''} ${selectedCell === t.id ? 'selected' : ''}" data-cell="${t.id}" aria-label="${label}" title="${landmark?.name ?? t.region}" tabindex="-1"></button>${decoration}</div>`;
     })
     .join(
       '',
-    )}<div class="world-sign" style="left:${project(14).x - 20}px;top:${project(14).y - 65}px;z-index:${project(14).depth + 1}" aria-hidden="true"><span>LANDMARK<br>COMMONS</span></div></div>`;
+    )}<div class="world-sign" style="left:${project(14).x - 20}px;top:${project(14).y - 65}px;z-index:${project(14).depth + 1}" aria-hidden="true"><span>The<br>Commons</span></div></div>`;
 }
 export function minimap() {
   return `<button id="overview" class="minimap" aria-label="Show whole island"><svg viewBox="0 0 ${SIZE * 4} ${SIZE * 4}" aria-hidden="true">${tiles
