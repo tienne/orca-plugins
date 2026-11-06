@@ -178,7 +178,8 @@ test('language changes keep a running reveal and backup confirmation intact and 
   // Minimal public-locale fixture; demo storage remains isolated in this context.
   await page.addInitScript(() => {
     (window as unknown as { orca: unknown }).orca = { locale: 'en-US' };
-    Math.random = () => 0.999;
+    let roll = 0;
+    Math.random = () => (roll++ % 2 === 0 ? 0.999 : 0);
   });
   await page.goto('/?lang=ko');
   await page.locator('#expedition').click();

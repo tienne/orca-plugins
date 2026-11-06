@@ -10,6 +10,7 @@ try {
     entryPoints: [
       'plugins/landmark-island/src/game.ts',
       'plugins/landmark-island/src/i18n.ts',
+      'plugins/landmark-island/src/decorations.ts',
       'plugins/landmark-island/src/walk.ts',
       'plugins/landmark-island/src/world.ts',
       'plugins/landmark-island/src/worker/main.ts',
@@ -63,6 +64,46 @@ try {
     '새로운 발견: 에펠탑 · 보유 ×1 · 파리 등불 선물 · 테마 해금 · 땅 +23칸',
   );
   assert.equal(translate('Eiffel Tower', 'en-US'), 'Eiffel Tower');
+  const { decorations } = await import(
+    pathToFileURL(join(dir, 'decorations.mjs'))
+  );
+  assert.equal(landmarks.length, 24);
+  assert.equal(new Set(landmarks.map((l) => l.id)).size, 24);
+  assert.equal(new Set(landmarks.map((l) => l.code)).size, 24);
+  assert.equal(decorations.length, 52);
+  for (const [tier, count, roll] of [
+    ['common', 12, 0.35],
+    ['rare', 6, 0.8],
+    ['epic', 4, 0.95],
+    ['legendary', 2, 0.995],
+  ]) {
+    const pool = landmarks.filter((l) => l.tier === tier);
+    assert.equal(pool.length, count);
+    for (let i = 0; i < pool.length; i++) {
+      let n = 0;
+      assert.equal(
+        draw(() => (n++ === 0 ? roll : (i + 0.5) / pool.length)),
+        pool[i].id,
+      );
+    }
+  }
+  for (const landmark of landmarks) {
+    assert.ok(Number.isFinite(landmark.lat) && Math.abs(landmark.lat) <= 90);
+    assert.ok(Number.isFinite(landmark.lon) && Math.abs(landmark.lon) <= 180);
+    assert.match(landmark.source, /^https:\/\/www\.wikidata\.org\/wiki\/Q\d+$/);
+    assert.match(landmark.descriptionSource, /^https:\/\//);
+    assert.ok(landmark.description.length > 100);
+    const set = decorations.filter((d) => d.landmark === landmark.id);
+    assert.equal(set.length, 2);
+    assert.equal(set.filter((d) => d.gift).length, 1);
+    for (const d of set) assert.notEqual(translate(d.name, 'ko-KR'), d.name);
+  }
+  assert.equal(translate('/ 24 discovered', 'ko-KR'), '/ 24종 발견');
+  assert.equal(
+    translate('24-landmark prototype', 'ko-KR'),
+    '랜드마크 24종 프로토타입',
+  );
+
   assert.equal(
     translate('Error: This file is not valid JSON.', 'ko-KR'),
     '오류: 올바른 JSON 파일이 아니에요.',
@@ -510,11 +551,11 @@ try {
     });
   assert.equal(islandLand(empty()).length, 36);
   let priorLand = new Set();
-  for (let count = 0; count <= 12; count++) {
+  for (let count = 0; count <= landmarks.length; count++) {
     const s = fixture(landmarks.slice(0, count).map((l) => l.id));
     const land = new Set(islandLand(s).map((t) => t.id));
     assert.ok([...priorLand].every((id) => land.has(id)));
-    assert.equal(land.size, 36 + Math.floor((count * 282) / 12));
+    assert.equal(land.size, 36 + Math.floor((Math.min(count, 12) * 282) / 12));
     const blocked = new Set(
       landTiles.filter((t) => !land.has(t.id)).map((t) => t.id),
     );
@@ -526,6 +567,55 @@ try {
         );
     priorLand = land;
   }
+
+  const fullCatalog = fixture(landmarks.map((l) => l.id));
+  fullCatalog.placements = landmarks.map((l, i) => ({
+    landmark: l.id,
+    cell: i,
+  }));
+  fullCatalog.decorations = landmarks.map((l, i) => ({
+    decoration: `${l.id}-gift`,
+    cell: 36 + i,
+  }));
+  // Use unlocked land addresses rather than assuming every outer cell is land.
+  fullCatalog.decorations.forEach(
+    (d, i) => (d.cell = landTiles.filter((t) => t.id >= 36)[i].id),
+  );
+  assert.deepEqual(decodeBackup(encodeBackup(fullCatalog)).state, fullCatalog);
+  assert.equal(islandLand(fullCatalog).length, 318);
+  assert.equal(materials(fullCatalog), 0);
+  for (const landmark of landmarks)
+    assert.equal(decorationQuantity(fullCatalog, `${landmark.id}-gift`), 1);
+  console.log(
+    'PASS: all 24 catalog draws, 52 decorations, localized descriptions, full-catalog backup and unchanged land cap',
+  );
+
+  let expandedSave = fixture([
+    ...landmarks.map((l) => l.id),
+    'greatwall',
+    'greatwall',
+  ]);
+  const expandedGame = new Game({
+    read: async () => expandedSave,
+    write: async (s) => {
+      expandedSave = structuredClone(s);
+    },
+  });
+  await expandedGame.craft({
+    id: 'expanded-craft',
+    decoration: 'greatwall-special',
+  });
+  await expandedGame.craft({
+    id: 'expanded-craft',
+    decoration: 'greatwall-special',
+  });
+  assert.equal(materials(expandedSave), 0);
+  assert.equal(decorationQuantity(expandedSave, 'greatwall-special'), 1);
+  assert.equal(decorationQuantity(expandedSave, 'greatwall-gift'), 1);
+  assert.deepEqual(
+    decodeBackup(encodeBackup(expandedSave)).state,
+    expandedSave,
+  );
   let garden = fixture(['eiffel', 'eiffel', 'eiffel', 'eiffel']);
   assert.equal(islandLand(garden).length, 59);
   assert.equal(materials(garden), 9);

@@ -1,6 +1,6 @@
 import { test, expect, type Page } from '@playwright/test';
 import { landTiles, landAtLevel } from '../src/world';
-import { validate } from '../src/game';
+import { validate, landmarks } from '../src/game';
 async function openInventory(page: Page, kind: 'decorations' | 'landmarks') {
   const menu = page.locator(`[data-inventory="${kind}"]`);
   if ((await menu.getAttribute('aria-expanded')) !== 'true') await menu.click();
@@ -360,20 +360,7 @@ test('field guide describes all landmarks, including unowned ones, without chang
   const before = await page.evaluate(() =>
     localStorage.getItem('landmark-island-demo-v1'),
   );
-  const entries = [
-    ['eiffel', 'Eiffel Tower', 'France'],
-    ['colosseum', 'Colosseum', 'Italy'],
-    ['stonehenge', 'Stonehenge', 'United Kingdom'],
-    ['liberty', 'Statue of Liberty', 'United States'],
-    ['opera', 'Sydney Opera House', 'Australia'],
-    ['fuji', 'Mount Fuji', 'Japan'],
-    ['taj', 'Taj Mahal', 'India'],
-    ['petra', 'Petra', 'Jordan'],
-    ['chichen', 'Chichén Itzá', 'Mexico'],
-    ['angkor', 'Angkor Wat', 'Cambodia'],
-    ['machu', 'Machu Picchu', 'Peru'],
-    ['giza', 'Great Pyramid of Giza', 'Egypt'],
-  ];
+  const entries = landmarks.map(({ id, name, country }) => [id, name, country]);
   for (const [id, name, country] of entries) {
     const about = page.locator(`[data-info="${id}"]`);
     await expect(page.locator(`[data-landmark="${id}"]`)).toBeDisabled();
@@ -476,7 +463,8 @@ test('rarity filters, discoveries and progress distinguish unique landmarks from
   await page.addInitScript(() => {
     const fixtureWindow = window as typeof window & { fixtureRoll: number };
     fixtureWindow.fixtureRoll = 0.999;
-    Math.random = () => fixtureWindow.fixtureRoll;
+    let roll = 0;
+    Math.random = () => (roll++ % 2 === 0 ? fixtureWindow.fixtureRoll : 0);
   });
   await page.goto('/');
   await demoDiscovery(page);
@@ -516,10 +504,10 @@ test('rarity filters, discoveries and progress distinguish unique landmarks from
   );
   const camera = await page.locator('.camera').getAttribute('style');
   for (const [tier, visible, collected, chance, rank, name] of [
-    ['common', 6, 0, 70, 1, 'Discovery'],
-    ['rare', 3, 0, 23, 2, 'Treasure'],
-    ['epic', 2, 0, 6, 3, 'Marvel'],
-    ['legendary', 1, 1, 1, 4, 'Wonder'],
+    ['common', 12, 0, 70, 1, 'Discovery'],
+    ['rare', 6, 0, 23, 2, 'Treasure'],
+    ['epic', 4, 0, 6, 3, 'Marvel'],
+    ['legendary', 2, 1, 1, 4, 'Wonder'],
   ] as const) {
     const filter = page.locator(`[data-tier-filter="${tier}"]`);
     await openInventory(page, 'landmarks');
@@ -590,8 +578,8 @@ test('rarity filters, discoveries and progress distinguish unique landmarks from
   );
   await openInventory(page, 'landmarks');
   await page.locator('[data-tier-filter="all"]').click();
-  await expect(page.locator('.collection .card:visible')).toHaveCount(12);
-  await expect(page.locator('[data-tier-filter="all"]')).toContainText('2/12');
+  await expect(page.locator('.collection .card:visible')).toHaveCount(24);
+  await expect(page.locator('[data-tier-filter="all"]')).toContainText('2/24');
   await openInventory(page, 'landmarks');
   await page.locator('.canvas-inventory').screenshot({
     path: 'test-results/landmark-island/rarity-collection-demo.png',
@@ -620,7 +608,8 @@ test('owned Wonder moves in the guide and on the island, with a static reduced-m
   page,
 }) => {
   await page.addInitScript(() => {
-    Math.random = () => 0.999;
+    let roll = 0;
+    Math.random = () => (roll++ % 2 === 0 ? 0.999 : 0);
   });
   await page.goto('/');
   const cardBody = page.locator('[data-landmark="giza"] .wonder-body');
@@ -885,7 +874,8 @@ test('cinematic discovery reveals rarity before artwork, then information and ac
   await page.clock.install();
   await page.clock.pauseAt(new Date(Date.now() + 1000));
   await page.addInitScript(() => {
-    Math.random = () => 0.999;
+    let roll = 0;
+    Math.random = () => (roll++ % 2 === 0 ? 0.999 : 0);
   });
   await page.goto('/');
   await page.getByRole('button', { name: 'Demo worktree' }).click();
@@ -1525,21 +1515,15 @@ test('host backup export calls saveAs only from a fresh click and reports cancel
 test('material artwork keeps local paint references isolated across collection, copies and details', async ({
   page,
 }) => {
-  const ids = [
-    'eiffel',
-    'colosseum',
-    'stonehenge',
-    'liberty',
-    'opera',
-    'fuji',
-    'taj',
-    'petra',
-    'chichen',
-    'angkor',
-    'machu',
-    'giza',
-    'giza',
-  ];
+  const svgErrors: string[] = [];
+  page.on('console', (message) => {
+    if (
+      message.type() === 'error' &&
+      /<path>|attribute d|SVG/i.test(message.text())
+    )
+      svgErrors.push(message.text());
+  });
+  const ids = [...landmarks.map((l) => l.id), 'giza'];
   const save = {
     version: 2,
     tickets: ids.map((_, i) => ({
@@ -1563,14 +1547,22 @@ test('material artwork keeps local paint references isolated across collection, 
     save,
   );
   await page.reload();
-  await expect(page.locator('.collection .landmark-art')).toHaveCount(12);
+  await expect(page.locator('.collection .landmark-art')).toHaveCount(24);
   await expect(page.locator('.building .landmark-art')).toHaveCount(2);
   await page.setViewportSize({ width: 1200, height: 1000 });
   await openInventory(page, 'landmarks');
   await page.locator('.canvas-inventory').screenshot({
     path: 'test-results/landmark-island/material-collection.png',
   });
-  for (const id of ['taj', 'colosseum', 'giza']) {
+  for (const id of [
+    'taj',
+    'colosseum',
+    'giza',
+    'gyeongbokgung',
+    'merlion',
+    'sagrada',
+    'greatwall',
+  ]) {
     await openInventory(page, 'landmarks');
     await page.locator(`[data-info=${id}]`).click();
     const result = await page.evaluate(() => {
@@ -1601,14 +1593,47 @@ test('material artwork keeps local paint references isolated across collection, 
       JSON.parse(localStorage.getItem('landmark-island-demo-v1')!),
     ),
   ).toEqual(save);
+  expect(svgErrors).toEqual([]);
+  // An isolated contact sheet for reviewing the bundled artwork, not a product screen.
+  await page.evaluate((entries) => {
+    const cards = entries
+      .map(({ id, name, country }) => {
+        const svg = document.querySelector(
+          `[data-landmark="${id}"] svg`,
+        )!.outerHTML;
+        return `<article>${svg}<strong>${name}</strong><small>${country}</small></article>`;
+      })
+      .join('');
+    document.body.innerHTML = `<main id="art-review"><h1>DEMO · New destinations</h1><div>${cards}</div></main>`;
+  }, landmarks.slice(12));
+  await page.addStyleTag({
+    content: `
+    body { margin: 0; background: #ede9d3; color: #344b3d; }
+    #art-review { padding: 24px; font-family: sans-serif; }
+    #art-review h1 { font-size: 22px; margin: 0 0 18px; }
+    #art-review > div { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+    #art-review article { display: flex; flex-direction: column; align-items: center; padding: 12px; background: #f7f3df; border: 1px solid #c6c9a7; border-radius: 12px; }
+    #art-review svg { width: 180px; height: 180px; }
+    #art-review strong { font-size: 14px; margin-top: 6px; }
+    #art-review small { font-size: 12px; color: #627159; }
+  `,
+  });
+  await page.screenshot({
+    path: 'test-results/landmark-island/new-destinations-demo.png',
+    fullPage: true,
+  });
 });
 
 test('new discoveries grow land, gifts unlock sets, duplicates craft chosen decorations', async ({
   page,
 }) => {
   await page.addInitScript(() => {
-    Math.random = () =>
-      (window as unknown as { fixtureRoll?: number }).fixtureRoll ?? 0;
+    let roll = 0;
+    Math.random = () => {
+      const tierRoll =
+        (window as unknown as { fixtureRoll?: number }).fixtureRoll ?? 0;
+      return roll++ % 2 === 0 ? tierRoll : tierRoll === 0.71 ? 2 / 6 : 0;
+    };
   });
   await page.goto('/');
   await expect(page.locator('.cell')).toHaveCount(36);
@@ -2384,3 +2409,133 @@ for (const reducedMotion of [false, true])
       ),
     ).toBe(save);
   });
+
+test('expanded catalog draws new landmarks, grants their sets and preserves an old island', async ({
+  page,
+}) => {
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await page.addInitScript(() => {
+    const fixture = window as unknown as {
+      catalogRolls: number[];
+      catalogRollIndex: number;
+    };
+    fixture.catalogRolls = [0, 0];
+    fixture.catalogRollIndex = 0;
+    Math.random = () => fixture.catalogRolls[fixture.catalogRollIndex++ % 2];
+    localStorage.setItem(
+      'landmark-island-demo-v1',
+      JSON.stringify({
+        version: 1,
+        receipts: [
+          { workspaceId: 'legacy-owner', landmark: 'eiffel', at: '2026-11-05' },
+        ],
+        placements: [{ landmark: 'eiffel', cell: 0 }],
+      }),
+    );
+  });
+  await page.goto('/');
+  const entries = landmarks.slice(12);
+  await expect(page.locator('#discovery-progress')).toHaveAttribute(
+    'max',
+    '24',
+  );
+  const tierRolls = { common: 0.35, rare: 0.8, epic: 0.95, legendary: 0.995 };
+  for (const entry of entries) {
+    const pool = landmarks.filter((l) => l.tier === entry.tier);
+    await page.evaluate(
+      ([tier, item]) => {
+        const fixture = window as unknown as {
+          catalogRolls: number[];
+          catalogRollIndex: number;
+        };
+        fixture.catalogRolls = [tier, item];
+        fixture.catalogRollIndex = 0;
+      },
+      [
+        tierRolls[entry.tier as keyof typeof tierRolls],
+        (pool.findIndex((l) => l.id === entry.id) + 0.5) / pool.length,
+      ],
+    );
+    await page.getByRole('button', { name: 'Demo worktree' }).click();
+    await page.locator('#draw-ticket').click();
+    await expect(page.locator('.discovery-result h2')).toHaveText(entry.name);
+    await expect(page.locator('.discovery-result')).toContainText(
+      entry.country,
+    );
+    await expect(
+      page.locator('.discovery-monument [data-material-art]'),
+    ).toHaveAttribute('data-material-art', entry.id);
+    await expect(page.locator('.reveal-bonus')).toContainText('Theme unlocked');
+    await page.getByRole('button', { name: 'Keep exploring' }).click();
+    await expect(
+      page.locator(`[data-decor-card="${entry.id}-gift"]`),
+    ).toContainText('Owned ×1');
+  }
+  await expect(page.locator('.cell')).toHaveCount(318);
+  await expect(page.locator('.land-progress')).toContainText(
+    'Your whole island is open.',
+  );
+  await openInventory(page, 'landmarks');
+  await page.locator('[data-info=greatwall]').click();
+  await expect(page.locator('.landmark-detail .wonder-effects')).toHaveCSS(
+    'opacity',
+    '1',
+  );
+  await expect(page.locator('.landmark-detail .wonder-body')).toHaveCSS(
+    'animation-name',
+    'none',
+  );
+  await page.emulateMedia({ reducedMotion: 'no-preference' });
+  const movingWall = page.locator('.landmark-detail .wonder-body');
+  const wallPose = await movingWall.evaluate(
+    (el) => getComputedStyle(el).transform,
+  );
+  await expect
+    .poll(() => movingWall.evaluate((el) => getComputedStyle(el).transform))
+    .not.toBe(wallPose);
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await expect(movingWall).toHaveCSS('animation-name', 'none');
+  await page.keyboard.press('Escape');
+  await page.locator('[data-landmark=greatwall]').click();
+  await page
+    .getByRole('button', { name: 'Cell 2: empty', exact: true })
+    .click();
+  const saved = JSON.parse(
+    (await page.evaluate(() =>
+      localStorage.getItem('landmark-island-demo-v1'),
+    ))!,
+  );
+  expect(saved.receipts).toHaveLength(13);
+  expect(saved.receipts[0]).toEqual({
+    workspaceId: 'legacy-owner',
+    landmark: 'eiffel',
+    at: '2026-11-05',
+  });
+  expect(saved.placements).toContainEqual({ landmark: 'eiffel', cell: 0 });
+  expect(saved.placements).toContainEqual({ landmark: 'greatwall', cell: 1 });
+  await page.getByRole('button', { name: 'World Map', exact: true }).click();
+  await expect(page.locator('.world circle')).toHaveCount(13);
+  await expect(page.locator('.countries')).toContainText('South Korea');
+  await expect(page.locator('.countries')).toContainText('Zimbabwe');
+  // Change preview language in place; keep the user's save untouched.
+  await page.evaluate(() => {
+    (window as unknown as { orca: unknown }).orca = { locale: 'ko-KR' };
+  });
+  await expect(page.locator('html')).toHaveAttribute('lang', 'ko-KR');
+  await page.getByRole('button', { name: '내 섬', exact: true }).click();
+  await openInventory(page, 'landmarks');
+  await page.locator('[data-info=gyeongbokgung]').click();
+  await expect(page.locator('.landmark-detail h2')).toHaveText('경복궁');
+  await expect(page.locator('#detail-description')).toContainText('1395년');
+  await page.keyboard.press('Escape');
+  await page.locator('[data-info=greatwall]').click();
+  await expect(page.locator('.landmark-detail h2')).toHaveText('만리장성');
+  await expect(page.locator('#detail-description')).toContainText('명나라');
+  expect(
+    JSON.parse(
+      (await page.evaluate(() =>
+        localStorage.getItem('landmark-island-demo-v1'),
+      ))!,
+    ),
+  ).toEqual(saved);
+});

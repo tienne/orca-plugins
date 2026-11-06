@@ -6,3 +6,5 @@ Converted from GeoJSON to local equirectangular SVG path strings, rounded to 0.0
 Landmark coordinates: Wikidata structured data, CC0. Individual entity URLs are recorded in src/landmarks.json and bundled into the application. Retrieved 2026-11-05 using Special:EntityData; P625 coordinates. Country metadata follows the named landmark's location. Coordinates are illustrative points, not navigation data.
 https://www.wikidata.org/wiki/Wikidata:Licensing
 Landmark illustrations: original miniature vector silhouettes, MIT (repository LICENSE).
+
+The 12 additional landmark coordinates were retrieved from Wikidata Special:EntityData on 2026-11-06. The Moai of Rapa Nui marker uses the island's representative point (Q14452); the Great Wall marker uses Wikidata's representative point for the wall (Q12501). These distributed sites do not have a single exact point. New descriptive text is an original summary of linked official heritage/tourism sources, checked 2026-11-06. No source photographs or illustrations are included.
