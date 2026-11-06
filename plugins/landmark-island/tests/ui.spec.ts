@@ -2287,3 +2287,100 @@ test('treasure opens and reveals inside the canvas, keeps scrolling local and re
   );
   expect(saved.receipts).toHaveLength(1);
 });
+
+for (const reducedMotion of [false, true])
+  test(`walking resumes camera follow after free browsing (${reducedMotion ? 'narrow reduced motion' : 'desktop'})`, async ({
+    page,
+  }) => {
+    if (reducedMotion) {
+      await page.setViewportSize({ width: 390, height: 844 });
+      await page.emulateMedia({ reducedMotion: 'reduce' });
+    }
+    await page.goto('/');
+    const ocean = page.locator('.ocean');
+    const camera = page.locator('.camera');
+    const walker = page.locator('.walker');
+    const save = await page.evaluate(() =>
+      localStorage.getItem('landmark-island-demo-v1'),
+    );
+    const centered = async (cell: number) => {
+      await expect(walker).toHaveAttribute('data-cell', String(cell));
+      await expect(ocean).toHaveAttribute('data-follow', 'true');
+      await expect(page.locator('#follow-player')).toHaveAttribute(
+        'aria-pressed',
+        'true',
+      );
+      // Check the rendered character's feet, not just the target CSS transform.
+      await expect
+        .poll(() =>
+          page.evaluate(() => {
+            const ocean = document.querySelector<HTMLElement>('.ocean')!;
+            const bounds = ocean.getBoundingClientRect();
+            const walker = document
+              .querySelector('.walker')!
+              .getBoundingClientRect();
+            return Math.hypot(
+              walker.x +
+                walker.width / 2 -
+                bounds.x -
+                ocean.clientLeft -
+                ocean.clientWidth / 2,
+              walker.bottom -
+                bounds.y -
+                ocean.clientTop -
+                ocean.clientHeight / 2,
+            );
+          }),
+        )
+        .toBeLessThan(1);
+    };
+    await centered(30);
+    await ocean.scrollIntoViewIfNeeded();
+    let box = (await ocean.boundingBox())!;
+    await page.mouse.move(box.x + 30, box.y + 180);
+    await page.mouse.down();
+    await page.mouse.move(box.x + 90, box.y + 210, { steps: 8 });
+    await page.mouse.up();
+    await expect(ocean).toHaveAttribute('data-follow', 'false');
+    const pan = await camera.getAttribute('style');
+    // A rejected move must not pull the camera away from the user's view.
+    await ocean.focus();
+    await page.keyboard.press('ArrowLeft');
+    await expect(walker).toHaveAttribute('data-cell', '30');
+    expect(await camera.getAttribute('style')).toBe(pan);
+    await expect(ocean).toHaveAttribute('data-follow', 'false');
+    await page.keyboard.press('d');
+    await centered(31);
+    expect(await camera.getAttribute('style')).not.toBe(pan);
+
+    await page.getByRole('button', { name: 'Show whole island' }).click();
+    await expect(ocean).toHaveAttribute('data-follow', 'false');
+    const overviewZoom = await page.locator('#zoom-value').textContent();
+    // A multi-cell click route resumes following without changing overview zoom.
+    await page
+      .getByRole('button', { name: 'Cell 35: empty', exact: true })
+      .click();
+    await centered(34);
+    await expect(page.locator('#zoom-value')).toHaveText(overviewZoom!);
+
+    box = (await ocean.boundingBox())!;
+    await page.mouse.move(box.x + box.width * 0.35, box.y + box.height * 0.45);
+    await page.mouse.wheel(0, -120);
+    await expect(ocean).toHaveAttribute('data-follow', 'false');
+    const wheelZoom = await page.locator('#zoom-value').textContent();
+    await page.getByRole('button', { name: 'Walk north' }).click();
+    await centered(28);
+    await expect(page.locator('#zoom-value')).toHaveText(wheelZoom!);
+    expect(await camera.evaluate((el) => el.style.transition)).toBe('');
+    // Repeated direction keys continue tracking, rather than only recentering once.
+    await ocean.focus();
+    await page.keyboard.press('ArrowLeft');
+    await centered(27);
+    await page.keyboard.press('ArrowLeft');
+    await centered(26);
+    expect(
+      await page.evaluate(() =>
+        localStorage.getItem('landmark-island-demo-v1'),
+      ),
+    ).toBe(save);
+  });

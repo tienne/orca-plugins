@@ -135,6 +135,13 @@ export class IslandScene {
             : 'No clear path. Try an empty patch of grass.';
         return;
       }
+      // Browsing the map only suspends following until the next valid walk.
+      // Keep the chosen zoom, but discard the free-camera offset so the explorer
+      // stays centered. Restore transitions if movement interrupts wheel input.
+      this.follow = true;
+      this.x = this.y = 0;
+      clearTimeout(wheelTimer);
+      camera.style.removeProperty('transition');
       hint.textContent = 'Taking the scenic route…';
       walking = true;
       walker.classList.add('walking');
