@@ -1,6 +1,10 @@
 import { test, expect, type Page } from '@playwright/test';
 import { landTiles, landAtLevel } from '../src/world';
 import { validate } from '../src/game';
+async function openInventory(page: Page, kind: 'decorations' | 'landmarks') {
+  const menu = page.locator(`[data-inventory="${kind}"]`);
+  if ((await menu.getAttribute('aria-expanded')) !== 'true') await menu.click();
+}
 async function demoDiscovery(page: Page) {
   await page.getByRole('button', { name: 'Demo worktree' }).click();
   await page.getByRole('button', { name: 'Use ticket · Discover' }).click();
@@ -24,6 +28,7 @@ test('demo acquisition, duplicate, placement, move, removal and persistent map',
   await expect(page.getByRole('status')).toContainText(
     'Duplicate discovered: Eiffel Tower',
   );
+  await openInventory(page, 'landmarks');
   await page.locator('[data-landmark=eiffel]').click();
   await page
     .getByRole('button', { name: 'Cell 1: empty', exact: true })
@@ -242,6 +247,7 @@ test('expanded land keeps old cell addresses and persists new placements', async
     page.getByRole('button', { name: 'Cell 1: Eiffel Tower', exact: true }),
   ).toBeAttached();
   await demoDiscovery(page);
+  await openInventory(page, 'landmarks');
   await page.locator('[data-landmark=eiffel]').click();
   await page.getByRole('button', { name: 'Show whole island' }).click();
   const destination = landAtLevel(1).find((t) => t.id >= 36 && !t.prop)!;
@@ -371,6 +377,7 @@ test('field guide describes all landmarks, including unowned ones, without chang
   for (const [id, name, country] of entries) {
     const about = page.locator(`[data-info="${id}"]`);
     await expect(page.locator(`[data-landmark="${id}"]`)).toBeDisabled();
+    await openInventory(page, 'landmarks');
     await about.click();
     const dialog = page.getByRole('dialog', { name, exact: true });
     await expect(dialog).toBeVisible();
@@ -394,6 +401,7 @@ test('field guide describes all landmarks, including unowned ones, without chang
   ).toBe(before);
   await expect(page.locator('.ocean')).toHaveAttribute('data-mode', 'walk');
   await page.setViewportSize({ width: 360, height: 800 });
+  await openInventory(page, 'landmarks');
   await page.locator('[data-info="giza"]').click();
   const dialog = page.getByRole('dialog');
   const bounds = (await dialog.boundingBox())!;
@@ -514,6 +522,7 @@ test('rarity filters, discoveries and progress distinguish unique landmarks from
     ['legendary', 1, 1, 1, 4, 'Wonder'],
   ] as const) {
     const filter = page.locator(`[data-tier-filter="${tier}"]`);
+    await openInventory(page, 'landmarks');
     await filter.click();
     await expect(filter).toHaveAttribute('aria-pressed', 'true');
     await expect(filter).toBeFocused();
@@ -550,6 +559,7 @@ test('rarity filters, discoveries and progress distinguish unique landmarks from
   ).toBe(before);
   expect(await page.locator('.camera').getAttribute('style')).toBe(camera);
   await expect(page.locator('.ocean')).toHaveAttribute('data-mode', 'walk');
+  await openInventory(page, 'landmarks');
   await page.locator('[data-info="giza"]').click();
   await expect(page.getByRole('dialog').locator('.rarity-badge')).toContainText(
     'Wonder',
@@ -578,10 +588,12 @@ test('rarity filters, discoveries and progress distinguish unique landmarks from
     'aria-pressed',
     'true',
   );
+  await openInventory(page, 'landmarks');
   await page.locator('[data-tier-filter="all"]').click();
   await expect(page.locator('.collection .card:visible')).toHaveCount(12);
   await expect(page.locator('[data-tier-filter="all"]')).toContainText('2/12');
-  await page.locator('.collection-section').screenshot({
+  await openInventory(page, 'landmarks');
+  await page.locator('.canvas-inventory').screenshot({
     path: 'test-results/landmark-island/rarity-collection-demo.png',
   });
   await page.reload();
@@ -593,11 +605,13 @@ test('rarity filters, discoveries and progress distinguish unique landmarks from
   await page.evaluate(() => {
     document.documentElement.className = 'dark';
   });
+  await openInventory(page, 'landmarks');
   await page.locator('[data-tier-filter="legendary"]').click();
   expect(
     await page.evaluate(() => document.documentElement.scrollWidth),
   ).toBeLessThanOrEqual(360);
-  await page.locator('.collection-section').screenshot({
+  await openInventory(page, 'landmarks');
+  await page.locator('.canvas-inventory').screenshot({
     path: 'test-results/landmark-island/rarity-mobile-demo.png',
   });
 });
@@ -613,6 +627,7 @@ test('owned Wonder moves in the guide and on the island, with a static reduced-m
   expect(
     await cardBody.evaluate((el) => getComputedStyle(el).animationName),
   ).toBe('none');
+  await openInventory(page, 'landmarks');
   await page.locator('[data-info="giza"]').click();
   expect(
     await page
@@ -630,6 +645,7 @@ test('owned Wonder moves in the guide and on the island, with a static reduced-m
   await expect
     .poll(() => cardBody.evaluate((el) => getComputedStyle(el).transform))
     .not.toBe(cardStart);
+  await openInventory(page, 'landmarks');
   await page.locator('[data-landmark="giza"]').click();
   await page
     .getByRole('button', { name: 'Cell 32: empty', exact: true })
@@ -1145,6 +1161,7 @@ test('host theme tokens update reading and controls live while preserving game a
     await page.screenshot({
       path: `test-results/landmark-island/host-theme-${dark ? 'dark' : 'light'}.png`,
     });
+    await openInventory(page, 'landmarks');
     await page.locator('[data-info=taj]').click();
     await expect(page.locator('.landmark-detail')).toHaveCSS(
       'background-color',
@@ -1219,6 +1236,7 @@ test('host source links use the public external-link API only on click', async (
     };
   });
   await page.goto('/');
+  await openInventory(page, 'landmarks');
   await page.locator('[data-info=eiffel]').click();
   expect(
     await page.evaluate(
@@ -1554,10 +1572,12 @@ test('material artwork keeps local paint references isolated across collection, 
   await expect(page.locator('.collection .landmark-art')).toHaveCount(12);
   await expect(page.locator('.building .landmark-art')).toHaveCount(2);
   await page.setViewportSize({ width: 1200, height: 1000 });
-  await page.locator('.collection-section').screenshot({
+  await openInventory(page, 'landmarks');
+  await page.locator('.canvas-inventory').screenshot({
     path: 'test-results/landmark-island/material-collection.png',
   });
   for (const id of ['taj', 'colosseum', 'giza']) {
+    await openInventory(page, 'landmarks');
     await page.locator(`[data-info=${id}]`).click();
     const result = await page.evaluate(() => {
       const allIds = [...document.querySelectorAll('.landmark-art [id]')].map(
@@ -1599,10 +1619,13 @@ test('new discoveries grow land, gifts unlock sets, duplicates craft chosen deco
   await page.goto('/');
   await expect(page.locator('.cell')).toHaveCount(36);
   await expect(page.locator('.material-balance')).toHaveText('0 materials');
+  await openInventory(page, 'decorations');
   await page.locator('#decor-theme').selectOption('eiffel');
   await expect(page.locator('[data-craft=eiffel-special]')).toBeDisabled();
   await expect(page.locator('[data-decor-place=eiffel-gift]')).toBeDisabled();
+  await openInventory(page, 'decorations');
   await page.locator('#decor-theme').selectOption('basics');
+  await openInventory(page, 'decorations');
   await page.locator('[data-decor-place=path]').click();
   await page
     .getByRole('button', { name: 'Cell 1: empty', exact: true })
@@ -1617,10 +1640,12 @@ test('new discoveries grow land, gifts unlock sets, duplicates craft chosen deco
   await demoDiscovery(page);
   await expect(page.locator('.cell')).toHaveCount(59);
   await expect(page.locator('.notice')).toContainText('+23 land tiles');
+  await openInventory(page, 'decorations');
   await page.locator('#decor-theme').selectOption('eiffel');
   await expect(page.locator('[data-decor-card=eiffel-gift]')).toContainText(
     'Owned ×1 · 1 available',
   );
+  await openInventory(page, 'decorations');
   await page.locator('[data-decor-place=eiffel-gift]').click();
   await page
     .getByRole('button', { name: 'Cell 1: empty', exact: true })
@@ -1640,11 +1665,13 @@ test('new discoveries grow land, gifts unlock sets, duplicates craft chosen deco
   await expect(page.locator('[data-craft=eiffel-special]')).toBeDisabled();
   await demoDiscovery(page);
   await expect(page.locator('.material-balance')).toHaveText('6 materials');
+  await openInventory(page, 'decorations');
   await page.locator('[data-craft=eiffel-special]').click();
   await expect(page.locator('.material-balance')).toHaveText('0 materials');
   await expect(page.locator('[data-landmark=eiffel]')).toContainText(
     'Owned ×3',
   );
+  await openInventory(page, 'decorations');
   await page.locator('[data-decor-place=eiffel-special]').click();
   await page
     .getByRole('button', { name: 'Cell 3: empty', exact: true })
@@ -1720,8 +1747,10 @@ test('garden workshop fits narrow themes and craft response-loss retry spends on
       }
     };
   });
+  await openInventory(page, 'decorations');
   await page.locator('[data-craft=eiffel-special]').click();
   await expect(page.getByRole('alert')).toContainText('Craft response lost');
+  await openInventory(page, 'decorations');
   await page.locator('[data-craft=eiffel-special]').click();
   await expect(page.locator('.material-balance')).toHaveText('0 materials');
   await expect(page.locator('[data-decor-card=eiffel-special]')).toContainText(
@@ -1737,14 +1766,16 @@ test('garden workshop fits narrow themes and craft response-loss retry spends on
       (theme) => (document.documentElement.className = theme),
       theme,
     );
+    await openInventory(page, 'decorations');
     await page.locator('#decor-theme').selectOption('giza');
     expect(
       await page.evaluate(() => document.documentElement.scrollWidth),
     ).toBeLessThanOrEqual(360);
     await page
-      .locator('.workshop')
+      .locator('.canvas-inventory')
       .screenshot({ path: `test-results/landmark-island/garden-${theme}.png` });
   }
+  await openInventory(page, 'decorations');
   await page.locator('#decor-theme').selectOption('angkor');
   await expect(page.locator('[data-decor-card=angkor-gift]')).toContainText(
     'Discover its landmark',
@@ -1761,6 +1792,7 @@ test('explorer respects the locked coast and decoration collisions', async ({
   await page.getByRole('button', { name: 'Walk south', exact: true }).click();
   await expect(page.locator('.walk-hint')).toContainText('No clear path');
   await expect(walker).toHaveAttribute('data-cell', '30');
+  await openInventory(page, 'decorations');
   await page.locator('[data-decor-place=oak]').click();
   await page
     .getByRole('button', { name: 'Cell 32: empty', exact: true })
@@ -1780,6 +1812,7 @@ test('explorer respects the locked coast and decoration collisions', async ({
   await page
     .getByRole('button', { name: 'Return to collection', exact: true })
     .click();
+  await openInventory(page, 'decorations');
   await page.locator('[data-decor-place=path]').click();
   await page
     .getByRole('button', { name: 'Cell 32: empty', exact: true })
@@ -1799,8 +1832,11 @@ test('all modals scroll internally without moving the page and release the lock 
   await page.setViewportSize({ width: 1000, height: 400 });
   await page.goto('/');
   for (const kind of ['details', 'backup', 'discovery']) {
-    if (kind === 'details') await page.locator('[data-info=eiffel]').click();
-    else if (kind === 'backup') await page.locator('#backups').click();
+    if (kind === 'details') {
+      await openInventory(page, 'landmarks');
+      await openInventory(page, 'landmarks');
+      await page.locator('[data-info=eiffel]').click();
+    } else if (kind === 'backup') await page.locator('#backups').click();
     else {
       await page.locator('#expedition').click();
       await page.locator('#draw-ticket').click();
@@ -1895,11 +1931,14 @@ test('floors overlap furniture; four directions, movement and undo preserve the 
     ids,
   );
   await page.reload();
+  await openInventory(page, 'decorations');
   await page.locator('[data-craft=eiffel-special]').click();
+  await openInventory(page, 'decorations');
   await page.locator('[data-decor-place=stonepath]').click();
   await page
     .getByRole('button', { name: 'Cell 1: empty', exact: true })
     .click();
+  await openInventory(page, 'landmarks');
   await page.locator('[data-landmark=eiffel]').click();
   await page
     .getByRole('button', { name: 'Cell 1: Stone paving', exact: true })
@@ -1908,6 +1947,7 @@ test('floors overlap furniture; four directions, movement and undo preserve the 
   await expect(
     page.locator('[data-world-cell="0"] [data-floor=stonepath]'),
   ).toHaveCount(1);
+  await openInventory(page, 'decorations');
   await page.locator('[data-decor-place=eiffel-special]').click();
   await page.locator('#rotate-piece').click();
   await page
@@ -1916,6 +1956,7 @@ test('floors overlap furniture; four directions, movement and undo preserve the 
   await expect(
     page.locator('[data-world-cell="1"] .garden-object'),
   ).toHaveAttribute('data-rotation', '1');
+  await openInventory(page, 'decorations');
   await page.locator('[data-decor-place=path]').click();
   await page
     .getByRole('button', { name: 'Cell 2: Café bench', exact: true })
@@ -2018,6 +2059,7 @@ test('brush strokes preview, cancel, save as one undo and stop at flower ownersh
     ),
   );
   await page.reload();
+  await openInventory(page, 'decorations');
   await page.locator('[data-decor-place=path]').click();
   await page.locator('#brush-toggle').click();
   await page.getByRole('button', { name: 'Show whole island' }).click();
@@ -2036,6 +2078,7 @@ test('brush strokes preview, cancel, save as one undo and stop at flower ownersh
   await page.locator('#undo-layout').click();
   await expect(page.locator('[data-floor]')).toHaveCount(0);
   await expect(page.locator('[data-world-cell="2"] .building')).toHaveCount(1);
+  await openInventory(page, 'decorations');
   await page.locator('[data-decor-place=stonehenge-gift]').click();
   await page.locator('#brush-toggle').click();
   await dragTiles(page, [0, 1, 2, 3]);
@@ -2053,3 +2096,140 @@ test('brush strokes preview, cancel, save as one undo and stop at flower ownersh
   );
   await expect(page.locator('.material-balance')).toHaveText('0 materials');
 });
+
+test('canvas inventories contain scrolling, preserve camera, and hand selection back to the island', async ({
+  page,
+}) => {
+  await page.addInitScript(() => {
+    Math.random = () => 0;
+  });
+  await page.goto('/');
+  await demoDiscovery(page);
+  await page.getByRole('button', { name: 'Show whole island' }).click();
+  const drawer = page.locator('.canvas-inventory');
+  const ocean = page.locator('.ocean');
+  await expect(drawer).toBeHidden();
+  await expect(page.locator('.ocean .collection-section')).toHaveCount(1);
+  await expect(page.locator('.ocean .workshop')).toHaveCount(1);
+  await ocean.scrollIntoViewIfNeeded();
+  await page.screenshot({
+    path: 'test-results/landmark-island/canvas-closed.png',
+  });
+  const camera = await page.locator('.camera').getAttribute('style');
+  await openInventory(page, 'landmarks');
+  await expect(page.locator('#close-inventory')).toBeFocused();
+  await ocean.screenshot({
+    path: 'test-results/landmark-island/canvas-journal-desktop.png',
+  });
+  const scroll = page.locator('.inventory-scroll');
+  const bounds = (await scroll.boundingBox())!;
+  const pageY = await page.evaluate(() => window.scrollY);
+  await page.mouse.move(
+    bounds.x + bounds.width / 2,
+    bounds.y + bounds.height / 2,
+  );
+  await page.mouse.wheel(0, 500);
+  await expect
+    .poll(() => scroll.evaluate((e) => e.scrollTop))
+    .toBeGreaterThan(0);
+  const savedScroll = await scroll.evaluate((e) => e.scrollTop);
+  expect(await page.locator('.camera').getAttribute('style')).toBe(camera);
+  expect(await page.evaluate(() => window.scrollY)).toBe(pageY);
+  await openInventory(page, 'decorations');
+  await expect(page.locator('.workshop')).toBeVisible();
+  await openInventory(page, 'landmarks');
+  expect(await scroll.evaluate((e) => e.scrollTop)).toBe(savedScroll);
+  await scroll.evaluate((e) => {
+    e.scrollTop = e.scrollHeight;
+  });
+  const edgeBounds = (await scroll.boundingBox())!;
+  await page.mouse.move(
+    edgeBounds.x + edgeBounds.width / 2,
+    edgeBounds.y + edgeBounds.height / 2,
+  );
+  const edgePageY = await page.evaluate(() => window.scrollY);
+  await page.mouse.wheel(0, 600);
+  await expect(page.locator('.camera')).toHaveAttribute('style', camera!);
+  expect(await page.evaluate(() => window.scrollY)).toBe(edgePageY);
+  await scroll.evaluate((e) => {
+    e.scrollTop = 0;
+  });
+  const heading = (await page.locator('.inventory-heading').boundingBox())!;
+  await page.mouse.move(heading.x + 30, heading.y + 20);
+  await page.mouse.wheel(0, 180);
+  await expect
+    .poll(() => scroll.evaluate((e) => e.scrollTop))
+    .toBeGreaterThan(0);
+  expect(await page.evaluate(() => window.scrollY)).toBe(edgePageY);
+  const closedScroll = await scroll.evaluate((e) => e.scrollTop);
+  await page.keyboard.press('Escape');
+  await expect(drawer).toBeHidden();
+  await expect(page.locator('[data-inventory=landmarks]')).toBeFocused();
+  await openInventory(page, 'landmarks');
+  expect(await scroll.evaluate((e) => e.scrollTop)).toBe(closedScroll);
+  await page.locator('[data-landmark=eiffel]').click();
+  await expect(drawer).toBeHidden();
+  await expect(ocean).toBeFocused();
+  await page
+    .getByRole('button', { name: 'Cell 1: empty', exact: true })
+    .click();
+  await expect(
+    page.getByRole('button', { name: 'Cell 1: Eiffel Tower', exact: true }),
+  ).toBeVisible();
+  await openInventory(page, 'decorations');
+  await page.locator('[data-decor-place=stonepath]').click();
+  await expect(drawer).toBeHidden();
+  await expect(ocean).toBeFocused();
+  await page
+    .getByRole('button', { name: 'Cell 1: Eiffel Tower', exact: true })
+    .click();
+  await expect(
+    page.locator('[data-world-cell="0"] [data-decoration=stonepath]'),
+  ).toHaveCount(1);
+  await page.getByRole('button', { name: 'World Map', exact: true }).click();
+  await page.locator('#map-journal').click();
+  await expect(drawer).toBeVisible();
+  await expect(page.locator('[data-inventory=landmarks]')).toHaveAttribute(
+    'aria-expanded',
+    'true',
+  );
+});
+
+for (const theme of ['light', 'dark'])
+  test(`${theme} canvas inventory stays inside a narrow island`, async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width: 360, height: 800 });
+    await page.goto('/');
+    await page.evaluate((theme) => {
+      document.documentElement.className = theme;
+    }, theme);
+    for (const kind of ['decorations', 'landmarks'] as const) {
+      await openInventory(page, kind);
+      const ocean = (await page.locator('.ocean').boundingBox())!;
+      for (const selector of ['.island-satchel', '.canvas-inventory']) {
+        const box = (await page.locator(selector).boundingBox())!;
+        expect(box.x).toBeGreaterThanOrEqual(ocean.x);
+        expect(box.y).toBeGreaterThanOrEqual(ocean.y);
+        expect(box.x + box.width).toBeLessThanOrEqual(ocean.x + ocean.width);
+        expect(box.y + box.height).toBeLessThanOrEqual(ocean.y + ocean.height);
+      }
+      expect(
+        await page.evaluate(() => document.documentElement.scrollWidth),
+      ).toBeLessThanOrEqual(360);
+      await expect(
+        page
+          .locator(
+            kind === 'landmarks'
+              ? '.collection .landmark-art'
+              : '.decoration-card > svg',
+          )
+          .first(),
+      ).toBeInViewport();
+      await page.locator('.ocean').screenshot({
+        path: `test-results/landmark-island/canvas-${kind}-${theme}.png`,
+      });
+    }
+    await page.locator('#close-inventory').click();
+    await expect(page.locator('.canvas-inventory')).toBeHidden();
+  });

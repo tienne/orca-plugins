@@ -270,7 +270,13 @@ export class IslandScene {
         .forEach((e) => e.classList.remove('brush-preview'));
     };
     const paintAt = (clientX: number, clientY: number) => {
-      if (!brush) return;
+      if (
+        !brush ||
+        document
+          .elementFromPoint(clientX, clientY)
+          ?.closest('.island-satchel,.canvas-inventory')
+      )
+        return;
       const rect = ocean.getBoundingClientRect();
       if (
         clientX < rect.left ||
@@ -359,7 +365,7 @@ export class IslandScene {
       (e) => {
         if (
           (e.target as Element).closest(
-            '.camera-controls,.walk-controls,.minimap',
+            '.camera-controls,.walk-controls,.minimap,.island-satchel,.canvas-inventory',
           ) ||
           e.button !== 0
         )
@@ -443,7 +449,7 @@ export class IslandScene {
       (e) => {
         if (
           (e.target as Element).closest(
-            '.camera-controls,.walk-controls,.minimap',
+            '.camera-controls,.walk-controls,.minimap,.island-satchel,.canvas-inventory',
           )
         )
           return;
@@ -472,6 +478,8 @@ export class IslandScene {
     ocean.addEventListener(
       'wheel',
       (e) => {
+        if ((e.target as Element).closest('.island-satchel,.canvas-inventory'))
+          return;
         if (e.deltaY === 0) return;
         e.preventDefault();
         if (paintPointer !== undefined) return;
