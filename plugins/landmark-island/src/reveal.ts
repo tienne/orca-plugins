@@ -174,9 +174,12 @@ export function revealDiscovery(
         if (description) caption.textContent = description;
         if (name === 'omen') {
           dialog.classList.add('rarity-known');
-          const rarity = dialog.querySelector(
-            '.omen-label .rarity-name',
-          )!.textContent;
+          const rarity = {
+            common: 'Discovery',
+            rare: 'Treasure',
+            epic: 'Marvel',
+            legendary: 'Wonder',
+          }[landmark.tier];
           caption.textContent = `${rarity} on the horizon…`;
         }
         if (name === 'details') showDetails();

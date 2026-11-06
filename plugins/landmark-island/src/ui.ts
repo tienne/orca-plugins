@@ -1,3 +1,4 @@
+import { startLocalization } from './i18n';
 import {
   Game,
   layout,
@@ -30,6 +31,7 @@ import {
   isFloor,
   canRotate,
 } from './decorations';
+startLocalization();
 const scene = new IslandScene();
 const rarities = [
   { id: 'common', name: 'Discovery', rank: 1, numeral: 'I' },
@@ -750,11 +752,14 @@ function saveSummary(s: State) {
 }
 async function openBackups() {
   if (busy || backupDialog.open) return;
-  backupDialog.innerHTML = `<button class="backup-close" aria-label="Close backups" autofocus>×</button><h2 id="backup-title">Your island, safely kept</h2><p>Save a file to keep a backup or move your island to another computer. Nothing is uploaded.</p><p class="backup-current"></p><button id="backup-save" disabled>Save backup file</button><hr><label for="backup-file">Choose a backup to restore</label><input id="backup-file" type="file" accept=".json,application/json"><button id="backup-previous">Review pre-restore copy</button><div class="backup-review" hidden><h3>Restore this island?</h3><p class="backup-incoming"></p><p>This replaces all current tickets, landmarks, decorations, materials and land; it does not merge them. Progress after the backup will be lost. A copy of your current save is kept before replacement.</p><label><input id="backup-confirm" type="checkbox"> I want to replace my current island</label><button id="backup-restore" disabled>Replace island</button></div><p class="backup-status" role="status"></p><small>Files contain workspace identifiers, which may include local paths. Keep them private. Maximum file size: 256 KiB. Walking, weather and camera position are not saved.</small>`;
+  backupDialog.innerHTML = `<button class="backup-close" aria-label="Close backups" autofocus>×</button><h2 id="backup-title">Your island, safely kept</h2><p>Save a file to keep a backup or move your island to another computer. Nothing is uploaded.</p><p class="backup-current"></p><button id="backup-save" disabled>Save backup file</button><hr><label for="backup-file">Choose a backup to restore</label><input id="backup-file" type="file" accept=".json,application/json" hidden><button id="backup-choose">Choose file…</button><button id="backup-previous">Review pre-restore copy</button><div class="backup-review" hidden><h3>Restore this island?</h3><p class="backup-incoming"></p><p>This replaces all current tickets, landmarks, decorations, materials and land; it does not merge them. Progress after the backup will be lost. A copy of your current save is kept before replacement.</p><label><input id="backup-confirm" type="checkbox"> I want to replace my current island</label><button id="backup-restore" disabled>Replace island</button></div><p class="backup-status" role="status"></p><small>Files contain workspace identifiers, which may include local paths. Keep them private. Maximum file size: 256 KiB. Walking, weather and camera position are not saved.</small>`;
   backupDialog.showModal();
   const status = backupDialog.querySelector<HTMLElement>('.backup-status')!;
   const save = backupDialog.querySelector<HTMLButtonElement>('#backup-save')!;
   const file = backupDialog.querySelector<HTMLInputElement>('#backup-file')!;
+  const choose =
+    backupDialog.querySelector<HTMLButtonElement>('#backup-choose')!;
+  choose.onclick = () => file.click();
   const previous =
     backupDialog.querySelector<HTMLButtonElement>('#backup-previous')!;
   const confirm =
@@ -773,6 +778,7 @@ async function openBackups() {
   const controls = (working: boolean) => {
     backupWorking = working;
     close.disabled =
+      choose.disabled =
       file.disabled =
       previous.disabled =
       confirm.disabled =
@@ -790,7 +796,7 @@ async function openBackups() {
     const parsed = decodeBackup(text);
     incomingText = text;
     backupDialog.querySelector('.backup-incoming')!.textContent =
-      `${saveSummary(parsed.state)} · Exported ${new Date(parsed.exportedAt).toLocaleString()}`;
+      `${saveSummary(parsed.state)} · Exported ${parsed.exportedAt}`;
     review.hidden = false;
     tell('Review the backup before replacing your island.');
   };
@@ -911,7 +917,7 @@ async function openBackups() {
   } finally {
     controls(false);
     // Never allow a restore without a successfully read current snapshot.
-    if (!exportText) file.disabled = previous.disabled = true;
+    if (!exportText) choose.disabled = file.disabled = previous.disabled = true;
   }
 }
 function renderRevealPreview() {

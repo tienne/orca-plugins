@@ -4,6 +4,7 @@ export default defineConfig({
   outputDir: '../../test-results/landmark-island',
   use: {
     baseURL: 'http://127.0.0.1:43189',
+    locale: 'en-US',
     channel: process.env.PW_CHANNEL ?? 'chrome',
     viewport: { width: 1000, height: 900 },
   },

@@ -9,6 +9,7 @@ try {
   await build({
     entryPoints: [
       'plugins/landmark-island/src/game.ts',
+      'plugins/landmark-island/src/i18n.ts',
       'plugins/landmark-island/src/walk.ts',
       'plugins/landmark-island/src/world.ts',
       'plugins/landmark-island/src/worker/main.ts',
@@ -36,6 +37,73 @@ try {
     decodeBackup,
     MAX_BACKUP_BYTES,
   } = await import(pathToFileURL(join(dir, 'game.mjs')));
+  const { translate, resolveLocale } = await import(
+    pathToFileURL(join(dir, 'i18n.mjs'))
+  );
+  for (const value of ['fr-FR', 'ja', 'bad_locale', '', undefined, null])
+    assert.equal(resolveLocale(value), 'en-US');
+  assert.equal(resolveLocale('ko-kr'), 'ko-KR');
+  assert.equal(resolveLocale('en-GB'), 'en-GB');
+  assert.equal(translate('  World Map ', 'ko-KR'), '  세계 지도 ');
+  assert.equal(
+    translate('Owned ×3 · 2 available', 'ko-KR'),
+    '보유 ×3 · 배치 가능 2개',
+  );
+  assert.equal(translate('2 decorations placed', 'ko-KR'), '장식 배치 2개');
+  assert.equal(translate('Cell 1: Eiffel Tower', 'ko-KR'), '1번 칸: 에펠탑');
+  assert.equal(
+    translate('☀ Sunny · Day · Auto', 'ko-KR'),
+    '☀ 맑음 · 낮 · 자동',
+  );
+  assert.equal(
+    translate(
+      'New discovery: Eiffel Tower · owned ×1 · Paris lantern gifted · Theme unlocked · +23 land tiles',
+      'ko-KR',
+    ),
+    '새로운 발견: 에펠탑 · 보유 ×1 · 파리 등불 선물 · 테마 해금 · 땅 +23칸',
+  );
+  assert.equal(translate('Eiffel Tower', 'en-US'), 'Eiffel Tower');
+  assert.equal(
+    translate('Error: This file is not valid JSON.', 'ko-KR'),
+    '오류: 올바른 JSON 파일이 아니에요.',
+  );
+  assert.equal(
+    translate('/private/user-file.json', 'ko-KR'),
+    '/private/user-file.json',
+  );
+  assert.equal(
+    translate('https://example.com/World%20Map', 'ko-KR'),
+    'https://example.com/World%20Map',
+  );
+  for (const landmark of landmarks) {
+    for (const field of [
+      'name',
+      'country',
+      'region',
+      'description',
+      'descriptionSourceName',
+    ]) {
+      assert.notEqual(
+        translate(landmark[field], 'ko-KR'),
+        landmark[field],
+        `${landmark.id}.${field}`,
+      );
+      assert.equal(translate(landmark[field], 'en-US'), landmark[field]);
+    }
+  }
+  assert.ok(
+    translate(
+      'Current snapshot: 2 unused tickets · 3 landmarks (1 unique) · 1 placed · 2 decorations placed · 4 floor tiles · 6 materials · 59 land tiles',
+      'ko-KR',
+    ).includes('장식 배치 2개'),
+  );
+  for (const locale of ['en-US', 'ko-KR'])
+    assert.ok(
+      !translate(
+        '0 unused tickets · Exported 2026-11-06T01:02:03.000Z',
+        locale,
+      ).includes('T01:02'),
+    );
   const { route } = await import(pathToFileURL(join(dir, 'walk.mjs')));
   const { tiles, landTiles, neighbours, solidProps, isLand, project, at } =
     await import(pathToFileURL(join(dir, 'world.mjs')));

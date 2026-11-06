@@ -24,6 +24,14 @@ The worker serializes ticket earning, draws and placements. Ticket identity is t
 
 Schema v1/v2/v3 saves are validated and read as v4. Existing grass/path decorations move to a separate floor layer at the same cells; other pieces retain their positions and start at their original direction. V1 receipts become already-redeemed tickets, preserving inventory and worktree deduplication without extra tickets. Existing landmark placements retain their exact cell IDs, with enough land kept open to contain them. Gifts and duplicate materials are derived from the complete existing collection, so older discoveries receive these benefits too, without a separate claim or repeat grant. The next successful mutation writes v4 under the existing key (`island-v1`, or `landmark-island-demo-v1` in the demo). Reads do not rewrite saves. Older builds cannot read v4 saves.
 
+## Language
+
+The plugin follows Orca's public `orca.locale` setting. Korean and English are supported; missing, malformed or other languages fall back to English. The plugin checks for changes every 500 ms and when the frame regains focus or visibility because the installed host API documents no locale-change event.
+
+Language changes update text in place, preserving camera position, selection, open dialogs, backup confirmation and running reveal timers. Orca may independently reload a frame. Menus, accessible labels, weather, rarity, quantities, decoration names, landmark descriptions and sources, map country names, known errors and backup dates are localized. Brand names, URLs, filenames and unknown host error details remain unchanged. The operating system controls the language of native file dialogs.
+
+Translations live in `src/messages.ko.json` and `src/landmarks.ko.json`. Save identifiers, receipts, draw probabilities and the save format are unchanged. Standalone browser previews use the browser language; `?lang=ko` or `?lang=en` overrides it, including `?preview=reveal&lang=ko`. A hosted frame always follows Orca, ignoring this preview override.
+
 ## Rarity and collection progress
 
 Each landmark has a fixed rarity: **I Discovery** (6 landmarks, 70% tier chance), **II Treasure** (3, 23%), **III Marvel** (2, 6%) or **IV Wonder** (1, 1%). Each badge has a Roman numeral and a four-slot scale: one filled mark is the lowest rarity, four is the highest. The same scale appears on cards, filters, field-guide pages and acquisition notices, with accessible labels such as “Wonder, rarity 4 of 4”. Color is an additional cue; unowned entries keep their full rarity scale. These are fixed ranks, not upgrade progress. The latest acquisition notice and field-guide page show the tier; the field guide explains its draw probability. These are tier probabilities, not the probability of each individual item: items within a tier remain equally likely.
@@ -104,7 +112,7 @@ One plugin-local collection is shared across repositories/worktrees on this host
 
 Map data: [Natural Earth](https://www.naturalearthdata.com/about/terms-of-use/), public domain. Landmark coordinates: Wikidata CC0; entity source links are included in the bundled catalog. See [geography attribution](licenses/geography.txt). Geometry is generalized, and small countries may not appear. Fictional island cells are unrelated to geographic coordinates.
 
-Deferred: terrain beyond the 318-tile world, additional decoration sets, cloud sync, trading, localization and a 120-landmark collection. Nothing is published.
+Deferred: terrain beyond the 318-tile world, additional decoration sets, cloud sync, trading, languages beyond Korean/English and a 120-landmark collection. Nothing is published.
 
 ## Verification record (2026-11-05)
 
@@ -150,3 +158,9 @@ Build, typecheck, worker/state tests and all 30 browser tests passed through Nx.
 ## Canvas treasure verification (2026-11-06)
 
 `pnpm nx run-many -t typecheck ui-test -p landmark-island --output-style=static` passed build, typecheck and all 34 browser tests; `pnpm validate` passed both packaged plugins. The browser suite covers the canvas chest, ticket counts, disabled/retry states, reward-before-animation persistence, direct placement, and the reveal staying inside the visible canvas after resizing. It also checks modal scroll isolation, focus return, reduced motion, unchanged standalone previews, and the existing inventory/placement flows. Desktop and narrow captures are saved as `test-results/landmark-island/canvas-treasure-*.png`. Verification uses isolated browser fixtures; native Orca clicking remains deferred. The worker, stored schema and reward probabilities are unchanged.
+
+## Language verification (2026-11-06)
+
+`pnpm nx run-many -t typecheck test ui-test -p landmark-island --output-style=static` passed, including the dependent build and all 40 browser tests. Six language scenarios cover host precedence, live Korean/English changes, unsupported locale fallback, translated discovery/placement/decorations/weather/backup flows, the file chooser button, narrow light/dark layouts and a standalone preview without save access. Assertions preserve camera, focus, journal scroll, backup confirmation, reveal progress and saved identifiers across language changes. Pure translation checks also cover every landmark's descriptive fields, dynamic quantities and localized dates. `pnpm validate` passed for both packaged plugins.
+
+These are isolated browser fixtures, including a mock of the documented `orca.locale` API, not evidence of clicking the live Orca language setting. Native Orca panel clicking remains deferred at the user's request. No capabilities, save schema, plugin identity or Git Logs source changed.

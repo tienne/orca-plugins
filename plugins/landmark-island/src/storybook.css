@@ -1144,9 +1144,11 @@ a:focus-visible,
   float: right;
   margin: 0;
 }
-.backup-dialog input[type='file'] {
+.backup-dialog input[type='file'][hidden] {
+  display: none;
+}
+#backup-choose {
   display: block;
-  max-width: 100%;
   margin: 12px 0;
 }
 .backup-dialog input[type='checkbox'] {
