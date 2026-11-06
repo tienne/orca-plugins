@@ -1,22 +1,29 @@
 import landmarks from './landmarks.json';
 import { isLand, expansionLevel, landAtLevel } from './world';
-import { decorationById, DUPLICATE_MATERIALS } from './decorations';
+import {
+  decorationById,
+  DUPLICATE_MATERIALS,
+  isFloor,
+  canRotate,
+} from './decorations';
 export { landmarks };
 export const weights = { common: 70, rare: 23, epic: 6, legendary: 1 };
 export type Placement = { landmark: string; cell: number };
 export type Receipt = { workspaceId: string; landmark: string; at: string };
 export type Ticket = { workspaceId: string; at: string };
 export type State = {
-  version: 3;
+  version: 4;
+  floors: { decoration: string; cell: number }[];
   landFloor: number;
   crafts: { id: string; decoration: string }[];
-  decorations: { decoration: string; cell: number }[];
+  decorations: { decoration: string; cell: number; rotation?: number }[];
   tickets: Ticket[];
   receipts: Receipt[];
   placements: Placement[];
 };
 export const empty = (): State => ({
-  version: 3,
+  version: 4,
+  floors: [],
   landFloor: 0,
   crafts: [],
   decorations: [],
@@ -64,7 +71,7 @@ export function validate(value: unknown): State {
   const version = (value as { version?: number }).version;
   const s = raw;
   if (
-    (version !== 1 && version !== 2 && version !== 3) ||
+    (version !== 1 && version !== 2 && version !== 3 && version !== 4) ||
     !Array.isArray(s.receipts) ||
     !Array.isArray(s.placements)
   )
@@ -121,20 +128,30 @@ export function validate(value: unknown): State {
   if (s.receipts.some((r) => !earned.has(r.workspaceId)))
     throw Error('Reward has no matching ticket');
   const landFloor =
-    version === 3
+    version === 3 || version === 4
       ? s.landFloor
       : Math.max(
           0,
           ...s.placements.map((p) => expansionLevel.get(p.cell) ?? 0),
         );
-  const crafts = version === 3 ? s.crafts : [];
-  const decor = version === 3 ? s.decorations : [];
+  const crafts = version === 3 || version === 4 ? s.crafts : [];
+  const oldDecor = version === 3 || version === 4 ? s.decorations : [];
+  if (!Array.isArray(oldDecor)) throw Error('Invalid decoration placements');
+  const floors =
+    version === 4
+      ? s.floors
+      : oldDecor.filter((p) => p && isFloor(p.decoration));
+  const decor =
+    version === 4
+      ? oldDecor
+      : oldDecor.filter((p) => !p || !isFloor(p.decoration));
   if (
     !Number.isInteger(landFloor) ||
     landFloor < 0 ||
     landFloor > 12 ||
     !Array.isArray(crafts) ||
-    !Array.isArray(decor)
+    !Array.isArray(decor) ||
+    !Array.isArray(floors)
   )
     throw Error('Invalid island progression');
   const craftIds = new Set<string>();
@@ -151,7 +168,7 @@ export function validate(value: unknown): State {
       throw Error('Invalid crafting ledger');
     craftIds.add(c.id);
   }
-  const next: State = { ...s, landFloor, crafts, decorations: decor };
+  const next: State = { ...s, landFloor, crafts, decorations: decor, floors };
   if (materials(next) < 0) throw Error('Not enough materials');
   for (const p of s.placements)
     if (!unlockedCell(next, p.cell)) throw Error('Land is not unlocked');
@@ -160,6 +177,12 @@ export function validate(value: unknown): State {
     if (
       !p ||
       !decorationById(p.decoration) ||
+      isFloor(p.decoration) ||
+      (p.rotation !== undefined &&
+        (!canRotate(p.decoration) ||
+          !Number.isInteger(p.rotation) ||
+          p.rotation < 0 ||
+          p.rotation > 3)) ||
       !unlockedCell(next, p.cell) ||
       cells.has(p.cell)
     )
@@ -169,11 +192,27 @@ export function validate(value: unknown): State {
     if (usedDecor.get(p.decoration)! > decorationQuantity(next, p.decoration))
       throw Error('Decoration placement exceeds ownership');
   }
+  const floorCells = new Set<number>();
+  for (const p of floors) {
+    if (
+      !p ||
+      !isFloor(p.decoration) ||
+      !unlockedCell(next, p.cell) ||
+      floorCells.has(p.cell)
+    )
+      throw Error('Invalid floor placement');
+    floorCells.add(p.cell);
+  }
   return structuredClone({
-    version: 3,
+    version: 4,
+    floors: floors.map(({ decoration, cell }) => ({ decoration, cell })),
     landFloor,
     crafts: crafts.map(({ id, decoration }) => ({ id, decoration })),
-    decorations: decor.map(({ decoration, cell }) => ({ decoration, cell })),
+    decorations: decor.map(({ decoration, cell, rotation }) => ({
+      decoration,
+      cell,
+      ...(rotation ? { rotation } : {}),
+    })),
     tickets: tickets.map(({ workspaceId, at }) => ({ workspaceId, at })),
     receipts: s.receipts.map(({ workspaceId, landmark, at }) => ({
       workspaceId,
@@ -182,6 +221,22 @@ export function validate(value: unknown): State {
     })),
     placements: s.placements.map(({ landmark, cell }) => ({ landmark, cell })),
   });
+}
+export type Layout = Pick<State, 'placements' | 'decorations' | 'floors'>;
+export function layout(s: State): Layout {
+  return structuredClone({
+    placements: s.placements,
+    decorations: s.decorations,
+    floors: s.floors,
+  });
+}
+export function sameLayout(a: Layout, b: Layout) {
+  return JSON.stringify(a) === JSON.stringify(b);
+}
+function checkLayout(s: State, input: unknown) {
+  const expected = (input as { expected?: Layout } | null)?.expected;
+  if (expected !== undefined && !sameLayout(layout(s), expected))
+    throw Error('Island layout changed. Refresh before editing again.');
 }
 export const MAX_BACKUP_BYTES = 256 * 1024;
 export function encodeBackup(state: State): string {
@@ -346,32 +401,138 @@ export class Game {
       return next;
     });
   }
+  replaceLayout(input: unknown) {
+    return this.queue(async (s) => {
+      const p = input as { expected?: Layout; layout?: Layout } | null;
+      if (!p?.layout || !p.expected) throw Error('Invalid layout request');
+      // Only layout fields can be replaced. New discoveries and crafts stay intact.
+      const next = validate({
+        ...s,
+        placements: p.layout.placements,
+        decorations: p.layout.decorations,
+        floors: p.layout.floors,
+      });
+      if (sameLayout(layout(s), layout(next))) return s;
+      if (!sameLayout(layout(s), p.expected))
+        throw Error('Island layout changed. Refresh before editing again.');
+      await this.store.write(next);
+      return next;
+    });
+  }
+  rotate(input: unknown) {
+    return this.queue(async (s) => {
+      checkLayout(s, input);
+      const p = input as { cell?: number; rotation?: number } | null;
+      const item = s.decorations.find((d) => d.cell === p?.cell);
+      if (
+        !item ||
+        !canRotate(item.decoration) ||
+        !Number.isInteger(p?.rotation) ||
+        p!.rotation! < 0 ||
+        p!.rotation! > 3
+      )
+        throw Error('Choose a bench or gate and a valid direction');
+      item.rotation = p!.rotation;
+      const next = validate(s);
+      await this.store.write(next);
+      return next;
+    });
+  }
+  paint(input: unknown) {
+    return this.queue(async (s) => {
+      const p = input as {
+        decoration?: string;
+        cells?: number[];
+        expected?: Layout;
+      } | null;
+      const d = p && decorationById(p.decoration!);
+      if (
+        !d ||
+        (!isFloor(d.id) && d.shape !== 'flowers') ||
+        !Array.isArray(p?.cells) ||
+        !p.cells.length ||
+        p.cells.length > 318 ||
+        new Set(p.cells).size !== p.cells.length ||
+        p.cells.some((cell) => !unlockedCell(s, cell))
+      )
+        throw Error('Invalid brush stroke');
+      if (!p.expected || !sameLayout(layout(s), p.expected))
+        throw Error('Island layout changed. Try the stroke again.');
+      for (const cell of p.cells) {
+        if (isFloor(d.id)) {
+          s.floors = s.floors.filter((f) => f.cell !== cell);
+          s.floors.push({ cell, decoration: d.id });
+        } else {
+          if (
+            s.placements.some((x) => x.cell === cell) ||
+            s.decorations.some((x) => x.cell === cell)
+          )
+            throw Error('Brush requires empty object cells');
+          s.decorations.push({ cell, decoration: d.id });
+        }
+      }
+      const next = validate(s); // entire stroke succeeds or no cells change
+      await this.store.write(next);
+      return next;
+    });
+  }
   decorate(input: unknown) {
     return this.queue(async (s) => {
+      checkLayout(s, input);
       const p = input as {
         cell: number;
         decoration?: string;
         from?: number;
+        layer?: string;
+        rotation?: number;
       } | null;
       if (!p || !unlockedCell(s, p.cell)) throw Error('Land is not unlocked');
-      if (s.placements.some((x) => x.cell === p.cell))
-        throw Error('Cell is occupied by a landmark');
-      if (p.from !== undefined) {
-        if (!Number.isInteger(p.from) || p.from === p.cell)
-          throw Error('Choose another cell');
-        const old = s.decorations.find((x) => x.cell === p.from);
-        if (!old || s.decorations.some((x) => x.cell === p.cell))
-          throw Error('Move requires an empty destination');
-        old.cell = p.cell;
+      if (p.layer !== undefined && p.layer !== 'floor' && p.layer !== 'objects')
+        throw Error('Invalid editing layer');
+      const floor =
+        p.layer === 'floor' ||
+        (p.decoration !== undefined && isFloor(p.decoration));
+      if (floor) {
+        if (p.decoration !== undefined && !isFloor(p.decoration))
+          throw Error('Choose a floor');
+        if (p.from !== undefined) {
+          const old = s.floors.find((f) => f.cell === p.from);
+          if (
+            !old ||
+            p.from === p.cell ||
+            s.floors.some((f) => f.cell === p.cell)
+          )
+            throw Error('Move requires an empty floor');
+          old.cell = p.cell;
+        } else {
+          s.floors = s.floors.filter((f) => f.cell !== p.cell);
+          if (p.decoration !== undefined)
+            s.floors.push({ cell: p.cell, decoration: p.decoration });
+        }
       } else {
-        if (
-          p.decoration !== undefined &&
-          s.decorations.some((x) => x.cell === p.cell)
-        )
-          throw Error('Choose an empty cell');
-        s.decorations = s.decorations.filter((x) => x.cell !== p.cell);
-        if (p.decoration !== undefined)
-          s.decorations.push({ cell: p.cell, decoration: p.decoration });
+        if (s.placements.some((x) => x.cell === p.cell))
+          throw Error('Cell is occupied by a landmark');
+        if (p.from !== undefined) {
+          if (!Number.isInteger(p.from) || p.from === p.cell)
+            throw Error('Choose another cell');
+          const old = s.decorations.find((x) => x.cell === p.from);
+          if (!old || s.decorations.some((x) => x.cell === p.cell))
+            throw Error('Move requires an empty destination');
+          old.cell = p.cell;
+        } else {
+          if (
+            p.decoration !== undefined &&
+            s.decorations.some((x) => x.cell === p.cell)
+          )
+            throw Error('Choose an empty cell');
+          s.decorations = s.decorations.filter((x) => x.cell !== p.cell);
+          if (p.decoration !== undefined)
+            s.decorations.push({
+              cell: p.cell,
+              decoration: p.decoration,
+              ...(p.rotation ? { rotation: p.rotation } : {}),
+            });
+        }
       }
       const next = validate(s);
       await this.store.write(next);
@@ -380,6 +541,7 @@ export class Game {
   }
   place(input: unknown) {
     return this.queue(async (s) => {
+      checkLayout(s, input);
       const p = input as { cell: number; landmark?: string; from?: number };
       if (!p || !unlockedCell(s, p.cell)) throw Error('Land is not unlocked');
       if (s.decorations.some((d) => d.cell === p.cell))

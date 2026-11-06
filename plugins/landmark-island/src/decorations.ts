@@ -102,6 +102,15 @@ export const decorations: Decoration[] = [
     walkable: true,
   },
   {
+    id: 'stonepath',
+    name: 'Stone paving',
+    cost: 0,
+    gift: false,
+    shape: 'path',
+    color: '#aeb5a1',
+    walkable: true,
+  },
+  {
     id: 'oak',
     name: 'Garden oak',
     cost: 0,
@@ -137,8 +146,64 @@ export const decorationById = (id: string) =>
   decorations.find((d) => d.id === id);
 export const DUPLICATE_MATERIALS = 3;
 
-export function decorationArt(id: string) {
+export const isFloor = (id: string) =>
+  ['grass', 'path', 'stonepath'].includes(id);
+export const canRotate = (id: string) =>
+  ['bench', 'gate'].includes(decorationById(id)?.shape ?? '');
+
+// Small original 3D furniture drawings keep upright posts upright when rotated.
+function furnitureArt(d: Decoration, rotation: number) {
+  type Point = [number, number, number];
+  const faces: { points: Point[]; fill: string }[] = [];
+  const turn = ([x, y, z]: Point): Point => {
+    for (let i = 0; i < rotation; i++) [x, y] = [-y, x];
+    return [x, y, z];
+  };
+  const box = (
+    x: number,
+    y: number,
+    z: number,
+    w: number,
+    depth: number,
+    h: number,
+  ) => {
+    const vertices: Point[] = [
+      [x, y, z],
+      [x + w, y, z],
+      [x + w, y + depth, z],
+      [x, y + depth, z],
+      [x, y, z + h],
+      [x + w, y, z + h],
+      [x + w, y + depth, z + h],
+      [x, y + depth, z + h],
+    ];
+    for (const [indices, fill] of [
+      [[0, 1, 5, 4], '#65705b'],
+      [[1, 2, 6, 5], d.color],
+      [[2, 3, 7, 6], d.color],
+      [[3, 0, 4, 7], '#65705b'],
+      [[4, 5, 6, 7], '#d6c7a0'],
+    ] as [number[], string][])
+      faces.push({ points: indices.map((i) => turn(vertices[i])), fill });
+  };
+  if (d.shape === 'bench') {
+    for (const x of [-23, 18]) for (const y of [-10, 7]) box(x, y, 0, 5, 5, 20);
+    for (let y = -12; y <= 8; y += 7) box(-27, y, 20, 54, 6, 3);
+    for (const x of [-23, 18]) box(x, -12, 20, 5, 4, 25);
+    for (const z of [29, 39]) box(-27, -14, z, 54, 4, 7);
+  } else {
+    for (const x of [-23, 17]) box(x, -3, 0, 6, 6, 62);
+    box(-30, -5, 54, 60, 10, 7);
+    box(-26, -4, 37, 52, 8, 5);
+  }
+  const depth = (p: Point[]) =>
+    p.reduce((sum, [x, y, z]) => sum + x + y + z * 0.001, 0) / p.length;
+  faces.sort((a, b) => depth(a.points) - depth(b.points));
+  return `<svg class="decoration-art" viewBox="0 0 80 104" aria-hidden="true"><ellipse cx="40" cy="90" rx="31" ry="9" fill="#244e3825"/>${faces.map((f) => `<polygon points="${f.points.map(([x, y, z]) => `${40 + (x - y) * 0.65},${86 + (x + y) * 0.32 - z}`).join(' ')}" fill="${f.fill}" stroke="#53624d" stroke-width=".7" stroke-linejoin="round"/>`).join('')}</svg>`;
+}
+export function decorationArt(id: string, rotation = 0) {
   const d = decorationById(id)!;
+  if (canRotate(id)) return furnitureArt(d, rotation);
   const shapes: Record<Decoration['shape'], string> = {
     grass:
       '<path d="M5 78L40 58 75 78 40 98Z"/><path d="M20 78l3-8 3 8m17 6 4-10 3 9m8-8 3-7 2 8" fill="none" stroke="#547644"/>',

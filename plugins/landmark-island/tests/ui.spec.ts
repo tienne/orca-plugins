@@ -1853,3 +1853,203 @@ test('all modals scroll internally without moving the page and release the lock 
       .toBeGreaterThan(250);
   }
 });
+
+async function dragTiles(page: Page, cells: number[], cancel = false) {
+  const points = [];
+  for (const cell of cells) {
+    const b = (await page.locator(`.cell[data-cell="${cell}"]`).boundingBox())!;
+    points.push({ x: b.x + b.width / 2, y: b.y + b.height / 2 });
+  }
+  await page.mouse.move(points[0].x, points[0].y);
+  await page.mouse.down();
+  for (const p of points.slice(1))
+    await page.mouse.move(p.x, p.y, { steps: 8 });
+  if (cancel) await page.keyboard.press('Escape');
+  await page.mouse.up();
+}
+
+test('floors overlap furniture; four directions, movement and undo preserve the collection', async ({
+  page,
+}) => {
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await page.goto('/');
+  const ids = ['eiffel', 'eiffel', 'eiffel'];
+  await page.evaluate(
+    (ids) =>
+      localStorage.setItem(
+        'landmark-island-demo-v1',
+        JSON.stringify({
+          version: 2,
+          tickets: ids.map((_, i) => ({
+            workspaceId: `layers-${i}`,
+            at: '2026-11-06',
+          })),
+          receipts: ids.map((landmark, i) => ({
+            workspaceId: `layers-${i}`,
+            landmark,
+            at: '2026-11-06',
+          })),
+          placements: [],
+        }),
+      ),
+    ids,
+  );
+  await page.reload();
+  await page.locator('[data-craft=eiffel-special]').click();
+  await page.locator('[data-decor-place=stonepath]').click();
+  await page
+    .getByRole('button', { name: 'Cell 1: empty', exact: true })
+    .click();
+  await page.locator('[data-landmark=eiffel]').click();
+  await page
+    .getByRole('button', { name: 'Cell 1: Stone paving', exact: true })
+    .click();
+  await expect(page.locator('[data-world-cell="0"] .building')).toHaveCount(1);
+  await expect(
+    page.locator('[data-world-cell="0"] [data-floor=stonepath]'),
+  ).toHaveCount(1);
+  await page.locator('[data-decor-place=eiffel-special]').click();
+  await page.locator('#rotate-piece').click();
+  await page
+    .getByRole('button', { name: 'Cell 2: empty', exact: true })
+    .click();
+  await expect(
+    page.locator('[data-world-cell="1"] .garden-object'),
+  ).toHaveAttribute('data-rotation', '1');
+  await page.locator('[data-decor-place=path]').click();
+  await page
+    .getByRole('button', { name: 'Cell 2: Café bench', exact: true })
+    .click();
+  await expect(
+    page.locator('[data-world-cell="1"] [data-floor=path]'),
+  ).toHaveCount(1);
+  await expect(
+    page.locator('[data-world-cell="1"] .garden-object'),
+  ).toHaveAttribute('data-rotation', '1');
+  await page.locator('[data-edit-layer=objects]').click();
+  await page
+    .getByRole('button', { name: 'Cell 2: Café bench', exact: true })
+    .click();
+  const views = new Set<string>();
+  for (let rotation = 2; rotation <= 5; rotation++) {
+    await page.locator('#rotate-piece').click();
+    const art = page.locator('[data-world-cell="1"] .garden-object');
+    await expect(art).toHaveAttribute('data-rotation', String(rotation % 4));
+    await expect(page.locator('#rotate-piece')).toHaveText(
+      `Rotate · ${(rotation % 4) * 90}°`,
+    );
+    views.add(await art.innerHTML());
+  }
+  expect(views.size).toBe(4);
+  await page
+    .getByRole('button', { name: 'Cell 3: empty', exact: true })
+    .click();
+  await expect(
+    page.locator('[data-world-cell="2"] .garden-object'),
+  ).toHaveAttribute('data-rotation', '1');
+  await expect(
+    page.locator('[data-world-cell="1"] [data-floor=path]'),
+  ).toHaveCount(1);
+  await page.locator('#undo-layout').click();
+  await expect(
+    page.locator('[data-world-cell="1"] .garden-object'),
+  ).toHaveAttribute('data-rotation', '1');
+  await page.locator('[data-edit-layer=floor]').click();
+  await page
+    .getByRole('button', { name: 'Cell 2: Café bench', exact: true })
+    .click();
+  await page.locator('#remove').click();
+  await expect(page.locator('[data-world-cell="1"] [data-floor]')).toHaveCount(
+    0,
+  );
+  await expect(
+    page.locator('[data-world-cell="1"] .garden-object'),
+  ).toHaveCount(1);
+  await page.locator('#undo-layout').click();
+  await expect(
+    page.locator('[data-world-cell="1"] [data-floor=path]'),
+  ).toHaveCount(1);
+  await page.reload();
+  await expect(
+    page.locator('[data-world-cell="1"] .garden-object'),
+  ).toHaveAttribute('data-rotation', '1');
+  await expect(
+    page.locator('[data-world-cell="0"] [data-floor=stonepath]'),
+  ).toHaveCount(1);
+  await expect(page.locator('[data-landmark=eiffel]')).toContainText(
+    'Owned ×3',
+  );
+  await expect(page.locator('.material-balance')).toHaveText('0 materials');
+  await expect(page.locator('#undo-layout')).toBeDisabled();
+  await page.getByRole('button', { name: 'Show whole island' }).click();
+  await page.locator('.island-section').screenshot({
+    path: 'test-results/landmark-island/layered-garden.png',
+    animations: 'disabled',
+  });
+});
+
+test('brush strokes preview, cancel, save as one undo and stop at flower ownership', async ({
+  page,
+}) => {
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await page.goto('/');
+  await page.evaluate(() =>
+    localStorage.setItem(
+      'landmark-island-demo-v1',
+      JSON.stringify({
+        version: 3,
+        landFloor: 0,
+        tickets: [
+          { workspaceId: 'flower', at: '2026-11-06' },
+          { workspaceId: 'flower-copy', at: '2026-11-06' },
+        ],
+        receipts: [
+          { workspaceId: 'flower', landmark: 'stonehenge', at: '2026-11-06' },
+          {
+            workspaceId: 'flower-copy',
+            landmark: 'stonehenge',
+            at: '2026-11-06',
+          },
+        ],
+        crafts: [{ id: 'crafted-flower', decoration: 'stonehenge-gift' }],
+        placements: [{ cell: 2, landmark: 'stonehenge' }],
+        decorations: [],
+      }),
+    ),
+  );
+  await page.reload();
+  await page.locator('[data-decor-place=path]').click();
+  await page.locator('#brush-toggle').click();
+  await page.getByRole('button', { name: 'Show whole island' }).click();
+  const cameraBefore = await page.locator('.camera').getAttribute('style');
+  await dragTiles(page, [0, 1, 2, 3], true);
+  await expect(page.locator('[data-floor]')).toHaveCount(0);
+  await expect(page.locator('.brush-preview')).toHaveCount(0);
+  await expect(page.locator('#undo-layout')).toBeDisabled();
+  await dragTiles(page, [0, 1, 2, 3]);
+  await expect(page.locator('[data-floor=path]')).toHaveCount(4);
+  await expect(page.locator('#undo-layout')).toHaveText('Undo layout · 1');
+  expect(await page.locator('.camera').getAttribute('style')).toBe(
+    cameraBefore,
+  );
+  await expect(page.locator('[data-world-cell="2"] .building')).toHaveCount(1);
+  await page.locator('#undo-layout').click();
+  await expect(page.locator('[data-floor]')).toHaveCount(0);
+  await expect(page.locator('[data-world-cell="2"] .building')).toHaveCount(1);
+  await page.locator('[data-decor-place=stonehenge-gift]').click();
+  await page.locator('#brush-toggle').click();
+  await dragTiles(page, [0, 1, 2, 3]);
+  await expect(
+    page.locator('.garden-object[data-decoration=stonehenge-gift]'),
+  ).toHaveCount(2);
+  await expect(page.locator('[data-decor-card=stonehenge-gift]')).toContainText(
+    'Owned ×2 · 0 available',
+  );
+  await expect(page.locator('#undo-layout')).toHaveText('Undo layout · 1');
+  await page.locator('#undo-layout').click();
+  await expect(page.locator('.garden-object')).toHaveCount(0);
+  await expect(page.locator('[data-decor-card=stonehenge-gift]')).toContainText(
+    'Owned ×2 · 2 available',
+  );
+  await expect(page.locator('.material-balance')).toHaveText('0 materials');
+});

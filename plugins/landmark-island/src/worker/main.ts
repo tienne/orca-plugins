@@ -71,6 +71,17 @@ export default function activate(orca: Worker) {
     await notify();
     return state;
   });
+  for (const [name, handler] of [
+    ['island.layout', (input: unknown) => game.replaceLayout(input)],
+    ['island.paint', (input: unknown) => game.paint(input)],
+    ['island.rotate', (input: unknown) => game.rotate(input)],
+  ] as const) {
+    orca.panels.handle(name, async (input) => {
+      const state = await handler(input);
+      await notify();
+      return state;
+    });
+  }
   orca.panels.handle('island.decorate', async (input) => {
     const state = await game.decorate(input);
     await notify();

@@ -1283,3 +1283,25 @@ html:has(dialog:modal) body {
 dialog:modal {
   overscroll-behavior: contain;
 }
+
+.editor-tools {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin: 10px 0;
+}
+.editor-tools [role='group'] {
+  display: flex;
+  gap: 4px;
+}
+.editor-tools small {
+  flex-basis: 100%;
+  color: var(--orca-muted-foreground, var(--ink));
+}
+.ocean[data-brush='true'] .cell {
+  cursor: cell;
+}
+.ocean .world-tile .cell.brush-preview {
+  background: #ffe8a5b3 !important;
+}

@@ -1,5 +1,8 @@
 import {
   Game,
+  layout,
+  sameLayout,
+  type Layout,
   validate,
   islandLand,
   islandLevel,
@@ -24,6 +27,8 @@ import {
   decorationById,
   decorationArt,
   DUPLICATE_MATERIALS,
+  isFloor,
+  canRotate,
 } from './decorations';
 const scene = new IslandScene();
 const rarities = [
@@ -80,6 +85,9 @@ let state: State = empty(),
   view = 'island',
   selected = '',
   selectedDecor = '',
+  editLayer: 'floor' | 'objects' = 'objects',
+  brushEnabled = false,
+  placementRotation = 0,
   from: number | undefined,
   busy = false,
   message =
@@ -154,20 +162,39 @@ async function request(name: string, input: unknown = {}) {
         ? game.redeem(input)
         : name === 'island.craft'
           ? game.craft(input)
-          : name === 'island.decorate'
-            ? game.decorate(input)
-            : game.place(input));
+          : name === 'island.layout'
+            ? game.replaceLayout(input)
+            : name === 'island.paint'
+              ? game.paint(input)
+              : name === 'island.rotate'
+                ? game.rotate(input)
+                : name === 'island.decorate'
+                  ? game.decorate(input)
+                  : game.place(input));
   return validate(result);
 }
 let loaded = false;
 let pendingTicket: string | undefined;
-async function run(action: () => Promise<State>) {
+const undoStack: { before: Layout; after: Layout }[] = [];
+async function run(
+  action: () => Promise<State>,
+  mode: 'read' | 'edit' | 'undo' = 'read',
+) {
   if (busy) return;
   busy = true;
   error = '';
   render();
   try {
+    const before = layout(state);
     const next = await action();
+    const after = layout(next);
+    if (mode === 'undo') undoStack.pop();
+    else if (!sameLayout(before, after)) {
+      if (mode === 'edit') {
+        undoStack.push({ before, after });
+        if (undoStack.length > 20) undoStack.shift();
+      } else undoStack.length = 0;
+    }
     const last = next.receipts.at(-1);
     if (loaded && last && next.receipts.length > state.receipts.length)
       message = `${quantity(next, last.landmark) > 1 ? 'Duplicate discovered' : 'New discovery'}: ${landmarks.find((l) => l.id === last.landmark)!.name} · owned ×${quantity(next, last.landmark)}`;
@@ -215,6 +242,8 @@ async function useTicket() {
       rarityBadge(landmark.tier),
       () => {
         selected = landmark.id;
+        editLayer = 'objects';
+        brushEnabled = false;
         selectedDecor = '';
         from = undefined;
         scene.mode = 'build';
@@ -255,6 +284,24 @@ function workshop() {
       '',
     )}</div><p class="muted">Move or return decorations at no cost. Returned pieces stay in your inventory. Preview locked sets with the menu above.</p></section>`;
 }
+function edit(name: string, input: unknown) {
+  const checkedInput = { ...(input as object), expected: layout(state) };
+  void run(() => request(name, checkedInput), 'edit');
+}
+function editorTools() {
+  const current =
+    from === undefined
+      ? undefined
+      : state.decorations.find((p) => p.cell === from);
+  const rotatable =
+    editLayer === 'objects' &&
+    (current ? canRotate(current.decoration) : canRotate(selectedDecor));
+  const paintable =
+    selectedDecor &&
+    (isFloor(selectedDecor) ||
+      decorationById(selectedDecor)?.shape === 'flowers');
+  return `<div class="editor-tools" aria-label="Island editing tools"><button id="undo-layout" ${!undoStack.length ? 'disabled' : ''}>Undo layout${undoStack.length ? ` · ${undoStack.length}` : ''}</button>${scene.mode === 'build' ? `<div role="group" aria-label="Edit layer"><button data-edit-layer="objects" aria-pressed="${editLayer === 'objects'}">Objects</button><button data-edit-layer="floor" aria-pressed="${editLayer === 'floor'}">Floor</button></div>${paintable ? `<button id="brush-toggle" aria-pressed="${brushEnabled}">Brush · ${brushEnabled ? 'On' : 'Off'}</button>` : ''}${rotatable ? `<button id="rotate-piece">Rotate · ${(current ? (current.rotation ?? 0) : placementRotation) * 90}°</button>` : ''}${selectedDecor || selected ? '<button id="stop-placing">Cancel selection</button>' : ''}<small>${editLayer === 'floor' ? 'Floor layer · Paint beneath objects' : 'Object layer · Floors stay in place'}${selectedDecor && canRotate(selectedDecor) ? ` · Facing ${placementRotation * 90}°` : ''}</small>` : ''}</div>`;
+}
 function render() {
   const tickets = availableTickets(state).length;
   const owned = landmarks.filter((l) => quantity(state, l.id) > 0);
@@ -264,7 +311,7 @@ function render() {
   root.innerHTML = `<header><div class="book-title"><div class="eyebrow">A worktree travel journal ${demo ? '<b>DEMO · LOCAL FIXTURES</b>' : ''}</div><h1>Landmark Island</h1></div><div class="stats"><strong>${owned.length}<small> / 12 discovered</small></strong><strong>${state.receipts.length}<small> discoveries</small></strong><strong>${new Set(owned.map((l) => l.code)).size}<small> countries</small></strong></div></header><nav><button data-view="island" aria-pressed="${view === 'island'}">My Island</button><button data-view="map" aria-pressed="${view === 'map'}">World Map</button>${demo ? '<button id="expedition">＋ Demo worktree</button>' : ''}<button id="refresh">Refresh</button><button id="backups" aria-haspopup="dialog">Backups</button></nav><section class="ticket-desk" aria-label="Exploration tickets"><div class="ticket-stamp" aria-hidden="true">✦</div><div><small>YOUR NEXT CHAPTER</small><h2><span id="ticket-count">${tickets}</span> exploration ticket${tickets === 1 ? '' : 's'}</h2><p>Create a worktree, earn a ticket, discover somewhere new.</p></div><button id="draw-ticket" ${!loaded || (!tickets && !pendingTicket) ? 'disabled' : ''}>${pendingTicket ? 'Retry discovery' : 'Use ticket · Discover'}</button></section><p class="notice ${latest ? 'discovery-notice' : ''}" ${latest ? `data-tier="${latest.tier}"` : ''} role="status">${latest ? rarityBadge(latest.tier) : ''}<span>${escape(message)}</span></p>${error ? `<p role="alert">${escape(error)}</p>` : ''}
  ${
    view === 'island'
-     ? `<section class="island-section"><div class="section-title"><h2><small>Chapter I</small> A place to wander</h2><span>${islandLand(state).length} / ${landTiles.length} land tiles</span></div><p class="land-progress">${islandLevel(state) >= 12 ? 'Your whole island is open.' : `At ${islandLevel(state) + 1} unique landmarks: +${landAtLevel(islandLevel(state) + 1).length - islandLand(state).length} land tiles · ${owned.length} unique discoveries`}${state.landFloor > owned.length ? ' · Existing settlement preserved; collection will catch up before further growth.' : ''}</p><p>${from !== undefined ? 'Choose an empty cell to move the selected piece.' : selectedDecor ? `Place ${decorationById(selectedDecor)!.name} on an empty cell.` : selected ? `Place ${escape(landmarks.find((l) => l.id === selected)!.name)} on an empty cell.` : scene.mode === 'walk' ? 'Take a stroll, watch the weather, and make yourself at home.' : 'Select a collected landmark below, then choose a cell.'}</p>${scene.markup()}<div class="ocean" tabindex="0" role="region" aria-label="Interactive island"><div class="camera"><div class="island">${terrain(state, from)}${scene.avatar()}</div><div class="sailboat" aria-hidden="true"><svg viewBox="0 0 90 90"><path d="M5 73q15-4 29 0m10 7q18-4 35 0" fill="none" stroke="#e7eedb" stroke-width="2"/><path d="M13 60q32 7 65-1L65 73H26z" fill="#ad7355" stroke="#655542" stroke-width="2"/><path d="M46 60V7" stroke="#655542" stroke-width="2"/><path d="M42 13Q26 29 20 50l22-3z" fill="#fcf3d8" stroke="#8c8268"/><path d="M50 21l20 29-20 2z" fill="#d9b07d" stroke="#8c8268"/><path d="M47 8l14 3-14 6" fill="#b76550"/></svg></div></div>${scene.layers(state)}</div>${from !== undefined ? '<div class="tools"><button id="remove">Return to collection</button><button id="cancel">Cancel move</button></div>' : ''}</section>`
+     ? `<section class="island-section"><div class="section-title"><h2><small>Chapter I</small> A place to wander</h2><span>${islandLand(state).length} / ${landTiles.length} land tiles</span></div><p class="land-progress">${islandLevel(state) >= 12 ? 'Your whole island is open.' : `At ${islandLevel(state) + 1} unique landmarks: +${landAtLevel(islandLevel(state) + 1).length - islandLand(state).length} land tiles · ${owned.length} unique discoveries`}${state.landFloor > owned.length ? ' · Existing settlement preserved; collection will catch up before further growth.' : ''}</p><p>${from !== undefined ? 'Choose an empty cell to move the selected piece.' : selectedDecor ? (isFloor(selectedDecor) ? `Lay ${decorationById(selectedDecor)!.name} on any unlocked tile, including beneath objects.` : `Place ${decorationById(selectedDecor)!.name} on an empty cell.`) : selected ? `Place ${escape(landmarks.find((l) => l.id === selected)!.name)} on an empty cell.` : scene.mode === 'walk' ? 'Take a stroll, watch the weather, and make yourself at home.' : 'Select a collected landmark below, then choose a cell.'}</p>${scene.markup()}${editorTools()}<div class="ocean" tabindex="0" role="region" aria-label="Interactive island"><div class="camera"><div class="island">${terrain(state, from)}${scene.avatar()}</div><div class="sailboat" aria-hidden="true"><svg viewBox="0 0 90 90"><path d="M5 73q15-4 29 0m10 7q18-4 35 0" fill="none" stroke="#e7eedb" stroke-width="2"/><path d="M13 60q32 7 65-1L65 73H26z" fill="#ad7355" stroke="#655542" stroke-width="2"/><path d="M46 60V7" stroke="#655542" stroke-width="2"/><path d="M42 13Q26 29 20 50l22-3z" fill="#fcf3d8" stroke="#8c8268"/><path d="M50 21l20 29-20 2z" fill="#d9b07d" stroke="#8c8268"/><path d="M47 8l14 3-14 6" fill="#b76550"/></svg></div></div>${scene.layers(state)}</div>${from !== undefined ? '<div class="tools"><button id="remove">Return to collection</button><button id="cancel">Cancel move</button></div>' : ''}</section>`
      : `<section><div class="section-title"><h2><small>Chapter II</small> A world of discoveries</h2><span>${owned.length} real locations</span></div><svg class="world" viewBox="0 0 720 360" role="img" aria-label="World map of collected landmarks">${world.map((c) => `<path d="${c.path}" class="${owned.some((l) => l.code === c.code) ? 'acquired' : ''}"><title>${escape(c.name)}</title></path>`).join('')}${owned.map((l) => `<circle cx="${(l.lon + 180) * 2}" cy="${(90 - l.lat) * 2}" r="4"><title>${escape(l.name)} · ${escape(l.country)}</title></circle>`).join('')}</svg><p class="muted">Made with Natural Earth · approximate locations · equirectangular projection</p><div class="countries">${[...new Set(landmarks.map((l) => l.country))].map((c) => `<span>${escape(c)} <strong>${owned.filter((l) => l.country === c).length}/${landmarks.filter((l) => l.country === c).length}</strong></span>`).join('')}</div></section>`
  }
  ${view === 'island' ? workshop() : ''}
@@ -322,6 +369,8 @@ function render() {
     (b) =>
       (b.onclick = () => {
         selected = b.dataset.landmark!;
+        editLayer = 'objects';
+        brushEnabled = false;
         selectedDecor = '';
         scene.mode = 'build';
         from = undefined;
@@ -334,8 +383,16 @@ function render() {
       (b.onclick = () => {
         const cell = Number(b.dataset.cell ?? b.dataset.site);
         const p =
-          state.placements.find((p) => p.cell === cell) ??
-          state.decorations.find((p) => p.cell === cell);
+          editLayer === 'floor'
+            ? state.floors.find((p) => p.cell === cell)
+            : (state.placements.find((p) => p.cell === cell) ??
+              state.decorations.find((p) => p.cell === cell));
+        if (selectedDecor && isFloor(selectedDecor)) {
+          const decoration = selectedDecor;
+          if (!brushEnabled) selectedDecor = '';
+          edit('island.decorate', { cell, decoration, layer: 'floor' });
+          return;
+        }
         if (p) {
           from = cell;
           selected = '';
@@ -346,22 +403,25 @@ function render() {
         if (from !== undefined) {
           const origin = from;
           from = undefined;
-          void run(() =>
-            request(
+          edit(
+            editLayer === 'floor' ||
               state.decorations.some((p) => p.cell === origin)
-                ? 'island.decorate'
-                : 'island.place',
-              { cell, from: origin },
-            ),
+              ? 'island.decorate'
+              : 'island.place',
+            { cell, from: origin, layer: editLayer },
           );
         } else if (selectedDecor) {
           const decoration = selectedDecor;
-          selectedDecor = '';
-          void run(() => request('island.decorate', { cell, decoration }));
+          if (!brushEnabled) selectedDecor = '';
+          edit('island.decorate', {
+            cell,
+            decoration,
+            rotation: canRotate(decoration) ? placementRotation : undefined,
+          });
         } else if (selected) {
           const landmark = selected;
           selected = '';
-          void run(() => request('island.place', { cell, landmark }));
+          edit('island.place', { cell, landmark });
         }
       }),
   );
@@ -385,6 +445,9 @@ function render() {
     .forEach((button) => {
       button.onclick = () => {
         selectedDecor = button.dataset.decorPlace!;
+        editLayer = isFloor(selectedDecor) ? 'floor' : 'objects';
+        brushEnabled = false;
+        placementRotation = 0;
         selected = '';
         from = undefined;
         scene.mode = 'build';
@@ -408,6 +471,62 @@ function render() {
       });
     };
   });
+  root
+    .querySelectorAll<HTMLButtonElement>('[data-edit-layer]')
+    .forEach((button) => {
+      button.onclick = () => {
+        editLayer = button.dataset.editLayer as typeof editLayer;
+        selected = selectedDecor = '';
+        from = undefined;
+        brushEnabled = false;
+        render();
+      };
+    });
+  const brushButton = root.querySelector<HTMLButtonElement>('#brush-toggle');
+  if (brushButton)
+    brushButton.onclick = () => {
+      brushEnabled = !brushEnabled;
+      render();
+    };
+  const stop = root.querySelector<HTMLButtonElement>('#stop-placing');
+  if (stop)
+    stop.onclick = () => {
+      selected = selectedDecor = '';
+      brushEnabled = false;
+      render();
+    };
+  const rotate = root.querySelector<HTMLButtonElement>('#rotate-piece');
+  if (rotate)
+    rotate.onclick = () => {
+      if (from !== undefined) {
+        const current = state.decorations.find((p) => p.cell === from)!;
+        edit('island.rotate', {
+          cell: from,
+          rotation: ((current.rotation ?? 0) + 1) % 4,
+        });
+      } else {
+        placementRotation = (placementRotation + 1) % 4;
+        render();
+      }
+    };
+  const undo = root.querySelector<HTMLButtonElement>('#undo-layout');
+  if (undo)
+    undo.onclick = () => {
+      const entry = undoStack.at(-1);
+      if (!entry) return;
+      selected = selectedDecor = '';
+      from = undefined;
+      brushEnabled = false;
+      void run(async () => {
+        const next = await request('island.layout', {
+          expected: entry.after,
+          layout: entry.before,
+        });
+        message =
+          'Layout change undone. Your discoveries and crafted pieces are kept.';
+        return next;
+      }, 'undo');
+    };
   scene.mount(
     root,
     state,
@@ -419,19 +538,34 @@ function render() {
     },
     busy,
     showDetails,
+    brushEnabled && selectedDecor && scene.mode === 'build'
+      ? {
+          decoration: selectedDecor,
+          available:
+            decorationQuantity(state, selectedDecor) -
+            state.decorations.filter((p) => p.decoration === selectedDecor)
+              .length,
+          onStroke: (cells) => {
+            message = `Placing ${cells.length} tiles. Occupied objects and unchanged floors are skipped.`;
+            edit('island.paint', {
+              decoration: selectedDecor,
+              cells,
+              expected: layout(state),
+            });
+          },
+        }
+      : undefined,
   );
   const remove = root.querySelector<HTMLButtonElement>('#remove');
   if (remove)
     remove.onclick = () => {
       const cell = from;
       from = undefined;
-      void run(() =>
-        request(
-          state.decorations.some((p) => p.cell === cell)
-            ? 'island.decorate'
-            : 'island.place',
-          { cell },
-        ),
+      edit(
+        editLayer === 'floor' || state.decorations.some((p) => p.cell === cell)
+          ? 'island.decorate'
+          : 'island.place',
+        { cell, layer: editLayer },
       );
     };
   const cancel = root.querySelector<HTMLButtonElement>('#cancel');
@@ -473,7 +607,7 @@ const backupRequest = (previous = false) =>
     ? bridge.request<string>('island.backup', { previous })
     : game.exportBackup(previous);
 function saveSummary(s: State) {
-  return `${availableTickets(s).length} unused tickets · ${s.receipts.length} landmarks (${new Set(s.receipts.map((r) => r.landmark)).size} unique) · ${s.placements.length} placed · ${s.decorations.length} decorations placed · ${materials(s)} materials · ${islandLand(s).length} land tiles`;
+  return `${availableTickets(s).length} unused tickets · ${s.receipts.length} landmarks (${new Set(s.receipts.map((r) => r.landmark)).size} unique) · ${s.placements.length} placed · ${s.decorations.length} decorations placed · ${s.floors.length} floor tiles · ${materials(s)} materials · ${islandLand(s).length} land tiles`;
 }
 async function openBackups() {
   if (busy || backupDialog.open) return;
@@ -600,6 +734,7 @@ async function openBackups() {
       loaded = true;
       pendingTicket = undefined;
       pendingCraft = undefined;
+      undoStack.length = 0;
       selected = '';
       selectedDecor = '';
       from = undefined;

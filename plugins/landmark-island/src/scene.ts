@@ -1,6 +1,6 @@
 import { route } from './walk';
 import { islandLand, unlockedCell, type State } from './game';
-import { decorationById } from './decorations';
+import { decorationById, isFloor } from './decorations';
 import {
   at,
   tiles,
@@ -43,6 +43,11 @@ export class IslandScene {
     onMode: () => void,
     busy: boolean,
     onInspect: (id: string) => void,
+    brush?: {
+      decoration: string;
+      available: number;
+      onStroke: (cells: number[]) => void;
+    },
   ) {
     this.cleanup();
     const ocean = root.querySelector<HTMLElement>('.ocean');
@@ -57,7 +62,8 @@ export class IslandScene {
       ...[...solidProps].filter(
         (cell) =>
           !state.placements.some((p) => p.cell === cell) &&
-          !state.decorations.some((p) => p.cell === cell),
+          !state.decorations.some((p) => p.cell === cell) &&
+          !state.floors.some((p) => p.cell === cell),
       ),
       ...state.decorations
         .filter((p) => !decorationById(p.decoration)!.walkable)
@@ -250,6 +256,93 @@ export class IslandScene {
       },
       { signal },
     );
+    let paintPointer: number | undefined;
+    let paintLast: { x: number; y: number } | undefined;
+    const painted = new Set<number>();
+    const clearStroke = () => {
+      if (paintPointer !== undefined && ocean.hasPointerCapture(paintPointer))
+        ocean.releasePointerCapture(paintPointer);
+      paintPointer = undefined;
+      paintLast = undefined;
+      painted.clear();
+      ocean
+        .querySelectorAll('.brush-preview')
+        .forEach((e) => e.classList.remove('brush-preview'));
+    };
+    const paintAt = (clientX: number, clientY: number) => {
+      if (!brush) return;
+      const rect = ocean.getBoundingClientRect();
+      if (
+        clientX < rect.left ||
+        clientX > rect.right ||
+        clientY < rect.top ||
+        clientY > rect.bottom
+      )
+        return;
+      const matrix = new DOMMatrixReadOnly(getComputedStyle(camera).transform);
+      const x = (clientX - rect.left - ocean.clientLeft - matrix.e) / matrix.a;
+      const y = (clientY - rect.top - ocean.clientTop - matrix.f) / matrix.d;
+      const tile = islandLand(state)
+        .sort((a, b) => project(b.id).depth - project(a.id).depth)
+        .find((t) => {
+          const p = project(t.id);
+          return Math.abs(x - p.x) / 40 + Math.abs(y - p.y) / 20 <= 1;
+        });
+      if (!tile || painted.has(tile.id)) return;
+      const floor = isFloor(brush.decoration);
+      if (
+        floor &&
+        state.floors.some(
+          (p) => p.cell === tile.id && p.decoration === brush.decoration,
+        )
+      )
+        return;
+      if (
+        !floor &&
+        (state.placements.some((p) => p.cell === tile.id) ||
+          state.decorations.some((p) => p.cell === tile.id))
+      )
+        return;
+      if (painted.size >= brush.available) {
+        hint.textContent =
+          'All available copies are in this stroke. Craft more flowers to keep planting.';
+        return;
+      }
+      painted.add(tile.id);
+      ocean
+        .querySelector(`[data-world-cell="${tile.id}"] .cell`)
+        ?.classList.add('brush-preview');
+      hint.textContent = `${painted.size} tiles ready · Release to place · Escape to cancel`;
+    };
+    const paintTo = (e: PointerEvent) => {
+      const last = paintLast ?? { x: e.clientX, y: e.clientY };
+      const steps = Math.max(
+        1,
+        Math.ceil(Math.hypot(e.clientX - last.x, e.clientY - last.y) / 6),
+      );
+      for (let i = 1; i <= steps; i++)
+        paintAt(
+          last.x + ((e.clientX - last.x) * i) / steps,
+          last.y + ((e.clientY - last.y) * i) / steps,
+        );
+      paintLast = { x: e.clientX, y: e.clientY };
+    };
+    ocean.dataset.brush = String(Boolean(brush));
+    if (brush)
+      hint.textContent =
+        'Drag to paint · Occupied objects are skipped · Alt-drag to pan · Escape cancels a stroke';
+    ocean.addEventListener(
+      'keydown',
+      (e) => {
+        if (e.key === 'Escape' && paintPointer !== undefined) {
+          e.preventDefault();
+          clearStroke();
+          hint.textContent = 'Stroke cancelled. Nothing was placed.';
+        }
+      },
+      { signal },
+    );
+    window.addEventListener('blur', clearStroke, { signal });
     const pointers = new Map<number, { x: number; y: number }>();
     let dragged = false,
       startX = 0,
@@ -273,6 +366,17 @@ export class IslandScene {
           return;
         e.preventDefault();
         ocean.focus({ preventScroll: true });
+        if (brush && this.mode === 'build' && !e.altKey && !busy) {
+          if (paintPointer !== undefined) {
+            clearStroke();
+            return;
+          }
+          paintPointer = e.pointerId;
+          dragged = true;
+          ocean.setPointerCapture(e.pointerId);
+          paintTo(e);
+          return;
+        }
         pointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
         startX = lastX = e.clientX;
         startY = lastY = e.clientY;
@@ -284,6 +388,10 @@ export class IslandScene {
     ocean.addEventListener(
       'pointermove',
       (e) => {
+        if (paintPointer === e.pointerId) {
+          paintTo(e);
+          return;
+        }
         if (!pointers.has(e.pointerId)) return;
         pointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
         if (pointers.size === 2) {
@@ -310,6 +418,13 @@ export class IslandScene {
       { signal },
     );
     const release = (e: PointerEvent) => {
+      if (paintPointer === e.pointerId) {
+        if (e.type === 'pointerup') paintTo(e);
+        const cells = [...painted];
+        clearStroke();
+        if (e.type === 'pointerup' && cells.length) brush!.onStroke(cells);
+        return;
+      }
       pointers.delete(e.pointerId);
       lastDistance = 0;
       const remaining = [...pointers.values()][0];
@@ -359,6 +474,7 @@ export class IslandScene {
       (e) => {
         if (e.deltaY === 0) return;
         e.preventDefault();
+        if (paintPointer !== undefined) return;
         // Anchor the rendered world point under the pointer, even mid-transition.
         // Wheel input deliberately leaves keyboard focus where the user put it.
         const rect = ocean.getBoundingClientRect();
@@ -397,6 +513,7 @@ export class IslandScene {
       climate();
     }, 30000);
     const visibility = () => {
+      if (document.hidden) clearStroke();
       if (document.hidden && walking) {
         clearTimeout(stepTimer);
         finish();
@@ -406,6 +523,7 @@ export class IslandScene {
     const resize = new ResizeObserver(updateCamera);
     resize.observe(ocean);
     this.cleanup = () => {
+      clearStroke();
       controller.abort();
       clearTimeout(stepTimer);
       clearInterval(auto);

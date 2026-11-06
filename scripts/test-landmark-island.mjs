@@ -22,6 +22,7 @@ try {
   });
   const {
     Game,
+    layout,
     empty,
     landmarks,
     islandLand,
@@ -119,7 +120,7 @@ try {
       landmark: 'eiffel',
     })),
   });
-  assert.equal(oldSave.version, 3);
+  assert.equal(oldSave.version, 4);
   assert.equal(availableTickets(oldSave).length, 0);
   assert.equal(oldSave.placements.length, 36);
   let legacy = {
@@ -136,7 +137,7 @@ try {
   await legacyGame.acquire({ workspaceId: 'w0', kind: 'worktree' });
   assert.equal(legacy.version, 1); // reads / duplicate delivery do not rewrite saves
   await legacyGame.acquire({ workspaceId: 'new-worktree', kind: 'worktree' });
-  assert.equal(legacy.version, 3);
+  assert.equal(legacy.version, 4);
   assert.equal(availableTickets(legacy).length, 1);
   assert.deepEqual(legacy.receipts, value.receipts);
   assert.deepEqual(legacy.placements, value.placements);
@@ -391,6 +392,9 @@ try {
     'island.restore',
     'island.draw',
     'island.craft',
+    'island.layout',
+    'island.paint',
+    'island.rotate',
     'island.decorate',
     'island.place',
   ]);
@@ -558,6 +562,138 @@ try {
     }),
   );
   assert.equal(islandLand(garden).length, 59); // duplicates and decoration edits never grow land
+  // Floors share a cell with exactly one object; rotation and a whole brush stroke
+  // are reversible without rolling back discoveries or crafting inventory.
+  const beforeFloor = layout(garden);
+  await gardener.decorate({ cell: 4, decoration: 'stonepath' });
+  assert.ok(garden.placements.some((p) => p.cell === 4));
+  assert.ok(garden.floors.some((p) => p.cell === 4));
+  await gardener.decorate({ cell: 5, decoration: 'grass' });
+  await gardener.rotate({ cell: 5, rotation: 3 });
+  assert.equal(garden.decorations.find((p) => p.cell === 5).rotation, 3);
+  assert.deepEqual(decodeBackup(encodeBackup(garden)).state, garden);
+  await assert.rejects(gardener.rotate({ cell: 5, rotation: 4 }));
+  await assert.rejects(gardener.rotate({ cell: 4, rotation: 1 }));
+  const beforeStroke = layout(garden);
+  await gardener.paint({
+    decoration: 'stonepath',
+    cells: [0, 1, 4, 5],
+    expected: beforeStroke,
+  });
+  const afterStroke = layout(garden);
+  assert.equal(
+    garden.floors.filter((p) => [0, 1, 4, 5].includes(p.cell)).length,
+    4,
+  );
+  const beforeRewardCount = garden.receipts.length;
+  gardener = new Game(gardenStore, () => 0);
+  await gardener.acquire({ workspaceId: 'during-edit', kind: 'worktree' });
+  await gardener.redeem({ ticketId: 'during-edit' });
+  await gardener.craft({ id: 'after-stroke', decoration: 'eiffel-gift' });
+  const craftsKept = garden.crafts.length;
+  await gardener.replaceLayout({ expected: afterStroke, layout: beforeStroke });
+  assert.deepEqual(layout(garden), beforeStroke);
+  assert.equal(garden.receipts.length, beforeRewardCount + 1);
+  assert.equal(garden.crafts.length, craftsKept);
+  await gardener.replaceLayout({ expected: afterStroke, layout: beforeStroke }); // lost-response retry
+  await assert.rejects(
+    gardener.replaceLayout({ expected: beforeFloor, layout: afterStroke }),
+    /layout changed/,
+  );
+  for (const [method, input] of [
+    ['place', { cell: 0, landmark: 'eiffel' }],
+    ['decorate', { cell: 0, decoration: 'grass' }],
+    ['rotate', { cell: 5, rotation: 2 }],
+  ]) {
+    const stable = structuredClone(garden);
+    await assert.rejects(
+      gardener[method]({ ...input, expected: beforeFloor }),
+      /layout changed/,
+    );
+    assert.deepEqual(garden, stable);
+  }
+  const unchangedGarden = structuredClone(garden);
+  for (const input of [
+    { decoration: 'grass', cells: [0, lockedCell] },
+    { decoration: 'oak', cells: [0] },
+    { decoration: 'giza-gift', cells: [0] },
+    { decoration: 'chichen-gift', cells: [0] },
+    { decoration: 'grass', cells: [0, 0] },
+  ]) {
+    await assert.rejects(
+      gardener.paint({ ...input, expected: layout(garden) }),
+    );
+    assert.deepEqual(garden, unchangedGarden);
+  }
+  // A valid old v3 floor becomes a floor layer at the same address.
+  const oldV3 = {
+    ...fixture(['eiffel']),
+    version: 3,
+    decorations: [{ cell: 0, decoration: 'path' }],
+  };
+  delete oldV3.floors;
+  const migratedV3 = validate(oldV3);
+  assert.deepEqual(migratedV3.floors, [{ cell: 0, decoration: 'path' }]);
+  assert.deepEqual(migratedV3.decorations, []);
+  assert.equal(migratedV3.version, 4);
+  assert.throws(() =>
+    validate({ ...garden, floors: [{ cell: 0, decoration: 'oak' }] }),
+  );
+  assert.throws(() =>
+    validate({ ...garden, decorations: [{ cell: 1, decoration: 'grass' }] }),
+  );
+  assert.throws(() =>
+    validate({
+      ...garden,
+      decorations: [{ cell: 1, decoration: 'eiffel-gift', rotation: 1 }],
+    }),
+  );
+  garden = fixture(['stonehenge', 'stonehenge']);
+  gardener = new Game(gardenStore);
+  await gardener.craft({ id: 'flowers-copy', decoration: 'stonehenge-gift' });
+  const flowersBefore = layout(garden);
+  await assert.rejects(
+    gardener.paint({
+      decoration: 'stonehenge-gift',
+      cells: [0, 1, 2],
+      expected: flowersBefore,
+    }),
+    /ownership/,
+  );
+  assert.deepEqual(layout(garden), flowersBefore);
+  await gardener.paint({
+    decoration: 'stonehenge-gift',
+    cells: [0, 1],
+    expected: flowersBefore,
+  });
+  assert.equal(garden.decorations.length, 2);
+  await assert.rejects(
+    gardener.paint({
+      decoration: 'grass',
+      cells: [2],
+      expected: flowersBefore,
+    }),
+    /layout changed/,
+  );
+  await gardener.replaceLayout({
+    expected: layout(garden),
+    layout: flowersBefore,
+  });
+  assert.equal(decorationQuantity(garden, 'stonehenge-gift'), 2);
+  failCraft = true;
+  await assert.rejects(
+    gardener.paint({
+      decoration: 'grass',
+      cells: [0, 1],
+      expected: layout(garden),
+    }),
+    /disk full/,
+  );
+  failCraft = false;
+  assert.deepEqual(layout(garden), flowersBefore);
+  console.log(
+    'PASS: layered occupancy, floor migration, four-way furniture rotation, atomic strokes, quantity limits, layout-only undo, stale edits and response-loss retry',
+  );
   console.log(
     'PASS: connected progressive land, legacy settlement preservation, gifts, duplicate materials, locked cells/sets, craft retry/restart/concurrency, placement ownership/collisions and backup conservation',
   );
