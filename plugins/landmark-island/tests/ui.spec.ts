@@ -639,6 +639,7 @@ test('owned Wonder moves in the guide and on the island, with a static reduced-m
   await expect(page.locator('[data-landmark="giza"]')).toContainText(
     'Owned ×1',
   );
+  await openInventory(page, 'landmarks');
   const cardStart = await cardBody.evaluate(
     (el) => getComputedStyle(el).transform,
   );
@@ -757,6 +758,7 @@ test('tickets accumulate before drawing; map reveal commits once and survives re
   });
   await page.getByRole('button', { name: 'Place on island' }).click();
   await expect(page.locator('.ocean')).toHaveAttribute('data-mode', 'build');
+  await expect(page.locator('.ocean')).toBeFocused();
   await page
     .getByRole('button', { name: 'Cell 1: empty', exact: true })
     .click();
@@ -1114,19 +1116,11 @@ test('host theme tokens update reading and controls live while preserving game a
       rgb(tokens.foreground),
     );
     await expect(page.locator('html')).toHaveCSS('font-size', '16px');
-    await expect(page.locator('.ticket-desk')).toHaveCSS(
-      'background-color',
-      rgb(tokens.card),
-    );
-    await expect(page.locator('.ticket-desk')).toHaveCSS(
-      'color',
-      rgb(tokens['card-foreground']),
-    );
-    await expect(page.locator('#draw-ticket')).toHaveCSS(
+    await expect(page.locator('#ticket-count')).toHaveCSS(
       'background-color',
       rgb(tokens.primary),
     );
-    await expect(page.locator('#draw-ticket')).toHaveCSS(
+    await expect(page.locator('#ticket-count')).toHaveCSS(
       'color',
       rgb(tokens['primary-foreground']),
     );
@@ -2233,3 +2227,63 @@ for (const theme of ['light', 'dark'])
     await page.locator('#close-inventory').click();
     await expect(page.locator('.canvas-inventory')).toBeHidden();
   });
+
+test('treasure opens and reveals inside the canvas, keeps scrolling local and restores island focus', async ({
+  page,
+}) => {
+  await page.addInitScript(() => {
+    Math.random = () => 0;
+  });
+  await page.goto('/');
+  await expect(page.locator('.ticket-desk')).toHaveCount(0);
+  await expect(page.locator('.ocean #draw-ticket')).toBeDisabled();
+  await page.locator('#expedition').click();
+  await expect(page.locator('.ocean #ticket-count')).toHaveText('1');
+  await page.locator('#draw-ticket').click();
+  const theatre = page.locator('.ocean > .discovery-theatre');
+  await expect(theatre).toBeVisible();
+  expect(await theatre.evaluate((e) => e.matches(':modal'))).toBe(true);
+  const contained = async () => {
+    const canvas = (await page.locator('.ocean').boundingBox())!;
+    const box = (await theatre.boundingBox())!;
+    expect(box.x).toBeGreaterThanOrEqual(Math.max(0, canvas.x) - 1);
+    expect(box.y).toBeGreaterThanOrEqual(Math.max(0, canvas.y) - 1);
+    expect(box.x + box.width).toBeLessThanOrEqual(canvas.x + canvas.width + 1);
+    expect(box.y + box.height).toBeLessThanOrEqual(
+      canvas.y + canvas.height + 1,
+    );
+    expect(box.y + box.height).toBeLessThanOrEqual(
+      page.viewportSize()!.height + 1,
+    );
+  };
+  await contained();
+  await page.getByRole('button', { name: 'Skip animation' }).click();
+  await expect(theatre.getByRole('heading')).toHaveText('Eiffel Tower');
+  await page.screenshot({
+    path: 'test-results/landmark-island/canvas-treasure-desktop.png',
+  });
+  await page.setViewportSize({ width: 360, height: 800 });
+  await expect(theatre).toHaveCSS('padding-left', '12px');
+  await contained();
+  await page.screenshot({
+    path: 'test-results/landmark-island/canvas-treasure-mobile.png',
+  });
+  const camera = await page.locator('.camera').getAttribute('style');
+  const y = await page.evaluate(() => window.scrollY);
+  await theatre.evaluate((e) => {
+    e.scrollTop = e.scrollHeight;
+  });
+  const box = (await theatre.boundingBox())!;
+  await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2);
+  await page.mouse.wheel(0, 350);
+  await expect(page.locator('.camera')).toHaveAttribute('style', camera!);
+  expect(await page.evaluate(() => window.scrollY)).toBe(y);
+  await page.getByRole('button', { name: 'Keep exploring' }).click();
+  await expect(theatre).toHaveCount(0);
+  await expect(page.locator('[data-inventory=landmarks]')).toBeFocused();
+  await expect(page.locator('#ticket-count')).toHaveText('0');
+  const saved = await page.evaluate(() =>
+    JSON.parse(localStorage.getItem('landmark-island-demo-v1')!),
+  );
+  expect(saved.receipts).toHaveLength(1);
+});

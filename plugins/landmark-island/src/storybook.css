@@ -1582,3 +1582,44 @@ dialog:modal {
 .canvas-inventory .workshop > select {
   margin-top: 3px;
 }
+
+.treasure-chest {
+  position: relative;
+}
+.treasure-chest #ticket-count {
+  position: absolute;
+  top: 1px;
+  right: 0;
+  min-width: 23px;
+  height: 23px;
+  display: grid;
+  place-items: center;
+  padding: 0 4px;
+  border-radius: 50%;
+  font-size: 11px;
+  background: var(--orca-primary, #edd39a);
+  color: var(--orca-primary-foreground, #3e4d35);
+  border: 1px solid var(--orca-border, #7c724f);
+}
+.treasure-chest:disabled {
+  opacity: 0.65;
+}
+.treasure-chest:not(:disabled) svg {
+  filter: drop-shadow(0 0 7px #ffdb8b99);
+}
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+@media (max-width: 600px) {
+  .ocean .minimap {
+    top: 150px;
+  }
+  .ocean[data-inventory-open='true'] .minimap {
+    visibility: hidden;
+  }
+}

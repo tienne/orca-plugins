@@ -8,7 +8,11 @@ export function revealDiscovery(
   count: number,
   badge: string,
   onPlace: () => void,
-  options: { preview?: boolean; rewardNote?: string } = {},
+  options: {
+    preview?: boolean;
+    rewardNote?: string;
+    container?: HTMLElement;
+  } = {},
 ) {
   const opener = document.activeElement as HTMLElement | null;
   const dialog = document.createElement('dialog');
@@ -62,8 +66,34 @@ export function revealDiscovery(
     dialog.querySelector('.discovery-result > small')!.textContent =
       'Your collection is unchanged';
   }
-  document.body.append(dialog);
+  const container = options.container;
+  let observer: ResizeObserver | undefined;
+  const fitCanvas = () => {
+    if (!container) return;
+    const bounds = container.getBoundingClientRect();
+    // The native dialog stays in the top layer for focus/inert handling, while
+    // its visible surface is bounded by the island and the current viewport.
+    const left = Math.max(0, bounds.left);
+    const top = Math.max(0, bounds.top);
+    const right = Math.min(document.documentElement.clientWidth, bounds.right);
+    const bottom = Math.min(window.innerHeight, bounds.bottom);
+    dialog.style.left = `${left}px`;
+    dialog.style.top = `${top}px`;
+    dialog.style.width = `${Math.max(1, right - left)}px`;
+    dialog.style.height = `${Math.max(1, bottom - top)}px`;
+  };
+  if (container) {
+    dialog.classList.add('canvas-discovery');
+    container.scrollIntoView({ block: 'center', behavior: 'instant' });
+    container.append(dialog);
+    observer = new ResizeObserver(fitCanvas);
+    observer.observe(container);
+    window.addEventListener('resize', fitCanvas);
+    window.addEventListener('scroll', fitCanvas, true);
+    fitCanvas();
+  } else document.body.append(dialog);
   let revealed = false;
+  let placing = false;
   const timers: ReturnType<typeof setTimeout>[] = [];
   const result = dialog.querySelector<HTMLElement>('.discovery-result')!;
   const actions = dialog.querySelector<HTMLElement>('.reveal-actions')!;
@@ -93,6 +123,7 @@ export function revealDiscovery(
   dialog.querySelector<HTMLButtonElement>('.reveal-keep')!.onclick = () =>
     dialog.close();
   dialog.querySelector<HTMLButtonElement>('.reveal-place')!.onclick = () => {
+    placing = true;
     dialog.close();
     onPlace();
   };
@@ -111,20 +142,31 @@ export function revealDiscovery(
     'close',
     () => {
       timers.forEach(clearTimeout);
+      observer?.disconnect();
+      window.removeEventListener('resize', fitCanvas);
+      window.removeEventListener('scroll', fitCanvas, true);
       preference.removeEventListener('change', reduce);
       dialog.remove();
+      if (placing) return;
       const target =
         opener?.isConnected &&
         opener.matches('button:not(:disabled), a[href], [tabindex]')
           ? opener
-          : document.querySelector<HTMLButtonElement>(
-              '#draw-ticket:not(:disabled), #refresh, #preview-play',
-            );
+          : (container?.querySelector<HTMLButtonElement>(
+              '#draw-ticket:not(:disabled)',
+            ) ??
+            container?.querySelector<HTMLButtonElement>(
+              '[data-inventory=landmarks]',
+            ) ??
+            document.querySelector<HTMLButtonElement>(
+              '#refresh, #preview-play',
+            ));
       target?.focus({ preventScroll: true });
     },
     { once: true },
   );
   dialog.showModal();
+  fitCanvas();
   const phase = (at: number, name: string, description?: string) => {
     timers.push(
       setTimeout(() => {
