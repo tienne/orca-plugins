@@ -1792,3 +1792,64 @@ test('explorer respects the locked coast and decoration collisions', async ({
   await expect(page.locator('#ticket-count')).toHaveText('0');
   await expect(page.locator('.material-balance')).toHaveText('0 materials');
 });
+
+test('all modals scroll internally without moving the page and release the lock on close', async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1000, height: 400 });
+  await page.goto('/');
+  for (const kind of ['details', 'backup', 'discovery']) {
+    if (kind === 'details') await page.locator('[data-info=eiffel]').click();
+    else if (kind === 'backup') await page.locator('#backups').click();
+    else {
+      await page.locator('#expedition').click();
+      await page.locator('#draw-ticket').click();
+      await page.getByRole('button', { name: 'Skip animation' }).click();
+    }
+    const modal = page.locator('dialog:modal');
+    await expect(modal).toHaveCount(1);
+    await expect(page.locator('html')).toHaveCSS('overflow-y', 'hidden');
+    const scrollY = await page.evaluate(() => window.scrollY);
+    await modal.evaluate((e) => {
+      e.scrollTop = 0;
+    });
+    const bounds = (await modal.boundingBox())!;
+    await page.mouse.move(
+      bounds.x + bounds.width / 2,
+      bounds.y + bounds.height / 2,
+    );
+    await page.mouse.wheel(0, 300);
+    await expect
+      .poll(() => modal.evaluate((e) => e.scrollTop))
+      .toBeGreaterThan(0);
+    expect(await page.evaluate(() => window.scrollY)).toBe(scrollY);
+    // Wheel at either inner edge and on the backdrop must not chain to the page.
+    await modal.evaluate((e) => {
+      e.scrollTop = e.scrollHeight;
+    });
+    await page.mouse.wheel(0, 800);
+    await page.mouse.move(4, 200);
+    await page.mouse.wheel(0, 800);
+    await page.waitForTimeout(150); // allow asynchronous wheel scrolling to settle
+    expect(await page.evaluate(() => window.scrollY)).toBe(scrollY);
+    await modal.evaluate((e) => {
+      e.scrollTop = 0;
+    });
+    await page.mouse.move(
+      bounds.x + bounds.width / 2,
+      bounds.y + bounds.height / 2,
+    );
+    await page.mouse.wheel(0, -800);
+    await page.waitForTimeout(150);
+    expect(await page.evaluate(() => window.scrollY)).toBe(scrollY);
+    await page.keyboard.press('Escape');
+    await expect(page.locator('dialog:modal')).toHaveCount(0);
+    expect(await page.evaluate(() => window.scrollY)).toBe(scrollY);
+    await page.evaluate(() => window.scrollTo(0, 250));
+    await page.mouse.move(4, 200);
+    await page.mouse.wheel(0, 300);
+    await expect
+      .poll(() => page.evaluate(() => window.scrollY))
+      .toBeGreaterThan(250);
+  }
+});

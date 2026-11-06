@@ -6,6 +6,8 @@ An unpublished Orca plugin prototype. New worktree creation earns an exploration
 
 ## Play
 
+While a landmark detail, backup or discovery dialog is open, only the dialog scrolls. Wheel scrolling at its edges or over the backdrop does not move the underlying page. Closing the dialog restores normal page scrolling at the previous position.
+
 Open the Landmark Island panel. In **Explore island**, click grass to walk around buildings, or focus the island and use Arrow keys / WASD. On-screen direction buttons also work. The camera follows the explorer. Drag to pan freely; hover over the map and scroll to zoom at the pointer (12–180%), without clicking, focusing, or holding a modifier key. Scrolling outside the map still scrolls the page. Wheel zoom switches to the free camera without taking keyboard focus; **Follow explorer** resumes tracking. The + / − buttons and two-finger pinch also work. **Whole island** on the minimap fits the island into view; **Follow explorer** recenters on the character. Reset camera restores 100% zoom and following.
 
 **Arrange landmarks** switches to editing. Selecting a collection card also enters this mode. Select an owned landmark and an empty cell to place it. Select a placed landmark, then an empty cell to move it, or **Return to collection** to remove it. Copies use owned quantities. **World Map** shows real geographic locations and unique country totals, regardless of island placements. Refresh reads the save without awarding anything.

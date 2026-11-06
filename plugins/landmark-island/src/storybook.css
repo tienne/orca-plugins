@@ -1270,3 +1270,16 @@ a:focus-visible,
     width: 100%;
   }
 }
+
+/* Keep the page at its current position while any native modal is open. */
+html {
+  scrollbar-gutter: stable;
+}
+html:has(dialog:modal),
+html:has(dialog:modal) body {
+  overflow: hidden;
+  overscroll-behavior: none;
+}
+dialog:modal {
+  overscroll-behavior: contain;
+}
