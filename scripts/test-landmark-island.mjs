@@ -67,15 +67,15 @@ try {
   const { decorations } = await import(
     pathToFileURL(join(dir, 'decorations.mjs'))
   );
-  assert.equal(landmarks.length, 24);
-  assert.equal(new Set(landmarks.map((l) => l.id)).size, 24);
-  assert.equal(new Set(landmarks.map((l) => l.code)).size, 24);
-  assert.equal(decorations.length, 52);
+  assert.equal(landmarks.length, 36);
+  assert.equal(new Set(landmarks.map((l) => l.id)).size, 36);
+  assert.equal(new Set(landmarks.map((l) => l.code)).size, 36);
+  assert.equal(decorations.length, 76);
   for (const [tier, count, roll] of [
-    ['common', 12, 0.35],
-    ['rare', 6, 0.8],
-    ['epic', 4, 0.95],
-    ['legendary', 2, 0.995],
+    ['common', 18, 0.35],
+    ['rare', 9, 0.8],
+    ['epic', 6, 0.95],
+    ['legendary', 3, 0.995],
   ]) {
     const pool = landmarks.filter((l) => l.tier === tier);
     assert.equal(pool.length, count);
@@ -98,10 +98,10 @@ try {
     assert.equal(set.filter((d) => d.gift).length, 1);
     for (const d of set) assert.notEqual(translate(d.name, 'ko-KR'), d.name);
   }
-  assert.equal(translate('/ 24 discovered', 'ko-KR'), '/ 24종 발견');
+  assert.equal(translate('/ 36 discovered', 'ko-KR'), '/ 36종 발견');
   assert.equal(
-    translate('24-landmark prototype', 'ko-KR'),
-    '랜드마크 24종 프로토타입',
+    translate('36-landmark prototype', 'ko-KR'),
+    '랜드마크 36종 프로토타입',
   );
 
   assert.equal(
@@ -587,7 +587,7 @@ try {
   for (const landmark of landmarks)
     assert.equal(decorationQuantity(fullCatalog, `${landmark.id}-gift`), 1);
   console.log(
-    'PASS: all 24 catalog draws, 52 decorations, localized descriptions, full-catalog backup and unchanged land cap',
+    'PASS: all 36 catalog draws, 76 decorations, localized descriptions, full-catalog backup and unchanged land cap',
   );
 
   let expandedSave = fixture([

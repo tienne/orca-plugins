@@ -504,10 +504,10 @@ test('rarity filters, discoveries and progress distinguish unique landmarks from
   );
   const camera = await page.locator('.camera').getAttribute('style');
   for (const [tier, visible, collected, chance, rank, name] of [
-    ['common', 12, 0, 70, 1, 'Discovery'],
-    ['rare', 6, 0, 23, 2, 'Treasure'],
-    ['epic', 4, 0, 6, 3, 'Marvel'],
-    ['legendary', 2, 1, 1, 4, 'Wonder'],
+    ['common', 18, 0, 70, 1, 'Discovery'],
+    ['rare', 9, 0, 23, 2, 'Treasure'],
+    ['epic', 6, 0, 6, 3, 'Marvel'],
+    ['legendary', 3, 1, 1, 4, 'Wonder'],
   ] as const) {
     const filter = page.locator(`[data-tier-filter="${tier}"]`);
     await openInventory(page, 'landmarks');
@@ -578,8 +578,8 @@ test('rarity filters, discoveries and progress distinguish unique landmarks from
   );
   await openInventory(page, 'landmarks');
   await page.locator('[data-tier-filter="all"]').click();
-  await expect(page.locator('.collection .card:visible')).toHaveCount(24);
-  await expect(page.locator('[data-tier-filter="all"]')).toContainText('2/24');
+  await expect(page.locator('.collection .card:visible')).toHaveCount(36);
+  await expect(page.locator('[data-tier-filter="all"]')).toContainText('2/36');
   await openInventory(page, 'landmarks');
   await page.locator('.canvas-inventory').screenshot({
     path: 'test-results/landmark-island/rarity-collection-demo.png',
@@ -1547,7 +1547,7 @@ test('material artwork keeps local paint references isolated across collection, 
     save,
   );
   await page.reload();
-  await expect(page.locator('.collection .landmark-art')).toHaveCount(24);
+  await expect(page.locator('.collection .landmark-art')).toHaveCount(36);
   await expect(page.locator('.building .landmark-art')).toHaveCount(2);
   await page.setViewportSize({ width: 1200, height: 1000 });
   await openInventory(page, 'landmarks');
@@ -1562,6 +1562,10 @@ test('material artwork keeps local paint references isolated across collection, 
     'merlion',
     'sagrada',
     'greatwall',
+    'cn',
+    'atomium',
+    'basil',
+    'kilimanjaro',
   ]) {
     await openInventory(page, 'landmarks');
     await page.locator(`[data-info=${id}]`).click();
@@ -1605,7 +1609,7 @@ test('material artwork keeps local paint references isolated across collection, 
       })
       .join('');
     document.body.innerHTML = `<main id="art-review"><h1>DEMO · New destinations</h1><div>${cards}</div></main>`;
-  }, landmarks.slice(12));
+  }, landmarks.slice(24));
   await page.addStyleTag({
     content: `
     body { margin: 0; background: #ede9d3; color: #344b3d; }
@@ -1619,7 +1623,7 @@ test('material artwork keeps local paint references isolated across collection, 
   `,
   });
   await page.screenshot({
-    path: 'test-results/landmark-island/new-destinations-demo.png',
+    path: 'test-results/landmark-island/new-destinations-36-demo.png',
     fullPage: true,
   });
 });
@@ -1632,7 +1636,7 @@ test('new discoveries grow land, gifts unlock sets, duplicates craft chosen deco
     Math.random = () => {
       const tierRoll =
         (window as unknown as { fixtureRoll?: number }).fixtureRoll ?? 0;
-      return roll++ % 2 === 0 ? tierRoll : tierRoll === 0.71 ? 2 / 6 : 0;
+      return roll++ % 2 === 0 ? tierRoll : tierRoll === 0.71 ? 2 / 9 : 0;
     };
   });
   await page.goto('/');
@@ -2410,132 +2414,166 @@ for (const reducedMotion of [false, true])
     ).toBe(save);
   });
 
-test('expanded catalog draws new landmarks, grants their sets and preserves an old island', async ({
-  page,
-}) => {
-  await page.emulateMedia({ reducedMotion: 'reduce' });
-  await page.addInitScript(() => {
-    const fixture = window as unknown as {
-      catalogRolls: number[];
-      catalogRollIndex: number;
-    };
-    fixture.catalogRolls = [0, 0];
-    fixture.catalogRollIndex = 0;
-    Math.random = () => fixture.catalogRolls[fixture.catalogRollIndex++ % 2];
-    localStorage.setItem(
-      'landmark-island-demo-v1',
-      JSON.stringify({
-        version: 1,
-        receipts: [
-          { workspaceId: 'legacy-owner', landmark: 'eiffel', at: '2026-11-05' },
+for (const wave of [
+  {
+    start: 12,
+    wonder: 'greatwall',
+    firstName: '경복궁',
+    firstFact: '1395년',
+    wonderName: '만리장성',
+    wonderFact: '명나라',
+  },
+  {
+    start: 24,
+    wonder: 'kilimanjaro',
+    firstName: 'CN 타워',
+    firstFact: '1976년',
+    wonderName: '킬리만자로',
+    wonderFact: '5,895미터',
+  },
+])
+  test(`expanded catalog wave ${wave.start / 12} draws landmarks, grants sets and preserves an old island`, async ({
+    page,
+  }) => {
+    await page.emulateMedia({ reducedMotion: 'reduce' });
+    await page.addInitScript(() => {
+      const fixture = window as unknown as {
+        catalogRolls: number[];
+        catalogRollIndex: number;
+      };
+      fixture.catalogRolls = [0, 0];
+      fixture.catalogRollIndex = 0;
+      Math.random = () => fixture.catalogRolls[fixture.catalogRollIndex++ % 2];
+      localStorage.setItem(
+        'landmark-island-demo-v1',
+        JSON.stringify({
+          version: 1,
+          receipts: [
+            {
+              workspaceId: 'legacy-owner',
+              landmark: 'eiffel',
+              at: '2026-11-05',
+            },
+          ],
+          placements: [{ landmark: 'eiffel', cell: 0 }],
+        }),
+      );
+    });
+    await page.goto('/');
+    const entries = landmarks.slice(wave.start, wave.start + 12);
+    await expect(page.locator('#discovery-progress')).toHaveAttribute(
+      'max',
+      '36',
+    );
+    const tierRolls = { common: 0.35, rare: 0.8, epic: 0.95, legendary: 0.995 };
+    for (const entry of entries) {
+      const pool = landmarks.filter((l) => l.tier === entry.tier);
+      await page.evaluate(
+        ([tier, item]) => {
+          const fixture = window as unknown as {
+            catalogRolls: number[];
+            catalogRollIndex: number;
+          };
+          fixture.catalogRolls = [tier, item];
+          fixture.catalogRollIndex = 0;
+        },
+        [
+          tierRolls[entry.tier as keyof typeof tierRolls],
+          (pool.findIndex((l) => l.id === entry.id) + 0.5) / pool.length,
         ],
-        placements: [{ landmark: 'eiffel', cell: 0 }],
-      }),
+      );
+      await page.getByRole('button', { name: 'Demo worktree' }).click();
+      await page.locator('#draw-ticket').click();
+      await expect(page.locator('.discovery-result h2')).toHaveText(entry.name);
+      await expect(page.locator('.discovery-result')).toContainText(
+        entry.country,
+      );
+      await expect(
+        page.locator('.discovery-monument [data-material-art]'),
+      ).toHaveAttribute('data-material-art', entry.id);
+      await expect(page.locator('.reveal-bonus')).toContainText(
+        'Theme unlocked',
+      );
+      await page.getByRole('button', { name: 'Keep exploring' }).click();
+      await expect(
+        page.locator(`[data-decor-card="${entry.id}-gift"]`),
+      ).toContainText('Owned ×1');
+    }
+    await expect(page.locator('.cell')).toHaveCount(318);
+    await expect(page.locator('.land-progress')).toContainText(
+      'Your whole island is open.',
     );
-  });
-  await page.goto('/');
-  const entries = landmarks.slice(12);
-  await expect(page.locator('#discovery-progress')).toHaveAttribute(
-    'max',
-    '24',
-  );
-  const tierRolls = { common: 0.35, rare: 0.8, epic: 0.95, legendary: 0.995 };
-  for (const entry of entries) {
-    const pool = landmarks.filter((l) => l.tier === entry.tier);
-    await page.evaluate(
-      ([tier, item]) => {
-        const fixture = window as unknown as {
-          catalogRolls: number[];
-          catalogRollIndex: number;
-        };
-        fixture.catalogRolls = [tier, item];
-        fixture.catalogRollIndex = 0;
-      },
-      [
-        tierRolls[entry.tier as keyof typeof tierRolls],
-        (pool.findIndex((l) => l.id === entry.id) + 0.5) / pool.length,
-      ],
+    await openInventory(page, 'landmarks');
+    await page.locator(`[data-info=${wave.wonder}]`).click();
+    await expect(page.locator('.landmark-detail .wonder-effects')).toHaveCSS(
+      'opacity',
+      '1',
     );
-    await page.getByRole('button', { name: 'Demo worktree' }).click();
-    await page.locator('#draw-ticket').click();
-    await expect(page.locator('.discovery-result h2')).toHaveText(entry.name);
-    await expect(page.locator('.discovery-result')).toContainText(
-      entry.country,
+    await expect(page.locator('.landmark-detail .wonder-body')).toHaveCSS(
+      'animation-name',
+      'none',
     );
-    await expect(
-      page.locator('.discovery-monument [data-material-art]'),
-    ).toHaveAttribute('data-material-art', entry.id);
-    await expect(page.locator('.reveal-bonus')).toContainText('Theme unlocked');
-    await page.getByRole('button', { name: 'Keep exploring' }).click();
-    await expect(
-      page.locator(`[data-decor-card="${entry.id}-gift"]`),
-    ).toContainText('Owned ×1');
-  }
-  await expect(page.locator('.cell')).toHaveCount(318);
-  await expect(page.locator('.land-progress')).toContainText(
-    'Your whole island is open.',
-  );
-  await openInventory(page, 'landmarks');
-  await page.locator('[data-info=greatwall]').click();
-  await expect(page.locator('.landmark-detail .wonder-effects')).toHaveCSS(
-    'opacity',
-    '1',
-  );
-  await expect(page.locator('.landmark-detail .wonder-body')).toHaveCSS(
-    'animation-name',
-    'none',
-  );
-  await page.emulateMedia({ reducedMotion: 'no-preference' });
-  const movingWall = page.locator('.landmark-detail .wonder-body');
-  const wallPose = await movingWall.evaluate(
-    (el) => getComputedStyle(el).transform,
-  );
-  await expect
-    .poll(() => movingWall.evaluate((el) => getComputedStyle(el).transform))
-    .not.toBe(wallPose);
-  await page.emulateMedia({ reducedMotion: 'reduce' });
-  await expect(movingWall).toHaveCSS('animation-name', 'none');
-  await page.keyboard.press('Escape');
-  await page.locator('[data-landmark=greatwall]').click();
-  await page
-    .getByRole('button', { name: 'Cell 2: empty', exact: true })
-    .click();
-  const saved = JSON.parse(
-    (await page.evaluate(() =>
-      localStorage.getItem('landmark-island-demo-v1'),
-    ))!,
-  );
-  expect(saved.receipts).toHaveLength(13);
-  expect(saved.receipts[0]).toEqual({
-    workspaceId: 'legacy-owner',
-    landmark: 'eiffel',
-    at: '2026-11-05',
-  });
-  expect(saved.placements).toContainEqual({ landmark: 'eiffel', cell: 0 });
-  expect(saved.placements).toContainEqual({ landmark: 'greatwall', cell: 1 });
-  await page.getByRole('button', { name: 'World Map', exact: true }).click();
-  await expect(page.locator('.world circle')).toHaveCount(13);
-  await expect(page.locator('.countries')).toContainText('South Korea');
-  await expect(page.locator('.countries')).toContainText('Zimbabwe');
-  // Change preview language in place; keep the user's save untouched.
-  await page.evaluate(() => {
-    (window as unknown as { orca: unknown }).orca = { locale: 'ko-KR' };
-  });
-  await expect(page.locator('html')).toHaveAttribute('lang', 'ko-KR');
-  await page.getByRole('button', { name: '내 섬', exact: true }).click();
-  await openInventory(page, 'landmarks');
-  await page.locator('[data-info=gyeongbokgung]').click();
-  await expect(page.locator('.landmark-detail h2')).toHaveText('경복궁');
-  await expect(page.locator('#detail-description')).toContainText('1395년');
-  await page.keyboard.press('Escape');
-  await page.locator('[data-info=greatwall]').click();
-  await expect(page.locator('.landmark-detail h2')).toHaveText('만리장성');
-  await expect(page.locator('#detail-description')).toContainText('명나라');
-  expect(
-    JSON.parse(
+    await page.emulateMedia({ reducedMotion: 'no-preference' });
+    const movingWonder = page.locator('.landmark-detail .wonder-body');
+    const wonderPose = await movingWonder.evaluate(
+      (el) => getComputedStyle(el).transform,
+    );
+    await expect
+      .poll(() => movingWonder.evaluate((el) => getComputedStyle(el).transform))
+      .not.toBe(wonderPose);
+    await page.emulateMedia({ reducedMotion: 'reduce' });
+    await expect(movingWonder).toHaveCSS('animation-name', 'none');
+    await page.keyboard.press('Escape');
+    await page.locator(`[data-landmark=${wave.wonder}]`).click();
+    await page
+      .getByRole('button', { name: 'Cell 2: empty', exact: true })
+      .click();
+    const saved = JSON.parse(
       (await page.evaluate(() =>
         localStorage.getItem('landmark-island-demo-v1'),
       ))!,
-    ),
-  ).toEqual(saved);
-});
+    );
+    expect(saved.receipts).toHaveLength(13);
+    expect(saved.receipts[0]).toEqual({
+      workspaceId: 'legacy-owner',
+      landmark: 'eiffel',
+      at: '2026-11-05',
+    });
+    expect(saved.placements).toContainEqual({ landmark: 'eiffel', cell: 0 });
+    expect(saved.placements).toContainEqual({ landmark: wave.wonder, cell: 1 });
+    await page.getByRole('button', { name: 'World Map', exact: true }).click();
+    await expect(page.locator('.world circle')).toHaveCount(13);
+    await expect(page.locator('.countries')).toContainText(entries[0].country);
+    await expect(page.locator('.countries')).toContainText(
+      entries.at(-1)!.country,
+    );
+    // Change preview language in place; keep the user's save untouched.
+    await page.evaluate(() => {
+      (window as unknown as { orca: unknown }).orca = { locale: 'ko-KR' };
+    });
+    await expect(page.locator('html')).toHaveAttribute('lang', 'ko-KR');
+    await page.getByRole('button', { name: '내 섬', exact: true }).click();
+    await openInventory(page, 'landmarks');
+    await page.locator(`[data-info=${entries[0].id}]`).click();
+    await expect(page.locator('.landmark-detail h2')).toHaveText(
+      wave.firstName,
+    );
+    await expect(page.locator('#detail-description')).toContainText(
+      wave.firstFact,
+    );
+    await page.keyboard.press('Escape');
+    await page.locator(`[data-info=${wave.wonder}]`).click();
+    await expect(page.locator('.landmark-detail h2')).toHaveText(
+      wave.wonderName,
+    );
+    await expect(page.locator('#detail-description')).toContainText(
+      wave.wonderFact,
+    );
+    expect(
+      JSON.parse(
+        (await page.evaluate(() =>
+          localStorage.getItem('landmark-island-demo-v1'),
+        ))!,
+      ),
+    ).toEqual(saved);
+  });
