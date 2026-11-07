@@ -504,8 +504,8 @@ test('rarity filters, discoveries and progress distinguish unique landmarks from
   );
   const camera = await page.locator('.camera').getAttribute('style');
   for (const [tier, visible, collected, chance, rank, name] of [
-    ['common', 24, 0, 70, 1, 'Discovery'],
-    ['rare', 14, 0, 23, 2, 'Treasure'],
+    ['common', 25, 0, 70, 1, 'Discovery'],
+    ['rare', 16, 0, 23, 2, 'Treasure'],
     ['epic', 7, 0, 6, 3, 'Marvel'],
     ['legendary', 3, 1, 1, 4, 'Wonder'],
   ] as const) {
@@ -578,8 +578,8 @@ test('rarity filters, discoveries and progress distinguish unique landmarks from
   );
   await openInventory(page, 'landmarks');
   await page.locator('[data-tier-filter="all"]').click();
-  await expect(page.locator('.collection .card:visible')).toHaveCount(48);
-  await expect(page.locator('[data-tier-filter="all"]')).toContainText('2/48');
+  await expect(page.locator('.collection .card:visible')).toHaveCount(51);
+  await expect(page.locator('[data-tier-filter="all"]')).toContainText('2/51');
   await openInventory(page, 'landmarks');
   await page.locator('.canvas-inventory').screenshot({
     path: 'test-results/landmark-island/rarity-collection-demo.png',
@@ -1560,7 +1560,7 @@ test('material artwork keeps local paint references isolated across collection, 
     save,
   );
   await page.reload();
-  await expect(page.locator('.collection .landmark-art')).toHaveCount(48);
+  await expect(page.locator('.collection .landmark-art')).toHaveCount(51);
   await expect(page.locator('.building .landmark-art')).toHaveCount(2);
   await expect(page.locator('.collection .wonder-art')).toHaveCount(3);
   for (const entry of landmarks) {
@@ -1601,8 +1601,8 @@ test('material artwork keeps local paint references isolated across collection, 
       );
       const missing: string[] = [];
       document.querySelectorAll('.landmark-art').forEach((svg) => {
-        svg.querySelectorAll('[fill],[stroke]').forEach((node) => {
-          for (const attribute of ['fill', 'stroke']) {
+        svg.querySelectorAll('[fill],[stroke],[clip-path]').forEach((node) => {
+          for (const attribute of ['fill', 'stroke', 'clip-path']) {
             const ref = node
               .getAttribute(attribute)
               ?.match(/^url\(#(.+)\)$/)?.[1];
@@ -1625,6 +1625,7 @@ test('material artwork keeps local paint references isolated across collection, 
   ).toEqual(save);
   expect(svgErrors).toEqual([]);
   // An isolated contact sheet for reviewing the bundled artwork, not a product screen.
+  await page.setViewportSize({ width: 1200, height: 420 });
   await page.evaluate((entries) => {
     const cards = entries
       .map(({ id, name, country }) => {
@@ -1634,23 +1635,23 @@ test('material artwork keeps local paint references isolated across collection, 
         return `<article>${svg}<strong>${name}</strong><small>${country}</small></article>`;
       })
       .join('');
-    document.body.innerHTML = `<main id="art-review"><h1>DEMO · New destinations</h1><div>${cards}</div></main>`;
-  }, landmarks.slice(36));
+    document.body.innerHTML = `<main id="art-review"><h1>DEMO · Modern landmarks</h1><div>${cards}</div></main>`;
+  }, landmarks.slice(48));
   await page.addStyleTag({
     content: `
     body { margin: 0; background: #ede9d3; color: #344b3d; }
     #art-review { padding: 24px; font-family: sans-serif; }
     #art-review h1 { font-size: 22px; margin: 0 0 18px; }
-    #art-review > div { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+    #art-review > div { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
     #art-review article { display: flex; flex-direction: column; align-items: center; padding: 12px; background: #f7f3df; border: 1px solid #c6c9a7; border-radius: 12px; }
     #art-review svg { width: 180px; height: 180px; }
     #art-review strong { font-size: 14px; margin-top: 6px; }
     #art-review small { font-size: 12px; color: #627159; }
   `,
   });
-  await page.screenshot({
-    path: 'test-results/landmark-island/new-destinations-48-demo.png',
-    fullPage: true,
+  await expect(page.locator('#art-review')).toHaveCount(1);
+  await page.locator('#art-review').screenshot({
+    path: 'test-results/landmark-island/modern-landmarks-51-demo.png',
   });
 });
 
@@ -1662,7 +1663,7 @@ test('new discoveries grow land, gifts unlock sets, duplicates craft chosen deco
     Math.random = () => {
       const tierRoll =
         (window as unknown as { fixtureRoll?: number }).fixtureRoll ?? 0.8;
-      return roll++ % 2 === 0 ? tierRoll : tierRoll === 0.71 ? 3.5 / 14 : 0;
+      return roll++ % 2 === 0 ? tierRoll : tierRoll === 0.71 ? 3.5 / 16 : 0;
     };
   });
   await page.goto('/');
@@ -2499,7 +2500,7 @@ for (const wave of [
     const entries = landmarks.slice(wave.start, wave.start + 12);
     await expect(page.locator('#discovery-progress')).toHaveAttribute(
       'max',
-      '48',
+      '51',
     );
     const tierRolls = { common: 0.35, rare: 0.8, epic: 0.95, legendary: 0.995 };
     for (const entry of entries) {

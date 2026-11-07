@@ -8,7 +8,7 @@ export function art(id: string) {
   const url = (name: string) => `url(#${prefix}-${name})`;
   const gradient = (name: string, light: string, mid: string, dark: string) =>
     `<linearGradient id="${prefix}-${name}" x1="0" y1="0" x2="1" y2=".7"><stop stop-color="${light}"/><stop offset=".45" stop-color="${mid}"/><stop offset="1" stop-color="${dark}"/></linearGradient>`;
-  const defs = `<defs>${gradient('stone', '#e0d0af', '#bba17a', '#796c55')}${gradient('sandstone', '#e3b497', '#c08465', '#774b3c')}${gradient('marble', '#fff9e8', '#dedace', '#989e98')}${gradient('slate', '#a4aaa1', '#778277', '#424e48')}${gradient('copper', '#a1c5b0', '#638f7f', '#355a50')}${gradient('iron', '#c0a58a', '#846e59', '#483c34')}${gradient('snow', '#fcfbef', '#d4e1df', '#879daa')}${gradient('mountain', '#969b94', '#677781', '#364a5a')}${gradient('gold', '#fae5a4', '#d0a44d', '#8c6229')}${gradient('dune', '#edb078', '#c97d4e', '#914c32')}${gradient('grass', '#a6ac76', '#6f8758', '#3e5940')}
+  const defs = `<defs>${gradient('glass', '#dce8df', '#9dbbbd', '#476a77')}${gradient('titanium', '#efe7c9', '#b9c0b1', '#6c827e')}${gradient('stone', '#e0d0af', '#bba17a', '#796c55')}${gradient('sandstone', '#e3b497', '#c08465', '#774b3c')}${gradient('marble', '#fff9e8', '#dedace', '#989e98')}${gradient('slate', '#a4aaa1', '#778277', '#424e48')}${gradient('copper', '#a1c5b0', '#638f7f', '#355a50')}${gradient('iron', '#c0a58a', '#846e59', '#483c34')}${gradient('snow', '#fcfbef', '#d4e1df', '#879daa')}${gradient('mountain', '#969b94', '#677781', '#364a5a')}${gradient('gold', '#fae5a4', '#d0a44d', '#8c6229')}${gradient('dune', '#edb078', '#c97d4e', '#914c32')}${gradient('grass', '#a6ac76', '#6f8758', '#3e5940')}
   <pattern id="${prefix}-masonry" width="13" height="8" patternUnits="userSpaceOnUse"><path d="M0 .4H13M0 4.4H13M4 0v4m6 0v4" stroke="#514337" stroke-opacity=".25" stroke-width=".55"/><path d="M0 1H13M0 5H13" stroke="#fff4d2" stroke-opacity=".25" stroke-width=".4"/><path d="M1 2h2m4 4h2m1-4h1" stroke="#fff7e3" stroke-opacity=".28" stroke-width=".65"/><path d="M6 2h2m-6 5h1" stroke="#433d33" stroke-opacity=".14" stroke-width=".5"/></pattern>
   <pattern id="${prefix}-grain" width="11" height="13" patternUnits="userSpaceOnUse"><path d="M1 3l2-.7m4 6 2-.5M4 12l1-2m4-7 1 2" stroke="#342e27" stroke-opacity=".2" stroke-width=".65"/><path d="M3 5l3 1m1 6h2M8 1h2" stroke="#fff3d4" stroke-opacity=".3" stroke-width=".7"/><circle cx="2" cy="8" r=".45" fill="#322e26" opacity=".2"/></pattern>
   <pattern id="${prefix}-tiles" width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(25)"><path d="M0 0h5v5" fill="none" stroke="#817d69" stroke-opacity=".35" stroke-width=".45"/><path d="M1 1h3" stroke="#fffdf0" stroke-opacity=".8" stroke-width=".5"/></pattern></defs>`;
@@ -528,6 +528,56 @@ export function art(id: string) {
       <path d="M40 85l19-14 20 14z" fill="${url('stone')}" stroke="#b49a74"/>
       ${line('M43 87h33M48 90v26M70 90v26M12 57l11-9m78 16 10 7M17 90l7-4m78 16 11 3', '#edc5a3', 1, 0.6)}
       <path d="M5 119l25-4 13 6 29-2 24 3 26-5v6H5z" fill="#cfaa7b"/>`;
+  } else if (id === 'lotte') {
+    body = `${surface('M36 119v-5l28-8 28 8v5l-28 6z', 'marble')}
+      <path d="M44 114Q46 49 56 13L62 3 67 4l7 12q9 43 10 98l-20 7z" fill="${url('glass')}"/>
+      <path d="M64 5Q62 56 64 121l20-7q-1-55-10-98l-7-12z" fill="#54777e" opacity=".65"/>
+      <path d="M56 13l6-10 1 27-5 15zM67 4l7 12-2 29-7-16z" fill="#cbdad3"/>
+      ${rows(22, (i) => {
+        const y = 29 + i * 3.8,
+          w = 10 + Math.pow((y - 29) / 85, 0.7) * 27;
+        return line(
+          `M${64 - w / 2} ${y}l${w / 2} 3 ${w / 2}-3`,
+          '#d0e4dd',
+          0.65,
+          0.6,
+        );
+      })}
+      ${rows(5, (i) => line(`M${56 + i * 4} 17Q${49 + i * 7} 68 ${48 + i * 8} 114`, '#d8e6dc', 0.8, 0.7))}
+      ${line('M44 114l20 7 20-7M56 13l6-10m5 1 7 12M64 32v86', '#f2f0d9', 1.2, 0.9)}
+      <path d="M60 111h8v9h-8z" fill="#3c5b60"/>${line('M39 119l25 6 25-6', '#b5b6a0', 0.8)}`;
+  } else if (id === 'marinabaysands') {
+    body = `<path d="M4 116l57-13 62 13-58 10z" fill="#8ba89a"/>
+      ${[14, 48, 82]
+        .map(
+          (
+            x,
+            i,
+          ) => `<defs><clipPath id="${prefix}-mbs-${i}"><path d="M${x} 111q8-38 2-78l14-2q-5 45 7 82l-12 5z"/></clipPath></defs><g clip-path="${url(`mbs-${i}`)}"><path d="M${x} 111q8-38 2-78l14-2q-5 45 7 82l-12 5z" fill="${url('glass')}"/>
+      <path d="M${x + 16} 31q-5 45 7 82l-12 5q-8-45-1-85z" fill="#567d81" opacity=".55"/>
+      ${rows(16, (j) => line(`M${x + 3} ${40 + j * 4.5}l11 2 13-2`, '#dce6d5', 0.65, 0.7))}
+      ${line(`M${x + 5} 36q3 38-2 73M${x + 14} 34q-3 40 2 78`, '#ebecda', 1, 0.85)}</g>`,
+        )
+        .join('')}
+      <path d="M4 31Q57 16 124 24l-10 13q-46 13-105 5z" fill="${url('stone')}"/>
+      <path d="M4 31Q57 16 124 24q-50 18-115 14z" fill="#82956b"/>
+      <path d="M15 31q32-7 64-7l-7 5-55 7z" fill="#9ac6bd"/>
+      ${line('M5 32q50 8 116-8M10 41q55 9 104-4', '#ead7b0', 1.2, 0.95)}
+      ${rows(9, (i) => `<path d="M${79 + i * 3.2} ${27 - i * 0.15}v-4" stroke="#778864" stroke-width=".8"/><circle cx="${79 + i * 3.2}" cy="${22 - i * 0.15}" r="2.5" fill="${i % 2 ? '#718a59' : '#9aac73'}"/>`)}
+      ${line('M7 118l54-9 58 8', '#d0d8ba', 1)}`;
+  } else if (id === 'guggenheim') {
+    body = `<path d="M3 112q44-17 121-4v11q-62 13-121 0z" fill="#88b4b2"/>
+      ${surface('M9 110V75l33-11 16 8v40z', 'stone')}${surface('M89 111V66l28 10v35z', 'stone')}
+      <path d="M20 93Q2 64 35 48l18 21-6 39z" fill="${url('titanium')}"/><path d="M43 109Q31 59 57 28q18 20 24 39l-10 44z" fill="${url('titanium')}"/>
+      <path d="M65 106q9-56 36-59 23 20 15 51l-30 16z" fill="${url('titanium')}"/>
+      <path d="M22 96q17-18 41-13 23 2 34 27l-34 13-40-7z" fill="${url('titanium')}"/>
+      <path d="M53 68l12-20 14 21-4 34-18-7z" fill="${url('glass')}" stroke="#77969b" stroke-width=".8"/>
+      ${line('M57 28q8 34-4 53M35 48q-12 24 2 40M101 47q-22 24-17 54M22 96q24-9 41-4 17 5 34 18', '#f2ebd1', 1.2, 0.9)}
+      ${rows(5, (i) => line(`M${46 + i * 1.6} ${48 + i * 6}q12 6 27 2`, '#7f8e87', 0.6, 0.65))}
+      ${rows(5, (i) => line(`M${90 - i * 1.2} ${57 + i * 7}q10-2 25 7`, '#89978c', 0.6, 0.7))}
+      ${rows(4, (i) => line(`M${18 + i * 2} ${66 + i * 6}l22 8`, '#7d8f86', 0.6, 0.65))}
+      ${rows(5, (i) => line(`M${30 + i * 11} ${92 + i * 0.3}l2 24`, '#829188', 0.6, 0.6))}
+      ${line('M61 60l-1 30m7-32 3 36M9 110l17 6m78-8 13 3M7 121h14m79 1 20-2', '#d7e4d5', 1, 0.8)}`;
   } else if (id === 'giza') {
     body = `${surface('M6 112L56 18l66 94z')}
       <path d="M56 18l16 94h50z" fill="#8c704c" opacity=".6"/><path d="M56 18l-7 14 9-1z" fill="#f4e5c0"/>

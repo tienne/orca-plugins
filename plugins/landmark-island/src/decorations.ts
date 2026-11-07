@@ -310,6 +310,30 @@ const themes: [
     '#83a997',
   ],
   ['hegra', 'Oasis palm', 'palm', 'Sandstone garden gate', 'gate', '#cdac84'],
+  [
+    'lotte',
+    'Seoul skyline lantern',
+    'lamp',
+    'Sky garden bench',
+    'bench',
+    '#8caeb3',
+  ],
+  [
+    'marinabaysands',
+    'Bay rooftop palm',
+    'palm',
+    'SkyPark fountain',
+    'fountain',
+    '#8da991',
+  ],
+  [
+    'guggenheim',
+    'Riverside flower bed',
+    'flowers',
+    'Sculpture garden stones',
+    'stones',
+    '#afafa0',
+  ],
 ];
 export const decorations: Decoration[] = [
   {

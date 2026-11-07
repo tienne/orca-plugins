@@ -670,5 +670,47 @@
     "description": "At Hegra, Nabataean builders cut monumental tombs directly into sandstone outcrops. Decorated facades, inscriptions and wells preserve traces of a caravan city and its skilful use of the desert landscape.",
     "descriptionSourceName": "UNESCO World Heritage Centre",
     "descriptionSource": "https://whc.unesco.org/en/list/1293/"
+  },
+  {
+    "id": "lotte",
+    "name": "Lotte World Tower",
+    "country": "South Korea",
+    "code": "KOR",
+    "tier": "common",
+    "lat": 37.5125,
+    "lon": 127.1025,
+    "source": "https://www.wikidata.org/wiki/Q494895",
+    "region": "Seoul",
+    "description": "Rising 555 metres above Seoul, this 123-storey tower brings offices, homes, a hotel and cultural spaces into a slender vertical city. Its tapered silhouette combines modern glass construction with inspiration from traditional Korean forms.",
+    "descriptionSourceName": "Lotte Engineering & Construction",
+    "descriptionSource": "https://www.lottecon.co.kr/Medias/tower_intro_stability"
+  },
+  {
+    "id": "marinabaysands",
+    "name": "Marina Bay Sands",
+    "country": "Singapore",
+    "code": "SGP",
+    "tier": "rare",
+    "lat": 1.2825,
+    "lon": 103.86,
+    "source": "https://www.wikidata.org/wiki/Q548679",
+    "region": "Marina Bay",
+    "description": "Three hotel towers support a long rooftop SkyPark above Singapore’s Marina Bay. The elevated gardens and the dramatic overhanging deck make this waterfront complex recognisable as a group of towers joined by a ship-like crown.",
+    "descriptionSourceName": "Marina Bay Sands official site",
+    "descriptionSource": "https://www.marinabaysands.com/guides/exceptional-experiences/marina-bay-sands-architecture.html"
+  },
+  {
+    "id": "guggenheim",
+    "name": "Guggenheim Museum Bilbao",
+    "country": "Spain",
+    "code": "ESP",
+    "tier": "rare",
+    "lat": 43.26883,
+    "lon": -2.934099,
+    "source": "https://www.wikidata.org/wiki/Q179199",
+    "region": "Bilbao",
+    "description": "Built between 1993 and 1997 on a former industrial wharf beside the Nervión, the museum brought a new cultural use to Bilbao’s riverfront. Curved titanium surfaces catch changing light across its sculptural forms.",
+    "descriptionSourceName": "Guggenheim Museum Bilbao official site",
+    "descriptionSource": "https://www.guggenheim-bilbao.eus/en/the-building/the-construction"
   }
 ]

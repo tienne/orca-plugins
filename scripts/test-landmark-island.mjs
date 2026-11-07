@@ -67,13 +67,22 @@ try {
   const { decorations } = await import(
     pathToFileURL(join(dir, 'decorations.mjs'))
   );
-  assert.equal(landmarks.length, 48);
-  assert.equal(new Set(landmarks.map((l) => l.id)).size, 48);
+  assert.equal(landmarks.length, 51);
+  assert.equal(new Set(landmarks.map((l) => l.id)).size, 51);
   assert.equal(new Set(landmarks.map((l) => l.code)).size, 48);
-  assert.equal(decorations.length, 104);
+  assert.equal(decorations.length, 110);
+  for (const code of ['KOR', 'SGP', 'ESP']) {
+    const entries = landmarks.filter((l) => l.code === code);
+    assert.equal(entries.length, 2);
+    assert.equal(new Set(entries.map((l) => l.country)).size, 1);
+    assert.equal(
+      new Set(entries.map((l) => translate(l.country, 'ko-KR'))).size,
+      1,
+    );
+  }
   for (const [tier, count, roll] of [
-    ['common', 24, 0.35],
-    ['rare', 14, 0.8],
+    ['common', 25, 0.35],
+    ['rare', 16, 0.8],
     ['epic', 7, 0.95],
     ['legendary', 3, 0.995],
   ]) {
@@ -101,10 +110,10 @@ try {
     assert.equal(set.filter((d) => d.gift).length, 1);
     for (const d of set) assert.notEqual(translate(d.name, 'ko-KR'), d.name);
   }
-  assert.equal(translate('/ 48 discovered', 'ko-KR'), '/ 48종 발견');
+  assert.equal(translate('/ 51 discovered', 'ko-KR'), '/ 51종 발견');
   assert.equal(
-    translate('48-landmark prototype', 'ko-KR'),
-    '랜드마크 48종 프로토타입',
+    translate('51-landmark prototype', 'ko-KR'),
+    '랜드마크 51종 프로토타입',
   );
 
   assert.equal(
@@ -591,7 +600,7 @@ try {
   for (const landmark of landmarks)
     assert.equal(decorationQuantity(fullCatalog, `${landmark.id}-gift`), 1);
   console.log(
-    'PASS: all 48 catalog draws, 104 decorations, localized descriptions, full-catalog backup and unchanged land cap',
+    'PASS: all 51 catalog draws across 48 countries, 110 decorations, localized descriptions, full-catalog backup and unchanged land cap',
   );
 
   // The four focal pieces use the same ownership and durable craft ledger.
