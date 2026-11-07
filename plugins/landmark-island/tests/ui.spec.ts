@@ -2590,3 +2590,89 @@ for (const wave of [
       ),
     ).toEqual(saved);
   });
+
+for (const notification of ['before response', 'during reveal'])
+  test(`host treasure survives change notification ${notification}`, async ({
+    page,
+  }) => {
+    const errors: string[] = [];
+    page.on('pageerror', (error) => errors.push(error.message));
+    await page.addInitScript(
+      ({ notification }) => {
+        const state = {
+          version: 4,
+          floors: [],
+          landFloor: 0,
+          crafts: [],
+          decorations: [],
+          tickets: [{ workspaceId: 'treasure-fixture', at: '2026-11-07' }],
+          receipts: [] as {
+            workspaceId: string;
+            landmark: string;
+            at: string;
+          }[],
+          placements: [],
+        };
+        let changed = () => {};
+        const fixture = window as unknown as {
+          orca: unknown;
+          drawCalls: number;
+          acquireDuringReveal: () => void;
+        };
+        fixture.drawCalls = 0;
+        fixture.acquireDuringReveal = () => {
+          state.tickets.push({ workspaceId: 'next-fixture', at: '2026-11-07' });
+          changed();
+        };
+        fixture.orca = {
+          locale: 'en-US',
+          plugin: {
+            on(_name: string, callback: () => void) {
+              changed = callback;
+            },
+            async request(name: string) {
+              if (name === 'island.draw') {
+                fixture.drawCalls++;
+                state.receipts.push({
+                  workspaceId: 'treasure-fixture',
+                  landmark: 'giza',
+                  at: '2026-11-07',
+                });
+                if (notification === 'before response') changed();
+                else setTimeout(changed, 100);
+              }
+              return structuredClone(state);
+            },
+          },
+        };
+      },
+      { notification },
+    );
+    await page.goto('/');
+    await page.locator('#draw-ticket').click();
+    const theatre = page.locator('.ocean > .discovery-theatre');
+    await expect(theatre).toBeVisible();
+    // Give both host notification timings time to trigger their refresh.
+    await page.waitForTimeout(350);
+    await expect(theatre).toBeVisible();
+    await page.evaluate(() =>
+      (
+        window as unknown as { acquireDuringReveal: () => void }
+      ).acquireDuringReveal(),
+    );
+    await page.waitForTimeout(150);
+    await expect(theatre).toBeVisible();
+    await page.getByRole('button', { name: 'Skip animation' }).click();
+    await expect(theatre.getByRole('heading')).toHaveText(
+      'Great Pyramid of Giza',
+    );
+    await page.getByRole('button', { name: 'Keep exploring' }).click();
+    await expect(theatre).toHaveCount(0);
+    await expect(page.locator('#ticket-count')).toHaveText('1');
+    expect(
+      await page.evaluate(
+        () => (window as unknown as { drawCalls: number }).drawCalls,
+      ),
+    ).toBe(1);
+    expect(errors).toEqual([]);
+  });

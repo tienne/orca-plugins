@@ -959,8 +959,11 @@ if (demo && new URLSearchParams(location.search).get('preview') === 'reveal') {
   render();
   void reload();
 }
-// Queue refreshes behind in-flight requests so an acquisition notification is not lost.
+// Refreshing replaces the canvas. Wait for its reward dialog to close as well
+// as the request, so the draw's own notification cannot remove the reveal.
+// Notifications received during the reveal still refresh newly earned tickets.
 async function reload() {
-  while (busy) await new Promise((r) => setTimeout(r, 50));
+  while (busy || root.querySelector('.discovery-theatre[open]'))
+    await new Promise((r) => setTimeout(r, 50));
   await run(() => request('island.read'));
 }
