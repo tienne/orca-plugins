@@ -50,7 +50,7 @@ Pin the runner's Orca version to a tested build. It must support `plugin validat
 
 ## Preview a release
 
-In GitHub Actions, run **Release Git Logs** from `main`:
+In GitHub Actions, run **Release Orca Plugin** from `main`:
 
 - `version`: the stable version already committed to the manifest, such as `0.1.0`.
 - `publish`: leave unchecked, which is the default.
@@ -66,7 +66,7 @@ The job summary records the source, artifact, catalog commits, and content hash.
 
 ## Publish
 
-Review the preview, then run **Release Git Logs** again from `main` with the same version and `publish` checked. This is a new run: it rebuilds and revalidates, rather than reusing the previous candidate's temporary directory. Check its source SHA and content hash. The `production` environment applies the reviewer rules configured above.
+Review the preview, then run **Release Orca Plugin** again from `main` with the same version and `publish` checked. This is a new run: it rebuilds and revalidates, rather than reusing the previous candidate's temporary directory. Check its source SHA and content hash. The `production` environment applies the reviewer rules configured above.
 
 The script checks the source checkout, candidate history, artifact bytes, Orca hash, catalog, provenance, destination URL, existing version tag, and current remote refs. It also compares committed blobs with the validated files, including catalog and provenance, to catch Git clean-filter changes. It then pushes the `release` branch and the source tag in one atomic Git operation.
 
@@ -116,6 +116,37 @@ The automated release workflow publishes the custom catalog. Public-directory di
 3. Publish `directory/git-logs` and its new `vX.Y.Z` tag atomically without rewriting existing refs. Later exports must extend the directory branch. The generic `vX.Y.Z` tags in this repository are reserved for Git Logs.
 4. Check the public status page. The directory indexes on its own schedule; do not report search availability before the listing appears.
 
-For 0.1.0, the directory tag points to `d957b8a6bbff132cac1b4e60e80d5bd518dd1a2e`, exported from artifact `c06f01b7c62909b4f8752e1e91a2f182b3dfd97e`. Both contain the same 18 files and Orca content hash `4e4723bf66e38ecee3807d05257019cd025074f6432921e6b70c41f26be14f41`. The root export passed local validation; the directory's own indexing result is tracked on its status page. Directory exports are currently a manual step and are not included in `Release Git Logs`.
+For 0.1.0, the directory tag points to `d957b8a6bbff132cac1b4e60e80d5bd518dd1a2e`, exported from artifact `c06f01b7c62909b4f8752e1e91a2f182b3dfd97e`. Both contain the same 18 files and Orca content hash `4e4723bf66e38ecee3807d05257019cd025074f6432921e6b70c41f26be14f41`. The root export passed local validation; the directory's own indexing result is tracked on its status page. Directory exports are currently a manual step and are not included in `Release Orca Plugin`.
 
 References: [Orca authoring](https://github.com/stablyai/orca/blob/main/docs/reference/plugin-authoring.md#5-publish-to-a-catalog), [catalog fields](https://github.com/stablyai/orca/blob/main/docs/reference/plugin-catalog.md), [public directory](https://www.onorca.dev/plugins/add).
+
+## Orcatopia candidates
+
+**Release Orca Plugin** now has a `plugin` selector. Its default remains `git-logs`; select `landmark-island` for Orcatopia. CI checks and uploads both plugins separately. Promotion validates the selected plugin against an allowlist, uses the artifact from the same source SHA and runs release integration tests. Both plugins share the release concurrency group and branch. Preview remains the default; this change does not configure the runner, environments or repository permissions.
+
+Orcatopia keeps internal ID `landmark-island`, initially at `0.1.0`. Its catalog identity is `tienne.landmark-island`, source tag is `landmark-island/v0.1.0`, and package path is `plugins/landmark-island`. Candidate preparation preserves Git Logs files, catalog history and provenance. Do not use the generic `vX.Y.Z` public-directory tags reserved for Git Logs. A separate public-directory listing for Orcatopia is not prepared.
+
+After committing and building, refresh the local release base with `git fetch --no-tags origin refs/heads/release:refs/remotes/origin/release`. Then prepare locally:
+
+```sh
+pnpm nx run landmark-island:build
+RELEASE_REPOSITORY=https://github.com/tienne/orca-plugins.git \
+RELEASE_VERSION=0.1.0 \
+RELEASE_SOURCE_SHA="$(git rev-parse HEAD)" \
+RELEASE_REPORT=/tmp/orcatopia-release-plan.json \
+pnpm nx run landmark-island:release-prepare
+```
+
+Use a new report filename on every attempt. Preparation writes a candidate in a separate temporary repository and validates it with the installed Orca CLI; it does not push or run plugin code. Review the report's source, artifact, catalog and content hash. The local source branch need not be `main` for preview; publishing later requires the exact reviewed source on remote `main`, a fresh matching release base and separate authorization. The candidate becomes stale if the source, package or release base changes.
+
+Before publication, finish native panel clicking, full Orca restart persistence, and clean installation/update checks in an isolated profile or with an exported backup. The development identity `local.landmark-island` and catalog identity `tienne.landmark-island` need separate execution approval and save transfer through the existing backup UI. Do not assume approval or storage transfers automatically. These checks remain pending; changing the display name alone preserves the development identity.
+
+The [English plugin guide](../plugins/landmark-island/README.md) records gameplay and limitations. The [demo images](screenshots/README.md) are browser fixtures, not host verification. Release notes for 0.1.0: worktree-earned tickets, 36 collectible landmarks in four tiers, an expanding island, decoration crafting, a canvas treasure reveal, Korean/English UI, and local backup/restore. No cloud account, telemetry or purchases are included.
+
+### Local preparation checks (2026-11-07)
+
+- Both plugin builds/typechecks and worker/state suites passed through Nx; Git Logs reported 49 tests.
+- Orcatopia's full 48-test UI suite and Git Logs' 22-test UI suite passed. The added English showcase/legacy-storage check passed separately (one test).
+- Release orchestration/workflow tests passed 22 tests with the mock validator and another 22 with the actual Orca 1.4.250 CLI. All publication tests use disposable local bare repositories.
+- `pnpm validate` passed both artifacts. Pinned actionlint 1.7.11 accepted the workflows. Independent static review of the release selector change found no issues; this is not hosted CI or production approval.
+- The development host reports the Orcatopia name, running status and no reconsent requirement. Native clicks remain deferred. No remote CI run, public installation, app restart, push or publication is claimed.

@@ -65,3 +65,31 @@ test('external actions are pinned to commit hashes', async () => {
     }
   }
 });
+
+test('both plugins are checked and selectable, with Git Logs still the release default', async () => {
+  const checks = await load('checks');
+  const commands = checks.jobs.check.steps
+    .map((step) => step.run || '')
+    .join('\n');
+  for (const plugin of ['git-logs', 'landmark-island']) {
+    assert.ok(commands.includes(`-p ${plugin} --output-style=static`));
+    const upload = checks.jobs.check.steps.find(
+      (step) => step.with?.name === `${plugin}-\${{ github.sha }}`,
+    );
+    assert.equal(upload.with.path, `dist/plugins/${plugin}/`);
+  }
+  const release = await load('release');
+  const selector = release.on.workflow_dispatch.inputs.plugin;
+  assert.equal(selector.default, 'git-logs');
+  assert.deepEqual(selector.options, ['git-logs', 'landmark-island']);
+  for (const name of ['preview', 'publish'])
+    assert.equal(release.jobs[name].with.plugin, '${{ inputs.plugin }}');
+  const promote = await load('promote');
+  assert.equal(promote.on.workflow_call.inputs.plugin.default, 'git-logs');
+  assert.equal(promote.jobs.promote.env.RELEASE_PLUGIN, '${{ inputs.plugin }}');
+  assert.ok(
+    promote.jobs.promote.steps.some((step) =>
+      step.run?.includes("['git-logs', 'landmark-island'].includes(plugin)"),
+    ),
+  );
+});

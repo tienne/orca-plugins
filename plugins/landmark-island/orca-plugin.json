@@ -1,9 +1,9 @@
 {
   "manifestVersion": 2,
   "id": "landmark-island",
-  "name": "Landmark Island",
+  "name": "Orcatopia",
   "version": "0.1.0",
-  "description": "Collect world landmarks from new worktree expeditions and build your own island.",
+  "description": "Turn waiting time into a little island getaway. Earn tickets from new worktrees, discover world landmarks, and make the island your own.",
   "engines": { "orca": ">=1.4.248" },
   "execution": "trusted-worker",
   "pluginApi": 1,
@@ -15,7 +15,7 @@
     "panels": [
       {
         "id": "landmark-island",
-        "title": "Landmark Island",
+        "title": "Orcatopia",
         "icon": "globe",
         "entry": "ui/index.html"
       }

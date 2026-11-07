@@ -50,7 +50,7 @@
 
 ## 배포 미리보기
 
-GitHub Actions에서 `main`을 선택해 **Release Git Logs**를 실행합니다.
+GitHub Actions에서 `main`을 선택해 **Release Orca Plugin**를 실행합니다.
 
 - `version`: manifest에 이미 커밋한 안정 버전입니다. 예: `0.1.0`.
 - `publish`: 기본값인 선택 해제 상태로 둡니다.
@@ -66,7 +66,7 @@ Job 요약에는 소스·산출물·카탈로그 커밋과 content hash를 기�
 
 ## 공개
 
-미리보기를 검토한 뒤 같은 버전으로 **Release Git Logs**를 다시 실행하고 `publish`를 선택합니다. 이전 임시 폴더를 재사용하는 것이 아니라 새 실행에서 다시 빌드·검증하므로 소스 SHA와 content hash를 확인합니다. `production` 환경에는 위에서 설정한 승인 규칙이 적용됩니다.
+미리보기를 검토한 뒤 같은 버전으로 **Release Orca Plugin**를 다시 실행하고 `publish`를 선택합니다. 이전 임시 폴더를 재사용하는 것이 아니라 새 실행에서 다시 빌드·검증하므로 소스 SHA와 content hash를 확인합니다. `production` 환경에는 위에서 설정한 승인 규칙이 적용됩니다.
 
 스크립트는 소스 상태, 후보 이력, 빌드 파일, Orca 해시, 카탈로그, 출처 기록, 배포 URL, 기존 태그, 원격 ref를 검사합니다. Git clean filter가 내용을 바꾸는 경우도 잡도록 카탈로그·출처 기록을 포함한 커밋 blob과 검증 파일을 대조합니다. 이어 `release` 브랜치와 소스 태그를 한 번의 atomic Git push로 갱신합니다.
 
@@ -116,6 +116,37 @@ ORCA_RELEASE_INTEGRATION=1 ORCA_CLI_COMMAND=orca pnpm nx run git-logs:release-te
 3. 기존 ref를 다시 쓰지 않고 `directory/git-logs`와 새 `vX.Y.Z` 태그를 원자적으로 공개합니다. 이후 번들은 기존 디렉터리 브랜치 이력을 이어야 합니다. 이 저장소의 일반 `vX.Y.Z` 태그는 Git Logs용으로 사용합니다.
 4. 공개 상태 페이지를 확인합니다. 인덱싱은 디렉터리 자체 일정으로 실행되므로 실제 목록에 나타나기 전에는 검색할 수 있다고 안내하지 않습니다.
 
-0.1.0의 디렉터리 태그는 `d957b8a6bbff132cac1b4e60e80d5bd518dd1a2e`를 가리키며, 설치 파일 커밋 `c06f01b7c62909b4f8752e1e91a2f182b3dfd97e`에서 내보냈습니다. 두 경로는 같은 파일 18개와 Orca 콘텐츠 해시 `4e4723bf66e38ecee3807d05257019cd025074f6432921e6b70c41f26be14f41`을 갖습니다. 루트 번들은 로컬 검증을 통과했으며 실제 인덱싱 결과는 상태 페이지에서 확인합니다. 디렉터리용 번들 공개는 현재 수동 단계로, `Release Git Logs`에는 포함되지 않습니다.
+0.1.0의 디렉터리 태그는 `d957b8a6bbff132cac1b4e60e80d5bd518dd1a2e`를 가리키며, 설치 파일 커밋 `c06f01b7c62909b4f8752e1e91a2f182b3dfd97e`에서 내보냈습니다. 두 경로는 같은 파일 18개와 Orca 콘텐츠 해시 `4e4723bf66e38ecee3807d05257019cd025074f6432921e6b70c41f26be14f41`을 갖습니다. 루트 번들은 로컬 검증을 통과했으며 실제 인덱싱 결과는 상태 페이지에서 확인합니다. 디렉터리용 번들 공개는 현재 수동 단계로, `Release Orca Plugin`에는 포함되지 않습니다.
 
 근거: [Orca 배포 가이드](https://github.com/stablyai/orca/blob/main/docs/reference/plugin-authoring.md#5-publish-to-a-catalog), [카탈로그 필드](https://github.com/stablyai/orca/blob/main/docs/reference/plugin-catalog.md), [공개 디렉터리](https://www.onorca.dev/plugins/add).
+
+## Orcatopia 배포 후보
+
+**Release Orca Plugin**에 `plugin` 선택 항목을 추가했습니다. 기본값은 기존 `git-logs`이며 Orcatopia는 `landmark-island`를 선택합니다. CI는 두 플러그인을 각각 검사하고 업로드합니다. 배포 작업은 허용된 플러그인인지 확인하고 같은 소스 SHA의 산출물을 사용하며 실제 Orca CLI 통합 테스트를 실행합니다. 두 플러그인은 같은 릴리스 동시 실행 그룹과 브랜치를 공유합니다. 기본 동작은 미리보기이며 러너·환경 보호·저장소 권한을 자동 설정하지 않습니다.
+
+Orcatopia의 내부 ID는 `landmark-island`, 최초 버전은 `0.1.0`입니다. 카탈로그 정체성은 `tienne.landmark-island`, 소스 태그는 `landmark-island/v0.1.0`, 패키지 경로는 `plugins/landmark-island`입니다. 후보 준비는 Git Logs 파일·카탈로그 이력·출처 정보를 보존합니다. Git Logs 공개 디렉터리에 예약된 일반 `vX.Y.Z` 태그를 사용하지 마세요. Orcatopia의 별도 공개 디렉터리 등록은 아직 준비하지 않았습니다.
+
+커밋과 빌드 후 `git fetch --no-tags origin refs/heads/release:refs/remotes/origin/release`로 로컬 릴리스 기준을 갱신하고 다음과 같이 후보를 만듭니다.
+
+```sh
+pnpm nx run landmark-island:build
+RELEASE_REPOSITORY=https://github.com/tienne/orca-plugins.git \
+RELEASE_VERSION=0.1.0 \
+RELEASE_SOURCE_SHA="$(git rev-parse HEAD)" \
+RELEASE_REPORT=/tmp/orcatopia-release-plan.json \
+pnpm nx run landmark-island:release-prepare
+```
+
+매번 새 보고서 파일명을 사용하세요. 별도 임시 저장소에 후보를 만들고 설치된 Orca CLI로 검증하며 푸시하거나 플러그인 코드를 실행하지 않습니다. 보고서의 소스·산출물·카탈로그 커밋과 콘텐츠 해시를 검토합니다. 로컬 미리보기는 `main`이 아닌 브랜치에서도 가능하지만, 나중에 게시하려면 검토한 정확한 소스가 원격 `main`에 있어야 하고 최신 릴리스 기준 및 별도 승인이 필요합니다. 소스·패키지·릴리스 기준이 바뀌면 후보를 다시 준비합니다.
+
+게시 전에 실제 패널 클릭, Orca 전체 재시작 후 저장 유지, 신규 설치·업데이트를 격리 프로필이나 내보낸 백업을 준비한 환경에서 확인해야 합니다. 개발 정체성 `local.landmark-island`와 카탈로그 정체성 `tienne.landmark-island`는 실행 승인이 각각 필요하며 기존 백업 UI로 저장을 옮깁니다. 승인과 저장 공간이 자동 승계된다고 가정하지 마세요. 이 검증은 아직 미완료이며 표시 이름만 바꾸는 것은 개발 정체성을 유지합니다.
+
+게임 기능과 제한은 [한국어 플러그인 안내](../plugins/landmark-island/README.ko.md), 브라우저 fixture 이미지는 [데모 이미지 안내](screenshots/README.ko.md)에 기록합니다. 이미지는 실제 호스트 검증 증거가 아닙니다. 0.1.0 릴리스 노트: 워크트리로 얻는 탐험권, 4개 등급의 랜드마크 36종, 확장되는 섬, 장식 제작, 캔버스 보물상자 연출, 한국어·영어 UI와 로컬 백업·복원. 클라우드 계정·행동 분석·구매 기능은 포함하지 않습니다.
+
+### 로컬 준비 검증 (2026-11-07)
+
+- Nx로 두 플러그인의 빌드·타입 검사와 워커·상태 테스트를 통과했습니다. Git Logs 테스트는 49개입니다.
+- Orcatopia 전체 UI 48개와 Git Logs UI 22개를 통과했습니다. 추가한 영문 소개 화면·기존 저장 호환 검사는 별도로 1개 통과했습니다.
+- 릴리스·워크플로 테스트는 모의 검증기로 22개, 실제 Orca 1.4.250 CLI로 22개 통과했습니다. 모든 게시 테스트는 임시 로컬 bare 저장소만 사용합니다.
+- `pnpm validate`로 두 패키지가 통과했고 고정 버전 actionlint 1.7.11로 워크플로 문법을 확인했습니다. 배포 대상 선택 변경의 독립 정적 검토에서 문제를 찾지 못했습니다. 원격 CI나 운영 승인에 해당하지 않습니다.
+- 개발 호스트에서 Orcatopia 이름, 실행 중 상태와 추가 승인 불필요 상태를 확인했습니다. 실제 클릭은 보류 중입니다. 원격 CI 실행·공개 설치·앱 재시작·푸시·게시를 했다고 주장하지 않습니다.

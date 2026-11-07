@@ -32,3 +32,14 @@ pnpm nx run git-logs:preview
 Open `http://127.0.0.1:4173/?lang=en&sample=en` and select a theme. `lang=en` chooses English UI text. `sample=en` chooses English fixture data only in the browser demo; it does not translate real Git data in Orca.
 
 See the [repository README](../../README.md) and [development guide](../development.md) for setup and validation details.
+
+## Orcatopia
+
+[orcatopia-island.png](orcatopia-island.png) shows the English browser fixture with Eiffel Tower, Taj Mahal and Petra. The full-page capture retains the DEMO label. It contains no real user save and is not a native Orca capture.
+
+Regenerate and copy it with:
+
+```sh
+pnpm nx run landmark-island:ui-test --grep='Orcatopia showcase'
+cp test-results/landmark-island/orcatopia-island-demo.png docs/screenshots/orcatopia-island.png
+```

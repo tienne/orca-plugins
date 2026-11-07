@@ -262,7 +262,7 @@ export function decodeBackup(text: unknown): {
     typeof text !== 'string' ||
     new TextEncoder().encode(text).length > MAX_BACKUP_BYTES
   )
-    throw Error('Choose a Landmark Island backup of at most 256 KiB.');
+    throw Error('Choose a Orcatopia backup of at most 256 KiB.');
   let data;
   try {
     data = JSON.parse(text);
@@ -278,7 +278,7 @@ export function decodeBackup(text: unknown): {
     !data.state ||
     typeof data.state !== 'object'
   )
-    throw Error('Unsupported or damaged Landmark Island backup.');
+    throw Error('Unsupported or damaged Orcatopia backup.');
   return { state: validate(data.state), exportedAt: data.exportedAt };
 }
 export function draw(random: () => number): string {

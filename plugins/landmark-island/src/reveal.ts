@@ -34,7 +34,7 @@ export function revealDiscovery(
   dialog.innerHTML = `<div class="discovery-heading"><span>THE EXPLORER’S ATLAS</span><button class="reveal-skip" autofocus>Skip animation</button></div>
     <div class="discovery-stage" aria-hidden="true">
       <div class="atlas-stars">✧ <span>✦</span> ✧ <span>✦</span> ✧</div>
-      <div class="invitation"><span>ONE NEW JOURNEY</span><i>✦</i><small>Landmark Island</small></div>
+      <div class="invitation"><span>ONE NEW JOURNEY</span><i>✦</i><small>Orcatopia</small></div>
       <div class="atlas-camera"><div class="atlas-map"><svg viewBox="0 0 640 390" class="atlas-ink">
         <defs><pattern id="atlas-grid" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" fill="none" stroke="#9a8b62" stroke-opacity=".16"/></pattern></defs>
         <rect width="640" height="390" fill="url(#atlas-grid)"/>

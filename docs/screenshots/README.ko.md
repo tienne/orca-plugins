@@ -32,3 +32,14 @@ pnpm nx run git-logs:preview
 `http://127.0.0.1:4173/?lang=en&sample=en`을 열고 테마를 선택하십시오. `lang=en`은 UI를 영어로 표시하고 `sample=en`은 브라우저 DEMO의 영문 샘플 데이터를 선택합니다. 실제 Orca의 Git 데이터를 번역하는 옵션은 아닙니다.
 
 개발 환경과 검증 방법은 [저장소 README](../../README.ko.md)와 [개발 안내](../development.ko.md)를 참고하십시오.
+
+## Orcatopia
+
+[orcatopia-island.png](orcatopia-island.png)은 에펠탑·타지마할·페트라를 배치한 영문 브라우저 fixture입니다. 전체 페이지 캡처로 DEMO 표시를 유지합니다. 실제 사용자 저장이나 Orca 호스트 캡처가 아닙니다.
+
+다음 명령으로 다시 생성하고 복사합니다.
+
+```sh
+pnpm nx run landmark-island:ui-test --grep='Orcatopia showcase'
+cp test-results/landmark-island/orcatopia-island-demo.png docs/screenshots/orcatopia-island.png
+```

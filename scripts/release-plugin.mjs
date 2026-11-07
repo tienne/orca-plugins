@@ -5,6 +5,7 @@ import { prepareRelease, publishRelease } from './release/plugin-release.mjs';
 
 const { values } = parseArgs({
   options: {
+    plugin: { type: 'string' },
     source: { type: 'string', default: process.env.RELEASE_SOURCE || '.' },
     repository: { type: 'string', default: process.env.RELEASE_REPOSITORY },
     version: { type: 'string', default: process.env.RELEASE_VERSION },
@@ -22,6 +23,8 @@ try {
         'Publishing requires --publish --plan <prepared JSON> and optional --source only.',
       );
     const plan = JSON.parse(await readFile(resolve(values.plan), 'utf8'));
+    if (values.plugin && values.plugin !== (plan.plugin ?? 'git-logs'))
+      throw new Error('Requested plugin differs from the prepared plan.');
     await publishRelease(plan, { source });
     console.log(
       JSON.stringify({
@@ -54,6 +57,7 @@ try {
       repository: values.repository,
       version: values.version,
       sourceCommit: values['source-sha'],
+      plugin: values.plugin,
     });
     await writeFile(report, `${JSON.stringify(plan, null, 2)}\n`, {
       flag: 'wx',

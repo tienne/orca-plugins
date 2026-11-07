@@ -244,7 +244,7 @@ test('standalone preview follows the browser language without accessing a save',
   await expect(
     page.getByRole('heading', { name: '발견의 무대' }),
   ).toBeVisible();
-  await expect(page).toHaveTitle('Landmark Island · 연출 미리보기');
+  await expect(page).toHaveTitle('Orcatopia · 연출 미리보기');
   await page.getByRole('button', { name: '연출 재생' }).click();
   await page.getByRole('button', { name: '연출 건너뛰기' }).click();
   await expect(page.locator('.discovery-result h2')).toHaveText('페트라');

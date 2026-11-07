@@ -994,7 +994,7 @@ test('standalone reveal preview replays every rarity without accessing the save'
     };
   });
   await page.goto('/?preview=reveal&tier=legendary&autoplay=1');
-  await expect(page).toHaveTitle('Landmark Island · Reveal Preview');
+  await expect(page).toHaveTitle('Orcatopia · Reveal Preview');
   const theatre = page.locator('.discovery-theatre');
   await expect(theatre).toHaveAttribute('data-tier', 'legendary');
   await expect(page.locator('.ocean')).toHaveCount(0);

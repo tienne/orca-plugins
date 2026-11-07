@@ -1,8 +1,14 @@
-name: Release Git Logs
+name: Release Orca Plugin
 
 on:
   workflow_dispatch:
     inputs:
+      plugin:
+        description: 'Plugin to release (landmark-island is Orcatopia)'
+        required: true
+        type: choice
+        default: git-logs
+        options: [git-logs, landmark-island]
       version:
         description: 'Stable version already committed to main (for example 0.1.0)'
         required: true
@@ -33,6 +39,7 @@ jobs:
       vars.ORCA_RELEASE_ENABLED == 'true' && !inputs.publish
     uses: ./.github/workflows/promote.yml
     with:
+      plugin: ${{ inputs.plugin }}
       version: ${{ inputs.version }}
       publish: false
     permissions:
@@ -45,6 +52,7 @@ jobs:
       vars.ORCA_RELEASE_ENABLED == 'true' && inputs.publish
     uses: ./.github/workflows/promote.yml
     with:
+      plugin: ${{ inputs.plugin }}
       version: ${{ inputs.version }}
       publish: true
     permissions:
