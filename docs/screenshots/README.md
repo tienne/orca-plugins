@@ -43,3 +43,20 @@ Regenerate and copy it with:
 pnpm nx run landmark-island:ui-test --grep='Orcatopia showcase'
 cp test-results/landmark-island/orcatopia-island-demo.png docs/screenshots/orcatopia-island.png
 ```
+
+### Product introduction images
+
+[English introduction](../../plugins/landmark-island/assets/orcatopia-introduction.png) and [Korean introduction](../../plugins/landmark-island/assets/orcatopia-introduction.ko.png) are 1600 × 1000 promotional compositions: an original island emblem, the Orcatopia name, a short product description and a real browser capture of the fixture garden. The screenshot retains an explicit DEMO label. The composition uses system fonts and local SVG/CSS; it includes no downloaded fonts or generated game imagery. The English image leads the English plugin README; the Korean image leads its Korean counterpart. Both are bundled under `assets/` so the same relative README links work after installation.
+
+The reproducible layout is `plugins/landmark-island/tests/introduction.ts`; the showcase test captures the running game separately in each language before composing the images. The latest fixture also places a koi pond, pavilion and rose arch using the normal ownership ledger.
+
+```sh
+pnpm nx run landmark-island:ui-test --grep='Orcatopia showcase'
+cp test-results/landmark-island/orcatopia-introduction.png plugins/landmark-island/assets/orcatopia-introduction.png
+cp test-results/landmark-island/orcatopia-introduction.ko.png plugins/landmark-island/assets/orcatopia-introduction.ko.png
+cp test-results/landmark-island/orcatopia-island-demo.png docs/screenshots/orcatopia-island.png
+pnpm nx run landmark-island:build
+pnpm validate
+```
+
+These are local introduction assets; creating them does not publish a marketplace listing or update a release candidate.

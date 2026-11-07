@@ -1,3 +1,4 @@
+import { introductionHtml } from './introduction';
 import { test, expect } from '@playwright/test';
 import { empty, validate } from '../src/game';
 import { decorationById, DUPLICATE_MATERIALS } from '../src/decorations';
@@ -26,13 +27,13 @@ test('Orcatopia showcase keeps legacy storage and shows an English fixture islan
         decoration: col === 11 || row === 11 ? 'stonepath' : 'grass',
       });
   const garden: [string, number, number, number?][] = [
-    ['fuji-gift', 9, 9],
+    ['fuji-pond', 9, 9],
     ['eiffel-gift', 10, 9],
     ['taj-gift', 14, 9],
     ['taj-gift', 10, 10],
-    ['taj-gift', 12, 10],
+    ['taj-pavilion', 12, 10],
     ['taj-gift', 13, 10],
-    ['eiffel-gift', 14, 10],
+    ['eiffel-rose-arch', 14, 10],
     ['eiffel-special', 9, 11, 1],
     ['taj-special', 12, 11],
     ['eiffel-special', 14, 11, 3],
@@ -95,4 +96,24 @@ test('Orcatopia showcase keeps legacy storage and shows an English fixture islan
     JSON.parse(localStorage.getItem('landmark-island-demo-v1')!),
   );
   expect(stored).toEqual(save);
+  const cover = await page.context().newPage();
+  await cover.setViewportSize({ width: 1600, height: 1000 });
+  for (const locale of ['en', 'ko'] as const) {
+    if (locale === 'ko') {
+      await page.goto('/?lang=ko');
+      await page.locator('#overview').click();
+    }
+    const canvas = await page.locator('.ocean').screenshot();
+    await cover.setContent(introductionHtml(canvas.toString('base64'), locale));
+    await expect(cover.locator('.screen img')).toBeVisible();
+    await cover
+      .locator('.screen img')
+      .evaluate((img: HTMLImageElement) => img.decode());
+    await expect(cover.locator('h1')).toHaveText('Orcatopia');
+    await expect(cover.locator('.demo')).toContainText('DEMO');
+    await cover.screenshot({
+      path: `test-results/landmark-island/orcatopia-introduction${locale === 'ko' ? '.ko' : ''}.png`,
+    });
+  }
+  await cover.close();
 });

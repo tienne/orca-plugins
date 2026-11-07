@@ -2,6 +2,8 @@
 
 English · [한국어](README.ko.md)
 
+![Orcatopia — A little escape between tasks, with an English DEMO garden screen](assets/orcatopia-introduction.png)
+
 Orcatopia is a little island getaway between tasks in Orca. Earn exploration tickets when you create worktrees, discover world landmarks, and arrange a place of your own while you wait. This is an unpublished prototype requiring Orca 1.4.248+.
 
 ## Play

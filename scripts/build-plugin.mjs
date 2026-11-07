@@ -54,11 +54,22 @@ if (plugin === 'git-logs')
     resolve(output, 'licenses/monaco-third-party.txt'),
   );
 
-if (plugin === 'landmark-island')
+if (plugin === 'landmark-island') {
   await copyFile(
     resolve(source, 'licenses/geography.txt'),
     resolve(output, 'licenses/geography.txt'),
   );
+  // README images use the same relative paths in source and installed artifacts.
+  await mkdir(resolve(output, 'assets'), { recursive: true });
+  for (const name of [
+    'orcatopia-introduction.png',
+    'orcatopia-introduction.ko.png',
+  ])
+    await copyFile(
+      resolve(source, 'assets', name),
+      resolve(output, 'assets', name),
+    );
+}
 
 const artifact = await validateArtifact(output);
 console.log(

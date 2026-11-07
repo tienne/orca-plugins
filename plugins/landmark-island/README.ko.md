@@ -2,6 +2,8 @@
 
 [English](README.md) · 한국어
 
+![Orcatopia — 기다리는 시간을, 나만의 섬으로. 한국어 데모 정원 화면](assets/orcatopia-introduction.ko.png)
+
 Orcatopia는 Orca에서 작업을 기다리는 동안 잠시 머무는 나만의 섬입니다. 워크트리를 만들면 탐험권을 받고, 세계의 랜드마크를 발견해 섬을 꾸밀 수 있습니다. Orca 1.4.248 이상이 필요한 미출시 프로토타입입니다.
 
 ## 플레이
