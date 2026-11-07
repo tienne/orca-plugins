@@ -35,7 +35,7 @@ pnpm nx run git-logs:preview
 
 ## Orcatopia
 
-[orcatopia-island.png](orcatopia-island.png)은 에펠탑·타지마할·페트라를 배치한 영문 브라우저 fixture입니다. 전체 페이지 캡처로 DEMO 표시를 유지합니다. 실제 사용자 저장이나 Orca 호스트 캡처가 아닙니다.
+[orcatopia-island.png](orcatopia-island.png)은 에펠탑·타지마할·페트라 주변을 벚나무, 꽃밭, 석재 산책로, 대리석 분수, 카페 벤치와 가로등으로 꾸민 영문 정원 fixture입니다. 기존 게임 장식만 사용하며 보유 수량과 제작 기록을 검증한 배치입니다. 전체 페이지 캡처로 DEMO 표시를 유지합니다. 실제 사용자 저장이나 Orca 호스트 캡처가 아닙니다.
 
 다음 명령으로 다시 생성하고 복사합니다.
 

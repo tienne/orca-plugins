@@ -35,7 +35,7 @@ See the [repository README](../../README.md) and [development guide](../developm
 
 ## Orcatopia
 
-[orcatopia-island.png](orcatopia-island.png) shows the English browser fixture with Eiffel Tower, Taj Mahal and Petra. The full-page capture retains the DEMO label. It contains no real user save and is not a native Orca capture.
+[orcatopia-island.png](orcatopia-island.png) shows an English garden fixture: Eiffel Tower, Taj Mahal and Petra surrounded by cherry trees, flower beds, stone paths, a marble fountain, café benches and lanterns. All decorations use existing game assets and a validated ownership/crafting ledger. The full-page capture retains the DEMO label. It contains no real user save and is not a native Orca capture.
 
 Regenerate and copy it with:
 
