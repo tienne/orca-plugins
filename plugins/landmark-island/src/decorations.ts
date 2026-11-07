@@ -15,7 +15,11 @@ export type Decoration = {
     | 'palm'
     | 'fountain'
     | 'stones'
-    | 'gate';
+    | 'gate'
+    | 'pond'
+    | 'pavilion'
+    | 'roseArch'
+    | 'fernBed';
   color: string;
   walkable: boolean;
 };
@@ -277,6 +281,46 @@ export const decorations: Decoration[] = [
       walkable: false,
     },
   ]),
+  {
+    id: 'fuji-pond',
+    name: 'Moonlit koi pond',
+    landmark: 'fuji',
+    cost: 9,
+    gift: false,
+    shape: 'pond',
+    color: '#80b8ae',
+    walkable: false,
+  },
+  {
+    id: 'taj-pavilion',
+    name: 'Marble garden pavilion',
+    landmark: 'taj',
+    cost: 12,
+    gift: false,
+    shape: 'pavilion',
+    color: '#e4dbc0',
+    walkable: false,
+  },
+  {
+    id: 'eiffel-rose-arch',
+    name: 'Rose-covered archway',
+    landmark: 'eiffel',
+    cost: 9,
+    gift: false,
+    shape: 'roseArch',
+    color: '#bc8e91',
+    walkable: false,
+  },
+  {
+    id: 'angkor-fern-bed',
+    name: 'Fern sanctuary',
+    landmark: 'angkor',
+    cost: 6,
+    gift: false,
+    shape: 'fernBed',
+    color: '#719c72',
+    walkable: false,
+  },
 ];
 export const decorationById = (id: string) =>
   decorations.find((d) => d.id === id);
@@ -355,6 +399,40 @@ export function decorationArt(id: string, rotation = 0) {
       '<path d="M8 75q32-20 64 0v12q-32 19-64 0Z"/><ellipse cx="40" cy="75" rx="30" ry="12" fill="#7fbbbc"/><path d="M33 74V49h14v25M18 45q22 16 44 0l-6 13H24Z"/><ellipse cx="40" cy="45" rx="22" ry="7" fill="#a3d9d2"/><path d="M40 45V21m0 0q-18 0-17 21m17-21q18 0 17 21" stroke="#bfece5" stroke-width="3" fill="none"/>',
     stones:
       '<path d="M6 80l13-28 16 2 7 31-19 9ZM38 82l8-48 17-6 9 51-18 12Z"/><path d="M19 52l4 42m23-60 8 57M8 80l13-5m22 8 23-9" fill="none" stroke="#6e7d69"/><path d="M12 85l12 5 11-5m11-2 9 4 11-8" fill="none" stroke="#799e5e" stroke-width="4"/>',
+    pond: `<path d="M5 72Q-1 55 17 46Q33 36 58 46Q82 53 76 74L68 89Q45 102 16 88Z" fill="#8e9b8a"/>
+      <path d="M7 67Q3 52 25 46Q52 39 72 54Q83 68 63 81Q34 95 12 79Z" fill="#d5ccb0"/>
+      <path d="M12 66Q9 55 28 50Q50 44 66 56Q76 66 59 77Q36 87 18 76Z" fill="#3e7e83" stroke="#667e6b"/>
+      <path d="M16 65Q25 50 45 53Q63 52 67 64Q54 82 30 79Q17 76 16 65Z" fill="#70b9b4" stroke="none"/>
+      <path d="M21 61q12-7 23-5m-21 17q15 6 27 0m8-10 6 1" fill="none" stroke="#d7eee0" stroke-width="1.4"/>
+      <path d="M28 64q9-6 14 2-7 7-14-2l-6 3 1-7z" fill="#e4a16c" stroke="#ab7956" stroke-width=".5"/>
+      <path d="M48 71q5-6 10-2-3 6-10 2l-4 4-1-5z" fill="#f4e2b8" stroke="none"/>
+      <path d="M54 53q8-6 11 1-6 7-11-1l6 1" fill="#628e59"/><path d="M56 53l3-5 3 3 4-1-2 5z" fill="#e0a7b3" stroke="#a8778c" stroke-width=".6"/>
+      <g fill="#c2c6a7" stroke="#7d8b78" stroke-width=".8"><path d="M8 55l9-8 9 2-6 6z"/><path d="M45 44l12 1 9 5-10 2z"/><path d="M65 76l9-8 1 9-6 7z"/><path d="M13 81l12 4 2 7-12-4z"/><path d="M39 88l14-3 4 6-15 4z"/></g>
+      <path d="M7 72Q0 61 5 55m1 16q6-9 5-15M70 86q8-9 6-17" fill="none" stroke="#628750" stroke-width="2"/>`,
+    pavilion: `<path d="M7 81L39 63 75 81 42 101 7 87Z" fill="#9caa97"/><path d="M7 81L39 63 75 81 42 95Z" fill="#e0d7bd"/>
+      <path d="M17 79L40 66 64 79 41 92Z" fill="#a9bcb1"/><path d="M21 81l20 8 17-9" stroke="#f6edd5" fill="none"/>
+      <g fill="#e9e1cb" stroke="#8c9580"><path d="M16 78V37l5 2v42z"/><path d="M37 68V29l5 1v41z"/><path d="M62 80V38l5-2v41z"/><path d="M38 91V48l6 1v39z"/></g>
+      <g fill="#c6c8ac"><path d="M13 76l9-2v7l-9 1zM35 87l11-2v7l-11 3zM60 76l9-2v7l-9 2z"/></g>
+      <path d="M5 37L39 13 75 37 41 55Z" fill="#4d867b"/><path d="M5 37L39 13 41 49Z" fill="#85aaa0"/><path d="M41 49L39 13 75 37Z" fill="#3e6e68"/>
+      <path d="M5 37v7l36 17 34-18v-6L41 53Z" fill="#e2cfaa"/><path d="M14 35l25-17m-12 26 12-26m15 24L41 18m22 20L41 18" stroke="#b6c3a1" stroke-width=".8" fill="none"/>
+      <path d="M35 15l5-10 5 10-5 4z" fill="#d8ba76"/><path d="M40 5V1" stroke="#ae945c"/>
+      <path d="M17 61q-9-9-7-19m8 31q-9-10-6-15m51 8q8-9 6-19" stroke="#679160" stroke-width="2" fill="none"/>
+      <g fill="#93b378" stroke="none"><ellipse cx="10" cy="47" rx="5" ry="3"/><ellipse cx="15" cy="59" rx="5" ry="3"/><ellipse cx="68" cy="51" rx="5" ry="3"/></g>`,
+    roseArch: `<path d="M8 87L40 69 73 88 42 101Z" fill="#b2b49b"/>
+      <path d="M15 85V38Q15 9 39 12Q64 14 64 42v44l-7 4V41Q57 21 39 20Q22 18 22 39v50Z" fill="#d4c6a3"/>
+      <path d="M24 88V43Q24 24 41 27Q57 30 57 45v44" fill="none" stroke="#7c8e71" stroke-width="2"/>
+      <path d="M15 46l8 5m-8 5 8 5m-8 5 8 5m-8 5 8 5m34-32 8-5m-8 15 8-5m-8 15 8-5m-8 15 8-5" stroke="#8c987a" stroke-width="1"/>
+      <path d="M18 87Q9 63 19 40T42 15Q65 14 60 42t2 43" stroke="#557d51" stroke-width="4" fill="none"/>
+      <g fill="#79a462" stroke="#577a4d" stroke-width=".7"><ellipse cx="13" cy="60" rx="7" ry="4" transform="rotate(-35 13 60)"/><ellipse cx="23" cy="43" rx="7" ry="4"/><ellipse cx="25" cy="21" rx="8" ry="4" transform="rotate(-40 25 21)"/><ellipse cx="47" cy="16" rx="8" ry="4"/><ellipse cx="65" cy="37" rx="7" ry="4" transform="rotate(50 65 37)"/><ellipse cx="58" cy="69" rx="7" ry="4"/></g>
+      <g fill="#d9a1af" stroke="#aa7285" stroke-width=".8"><circle cx="17" cy="31" r="6"/><circle cx="35" cy="15" r="7"/><circle cx="56" cy="23" r="6"/><circle cx="64" cy="52" r="6"/><circle cx="15" cy="77" r="5"/></g>
+      <path d="M14 31q2-5 6 0-3 5-5 0m17-16q3-6 7 0-4 5-6 0m20 8q2-4 5 0m-2 29q3-5 6 0m-51 25 3-2" fill="none" stroke="#f5d5d5" stroke-width="1.4"/>
+      <path d="M8 86l18-1-3 10-12-2zM55 88l16-5-1 10-12 5z" fill="#9b8871"/>`,
+    fernBed: `<path d="M6 79L40 60 74 79v10L40 104 6 89Z" fill="#8b9681"/><path d="M6 79L40 60 74 79 40 96Z" fill="#c4bda0"/>
+      <path d="M12 79L40 65 67 79 40 91Z" fill="#64745b"/><path d="M12 90l24 10m9-1 24-12" stroke="#b7b997" fill="none"/>
+      <g fill="none" stroke="#487655" stroke-width="1.6"><path d="M23 84Q17 63 8 57m15 27Q24 55 35 47m8 41Q43 60 58 48m-15 40Q29 63 23 60m32 23Q64 67 72 63"/></g>
+      <g fill="#81ac70" stroke="#567b51" stroke-width=".6"><path d="M19 74Q8 76 8 68q8-2 11 6m-4-9Q4 67 3 59q8-2 12 6m8 7q-3-12 4-15 5 7-4 15m6-13q-3-12 4-15 5 7-4 15m17 15q-4-13 5-17 4 9-5 17m8-14q-3-13 6-16 3 9-6 16m-14 20q-12-2-12-10 9-2 12 10m18-4q6-12 14-8-2 9-14 8"/></g>
+      <path d="M31 79q8-6 16 0l-2 9q-6 5-12 0z" fill="#749e9c"/><ellipse cx="39" cy="79" rx="8" ry="3" fill="#b3d0bc"/>
+      <path d="M38 79V66m-1 7-5-4m8 3 6-6" stroke="#5b8158" fill="none"/><g fill="#d7b5cf" stroke="#a28da4" stroke-width=".5"><circle cx="38" cy="65" r="4"/><circle cx="31" cy="68" r="3"/><circle cx="47" cy="65" r="3"/></g>`,
     gate: '<path d="M16 90V31h8v59m32 0V31h8v59M10 29h60v9H10Zm-5-14q35 10 70 0v10q-35 9-70 0Z"/><path d="M24 47h32v6H24Z"/><path d="M13 22q27 6 54 0" stroke="#ead8ae" fill="none"/>',
   };
   return `<svg class="decoration-art" viewBox="0 0 80 104" aria-hidden="true"><ellipse cx="40" cy="92" rx="31" ry="7" fill="#244e3825"/><g fill="${d.color}" stroke="#53624d" stroke-width="1.3" stroke-linejoin="round">${shapes[d.shape]}</g></svg>`;

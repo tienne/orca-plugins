@@ -70,7 +70,7 @@ try {
   assert.equal(landmarks.length, 36);
   assert.equal(new Set(landmarks.map((l) => l.id)).size, 36);
   assert.equal(new Set(landmarks.map((l) => l.code)).size, 36);
-  assert.equal(decorations.length, 76);
+  assert.equal(decorations.length, 80);
   for (const [tier, count, roll] of [
     ['common', 18, 0.35],
     ['rare', 10, 0.8],
@@ -94,7 +94,10 @@ try {
     assert.match(landmark.descriptionSource, /^https:\/\//);
     assert.ok(landmark.description.length > 100);
     const set = decorations.filter((d) => d.landmark === landmark.id);
-    assert.equal(set.length, 2);
+    assert.equal(
+      set.length,
+      ['fuji', 'taj', 'eiffel', 'angkor'].includes(landmark.id) ? 3 : 2,
+    );
     assert.equal(set.filter((d) => d.gift).length, 1);
     for (const d of set) assert.notEqual(translate(d.name, 'ko-KR'), d.name);
   }
@@ -588,7 +591,53 @@ try {
   for (const landmark of landmarks)
     assert.equal(decorationQuantity(fullCatalog, `${landmark.id}-gift`), 1);
   console.log(
-    'PASS: all 36 catalog draws, 76 decorations, localized descriptions, full-catalog backup and unchanged land cap',
+    'PASS: all 36 catalog draws, 80 decorations, localized descriptions, full-catalog backup and unchanged land cap',
+  );
+
+  // The four focal pieces use the same ownership and durable craft ledger.
+  const focalIds = [
+    'fuji-pond',
+    'taj-pavilion',
+    'eiffel-rose-arch',
+    'angkor-fern-bed',
+  ];
+  let focalSave = fixture([
+    'fuji',
+    'taj',
+    'eiffel',
+    'angkor',
+    ...Array(12).fill('eiffel'),
+  ]);
+  const focalStore = {
+    read: async () => structuredClone(focalSave),
+    write: async (s) => {
+      focalSave = structuredClone(s);
+    },
+  };
+  let focalGame = new Game(focalStore);
+  const lockedGame = new Game({
+    read: async () => fixture(Array(20).fill('giza')),
+    write: async () => {
+      throw Error('Unexpected write');
+    },
+  });
+  for (const [cell, decoration] of focalIds.entries()) {
+    await assert.rejects(lockedGame.craft({ id: decoration, decoration }));
+    await focalGame.craft({ id: decoration, decoration });
+    focalGame = new Game(focalStore);
+    await focalGame.craft({ id: decoration, decoration });
+    assert.equal(decorationQuantity(focalSave, decoration), 1);
+    await focalGame.decorate({ cell, decoration });
+    await assert.rejects(focalGame.decorate({ cell: cell + 10, decoration }));
+  }
+  assert.equal(materials(focalSave), 0);
+  assert.equal(focalSave.crafts.length, 4);
+  assert.deepEqual(decodeBackup(encodeBackup(focalSave)).state, focalSave);
+  await assert.rejects(
+    focalGame.craft({ id: 'unfunded', decoration: focalIds[0] }),
+  );
+  console.log(
+    'PASS: focal garden pieces enforce ownership, exact costs, retry/restart safety, placement quantity and backup round-trip',
   );
 
   let expandedSave = fixture([
