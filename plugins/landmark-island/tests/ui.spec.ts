@@ -504,9 +504,9 @@ test('rarity filters, discoveries and progress distinguish unique landmarks from
   );
   const camera = await page.locator('.camera').getAttribute('style');
   for (const [tier, visible, collected, chance, rank, name] of [
-    ['common', 18, 0, 70, 1, 'Discovery'],
-    ['rare', 10, 0, 23, 2, 'Treasure'],
-    ['epic', 5, 0, 6, 3, 'Marvel'],
+    ['common', 24, 0, 70, 1, 'Discovery'],
+    ['rare', 14, 0, 23, 2, 'Treasure'],
+    ['epic', 7, 0, 6, 3, 'Marvel'],
     ['legendary', 3, 1, 1, 4, 'Wonder'],
   ] as const) {
     const filter = page.locator(`[data-tier-filter="${tier}"]`);
@@ -578,8 +578,8 @@ test('rarity filters, discoveries and progress distinguish unique landmarks from
   );
   await openInventory(page, 'landmarks');
   await page.locator('[data-tier-filter="all"]').click();
-  await expect(page.locator('.collection .card:visible')).toHaveCount(36);
-  await expect(page.locator('[data-tier-filter="all"]')).toContainText('2/36');
+  await expect(page.locator('.collection .card:visible')).toHaveCount(48);
+  await expect(page.locator('[data-tier-filter="all"]')).toContainText('2/48');
   await openInventory(page, 'landmarks');
   await page.locator('.canvas-inventory').screenshot({
     path: 'test-results/landmark-island/rarity-collection-demo.png',
@@ -1560,7 +1560,7 @@ test('material artwork keeps local paint references isolated across collection, 
     save,
   );
   await page.reload();
-  await expect(page.locator('.collection .landmark-art')).toHaveCount(36);
+  await expect(page.locator('.collection .landmark-art')).toHaveCount(48);
   await expect(page.locator('.building .landmark-art')).toHaveCount(2);
   await expect(page.locator('.collection .wonder-art')).toHaveCount(3);
   for (const entry of landmarks) {
@@ -1591,6 +1591,7 @@ test('material artwork keeps local paint references isolated across collection, 
     'petra',
     'angkor',
     'machu',
+    ...landmarks.slice(36).map((l) => l.id),
   ]) {
     await openInventory(page, 'landmarks');
     await page.locator(`[data-info=${id}]`).click();
@@ -1634,7 +1635,7 @@ test('material artwork keeps local paint references isolated across collection, 
       })
       .join('');
     document.body.innerHTML = `<main id="art-review"><h1>DEMO · New destinations</h1><div>${cards}</div></main>`;
-  }, landmarks.slice(24));
+  }, landmarks.slice(36));
   await page.addStyleTag({
     content: `
     body { margin: 0; background: #ede9d3; color: #344b3d; }
@@ -1648,7 +1649,7 @@ test('material artwork keeps local paint references isolated across collection, 
   `,
   });
   await page.screenshot({
-    path: 'test-results/landmark-island/new-destinations-36-demo.png',
+    path: 'test-results/landmark-island/new-destinations-48-demo.png',
     fullPage: true,
   });
 });
@@ -1661,7 +1662,7 @@ test('new discoveries grow land, gifts unlock sets, duplicates craft chosen deco
     Math.random = () => {
       const tierRoll =
         (window as unknown as { fixtureRoll?: number }).fixtureRoll ?? 0.8;
-      return roll++ % 2 === 0 ? tierRoll : tierRoll === 0.71 ? 3.5 / 10 : 0;
+      return roll++ % 2 === 0 ? tierRoll : tierRoll === 0.71 ? 3.5 / 14 : 0;
     };
   });
   await page.goto('/');
@@ -2458,6 +2459,14 @@ for (const wave of [
     featuredName: '킬리만자로',
     featuredFact: '5,895미터',
   },
+  {
+    start: 36,
+    featured: 'halong',
+    firstName: '프라하 천문시계',
+    firstFact: '황도대',
+    featuredName: '하롱베이',
+    featuredFact: '석회암',
+  },
 ])
   test(`expanded catalog wave ${wave.start / 12} draws landmarks, grants sets and preserves an old island`, async ({
     page,
@@ -2490,7 +2499,7 @@ for (const wave of [
     const entries = landmarks.slice(wave.start, wave.start + 12);
     await expect(page.locator('#discovery-progress')).toHaveAttribute(
       'max',
-      '36',
+      '48',
     );
     const tierRolls = { common: 0.35, rare: 0.8, epic: 0.95, legendary: 0.995 };
     for (const entry of entries) {

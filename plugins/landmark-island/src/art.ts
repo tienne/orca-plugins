@@ -377,6 +377,157 @@ export function art(id: string) {
     body = `${surface('M2 113l18-24 14-15 11-20 7-16 27-6 13 15 8 26 25 40z', 'mountain', 'grain')}<path d="M78 33L66 60l11 28 10 27h38l-25-42-8-26z" fill="#364e59" opacity=".6"/>
       ${surface('M40 62l5-8 7-16 27-6 13 15 6 19-13-7-5 6-11-11-8 8-6-8-8 10z', 'snow', 'grain')}${line('M52 40l13 1 13-6 12 13M56 63l-9 23-12 16m47-34 10 23 12 17M64 75l-4 29', '#c6d4d1', 1, 0.65)}
       <path d="M2 112l16-6 8 4 13-8 14 6 13-4 16 5 14-7 17 9 12 1v11H2z" fill="${url('grass')}"/><path d="M5 118q34-3 58 1t61-1v5H5z" fill="#b1a66f"/>${line('M16 116v-10m-6 1q6-7 13 0m-10-2h8', '#3e5846', 1.6, 1)}`;
+  } else if (id === 'pragueclock') {
+    body = `${surface('M32 120V33l32-9 31 10v86z')}${surface('M64 24l31 10v86H64z', 'slate')}
+      <path d="M25 34L63 6l39 29-38-9z" fill="${url('slate')}"/>${line('M63 6v20M27 34l37-8 36 9', '#d2c3a0', 1)}
+      ${rows(4, (i) => arch(38 + i * 12, 36, 6, 12))}
+      <path d="M35 52h46v65H35z" fill="#c4b28c"/><path d="M39 53h37v30H39z" fill="#544b3c"/>
+      <circle cx="57" cy="68" r="13" fill="#334d57" stroke="#d9b668" stroke-width="1.7"/><circle cx="57" cy="68" r="9" fill="none" stroke="#c9a35c"/>
+      <circle cx="60" cy="66" r="6" fill="none" stroke="#e3c882" stroke-width=".8"/>
+      ${rows(12, (i) => {
+        const a = (i * Math.PI) / 6;
+        return line(
+          `M${57 + 11 * Math.cos(a)} ${68 + 11 * Math.sin(a)}l${1.8 * Math.cos(a)} ${1.8 * Math.sin(a)}`,
+          '#f7e4a6',
+          0.7,
+        );
+      })}
+      ${line('M57 68l8-8m-8 8-8 3', '#f7d277', 1.2, 1)}
+      <circle cx="57" cy="99" r="13" fill="${url('gold')}" stroke="#78664c"/><circle cx="57" cy="99" r="8" fill="#839c91"/>
+      ${rows(12, (i) => {
+        const a = (i * Math.PI) / 6;
+        return `<circle cx="${57 + 10 * Math.cos(a)}" cy="${99 + 10 * Math.sin(a)}" r="1.5" fill="#f5dfae"/>`;
+      })}
+      ${line('M32 51h63M32 117h63M83 57v55', '#eee0c0', 1)}${arch(84, 61, 5, 13)}`;
+  } else if (id === 'parliament') {
+    body = `${surface('M4 119V80h120v39z')}${surface('M10 80V69h108v11z')}
+      <path d="M5 70l12-16 14 16 15-16 18 16 18-16 18 16 13-16 12 16z" fill="#9d675c"/>
+      ${rows(12, (i) => `${arch(9 + i * 9.3, 84, 4.6, 17)}${arch(9 + i * 9.3, 105, 4.6, 10)}`)}
+      ${surface('M45 119V59h38v60z')}
+      <path d="M43 61Q43 34 64 21Q85 34 85 61Z" fill="#a66e60" stroke="#6d584a"/>
+      ${rows(7, (i) => line(`M64 21Q${44 + i * 6} 40 ${45 + i * 6} 61`, '#e1b68e', 0.9))}
+      <path d="M58 26V17h12v9z" fill="${url('stone')}"/><path d="M59 17l5-12 5 12z" fill="#807761"/>
+      ${line('M64 5V0M43 61h42M44 68h40M4 117h120', '#e6d8b8', 1.1)}
+      ${rows(4, (i) => arch(49 + i * 8, 73, 5, 18))}${arch(58, 99, 12, 20)}
+      ${rows(8, (i) => {
+        const x = 8 + i * 16;
+        return `<path d="M${x} 82V56h3v26z" fill="${url('stone')}"/><path d="M${x - 2} 56l3.5-13 3.5 13z" fill="#9b6956"/>`;
+      })}`;
+  } else if (id === 'schonbrunn') {
+    body = `<path d="M4 113l58-20 62 20-60 12z" fill="#82966a"/>${surface('M6 108V61h116v47z')}
+      <path d="M6 65h116v43H6z" fill="#dfc277"/><path d="M4 62l8-14h104l9 14z" fill="${url('slate')}"/>
+      ${rows(12, (i) => `${arch(10 + i * 9.3, 69, 4.5, 12, '#5c706c')}${arch(10 + i * 9.3, 88, 4.5, 13, '#5c706c')}`)}
+      ${surface('M47 109V52h34v57z')}
+      <path d="M43 54l21-17 22 17z" fill="#e5cd89" stroke="#9b8966"/><circle cx="64" cy="49" r="3.5" fill="#526665"/>
+      ${rows(4, (i) => `<path d="M${49 + i * 9} 58v46" stroke="#efe2b3" stroke-width="3"/>`)}
+      ${arch(58, 88, 12, 21)}${line('M6 84h116M6 106h116M46 55h37', '#f7e9bd', 1.5)}
+      <path d="M57 109h15l10 13H46z" fill="#c4bb9a"/><path d="M14 115l20-6 14 4-20 6zm67-2 14-4 20 6-14 4z" fill="#5e804f"/>
+      ${rows(5, (i) => `<circle cx="${16 + i * 4}" cy="115" r="1.3" fill="#d8a9ad"/><circle cx="${95 + i * 4}" cy="115" r="1.3" fill="#d8a9ad"/>`)}`;
+  } else if (id === 'matterhorn') {
+    body = `${surface('M3 119l29-42 20-32 15-37 9 4 8 37 18 34 24 36z', 'mountain', 'grain')}
+      <path d="M67 8L58 69 32 117H5l27-40 20-32z" fill="#b4b9ac" opacity=".6"/>
+      ${surface('M52 45L67 8l9 4 8 37-9-9-5 10-5-16-6 18z', 'snow', 'grain')}
+      <path d="M76 12l-6 38 10 25 24 43H64l-6-49 9-61z" fill="#4c606c" opacity=".5"/>
+      ${line('M67 8l-9 61-26 48M76 12l8 37 18 34M56 61L31 98m33-37 3 40m15-37 16 33M38 84l-8 17', '#e2e5d9', 1.2)}
+      ${line('M18 110l23-13 10 4m30-7 17 8 13-3M8 119h117', '#bfd0c6', 1)}
+      <path d="M5 119l23-8 15 6 21-5 20 7 23-5 18 5z" fill="#718b6d"/>`;
+  } else if (id === 'mermaid') {
+    body = `<ellipse cx="64" cy="114" rx="55" ry="10" fill="#82b8b4" opacity=".65"/>${surface('M27 115L23 91l14-20 29-8 26 16 11 32-29 10z', 'slate', 'grain')}
+      ${line('M25 92l26-10 22 12 18-15M51 82l6 35M73 94l-3 23', '#c8c6ad', 1)}
+      ${surface('M51 76l5-20-3-12 9-5 11 5 3 19-5 8 15 9-7 11-18 6-15 14-9-2 15-22-2-11z', 'copper', 'grain')}
+      <ellipse cx="62" cy="32" rx="9" ry="11" fill="${url('copper')}" transform="rotate(-18 62 32)"/>
+      <path d="M54 34q-9-18 7-18 13 2 10 17l-5-12-8 3z" fill="#47665b"/>
+      ${line('M58 31l-2 5 5 3M56 47l-9 20 7 14m16-32 7 14-11 13M57 83l18 3-19 13-11 10', '#a8c4ac', 1.5, 0.85)}
+      <path d="M44 108l-10 4 5 4 12-7" fill="#659180"/>
+      ${line('M10 114q8 3 17 0m66 1q12 3 25-1M37 122h15', '#d8e9d7', 1.3)}`;
+  } else if (id === 'borgund') {
+    body = `${surface('M13 118V82h100v36z', 'iron', 'grain')}
+      ${rows(19, (i) => line(`M${17 + i * 5} 87v28`, '#c2a67f', 0.8, 0.5))}
+      ${surface('M33 89V57h62v32z', 'iron', 'grain')}${surface('M47 60V36h34v24z', 'iron', 'grain')}
+      <path d="M5 84l25-27h67l26 27-59 5zM22 60l21-25h42l23 25-44 5zM38 38L63 14l26 24-25 5z" fill="${url('slate')}"/>
+      ${rows(6, (i) => line(`M${8 + i * 4} ${81 - i * 4}H${120 - i * 4}`, '#bca98b', 0.65, 0.6))}
+      ${rows(4, (i) => line(`M${26 + i * 4} ${57 - i * 5}H${104 - i * 4}`, '#c4ad87', 0.7, 0.65))}
+      <path d="M57 35V19h14v16z" fill="${url('iron')}"/><path d="M52 20L64 1l12 19z" fill="#514c40"/>
+      ${line('M64 1v-1M30 57l-8-7-5 2 7 3m74 2 8-7 5 2-7 3M43 35l-7-6-5 2m54 4 7-6 5 2', '#5b4836', 2, 1)}
+      ${arch(52, 92, 22, 26, '#302e27')}${line('M48 118V95q0-13 15-13t15 13v23', '#a28a67', 2, 0.9)}
+      ${rows(5, (i) => arch(18 + i * 20, 91, 5, 11, '#302e27'))}`;
+  } else if (id === 'helsinki') {
+    body = `${surface('M5 120v-5h5v-5h6v-5h96v5h6v5h5v5z', 'marble')}${surface('M16 105V66h96v39z', 'marble')}
+      <path d="M15 67l23-16h52l23 16z" fill="${url('copper')}"/>
+      ${surface('M47 65V44h34v21z', 'marble')}
+      <path d="M45 44Q44 24 64 19Q84 24 83 44z" fill="${url('copper')}"/><path d="M60 20V12h8v8" fill="${url('gold')}"/>
+      ${line('M64 13V4m-4 4h8M47 44h34', '#e6d7ad', 1.1)}
+      ${[26, 102].map((x) => `${surface(`M${x - 8} 68V51h16v17z`, 'marble')}<path d="M${x - 10} 51q0-16 10-17 10 1 10 17z" fill="${url('copper')}"/>${line(`M${x} 34v-7m-3 3h6`, '#cbb681', 0.9)}`).join('')}
+      ${surface('M35 105V76h58v29z', 'marble')}<path d="M31 76l33-21 33 21z" fill="${url('marble')}" stroke="#9ba89d"/>
+      ${rows(6, (i) => `<path d="M${38 + i * 10} 79v24" stroke="#f9f6e9" stroke-width="4"/><path d="M${40 + i * 10} 79v24" stroke="#9ca89d" stroke-width=".9"/>`)}
+      ${arch(58, 83, 12, 22)}${line('M6 115h116M12 110h104M18 105h92M33 77h62', '#a8ada0', 0.8)}`;
+  } else if (id === 'obelisco') {
+    body = `<path d="M22 114l42-15 42 15-42 12z" fill="#8ca175"/>${surface('M44 119v-7h40v7z', 'marble')}
+      ${surface('M51 112l5-94 8-15 8 15 5 94z', 'marble', 'grain')}
+      <path d="M64 3l8 15 5 94H64z" fill="#98a9a4" opacity=".65"/>
+      ${line('M64 3v109M56 18h16M52 101h24', '#edf0df', 0.8)}
+      <path d="M59 25h3v5h-3zM67 25h3v5h-3zM59 92h4v12h-4z" fill="#506464"/>
+      ${rows(6, (i) => line(`M${54 + i * 0.12} ${65 + i * 3}h7`, '#878f84', 0.6, 0.7))}
+      <path d="M22 109V80m84 29V80" stroke="#7c8068" stroke-width="1.5"/>
+      <path d="M22 81h15v10H22zM106 81h-15v10h15z" fill="#a9d2d7"/><path d="M22 84h15v3H22zM106 84h-15v3h15z" fill="#f6edda"/>
+      ${line('M34 117h14m32 0h14', '#e3d6b3', 1)}`;
+  } else if (id === 'dubrovnik') {
+    body = `<path d="M4 112q35-8 64 0t57 0v8H4z" fill="#79aeb1"/>
+      ${rows(7, (i) => {
+        const x = 15 + i * 13,
+          y = 72 + (i % 2) * 8;
+        return `${surface(`M${x} ${y + 29}v-24h12v24z`)}<path d="M${x - 2} ${y + 5}l8-10 9 10z" fill="#b6795f"/>${arch(x + 4, y + 12, 3, 9)}`;
+      })}
+      ${surface('M7 113V82l18-5 14 13 54-4 25-13v40L76 124 33 119z')}
+      ${surface('M6 85V65l17-5 16 8v24L23 98 6 92z')}${surface('M91 87V63l14-5 17 7v28l-16 5z')}
+      ${rows(5, (i) => `<path d="M${7 + i * 6} ${66 + (i > 2 ? 3 : 0)}v-7h4v7" fill="${url('stone')}"/>`)}
+      ${rows(5, (i) => `<path d="M${92 + i * 6} 66v-7h4v7" fill="${url('stone')}"/>`)}
+      ${rows(9, (i) => `<path d="M${39 + i * 6} ${89 - i * 0.04}v-5h4v5" fill="${url('stone')}"/>`)}
+      ${arch(59, 99, 14, 23)}${arch(17, 72, 5, 12)}${arch(101, 72, 5, 12)}
+      ${line('M7 92l16 6 16-6M92 92l14 6 16-5M39 97l52-3', '#f0dfb5', 1.2)}
+      ${line('M5 119h20m82 4h16', '#d9e8d4', 1.2)}`;
+  } else if (id === 'boudhanath') {
+    body = `${surface('M8 117V107l56-15 56 15v10l-56 10z', 'marble')}${surface('M17 105V95l47-14 47 14v10l-47 13z', 'marble')}
+      <path d="M25 96a39 39 0 0 1 78 0q-39 19-78 0z" fill="${url('marble')}"/><path d="M64 57q30 5 33 39l-18 7Q90 72 64 57" fill="#acb7ad" opacity=".4"/>
+      ${surface('M50 60V38h28v22z', 'gold', 'grain')}
+      <path d="M48 38l16-29 16 29z" fill="${url('gold')}"/>${rows(6, (i) => line(`M${50 + i * 2} ${35 - i * 4}h${28 - i * 4}`, '#7c633c', 0.8))}
+      ${line('M64 10V2', '#b4914c', 1.2)}<ellipse cx="64" cy="5" rx="4" ry="1.2" fill="#d9b56d"/><circle cx="64" cy="2" r="1.2" fill="#e5ca84"/>
+      <path d="M52 46q5-5 10 0-5 5-10 0m14 0q5-5 10 0-5 5-10 0" fill="#faf1d4" stroke="#355459" stroke-width="1"/><circle cx="57" cy="46" r="1.4" fill="#244343"/><circle cx="71" cy="46" r="1.4" fill="#244343"/>
+      ${line('M64 48q-4 4 0 6q4 2 0 4', '#476b70', 1)}
+      ${line('M64 21Q37 68 8 91M64 21q28 47 56 70', '#8a947b', 0.65)}
+      ${rows(8, (i) => {
+        const x = 14 + i * 5,
+          y = 87 - i * 7;
+        return `<path d="M${x} ${y}l5-5 1 8-5 4z" fill="${['#ba7465', '#6b9494', '#d8c27a', '#ece5ca'][i % 4]}"/><path d="M${128 - x} ${y}l-5-5-1 8 5 4z" fill="${['#7c9b78', '#d8c27a', '#b97568', '#719798'][i % 4]}"/>`;
+      })}
+      ${line('M17 105l47 13 47-13M8 117l56 10 56-10', '#c1c4ad', 0.9)}`;
+  } else if (id === 'halong') {
+    body = `<path d="M3 101q27-14 58-5t64 6v17q-33 10-63 2t-59-2z" fill="#75aaa6"/><ellipse cx="64" cy="112" rx="56" ry="9" fill="#91c5b8" opacity=".5"/>
+      ${[
+        [10, 52, 27, 54],
+        [43, 19, 32, 85],
+        [86, 42, 31, 62],
+      ]
+        .map(
+          ([x, y, w, h]) =>
+            `${surface(`M${x} ${y + h}l3-${h - 15} 7-13 9-2 ${w - 19} 8 5 ${h - 8}z`, 'slate', 'grain')}<path d="M${x + 3} ${y + 15}l7-13 9-2 ${w - 19} 8 1 12-9-6-6 7-6-8z" fill="#6e925f"/>${rows(4, (i) => line(`M${x + 7 + i * 5} ${y + 19}l-2 ${h - 22}`, '#b2b7a1', 0.7, 0.7))}`,
+        )
+        .join('')}
+      ${line('M7 108q12 4 23 0m6 7q11 3 21 0m39-3q11 3 22-1', '#d5e6cd', 1.2)}
+      <path d="M54 111h32l-8 8H61z" fill="#74624b"/><path d="M69 110V67" stroke="#856d50" stroke-width="1.2"/>
+      <path d="M68 72q-17 10-17 32h17zM71 78q12 11 13 26H71z" fill="#d5b177" stroke="#a48259" stroke-width=".7"/>
+      ${rows(4, (i) => line(`M${54 - i * 0.4} ${85 + i * 5}H68`, '#94714f', 0.7))}`;
+  } else if (id === 'hegra') {
+    body = `${surface('M7 116L9 54l11-29 19-11 51 1 22 25 10 76-58 9z', 'sandstone', 'grain')}
+      <path d="M90 15l22 25 10 76-26 5-5-77z" fill="#926149" opacity=".65"/>
+      ${surface('M29 119V50h60v69z', 'stone')}
+      <path d="M24 52V40h8v-8h8v-8h10v8h8v8h8v-8h8v-8h10v8h8v8h6v12z" fill="${url('stone')}"/>
+      ${line('M24 52h74M29 57h60M29 67h60M32 42h60', '#f5dcb3', 1.3)}
+      ${rows(2, (i) => `${surface(`M${32 + i * 48} 117V68h7v49z`)}${line(`M${34 + i * 48} 70v45`, '#f7debd', 1)}`)}
+      <path d="M45 117V86h28v31z" fill="#4d3e31"/>
+      <path d="M40 85l19-14 20 14z" fill="${url('stone')}" stroke="#b49a74"/>
+      ${line('M43 87h33M48 90v26M70 90v26M12 57l11-9m78 16 10 7M17 90l7-4m78 16 11 3', '#edc5a3', 1, 0.6)}
+      <path d="M5 119l25-4 13 6 29-2 24 3 26-5v6H5z" fill="#cfaa7b"/>`;
   } else if (id === 'giza') {
     body = `${surface('M6 112L56 18l66 94z')}
       <path d="M56 18l16 94h50z" fill="#8c704c" opacity=".6"/><path d="M56 18l-7 14 9-1z" fill="#f4e5c0"/>

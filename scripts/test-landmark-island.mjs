@@ -67,14 +67,14 @@ try {
   const { decorations } = await import(
     pathToFileURL(join(dir, 'decorations.mjs'))
   );
-  assert.equal(landmarks.length, 36);
-  assert.equal(new Set(landmarks.map((l) => l.id)).size, 36);
-  assert.equal(new Set(landmarks.map((l) => l.code)).size, 36);
-  assert.equal(decorations.length, 80);
+  assert.equal(landmarks.length, 48);
+  assert.equal(new Set(landmarks.map((l) => l.id)).size, 48);
+  assert.equal(new Set(landmarks.map((l) => l.code)).size, 48);
+  assert.equal(decorations.length, 104);
   for (const [tier, count, roll] of [
-    ['common', 18, 0.35],
-    ['rare', 10, 0.8],
-    ['epic', 5, 0.95],
+    ['common', 24, 0.35],
+    ['rare', 14, 0.8],
+    ['epic', 7, 0.95],
     ['legendary', 3, 0.995],
   ]) {
     const pool = landmarks.filter((l) => l.tier === tier);
@@ -101,10 +101,10 @@ try {
     assert.equal(set.filter((d) => d.gift).length, 1);
     for (const d of set) assert.notEqual(translate(d.name, 'ko-KR'), d.name);
   }
-  assert.equal(translate('/ 36 discovered', 'ko-KR'), '/ 36종 발견');
+  assert.equal(translate('/ 48 discovered', 'ko-KR'), '/ 48종 발견');
   assert.equal(
-    translate('36-landmark prototype', 'ko-KR'),
-    '랜드마크 36종 프로토타입',
+    translate('48-landmark prototype', 'ko-KR'),
+    '랜드마크 48종 프로토타입',
   );
 
   assert.equal(
@@ -575,7 +575,7 @@ try {
   const fullCatalog = fixture(landmarks.map((l) => l.id));
   fullCatalog.placements = landmarks.map((l, i) => ({
     landmark: l.id,
-    cell: i,
+    cell: landTiles[i].id,
   }));
   fullCatalog.decorations = landmarks.map((l, i) => ({
     decoration: `${l.id}-gift`,
@@ -583,7 +583,7 @@ try {
   }));
   // Use unlocked land addresses rather than assuming every outer cell is land.
   fullCatalog.decorations.forEach(
-    (d, i) => (d.cell = landTiles.filter((t) => t.id >= 36)[i].id),
+    (d, i) => (d.cell = landTiles[landmarks.length + i].id),
   );
   assert.deepEqual(decodeBackup(encodeBackup(fullCatalog)).state, fullCatalog);
   assert.equal(islandLand(fullCatalog).length, 318);
@@ -591,7 +591,7 @@ try {
   for (const landmark of landmarks)
     assert.equal(decorationQuantity(fullCatalog, `${landmark.id}-gift`), 1);
   console.log(
-    'PASS: all 36 catalog draws, 80 decorations, localized descriptions, full-catalog backup and unchanged land cap',
+    'PASS: all 48 catalog draws, 104 decorations, localized descriptions, full-catalog backup and unchanged land cap',
   );
 
   // The four focal pieces use the same ownership and durable craft ledger.
@@ -640,11 +640,7 @@ try {
     'PASS: focal garden pieces enforce ownership, exact costs, retry/restart safety, placement quantity and backup round-trip',
   );
 
-  let expandedSave = fixture([
-    ...landmarks.map((l) => l.id),
-    'greatwall',
-    'greatwall',
-  ]);
+  let expandedSave = fixture([...landmarks.map((l) => l.id), 'hegra', 'hegra']);
   const expandedGame = new Game({
     read: async () => expandedSave,
     write: async (s) => {
@@ -653,15 +649,15 @@ try {
   });
   await expandedGame.craft({
     id: 'expanded-craft',
-    decoration: 'greatwall-special',
+    decoration: 'hegra-special',
   });
   await expandedGame.craft({
     id: 'expanded-craft',
-    decoration: 'greatwall-special',
+    decoration: 'hegra-special',
   });
   assert.equal(materials(expandedSave), 0);
-  assert.equal(decorationQuantity(expandedSave, 'greatwall-special'), 1);
-  assert.equal(decorationQuantity(expandedSave, 'greatwall-gift'), 1);
+  assert.equal(decorationQuantity(expandedSave, 'hegra-special'), 1);
+  assert.equal(decorationQuantity(expandedSave, 'hegra-gift'), 1);
   assert.deepEqual(
     decodeBackup(encodeBackup(expandedSave)).state,
     expandedSave,
