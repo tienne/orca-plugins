@@ -1,8 +1,8 @@
-# Landmark rarity criteria — draft 1
+# Landmark rarity criteria — allocation revision 2
 
 [한국어](landmark-rarity-criteria.ko.md)
 
-Status: internal design proposal, 2026-11-07. This document does not change the catalog, draw probabilities, saved inventory or artwork. Scores, scoring criteria and selection explanations are not intended for the player UI. Existing rarity names, colors and effects remain the player-facing presentation.
+Status: internal allocation policy, revision 2, 2026-11-07. The user authorized a descending number of entries per tier. This revision supersedes draft 1's absolute-score tier bands. The 18/10/5/3 allocation is implemented in the source catalog; internal scores and reasons remain outside the player UI. This is an editorial prototype allocation using the latest conversational assessment, not a completed independent recognition or heritage study.
 
 ## Purpose and limits
 
@@ -37,26 +37,13 @@ The anchors guide judgment; they do not turn editorial opinions into measurement
 - Landscape impact concerns representative views and spatial relationships. It does not measure the quality of the current SVG, animation budget, seasonal lighting or a single dramatic photograph. Small sites can score highly through composition and setting.
 - One fact can inform two axes only with separate explanations. For example, height may affect landscape impact; a distinct engineering system needs separate evidence to affect significance. Do not award the same height bonus four times.
 
-## Collection ranks
+## Collection ranks — capacity policy
 
-| Rank        | Weighted total                    | Meaning within the game                                    |
-| ----------- | --------------------------------- | ---------------------------------------------------------- |
-| I Discovery | Below 60                          | A place to discover, with a meaningful identity of its own |
-| II Treasure | 60–74                             | A distinctive destination supported by several strengths   |
-| III Marvel  | 75–89                             | A strong centerpiece for the collection                    |
-| IV Wonder   | 90–100, plus the conditions below | An exceptional collection goal                             |
+For 36 entries, allocate 3 Wonder, 5 Marvel, 10 Treasure and 18 Discovery slots. Rank by weighted total, then distinctiveness, significance, recognition and landscape impact, in that order. Exact ties across a cutoff require an explicit editorial decision; item IDs must not decide a tier. No cutoff in this snapshot splits an exact tie.
 
-A Wonder must also have distinctiveness **at least 4**, significance **at least 4**, and **at least one of these two ratings equal to 5**. If the total is 90 or more but these conditions fail, assign Marvel. Recognition and visual spectacle alone cannot produce a Wonder. These are proposed boundaries, not implemented draw rules.
+Wonder eligibility retains the previous safeguards: total at least 90, distinctiveness and significance at least 4, and at least one of those two ratings 5. Choose the three highest eligible candidates. If fewer than three qualify, give unused slots to Marvel. Allocate Marvel, Treasure and Discovery from the remaining ranked candidates. Other tiers no longer use absolute score boundaries; a high-scoring entry can be Discovery within this selected catalog.
 
-Example calculations use fictional candidates, not assessed real landmarks:
-
-| Candidate                                                        | Recognition / distinctiveness / significance / impact | Total | Result                               |
-| ---------------------------------------------------------------- | ----------------------------------------------------- | ----- | ------------------------------------ |
-| Local destination with a distinctive identity                    | 2 / 3 / 3 / 3                                         | 54    | Discovery                            |
-| Regional destination with international interest                 | 3 / 3 / 4 / 3                                         | 65    | Treasure                             |
-| Widely recognized, distinctive landmark                          | 5 / 4 / 4 / 4                                         | 86    | Marvel                               |
-| Widely recognized place with exceptional distinctiveness         | 5 / 5 / 4 / 4                                         | 92    | Wonder                               |
-| Visually spectacular but weak in historical/natural significance | 5 / 5 / 3 / 5                                         | 90    | Marvel: significance condition fails |
+Future catalog sizes need an explicit capacity review using this descending shape as a guide. The runtime does not calculate scores or automatically demote existing entries when content is added. Reassessment, tie decisions and capacity changes are versioned editorial operations.
 
 ## Evidence and uncertainty
 
@@ -66,7 +53,7 @@ Use official site documentation, heritage assessments, research and credible vis
 
 Record uncertainty as a plausible integer interval for each contested axis, for example recognition 3–4. Calculate the lowest and highest possible ranks including the Wonder conditions. If they differ, mark the proposed reassignment pending and collect better evidence. Do not invent a confidence percentage or average unsupported alternatives into a precise score. A one-point change shifts the total by 3, 5 or 6, so a score such as 89 is not a measured fact one unit below 90.
 
-Review candidates within five points of a rank boundary (60, 75, 90), all possible Wonders, and apparent inconsistencies between comparable sites. This is a consistency check, not an invitation to nudge a favorite over the line. Unresolved existing entries retain their current implemented rank until the reassessment is resolved. A pending new entry is not assigned zero or automatically added to the draw pool.
+Review candidates near a capacity cutoff, all possible Wonders, and apparent inconsistencies between comparable sites. This is a consistency check, not an invitation to nudge a favorite over the line. Unresolved existing entries retain their current implemented rank until the reassessment is resolved. A pending new entry is not assigned zero or automatically added to the draw pool.
 
 ## Applying the draft to the catalog
 
@@ -74,10 +61,55 @@ Review candidates within five points of a rank boundary (60, 75, 90), all possib
 2. Assess the four axes without looking at the old rarity. Record evidence and uncertainty, including comparators outside this small catalog.
 3. Compare like cases for consistent anchors, including human-built and natural sites. Resolve boundary cases before assigning final proposals.
 4. Produce a review table of current rank, proposed rank, evidence status and reason. Do not reuse the earlier conversational scores as established facts.
-5. Inspect the resulting game economy separately. Do not force fixed numbers of items into tiers or lower the rank of one culture to fill Discovery. A catalog of internationally famous destinations may naturally have few Discovery entries; smaller destinations can be added for variety.
+5. Inspect the resulting game economy separately. Do not alter assessment scores to manufacture a desired allocation; the user-authorized capacities determine the collection ranks. Do not lower a culture’s assessment to fill a tier. A catalog of internationally famous destinations may naturally have few Discovery entries; smaller destinations can be added for variety.
 6. Before any implementation, calculate per-item odds using actual pool sizes and check for empty pools. The current tier probabilities are 70/23/6/1%; those probabilities are unchanged by this document. An empty pool must be handled explicitly before changing runtime tier assignments.
 7. If implemented later, preserve all existing item IDs, quantities, receipts, placements, gifts and unlocked land. Reassessment must not reroll past draws or award extra items. Explain changed badge/effect behavior in release documentation without exposing the internal scorecard in the game.
 
 ## Revision policy
 
 Reassess on substantive new evidence, a clarified site scope or a documented rubric revision. Do not change rarity in response to transient search trends, a new visual asset or a desired daily draw result. Apply rubric revisions consistently across the catalog rather than selectively boosting new additions.
+
+## Implemented editorial snapshot (2026-11-07)
+
+This snapshot uses the latest 36-item reassessment shown in the conversation and the subsequently approved capacity policy. Scores are editorial estimates; independent recognition evidence and comparator reviews are incomplete. That limitation remains explicit even though the user authorized implementing the game allocation. No new historical claims or source verification are asserted here. Source links for descriptive facts remain in the bundled catalog. A future evidence review may propose a versioned change; it does not happen automatically.
+
+Machu Picchu ranks first (95). Petra and Angkor Wat follow (94, distinctiveness 5); they precede the other 94-point entries whose distinctiveness is 4. At the Treasure cutoff, Chichen Itza and Saint Basil’s Cathedral (80, distinctiveness 4) precede the Statue of Liberty (80, distinctiveness 3). These rules account for the changed tiers without changing anyone's scores.
+
+| Landmark                | Recognition / distinctiveness / significance / impact | Total | Implemented rank |
+| ----------------------- | ----------------------------------------------------- | ----- | ---------------- |
+| Machu Picchu            | 5 / 5 / 4 / 5                                         | 95    | IV Wonder        |
+| Angkor Wat              | 4 / 5 / 5 / 5                                         | 94    | IV Wonder        |
+| Petra                   | 4 / 5 / 5 / 5                                         | 94    | IV Wonder        |
+| Great Pyramid of Giza   | 5 / 4 / 5 / 5                                         | 94    | III Marvel       |
+| Great Wall of China     | 5 / 4 / 5 / 5                                         | 94    | III Marvel       |
+| Taj Mahal               | 5 / 4 / 5 / 5                                         | 94    | III Marvel       |
+| Colosseum               | 5 / 4 / 5 / 4                                         | 91    | III Marvel       |
+| Sagrada Família         | 4 / 5 / 4 / 5                                         | 89    | III Marvel       |
+| Moai of Rapa Nui        | 4 / 5 / 4 / 4                                         | 86    | II Treasure      |
+| Sydney Opera House      | 4 / 5 / 4 / 4                                         | 86    | II Treasure      |
+| Eiffel Tower            | 5 / 4 / 4 / 4                                         | 86    | II Treasure      |
+| Borobudur Temple        | 3 / 5 / 5 / 4                                         | 85    | II Treasure      |
+| Acropolis of Athens     | 4 / 4 / 5 / 4                                         | 85    | II Treasure      |
+| Hagia Sophia            | 4 / 4 / 5 / 4                                         | 85    | II Treasure      |
+| Burj Khalifa            | 4 / 4 / 4 / 5                                         | 83    | II Treasure      |
+| Stonehenge              | 4 / 4 / 5 / 3                                         | 82    | II Treasure      |
+| Saint Basil’s Cathedral | 4 / 4 / 4 / 4                                         | 80    | II Treasure      |
+| Chichén Itzá            | 4 / 4 / 4 / 4                                         | 80    | II Treasure      |
+| Statue of Liberty       | 5 / 3 / 4 / 4                                         | 80    | I Discovery      |
+| Christ the Redeemer     | 5 / 3 / 3 / 5                                         | 78    | I Discovery      |
+| Sigiriya                | 3 / 4 / 4 / 5                                         | 77    | I Discovery      |
+| Sossusvlei              | 3 / 4 / 4 / 5                                         | 77    | I Discovery      |
+| Mount Fuji              | 4 / 3 / 4 / 5                                         | 77    | I Discovery      |
+| Mount Kilimanjaro       | 4 / 3 / 4 / 5                                         | 77    | I Discovery      |
+| Shwedagon Pagoda        | 3 / 4 / 4 / 4                                         | 74    | I Discovery      |
+| Petronas Twin Towers    | 4 / 3 / 3 / 4                                         | 69    | I Discovery      |
+| Brandenburg Gate        | 4 / 3 / 4 / 2                                         | 68    | I Discovery      |
+| Atomium                 | 3 / 4 / 3 / 3                                         | 66    | I Discovery      |
+| Great Zimbabwe          | 2 / 4 / 4 / 3                                         | 65    | I Discovery      |
+| Gyeongbokgung Palace    | 3 / 3 / 4 / 3                                         | 65    | I Discovery      |
+| Kinderdijk Windmills    | 3 / 3 / 4 / 3                                         | 65    | I Discovery      |
+| Hallgrímskirkja         | 3 / 4 / 2 / 3                                         | 61    | I Discovery      |
+| Belém Tower             | 3 / 3 / 3 / 3                                         | 60    | I Discovery      |
+| Ait-Ben-Haddou          | 2 / 3 / 3 / 4                                         | 57    | I Discovery      |
+| CN Tower                | 3 / 2 / 3 / 4                                         | 57    | I Discovery      |
+| Merlion                 | 3 / 3 / 2 / 2                                         | 52    | I Discovery      |

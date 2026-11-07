@@ -1,3 +1,4 @@
+import landmarks from './landmarks.json';
 // Original architectural illustrations, distributed under the repository MIT license.
 // Material patterns use local SVG geometry, not raster noise or runtime downloads.
 // Every instance owns its paint IDs so cards, dialogs and island copies never collide.
@@ -225,8 +226,7 @@ export function art(id: string) {
       `<g transform="translate(${x} ${y}) scale(${s})">${surface('M-17 97l2-32 6-9-4-36 6-10 24 3 3 42-9 7 8 35z', 'slate', 'grain')}<path d="M7 13l10 1 3 42-9 7 8 34H7L2 62l4-7z" fill="#556454"/>${line('M-10 29l9-2 10 2m-11 0-2 20 10 1m-13 9h17m-15 3h13M-11 70l-2 18 12 5m12-24 4 19-11 5', '#344b40', 1.8, 0.85)}${line('M-10 23l2-6h17M-10 34l3-1m12 1h5', '#c4c3a5', 1.1)}</g>`;
     body = `${surface('M3 112l55-13 67 11v10H3z', 'grass', 'grain')}${figure(24, 27, 0.84)}${figure(96, 29, 0.82)}${figure(60, 4, 1.12)}${surface('M4 118h120v5H4z', 'slate')}`;
   } else if (id === 'greatwall') {
-    body = `<g class="wonder-body">${surface('M2 109l19-30 15-30 21 16 21-43 17 29 30 58z', 'grass', 'grain')}<path d="M36 49L22 112h36l-1-47 21-43-12 68 30 20 29-1-30-58-17-29-21 43z" fill="#314f3d" opacity=".4"/>${surface('M8 102l24-23 23 12 24-37 31 13v18L83 74l-24 38-25-13-26 23z')}${surface('M8 102l24-23 23 12 24-37 31 13-1-6-32-14-24 37-23-12-24 25z', 'slate')}${line('M12 99l20-18 23 13 25-37 27 12', '#e4d5ad', 1.4)}${rows(5, (i) => surface(`M${9 + i * 5} ${99 - i * 4.6}v-6l4-3v6z`))}${rows(6, (i) => surface(`M${57 + i * 4} ${89 - i * 6}v-6l3-4v6z`))}${surface('M24 87V67l10-5 12 5v25zM74 62V41l11-5 13 6v27z')}${arch(31, 71, 7, 15)}${arch(82, 46, 7, 15)}${surface('M22 66v-7h5v4l6-3v-5h5v5l6 3v-4h5v9l-15-4zM72 41v-7h5v4l7-3v-5h5v5l6 3v-4h5v9l-15-5z')}</g>
-      <g class="wonder-effects"><ellipse cx="64" cy="119" rx="61" ry="12" fill="none" stroke="#d7b46a" stroke-width=".8" opacity=".6"/><g transform="translate(64 65) scale(1 .6)"><g class="wonder-orbit"><circle cx="60" cy="0" r="3" fill="#f9dda1"/><circle cx="-60" cy="0" r="2" fill="#f9dda1"/><path d="M-6-57h12v7H-6zM-4 54h8v6h-8z" fill="#c8ae81" stroke="#f3dfb2"/></g></g><path class="wonder-spark spark-one" d="M12 45v10m-5-5h10" stroke="#fff0c2"/><path class="wonder-spark spark-two" d="M112 28v10m-5-5h10" stroke="#fff0c2"/></g>`;
+    body = `${surface('M2 109l19-30 15-30 21 16 21-43 17 29 30 58z', 'grass', 'grain')}<path d="M36 49L22 112h36l-1-47 21-43-12 68 30 20 29-1-30-58-17-29-21 43z" fill="#314f3d" opacity=".4"/>${surface('M8 102l24-23 23 12 24-37 31 13v18L83 74l-24 38-25-13-26 23z')}${surface('M8 102l24-23 23 12 24-37 31 13-1-6-32-14-24 37-23-12-24 25z', 'slate')}${line('M12 99l20-18 23 13 25-37 27 12', '#e4d5ad', 1.4)}${rows(5, (i) => surface(`M${9 + i * 5} ${99 - i * 4.6}v-6l4-3v6z`))}${rows(6, (i) => surface(`M${57 + i * 4} ${89 - i * 6}v-6l3-4v6z`))}${surface('M24 87V67l10-5 12 5v25zM74 62V41l11-5 13 6v27z')}${arch(31, 71, 7, 15)}${arch(82, 46, 7, 15)}${surface('M22 66v-7h5v4l6-3v-5h5v5l6 3v-4h5v9l-15-4zM72 41v-7h5v4l7-3v-5h5v5l6 3v-4h5v9l-15-5z')}`;
   } else if (id === 'cn') {
     body = `${surface('M38 118l18-63h16l18 63H76L65 65l-11 53z', 'marble', 'grain')}
       <path d="M65 58h7l18 60H76z" fill="#788c8e" opacity=".5"/>
@@ -374,12 +374,11 @@ export function art(id: string) {
       ${surface('M1 105q22-11 51-7 31 4 75-9v32H1z', 'dune', 'grain')}<path d="M16 111q22-12 48-4t48-3l-8 14-44 5-45-4z" fill="#eadcc0"/><path d="M17 116l20-3 15 3 18-4 13 4 22-6" fill="none" stroke="#b6aa8b" stroke-width=".7"/>
       ${line('M4 94q25-23 42-68M48 35q13 28 27 35l26-23', '#ffce92', 1.2, 0.9)}${rows(5, (i) => line(`M${8 + i * 3} ${99 + i * 2}q22-8 35-4`, '#f1be83', 0.6, 0.6))}<path d="M112 119l2-7 1 5 4-5-2 7m-111 0 2-7 2 5 3-4-1 6" fill="#71734e"/>`;
   } else if (id === 'kilimanjaro') {
-    body = `<g class="wonder-body">${surface('M2 113l18-24 14-15 11-20 7-16 27-6 13 15 8 26 25 40z', 'mountain', 'grain')}<path d="M78 33L66 60l11 28 10 27h38l-25-42-8-26z" fill="#364e59" opacity=".6"/>
+    body = `${surface('M2 113l18-24 14-15 11-20 7-16 27-6 13 15 8 26 25 40z', 'mountain', 'grain')}<path d="M78 33L66 60l11 28 10 27h38l-25-42-8-26z" fill="#364e59" opacity=".6"/>
       ${surface('M40 62l5-8 7-16 27-6 13 15 6 19-13-7-5 6-11-11-8 8-6-8-8 10z', 'snow', 'grain')}${line('M52 40l13 1 13-6 12 13M56 63l-9 23-12 16m47-34 10 23 12 17M64 75l-4 29', '#c6d4d1', 1, 0.65)}
-      <path d="M2 112l16-6 8 4 13-8 14 6 13-4 16 5 14-7 17 9 12 1v11H2z" fill="${url('grass')}"/><path d="M5 118q34-3 58 1t61-1v5H5z" fill="#b1a66f"/>${line('M16 116v-10m-6 1q6-7 13 0m-10-2h8', '#3e5846', 1.6, 1)}</g>
-      <g class="wonder-effects"><ellipse cx="64" cy="119" rx="61" ry="12" fill="none" stroke="#e3c17e" stroke-width=".8" opacity=".6"/><g transform="translate(64 68) scale(1 .55)"><g class="wonder-orbit"><path d="M-68 0q0-6 6-5 3-8 9-3 7-2 9 5l-2 5h-22zM47 0q0-6 6-5 3-8 9-3 7-2 9 5l-2 5H47z" fill="#e2e9db" opacity=".85"/><circle cy="-60" r="2.5" fill="#ffe0a3"/><circle cy="60" r="2" fill="#ffe0a3"/></g></g><path class="wonder-spark spark-one" d="M10 48v10m-5-5h10" stroke="#fff0ce"/><path class="wonder-spark spark-two" d="M111 28v10m-5-5h10" stroke="#fff0ce"/></g>`;
+      <path d="M2 112l16-6 8 4 13-8 14 6 13-4 16 5 14-7 17 9 12 1v11H2z" fill="${url('grass')}"/><path d="M5 118q34-3 58 1t61-1v5H5z" fill="#b1a66f"/>${line('M16 116v-10m-6 1q6-7 13 0m-10-2h8', '#3e5846', 1.6, 1)}`;
   } else if (id === 'giza') {
-    body = `<g class="wonder-body">${surface('M6 112L56 18l66 94z')}
+    body = `${surface('M6 112L56 18l66 94z')}
       <path d="M56 18l16 94h50z" fill="#8c704c" opacity=".6"/><path d="M56 18l-7 14 9-1z" fill="#f4e5c0"/>
       ${rows(20, (i) => {
         const y = 25 + i * 4.25,
@@ -392,9 +391,12 @@ export function art(id: string) {
         );
       })}
       ${line('M6 112L56 18l16 94M6 112h116', '#f3dca8', 1, 0.85)}
-      <path d="M42 57l5-7 4 7z" fill="#5b503c" opacity=".6"/>${line('M17 104l5-5m11-28 3-4m28 27 2 7m25-16 4 6', '#69583e', 0.85, 0.5)}</g>
-      <g class="wonder-effects"><ellipse cx="64" cy="118" rx="61" ry="15" fill="none" stroke="#d7b46a" stroke-width=".7" opacity=".6"/><g transform="translate(64 72) scale(1 .55)"><g class="wonder-orbit"><path d="M58-8l10 6-2 12-12-4z" fill="#c5ab7c" stroke="#8c7450" stroke-width=".7"/><path d="M-60-10l10 4-2 12-12-6z" fill="#ad9166" stroke="#e1c895" stroke-width=".7"/><circle cx="0" cy="-64" r="2" fill="#f9e8ba"/><circle cx="0" cy="64" r="1.6" fill="#f9e8ba"/></g></g><path class="wonder-spark spark-one" d="M12 40v10m-5-5h10" stroke="#eee2bc" stroke-width="1"/><path class="wonder-spark spark-two" d="M114 28v8m-4-4h8" stroke="#edddb2" stroke-width="1"/></g>`;
+      <path d="M42 57l5-7 4 7z" fill="#5b503c" opacity=".6"/>${line('M17 104l5-5m11-28 3-4m28 27 2 7m25-16 4 6', '#69583e', 0.85, 0.5)}`;
   }
-  const wonder = id === 'giza' || id === 'greatwall' || id === 'kilimanjaro';
+  const wonder =
+    landmarks.find((landmark) => landmark.id === id)?.tier === 'legendary';
+  if (wonder) {
+    body = `<g class="wonder-body">${body}</g><g class="wonder-effects"><ellipse cx="64" cy="118" rx="61" ry="15" fill="none" stroke="#d7b46a" stroke-width=".7" opacity=".6"/><g transform="translate(64 72) scale(1 .55)"><g class="wonder-orbit"><path d="M58-8l10 6-2 12-12-4z" fill="${url('stone')}" stroke="#8c7450" stroke-width=".7"/><path d="M-60-10l10 4-2 12-12-6z" fill="${url('stone')}" stroke="#e1c895" stroke-width=".7"/><circle cx="0" cy="-64" r="2" fill="#f9e8ba"/><circle cx="0" cy="64" r="1.6" fill="#f9e8ba"/></g></g><path class="wonder-spark spark-one" d="M12 40v10m-5-5h10" stroke="#eee2bc" stroke-width="1"/><path class="wonder-spark spark-two" d="M114 28v8m-4-4h8" stroke="#edddb2" stroke-width="1"/></g>`;
+  }
   return `<svg class="landmark-art${wonder ? ' wonder-art' : ''}" data-material-art="${id}" viewBox="${wonder ? '-20 -24 168 168' : '0 0 128 128'}" aria-hidden="true">${defs}<ellipse ${wonder ? 'class="wonder-shadow"' : ''} cx="64" cy="118" rx="53" ry="7" fill="#34372b" opacity=".17"/>${body}</svg>`;
 }

@@ -16,7 +16,8 @@ test('demo acquisition, duplicate, placement, move, removal and persistent map',
   page,
 }) => {
   await page.addInitScript(() => {
-    Math.random = () => 0;
+    let roll = 0;
+    Math.random = () => (roll++ % 2 === 0 ? 0.8 : 0);
   });
   await page.goto('/');
   await expect(page.getByText('DEMO · LOCAL FIXTURES')).toBeVisible();
@@ -227,7 +228,8 @@ test('expanded land keeps old cell addresses and persists new placements', async
   page,
 }) => {
   await page.addInitScript(() => {
-    Math.random = () => 0;
+    let roll = 0;
+    Math.random = () => (roll++ % 2 === 0 ? 0.8 : 0);
   });
   await page.goto('/');
   await page.evaluate(() =>
@@ -468,9 +470,7 @@ test('rarity filters, discoveries and progress distinguish unique landmarks from
   });
   await page.goto('/');
   await demoDiscovery(page);
-  await expect(page.getByRole('status')).toContainText(
-    'New discovery: Great Pyramid of Giza',
-  );
+  await expect(page.getByRole('status')).toContainText('New discovery: Petra');
   await expect(page.getByRole('status').locator('.rarity-badge')).toHaveText(
     'IVWonder',
   );
@@ -485,9 +485,9 @@ test('rarity filters, discoveries and progress distinguish unique landmarks from
   );
   await demoDiscovery(page);
   await expect(page.getByRole('status')).toContainText(
-    'Duplicate discovered: Great Pyramid of Giza',
+    'Duplicate discovered: Petra',
   );
-  await expect(page.locator('[data-landmark="giza"]')).toContainText(
+  await expect(page.locator('[data-landmark="petra"]')).toContainText(
     'Owned ×2',
   );
   await expect(
@@ -505,8 +505,8 @@ test('rarity filters, discoveries and progress distinguish unique landmarks from
   const camera = await page.locator('.camera').getAttribute('style');
   for (const [tier, visible, collected, chance, rank, name] of [
     ['common', 18, 0, 70, 1, 'Discovery'],
-    ['rare', 9, 0, 23, 2, 'Treasure'],
-    ['epic', 6, 0, 6, 3, 'Marvel'],
+    ['rare', 10, 0, 23, 2, 'Treasure'],
+    ['epic', 5, 0, 6, 3, 'Marvel'],
     ['legendary', 3, 1, 1, 4, 'Wonder'],
   ] as const) {
     const filter = page.locator(`[data-tier-filter="${tier}"]`);
@@ -548,7 +548,7 @@ test('rarity filters, discoveries and progress distinguish unique landmarks from
   expect(await page.locator('.camera').getAttribute('style')).toBe(camera);
   await expect(page.locator('.ocean')).toHaveAttribute('data-mode', 'walk');
   await openInventory(page, 'landmarks');
-  await page.locator('[data-info="giza"]').click();
+  await page.locator('[data-info="petra"]').click();
   await expect(page.getByRole('dialog').locator('.rarity-badge')).toContainText(
     'Wonder',
   );
@@ -604,114 +604,127 @@ test('rarity filters, discoveries and progress distinguish unique landmarks from
   });
 });
 
-test('owned Wonder moves in the guide and on the island, with a static reduced-motion alternative', async ({
-  page,
-}) => {
-  await page.addInitScript(() => {
-    let roll = 0;
-    Math.random = () => (roll++ % 2 === 0 ? 0.999 : 0);
-  });
-  await page.goto('/');
-  const cardBody = page.locator('[data-landmark="giza"] .wonder-body');
-  expect(
-    await cardBody.evaluate((el) => getComputedStyle(el).animationName),
-  ).toBe('none');
-  await openInventory(page, 'landmarks');
-  await page.locator('[data-info="giza"]').click();
-  expect(
-    await page
-      .locator('.detail-art .wonder-body')
-      .evaluate((el) => getComputedStyle(el).animationName),
-  ).toBe('none');
-  await page.keyboard.press('Escape');
-  await demoDiscovery(page);
-  await expect(page.locator('[data-landmark="giza"]')).toContainText(
-    'Owned ×1',
-  );
-  await openInventory(page, 'landmarks');
-  const cardStart = await cardBody.evaluate(
-    (el) => getComputedStyle(el).transform,
-  );
-  await expect
-    .poll(() => cardBody.evaluate((el) => getComputedStyle(el).transform))
-    .not.toBe(cardStart);
-  await openInventory(page, 'landmarks');
-  await page.locator('[data-landmark="giza"]').click();
-  await page
-    .getByRole('button', { name: 'Cell 32: empty', exact: true })
-    .click();
-  await expect(
-    page.getByRole('button', {
-      name: 'Landmark: Great Pyramid of Giza',
-      exact: true,
-    }),
-  ).toBeVisible();
-  const islandBody = page.locator('.building .wonder-body');
-  const islandStart = await islandBody.evaluate(
-    (el) => getComputedStyle(el).transform,
-  );
-  await expect
-    .poll(() => islandBody.evaluate((el) => getComputedStyle(el).transform))
-    .not.toBe(islandStart);
-  const orbit = page.locator('.building .wonder-orbit');
-  const orbitStart = await orbit.evaluate(
-    (el) => getComputedStyle(el).transform,
-  );
-  await expect
-    .poll(() => orbit.evaluate((el) => getComputedStyle(el).transform))
-    .not.toBe(orbitStart);
-  const save = await page.evaluate(() =>
-    localStorage.getItem('landmark-island-demo-v1'),
-  );
-  await page.getByRole('button', { name: 'Explore island' }).click();
-  await page
-    .getByRole('button', {
-      name: 'Landmark: Great Pyramid of Giza',
-      exact: true,
-    })
-    .click();
-  const detailBody = page.locator('.detail-art .wonder-body');
-  const detailStart = await detailBody.evaluate(
-    (el) => getComputedStyle(el).transform,
-  );
-  await expect
-    .poll(() => detailBody.evaluate((el) => getComputedStyle(el).transform))
-    .not.toBe(detailStart);
-  await page.emulateMedia({ reducedMotion: 'reduce' });
-  for (const selector of [
-    '.wonder-body',
-    '.wonder-orbit',
-    '.wonder-spark',
-    '.wonder-shadow',
-  ]) {
+for (const wonder of landmarks.filter((l) => l.tier === 'legendary'))
+  test(`owned Wonder ${wonder.id} moves in the guide and on the island, with a static reduced-motion alternative`, async ({
+    page,
+  }) => {
+    await page.addInitScript(
+      (itemRoll) => {
+        let roll = 0;
+        Math.random = () => (roll++ % 2 === 0 ? 0.999 : itemRoll);
+      },
+      (landmarks
+        .filter((l) => l.tier === 'legendary')
+        .findIndex((l) => l.id === wonder.id) +
+        0.5) /
+        3,
+    );
+    await page.goto('/');
+    const cardBody = page.locator(
+      `[data-landmark="${wonder.id}"] .wonder-body`,
+    );
+    expect(
+      await cardBody.evaluate((el) => getComputedStyle(el).animationName),
+    ).toBe('none');
+    await openInventory(page, 'landmarks');
+    await page.locator(`[data-info="${wonder.id}"]`).click();
     expect(
       await page
-        .locator(selector)
-        .evaluateAll((els) =>
-          els.every((el) => getComputedStyle(el).animationName === 'none'),
-        ),
-    ).toBe(true);
-  }
-  expect(
-    await detailBody.evaluate((el) => getComputedStyle(el).transform),
-  ).not.toBe('none');
-  await page.screenshot({
-    path: 'test-results/landmark-island/wonder-detail-demo.png',
+        .locator('.detail-art .wonder-body')
+        .evaluate((el) => getComputedStyle(el).animationName),
+    ).toBe('none');
+    await page.keyboard.press('Escape');
+    await demoDiscovery(page);
+    await expect(page.locator(`[data-landmark="${wonder.id}"]`)).toContainText(
+      'Owned ×1',
+    );
+    await openInventory(page, 'landmarks');
+    const cardStart = await cardBody.evaluate(
+      (el) => getComputedStyle(el).transform,
+    );
+    await expect
+      .poll(() => cardBody.evaluate((el) => getComputedStyle(el).transform))
+      .not.toBe(cardStart);
+    await openInventory(page, 'landmarks');
+    await page.locator(`[data-landmark="${wonder.id}"]`).click();
+    await page
+      .getByRole('button', { name: 'Cell 32: empty', exact: true })
+      .click();
+    await expect(
+      page.getByRole('button', {
+        name: `Landmark: ${wonder.name}`,
+        exact: true,
+      }),
+    ).toBeVisible();
+    const islandBody = page.locator('.building .wonder-body');
+    const islandStart = await islandBody.evaluate(
+      (el) => getComputedStyle(el).transform,
+    );
+    await expect
+      .poll(() => islandBody.evaluate((el) => getComputedStyle(el).transform))
+      .not.toBe(islandStart);
+    const orbit = page.locator('.building .wonder-orbit');
+    const orbitStart = await orbit.evaluate(
+      (el) => getComputedStyle(el).transform,
+    );
+    await expect
+      .poll(() => orbit.evaluate((el) => getComputedStyle(el).transform))
+      .not.toBe(orbitStart);
+    const save = await page.evaluate(() =>
+      localStorage.getItem('landmark-island-demo-v1'),
+    );
+    await page.getByRole('button', { name: 'Explore island' }).click();
+    await page
+      .getByRole('button', {
+        name: `Landmark: ${wonder.name}`,
+        exact: true,
+      })
+      .click();
+    const detailBody = page.locator('.detail-art .wonder-body');
+    const detailStart = await detailBody.evaluate(
+      (el) => getComputedStyle(el).transform,
+    );
+    await expect
+      .poll(() => detailBody.evaluate((el) => getComputedStyle(el).transform))
+      .not.toBe(detailStart);
+    await page.emulateMedia({ reducedMotion: 'reduce' });
+    for (const selector of [
+      '.wonder-body',
+      '.wonder-orbit',
+      '.wonder-spark',
+      '.wonder-shadow',
+    ]) {
+      expect(
+        await page
+          .locator(selector)
+          .evaluateAll((els) =>
+            els.every((el) => getComputedStyle(el).animationName === 'none'),
+          ),
+      ).toBe(true);
+    }
+    expect(
+      await detailBody.evaluate((el) => getComputedStyle(el).transform),
+    ).not.toBe('none');
+    await page.screenshot({
+      path: `test-results/landmark-island/wonder-${wonder.id}-detail-demo.png`,
+    });
+    await page.keyboard.press('Escape');
+    await page.locator('.ocean').screenshot({
+      path: `test-results/landmark-island/wonder-${wonder.id}-island-demo.png`,
+    });
+    expect(
+      await page.evaluate(() =>
+        localStorage.getItem('landmark-island-demo-v1'),
+      ),
+    ).toBe(save);
   });
-  await page.keyboard.press('Escape');
-  await page.locator('.ocean').screenshot({
-    path: 'test-results/landmark-island/wonder-island-demo.png',
-  });
-  expect(
-    await page.evaluate(() => localStorage.getItem('landmark-island-demo-v1')),
-  ).toBe(save);
-});
 
 test('tickets accumulate before drawing; map reveal commits once and survives reload', async ({
   page,
 }) => {
   await page.addInitScript(() => {
-    Math.random = () => 0;
+    let roll = 0;
+    Math.random = () => (roll++ % 2 === 0 ? 0.8 : 0);
   });
   await page.goto('/');
   await expect(page.locator('#draw-ticket')).toBeDisabled();
@@ -1549,6 +1562,15 @@ test('material artwork keeps local paint references isolated across collection, 
   await page.reload();
   await expect(page.locator('.collection .landmark-art')).toHaveCount(36);
   await expect(page.locator('.building .landmark-art')).toHaveCount(2);
+  await expect(page.locator('.collection .wonder-art')).toHaveCount(3);
+  for (const entry of landmarks) {
+    await expect(
+      page.locator(`[data-landmark="${entry.id}"] .wonder-body`),
+    ).toHaveCount(entry.tier === 'legendary' ? 1 : 0);
+  }
+  // Previously saved Giza placements remain in place without the old Wonder effects.
+  await expect(page.locator('.building .wonder-art')).toHaveCount(0);
+
   await page.setViewportSize({ width: 1200, height: 1000 });
   await openInventory(page, 'landmarks');
   await page.locator('.canvas-inventory').screenshot({
@@ -1566,6 +1588,9 @@ test('material artwork keeps local paint references isolated across collection, 
     'atomium',
     'basil',
     'kilimanjaro',
+    'petra',
+    'angkor',
+    'machu',
   ]) {
     await openInventory(page, 'landmarks');
     await page.locator(`[data-info=${id}]`).click();
@@ -1635,8 +1660,8 @@ test('new discoveries grow land, gifts unlock sets, duplicates craft chosen deco
     let roll = 0;
     Math.random = () => {
       const tierRoll =
-        (window as unknown as { fixtureRoll?: number }).fixtureRoll ?? 0;
-      return roll++ % 2 === 0 ? tierRoll : tierRoll === 0.71 ? 2 / 9 : 0;
+        (window as unknown as { fixtureRoll?: number }).fixtureRoll ?? 0.8;
+      return roll++ % 2 === 0 ? tierRoll : tierRoll === 0.71 ? 3.5 / 10 : 0;
     };
   });
   await page.goto('/');
@@ -2124,7 +2149,8 @@ test('canvas inventories contain scrolling, preserve camera, and hand selection 
   page,
 }) => {
   await page.addInitScript(() => {
-    Math.random = () => 0;
+    let roll = 0;
+    Math.random = () => (roll++ % 2 === 0 ? 0.8 : 0);
   });
   await page.goto('/');
   await demoDiscovery(page);
@@ -2261,7 +2287,8 @@ test('treasure opens and reveals inside the canvas, keeps scrolling local and re
   page,
 }) => {
   await page.addInitScript(() => {
-    Math.random = () => 0;
+    let roll = 0;
+    Math.random = () => (roll++ % 2 === 0 ? 0.8 : 0);
   });
   await page.goto('/');
   await expect(page.locator('.ticket-desk')).toHaveCount(0);
@@ -2417,19 +2444,19 @@ for (const reducedMotion of [false, true])
 for (const wave of [
   {
     start: 12,
-    wonder: 'greatwall',
+    featured: 'greatwall',
     firstName: '경복궁',
     firstFact: '1395년',
-    wonderName: '만리장성',
-    wonderFact: '명나라',
+    featuredName: '만리장성',
+    featuredFact: '명나라',
   },
   {
     start: 24,
-    wonder: 'kilimanjaro',
+    featured: 'kilimanjaro',
     firstName: 'CN 타워',
     firstFact: '1976년',
-    wonderName: '킬리만자로',
-    wonderFact: '5,895미터',
+    featuredName: '킬리만자로',
+    featuredFact: '5,895미터',
   },
 ])
   test(`expanded catalog wave ${wave.start / 12} draws landmarks, grants sets and preserves an old island`, async ({
@@ -2504,27 +2531,10 @@ for (const wave of [
       'Your whole island is open.',
     );
     await openInventory(page, 'landmarks');
-    await page.locator(`[data-info=${wave.wonder}]`).click();
-    await expect(page.locator('.landmark-detail .wonder-effects')).toHaveCSS(
-      'opacity',
-      '1',
-    );
-    await expect(page.locator('.landmark-detail .wonder-body')).toHaveCSS(
-      'animation-name',
-      'none',
-    );
-    await page.emulateMedia({ reducedMotion: 'no-preference' });
-    const movingWonder = page.locator('.landmark-detail .wonder-body');
-    const wonderPose = await movingWonder.evaluate(
-      (el) => getComputedStyle(el).transform,
-    );
-    await expect
-      .poll(() => movingWonder.evaluate((el) => getComputedStyle(el).transform))
-      .not.toBe(wonderPose);
-    await page.emulateMedia({ reducedMotion: 'reduce' });
-    await expect(movingWonder).toHaveCSS('animation-name', 'none');
+    await page.locator(`[data-info=${wave.featured}]`).click();
+    await expect(page.locator('.landmark-detail .wonder-art')).toHaveCount(0);
     await page.keyboard.press('Escape');
-    await page.locator(`[data-landmark=${wave.wonder}]`).click();
+    await page.locator(`[data-landmark=${wave.featured}]`).click();
     await page
       .getByRole('button', { name: 'Cell 2: empty', exact: true })
       .click();
@@ -2540,7 +2550,10 @@ for (const wave of [
       at: '2026-11-05',
     });
     expect(saved.placements).toContainEqual({ landmark: 'eiffel', cell: 0 });
-    expect(saved.placements).toContainEqual({ landmark: wave.wonder, cell: 1 });
+    expect(saved.placements).toContainEqual({
+      landmark: wave.featured,
+      cell: 1,
+    });
     await page.getByRole('button', { name: 'World Map', exact: true }).click();
     await expect(page.locator('.world circle')).toHaveCount(13);
     await expect(page.locator('.countries')).toContainText(entries[0].country);
@@ -2562,12 +2575,12 @@ for (const wave of [
       wave.firstFact,
     );
     await page.keyboard.press('Escape');
-    await page.locator(`[data-info=${wave.wonder}]`).click();
+    await page.locator(`[data-info=${wave.featured}]`).click();
     await expect(page.locator('.landmark-detail h2')).toHaveText(
-      wave.wonderName,
+      wave.featuredName,
     );
     await expect(page.locator('#detail-description')).toContainText(
-      wave.wonderFact,
+      wave.featuredFact,
     );
     expect(
       JSON.parse(

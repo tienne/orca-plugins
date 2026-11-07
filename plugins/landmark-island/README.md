@@ -14,7 +14,7 @@ The island has illustrated canvas menus: a satchel for **Decorations**, a book f
 
 **Arrange landmarks** switches to editing. Selecting a collection card also enters this mode. Select an owned landmark and an empty cell to place it. Select a placed landmark, then an empty cell to move it, or **Return to collection** to remove it. Copies use owned quantities. **World Map** shows real geographic locations and unique country totals, regardless of island placements. Refresh reads the save without awarding anything.
 
-There are 36 landmarks across 36 countries: 18 Discovery, 9 Treasure, 6 Marvel and 3 Wonder. Each draw first chooses a tier with 70/23/6/1 percent probabilities, then uniformly selects a landmark in that tier. Owned items always remain eligible; duplicates increase quantity. Tickets are earned only through worktree creation; there is no purchase, pity, or completion guarantee. Original architectural vector illustrations are bundled locally. Each landmark has material shading and fine surface detail: stone courses and weathering, iron latticework, marble domes, copper patina, roof tiles, or mountain strata. Collection and field-guide artwork is larger to expose those details. This is textured illustration, not photography or a surveyed architectural model. The same artwork appears on the island and in the discovery sequence; Wonder animation and reduced-motion support remain available.
+There are 36 landmarks across 36 countries: 18 Discovery, 10 Treasure, 5 Marvel and 3 Wonder. Each draw first chooses a tier with 70/23/6/1 percent probabilities, then uniformly selects a landmark in that tier. Owned items always remain eligible; duplicates increase quantity. Tickets are earned only through worktree creation; there is no purchase, pity, or completion guarantee. Original architectural vector illustrations are bundled locally. Each landmark has material shading and fine surface detail: stone courses and weathering, iron latticework, marble domes, copper patina, roof tiles, or mountain strata. Collection and field-guide artwork is larger to expose those details. This is textured illustration, not photography or a surveyed architectural model. The same artwork appears on the island and in the discovery sequence; Wonder animation and reduced-motion support remain available.
 
 Only `workspace.created` with `kind: worktree` earns one ticket. It does not draw a landmark automatically. Folder creation, chats, refreshes, workspace switching and app launch do not earn tickets. Click the **Treasure** chest on the island to redeem one ticket (accessible action: **Use ticket · Discover**). The chest is unavailable without tickets; a failed draw offers **Retry** for the same ticket. Unused tickets accumulate and survive restarts and worktree removal.
 
@@ -34,11 +34,24 @@ Translations live in `src/messages.ko.json` and `src/landmarks.ko.json`. Save id
 
 ## Rarity and collection progress
 
-Each landmark has a fixed rarity: **I Discovery** (18 landmarks, 70% tier chance), **II Treasure** (9, 23%), **III Marvel** (6, 6%) or **IV Wonder** (3, 1%). Each badge has a Roman numeral and a four-slot scale: one filled mark is the lowest rarity, four is the highest. The same scale appears on cards, filters, field-guide pages and acquisition notices, with accessible labels such as “Wonder, rarity 4 of 4”. Color is an additional cue; unowned entries keep their full rarity scale. These are fixed ranks, not upgrade progress. The latest acquisition notice and field-guide page show the tier; the field guide explains its draw probability. These are tier probabilities, not the probability of each individual item: items within a tier remain equally likely.
+Each landmark has a fixed rarity: **I Discovery** (18 landmarks, 70% tier chance), **II Treasure** (10, 23%), **III Marvel** (5, 6%) or **IV Wonder** (3, 1%). Each badge has a Roman numeral and a four-slot scale: one filled mark is the lowest rarity, four is the highest. The same scale appears on cards, filters, field-guide pages and acquisition notices, with accessible labels such as “Wonder, rarity 4 of 4”. Color is an additional cue; unowned entries keep their full rarity scale. These are fixed ranks, not upgrade progress. The latest acquisition notice and field-guide page show the tier; the field guide explains its draw probability. These are tier probabilities, not the probability of each individual item: items within a tier remain equally likely.
 
-The collection has All / Discovery / Treasure / Marvel / Wonder filters and a progress bar. Counts track unique discoveries, so duplicates increase owned quantities without advancing completion. Filters only change the visible collection entries and do not alter island mode, camera, placements or draw odds. Unowned entries retain their rarity badge and remain readable. Internal tier IDs remain `common`, `rare`, `epic` and `legendary`. All existing tier assignments, tier probabilities and saved quantities are unchanged; no pity or guaranteed completion has been added.
+The collection has All / Discovery / Treasure / Marvel / Wonder filters and a progress bar. Counts track unique discoveries, so duplicates increase owned quantities without advancing completion. Filters only change the visible collection entries and do not alter island mode, camera, placements or draw odds. Unowned entries retain their rarity badge and remain readable. Internal tier IDs remain `common`, `rare`, `epic` and `legendary`. The 2026-11-07 allocation changes tier assignments while preserving tier probabilities and saved quantities; no pity or guaranteed completion has been added.
 
-Owned Treasures gain a blue sheen and Marvels a violet halo. The Wonders, the Great Pyramid of Giza, the Great Wall of China and Mount Kilimanjaro, have gold frames and living miniatures: the structures levitate above grounded shadows while small stones, clouds or lights orbit them. This animation appears in the collection, its detail page and island placements. Unowned Wonders stay still. Reduced-motion preferences replace motion with a static floating pose and light effects. These are fictional visual effects; they do not change movement, placement, ownership or probabilities.
+Owned Treasures gain a blue sheen and Marvels a violet halo. The Wonders, Petra, Angkor Wat and Machu Picchu, have gold frames and living miniatures: the structures levitate above grounded shadows while small stones and lights orbit them. This animation appears in the collection, its detail page and island placements. Unowned Wonders stay still. Reduced-motion preferences replace motion with a static floating pose and light effects. These are fictional visual effects; they do not change movement, placement, ownership or probabilities.
+
+## Rarity allocation update (2026-11-07)
+
+The catalog now uses 18 Discovery, 10 Treasure, 5 Marvel and 3 Wonder entries. This is an editorial game allocation; internal scores and selection criteria are not displayed. Tier chances remain 70/23/6/1%. New additions do not automatically rerank the existing catalog.
+
+Previously owned copies show their updated badge and effects, including after backup restore. Item IDs, quantities, receipts, placements, decoration gifts, crafting materials and unlocked land are preserved. There is no reroll or compensation grant. Petra, Angkor Wat and Machu Picchu gain Wonder motion; Giza and the Great Wall use Marvel effects, and Kilimanjaro uses Discovery styling. Reduced-motion preferences apply to all new Wonders. The following table and expansion tables show the current assignments.
+
+| Rank        | Landmarks                                                                                                                                                                                                                                                                                   |
+| ----------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| I Discovery | Statue of Liberty, Mount Fuji, Gyeongbokgung Palace, Merlion, Brandenburg Gate, Belém Tower, Christ the Redeemer, Great Zimbabwe, CN Tower, Kinderdijk Windmills, Hallgrímskirkja, Atomium, Petronas Twin Towers, Shwedagon Pagoda, Ait-Ben-Haddou, Sigiriya, Sossusvlei, Mount Kilimanjaro |
+| II Treasure | Eiffel Tower, Stonehenge, Sydney Opera House, Chichén Itzá, Burj Khalifa, Hagia Sophia, Borobudur Temple, Moai of Rapa Nui, Acropolis of Athens, Saint Basil’s Cathedral                                                                                                                    |
+| III Marvel  | Colosseum, Taj Mahal, Great Pyramid of Giza, Sagrada Família, Great Wall of China                                                                                                                                                                                                           |
+| IV Wonder   | Petra, Angkor Wat, Machu Picchu                                                                                                                                                                                                                                                             |
 
 ## Landmark field guide
 
@@ -57,13 +70,13 @@ The first expansion on 2026-11-06 added these twelve entries, bringing the catal
 | Brandenburg Gate     | Germany              | I Discovery |
 | Belém Tower          | Portugal             | I Discovery |
 | Christ the Redeemer  | Brazil               | I Discovery |
-| Burj Khalifa         | United Arab Emirates | I Discovery |
+| Burj Khalifa         | United Arab Emirates | II Treasure |
 | Hagia Sophia         | Türkiye              | II Treasure |
 | Borobudur Temple     | Indonesia            | II Treasure |
-| Great Zimbabwe       | Zimbabwe             | II Treasure |
+| Great Zimbabwe       | Zimbabwe             | I Discovery |
 | Sagrada Família      | Spain                | III Marvel  |
-| Moai of Rapa Nui     | Chile                | III Marvel  |
-| Great Wall of China  | China                | IV Wonder   |
+| Moai of Rapa Nui     | Chile                | II Treasure |
+| Great Wall of China  | China                | III Marvel  |
 
 The second expansion adds twelve more entries, bringing the catalog to 36:
 
@@ -77,14 +90,14 @@ The second expansion adds twelve more entries, bringing the catalog to 36:
 | Shwedagon Pagoda        | Myanmar     | I Discovery |
 | Acropolis of Athens     | Greece      | II Treasure |
 | Saint Basil’s Cathedral | Russia      | II Treasure |
-| Ait-Ben-Haddou          | Morocco     | II Treasure |
-| Sigiriya                | Sri Lanka   | III Marvel  |
-| Sossusvlei              | Namibia     | III Marvel  |
-| Mount Kilimanjaro       | Tanzania    | IV Wonder   |
+| Ait-Ben-Haddou          | Morocco     | I Discovery |
+| Sigiriya                | Sri Lanka   | I Discovery |
+| Sossusvlei              | Namibia     | I Discovery |
+| Mount Kilimanjaro       | Tanzania    | I Discovery |
 
-Tier chances remain 70/23/6/1%; each tier now contains 18/9/6/3 entries. Per-item chances are approximately 3.8889% / 2.5556% / 1% / 0.3333%, respectively, two-thirds of the previous 24-entry catalog’s per-item chances. Existing receipts, placement addresses, gifts and unlocked land are preserved; reads do not grant new entries. They enter the normal ticket draw pool. Collection progress now uses 36 as its denominator, so an existing percentage can decrease without losing any items. Backups containing newly introduced landmark or decoration IDs require a build that includes those IDs; earlier catalog builds cannot read them. Save schema and storage keys are unchanged.
+Tier chances remain 70/23/6/1%; the current allocation contains 18/10/5/3 entries. Per-item chances are approximately 3.8889% / 2.3% / 1.2% / 0.3333%, respectively. Existing receipts, placement addresses, gifts and unlocked land are preserved; reads do not grant new entries. They enter the normal ticket draw pool. Collection progress now uses 36 as its denominator, so an existing percentage can decrease without losing any items. Backups containing newly introduced landmark or decoration IDs require a build that includes those IDs; earlier catalog builds cannot read them. Save schema and storage keys are unchanged.
 
-Each new entry has its own bundled textured SVG, English/Korean description, official source link, map point and two-piece garden set. Descriptions are original summaries of the linked official heritage, tourism and monument sources. Rapa Nui, the Great Wall, the windmill network and natural landscapes use representative map points, not exact boundaries. Shwedagon’s reference is Myanmar’s submission to UNESCO’s Tentative Lists, not a World Heritage inscription. Mount Kilimanjaro has a floating miniature with orbiting clouds and lights; reduced-motion mode keeps a static alternative. No external images, fonts or runtime requests were added.
+Each new entry has its own bundled textured SVG, English/Korean description, official source link, map point and two-piece garden set. Descriptions are original summaries of the linked official heritage, tourism and monument sources. Rapa Nui, the Great Wall, the windmill network and natural landscapes use representative map points, not exact boundaries. Shwedagon’s reference is Myanmar’s submission to UNESCO’s Tentative Lists, not a World Heritage inscription. Wonder effects now follow the current catalog tier. Mount Kilimanjaro is a Discovery and uses its static base illustration. No external images, fonts or runtime requests were added.
 
 ## Garden workshop and growing land
 
@@ -220,3 +233,9 @@ After the final illustration alignment, `pnpm nx run landmark-island:ui-test --g
 `pnpm nx run-many -t typecheck test ui-test -p landmark-island --output-style=static` passed build, typecheck, state/worker checks and all 44 browser tests. The catalog checks now cover 36 unique landmarks/countries, 76 decorations, every draw-pool member, bilingual descriptions, full-catalog backup and the unchanged land cap. Separate browser scenarios exercise both twelve-entry expansions: acquisition, gift unlocks, old receipts/placements, maps, Korean text and animated/reduced-motion Wonders. The field guide reads all 36 entries. The new twelve-artwork DEMO sheet and enlarged details were visually inspected at `test-results/landmark-island/new-destinations-36-demo.png` and `material-*.png`.
 
 `pnpm validate` passed both plugin artifacts. Verification uses isolated fixtures; native Orca panel clicking remains deferred. Real host saves, plugin identity/capabilities and Git Logs source are unchanged. No plugin execution approval, push or publication was performed.
+
+## Rarity allocation verification (2026-11-07)
+
+The Nx build and typecheck passed, and the full browser suite passed all 46 tests. The initial state-test run exposed a fixture that assumed a zero roll selected Eiffel Tower; after explicitly selecting its new Treasure pool, `pnpm nx run landmark-island:test --output-style=static` passed. The three new Wonders are each checked for unowned static art, owned animation in cards/details/island placements, orbit movement, reduced-motion behavior and unchanged saves.
+
+After adding full-catalog effect assertions, `pnpm nx run landmark-island:ui-test --grep='material artwork|expanded catalog' --output-style=static` passed all three selected tests. Only the three current Wonders contain Wonder artwork. Previously saved Giza placements and the two expansion scenarios remain intact; Great Wall and Kilimanjaro no longer carry Wonder art. SVG references, all draw pools, backup round trips, quantities, materials and land preservation are covered. The new Petra, Angkor Wat and Machu Picchu detail captures were visually inspected. `pnpm validate` passed both plugin artifacts. These are isolated fixtures; native Orca clicks remain deferred, with no real-save changes, plugin execution approval, push or publication.

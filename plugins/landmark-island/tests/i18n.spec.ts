@@ -92,7 +92,8 @@ test('Korean browser fixture covers discovery, placement, decorations, dynamic w
   page,
 }) => {
   await page.addInitScript(() => {
-    Math.random = () => 0;
+    let roll = 0;
+    Math.random = () => (roll++ % 2 === 0 ? 0.8 : 0);
   });
   await page.goto('/?lang=ko-KR');
   await expect(
@@ -199,9 +200,9 @@ test('language changes keep a running reveal and backup confirmation intact and 
   await expect(theatre.locator('.journey-caption')).toContainText('불가사의');
   await setHostLocale(page, 'en-US');
   await page.getByRole('button', { name: 'Skip animation' }).click();
-  await expect(theatre.locator('h2')).toHaveText('Great Pyramid of Giza');
+  await expect(theatre.locator('h2')).toHaveText('Petra');
   await setHostLocale(page, 'ko-KR');
-  await expect(theatre.locator('h2')).toHaveText('기자 대피라미드');
+  await expect(theatre.locator('h2')).toHaveText('페트라');
   await expect(theatre.locator('.reveal-place')).toBeFocused();
   await page.keyboard.press('Escape');
   expect(
@@ -246,9 +247,7 @@ test('standalone preview follows the browser language without accessing a save',
   await expect(page).toHaveTitle('Landmark Island · 연출 미리보기');
   await page.getByRole('button', { name: '연출 재생' }).click();
   await page.getByRole('button', { name: '연출 건너뛰기' }).click();
-  await expect(page.locator('.discovery-result h2')).toHaveText(
-    '기자 대피라미드',
-  );
+  await expect(page.locator('.discovery-result h2')).toHaveText('페트라');
   expect(
     await page.evaluate(() => localStorage.getItem('landmark-island-demo-v1')),
   ).toBeNull();

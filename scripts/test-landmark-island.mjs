@@ -73,8 +73,8 @@ try {
   assert.equal(decorations.length, 76);
   for (const [tier, count, roll] of [
     ['common', 18, 0.35],
-    ['rare', 9, 0.8],
-    ['epic', 6, 0.95],
+    ['rare', 10, 0.8],
+    ['epic', 5, 0.95],
     ['legendary', 3, 0.995],
   ]) {
     const pool = landmarks.filter((l) => l.tier === tier);
@@ -190,7 +190,8 @@ try {
       writes++;
     },
   };
-  let game = new Game(store, () => 0);
+  let fixtureRoll = 0;
+  let game = new Game(store, () => (fixtureRoll++ % 2 === 0 ? 0.8 : 0));
   await game.acquire({ workspaceId: 'folder', kind: 'folder' });
   assert.equal(writes, 0);
   await Promise.all(
@@ -317,10 +318,10 @@ try {
     validate({ ...value, tickets: [...value.tickets, value.tickets[0]] }),
   );
   for (const [r, id] of [
-    [0, 'eiffel'],
-    [0.7, 'taj'],
-    [0.93, 'angkor'],
-    [0.99, 'giza'],
+    [0, 'liberty'],
+    [0.7, 'eiffel'],
+    [0.93, 'colosseum'],
+    [0.99, 'petra'],
   ]) {
     let n = 0;
     assert.equal(
@@ -744,7 +745,8 @@ try {
     4,
   );
   const beforeRewardCount = garden.receipts.length;
-  gardener = new Game(gardenStore, () => 0);
+  let gardenRoll = 0;
+  gardener = new Game(gardenStore, () => (gardenRoll++ % 2 === 0 ? 0.8 : 0));
   await gardener.acquire({ workspaceId: 'during-edit', kind: 'worktree' });
   await gardener.redeem({ ticketId: 'during-edit' });
   await gardener.craft({ id: 'after-stroke', decoration: 'eiffel-gift' });
