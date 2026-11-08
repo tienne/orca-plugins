@@ -78,7 +78,11 @@ test('Orca locale wins over browser and preview settings; live changes preserve 
   await page.keyboard.press('Escape');
   await expect(page.locator('[data-info=eiffel]')).toBeFocused();
   expect(
-    await page.evaluate(() => (window as unknown as { calls: string[] }).calls),
+    await page.evaluate(() =>
+      (window as unknown as { calls: string[] }).calls.filter(
+        (name) => name !== 'island.weather',
+      ),
+    ),
   ).toEqual(['island.read']);
   await page.locator('#close-inventory').click();
   await page.getByRole('button', { name: '세계 지도', exact: true }).click();

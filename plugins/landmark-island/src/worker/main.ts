@@ -1,4 +1,5 @@
 import { randomInt } from 'node:crypto';
+import { WeatherService } from './weather';
 import { Game, type State } from '../game';
 // Narrow contracts from the installed Orca authoring reference; generated types
 // are unavailable in this host installation. No event path is ever accessed.
@@ -39,6 +40,14 @@ export default function activate(orca: Worker) {
     },
     () => randomInt(0, 2 ** 32) / 2 ** 32,
   );
+  const weather = new WeatherService({
+    read: async (key) => (await orca.host.call('storage.get', { key })).value,
+    write: async (key, value) => {
+      await orca.host.call('storage.set', { key, value });
+    },
+  });
+  // Request-driven only: no network on activation or while all panels are closed.
+  orca.panels.handle('island.weather', (input) => weather.read(input));
   const notify = async () => {
     try {
       await orca.panels.post('island.changed', {});

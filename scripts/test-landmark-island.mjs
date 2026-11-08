@@ -4,6 +4,7 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { pathToFileURL } from 'node:url';
 import assert from 'node:assert/strict';
+import { testWeather } from './test-landmark-weather.mjs';
 const dir = await mkdtemp(join(tmpdir(), 'landmark-test-'));
 try {
   await build({
@@ -14,6 +15,8 @@ try {
       'plugins/landmark-island/src/walk.ts',
       'plugins/landmark-island/src/world.ts',
       'plugins/landmark-island/src/worker/main.ts',
+      'plugins/landmark-island/src/worker/weather.ts',
+      'plugins/landmark-island/src/weather.ts',
     ],
     outdir: dir,
     outbase: 'plugins/landmark-island/src',
@@ -22,6 +25,7 @@ try {
     format: 'esm',
     outExtension: { '.js': '.mjs' },
   });
+  await testWeather(dir);
   const {
     Game,
     layout,
@@ -590,6 +594,7 @@ try {
   });
   assert.deepEqual(Object.keys(events), ['workspace.created']);
   assert.deepEqual(Object.keys(handlers), [
+    'island.weather',
     'island.read',
     'island.backup',
     'island.restore',

@@ -1,4 +1,6 @@
 import { route } from './walk';
+import { TimezoneWeather, type WeatherReader } from './weather-client';
+import { timezoneLocation } from './weather';
 import { islandLand, unlockedCell, type State } from './game';
 import { decorationById, isFloor } from './decorations';
 import {
@@ -32,6 +34,15 @@ export class IslandScene {
   phase: number = deviceDaylight().phase;
   deviceTime = true;
   automatic = true;
+  timezoneWeatherEnabled = false;
+  private timezoneWeather: TimezoneWeather;
+  constructor(
+    private weatherReader?: WeatherReader,
+    private openWeatherSource?: (url: string) => Promise<{ opened: boolean }>,
+  ) {
+    this.timezoneWeather = new TimezoneWeather(weatherReader);
+    this.timezoneWeatherEnabled = Boolean(weatherReader);
+  }
   zoom = 1;
   x = 0;
   y = 0;
@@ -41,7 +52,7 @@ export class IslandScene {
   private cleanup = () => {};
   private nextClimateAt = Date.now() + 30000;
   markup() {
-    return `<div class="scene-controls"><div class="climate-controls"><div class="climate-field"><label for="weather">Weather</label><select id="weather"><option value="auto" ${this.automatic ? 'selected' : ''}>Auto · island forecast</option>${weatherNames.map((w, i) => `<option value="${i}" ${!this.automatic && this.weather === i ? 'selected' : ''}>${w}</option>`).join('')}</select></div><div class="climate-field"><label for="daylight">Time of day</label><select id="daylight"><option value="auto" ${this.deviceTime ? 'selected' : ''}>Auto · device time</option>${phases.map((phase, i) => `<option value="${i}" ${!this.deviceTime && this.phase === i ? 'selected' : ''}>${phase}</option>`).join('')}</select></div></div></div>`;
+    return `<div class="scene-controls"><div class="climate-controls"><div class="climate-field"><label for="weather">Weather</label><select id="weather"><option value="timezone" ${this.timezoneWeatherEnabled ? 'selected' : ''}>Timezone weather</option><option value="auto" ${this.automatic && !this.timezoneWeatherEnabled ? 'selected' : ''}>Auto · island forecast</option>${weatherNames.map((w, i) => `<option value="${i}" ${!this.automatic && !this.timezoneWeatherEnabled && this.weather === i ? 'selected' : ''}>${w}</option>`).join('')}</select></div><div class="climate-field"><label for="daylight">Time of day</label><select id="daylight"><option value="auto" ${this.deviceTime ? 'selected' : ''}>Auto · device time</option>${phases.map((phase, i) => `<option value="${i}" ${!this.deviceTime && this.phase === i ? 'selected' : ''}>${phase}</option>`).join('')}</select></div></div><p class="weather-status" ${this.timezoneWeatherEnabled ? '' : 'hidden'}><span class="weather-summary"></span> <span class="weather-updated"></span> <a class="weather-source" href="https://open-meteo.com/" target="_blank" rel="noopener noreferrer">Weather data: Open-Meteo (adapted)</a><span class="weather-link-status"></span></p></div>`;
   }
   modeMarkup() {
     return `<div class="mode-controls" role="group" aria-label="Island mode"><button data-mode="walk" aria-pressed="${this.mode === 'walk'}">Explore island</button><button data-mode="build" aria-pressed="${this.mode === 'build'}">Arrange landmarks</button>${this.mode === 'build' ? '<button class="finish-arranging" data-mode="walk">Done arranging</button>' : ''}</div>`;
@@ -131,7 +142,36 @@ export class IslandScene {
       ocean.dataset.phase = phases[this.phase].toLowerCase();
       ocean.dataset.timeSource = this.deviceTime ? 'device' : 'manual';
       ocean.querySelector('.forecast')!.textContent =
-        `${['☀', '☁', '☂', '❄'][this.weather]} ${weatherNames[this.weather]} · ${phases[this.phase]}${this.deviceTime ? ' · Device time' : ''}${this.automatic ? ' · Auto weather' : ''}`;
+        `${['☀', '☁', '☂', '❄'][this.weather]} ${weatherNames[this.weather]} · ${phases[this.phase]}${this.deviceTime ? ' · Device time' : ''}${this.automatic && !this.timezoneWeatherEnabled ? ' · Auto weather' : ''}`;
+      const report = this.timezoneWeather.report;
+      const location = timezoneLocation(this.timezoneWeather.timezone);
+      const note = root.querySelector<HTMLElement>('.weather-status')!;
+      note.hidden = !this.timezoneWeatherEnabled;
+      note.querySelector('.weather-summary')!.textContent = !this.weatherReader
+        ? 'Browser demo · simulated weather'
+        : !location
+          ? 'No reference city for this timezone · Simulated weather'
+          : `Timezone weather · ${location.city} · ${!report ? 'Checking weather…' : report.status === 'fresh' ? 'Reference city, not your precise location' : report.weather !== null ? 'Update unavailable · Keeping last weather' : 'Weather unavailable · Simulated weather'}`;
+      note.querySelector('.weather-updated')!.textContent =
+        report?.updatedAt != null
+          ? `Weather updated ${new Date(report.updatedAt).toISOString()}`
+          : '';
+      (note.querySelector('.weather-source') as HTMLElement).hidden =
+        report?.weather == null;
+    };
+    const applyTimezoneWeather = () => {
+      if (!this.timezoneWeatherEnabled) return;
+      if (this.timezoneWeather.report?.weather != null)
+        this.weather = this.timezoneWeather.report.weather;
+      // A new region must not inherit the old region's weather as a real reading.
+      else if (!this.timezoneWeather.report) this.weather = 0;
+      climate();
+    };
+    const startTimezoneWeather = () => {
+      if (this.timezoneWeatherEnabled) {
+        this.timezoneWeather.start(applyTimezoneWeather);
+        applyTimezoneWeather();
+      } else this.timezoneWeather.stop();
     };
     let daylightTimer: ReturnType<typeof setTimeout> | undefined;
     const syncDaylight = () => {
@@ -202,6 +242,22 @@ export class IslandScene {
     updateCamera();
     syncDaylight();
     climate();
+    startTimezoneWeather();
+    if (this.openWeatherSource)
+      root.querySelector<HTMLAnchorElement>('.weather-source')!.onclick =
+        async (event) => {
+          event.preventDefault();
+          const status = root.querySelector('.weather-link-status')!;
+          status.textContent = '';
+          try {
+            if (
+              !(await this.openWeatherSource!('https://open-meteo.com/')).opened
+            )
+              status.textContent = 'The link was not opened.';
+          } catch {
+            status.textContent = 'Could not open the source. Please try again.';
+          }
+        };
     root.querySelectorAll<HTMLButtonElement>('button[data-mode]').forEach(
       (b) =>
         (b.onclick = () => {
@@ -211,8 +267,11 @@ export class IslandScene {
     );
     root.querySelector<HTMLSelectElement>('#weather')!.onchange = (e) => {
       const value = (e.target as HTMLSelectElement).value;
+      this.timezoneWeatherEnabled = value === 'timezone';
       this.automatic = value === 'auto';
-      if (!this.automatic) this.weather = Number(value);
+      if (!this.automatic && !this.timezoneWeatherEnabled)
+        this.weather = Number(value);
+      startTimezoneWeather();
       climate();
     };
     root.querySelector<HTMLSelectElement>('#daylight')!.onchange = (e) => {
@@ -565,7 +624,13 @@ export class IslandScene {
     let auto: ReturnType<typeof setTimeout>;
     const advanceClimate = () => {
       this.nextClimateAt = Date.now() + 30000;
-      if (this.automatic && !document.hidden) {
+      this.timezoneWeather.refresh();
+      if (
+        (this.timezoneWeatherEnabled
+          ? this.timezoneWeather.report?.weather == null
+          : this.automatic) &&
+        !document.hidden
+      ) {
         this.weather = (this.weather + 1) % 4;
         climate();
       }
@@ -577,6 +642,7 @@ export class IslandScene {
     );
     const visibility = () => {
       syncDaylight();
+      this.timezoneWeather.refresh();
       if (document.hidden) clearStroke();
       if (document.hidden && walking) {
         clearTimeout(stepTimer);
@@ -584,11 +650,16 @@ export class IslandScene {
       }
     };
     document.addEventListener('visibilitychange', visibility, { signal });
-    window.addEventListener('focus', syncDaylight, { signal });
-    window.addEventListener('pageshow', syncDaylight, { signal });
+    const resume = () => {
+      syncDaylight();
+      this.timezoneWeather.refresh();
+    };
+    window.addEventListener('focus', resume, { signal });
+    window.addEventListener('pageshow', resume, { signal });
     const resize = new ResizeObserver(() => updateCamera());
     resize.observe(ocean);
     this.cleanup = () => {
+      this.timezoneWeather.stop();
       clearStroke();
       finish();
       camera.style.removeProperty('transition');

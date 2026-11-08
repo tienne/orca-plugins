@@ -541,3 +541,22 @@
     left: 35%;
   }
 }
+
+.weather-status {
+  flex-basis: 100%;
+  margin: 0;
+  color: var(--orca-muted-foreground, var(--muted));
+  font-size: 11px;
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+}
+.weather-status[hidden],
+.weather-source[hidden] {
+  display: none;
+}
+.weather-status > span:not(:empty) {
+  margin-right: 8px;
+}
+.weather-source {
+  color: var(--orca-primary, var(--accent));
+}

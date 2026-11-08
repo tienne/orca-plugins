@@ -62,9 +62,11 @@ export function translate(source: string, locale = currentLocale()): string {
   if (!text) return source;
   let result = text;
   // Dates keep their ISO source so a language switch can reformat an open backup.
-  const date = /^Exported (\d{4}-\d{2}-\d{2}T[^ ]+)$/.exec(text);
-  if (date && Number.isFinite(Date.parse(date[1]))) {
-    result = `${locale.startsWith('ko') ? '내보낸 시각' : 'Exported'} ${new Intl.DateTimeFormat(locale, { dateStyle: 'medium', timeStyle: 'short' }).format(new Date(date[1]))}`;
+  const date = /^(Exported|Weather updated) (\d{4}-\d{2}-\d{2}T[^ ]+)$/.exec(
+    text,
+  );
+  if (date && Number.isFinite(Date.parse(date[2]))) {
+    result = `${locale.startsWith('ko') ? (date[1] === 'Exported' ? '내보낸 시각' : '마지막 날씨 갱신') : date[1]} ${new Intl.DateTimeFormat(locale, { dateStyle: 'medium', timeStyle: 'short' }).format(new Date(date[2]))}`;
   } else if (!locale.startsWith('ko') && text.includes(' · ')) {
     result = text
       .split(' · ')

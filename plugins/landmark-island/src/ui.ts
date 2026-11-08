@@ -33,7 +33,6 @@ import {
   canRotate,
 } from './decorations';
 startLocalization();
-const scene = new IslandScene();
 const rarities = [
   { id: 'common', name: 'Discovery', rank: 1, numeral: 'I' },
   { id: 'rare', name: 'Treasure', rank: 2, numeral: 'II' },
@@ -75,6 +74,12 @@ const frame = (
 ).orca;
 const bridge = frame?.plugin;
 const demo = !bridge;
+const scene = new IslandScene(
+  bridge
+    ? (timezone) => bridge.request('island.weather', { timezone })
+    : undefined,
+  frame ? (url) => frame.shell.openExternal(url) : undefined,
+);
 const demoKey = 'landmark-island-demo-v1';
 const game = new Game({
   read: async () => JSON.parse(localStorage.getItem(demoKey) ?? 'null'),
