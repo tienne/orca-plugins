@@ -143,7 +143,7 @@ export interface Requests {
       branchRef?: string;
       filter?: LogFilter;
       cursor?: string;
-      // 'filter'를 보내면 같은 저장소의 앞선 'filter' 요청을 취소한다.
+      // 'filter'를 보내면 같은 저장소의 앞선 'filter' 요청과 진행 중인 다음 페이지 요청을 취소한다.
       cancelKey?: 'filter';
     };
     output: Repository;

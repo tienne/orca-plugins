@@ -208,13 +208,35 @@ export default function activate(orca: WorkerApi): void {
     };
   });
   // 필터를 연달아 바꾸면 앞선 요청의 git 프로세스를 끊어 새 요청이 밀리지 않게 한다.
-  // 페이지 요청은 cancelKey를 보내지 않아 필터 요청을 끊지 않는다.
+  // 필터 요청은 같은 저장소에서 아직 도는 다음 페이지 요청도 함께 끊는다. 이미 버려질 결과라서다.
+  // 페이지 요청끼리는 서로 끊지 않는다.
   const filterRequests = new Map<string, AbortController>();
+  const pageRequests = new Map<string, Set<AbortController>>();
   handle('log', async ({ repo, all, branchRef, filter, cursor, cancelKey }) => {
     const root = check(repo);
-    if (cancelKey !== 'filter')
-      return log(root, all === true, branchRef, filter, cursor);
+    if (cancelKey !== 'filter') {
+      if (!cursor) return log(root, all === true, branchRef, filter, cursor);
+      const controller = new AbortController();
+      const pending = pageRequests.get(root) ?? new Set<AbortController>();
+      pending.add(controller);
+      pageRequests.set(root, pending);
+      try {
+        return await log(
+          root,
+          all === true,
+          branchRef,
+          filter,
+          cursor,
+          controller.signal,
+        );
+      } finally {
+        pending.delete(controller);
+        if (pending.size === 0 && pageRequests.get(root) === pending)
+          pageRequests.delete(root);
+      }
+    }
     filterRequests.get(root)?.abort();
+    for (const pending of pageRequests.get(root) ?? []) pending.abort();
     const controller = new AbortController();
     filterRequests.set(root, controller);
     try {

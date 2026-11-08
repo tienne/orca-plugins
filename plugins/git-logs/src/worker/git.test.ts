@@ -2179,7 +2179,7 @@ test('commitHash도 이미 취소된 signal을 받으면 거부한다', () =>
     assert.equal(await commitHash(root, hash), hash);
   }));
 
-test('같은 저장소에 cancelKey가 filter인 log 요청이 겹치면 앞 요청만 취소되고 페이징 요청은 영향이 없다', () =>
+test('cancelKey가 filter인 log 요청은 앞선 필터 요청과 진행 중인 페이지 요청을 취소하고 페이지 요청은 필터 요청을 취소하지 않는다', () =>
   fixture(async (root) => {
     await chain(root, 450, (i) => ({
       author: i % 2 ? 'Alice Kim' : 'Bob Lee',
@@ -2220,6 +2220,23 @@ test('같은 저장소에 cancelKey가 filter인 log 요청이 겹치면 앞 요
     ]);
     assert.equal(pendingResult.status, 'fulfilled');
     assert.equal(pagingResult.status, 'fulfilled');
+
+    // 필터 요청이 오면 아직 도는 페이지 요청은 끊기고 필터 요청은 정상 응답한다.
+    const stalePage = worker.call('log', {
+      repo: root,
+      cursor: first.nextCursor,
+    });
+    const next = filtered({ author: 'Bob' });
+    const [staleResult, nextResult] = await Promise.allSettled([
+      stalePage,
+      next,
+    ]);
+    assert.equal(staleResult.status, 'rejected');
+    assert.equal(
+      (staleResult as PromiseRejectedResult).reason.name,
+      'AbortError',
+    );
+    assert.equal(nextResult.status, 'fulfilled');
   }));
 
 // 워커 핸들러를 임시 레포에 연결한다. open이 쓴 문서는 opened 경로로 다시 읽는다.

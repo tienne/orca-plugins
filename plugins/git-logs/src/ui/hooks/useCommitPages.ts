@@ -87,7 +87,7 @@ export function useCommitPages({ repo, logSeq, loaded, reloadLog }: Options) {
   }
   const pagesRef = useRef(current);
   pagesRef.current = current;
-  // 취소할 수 없는 요청이 남아 있으면 목록이 바뀌어도 끝날 때까지 다음 요청을 보내지 않는다.
+  // 필터 요청이 끊은 페이지 요청도 응답(취소 오류)이 와야 끝난다. 그 전에는 다음 요청을 보내지 않는다.
   const inFlight = useRef(false);
   const staleReload = useRef(false);
   useEffect(() => {
