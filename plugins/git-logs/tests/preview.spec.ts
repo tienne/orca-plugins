@@ -494,7 +494,7 @@ test('commit context menu supports keyboard navigation and a safe demo hard rese
   const commit = page.getByRole('button', { name: /^Merge branch/ });
   await commit.click({ button: 'right' });
   await expect(page.getByRole('menu', { name: '커밋 작업' })).toBeVisible();
-  await expect(page.getByRole('menuitem')).toHaveCount(7);
+  await expect(page.getByRole('menuitem')).toHaveCount(10);
   // Arrow navigation crosses visual group boundaries without stopping on labels.
   await page.keyboard.press('ArrowDown');
   await expect(
@@ -825,7 +825,12 @@ test('branch search filters local and remote history, supports keyboard selectio
   await page.getByRole('button', { name: '브랜치 범위' }).click();
   await page.getByRole('option', { name: '전체 브랜치', exact: true }).click();
   await expect(page.locator('.commit-row')).toHaveCount(6);
+  // 검색창은 메시지 전용이라 작성자 이름은 작성자 필터로 찾는다(설계 D6).
   await page.getByLabel('커밋 검색').fill('David');
+  await expect(page.getByText('일치하는 커밋이 없습니다.')).toBeVisible();
+  await page.getByLabel('커밋 검색').fill('');
+  await page.getByRole('button', { name: '필터', exact: true }).click();
+  await page.getByLabel('작성자', { exact: true }).fill('David');
   await expect(page.locator('.commit-row')).toHaveCount(3);
 });
 test('selected branch refreshes through worker RPC, disappears cleanly and resets on workspace change', async ({
@@ -938,19 +943,10 @@ test('sidebar bottom panes keep their height and files open a central diff on do
     path: `src/long-folder-name/file-${index}.ts`,
     status: 'M',
   }));
-  const repo = {
-    ...fixtureRepo,
-    commits: fixtureRepo.commits.map((commit, index) =>
-      index === 0
-        ? {
-            ...commit,
-            message: commit.message + '\n' + 'Long commit details\n'.repeat(60),
-          }
-        : commit,
-    ),
-  };
+  const repo = fixtureRepo;
+  const longMessage = `${repo.commits[0].subject}\n${'Long commit details\n'.repeat(60)}`;
   await page.addInitScript(
-    ({ repo, files, set, diff }) => {
+    ({ repo, files, set, diff, longMessage }) => {
       const opens: unknown[] = [];
       Object.defineProperty(window, 'testOpenRequests', { get: () => opens });
       window.orca = {
@@ -982,6 +978,7 @@ test('sidebar bottom panes keep their height and files open a central diff on do
               } as T;
             }
             if (name === 'diff') return diff as T;
+            if (name === 'commitMessage') return { message: longMessage } as T;
             if (name === 'open') {
               opens.push(raw);
               return { opened: true } as T;
@@ -996,6 +993,7 @@ test('sidebar bottom panes keep their height and files open a central diff on do
       files,
       set: fixtureSet,
       diff: fixtureDiff(fixtureSet.files[0].path),
+      longMessage,
     },
   );
   await page.setViewportSize({ width: 380, height: 900 });
@@ -1222,4 +1220,1688 @@ test('local ignore setup warnings are translated without hiding the connected gr
     fixtureRepo.commits.length,
   );
   await page.screenshot({ path: info.outputPath('local-ignore-warning.png') });
+});
+test('commit tags render as badges without changing row height or branch options', async ({
+  page,
+}, info) => {
+  await page.setViewportSize({ width: 360, height: 780 });
+  await page.goto('/');
+  await page.getByRole('button', { name: '브랜치 범위' }).click();
+  await page.getByRole('option', { name: '전체 브랜치', exact: true }).click();
+  await expect(page.locator('.commit-row')).toHaveCount(6);
+  const single = page.locator('.commit-row', {
+    hasText: 'Improve empty states',
+  });
+  await expect(single.locator('.tag-badge')).toHaveText(['v1.0.0']);
+  const double = page.locator('.commit-row', {
+    hasText: 'Extract repository connection controls',
+  });
+  await expect(double.locator('.tag-badge')).toHaveText([
+    'v0.9.0',
+    'v0.9.0-rc.1',
+  ]);
+  await expect(double.locator('.tag-badge').first()).toBeVisible();
+  const heights = await page
+    .locator('.commit-row')
+    .evaluateAll((rows) =>
+      rows.map((row) => row.getBoundingClientRect().height),
+    );
+  expect(heights.length).toBeGreaterThan(0);
+  expect(new Set(heights)).toEqual(new Set([64]));
+  const fits = await double.evaluate((row) => {
+    const box = row.querySelector('.tag-badges')!.getBoundingClientRect();
+    return Array.from(
+      row.querySelectorAll('.tag-badge:not([data-folded])'),
+    ).every((badge) => badge.getBoundingClientRect().right <= box.right + 0.5);
+  });
+  expect(fits).toBe(true);
+  for (const theme of ['light', 'dark']) {
+    await page.getByLabel('미리보기 테마').selectOption(theme);
+    const badgeColor = await double
+      .locator('.tag-badge')
+      .first()
+      .evaluate((el) => getComputedStyle(el).color);
+    const branchColor = await page
+      .locator('.commit-row', { hasText: 'Merge branch' })
+      .locator('.refs em')
+      .first()
+      .evaluate((el) => getComputedStyle(el).color);
+    expect(badgeColor).not.toBe(branchColor);
+  }
+  await page.getByRole('button', { name: '브랜치 범위' }).click();
+  await expect(
+    page.getByRole('option', { name: /v1\.0\.0|v0\.9\.0/ }),
+  ).toHaveCount(0);
+  await page.getByLabel('브랜치 검색').press('Escape');
+  await page.screenshot({ path: info.outputPath('commit-tags.png') });
+});
+test('commit details show the subject first and fill in the body on selection', async ({
+  page,
+}) => {
+  await page.goto('/?sample=en');
+  await page.locator('.commit-row', { hasText: 'Merge branch' }).click();
+  await expect(page.locator('.details pre')).toHaveText(
+    /^Merge branch feature\/readable-diff\n\nBring aligned comparison/,
+  );
+  await page
+    .locator('.commit-row', { hasText: 'Handle binary and renamed files' })
+    .click();
+  await expect(page.locator('.details pre')).toHaveText(
+    'Handle binary and renamed files',
+  );
+  await expect(page.locator('.commit-body-error')).toHaveCount(0);
+});
+test('commit message failure keeps the subject and shows only an error note', async ({
+  page,
+}) => {
+  await page.goto('/?fixture=messageError');
+  await page.locator('.commit-row', { hasText: 'Merge branch' }).click();
+  await expect(page.locator('.commit-body-error')).toHaveText(
+    '커밋 본문을 불러오지 못했습니다.',
+  );
+  await expect(page.locator('.details pre')).toHaveText(
+    'Merge branch feature/readable-diff',
+  );
+});
+test('a late commit message response for a previous selection is discarded', async ({
+  page,
+}) => {
+  const { fixtureRepo, fixtureSet, fixtureDiff } =
+    await import('../src/ui/fixture');
+  await page.addInitScript(
+    ({ repo, set, diff }) => {
+      const pending: Record<string, (value: unknown) => void> = {};
+      Object.defineProperty(window, 'testPending', {
+        get: () => Object.keys(pending).length,
+      });
+      Object.defineProperty(window, 'testResolve', {
+        value: (hash: string, message: string) => pending[hash]({ message }),
+      });
+      window.orca = {
+        locale: 'ko-KR',
+        api: { major: 1, minor: 3 },
+        host: { has: () => true },
+        plugin: {
+          request: async <T>(name: string, raw: unknown) => {
+            if (name === 'active')
+              return {
+                status: 'connected',
+                repository: repo,
+                workspace: {
+                  id: 'fixture',
+                  name: 'Fixture',
+                  path: repo.root,
+                  branch: repo.branch,
+                },
+              } as T;
+            if (name === 'changes')
+              return {
+                ...set,
+                comparison: (raw as { comparison: unknown }).comparison,
+              } as T;
+            if (name === 'diff') return diff as T;
+            if (name === 'commitMessage')
+              return new Promise<T>((resolve) => {
+                pending[(raw as { commit: string }).commit] = resolve as never;
+              });
+            throw new Error(`Unexpected request: ${name}`);
+          },
+        },
+      };
+    },
+    {
+      repo: fixtureRepo,
+      set: fixtureSet,
+      diff: fixtureDiff(fixtureSet.files[0].path),
+    },
+  );
+  await page.goto('/');
+  const [first, second] = fixtureRepo.commits;
+  await page.locator('.commit-row').nth(0).click();
+  await expect(page.locator('.details pre')).toHaveText(first.subject);
+  await page.locator('.commit-row').nth(1).click();
+  await expect(page.locator('.details pre')).toHaveText(second.subject);
+  await expect
+    .poll(() => page.evaluate(() => Reflect.get(window, 'testPending')))
+    .toBe(2);
+  await page.evaluate(
+    ([hash]) => Reflect.get(window, 'testResolve')(hash, 'LATE BODY'),
+    [first.hash],
+  );
+  await page.waitForTimeout(100);
+  await expect(page.locator('.details pre')).toHaveText(second.subject);
+  await page.evaluate(
+    ([hash]) => Reflect.get(window, 'testResolve')(hash, 'SECOND BODY'),
+    [second.hash],
+  );
+  await expect(page.locator('.details pre')).toHaveText('SECOND BODY');
+});
+
+test('log filters chip, clear and hide the graph in the browser fixture', async ({
+  page,
+}) => {
+  await page.goto('/');
+  await expect(page.locator('.commit-row')).toHaveCount(6);
+  await expect(page.locator('.commit-row svg')).toHaveCount(6);
+  await expect(page.getByLabel('작성자', { exact: true })).toBeHidden();
+  await page.getByRole('button', { name: '필터', exact: true }).click();
+  await page.getByLabel('작성자', { exact: true }).fill('david');
+  await page.getByLabel('커밋 검색').fill('implement');
+  await expect(page.locator('.commit-row')).toHaveCount(1);
+  await expect(page.locator('.commit-row svg')).toHaveCount(0);
+  await expect(page.getByText('검색 결과 · 그래프 숨김')).toBeVisible();
+  const chips = page.locator('.filter-chip');
+  await expect(chips).toHaveText(['메시지: implement×', '작성자: david×']);
+  await page.getByRole('button', { name: '메시지 필터 해제' }).click();
+  await expect(page.getByLabel('커밋 검색')).toHaveValue('');
+  await expect(chips).toHaveText(['작성자: david×']);
+  await expect(page.locator('.commit-row')).toHaveCount(3);
+  await page.getByLabel('시작일 (committer date)').fill('2026-11-03');
+  await page.getByLabel('종료일 (committer date)').fill('2026-11-03');
+  await expect(page.locator('.commit-row')).toHaveCount(1);
+  await expect(page.locator('.filter-note')).toContainText('committer date');
+  await page.getByRole('button', { name: '모두 해제' }).click();
+  await expect(chips).toHaveCount(0);
+  await expect(page.getByLabel('작성자', { exact: true })).toHaveValue('');
+  await expect(page.locator('.commit-row')).toHaveCount(6);
+  await expect(page.locator('.commit-row svg')).toHaveCount(6);
+  await expect(page.locator('.commit-row').first()).toHaveCSS('height', '64px');
+  await page.getByLabel('경로').fill('src/connection.ts');
+  await expect(page.locator('.commit-row')).toHaveCount(1);
+  await expect(page.locator('.commit-row')).toContainText(
+    'Extract repository connection controls',
+  );
+});
+
+test('log filters reach the worker once after debounce, AND with the branch and drop late responses', async ({
+  page,
+}) => {
+  const { fixtureRepo } = await import('../src/ui/fixture');
+  await page.addInitScript((repo) => {
+    const calls: unknown[] = [];
+    const slow: Array<() => void> = [];
+    Reflect.set(window, 'testLogCalls', calls);
+    Reflect.set(window, 'testReleaseSlow', () =>
+      slow.splice(0).forEach((fn) => fn()),
+    );
+    window.orca = {
+      locale: 'ko-KR',
+      api: { major: 1, minor: 3 },
+      host: { has: () => true },
+      plugin: {
+        request: async <T>(name: string, raw: unknown) => {
+          if (name === 'active')
+            return {
+              status: 'connected',
+              repository: repo,
+              workspace: {
+                id: 'fixture',
+                name: 'Fixture',
+                path: repo.root,
+                branch: repo.branch,
+              },
+            } as T;
+          if (name === 'changes')
+            return {
+              comparison: { kind: 'working' },
+              files: [],
+              left: 'HEAD',
+              right: '현재 작업 트리 · 디스크',
+            } as T;
+          if (name === 'log') {
+            const input = raw as {
+              filter?: { author?: string; text?: string };
+            };
+            calls.push(input);
+            const author = input.filter?.author ?? '';
+            const result = {
+              ...repo,
+              commits: repo.commits.filter((c) =>
+                c.author.toLowerCase().includes(author.toLowerCase()),
+              ),
+            };
+            // 'slow'로 시작하는 작성자는 다음 입력보다 늦게 도착하게 한다.
+            if (author.startsWith('slow'))
+              return new Promise<T>((resolve) =>
+                slow.push(() =>
+                  resolve({
+                    ...repo,
+                    commits: repo.commits.slice(0, 1),
+                  } as T),
+                ),
+              );
+            return result as T;
+          }
+          throw new Error(`Unexpected request: ${name}`);
+        },
+      },
+    };
+  }, fixtureRepo);
+  const calls = () =>
+    page.evaluate(() => Reflect.get(window, 'testLogCalls') as unknown[]);
+  await page.goto('/');
+  await expect(page.locator('.commit-row')).toHaveCount(6);
+  await page.getByRole('button', { name: '브랜치 범위' }).click();
+  await page
+    .getByRole('option', { name: 'feature/readable-diff 로컬', exact: true })
+    .click();
+  await expect.poll(async () => (await calls()).length).toBe(1);
+  await page.getByRole('button', { name: '필터', exact: true }).click();
+  await page
+    .getByLabel('작성자', { exact: true })
+    .pressSequentially('David', { delay: 60 });
+  await page.waitForTimeout(600);
+  const afterTyping = await calls();
+  expect(afterTyping).toHaveLength(2);
+  expect(afterTyping[1]).toEqual({
+    repo: fixtureRepo.root,
+    all: false,
+    branchRef: 'refs/heads/feature/readable-diff',
+    filter: { author: 'David' },
+  });
+  await expect(page.locator('.commit-row')).toHaveCount(3);
+  await expect(page.locator('.commit-row svg')).toHaveCount(0);
+
+  await page.getByLabel('작성자', { exact: true }).fill('slow');
+  await expect.poll(async () => (await calls()).length).toBe(3);
+  await page.getByLabel('작성자', { exact: true }).fill('David');
+  await expect.poll(async () => (await calls()).length).toBe(4);
+  await expect(page.locator('.commit-row')).toHaveCount(3);
+  await page.evaluate(() => Reflect.get(window, 'testReleaseSlow')());
+  await page.waitForTimeout(200);
+  await expect(page.locator('.commit-row')).toHaveCount(3);
+  await expect(page.getByRole('alert')).toHaveCount(0);
+});
+
+// 가상화된 목록에서 DOM에 남아도 되는 행 수: 보이는 행 + 위아래 여유 8행씩 + 고정(선택·포커스) 2행.
+async function rowBudget(page: import('@playwright/test').Page) {
+  const height = await page
+    .locator('.commit-list')
+    .evaluate((el) => el.clientHeight);
+  return Math.ceil(height / 64) + 1 + 16 + 2;
+}
+const scrollListTo = (
+  page: import('@playwright/test').Page,
+  where: 'top' | 'bottom',
+) =>
+  page.locator('.commit-list').evaluate((el, where) => {
+    el.scrollTop = where === 'top' ? 0 : el.scrollHeight;
+    el.dispatchEvent(new Event('scroll'));
+  }, where);
+const loadedCount = (page: import('@playwright/test').Page) =>
+  page.locator('.history > .section-heading span');
+
+test('infinite scroll loads 200/200/50 fixture pages, keeps rows windowed and continues the graph', async ({
+  page,
+}) => {
+  await page.goto('/?fixture=paged');
+  await expect(loadedCount(page)).toHaveText('200 / 최대 5,000');
+  const budget = await rowBudget(page);
+  expect(await page.locator('.commit-row').count()).toBeLessThanOrEqual(budget);
+  await expect(page.locator('.commit-row').first()).toHaveAttribute(
+    'data-index',
+    '0',
+  );
+  // 선택하고 포커스한 행은 창 밖으로 스크롤돼도 DOM과 포커스에 남는다.
+  const first = page.locator('.commit-row[data-index="0"]');
+  await first.click();
+  await expect(first).toBeFocused();
+  await scrollListTo(page, 'bottom');
+  await expect(loadedCount(page)).toHaveText('400 / 최대 5,000');
+  await scrollListTo(page, 'bottom');
+  await expect(loadedCount(page)).toHaveText('450 / 최대 5,000');
+  await scrollListTo(page, 'bottom');
+  await expect(page.locator('.commit-row').last()).toHaveAttribute(
+    'data-index',
+    '449',
+  );
+  await expect(page.locator('.commit-row').last()).toContainText(
+    'DEMO paged commit 450',
+  );
+  expect(await page.locator('.commit-row').count()).toBeLessThanOrEqual(budget);
+  await expect(first).toBeFocused();
+  await expect(page.locator('.commit-row.selected')).toHaveAttribute(
+    'data-index',
+    '0',
+  );
+  await page.keyboard.press('Shift+F10');
+  await expect(page.getByRole('menu', { name: '커밋 작업' })).toBeVisible();
+  await page.keyboard.press('Escape');
+  await expect(page.getByText('이전 커밋을 불러오는 중…')).toHaveCount(0);
+  await expect(page.locator('.page-state')).toHaveCount(0);
+  // 190행에서 갈라진 곁가지가 205행까지 이어지므로 두 번째 페이지 첫 행도 레인 2개를 그린다.
+  await page
+    .locator('.commit-list')
+    .evaluate((el) => (el.scrollTop = 195 * 64));
+  const boundary = page.locator('.commit-row[data-index="200"] svg path');
+  await expect(boundary).toHaveCount(3);
+  await expect(
+    page.locator('.commit-row[data-index="199"] svg path'),
+  ).toHaveCount(3);
+  await scrollListTo(page, 'top');
+  await expect(page.locator('.commit-row').first()).toHaveAttribute(
+    'data-index',
+    '0',
+  );
+  await expect(page.locator('.commit-row').nth(1)).toHaveAttribute(
+    'data-index',
+    '1',
+  );
+  const spacerTotal = await page
+    .locator('.commit-list')
+    .evaluate((el) => el.scrollHeight);
+  expect(spacerTotal).toBeGreaterThanOrEqual(450 * 64);
+  // 필터가 켜진 목록도 같은 조건으로 이어 받고, 그래프는 그리지 않는다.
+  await page.getByRole('button', { name: '필터', exact: true }).click();
+  await page.getByLabel('작성자', { exact: true }).fill('David');
+  await expect(loadedCount(page)).toHaveText('200 / 최대 5,000');
+  await expect(page.locator('.commit-row svg')).toHaveCount(0);
+  await scrollListTo(page, 'bottom');
+  await expect(loadedCount(page)).toHaveText('300 / 최대 5,000');
+  await scrollListTo(page, 'bottom');
+  await expect(page.locator('.commit-row').last()).toContainText(
+    'DEMO paged commit 450',
+  );
+});
+
+test('page requests run one at a time, reload on stale cursors and reset on branch change', async ({
+  page,
+}) => {
+  const { fixtureRepo } = await import('../src/ui/fixture');
+  await page.addInitScript((repo) => {
+    const commits = Array.from({ length: 450 }, (_, i) => ({
+      hash: `e${i.toString(16).padStart(7, '0')}`.padEnd(40, '0'),
+      parents:
+        i === 449
+          ? []
+          : [`e${(i + 1).toString(16).padStart(7, '0')}`.padEnd(40, '0')],
+      author: 'David',
+      date: '2026-11-04T09:20:00+09:00',
+      subject: `Worker page commit ${i + 1}`,
+      refs: [],
+    }));
+    const pageOf = (skip: number, branch: boolean) => {
+      const list = branch ? commits.slice(100) : commits;
+      const next = Math.min(skip + 200, list.length);
+      const hasMore = next < list.length;
+      return {
+        ...repo,
+        head: commits[0].hash,
+        commits: list.slice(skip, next),
+        hasMore,
+        ...(hasMore ? { nextCursor: `c${next}` } : {}),
+      };
+    };
+    const calls: Record<string, unknown>[] = [];
+    const held: Array<() => void> = [];
+    let stale = false;
+    Reflect.set(window, 'testLogCalls', calls);
+    Reflect.set(window, 'testRelease', () =>
+      held.splice(0).forEach((fn) => fn()),
+    );
+    Reflect.set(window, 'testStale', () => {
+      stale = true;
+    });
+    window.orca = {
+      locale: 'en-US',
+      api: { major: 1, minor: 3 },
+      host: { has: () => true },
+      plugin: {
+        request: async <T>(name: string, raw: unknown) => {
+          if (name === 'active')
+            return {
+              status: 'connected',
+              repository: pageOf(0, false),
+              workspace: {
+                id: 'fixture',
+                name: 'Fixture',
+                path: repo.root,
+                branch: repo.branch,
+              },
+            } as T;
+          if (name === 'changes')
+            return {
+              comparison: { kind: 'working' },
+              files: [],
+              left: 'HEAD',
+              right: '현재 작업 트리 · 디스크',
+            } as T;
+          if (name === 'log') {
+            const input = raw as { cursor?: string; branchRef?: string };
+            calls.push(input);
+            const branch = !!input.branchRef;
+            if (input.cursor === undefined) return pageOf(0, branch) as T;
+            if (stale) {
+              stale = false;
+              throw new Error(
+                'stale-cursor: 이력이 바뀌었습니다. 처음부터 다시 불러옵니다.',
+              );
+            }
+            const skip = Number(input.cursor.slice(1));
+            return new Promise<T>((resolve) =>
+              held.push(() => resolve(pageOf(skip, branch) as T)),
+            );
+          }
+          throw new Error(`Unexpected request: ${name}`);
+        },
+      },
+    };
+  }, fixtureRepo);
+  const calls = () =>
+    page.evaluate(
+      () => Reflect.get(window, 'testLogCalls') as Record<string, unknown>[],
+    );
+  const pageCalls = async () =>
+    (await calls()).filter((call) => 'cursor' in call);
+  await page.goto('/');
+  await expect(loadedCount(page)).toHaveText('200 / max 5,000');
+  expect(await calls()).toHaveLength(0);
+  await scrollListTo(page, 'bottom');
+  await expect.poll(async () => (await pageCalls()).length).toBe(1);
+  expect((await pageCalls())[0]).toEqual({
+    repo: fixtureRepo.root,
+    all: false,
+    cursor: 'c200',
+  });
+  await expect(page.getByText('Loading older commits…')).toBeVisible();
+  // 응답 전 스크롤을 반복해도 두 번째 요청은 나가지 않는다.
+  for (const offset of [64, 0, 128, 0]) {
+    await page.locator('.commit-list').evaluate((el, offset) => {
+      el.scrollTop = el.scrollHeight - el.clientHeight - offset;
+      el.dispatchEvent(new Event('scroll'));
+    }, offset);
+    await page.waitForTimeout(50);
+  }
+  expect(await pageCalls()).toHaveLength(1);
+  await page.evaluate(() => Reflect.get(window, 'testRelease')());
+  await expect(loadedCount(page)).toHaveText('400 / max 5,000');
+  expect(await page.locator('.commit-row').count()).toBeLessThanOrEqual(
+    await rowBudget(page),
+  );
+
+  // 낡은 커서 오류는 알림 없이 첫 페이지부터 다시 받고, 다시 이어 받아도 중복이 없다.
+  await page.evaluate(() => Reflect.get(window, 'testStale')());
+  await scrollListTo(page, 'bottom');
+  await expect(
+    page.getByText('History changed. Reloading from the start.'),
+  ).toBeVisible();
+  await expect(loadedCount(page)).toHaveText('200 / max 5,000');
+  const reload = (await calls()).at(-1)!;
+  expect(reload).toEqual({ repo: fixtureRepo.root, all: false });
+  await expect(page.getByRole('alert')).toHaveCount(0);
+  await scrollListTo(page, 'bottom');
+  await expect.poll(async () => (await pageCalls()).length).toBe(3);
+  await page.evaluate(() => Reflect.get(window, 'testRelease')());
+  await expect(loadedCount(page)).toHaveText('400 / max 5,000');
+  await scrollListTo(page, 'bottom');
+  await expect.poll(async () => (await pageCalls()).length).toBe(4);
+  await page.evaluate(() => Reflect.get(window, 'testRelease')());
+  await expect(loadedCount(page)).toHaveText('450 / max 5,000');
+  await scrollListTo(page, 'bottom');
+  await expect(page.locator('.commit-row').last()).toContainText(
+    'Worker page commit 450',
+  );
+  const hashes = await page
+    .locator('.commit-row .commit-hash')
+    .evaluateAll((nodes) => nodes.map((node) => node.getAttribute('title')));
+  expect(new Set(hashes).size).toBe(hashes.length);
+
+  // 브랜치를 바꾸면 페이지 상태가 초기화되고, 이전 범위의 늦은 페이지 응답은 버려진다.
+  await page.getByRole('button', { name: '↻ Refresh' }).click();
+  await expect(loadedCount(page)).toHaveText('200 / max 5,000');
+  await scrollListTo(page, 'bottom');
+  await expect.poll(async () => (await pageCalls()).length).toBe(5);
+  await page.getByRole('button', { name: 'Branch scope' }).click();
+  await page.getByLabel('Search branches').fill('feature/readable-diff');
+  await page.getByLabel('Search branches').press('ArrowDown');
+  await page.keyboard.press('Enter');
+  await expect(loadedCount(page)).toHaveText('200 / max 5,000');
+  await expect(page.locator('.commit-row').first()).toContainText(
+    'Worker page commit 101',
+  );
+  expect(
+    await page.locator('.commit-list').evaluate((el) => el.scrollTop),
+  ).toBe(0);
+  await page.evaluate(() => Reflect.get(window, 'testRelease')());
+  await page.waitForTimeout(200);
+  await expect(loadedCount(page)).toHaveText('200 / max 5,000');
+  await expect(page.locator('.commit-row').first()).toContainText(
+    'Worker page commit 101',
+  );
+  // 이전 요청이 끝난 뒤에야 새 범위의 다음 페이지가 커서와 브랜치를 함께 싣고 나간다.
+  await scrollListTo(page, 'bottom');
+  await expect.poll(async () => (await pageCalls()).length).toBe(6);
+  expect((await pageCalls()).at(-1)).toMatchObject({
+    branchRef: expect.stringContaining('feature/readable-diff'),
+    cursor: 'c200',
+  });
+});
+
+test('loading stops at the 5,000 commit limit with a notice and a bounded DOM', async ({
+  page,
+}) => {
+  test.setTimeout(120000);
+  await page.goto('/?fixture=many');
+  await expect(loadedCount(page)).toHaveText('200 / 최대 5,000');
+  for (let loaded = 200; loaded < 5000; loaded += 200) {
+    await scrollListTo(page, 'bottom');
+    await expect(loadedCount(page)).toHaveText(
+      `${(loaded + 200).toLocaleString('en-US')} / 최대 5,000`,
+    );
+  }
+  await scrollListTo(page, 'bottom');
+  await expect(
+    page.getByText(
+      '최근 커밋 5,000개까지만 불러옵니다. 더 오래된 커밋은 검색이나 필터로 찾으세요.',
+    ),
+  ).toBeVisible();
+  await page.waitForTimeout(200);
+  await expect(loadedCount(page)).toHaveText('5,000 / 최대 5,000');
+  await expect(page.locator('.commit-row').last()).toHaveAttribute(
+    'data-index',
+    '4999',
+  );
+  const budget = await rowBudget(page);
+  expect(await page.locator('.commit-row').count()).toBeLessThanOrEqual(budget);
+  expect(
+    await page.locator('.commit-list').evaluate((el) => el.scrollHeight),
+  ).toBeGreaterThanOrEqual(5000 * 64);
+  await scrollListTo(page, 'top');
+  await expect(page.locator('.commit-row').first()).toHaveAttribute(
+    'data-index',
+    '0',
+  );
+  expect(await page.locator('.commit-row').count()).toBeLessThanOrEqual(budget);
+});
+
+// 임의 비교(range) 진입 UI 테스트
+const rangeRow = (page: import('@playwright/test').Page, subject: string) =>
+  page.locator('.commit-row', { hasText: subject });
+const improve = 'Improve empty states';
+const aligned = 'Add aligned side-by-side comparison';
+
+test('commit menu lists base items, enables compare only after a base is set, and the chip clears it', async ({
+  page,
+}) => {
+  await page.goto('/');
+  await rangeRow(page, improve).click({ button: 'right' });
+  const menu = page.getByRole('menu', { name: '커밋 작업' });
+  await expect(menu.getByRole('menuitem')).toHaveCount(10);
+  const setBase = menu.getByRole('menuitem', { name: '비교 기준으로 지정' });
+  const compare = menu.getByRole('menuitem', { name: '지정한 커밋과 비교' });
+  const clear = menu.getByRole('menuitem', { name: '기준 해제' });
+  await expect(setBase).toBeVisible();
+  await expect(compare).toHaveAttribute('aria-disabled', 'true');
+  await expect(clear).toHaveAttribute('aria-disabled', 'true');
+  await expect(page.getByLabel('비교 기준', { exact: true })).toHaveCount(0);
+  // 비활성 항목을 눌러도 메뉴가 유지되고 비교로 바뀌지 않는다.
+  await compare.click({ force: true });
+  await expect(menu).toBeVisible();
+  await expect(page.locator('.working-row')).toHaveClass(/selected/);
+  await setBase.click();
+  await expect(menu).toHaveCount(0);
+  await expect(page.getByLabel('비교 기준', { exact: true })).toContainText(
+    '기준: 7a4f19c',
+  );
+  await rangeRow(page, aligned).click({ button: 'right' });
+  await expect(compare).toHaveAttribute('aria-disabled', 'false');
+  await expect(clear).toHaveAttribute('aria-disabled', 'false');
+  // 비활성 항목도 방향키 이동에서 빠지지 않는다.
+  await page.keyboard.press('End');
+  await expect(page.getByRole('menuitem', { name: /리셋/ })).toBeFocused();
+  await clear.click();
+  await expect(page.getByLabel('비교 기준', { exact: true })).toHaveCount(0);
+  await rangeRow(page, aligned).click({ button: 'right' });
+  await expect(compare).toHaveAttribute('aria-disabled', 'true');
+  await page.keyboard.press('Escape');
+  await rangeRow(page, improve).click({ button: 'right' });
+  await setBase.click();
+  await page.getByRole('button', { name: '비교 기준 해제' }).click();
+  await expect(page.getByLabel('비교 기준', { exact: true })).toHaveCount(0);
+});
+
+test('fixture range comparison follows the merge-base toggle and shows worker status messages', async ({
+  page,
+}) => {
+  await page.goto('/');
+  await rangeRow(page, improve).click({ button: 'right' });
+  await page.getByRole('menuitem', { name: '비교 기준으로 지정' }).click();
+  await rangeRow(page, aligned).click({ button: 'right' });
+  await page.getByRole('menuitem', { name: '지정한 커밋과 비교' }).click();
+  const toggle = page.getByRole('checkbox', {
+    name: /공통 조상 기준으로 비교/,
+  });
+  await expect(toggle).not.toBeChecked();
+  await expect(page.locator('.range-options code')).toHaveText(
+    '7a4f19c..6a4f19c',
+  );
+  await expect(page.locator('.file-row')).toHaveCount(5);
+  await toggle.check();
+  await expect(page.locator('.file-row')).toHaveCount(2);
+  await toggle.uncheck();
+  await expect(page.locator('.file-row')).toHaveCount(5);
+  // 같은 커밋은 워커처럼 요청 결과를 상태 문구로 보여 준다.
+  await rangeRow(page, improve).click({ button: 'right' });
+  await page.getByRole('menuitem', { name: '지정한 커밋과 비교' }).click();
+  await expect(page.locator('.error[role=alert]')).toHaveText(
+    '같은 커밋입니다.',
+  );
+  await rangeRow(page, aligned).click({ button: 'right' });
+  await page.getByRole('menuitem', { name: '지정한 커밋과 비교' }).click();
+  await expect(page.locator('.error[role=alert]')).toHaveCount(0);
+  await expect(page.locator('.file-row')).toHaveCount(5);
+});
+
+test('fixture without a common ancestor reports it only when merge-base is on, and English copy is localized', async ({
+  page,
+}) => {
+  await page.goto('/?fixture=unrelated&lang=en');
+  await rangeRow(page, improve).click({ button: 'right' });
+  await page.getByRole('menuitem', { name: 'Set as comparison base' }).click();
+  await rangeRow(page, aligned).click({ button: 'right' });
+  await page
+    .getByRole('menuitem', { name: 'Compare with base commit' })
+    .click();
+  await expect(page.locator('.file-row')).toHaveCount(5);
+  await page
+    .getByRole('checkbox', { name: /Compare from common ancestor/ })
+    .check();
+  await expect(page.locator('.error[role=alert]')).toHaveText(
+    'No common ancestor.',
+  );
+  await page
+    .getByRole('checkbox', { name: /Compare from common ancestor/ })
+    .uncheck();
+  await rangeRow(page, improve).click({ button: 'right' });
+  await page
+    .getByRole('menuitem', { name: 'Compare with base commit' })
+    .click();
+  await expect(page.locator('.error[role=alert]')).toHaveText(
+    'Both sides are the same commit.',
+  );
+  await expect(
+    page.getByLabel('Comparison base', { exact: true }),
+  ).toContainText('Base: 7a4f19c');
+});
+
+test('worker requests carry the range comparison, the merge-base value, and a version 2 descriptor', async ({
+  page,
+}) => {
+  const { fixtureRepo, fixtureSet, fixtureDiff } =
+    await import('../src/ui/fixture');
+  await page.addInitScript(
+    ({ repo, set, diff }) => {
+      const calls: Array<{ name: string; input: any }> = [];
+      Object.defineProperty(window, 'testCalls', { get: () => calls });
+      window.orca = {
+        locale: 'ko-KR',
+        api: { major: 1, minor: 3 },
+        host: { has: () => true },
+        plugin: {
+          request: async <T>(name: string, raw: unknown) => {
+            calls.push({ name, input: raw });
+            if (name === 'active')
+              return {
+                status: 'connected',
+                repository: repo,
+                workspace: {
+                  id: 'fixture',
+                  name: 'Fixture',
+                  path: repo.root,
+                  branch: repo.branch,
+                },
+              } as T;
+            if (name === 'changes') {
+              const { comparison } = raw as { comparison: any };
+              if (comparison.kind === 'range') {
+                if (comparison.base === comparison.target)
+                  throw new Error('같은 커밋입니다.');
+                if (
+                  comparison.mergeBase &&
+                  comparison.target === repo.commits[5].hash
+                )
+                  throw new Error('공통 조상이 없습니다.');
+              }
+              return { ...set, comparison } as T;
+            }
+            if (name === 'diff') return diff as T;
+            if (name === 'commitMessage') return { message: 'm' } as T;
+            if (name === 'open') return { opened: true } as T;
+            throw new Error(`Unexpected request: ${name}`);
+          },
+        },
+      };
+    },
+    {
+      repo: fixtureRepo,
+      set: fixtureSet,
+      diff: fixtureDiff(fixtureSet.files[0].path),
+    },
+  );
+  const calls = (name: string) =>
+    page.evaluate(
+      (wanted) =>
+        (
+          Reflect.get(window, 'testCalls') as Array<{
+            name: string;
+            input: any;
+          }>
+        )
+          .filter((call) => call.name === wanted)
+          .map((call) => call.input),
+      name,
+    );
+  const [, improved, alignedCommit, , , first] = fixtureRepo.commits;
+  await page.goto('/');
+  await expect(page.locator('.commit-row')).toHaveCount(6);
+  await rangeRow(page, improve).click({ button: 'right' });
+  await page.getByRole('menuitem', { name: '비교 기준으로 지정' }).click();
+  await rangeRow(page, aligned).click({ button: 'right' });
+  await page.getByRole('menuitem', { name: '지정한 커밋과 비교' }).click();
+  await expect
+    .poll(async () => (await calls('changes')).at(-1)?.comparison)
+    .toEqual({
+      kind: 'range',
+      base: improved.hash,
+      target: alignedCommit.hash,
+      mergeBase: false,
+    });
+  const toggle = page.getByRole('checkbox', {
+    name: /공통 조상 기준으로 비교/,
+  });
+  await toggle.check();
+  await expect
+    .poll(async () => (await calls('changes')).at(-1)?.comparison.mergeBase)
+    .toBe(true);
+  await toggle.uncheck();
+  await expect
+    .poll(async () => (await calls('changes')).at(-1)?.comparison.mergeBase)
+    .toBe(false);
+  // 토글 값은 다음 비교에도 이어진다.
+  await toggle.check();
+  await rangeRow(page, 'Merge branch').click({ button: 'right' });
+  await page.getByRole('menuitem', { name: '지정한 커밋과 비교' }).click();
+  await expect
+    .poll(async () => (await calls('changes')).at(-1)?.comparison)
+    .toMatchObject({ target: fixtureRepo.commits[0].hash, mergeBase: true });
+  await rangeRow(page, 'Initial implementation').click({ button: 'right' });
+  await page.getByRole('menuitem', { name: '지정한 커밋과 비교' }).click();
+  await expect(page.locator('.error[role=alert]')).toHaveText(
+    '공통 조상이 없습니다.',
+  );
+  expect((await calls('changes')).at(-1).comparison.target).toBe(first.hash);
+  await rangeRow(page, improve).click({ button: 'right' });
+  await page.getByRole('menuitem', { name: '지정한 커밋과 비교' }).click();
+  await expect(page.locator('.error[role=alert]')).toHaveText(
+    '같은 커밋입니다.',
+  );
+  await rangeRow(page, aligned).click({ button: 'right' });
+  await page.getByRole('menuitem', { name: '지정한 커밋과 비교' }).click();
+  await expect(page.locator('.file-row').first()).toBeVisible();
+  await expect(page.locator('.error[role=alert]')).toHaveCount(0);
+  await page.locator('.file-row').first().dblclick();
+  await expect.poll(async () => (await calls('open')).length).toBe(1);
+  expect((await calls('open'))[0]).toMatchObject({
+    workspaceId: 'fixture',
+    descriptor: {
+      version: 2,
+      repo: fixtureRepo.root,
+      comparison: {
+        kind: 'range',
+        base: improved.hash,
+        target: alignedCommit.hash,
+        mergeBase: true,
+      },
+    },
+  });
+  // range가 아닌 비교는 이전처럼 version 1로 저장한다.
+  await page.locator('.working-row').click();
+  await expect(page.locator('.file-row').first()).toBeVisible();
+  await page.locator('.file-row').first().dblclick();
+  await expect.poll(async () => (await calls('open')).length).toBe(2);
+  expect((await calls('open'))[1].descriptor).toMatchObject({
+    version: 1,
+    comparison: { kind: 'working' },
+  });
+});
+
+test('editor entry opens a version 2 range descriptor and rejects version 1 with a range', async ({
+  page,
+}) => {
+  const { fixtureRepo, fixtureSet, fixtureDiff } =
+    await import('../src/ui/fixture');
+  const range = {
+    kind: 'range',
+    base: fixtureRepo.commits[1].hash,
+    target: fixtureRepo.commits[2].hash,
+    mergeBase: true,
+  };
+  const install = (version: number) =>
+    page.addInitScript(
+      ({ repo, set, diff, descriptor }) => {
+        const requests: Array<{ name: string; input: unknown }> = [];
+        Object.defineProperty(window, 'testRequests', { get: () => requests });
+        window.orca = {
+          api: { major: 1, minor: 3 },
+          host: { has: () => true },
+          plugin: {
+            request: async <T>(name: string, input: unknown) => {
+              requests.push({ name, input });
+              return (
+                name === 'changes'
+                  ? { ...set, comparison: descriptor.comparison }
+                  : diff
+              ) as T;
+            },
+          },
+          document: {
+            session: async () => ({
+              value: JSON.stringify(descriptor),
+              onReplace: () => () => {},
+              dispose() {},
+            }),
+          },
+        };
+      },
+      {
+        repo: fixtureRepo,
+        set: fixtureSet,
+        diff: fixtureDiff(fixtureSet.files[0].path),
+        descriptor: {
+          version,
+          repo: fixtureRepo.root,
+          comparison: range,
+          path: fixtureSet.files[0].path,
+        },
+      },
+    );
+  await install(2);
+  await page.goto('/editor.html');
+  await expect(page.locator('.monaco-editor[role=code]')).toHaveCount(2);
+  await expect(page.locator('.error[role=alert]')).toHaveCount(0);
+  const requests = await page.evaluate(
+    () =>
+      Reflect.get(window, 'testRequests') as Array<{
+        name: string;
+        input: { comparison: unknown };
+      }>,
+  );
+  expect(requests.find((r) => r.name === 'changes')?.input.comparison).toEqual(
+    range,
+  );
+  const toggle = page.getByRole('checkbox', {
+    name: /공통 조상 기준으로 비교/,
+  });
+  await expect(toggle).toBeChecked();
+  await expect(toggle).toBeDisabled();
+
+  const rejected = await page.context().newPage();
+  await rejected.addInitScript(
+    ({ repo, descriptor }) => {
+      const requests: unknown[] = [];
+      Object.defineProperty(window, 'testRequests', { get: () => requests });
+      window.orca = {
+        api: { major: 1, minor: 3 },
+        host: { has: () => true },
+        plugin: {
+          request: async <T>(name: string) => {
+            requests.push(name);
+            throw new Error(`Unexpected request: ${name} ${repo.root}`);
+          },
+        },
+        document: {
+          session: async () => ({
+            value: JSON.stringify(descriptor),
+            onReplace: () => () => {},
+            dispose() {},
+          }),
+        },
+      };
+    },
+    {
+      repo: fixtureRepo,
+      descriptor: {
+        version: 1,
+        repo: fixtureRepo.root,
+        comparison: range,
+      },
+    },
+  );
+  await rejected.goto('/editor.html');
+  await expect(rejected.locator('.error[role=alert]')).toHaveText(
+    '지원하지 않는 비교 문서입니다.',
+  );
+  expect(
+    await rejected.evaluate(() => Reflect.get(window, 'testRequests')),
+  ).toEqual([]);
+});
+
+async function mockFileHistoryWorker(page: import('@playwright/test').Page) {
+  const { fixtureRepo } = await import('../src/ui/fixture');
+  await page.addInitScript((repo) => {
+    const calls: unknown[] = [];
+    Reflect.set(window, 'testLogCalls', calls);
+    window.orca = {
+      locale: 'ko-KR',
+      api: { major: 1, minor: 3 },
+      host: { has: () => true },
+      plugin: {
+        request: async <T>(name: string, raw: unknown) => {
+          if (name === 'active')
+            return {
+              status: 'connected',
+              repository: repo,
+              workspace: {
+                id: 'fixture',
+                name: 'Fixture',
+                path: repo.root,
+                branch: repo.branch,
+              },
+            } as T;
+          if (name === 'changes')
+            return {
+              comparison: { kind: 'working' },
+              files: [
+                { path: 'src/ui/Timeline.tsx', status: 'M', unstaged: true },
+                { path: 'README.md', status: 'M', unstaged: true },
+              ],
+              left: 'HEAD',
+              right: '현재 작업 트리 · 디스크',
+            } as T;
+          if (name === 'diff')
+            return {
+              file: { path: 'src/ui/Timeline.tsx', status: 'M' },
+              original: { kind: 'text', text: 'a\n', bytes: 2 },
+              modified: { kind: 'text', text: 'b\n', bytes: 2 },
+            } as T;
+          if (name === 'log') {
+            calls.push(raw);
+            const input = raw as { filter?: { path?: string } };
+            return {
+              ...repo,
+              commits: input.filter?.path
+                ? repo.commits.slice(1, 4)
+                : repo.commits,
+            } as T;
+          }
+          throw new Error(`Unexpected request: ${name}`);
+        },
+      },
+    };
+  }, fixtureRepo);
+  return {
+    fixtureRepo,
+    calls: () =>
+      page.evaluate(() => Reflect.get(window, 'testLogCalls') as unknown[]),
+  };
+}
+const fileRow = (page: import('@playwright/test').Page, name: string) =>
+  page.locator('.file-row', { hasText: name });
+
+test('right-clicking a changed file opens a file menu whose history item follows renames and returns focus', async ({
+  page,
+}) => {
+  const { fixtureRepo, calls } = await mockFileHistoryWorker(page);
+  await page.goto('/');
+  await expect(page.locator('.commit-row')).toHaveCount(6);
+  const row = fileRow(page, 'Timeline.tsx');
+  await row.click({ button: 'right' });
+  const menu = page.getByRole('menu', { name: '파일 작업' });
+  await expect(menu).toBeVisible();
+  await expect(menu.getByRole('menuitem')).toHaveCount(1);
+  await expect(menu.getByRole('menuitem', { name: '히스토리' })).toBeFocused();
+  await menu.getByRole('menuitem', { name: '히스토리' }).click();
+  await expect(menu).toHaveCount(0);
+  await expect(row).toBeFocused();
+  await expect(page.locator('.filter-chip')).toHaveText([
+    '파일: src/ui/Timeline.tsx (이름 변경 추적)×',
+  ]);
+  await expect(page.getByText('검색 결과 · 그래프 숨김')).toBeVisible();
+  await expect(page.locator('.commit-row')).toHaveCount(3);
+  await expect(page.locator('.commit-row svg')).toHaveCount(0);
+  const sent = await calls();
+  expect(sent).toHaveLength(1);
+  expect(sent[0]).toEqual({
+    repo: fixtureRepo.root,
+    all: false,
+    filter: { path: 'src/ui/Timeline.tsx', follow: true },
+  });
+});
+
+test('Shift+F10 on a changed file opens the menu, Escape closes it and focus returns to the file', async ({
+  page,
+}) => {
+  await page.goto('/?fixture=rename');
+  await expect(page.locator('.commit-row')).toHaveCount(5);
+  const row = fileRow(page, 'Timeline.tsx');
+  await row.focus();
+  await page.keyboard.press('Shift+F10');
+  const item = page.getByRole('menuitem', { name: '히스토리' });
+  await expect(page.getByRole('menu', { name: '파일 작업' })).toBeVisible();
+  await expect(item).toBeFocused();
+  await page.keyboard.press('ArrowDown');
+  await expect(item).toBeFocused();
+  await page.keyboard.press('Escape');
+  await expect(page.getByRole('menu')).toHaveCount(0);
+  await expect(row).toBeFocused();
+  await page.keyboard.press('Shift+F10');
+  await page.keyboard.press('Enter');
+  await expect(page.locator('.filter-chip')).toHaveText([
+    '파일: src/ui/Timeline.tsx (이름 변경 추적)×',
+  ]);
+  await expect(row).toBeFocused();
+});
+
+test('clearing the file chip returns to the original list and keeps other filters ANDed', async ({
+  page,
+}) => {
+  await page.goto('/?fixture=rename');
+  await expect(page.locator('.commit-row')).toHaveCount(5);
+  await fileRow(page, 'Timeline.tsx').click({ button: 'right' });
+  await page.getByRole('menuitem', { name: '히스토리' }).click();
+  // 이름이 바뀌기 전 커밋까지 이어진다. README만 바꾼 커밋은 빠진다.
+  await expect(page.locator('.commit-row')).toHaveCount(4);
+  await expect(page.locator('.commit-row').last()).toContainText(
+    'Add history view',
+  );
+  await page.getByLabel('커밋 검색').fill('view');
+  await expect(page.locator('.commit-row')).toHaveCount(1);
+  await expect(page.locator('.filter-chip')).toHaveText([
+    '메시지: view×',
+    '파일: src/ui/Timeline.tsx (이름 변경 추적)×',
+  ]);
+  await page.getByRole('button', { name: '파일 필터 해제' }).click();
+  await expect(page.locator('.filter-chip')).toHaveText(['메시지: view×']);
+  await expect(page.locator('.commit-row')).toHaveCount(2);
+  await page.getByRole('button', { name: '메시지 필터 해제' }).click();
+  await expect(page.locator('.filter-chip')).toHaveCount(0);
+  await expect(page.locator('.commit-row')).toHaveCount(5);
+  await expect(page.locator('.commit-row svg')).toHaveCount(5);
+});
+
+test('picking a commit in a file history selects the file by oldPath when it was renamed there', async ({
+  page,
+}) => {
+  await page.goto('/?fixture=rename');
+  await page.locator('.commit-row', { hasText: 'Add history filters' }).click();
+  await expect(fileRow(page, 'History.tsx')).toBeVisible();
+  await fileRow(page, 'History.tsx').click({ button: 'right' });
+  await page.getByRole('menuitem', { name: '히스토리' }).click();
+  await expect(page.locator('.filter-chip')).toHaveText([
+    '파일: src/ui/History.tsx (이름 변경 추적)×',
+  ]);
+  await expect(page.locator('.commit-row')).toHaveCount(3);
+  await page
+    .locator('.commit-row', { hasText: 'Rename History to Timeline' })
+    .click();
+  // 첫 파일은 connection.ts지만 oldPath가 히스토리 경로와 일치하는 Timeline.tsx를 고른다.
+  await expect(fileRow(page, 'connection.ts')).not.toHaveClass(/selected/);
+  await expect(fileRow(page, 'Timeline.tsx')).toHaveClass(/selected/);
+  await expect(page.locator('.comparison-heading h2')).toHaveText(
+    'Timeline.tsx',
+  );
+});
+
+test('picking a commit in a file history selects the only changed file and leaves none when nothing matches', async ({
+  page,
+}) => {
+  await page.goto('/?fixture=rename');
+  await fileRow(page, 'Timeline.tsx').click({ button: 'right' });
+  await page.getByRole('menuitem', { name: '히스토리' }).click();
+  await expect(page.locator('.commit-row')).toHaveCount(4);
+  await page.locator('.commit-row', { hasText: 'Add history view' }).click();
+  await expect(page.locator('.file-row')).toHaveCount(1);
+  await expect(fileRow(page, 'History.tsx')).toHaveClass(/selected/);
+  await expect(page.locator('.comparison-heading h2')).toHaveText(
+    'History.tsx',
+  );
+  // 이름이 바뀌기 전 경로(History.tsx)만 있는 커밋에서는 path와 oldPath 모두 안 맞아 고르지 않는다.
+  await page.locator('.commit-row', { hasText: 'Add history filters' }).click();
+  await expect(page.locator('.file-row')).toHaveCount(2);
+  await expect(page.locator('.file-row.selected')).toHaveCount(0);
+  await expect(page.locator('.comparison-heading h2')).toHaveText(
+    '변경 파일 비교',
+  );
+  // 다음 커밋 선택은 이전 선택 규칙을 물려받지 않고 일치하는 파일을 다시 고른다.
+  await page.locator('.commit-row', { hasText: 'Polish timeline' }).click();
+  await expect(fileRow(page, 'Timeline.tsx')).toHaveClass(/selected/);
+});
+
+test('all-branches scope drops follow before the request, shows a notice and restores follow on a branch scope', async ({
+  page,
+}) => {
+  const { fixtureRepo, calls } = await mockFileHistoryWorker(page);
+  await page.goto('/');
+  await expect(page.locator('.commit-row')).toHaveCount(6);
+  await page.getByRole('button', { name: '브랜치 범위' }).click();
+  await page.getByRole('option', { name: '전체 브랜치', exact: true }).click();
+  await expect.poll(async () => (await calls()).length).toBe(1);
+  await fileRow(page, 'Timeline.tsx').click({ button: 'right' });
+  await page.getByRole('menuitem', { name: '히스토리' }).click();
+  await expect.poll(async () => (await calls()).length).toBe(2);
+  const sent = await calls();
+  expect(sent[1]).toEqual({
+    repo: fixtureRepo.root,
+    all: true,
+    filter: { path: 'src/ui/Timeline.tsx' },
+  });
+  expect(Object.keys((sent[1] as { filter: object }).filter)).toEqual(['path']);
+  await expect(page.locator('.follow-note')).toHaveText(
+    '전체 브랜치 보기에서는 이름 변경 추적을 쓸 수 없습니다.',
+  );
+  await expect(page.locator('.filter-chip')).toHaveText([
+    '파일: src/ui/Timeline.tsx×',
+  ]);
+  await page.getByRole('button', { name: '브랜치 범위' }).click();
+  await page.getByRole('option', { name: '현재 브랜치', exact: true }).click();
+  await expect.poll(async () => (await calls()).length).toBe(3);
+  expect((await calls())[2]).toEqual({
+    repo: fixtureRepo.root,
+    all: false,
+    filter: { path: 'src/ui/Timeline.tsx', follow: true },
+  });
+  await expect(page.locator('.follow-note')).toHaveCount(0);
+  await expect(page.locator('.filter-chip')).toHaveText([
+    '파일: src/ui/Timeline.tsx (이름 변경 추적)×',
+  ]);
+});
+
+const selectedRow = (page: import('@playwright/test').Page) =>
+  page.locator('.commit-row.selected');
+const commitAt = (page: import('@playwright/test').Page, index: number) =>
+  page.locator(`.commit-row[data-index="${index}"]`);
+const selectedFile = (page: import('@playwright/test').Page) =>
+  page.locator('.file-row.selected');
+
+test('arrow keys move the selected commit one row at a time and stop at both ends', async ({
+  page,
+}) => {
+  await page.goto('/');
+  await expect(page.locator('.commit-row')).toHaveCount(6);
+  await commitAt(page, 2).click();
+  await expect(selectedRow(page)).toHaveAttribute('data-index', '2');
+  await page.keyboard.press('ArrowDown');
+  await expect(selectedRow(page)).toHaveAttribute('data-index', '3');
+  await expect(commitAt(page, 3)).toBeFocused();
+  await page.keyboard.press('ArrowUp');
+  await expect(selectedRow(page)).toHaveAttribute('data-index', '2');
+  await expect(commitAt(page, 2)).toBeFocused();
+  // 수식키가 붙으면 다른 단축키에 양보한다.
+  await page.keyboard.press('Alt+ArrowDown');
+  await page.keyboard.press('Shift+ArrowDown');
+  await expect(selectedRow(page)).toHaveAttribute('data-index', '2');
+  await page.keyboard.press('ArrowUp');
+  await page.keyboard.press('ArrowUp');
+  await page.keyboard.press('ArrowUp');
+  await expect(selectedRow(page)).toHaveAttribute('data-index', '0');
+  await page.keyboard.press('ArrowDown');
+  for (let i = 0; i < 8; i++) await page.keyboard.press('ArrowDown');
+  await expect(selectedRow(page)).toHaveAttribute('data-index', '5');
+  await expect(commitAt(page, 5)).toBeFocused();
+  // 선택한 커밋의 변경 파일 목록도 따라 바뀐다.
+  await expect(page.locator('.file-row')).toHaveCount(6);
+});
+
+test('arrow keys start from the first commit when the working tree is selected', async ({
+  page,
+}) => {
+  await page.goto('/');
+  await expect(page.locator('.commit-row')).toHaveCount(6);
+  await page.locator('.working-row').click();
+  await expect(selectedRow(page)).toHaveCount(0);
+  await page.keyboard.press('ArrowDown');
+  await expect(selectedRow(page)).toHaveAttribute('data-index', '0');
+});
+
+test('arrow keys after clicking the file list move only the selected file', async ({
+  page,
+}) => {
+  await page.goto('/');
+  await expect(page.locator('.commit-row')).toHaveCount(6);
+  await commitAt(page, 1).click();
+  await expect(page.locator('.file-row')).toHaveCount(6);
+  await page.locator('.file-row').nth(1).click();
+  await expect(selectedFile(page)).toContainText('comparison.css');
+  await page.keyboard.press('ArrowDown');
+  await expect(selectedFile(page)).toContainText('side-by-side-comparison');
+  await expect(page.locator('.file-row').nth(2)).toBeFocused();
+  await page.keyboard.press('ArrowUp');
+  await page.keyboard.press('ArrowUp');
+  await expect(page.locator('.file-row').nth(0)).toHaveAttribute(
+    'aria-pressed',
+    'true',
+  );
+  // 첫 행에서 멈추고 그래프 선택은 그대로다.
+  await page.keyboard.press('ArrowUp');
+  await expect(page.locator('.file-row').nth(0)).toHaveAttribute(
+    'aria-pressed',
+    'true',
+  );
+  for (let i = 0; i < 8; i++) await page.keyboard.press('ArrowDown');
+  await expect(page.locator('.file-row').nth(5)).toHaveAttribute(
+    'aria-pressed',
+    'true',
+  );
+  await expect(selectedRow(page)).toHaveAttribute('data-index', '1');
+});
+
+test('clicking the other area switches which list the arrow keys move', async ({
+  page,
+}) => {
+  await page.goto('/');
+  await expect(page.locator('.commit-row')).toHaveCount(6);
+  await commitAt(page, 1).click();
+  await expect(page.locator('.file-row')).toHaveCount(6);
+  await page.locator('.file-row').nth(0).click();
+  await page.keyboard.press('ArrowDown');
+  await expect(page.locator('.file-row').nth(1)).toHaveAttribute(
+    'aria-pressed',
+    'true',
+  );
+  await expect(selectedRow(page)).toHaveAttribute('data-index', '1');
+  await commitAt(page, 1).click();
+  await expect(page.locator('.file-row')).toHaveCount(6);
+  await page.keyboard.press('ArrowDown');
+  await expect(selectedRow(page)).toHaveAttribute('data-index', '2');
+  await page.locator('.file-row').nth(0).click();
+  await page.keyboard.press('ArrowDown');
+  await expect(page.locator('.file-row').nth(1)).toHaveAttribute(
+    'aria-pressed',
+    'true',
+  );
+  await expect(selectedRow(page)).toHaveAttribute('data-index', '2');
+});
+
+test('arrow keys keep the selected row visible and focused in a windowed list', async ({
+  page,
+}) => {
+  await page.goto('/?fixture=many');
+  await expect(commitAt(page, 0)).toBeVisible();
+  await commitAt(page, 0).click();
+  for (let i = 0; i < 40; i++) await page.keyboard.press('ArrowDown');
+  await expect(selectedRow(page)).toHaveAttribute('data-index', '40');
+  const inside = () =>
+    page.evaluate(() => {
+      const list = document
+        .querySelector('.commit-list')!
+        .getBoundingClientRect();
+      const row = document
+        .querySelector('.commit-row.selected')!
+        .getBoundingClientRect();
+      return row.top >= list.top - 1 && row.bottom <= list.bottom + 1;
+    });
+  expect(await inside()).toBe(true);
+  await expect(commitAt(page, 40)).toBeFocused();
+  const scrolled = await page
+    .locator('.commit-list')
+    .evaluate((el) => el.scrollTop);
+  expect(scrolled).toBeGreaterThan(0);
+  for (let i = 0; i < 40; i++) await page.keyboard.press('ArrowUp');
+  await expect(selectedRow(page)).toHaveAttribute('data-index', '0');
+  expect(await inside()).toBe(true);
+  await expect(commitAt(page, 0)).toBeFocused();
+  expect(
+    await page.locator('.commit-list').evaluate((el) => el.scrollTop),
+  ).toBe(0);
+  const budget = await rowBudget(page);
+  expect(await page.locator('.commit-row').count()).toBeLessThanOrEqual(budget);
+});
+
+test('moving down near the end of the loaded commits requests the next page', async ({
+  page,
+}) => {
+  await page.goto('/?fixture=paged');
+  await expect(loadedCount(page)).toHaveText('200 / 최대 5,000');
+  await page.locator('.commit-list').evaluate((el) => {
+    el.scrollTop = 175 * 64;
+    el.dispatchEvent(new Event('scroll'));
+  });
+  await commitAt(page, 185).click();
+  for (let i = 0; i < 14; i++) await page.keyboard.press('ArrowDown');
+  await expect(loadedCount(page)).toHaveText('400 / 최대 5,000');
+  await expect(selectedRow(page)).toHaveAttribute('data-index', '199');
+  await page.keyboard.press('ArrowDown');
+  await page.keyboard.press('ArrowDown');
+  await expect(selectedRow(page)).toHaveAttribute('data-index', '201');
+  await expect(commitAt(page, 201)).toBeFocused();
+});
+
+test('arrow keys are ignored while the branch picker is open', async ({
+  page,
+}) => {
+  await page.goto('/');
+  await expect(page.locator('.commit-row')).toHaveCount(6);
+  await commitAt(page, 1).click();
+  await page.getByRole('button', { name: '브랜치 범위' }).click();
+  await expect(
+    page.getByRole('listbox', { name: '브랜치 목록' }),
+  ).toBeVisible();
+  await page.keyboard.press('ArrowDown');
+  await page.keyboard.press('ArrowDown');
+  await expect(
+    page.getByRole('listbox', { name: '브랜치 목록' }).locator(':focus'),
+  ).toHaveCount(1);
+  await expect(selectedRow(page)).toHaveAttribute('data-index', '1');
+  // 트리거에 포커스가 있어도 열려 있는 동안은 커밋 선택이 움직이지 않는다.
+  await page.getByRole('button', { name: '브랜치 범위' }).focus();
+  await page.keyboard.press('ArrowDown');
+  await expect(selectedRow(page)).toHaveAttribute('data-index', '1');
+  await page.keyboard.press('Escape');
+  await expect(page.getByRole('listbox')).toHaveCount(0);
+  await commitAt(page, 1).click();
+  await page.keyboard.press('ArrowDown');
+  await expect(selectedRow(page)).toHaveAttribute('data-index', '2');
+});
+
+test('arrow keys leave the commit menu to its own navigation', async ({
+  page,
+}) => {
+  await page.goto('/');
+  await expect(page.locator('.commit-row')).toHaveCount(6);
+  await commitAt(page, 1).click();
+  await commitAt(page, 3).click({ button: 'right' });
+  const menu = page.getByRole('menu', { name: '커밋 작업' });
+  await expect(menu).toBeVisible();
+  await page.keyboard.press('ArrowDown');
+  await expect(
+    page.getByRole('menuitem', { name: '새 브랜치…' }),
+  ).toBeFocused();
+  await page.keyboard.press('ArrowDown');
+  await expect(
+    page.getByRole('menuitem', { name: '현재 브랜치에 병합…' }),
+  ).toBeFocused();
+  await page.keyboard.press('ArrowUp');
+  await expect(
+    page.getByRole('menuitem', { name: '새 브랜치…' }),
+  ).toBeFocused();
+  await expect(selectedRow(page)).toHaveAttribute('data-index', '1');
+  await page.keyboard.press('Escape');
+  await expect(menu).toHaveCount(0);
+});
+
+test('arrow keys leave the file menu to its own navigation and resume after it closes', async ({
+  page,
+}) => {
+  await page.goto('/?fixture=rename');
+  await expect(page.locator('.commit-row')).toHaveCount(5);
+  const first = page.locator('.file-row').nth(0);
+  await first.click();
+  const before = await selectedFile(page).textContent();
+  await page.locator('.file-row').nth(1).click({ button: 'right' });
+  const item = page.getByRole('menuitem', { name: '히스토리' });
+  await expect(item).toBeFocused();
+  await page.keyboard.press('ArrowDown');
+  await page.keyboard.press('ArrowUp');
+  await expect(item).toBeFocused();
+  await expect(selectedFile(page)).toHaveText(before ?? '');
+  await page.keyboard.press('Escape');
+  await expect(page.getByRole('menu')).toHaveCount(0);
+  await expect(page.locator('.file-row').nth(1)).toBeFocused();
+  await page.keyboard.press('ArrowUp');
+  await expect(page.locator('.file-row').nth(0)).toHaveAttribute(
+    'aria-pressed',
+    'true',
+  );
+});
+
+test('arrow keys are ignored while an input has focus', async ({ page }) => {
+  await page.goto('/');
+  await expect(page.locator('.commit-row')).toHaveCount(6);
+  await commitAt(page, 1).click();
+  await expect(page.locator('.file-row')).toHaveCount(6);
+  const search = page.getByLabel('커밋 검색');
+  await search.click();
+  await page.keyboard.press('ArrowDown');
+  await page.keyboard.press('ArrowUp');
+  await expect(selectedRow(page)).toHaveAttribute('data-index', '1');
+  const fileSearch = page.getByLabel('파일 검색');
+  await fileSearch.click();
+  const selected = await selectedFile(page).textContent();
+  await page.keyboard.press('ArrowDown');
+  await expect(selectedFile(page)).toHaveText(selected ?? '');
+  await expect(fileSearch).toBeFocused();
+});
+
+// 통과 판정 순서(메인 배포 태그 확인 → 두 배포 사이 비교 → 오래된 커밋 확인 → 특정 인물 작업분 검색 → 키보드 이동)를
+// 한 세션에서 이어 간다. fixture는 page.goto로 바꿔 가며 같은 흐름을 유지한다.
+test('acceptance order: deploy tags, range between two deploys, old commit, one author, keyboard', async ({
+  page,
+}) => {
+  await page.goto('/');
+  await expect(page.locator('.commit-row')).toHaveCount(6);
+  const latestDeploy = rangeRow(page, improve);
+  const previousDeploy = rangeRow(
+    page,
+    'Extract repository connection controls',
+  );
+  await expect(latestDeploy.locator('.tag-badge')).toHaveText(['v1.0.0']);
+  await expect(previousDeploy.locator('.tag-badge')).toHaveText([
+    'v0.9.0',
+    'v0.9.0-rc.1',
+  ]);
+  await previousDeploy.click({ button: 'right' });
+  await page.getByRole('menuitem', { name: '비교 기준으로 지정' }).click();
+  await expect(page.getByLabel('비교 기준', { exact: true })).toContainText(
+    '기준: 5a4f19c',
+  );
+  await latestDeploy.click({ button: 'right' });
+  await page.getByRole('menuitem', { name: '지정한 커밋과 비교' }).click();
+  await expect(page.locator('.range-options code')).toHaveText(
+    '5a4f19c..7a4f19c',
+  );
+  await expect(page.locator('.file-row')).toHaveCount(5);
+  await expect(page.locator('.error[role=alert]')).toHaveCount(0);
+
+  // 200개 상한 밖의 오래된 커밋까지 스크롤로 불러와 내용을 확인한다.
+  await page.goto('/?fixture=paged');
+  await expect(loadedCount(page)).toHaveText('200 / 최대 5,000');
+  await scrollListTo(page, 'bottom');
+  await expect(loadedCount(page)).toHaveText('400 / 최대 5,000');
+  await scrollListTo(page, 'bottom');
+  await expect(loadedCount(page)).toHaveText('450 / 최대 5,000');
+  await scrollListTo(page, 'bottom');
+  await expect(page.locator('.commit-row').last()).toHaveAttribute(
+    'data-index',
+    '449',
+  );
+  await commitAt(page, 449).click();
+  await expect(page.locator('.details pre')).toHaveText(
+    'DEMO paged commit 450',
+  );
+
+  // 특정 인물의 작업분만 모은다. 450개 중 3의 배수 번째 150개가 해당한다.
+  await page.getByRole('button', { name: '필터', exact: true }).click();
+  await page.getByLabel('작성자', { exact: true }).fill('서연');
+  await expect(page.locator('.filter-chip')).toHaveText(['작성자: 서연×']);
+  await expect(loadedCount(page)).toHaveText('150 / 최대 5,000');
+  await expect(page.locator('.commit-row').first()).toHaveAttribute(
+    'data-index',
+    '0',
+  );
+  const everyByAuthor = await page
+    .locator('.commit-row')
+    .evaluateAll((rows) =>
+      rows.every((row) => row.textContent?.includes('서연')),
+    );
+  expect(everyByAuthor).toBe(true);
+
+  await commitAt(page, 0).click();
+  await page.keyboard.press('ArrowDown');
+  await page.keyboard.press('ArrowDown');
+  await expect(selectedRow(page)).toHaveAttribute('data-index', '2');
+  await expect(commitAt(page, 2)).toBeFocused();
+  await expect(page.locator('.details pre')).toHaveText('DEMO paged commit 7');
+  await page.keyboard.press('ArrowUp');
+  await expect(selectedRow(page)).toHaveAttribute('data-index', '1');
+});
+
+test('read-only tools chain in one session: tag, message search, branch AND author, range, file history, keys, paging', async ({
+  page,
+}) => {
+  const rows = page.locator('.commit-row');
+  // 비교 기준 칩도 같은 .filter-chip 클래스를 쓰므로 적용된 필터 묶음만 본다.
+  const chips = page.locator('[aria-label="적용된 필터"] .filter-chip');
+  await page.goto('/');
+  await expect(rows).toHaveCount(6);
+  await expect(rangeRow(page, improve).locator('.tag-badge')).toHaveText([
+    'v1.0.0',
+  ]);
+
+  // 메시지 검색은 그래프를 생략하고 칩으로 남는다.
+  await page.getByLabel('커밋 검색').fill('aligned');
+  await expect(rows).toHaveCount(1);
+  await expect(rows.first()).toContainText(aligned);
+  await expect(page.locator('.commit-row svg')).toHaveCount(0);
+  await expect(chips).toHaveText(['메시지: aligned×']);
+  await page.getByLabel('커밋 검색').fill('');
+  await expect(chips).toHaveCount(0);
+  await expect(rows).toHaveCount(6);
+
+  // 브랜치와 작성자는 AND로 걸린다. feature 브랜치의 4개 중 David는 2개다.
+  await page.getByRole('button', { name: '브랜치 범위' }).click();
+  await page
+    .getByRole('option', { name: 'feature/readable-diff 로컬', exact: true })
+    .click();
+  await expect(rows).toHaveCount(4);
+  await page.getByRole('button', { name: '필터', exact: true }).click();
+  await page.getByLabel('작성자', { exact: true }).fill('David');
+  await expect(chips).toHaveText(['작성자: David×']);
+  await expect(rows).toHaveCount(2);
+  await expect(rows.nth(0)).toContainText('Extract repository connection');
+  await expect(rows.nth(1)).toContainText('Initial implementation');
+  await page.getByRole('button', { name: '모두 해제' }).click();
+  await expect(rows).toHaveCount(4);
+
+  // 브랜치 안에서 처음 커밋과 끝 커밋을 range로 비교한다.
+  await rangeRow(page, 'Initial implementation').click({ button: 'right' });
+  await page.getByRole('menuitem', { name: '비교 기준으로 지정' }).click();
+  await rangeRow(page, aligned).click({ button: 'right' });
+  await page.getByRole('menuitem', { name: '지정한 커밋과 비교' }).click();
+  await expect(page.locator('.range-options code')).toHaveText(
+    '3a4f19c..6a4f19c',
+  );
+  const mergeBaseToggle = page.getByRole('checkbox', {
+    name: /공통 조상 기준으로 비교/,
+  });
+  await expect(page.locator('.file-row')).toHaveCount(5);
+  await mergeBaseToggle.check();
+  await expect(page.locator('.file-row')).toHaveCount(2);
+  await mergeBaseToggle.uncheck();
+  await expect(page.locator('.file-row')).toHaveCount(5);
+
+  // 변경 파일 우클릭으로 파일 히스토리에 들어가면 같은 브랜치 안에서 그 파일을 바꾼 3개 커밋만 남는다.
+  await fileRow(page, 'DiffViewer.tsx').click({ button: 'right' });
+  await page.getByRole('menuitem', { name: '히스토리' }).click();
+  await expect(chips).toHaveText([
+    '파일: src/components/comparison/DiffViewer.tsx (이름 변경 추적)×',
+  ]);
+  await expect(rows).toHaveCount(3);
+  await expect(page.locator('.commit-row svg')).toHaveCount(0);
+
+  await commitAt(page, 0).click();
+  await page.keyboard.press('ArrowDown');
+  await expect(selectedRow(page)).toHaveAttribute('data-index', '1');
+  await expect(selectedRow(page)).toContainText('Handle binary and renamed');
+  await expect(page.locator('.file-row')).toHaveCount(6);
+  await page.locator('.file-row').nth(0).click();
+  await page.keyboard.press('ArrowDown');
+  await expect(page.locator('.file-row').nth(1)).toHaveAttribute(
+    'aria-pressed',
+    'true',
+  );
+  await expect(selectedRow(page)).toHaveAttribute('data-index', '1');
+
+  // 파일 히스토리 칩을 해제하면 브랜치 범위의 원래 목록으로 돌아온다.
+  await page.getByRole('button', { name: '파일 필터 해제' }).click();
+  await expect(chips).toHaveCount(0);
+  await expect(rows).toHaveCount(4);
+
+  // 450개 이력에서는 브랜치와 작성자 필터를 건 채로 다음 페이지를 이어 받는다.
+  // main은 앞 50개를 건너뛴 400개 중 David가 267개이고, 첫 페이지는 200개다.
+  await page.goto('/?fixture=paged');
+  await expect(loadedCount(page)).toHaveText('200 / 최대 5,000');
+  await page.getByRole('button', { name: '브랜치 범위' }).click();
+  await page.getByRole('option', { name: 'main 로컬', exact: true }).click();
+  await expect(loadedCount(page)).toHaveText('200 / 최대 5,000');
+  await expect(rows.first()).toContainText('DEMO paged commit 51');
+  await page.getByRole('button', { name: '필터', exact: true }).click();
+  await page.getByLabel('작성자', { exact: true }).fill('David');
+  // 디바운스 뒤 필터 응답이 반영돼 51번째(서연)가 빠진 것을 확인한 다음에 스크롤한다.
+  await expect(rows.nth(1)).toContainText('DEMO paged commit 53');
+  await expect(loadedCount(page)).toHaveText('200 / 최대 5,000');
+  await scrollListTo(page, 'bottom');
+  await expect(loadedCount(page)).toHaveText('267 / 최대 5,000');
+  await scrollListTo(page, 'bottom');
+  await expect(rows.last()).toContainText('DEMO paged commit 450');
+  await expect(page.locator('.page-state')).toHaveCount(0);
+});
+
+// 위 explicit fixture state 목록은 주소만으로 닿는 정적 상태다. 아래는 조작이 필요한 새 상태를 같은 이름으로 모은다.
+// 상한 5,000 안내는 'loading stops at the 5,000 commit limit...' 테스트가 이미 덮는다.
+test('explicit fixture state: stale-cursor reloads from the start with Korean copy and no internal prefix', async ({
+  page,
+}) => {
+  await page.goto('/?fixture=stale');
+  await expect(loadedCount(page)).toHaveText('200 / 최대 5,000');
+  await scrollListTo(page, 'bottom');
+  await expect(
+    page.getByText('이력이 바뀌었습니다. 처음부터 다시 불러옵니다.', {
+      exact: true,
+    }),
+  ).toBeVisible();
+  await expect(page.getByText('stale-cursor')).toHaveCount(0);
+  await expect(loadedCount(page)).toHaveText('200 / 최대 5,000');
+  await expect(page.locator('.page-state[role=alert]')).toHaveCount(0);
+  // 낡은 커서 오류는 한 번만 나고 다시 이어 받으면 중복 없이 400개까지 쌓인다.
+  await scrollListTo(page, 'bottom');
+  await expect(loadedCount(page)).toHaveText('400 / 최대 5,000');
+  await expect(page.locator('.page-state[role=alert]')).toHaveCount(0);
+});
+
+test('explicit fixture state: no common ancestor and the same commit are shown in Korean', async ({
+  page,
+}) => {
+  await page.goto('/?fixture=unrelated');
+  await rangeRow(page, improve).click({ button: 'right' });
+  await page.getByRole('menuitem', { name: '비교 기준으로 지정' }).click();
+  await rangeRow(page, aligned).click({ button: 'right' });
+  await page.getByRole('menuitem', { name: '지정한 커밋과 비교' }).click();
+  await expect(page.locator('.file-row')).toHaveCount(5);
+  await expect(page.locator('.error[role=alert]')).toHaveCount(0);
+  const toggle = page.getByRole('checkbox', {
+    name: /공통 조상 기준으로 비교/,
+  });
+  await toggle.check();
+  await expect(page.locator('.error[role=alert]')).toHaveText(
+    '공통 조상이 없습니다.',
+  );
+  await toggle.uncheck();
+  await rangeRow(page, improve).click({ button: 'right' });
+  await page.getByRole('menuitem', { name: '지정한 커밋과 비교' }).click();
+  await expect(page.locator('.error[role=alert]')).toHaveText(
+    '같은 커밋입니다.',
+  );
+});
+
+test('explicit fixture state: all-branches scope shows the rename tracking notice over the rename history fixture', async ({
+  page,
+}) => {
+  await page.goto('/?fixture=rename');
+  await expect(page.locator('.commit-row')).toHaveCount(5);
+  await page.getByRole('button', { name: '브랜치 범위' }).click();
+  await page.getByRole('option', { name: '전체 브랜치', exact: true }).click();
+  await fileRow(page, 'Timeline.tsx').click({ button: 'right' });
+  await page.getByRole('menuitem', { name: '히스토리' }).click();
+  await expect(page.locator('.follow-note')).toHaveText(
+    '전체 브랜치 보기에서는 이름 변경 추적을 쓸 수 없습니다.',
+  );
+  await expect(page.locator('.filter-chip')).toHaveText([
+    '파일: src/ui/Timeline.tsx×',
+  ]);
+  // 추적 없이 새 경로만 보므로 이름이 바뀌기 전 두 커밋은 빠진다.
+  await expect(page.locator('.commit-row')).toHaveCount(2);
+  await page.getByRole('button', { name: '브랜치 범위' }).click();
+  await page.getByRole('option', { name: '현재 브랜치', exact: true }).click();
+  await expect(page.locator('.follow-note')).toHaveCount(0);
+  await expect(page.locator('.commit-row')).toHaveCount(4);
 });
