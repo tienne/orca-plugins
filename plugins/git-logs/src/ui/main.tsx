@@ -5,29 +5,35 @@ import {
   formatNumber,
   setPreviewLocale,
 } from './i18n';
-import { StrictMode, useEffect, useMemo, useRef, useState } from 'react';
+import {
+  StrictMode,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  type CSSProperties,
+} from 'react';
 import { createRoot } from 'react-dom/client';
-import type {
-  ChangeSet,
-  Comparison,
-  Descriptor,
-  FileDiff,
-  Repository,
-  WorkspaceChoice,
-} from '../protocol';
+import { LOAD_LIMIT, descriptorVersion, type Commit } from '../protocol';
 import { request } from './client';
-import { fixtureDiff, fixtureRepo, fixtureSet, fixtureLog } from './fixture';
-import { layout } from './graph';
 import { DiffView } from './DiffView';
 import { BranchPicker } from './BranchPicker';
 import { PaneResizer, usePaneLayout } from './PaneResizer';
-import { CommitActions, type CommitMenu } from './CommitActions';
+import { CommitActions } from './CommitActions';
+import { FileActions, type FileMenu } from './FileActions';
+import { demo, editorMode, message, scenario } from './env';
+import { useComparison, useComparisonLoader } from './hooks/useComparison';
+import { useRepository } from './hooks/useRepository';
+import { useCommitPages } from './hooks/useCommitPages';
+import { ROW_HEIGHT, useRowWindow } from './hooks/useRowWindow';
+import { RefLabels } from './RefLabels';
+import { useKeyboardNav } from './hooks/useKeyboardNav';
+import { useCommitMenu } from './hooks/useCommitMenu';
+import { useCommitMessage } from './hooks/useCommitMessage';
+import { filterLabels, hasFilter, useLogFilter } from './hooks/useLogFilter';
 import './styles.css';
-const demo = !window.orca;
-const scenario = demo
-  ? (new URLSearchParams(location.search).get('fixture') ?? 'default')
-  : 'default';
-const editorMode = document.body.dataset.surface === 'editor';
+const ROW_MID = ROW_HEIGHT / 2;
+const ROW_CURVE = (ROW_HEIGHT * 3) / 4;
 const colors = [
   'var(--graph-blue)',
   'var(--graph-purple)',
@@ -35,344 +41,142 @@ const colors = [
   'var(--graph-amber)',
   'var(--graph-pink)',
 ];
-const message = (e: unknown) => (e instanceof Error ? e.message : String(e));
 function App() {
   const locale = useLocale();
-  const [repo, setRepo] = useState<Repository | null>(
-    demo
-      ? scenario === 'empty'
-        ? { ...fixtureRepo, commits: [], head: null }
-        : fixtureRepo
-      : null,
-  );
-  const historyRef = useRef<HTMLElement>(null);
-  usePaneLayout(historyRef, repo?.root);
-  const [autoTick, setAutoTick] = useState(0);
-  const [choices, setChoices] = useState<WorkspaceChoice[]>([]);
-  const [connectionNote, setConnectionNote] =
-    useState('열린 워크트리에 연결하는 중…');
-  const connectActive = useRef<(workspaceId?: string) => void>(() => {});
-  const [scope, setScope] = useState('current');
-  const scopeRef = useRef('current');
-  const all = scope === 'all';
-  const [branchNote, setBranchNote] = useState('');
-  const [search, setSearch] = useState('');
-  const [comparison, setComparison] = useState<Comparison>({ kind: 'working' });
-  const [set, setSet] = useState<ChangeSet | null>(null);
-  const [file, setFile] = useState('');
-  const [data, setData] = useState<FileDiff | null>(null);
+  const logFilter = useLogFilter();
+  const filtered = hasFilter(logFilter.filter);
+  // 좁은 패널에서 커밋 목록 높이를 지키려고 필터 입력은 접어 두고, 적용된 필터는 칩으로 항상 보인다.
+  const [filtersOpen, setFiltersOpen] = useState(false);
   const [error, setError] = useState('');
   const [busy, setBusy] = useState(false);
-  const [actionBusy, setActionBusy] = useState(false);
-  const [commitMenu, setCommitMenu] = useState<CommitMenu | null>(null);
-  const [loadingFiles, setLoadingFiles] = useState(false);
-  const [loadingDiff, setLoadingDiff] = useState(false);
-  const [generation, setGeneration] = useState(0);
-  const [fileSearch, setFileSearch] = useState('');
   const [theme, setTheme] = useState('system');
-  const [workspace, setWorkspace] = useState('');
-  const logSeq = useRef(0);
   const openingEditor = useRef(false);
-  const pendingPath = useRef('');
-  const currentRoot = useRef(repo?.root);
-  currentRoot.current = repo?.root;
-  useEffect(() => {
-    setCommitMenu(null);
-  }, [repo?.root, workspace]);
-  async function operationChanged() {
-    if (!repo) return;
-    const root = repo.root;
-    const updated = await request('log', {
-      repo: root,
-      all,
-      ...(scope !== 'current' && scope !== 'all' ? { branchRef: scope } : {}),
-    });
-    if (currentRoot.current !== root) return;
-    setRepo((current) => (current?.root === root ? updated : current));
-    setComparison({ kind: 'working' });
-    setGeneration((n) => n + 1);
-  }
-  useEffect(() => {
-    if (!editorMode) return;
-    if (typeof window.orca?.document?.session !== 'function') {
-      setError(
-        '이 Orca는 document.session을 지원하지 않습니다. Orca를 업데이트하세요.',
-      );
-      return;
-    }
-    let disposed = false;
-    let stop: (() => void) | undefined;
-    let session:
-      | Awaited<
-          ReturnType<
-            NonNullable<NonNullable<typeof window.orca>['document']>['session']
-          >
-        >
-      | undefined;
-    const receive = (raw: string) => {
-      try {
-        const d = JSON.parse(raw) as Descriptor;
-        if (d.version !== 1 || typeof d.repo !== 'string' || !d.comparison)
-          throw new Error('유효한 .orcadiff 문서가 아닙니다.');
-        setRepo({ root: d.repo, branch: '', head: null, commits: [] });
-        setComparison(d.comparison);
-        pendingPath.current = d.path ?? '';
-        setGeneration((n) => n + 1);
-      } catch (e) {
-        setError(message(e));
-      }
-    };
-    window
-      .orca!.document!.session()
-      .then((s) => {
-        if (disposed) {
-          s.dispose();
-          return;
-        }
-        session = s;
-        receive(s.value);
-        stop = s.onReplace(receive);
-      })
-      .catch((e) => setError(message(e)));
-    return () => {
-      disposed = true;
-      stop?.();
-      session?.dispose();
-    };
-  }, []);
+  const [fileMenu, setFileMenu] = useState<FileMenu | null>(null);
+  const view = useComparison();
+  const {
+    comparison,
+    setComparison,
+    set,
+    file,
+    setFile,
+    data,
+    loadingFiles,
+    loadingDiff,
+    fileSearch,
+    setFileSearch,
+    baseCommit,
+    setBaseCommit,
+    compareWithBase,
+    changeMergeBase,
+    historyPath,
+  } = view;
+  const {
+    repo,
+    choices,
+    connectionNote,
+    connectActive,
+    scope,
+    branchNote,
+    workspace,
+    selectScope,
+    operationChanged,
+    refresh,
+    logSeq,
+    loaded,
+    reloadLog,
+  } = useRepository({
+    comparison: view,
+    busy,
+    setBusy,
+    setError,
+    filter: logFilter.filter,
+    resetFilter: logFilter.clearAll,
+  });
+  const historyRef = useRef<HTMLElement>(null);
+  usePaneLayout(historyRef, repo?.root);
+  const { commitMenu, setCommitMenu, actionBusy, setActionBusy } =
+    useCommitMenu(repo?.root, workspace);
   useEffect(() => {
     if (!demo) return;
     document.documentElement.classList.remove('dark', 'light');
     if (theme !== 'system') document.documentElement.classList.add(theme);
   }, [theme]);
-  function refreshDemo() {
-    setRepo(
-      scenario === 'empty'
-        ? { ...fixtureRepo, commits: [], head: null }
-        : fixtureLog(scopeRef.current),
-    );
-    setComparison({ kind: 'working' });
-    setGeneration((n) => n + 1);
-  }
+  useComparisonLoader(repo, view, setError);
   useEffect(() => {
-    if (demo && !editorMode) refreshDemo();
-  }, []);
-  useEffect(() => {
-    if (demo || editorMode) return;
-    let active = true;
-    async function load(workspaceId?: string, resetScope = !!workspaceId) {
-      if (!active) return;
-      const seq = ++logSeq.current;
-      const previousRoot = currentRoot.current;
-      setBusy(true);
-      setError('');
-      setRepo(null);
-      setSet(null);
-      setData(null);
-      setWorkspace('');
-      setChoices([]);
-      setConnectionNote('열린 워크트리에 연결하는 중…');
-      try {
-        const result = await request('active', {
-          all: false,
-          ...(workspaceId ? { workspaceId } : {}),
-        });
-        if (!active || seq !== logSeq.current) return;
-        if (result.status === 'connected') {
-          let selection =
-            resetScope ||
-            (previousRoot && previousRoot !== result.repository.root)
-              ? 'current'
-              : scopeRef.current;
-          const missing =
-            selection !== 'current' &&
-            selection !== 'all' &&
-            !(result.repository.branches ?? []).some(
-              (branch) => branch.ref === selection,
-            );
-          if (missing) selection = 'current';
-          const repository =
-            selection === 'current'
-              ? result.repository
-              : await request('log', {
-                  repo: result.repository.root,
-                  all: selection === 'all',
-                  ...(selection !== 'all' ? { branchRef: selection } : {}),
-                });
-          if (!active || seq !== logSeq.current) return;
-          scopeRef.current = selection;
-          setScope(selection);
-          setBranchNote(
-            missing ? '선택한 브랜치가 없어 현재 브랜치를 표시합니다.' : '',
-          );
-          setRepo(repository);
-          setWorkspace(result.workspace.id);
-          setComparison({ kind: 'working' });
-          setFileSearch('');
-          setSearch('');
-          setGeneration((n) => n + 1);
-          setConnectionNote(`열린 워크트리 · ${result.workspace.name}`);
-        } else {
-          setChoices(result.choices);
-          setConnectionNote(result.message);
-        }
-      } catch (e) {
-        if (active && seq === logSeq.current) {
-          setError(message(e));
-          setConnectionNote(
-            '자동 연결에 실패했습니다. Orca에서 로컬 Git 워크트리를 열고 새로고침하세요.',
-          );
-        }
-      } finally {
-        if (active && seq === logSeq.current) setBusy(false);
-      }
-    }
-    connectActive.current = (id) => {
-      void load(id);
-    };
-    const stop = window.orca?.on?.('workspace.changed', () => {
-      void load(undefined, true);
-    });
-    void load();
-    return () => {
-      active = false;
-      connectActive.current = () => {};
-      if (typeof stop === 'function') stop();
-    };
-  }, [autoTick]);
-  async function selectScope(next: string) {
-    if (!repo || busy || actionBusy) return;
-    const previous = scopeRef.current;
-    const root = repo.root;
-    const seq = ++logSeq.current;
-    scopeRef.current = next;
-    setScope(next);
-    setBranchNote('');
-    if (demo) {
-      refreshDemo();
-      return;
-    }
-    setBusy(true);
-    setError('');
-    try {
-      const updated = await request('log', {
-        repo: root,
-        all: next === 'all',
-        ...(next !== 'current' && next !== 'all' ? { branchRef: next } : {}),
-      });
-      if (seq !== logSeq.current || currentRoot.current !== root) return;
-      setRepo(updated);
-      setComparison({ kind: 'working' });
-      setGeneration((n) => n + 1);
-    } catch (e) {
-      if (seq === logSeq.current && currentRoot.current === root) {
-        scopeRef.current = previous;
-        setScope(previous);
-        setError(message(e));
-      }
-    } finally {
-      if (seq === logSeq.current) setBusy(false);
-    }
-  }
-  useEffect(() => {
-    if (!repo) return;
-    let active = true;
-    setLoadingFiles(true);
-    setData(null);
-    setSet(null);
-    setError('');
-    (demo
-      ? scenario === 'loading'
-        ? new Promise<ChangeSet>(() => {})
-        : scenario === 'error'
-          ? Promise.reject(
-              new Error('DEMO 오류 상태 · 저장소 조회 실패 fixture'),
-            )
-          : Promise.resolve({
-              ...fixtureSet,
-              ...(scenario === 'empty' || scenario === 'unchanged'
-                ? { files: [] }
-                : {}),
-              comparison,
-              left:
-                comparison.kind === 'commit'
-                  ? (comparison.parent ?? '부모 1')
-                  : fixtureSet.left,
-              right:
-                comparison.kind === 'commit'
-                  ? comparison.commit
-                  : fixtureSet.right,
-            })
-      : request('changes', { repo: repo.root, comparison })
-    )
-      .then((result) => {
-        if (active) {
-          setSet(result);
-          if (result.setupWarning) setError(result.setupWarning);
-          setFile(
-            result.files.some((f) => f.path === pendingPath.current)
-              ? pendingPath.current
-              : (result.files[0]?.path ?? ''),
-          );
-          pendingPath.current = '';
-        }
-      })
-      .catch((e) => {
-        if (active) setError(message(e));
-      })
-      .finally(() => {
-        if (active) setLoadingFiles(false);
-      });
-    return () => {
-      active = false;
-    };
-  }, [repo?.root, comparison, generation]);
-  useEffect(() => {
-    setData(null);
-    setLoadingDiff(false);
-    if (!repo || !file || !set) return;
-    let active = true;
-    setLoadingDiff(true);
-    (demo
-      ? Promise.resolve(fixtureDiff(file))
-      : request('diff', {
-          repo: repo.root,
-          comparison: set.comparison,
-          path: file,
-        })
-    )
-      .then((result) => {
-        if (active) setData(result);
-      })
-      .catch((e) => {
-        if (active) setError(message(e));
-      })
-      .finally(() => {
-        if (active) setLoadingDiff(false);
-      });
-    return () => {
-      active = false;
-    };
-  }, [repo?.root, set, file]);
-  const rows = useMemo(() => layout(repo?.commits ?? []), [repo?.commits]);
-  const graphWidth = Math.max(
-    44,
-    ...rows.map(
-      (row) => (Math.max(row.before.length, row.after.length) + 1) * 14,
-    ),
-  );
-  const selected =
+    setFileMenu(null);
+  }, [repo?.root, workspace, set]);
+  // 전체 브랜치 범위에서는 UI가 follow를 빼고 요청하므로 칩과 안내를 거기에 맞춘다.
+  const followBlocked =
+    scope === 'all' && !!logFilter.filter.path && !!logFilter.filter.follow;
+  const pages = useCommitPages({ repo, logSeq, loaded, reloadLog });
+  const { commits, rows, graphWidth } = pages;
+  const selectedIndex =
     comparison.kind === 'commit'
-      ? repo?.commits.find((c) => c.hash === comparison.commit)
-      : undefined;
-  const visible =
-    repo?.commits
-      .map((commit, index) => ({ commit, row: rows[index] }))
-      .filter(({ commit }) =>
-        `${commit.message} ${commit.author} ${commit.hash} ${commit.refs.join(' ')}`
-          .toLocaleLowerCase()
-          .includes(search.toLocaleLowerCase()),
-      ) ?? [];
+      ? commits.findIndex((c) => c.hash === comparison.commit)
+      : -1;
+  const selected = selectedIndex >= 0 ? commits[selectedIndex] : undefined;
+  const [listElement, setListElement] = useState<HTMLDivElement | null>(null);
+  const [focusedHash, setFocusedHash] = useState<string | null>(null);
+  const focusedIndex = useMemo(
+    () => (focusedHash ? commits.findIndex((c) => c.hash === focusedHash) : -1),
+    [commits, focusedHash],
+  );
+  // 선택 행과 포커스 행은 창 밖으로 스크롤돼도 남겨 Shift+F10 메뉴와 포커스를 잃지 않게 한다.
+  const { segments, lastVisible } = useRowWindow(
+    listElement,
+    commits.length,
+    [selectedIndex, focusedIndex],
+    repo,
+  );
+  const [fileListElement, setFileListElement] = useState<HTMLDivElement | null>(
+    null,
+  );
+  const visibleFiles = useMemo(
+    () =>
+      (set?.files ?? []).filter((f) =>
+        f.path.toLowerCase().includes(fileSearch.toLowerCase()),
+      ),
+    [set, fileSearch],
+  );
+  function selectCommit(commit: Commit) {
+    // 파일 히스토리 목록이면 changes 응답 뒤 그 파일을 고르도록 알려 준다.
+    historyPath.current = logFilter.filter.path ?? '';
+    setComparison({
+      kind: 'commit',
+      commit: commit.hash,
+      parent: commit.parents[0],
+    });
+  }
+  const { graphArea, filesArea } = useKeyboardNav({
+    graph: {
+      count: commits.length,
+      selectedIndex,
+      listElement,
+      enabled: !busy && !editorMode,
+      select: (index) => selectCommit(commits[index]),
+    },
+    files: {
+      paths: visibleFiles.map((f) => f.path),
+      selected: file,
+      listElement: fileListElement,
+      select: (path) => {
+        setError('');
+        setFile(path);
+      },
+    },
+    blocked: commitMenu !== null || fileMenu !== null,
+  });
+  // 스크롤로 끝에 닿은 경우만 실패 뒤 재시도를 허용한다.
+  useEffect(() => {
+    if (!busy) pages.reachEnd(lastVisible, 10, true);
+  }, [lastVisible]);
+  useEffect(() => {
+    if (!busy) pages.reachEnd(lastVisible);
+  }, [pages.retry, commits.length, busy]);
+  const { body: commitBody, error: commitBodyError } = useCommitMessage(
+    repo?.root,
+    selected?.hash,
+  );
   async function openEditor(path: string) {
     if (
       !repo ||
@@ -390,7 +194,7 @@ function App() {
     try {
       const result = await request('open', {
         descriptor: {
-          version: 1,
+          version: descriptorVersion(set.comparison),
           repo: repo.root,
           comparison: set.comparison,
           path,
@@ -406,11 +210,30 @@ function App() {
     }
   }
   const files = (
-    <section className="files" id="changed-files">
+    <section className="files" id="changed-files" {...filesArea}>
       <div className="section-heading">
         <b>{t('변경 파일')}</b>
         <span>{formatNumber(set?.files.length ?? 0)}</span>
       </div>
+      {comparison.kind === 'range' && (
+        <label
+          className="range-options"
+          title={t(
+            '끄면 기준과 대상을 직접 비교하고 켜면 두 지점의 공통 조상에서 대상까지의 변경을 봅니다.',
+          )}
+        >
+          <input
+            type="checkbox"
+            checked={comparison.mergeBase === true}
+            disabled={editorMode}
+            onChange={(e) => changeMergeBase(e.target.checked)}
+          />
+          <span>{t('공통 조상 기준으로 비교')}</span>
+          <code>
+            {comparison.base.slice(0, 7)}..{comparison.target.slice(0, 7)}
+          </code>
+        </label>
+      )}
       <input
         aria-label={t('파일 검색')}
         placeholder={t('파일 이름으로 찾기')}
@@ -424,55 +247,77 @@ function App() {
       ) : set?.files.length === 0 ? (
         <p className="state">{t('이 비교 기준에는 변경 파일이 없습니다.')}</p>
       ) : (
-        <div className="file-list">
-          {set?.files
-            .filter((f) =>
-              f.path.toLowerCase().includes(fileSearch.toLowerCase()),
-            )
-            .map((f) => (
-              <button
-                className={`file-row ${file === f.path ? 'selected' : ''}`}
-                key={f.path}
-                onClick={() => {
-                  setError('');
+        <div className="file-list" ref={setFileListElement}>
+          {visibleFiles.map((f) => (
+            <button
+              className={`file-row ${file === f.path ? 'selected' : ''}`}
+              key={f.path}
+              onClick={() => {
+                setError('');
+                setFile(f.path);
+              }}
+              onDoubleClick={() => {
+                if (!editorMode && !demo) void openEditor(f.path);
+              }}
+              onContextMenu={(event) => {
+                if (editorMode) return;
+                event.preventDefault();
+                if (busy || actionBusy) return;
+                const rect = event.currentTarget.getBoundingClientRect();
+                setFileMenu({
+                  path: f.path,
+                  x: event.clientX || rect.left + 24,
+                  y: event.clientY || rect.top + 20,
+                  origin: event.currentTarget,
+                });
+              }}
+              onKeyDown={(event) => {
+                if (event.key === 'Enter' && !editorMode && !demo) {
+                  event.preventDefault();
                   setFile(f.path);
-                }}
-                onDoubleClick={() => {
-                  if (!editorMode && !demo) void openEditor(f.path);
-                }}
-                onKeyDown={(event) => {
-                  if (event.key === 'Enter' && !editorMode && !demo) {
-                    event.preventDefault();
-                    setFile(f.path);
-                    void openEditor(f.path);
-                  }
-                }}
-                aria-keyshortcuts={!editorMode && !demo ? 'Enter' : undefined}
-                title={`${f.oldPath ? f.oldPath + ' → ' : ''}${f.path}`}
-                aria-pressed={file === f.path}
-              >
-                <span className={`status status-${f.status}`}>{f.status}</span>
-                <span className="file-name">
-                  {f.path}
-                  {f.oldPath && <small>← {f.oldPath}</small>}
-                  <small>
-                    {[
-                      f.staged && 'staged',
-                      f.unstaged && 'unstaged',
-                      f.untracked && 'untracked',
-                      f.conflict && t('충돌'),
-                    ]
-                      .filter(Boolean)
-                      .join(' · ')}
-                  </small>
-                </span>
-              </button>
-            ))}
-          {set &&
-            set.files.length > 0 &&
-            !set.files.some((f) =>
-              f.path.toLowerCase().includes(fileSearch.toLowerCase()),
-            ) && <p className="state">{t('검색 결과가 없습니다.')}</p>}
+                  void openEditor(f.path);
+                } else if (
+                  event.key === 'F10' &&
+                  event.shiftKey &&
+                  !editorMode &&
+                  !busy &&
+                  !actionBusy
+                ) {
+                  event.preventDefault();
+                  const rect = event.currentTarget.getBoundingClientRect();
+                  setFileMenu({
+                    path: f.path,
+                    x: rect.left + 24,
+                    y: rect.top + 20,
+                    origin: event.currentTarget,
+                  });
+                }
+              }}
+              aria-haspopup={editorMode ? undefined : 'menu'}
+              aria-keyshortcuts={!editorMode && !demo ? 'Enter' : undefined}
+              title={`${f.oldPath ? f.oldPath + ' → ' : ''}${f.path}`}
+              aria-pressed={file === f.path}
+            >
+              <span className={`status status-${f.status}`}>{f.status}</span>
+              <span className="file-name">
+                {f.path}
+                {f.oldPath && <small>← {f.oldPath}</small>}
+                <small>
+                  {[
+                    f.staged && 'staged',
+                    f.unstaged && 'unstaged',
+                    f.untracked && 'untracked',
+                    f.conflict && t('충돌'),
+                  ]
+                    .filter(Boolean)
+                    .join(' · ')}
+                </small>
+              </span>
+            </button>
+          ))}
+          {set && set.files.length > 0 && visibleFiles.length === 0 && (
+            <p className="state">{t('검색 결과가 없습니다.')}</p>
+          )}
         </div>
       )}
       {!editorMode && !demo && (
@@ -539,15 +384,7 @@ function App() {
         </div>
         <button
           disabled={busy || actionBusy}
-          onClick={() =>
-            editorMode
-              ? (comparison.kind === 'working' &&
-                  setComparison({ kind: 'working' }),
-                setGeneration((n) => n + 1))
-              : demo
-                ? refreshDemo()
-                : setAutoTick((n) => n + 1)
-          }
+          onClick={refresh}
           title={t('새로고침')}
         >
           {t('↻ 새로고침')}{' '}
@@ -564,6 +401,7 @@ function App() {
             className="history"
             ref={historyRef}
             data-layout-kind={demo ? 'preview' : 'panel'}
+            {...graphArea}
           >
             {!demo && (
               <div className="workspace-connect">
@@ -596,15 +434,128 @@ function App() {
                     branches={repo.branches ?? []}
                     value={scope}
                     disabled={busy || actionBusy}
-                    onChange={(value) => void selectScope(value)}
+                    onChange={(value) => {
+                      if (!actionBusy) void selectScope(value);
+                    }}
                   />
                   {branchNote && <small role="status">{t(branchNote)}</small>}
-                  <input
-                    aria-label={t('커밋 검색')}
-                    placeholder={t('커밋 · 작성자 · 해시 검색')}
-                    value={search}
-                    onChange={(e) => setSearch(e.target.value)}
-                  />
+                  <div className="search-row">
+                    <input
+                      aria-label={t('커밋 검색')}
+                      placeholder={t('커밋 메시지 검색')}
+                      maxLength={200}
+                      value={logFilter.input.text}
+                      onChange={(e) => logFilter.change('text', e.target.value)}
+                      {...logFilter.composition('text')}
+                    />
+                    <button
+                      className="filter-toggle"
+                      aria-expanded={filtersOpen}
+                      aria-controls="log-filters"
+                      onClick={() => setFiltersOpen((open) => !open)}
+                    >
+                      {t('필터')}
+                    </button>
+                  </div>
+                  <div
+                    className="filter-row"
+                    id="log-filters"
+                    hidden={!filtersOpen}
+                  >
+                    <input
+                      aria-label={t('작성자')}
+                      placeholder={t('작성자')}
+                      maxLength={200}
+                      value={logFilter.input.author}
+                      onChange={(e) =>
+                        logFilter.change('author', e.target.value)
+                      }
+                      {...logFilter.composition('author')}
+                    />
+                    <input
+                      aria-label={t('경로')}
+                      placeholder={t('경로')}
+                      value={logFilter.input.path}
+                      onChange={(e) => logFilter.change('path', e.target.value)}
+                      {...logFilter.composition('path')}
+                    />
+                    <input
+                      type="date"
+                      aria-label={t('시작일 (committer date)')}
+                      title={t('시작일 (committer date)')}
+                      value={logFilter.input.since}
+                      onChange={(e) =>
+                        logFilter.change('since', e.target.value)
+                      }
+                    />
+                    <input
+                      type="date"
+                      aria-label={t('종료일 (committer date)')}
+                      title={t('종료일 (committer date)')}
+                      value={logFilter.input.until}
+                      onChange={(e) =>
+                        logFilter.change('until', e.target.value)
+                      }
+                    />
+                    <small className="filter-note">
+                      {t(
+                        '날짜 필터는 committer date 기준입니다. 목록의 날짜는 작성일입니다.',
+                      )}
+                    </small>
+                  </div>
+                  {logFilter.chips.length > 0 && (
+                    <div className="filter-chips" aria-label={t('적용된 필터')}>
+                      {logFilter.chips.map(({ field, value, follow }) => (
+                        <span className="filter-chip" key={field}>
+                          <span title={value}>
+                            {follow
+                              ? followBlocked
+                                ? `${t('파일')}: ${value}`
+                                : t('파일: {p0} (이름 변경 추적)', {
+                                    p0: value,
+                                  })
+                              : `${t(filterLabels[field])}: ${value}`}
+                          </span>
+                          <button
+                            aria-label={t('{p0} 필터 해제', {
+                              p0: t(follow ? '파일' : filterLabels[field]),
+                            })}
+                            onClick={() => logFilter.clear(field)}
+                          >
+                            ×
+                          </button>
+                        </span>
+                      ))}
+                      <button
+                        className="filter-clear"
+                        onClick={logFilter.clearAll}
+                      >
+                        {t('모두 해제')}
+                      </button>
+                    </div>
+                  )}
+                  {followBlocked && (
+                    <small className="follow-note" role="status">
+                      {t(
+                        '전체 브랜치 보기에서는 이름 변경 추적을 쓸 수 없습니다.',
+                      )}
+                    </small>
+                  )}
+                  {baseCommit && (
+                    <div className="filter-chips" aria-label={t('비교 기준')}>
+                      <span className="filter-chip">
+                        <span title={baseCommit}>
+                          {t('기준: {p0}', { p0: baseCommit.slice(0, 7) })}
+                        </span>
+                        <button
+                          aria-label={t('비교 기준 해제')}
+                          onClick={() => setBaseCommit(null)}
+                        >
+                          ×
+                        </button>
+                      </span>
+                    </div>
+                  )}
                 </div>
                 <button
                   className={`working-row ${comparison.kind === 'working' ? 'selected' : ''}`}
@@ -614,137 +565,176 @@ function App() {
                 </button>
                 <div className="section-heading">
                   <b>
-                    {search ? t('검색 결과 · 그래프 생략') : t('커밋 그래프')}
+                    {filtered ? t('검색 결과 · 그래프 생략') : t('커밋 그래프')}
                   </b>
                   <span>
-                    {formatNumber(visible.length)} {t('/ 최대 200')}
+                    {formatNumber(commits.length)}{' '}
+                    {t('/ 최대 {p0}', { p0: formatNumber(LOAD_LIMIT) })}
                   </span>
                 </div>
-                <div className="commit-list" aria-busy={busy}>
+                {pages.notice && (
+                  <small className="page-notice" role="status">
+                    {t(pages.notice)}
+                  </small>
+                )}
+                <div
+                  className="commit-list"
+                  style={{ '--row-height': `${ROW_HEIGHT}px` } as CSSProperties}
+                  aria-busy={busy || pages.loading}
+                  ref={setListElement}
+                >
                   {busy && (
                     <p className="state" role="status">
                       {t('Git 조회 중…')}
                     </p>
                   )}
                   {!busy &&
-                    visible.map(({ commit, row }) => (
-                      <button
-                        key={commit.hash}
-                        className={`commit-row ${selected?.hash === commit.hash ? 'selected' : ''}`}
-                        onClick={() =>
-                          setComparison({
-                            kind: 'commit',
-                            commit: commit.hash,
-                            parent: commit.parents[0],
-                          })
-                        }
-                        aria-pressed={selected?.hash === commit.hash}
-                        aria-haspopup="menu"
-                        onContextMenu={(event) => {
-                          event.preventDefault();
-                          if (busy || actionBusy) return;
-                          const rect =
-                            event.currentTarget.getBoundingClientRect();
-                          setCommitMenu({
-                            commit,
-                            x: event.clientX || rect.left + 24,
-                            y: event.clientY || rect.top + 20,
-                          });
-                        }}
-                        onKeyDown={(event) => {
-                          if (
-                            event.key === 'F10' &&
-                            event.shiftKey &&
-                            !busy &&
-                            !actionBusy
-                          ) {
+                    segments.map((segment) => {
+                      if ('gap' in segment)
+                        return (
+                          <div
+                            key={`gap-${segment.at}`}
+                            className="commit-spacer"
+                            style={{ height: segment.gap }}
+                            aria-hidden="true"
+                          />
+                        );
+                      const commit = commits[segment.index];
+                      const row = rows[segment.index];
+                      return (
+                        <button
+                          key={commit.hash}
+                          data-index={segment.index}
+                          onFocus={() => setFocusedHash(commit.hash)}
+                          onBlur={() =>
+                            setFocusedHash((current) =>
+                              current === commit.hash ? null : current,
+                            )
+                          }
+                          className={`commit-row ${selected?.hash === commit.hash ? 'selected' : ''}`}
+                          onClick={() => selectCommit(commit)}
+                          aria-pressed={selected?.hash === commit.hash}
+                          aria-haspopup="menu"
+                          onContextMenu={(event) => {
                             event.preventDefault();
+                            if (busy || actionBusy) return;
                             const rect =
                               event.currentTarget.getBoundingClientRect();
                             setCommitMenu({
                               commit,
-                              x: rect.left + 24,
-                              y: rect.top + 20,
+                              x: event.clientX || rect.left + 24,
+                              y: event.clientY || rect.top + 20,
+                              origin: event.currentTarget,
                             });
-                          }
-                        }}
-                      >
-                        {!search && (
-                          <svg
-                            width={Math.min(110, graphWidth)}
-                            viewBox={`0 0 ${graphWidth} 64`}
-                            preserveAspectRatio="none"
-                            height="64"
-                            aria-hidden="true"
-                          >
-                            <path
-                              d={`M${12 + row.lane * 14} 0 V32`}
-                              stroke={colors[row.lane % colors.length]}
-                              fill="none"
-                              strokeWidth="2"
-                            />
-                            {row.edges.map((edge, i) => (
+                          }}
+                          onKeyDown={(event) => {
+                            if (
+                              event.key === 'F10' &&
+                              event.shiftKey &&
+                              !busy &&
+                              !actionBusy
+                            ) {
+                              event.preventDefault();
+                              const rect =
+                                event.currentTarget.getBoundingClientRect();
+                              setCommitMenu({
+                                commit,
+                                x: rect.left + 24,
+                                y: rect.top + 20,
+                                origin: event.currentTarget,
+                              });
+                            }
+                          }}
+                        >
+                          {!filtered && (
+                            <svg
+                              width={Math.min(110, graphWidth)}
+                              viewBox={`0 0 ${graphWidth} ${ROW_HEIGHT}`}
+                              preserveAspectRatio="none"
+                              height={ROW_HEIGHT}
+                              aria-hidden="true"
+                            >
                               <path
-                                key={i}
-                                d={`M${12 + edge.from * 14} ${edge.parent ? 32 : 0} C${12 + edge.from * 14} 48 ${12 + edge.to * 14} 48 ${12 + edge.to * 14} 64`}
+                                d={`M${12 + row.lane * 14} 0 V${ROW_MID}`}
+                                stroke={colors[row.lane % colors.length]}
                                 fill="none"
-                                stroke={
-                                  colors[
-                                    (edge.parent ? edge.to : edge.from) %
-                                      colors.length
-                                  ]
-                                }
                                 strokeWidth="2"
                               />
-                            ))}
-                            <circle
-                              cx={12 + row.lane * 14}
-                              cy="32"
-                              r="4"
-                              fill={colors[row.lane % colors.length]}
-                            />
-                          </svg>
-                        )}
-                        <span className="commit-content">
-                          <span
-                            className="commit-subject"
-                            title={commit.message.split('\n')[0]}
-                          >
-                            {commit.message.split('\n')[0]}
-                          </span>
-                          {commit.refs.length > 0 && (
-                            <span className="refs">
-                              {commit.refs.map((ref) => (
-                                <em key={ref} title={ref}>
-                                  {ref}
-                                </em>
+                              {row.edges.map((edge, i) => (
+                                <path
+                                  key={i}
+                                  d={`M${12 + edge.from * 14} ${edge.parent ? ROW_MID : 0} C${12 + edge.from * 14} ${ROW_CURVE} ${12 + edge.to * 14} ${ROW_CURVE} ${12 + edge.to * 14} ${ROW_HEIGHT}`}
+                                  fill="none"
+                                  stroke={
+                                    colors[
+                                      (edge.parent ? edge.to : edge.from) %
+                                        colors.length
+                                    ]
+                                  }
+                                  strokeWidth="2"
+                                />
                               ))}
-                            </span>
+                              <circle
+                                cx={12 + row.lane * 14}
+                                cy="32"
+                                r="4"
+                                fill={colors[row.lane % colors.length]}
+                              />
+                            </svg>
                           )}
-                          <small className="commit-meta">
+                          <span className="commit-content">
                             <span
-                              className="commit-author"
-                              title={commit.author}
+                              className="commit-subject"
+                              title={commit.subject}
                             >
-                              {commit.author}
+                              {commit.subject}
                             </span>
-                            <time
-                              className="commit-date"
-                              dateTime={commit.date}
-                              title={formatDate(commit.date, true)}
-                            >
-                              {formatDate(commit.date)}
-                            </time>
-                            <code className="commit-hash" title={commit.hash}>
-                              {commit.hash.slice(0, 7)}
-                            </code>
-                          </small>
-                        </span>
-                      </button>
-                    ))}
-                  {!busy && !visible.length && (
+                            {commit.refs.length > 0 && (
+                              <RefLabels refs={commit.refs} />
+                            )}
+                            <small className="commit-meta">
+                              <span
+                                className="commit-author"
+                                title={commit.author}
+                              >
+                                {commit.author}
+                              </span>
+                              <time
+                                className="commit-date"
+                                dateTime={commit.date}
+                                title={formatDate(commit.date, true)}
+                              >
+                                {formatDate(commit.date)}
+                              </time>
+                              <code className="commit-hash" title={commit.hash}>
+                                {commit.hash.slice(0, 7)}
+                              </code>
+                            </small>
+                          </span>
+                        </button>
+                      );
+                    })}
+                  {!busy && pages.loading && (
+                    <p className="page-state" role="status">
+                      {t('이전 커밋을 불러오는 중…')}
+                    </p>
+                  )}
+                  {!busy && pages.pageError && (
+                    <p className="page-state page-error" role="alert">
+                      {t(pages.pageError)}
+                    </p>
+                  )}
+                  {!busy && pages.limitReached && (
+                    <p className="page-state" role="status">
+                      {t(
+                        '최근 커밋 {p0}개까지만 불러옵니다. 더 오래된 커밋은 검색이나 필터로 찾으세요.',
+                        { p0: formatNumber(LOAD_LIMIT) },
+                      )}
+                    </p>
+                  )}
+                  {!busy && !commits.length && (
                     <p className="state">
-                      {search
+                      {filtered
                         ? t('일치하는 커밋이 없습니다.')
                         : t(
                             '커밋이 없습니다. 최초 커밋 전에도 작업 트리를 비교할 수 있습니다.',
@@ -760,7 +750,17 @@ function App() {
                         <b>{t('커밋 정보')}</b>
                         <code>{selected.hash.slice(0, 7)}</code>
                       </div>
-                      <pre>{selected.message}</pre>
+                      <pre>{commitBody ?? selected.subject}</pre>
+                      {commitBodyError !== undefined && (
+                        <div className="commit-body-error" role="alert">
+                          <p>{t('커밋 본문을 불러오지 못했습니다.')}</p>
+                          {commitBodyError && (
+                            <small className="commit-body-error-reason">
+                              {t(commitBodyError)}
+                            </small>
+                          )}
+                        </div>
+                      )}
                       <small>
                         {selected.author} · {formatDate(selected.date, true)}
                       </small>
@@ -880,6 +880,13 @@ function App() {
         </span>
       </footer>
       {!editorMode && repo && (
+        <FileActions
+          menu={fileMenu}
+          closeMenu={() => setFileMenu(null)}
+          showHistory={logFilter.followFile}
+        />
+      )}
+      {!editorMode && repo && (
         <CommitActions
           key={`${repo.root}:${workspace}`}
           repo={repo}
@@ -888,6 +895,10 @@ function App() {
           closeMenu={() => setCommitMenu(null)}
           changed={operationChanged}
           running={setActionBusy}
+          hasBase={baseCommit !== null}
+          setBase={(commit) => setBaseCommit(commit.hash)}
+          compareWithBase={(commit) => compareWithBase(commit.hash)}
+          clearBase={() => setBaseCommit(null)}
         />
       )}
     </main>
