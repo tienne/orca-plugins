@@ -13,7 +13,7 @@ test('Orcatopia showcase keeps legacy storage and shows an English fixture islan
     fixture.tickets.push({ workspaceId, at: '2026-11-07' });
     fixture.receipts.push({ workspaceId, landmark, at: '2026-11-07' });
   };
-  // Twelve collected destinations unlock the complete island through normal rules.
+  // Fifteen collected themes provide varied planting; twelve already unlock all land.
   for (const landmark of [
     'eiffel',
     'taj',
@@ -27,6 +27,9 @@ test('Orcatopia showcase keeps legacy storage and shows an English fixture islan
     'opera',
     'colosseum',
     'belem',
+    'cn',
+    'gyeongbokgung',
+    'chichen',
   ])
     acquire(landmark);
   fixture.placements = [
@@ -50,19 +53,28 @@ test('Orcatopia showcase keeps legacy storage and shows an English fixture islan
   for (const tile of land)
     fixture.floors.push({
       cell: tile.id,
-      decoration: promenade(tile.col, tile.row) ? 'stonepath' : 'grass',
+      decoration:
+        tile.col >= 15 && tile.col <= 19 && tile.row >= 15 && tile.row <= 17
+          ? 'path' // Warm earth under the palm-and-sandstone oasis.
+          : tile.col >= 12 && tile.col <= 14 && tile.row >= 8 && tile.row <= 10
+            ? 'stonepath' // A compact paved fountain court.
+            : promenade(tile.col, tile.row)
+              ? tile.col < 9 || tile.row > 17
+                ? 'path'
+                : 'stonepath'
+              : 'grass',
     });
   const garden: [string, number, number, number?][] = [
     // Central parterre: open sight lines, paired water features and flower beds.
     ['taj-special', 10, 9],
-    ['taj-special', 12, 9],
+    ['colosseum-special', 12, 9],
     ['taj-pavilion', 13, 13],
     ['fuji-pond', 9, 10],
-    ['fuji-pond', 13, 10],
+    ['stonehenge-special', 13, 10],
     ['eiffel-special', 9, 12, 1],
-    ['eiffel-special', 13, 12, 3],
+    ['sagrada-special', 13, 12, 3],
     ['eiffel-rose-arch', 10, 16],
-    ['eiffel-rose-arch', 12, 16],
+    ['hagia-special', 12, 16],
     ['eiffel-gift', 10, 14],
     ['eiffel-gift', 12, 14],
     ['eiffel-gift', 7, 10],
@@ -90,7 +102,7 @@ test('Orcatopia showcase keeps legacy storage and shows an English fixture islan
     ['eiffel-gift', 14, 6],
     ['fuji-gift', 9, 3],
     ['fuji-gift', 13, 3],
-    ['fuji-gift', 15, 4],
+    ['cn-gift', 15, 4],
     ['eiffel-special', 19, 10, 3],
     ['colosseum-gift', 19, 6],
     ['colosseum-gift', 20, 8],
@@ -100,7 +112,7 @@ test('Orcatopia showcase keeps legacy storage and shows an English fixture islan
     ['kinderdijk-special', 7, 16],
     ['eiffel-special', 6, 17, 1],
     ['fuji-gift', 4, 15],
-    ['fuji-gift', 7, 18],
+    ['cn-gift', 7, 18],
     ['angkor-gift', 3, 13],
     ['angkor-gift', 3, 16],
     ['angkor-fern-bed', 4, 14],
@@ -111,24 +123,27 @@ test('Orcatopia showcase keeps legacy storage and shows an English fixture islan
     ['eiffel-rose-arch', 10, 20],
     ['eiffel-rose-arch', 12, 20],
     ['fuji-gift', 8, 19],
-    ['fuji-gift', 14, 19],
+    ['cn-gift', 14, 19],
     ['petra-gift', 16, 15],
     ['petra-gift', 19, 16],
     ['petra-gift', 16, 18],
     ['petra-special', 19, 18],
     ['belem-special', 16, 17],
     ['eiffel-special', 15, 17, 3],
-    ['oak', 16, 13],
-    ['oak', 7, 4],
+    ['petra-gift', 16, 13],
+    ['gyeongbokgung-gift', 7, 4],
     ['oak', 15, 6],
     ['oak', 20, 12],
-    ['oak', 20, 15],
+    ['petra-gift', 20, 15],
     ['oak', 16, 4],
     ['hagia-gift', 15, 3],
     ['stonehenge-gift', 3, 9],
     ['opera-gift', 19, 14],
     ['opera-gift', 20, 14],
     ['angkor-fern-bed', 17, 12],
+    ['angkor-fern-bed', 9, 13],
+    ['cn-gift', 10, 13],
+    ['gyeongbokgung-gift', 12, 12],
   ];
   const reserved = new Set(fixture.placements.map((p) => p.cell));
   for (const [, col, row] of garden) {
@@ -156,18 +171,34 @@ test('Orcatopia showcase keeps legacy storage and shows an English fixture islan
     if (formal || border || meadow) {
       const flower = meadow
         ? 'kinderdijk-gift'
-        : row < 9
-          ? 'hagia-gift'
-          : col < 11
-            ? 'sagrada-gift'
-            : 'taj-gift';
+        : col >= 15 && row >= 13
+          ? 'chichen-gift'
+          : col >= 14
+            ? 'opera-gift'
+            : row < 9
+              ? 'hagia-gift'
+              : col < 10
+                ? 'stonehenge-gift'
+                : row > 14
+                  ? 'sagrada-gift'
+                  : 'taj-gift';
       garden.push([flower, col, row]);
     } else if (
       col % 3 === 0 &&
       row % 3 === 0 &&
       neighbours(tile.id).length === 4
     ) {
-      garden.push([col < 11 ? 'fuji-gift' : 'colosseum-gift', col, row]);
+      garden.push([
+        col < 8
+          ? 'gyeongbokgung-gift'
+          : col < 11
+            ? 'fuji-gift'
+            : row > 14
+              ? 'cn-gift'
+              : 'colosseum-gift',
+        col,
+        row,
+      ]);
     } else if ((col + row * 2) % 11 === 0 && row > 6) {
       garden.push([col < 8 ? 'angkor-fern-bed' : 'stonehenge-gift', col, row]);
     }

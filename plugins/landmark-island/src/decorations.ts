@@ -495,7 +495,17 @@ function furnitureArt(d: Decoration, rotation: number) {
   return `<svg class="decoration-art" viewBox="0 0 80 104" aria-hidden="true"><ellipse cx="40" cy="90" rx="31" ry="9" fill="#244e3825"/>${faces.map((f) => `<polygon points="${f.points.map(([x, y, z]) => `${40 + (x - y) * 0.65},${86 + (x + y) * 0.32 - z}`).join(' ')}" fill="${f.fill}" stroke="#53624d" stroke-width=".7" stroke-linejoin="round"/>`).join('')}</svg>`;
 }
 // Low planting keeps views across paths open; small blossoms sit in layered foliage.
-function flowerBedArt(color: string) {
+function flowerBedArt(d: Decoration) {
+  const themes: Record<string, { colors: string[]; tulip?: boolean }> = {
+    hagia: { colors: ['#da706b', '#b85c88', '#efac83'], tulip: true },
+    kinderdijk: { colors: ['#e5b64f', '#df7868', '#f0cf78'], tulip: true },
+    taj: { colors: ['#f7eedc', '#d98fab', '#f3c2ce'] },
+    sagrada: { colors: ['#699cbd', '#e6b65a', '#db817b'] },
+    opera: { colors: ['#92b7d0', '#b6a2d3', '#f3f0db'] },
+    stonehenge: { colors: ['#9b83bc', '#c7abd8', '#eee6d9'] },
+    chichen: { colors: ['#e48b5f', '#e7bd56', '#cf687c'] },
+  };
+  const theme = themes[d.landmark ?? ''] ?? { colors: [d.color, '#f5e8cf'] };
   const blooms = [
     [17, 74],
     [27, 65],
@@ -514,15 +524,26 @@ function flowerBedArt(color: string) {
       .map(
         ([x, y], i) => `<g transform="translate(${x} ${y})">
       <path d="M0 4v9m0-4q-8-7-8-1 4 4 8 3m0-6q8-6 8-1-4 4-8 3" fill="#94b57a" stroke="#486e49" stroke-width=".7"/>
-      <g fill="${i % 3 === 0 ? '#f5e8cf' : color}" stroke="none">
-        ${[0, 72, 144, 216, 288].map((angle) => `<ellipse cy="-2.8" rx="2.5" ry="3.4" transform="rotate(${angle})"/>`).join('')}
-      </g><circle r="1.7" fill="#d8af64" stroke="none"/>
+      <g fill="${theme.colors[i % theme.colors.length]}" stroke="none">
+        ${theme.tulip ? '<path d="M-5-7l4 3 2-5 3 5 3-3Q8 4 1 5-6 3-5-7Z"/><path d="M-1-3l2 7" stroke="#fff0d7" stroke-opacity=".45" stroke-width=".8"/>' : [0, 72, 144, 216, 288].map((angle) => `<ellipse cy="-2.8" rx="2.5" ry="3.4" transform="rotate(${angle})"/>`).join('')}
+      </g>${theme.tulip ? '' : '<circle r="1.7" fill="#d8af64" stroke="none"/>'}
     </g>`,
       )
       .join('')}
     <path d="M12 84l5 2m17 4 6 1m17-4 5-2m-28-8 4 1" stroke="#bed09c" stroke-width="1" fill="none"/>`;
 }
-function gardenTreeArt(color: string) {
+function gardenTreeArt(d: Decoration) {
+  const color = d.color;
+  if (d.landmark === 'colosseum')
+    return `<path d="M38 94V67h5v27" fill="#8e7758" stroke="none"/>
+    <path d="M40 4Q23 27 24 54Q15 79 31 85Q48 94 57 76Q61 57 52 37Q49 15 40 4Z" fill="#466e54" stroke="#35543e" stroke-width=".8"/>
+    <path d="M40 8Q29 39 30 62Q22 78 35 83L41 57Z" fill="#72966c" stroke="none"/>
+    <path d="M35 29l3-7m-5 27 3-8m-8 27 4-7m9 15 3-9m3-15 2 5" stroke="#a1b684" stroke-width="1" fill="none"/>`;
+  if (d.landmark === 'gyeongbokgung' || d.landmark === 'greatwall')
+    return `<path d="M37 94V56h6v38" fill="#917654" stroke="none"/>
+    <path d="M40 7L22 33l8-2L13 56l12-3L6 82q34 17 68 0L55 53l12 3-17-25 8 2Z" fill="#3c735e" stroke="#325944" stroke-width=".8"/>
+    <path d="M40 9L26 31l11-4-16 26 14-6L14 79q13 6 21 6Z" fill="#80a27a" stroke="none"/>
+    <path d="m43 31 8 2m-9 18 13 4m-11 23 18 4" fill="none" stroke="#adc395" stroke-width="1.2"/>`;
   return `<path d="M34 93q7-25 3-50l8-1q-4 29 5 50z" fill="#8b785c" stroke="#6c694e" stroke-width=".8"/>
     <path d="M40 74L22 46m19 15 17-26" fill="none" stroke="#8b785c" stroke-width="3"/>
     <g fill="${color}" stroke="#526e4b" stroke-width=".6">
@@ -542,8 +563,8 @@ export function decorationArt(id: string, rotation = 0) {
     grass:
       '<path d="M5 78L40 58 75 78 40 98Z"/><path d="M20 78l3-8 3 8m17 6 4-10 3 9m8-8 3-7 2 8" fill="none" stroke="#547644"/>',
     path: '<path d="M5 78L40 58 75 78 40 98Z"/><path d="M16 78l21-12m2 25 23-14" stroke="#e4cfaa"/>',
-    tree: gardenTreeArt(d.color),
-    flowers: flowerBedArt(d.color),
+    tree: gardenTreeArt(d),
+    flowers: flowerBedArt(d),
     lamp: '<path d="M29 90h22l-6-7H35zM38 83V37h4v46"/><path d="M27 17l13-8 13 8-4 25H31Z"/><path d="M32 20h16l-3 17H35Z" fill="#f7db83"/><path d="M40 18v20M25 18h30" stroke="#354e4e"/><circle cx="40" cy="27" r="16" fill="#ffdf8b" opacity=".12" stroke="none"/>',
     bench:
       '<path d="M12 68v20m48-15v20m-39-23v16m47-20v18" stroke="#5b6354" stroke-width="4"/><path d="M10 65l45-9 17 10-46 12Z"/><path d="M12 63V43l45-9v20Z"/><path d="M17 48l35-7m-34 15 34-7" stroke="#e8d3ac" fill="none"/>',

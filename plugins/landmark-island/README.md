@@ -132,7 +132,7 @@ These join existing landmarks from the same countries. Owning both increases tha
 
 ## Garden workshop and growing land
 
-Flower decorations use low beds of small blossoms and foliage. Garden trees have layered canopy shading; terrain draws cliff faces only along exposed coastlines and height changes. These are bundled vector illustrations.
+Flower decorations use low beds of small blossoms and foliage. Tulip, meadow, coastal and tropical sets have distinct flower colors; tulips also have cup-shaped petals. Garden trees have layered canopy shading, with slender Roman cypresses and tiered palace/mountain pines alongside rounded canopies; terrain draws cliff faces only along exposed coastlines and height changes. These are bundled vector illustrations.
 
 New islands start with the central 36 land tiles. Each **different landmark owned** opens another connected portion of the coast: 0/1/2/4/8/12 unique landmarks give 36/59/83/130/224/318 tiles. Duplicates, ticket earning and placing/removing pieces do not expand land. The island heading shows the current area and the next collection threshold; the minimap and Whole island camera show the unlocked area. Locked land cannot be walked on or built on, with worker validation as well as UI filtering. Ownership, not the number currently placed, controls growth. There is no expansion purchase. Land still reaches its 318-tile cap at 12 unique discoveries; discoveries 13–51 continue collection and decoration unlocks without shrinking or further expanding the terrain.
 
