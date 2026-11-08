@@ -32,9 +32,12 @@ function mockOrca([command, path]) {
   return readFile(join(path, 'orca-plugin.json'), 'utf8').then((raw) => {
     const manifest = JSON.parse(raw);
     const commit = git(directory, ['rev-parse', 'HEAD']);
-    const tree = git(directory, ['rev-parse', `${commit}:plugins/git-logs`]);
+    const tree = git(directory, [
+      'rev-parse',
+      `${commit}:plugins/${manifest.id}`,
+    ]);
     return {
-      sourcePath: 'plugins/git-logs',
+      sourcePath: `plugins/${manifest.id}`,
       entry: {
         version: manifest.version,
         commit,
@@ -561,4 +564,86 @@ test('clean filters cannot silently change the committed catalog or source prove
       if (previous === undefined) delete process.env.GIT_CONFIG_GLOBAL;
       else process.env.GIT_CONFIG_GLOBAL = previous;
     }
+  }));
+
+test('Orcatopia candidates preserve Git Logs, separate identity and reject a mismatched plan', () =>
+  fixture(async ({ source, remote, prepare, save }) => {
+    const logs = await prepare();
+    await publishRelease(logs, { source, orca });
+    git(source, ['fetch', 'origin', 'release:refs/remotes/origin/release']);
+    const path = join(source, 'plugins/landmark-island');
+    await cp(join(source, 'plugins/git-logs'), path, { recursive: true });
+    const manifest = JSON.parse(
+      await readFile(join(path, 'orca-plugin.json'), 'utf8'),
+    );
+    manifest.id = 'landmark-island';
+    manifest.name = 'Orcatopia';
+    manifest.contributes.panels[0].id = 'landmark-island';
+    manifest.contributes.panels[0].title = 'Orcatopia';
+    await writeFile(join(path, 'orca-plugin.json'), JSON.stringify(manifest));
+    await cp(path, join(source, 'dist/plugins/landmark-island'), {
+      recursive: true,
+    });
+    await save('Add Orcatopia fixture');
+    const beforeRefs = git(remote, ['show-ref']);
+    const plan = await prepare({ plugin: 'landmark-island' });
+    assert.equal(plan.pluginKey, 'tienne.landmark-island');
+    assert.equal(plan.tag, 'landmark-island/v0.1.0');
+    assert.equal(plan.baseCommit, logs.catalogCommit);
+    assert.equal(
+      git(remote, ['show-ref']),
+      beforeRefs,
+      'Preparation never publishes',
+    );
+    assert.equal(
+      git(plan.directory, [
+        'rev-parse',
+        `${plan.catalogCommit}:plugins/git-logs`,
+      ]),
+      git(logs.directory, [
+        'rev-parse',
+        `${logs.catalogCommit}:plugins/git-logs`,
+      ]),
+    );
+    const catalog = JSON.parse(
+      await readFile(join(plan.directory, 'orca-catalog.json'), 'utf8'),
+    );
+    assert.deepEqual(catalog.plugins.map((p) => p.id).sort(), [
+      'tienne.git-logs',
+      'tienne.landmark-island',
+    ]);
+    assert.equal(
+      catalog.plugins.find((p) => p.id === 'tienne.landmark-island').releases[0]
+        .name,
+      'Orcatopia',
+    );
+    await verifyCandidate(plan, { source, orca });
+    await assert.rejects(
+      verifyCandidate({ ...plan, plugin: 'git-logs' }, { source, orca }),
+      /identity/,
+    );
+    await assert.rejects(
+      verifyCandidate({ ...plan, plugin: '../outside' }, { source, orca }),
+      /Unsupported release plugin/,
+    );
+    await assert.rejects(
+      prepare({ plugin: '../outside' }),
+      /Unsupported release plugin/,
+    );
+    await publishRelease(plan, { source, orca }); // Temporary local bare repository only.
+    assert.equal(
+      git(remote, ['rev-parse', 'refs/tags/landmark-island/v0.1.0']),
+      plan.sourceCommit,
+    );
+    assert.equal(
+      git(remote, ['rev-parse', 'refs/tags/git-logs/v0.1.0']),
+      logs.sourceCommit,
+    );
+  }));
+
+test('legacy Git Logs plans without a plugin selector still validate', () =>
+  fixture(async ({ source, prepare }) => {
+    const plan = await prepare();
+    delete plan.plugin;
+    await verifyCandidate(plan, { source, orca });
   }));

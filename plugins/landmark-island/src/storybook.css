@@ -1,0 +1,1854 @@
+/* A locally drawn woodland-adventure scene; no remote fonts or image requests. */
+:root,
+html.light {
+  color-scheme: light;
+  --ink: var(--orca-foreground, #514c3c);
+  --paper: var(--orca-background, #ecebd7);
+  --panel: var(--orca-card, #faf6e8);
+  --line: var(--orca-border, #c9c2a8);
+  --accent: var(--orca-primary, #426e4d);
+  color: var(--ink);
+  background: var(--paper);
+  font-family: 'Avenir Next', 'Trebuchet MS', sans-serif;
+}
+html.dark {
+  color-scheme: dark;
+  --ink: var(--orca-foreground, #e5dcc3);
+  --paper: var(--orca-background, #35372e);
+  --panel: var(--orca-card, #414439);
+  --line: var(--orca-border, #777860);
+  --accent: var(--orca-primary, #dfb784);
+}
+body {
+  /* Sparse fibers, fixed in page space rather than moving with the camera. */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='160'%3E%3Cg stroke='%23837b59' stroke-opacity='.10' stroke-width='.6'%3E%3Cpath d='M8 12l3 1m32 20 5-1m60-11 2 2m31 41 6 1M24 98l4 2m52-27 3-1m28 57 5 1m-62 16 5-1M170 8l2 3m-8 110 4-2'/%3E%3C/g%3E%3C/svg%3E");
+}
+#app {
+  max-width: 1600px;
+  padding: 24px 36px;
+}
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px 30px;
+  padding: 0 0 17px;
+  border-bottom: 1px solid var(--line);
+}
+.eyebrow {
+  font:
+    italic 12px Georgia,
+    serif;
+  letter-spacing: 0;
+  color: var(--ink);
+}
+.eyebrow b {
+  margin: 0 0 0 10px;
+  padding: 3px 5px;
+  border: 1px solid var(--line);
+  background: transparent;
+  color: var(--ink);
+  font:
+    9px 'Trebuchet MS',
+    sans-serif;
+  letter-spacing: 0.4px;
+}
+h1 {
+  font-size: 32px;
+  margin: 6px 0 0;
+  letter-spacing: -1px;
+}
+.stats {
+  margin: 0;
+  gap: 22px;
+}
+.stats strong {
+  font:
+    normal 22px Georgia,
+    serif;
+}
+.stats small {
+  display: block;
+  margin-top: 4px;
+  font:
+    10px 'Trebuchet MS',
+    sans-serif;
+  opacity: 0.8;
+}
+nav {
+  margin-top: 12px;
+  align-items: center;
+  gap: 4px;
+}
+button,
+.climate-controls select {
+  border-radius: var(--orca-radius, 4px 7px 5px 3px);
+  box-shadow: none;
+  padding: 8px 12px;
+}
+button:hover:not(:disabled),
+button:focus-visible {
+  outline: 2px solid var(--accent);
+}
+button[aria-pressed='true'] {
+  outline: none;
+  background: var(--orca-accent, #d9dfbf);
+  color: var(--orca-accent-foreground, #454f3c);
+  border-color: var(--orca-border, #909c72);
+}
+nav button {
+  background: transparent;
+  color: var(--ink);
+  border-color: transparent;
+}
+nav button[aria-pressed='true'] {
+  background: transparent;
+  color: var(--ink);
+  border: 1px solid var(--line);
+  border-bottom: 3px solid var(--accent);
+}
+#expedition {
+  margin-left: auto;
+  border-color: var(--line);
+}
+#refresh {
+  font-size: 11px;
+}
+.notice {
+  background: none;
+  border: 0;
+  padding: 0;
+  min-height: 0;
+  margin: 12px 0;
+  font:
+    italic 13px/1.5 Georgia,
+    serif;
+}
+.notice::before {
+  content: '↳ ';
+  color: var(--accent);
+}
+[role='alert'] {
+  color: var(--orca-destructive, #a33d35);
+}
+html.dark [role='alert'] {
+  color: var(--orca-destructive, #ffc1a3);
+}
+section {
+  margin-top: 22px;
+}
+h2,
+.island-section .section-title h2 {
+  font-size: 24px;
+  margin: 8px 0;
+}
+h2 small {
+  display: block;
+  font:
+    italic 11px Georgia,
+    serif;
+  margin-bottom: 5px;
+  color: var(--accent);
+}
+.section-title span,
+.muted {
+  opacity: 0.85;
+}
+.island-section > p {
+  margin: 4px 0 0;
+  font-size: 12px;
+}
+.scene-controls {
+  margin: 12px 0 10px;
+  gap: 10px;
+  font-size: 11px;
+}
+.climate-controls select {
+  max-width: 175px;
+  padding: 8px;
+}
+.ocean {
+  border: 1px solid #6a8764;
+  border-radius: 48% 2% 2% 1% / 1% 1% 2% 2%;
+  background: radial-gradient(
+    ellipse at 50% 55%,
+    #a4d3ae,
+    #68aa9b 65%,
+    #488e8a
+  );
+  box-shadow:
+    0 0 0 5px var(--paper),
+    0 0 0 6px var(--line);
+}
+/* Two decorative layers sit above the scene without intercepting input. */
+.ocean::before,
+.ocean::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.ocean::before {
+  z-index: 1;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='120'%3E%3Cg fill='none' stroke='%23eff2d9' stroke-width='1.2' stroke-opacity='.4' stroke-linecap='round'%3E%3Cpath d='M13 34q8 4 18 0m4 1h5m55 48q10 4 21 0m4 1h8M140 15q6 3 14 0M18 103q5 2 10 0'/%3E%3C/g%3E%3C/svg%3E");
+}
+.ocean::after {
+  z-index: 9;
+  opacity: 0.07;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.78' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Cpath fill='%23887c59' filter='url(%23n)' opacity='.5' d='M0 0h180v180H0z'/%3E%3C/svg%3E");
+}
+.ocean[data-weather='rain'] {
+  background: radial-gradient(ellipse at center, #9aafa5, #758f93);
+}
+.ocean[data-phase='sunset'] {
+  background: radial-gradient(
+    ellipse at 65% 10%,
+    #e6bd9d,
+    #b7b4a0 50%,
+    #8da5a0
+  );
+}
+.ocean[data-phase='dawn'] {
+  background: radial-gradient(
+    ellipse at 70% 10%,
+    #e8d5b3,
+    #b5c9b2 50%,
+    #94b5ad
+  );
+}
+.ocean[data-phase='night'] {
+  background: radial-gradient(ellipse at center, #667c80, #414e65);
+}
+.world-object.building {
+  filter: drop-shadow(2px 2px 0 #8c7b5a55);
+}
+.world-object.pine {
+  width: 71px;
+  height: 108px;
+}
+.world-object.oak {
+  width: 96px;
+  height: 112px;
+}
+.world-sign span {
+  font:
+    italic 9px/1.2 Georgia,
+    serif;
+  background: #d3ba8b;
+  color: #5b513b;
+  border: 1px solid #867652;
+  box-shadow: 1px 2px 0 #867652;
+  transform: rotate(-4deg);
+}
+.walker {
+  width: 36px !important;
+  height: 54px;
+  filter: none;
+}
+.sailboat {
+  width: 78px;
+  height: 78px;
+  filter: none;
+}
+.sailboat svg {
+  width: 100%;
+  height: 100%;
+}
+.sun-moon {
+  box-shadow:
+    0 0 0 7px #fbefbd19,
+    0 0 0 14px #fbefbd10;
+  background: #f6e5ad;
+}
+.cloud {
+  filter: blur(1px);
+  background: #f7f4dfad;
+}
+.scene-hud {
+  color: #f4edc8;
+}
+.forecast {
+  border-radius: 2px 8px 3px 5px;
+  background: var(--orca-popover, #243f35e8);
+  color: var(--orca-popover-foreground, #f4edc8);
+  border: 1px solid var(--orca-border, #b6b681);
+  backdrop-filter: none;
+  font:
+    italic 12px Georgia,
+    serif;
+  box-shadow: 1px 2px 0 #647b5d15;
+}
+.scene-location {
+  font:
+    italic 14px Georgia,
+    serif;
+  text-transform: none;
+  letter-spacing: 0;
+  text-shadow: none;
+  color: var(--orca-popover-foreground, #f4edc8);
+  background: var(--orca-popover, #243f35e8);
+  padding: 6px 9px;
+  border-radius: 2px;
+}
+.minimap {
+  background: var(--orca-popover, #284b3c);
+  color: var(--orca-popover-foreground, #f4edc8);
+  border: 1px solid var(--orca-border, #c6bc7c);
+  border-radius: 2px 8px 3px 4px;
+  backdrop-filter: none;
+  box-shadow: 2px 3px 0 #586e4d22;
+  transform: none;
+}
+.minimap svg {
+  background: #70aa94;
+  border-radius: 1px;
+}
+.minimap span {
+  color: var(--orca-popover-foreground, #f1e6b4);
+  font:
+    italic 10px Georgia,
+    serif;
+}
+.camera-controls {
+  background: var(--orca-popover, #254637ed);
+  border: 1px solid var(--orca-border, #b5ae74);
+  border-radius: 3px 6px 4px 2px;
+  color: var(--orca-popover-foreground, #f3e9b9);
+}
+.camera-controls button,
+.walk-controls button {
+  background: var(--orca-secondary, #385c42);
+  border-color: var(--orca-border, #9f9f6c);
+  color: var(--orca-secondary-foreground, #f3eac6);
+  border-radius: var(--orca-radius, 3px 6px 4px 2px);
+}
+.camera-controls button[aria-pressed='true'] {
+  background: var(--orca-accent, #697e45);
+  color: var(--orca-accent-foreground, #f3eac6);
+}
+.walk-hint {
+  color: var(--orca-popover-foreground, #f1e9ca);
+  background: var(--orca-popover, #244738e8);
+  text-shadow: none;
+  border-radius: 2px;
+  padding: 5px 8px;
+  left: 10px;
+  right: 10px;
+  bottom: 8px;
+  font-size: 10px;
+}
+.collection-section {
+  border-top: 1px solid var(--line);
+  margin-top: 32px;
+  padding-top: 12px;
+}
+.collection {
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 0;
+  margin-top: 15px;
+}
+.card {
+  position: relative;
+  padding: 16px 12px;
+  gap: 7px;
+  border: 0;
+  border-bottom: 1px dashed var(--line);
+  border-radius: 0;
+  background: transparent;
+}
+.card + .card {
+  border-left: 1px dashed var(--line);
+}
+.card:nth-child(6n + 1) {
+  border-left: 0;
+}
+.card svg {
+  width: 96px;
+  height: 96px;
+  max-width: 100%;
+  margin-bottom: 6px;
+}
+.card strong {
+  font:
+    normal 14px Georgia,
+    serif;
+}
+.card span,
+.card small {
+  opacity: 0.85;
+  font-size: 10px;
+}
+.card.locked {
+  opacity: 1;
+}
+.card.locked svg {
+  opacity: 0.62;
+  filter: grayscale(0.55);
+}
+.card.locked strong {
+  opacity: 0.7;
+}
+.card.locked small {
+  font-style: italic;
+}
+.card[aria-pressed='true'] {
+  outline: 1px solid var(--accent);
+  outline-offset: -1px;
+  background: #a8ae7220;
+  color: var(--ink);
+}
+.world {
+  background: #a7c2b7;
+  border-radius: 3px;
+  border: 1px solid #8a9e8e;
+}
+.world path {
+  fill: #e1dcc0;
+  stroke: #969d80;
+}
+.world path.acquired {
+  fill: #a3b17a;
+}
+.world circle {
+  fill: #b66a4d;
+  stroke: #fcf1d0;
+}
+.countries span {
+  border-radius: 0;
+  background: transparent;
+  border-bottom: 1px solid var(--line);
+}
+footer {
+  opacity: 0.85;
+}
+/* Ambient layers share the scene's reduced-motion and weather controls. */
+.sunbeams {
+  position: absolute;
+  inset: -20%;
+  background: linear-gradient(
+    118deg,
+    transparent 30%,
+    #fff5b429 35%,
+    transparent 40%,
+    transparent 52%,
+    #fff4b51c 55%,
+    transparent 60%
+  );
+  mix-blend-mode: screen;
+  opacity: 0.7;
+  transition: opacity 2s;
+  animation: canopy-light 18s ease-in-out infinite alternate;
+}
+.ocean[data-phase='night'] .sunbeams,
+.ocean[data-weather='rain'] .sunbeams,
+.ocean[data-weather='snow'] .sunbeams,
+.ocean[data-weather='cloudy'] .sunbeams {
+  opacity: 0;
+}
+.forest-motes {
+  position: absolute;
+  inset: 0;
+  opacity: 0.55;
+  transition: opacity 2s;
+}
+.forest-motes i {
+  position: absolute;
+  left: var(--mx);
+  top: var(--my);
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: #fff5bc;
+  box-shadow: 0 0 8px 2px #f8eda459;
+  animation: woodland-mote 9s var(--md) ease-in-out infinite;
+}
+.ocean[data-phase='night'] .forest-motes {
+  opacity: 1;
+}
+.ocean[data-weather='rain'] .forest-motes,
+.ocean[data-weather='snow'] .forest-motes {
+  opacity: 0;
+}
+.world-object.ruin {
+  width: 72px;
+  height: 99px;
+}
+.ruin-rune {
+  filter: drop-shadow(0 0 2px #8fe3ad);
+}
+.trail-lantern {
+  position: absolute;
+  right: -14px;
+  top: 26px;
+  width: 12px;
+  height: 17px;
+  border: 2px solid #675d39;
+  border-radius: 3px;
+  background: #edcf78;
+}
+.trail-lantern::before {
+  content: '';
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  border: 1px solid #675d39;
+  border-radius: 50%;
+  top: -9px;
+  left: 0;
+}
+.ocean[data-phase='night'] .trail-lantern,
+.ocean[data-phase='sunset'] .trail-lantern {
+  background: #ffeaa0;
+  box-shadow: 0 0 18px 9px #ffe19b70;
+}
+@keyframes canopy-light {
+  to {
+    transform: translateX(4%);
+  }
+}
+@keyframes woodland-mote {
+  0%,
+  100% {
+    opacity: 0.15;
+    transform: translate(0, 8px);
+  }
+  50% {
+    opacity: 1;
+    transform: translate(12px, -14px);
+  }
+}
+@media (max-width: 900px) {
+  #app {
+    padding: 22px;
+  }
+  .collection {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+  .card:nth-child(6n + 1) {
+    border-left: 1px dashed var(--line);
+  }
+  .card:nth-child(4n + 1) {
+    border-left: 0;
+  }
+}
+@media (max-width: 600px) {
+  #app {
+    padding: 16px;
+  }
+  header {
+    gap: 14px;
+  }
+  h1 {
+    font-size: 29px;
+  }
+  .stats {
+    gap: 25px;
+  }
+  .stats strong {
+    font-size: 18px;
+  }
+  .stats small {
+    display: inline;
+    margin-left: 4px;
+    font-size: 9px;
+  }
+  nav {
+    gap: 4px;
+  }
+  nav button {
+    padding: 7px 8px;
+    font-size: 11px;
+  }
+  #expedition {
+    margin-left: 0;
+  }
+  .eyebrow {
+    font-size: 11px;
+  }
+  .eyebrow b {
+    font-size: 8px;
+    margin-left: 6px;
+  }
+  .island-section .section-title h2 {
+    font-size: 22px;
+  }
+  .island-section .section-title span {
+    max-width: 100px;
+    font-size: 10px;
+  }
+  .scene-controls {
+    gap: 8px;
+  }
+  .scene-location {
+    font-size: 11px;
+  }
+  .forecast {
+    font-size: 10px;
+  }
+  .walk-hint {
+    font-size: 9px;
+  }
+  .camera-controls,
+  .walk-controls {
+    bottom: 53px;
+  }
+  .collection {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .card:nth-child(odd) {
+    border-left: 0;
+  }
+  .minimap span {
+    font-size: 8px;
+  }
+}
+
+/* Field-guide reading is separate from selecting an item for placement. */
+.collect-action {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 7px;
+  width: 100%;
+  padding: 0;
+  text-align: left;
+  background: transparent;
+  color: inherit;
+  border: 0;
+  border-radius: 2px;
+}
+.collect-action[aria-pressed='true'] {
+  background: transparent;
+  color: inherit;
+  outline: 1px solid var(--accent);
+  outline-offset: 5px;
+}
+.card .card-country {
+  color: var(--orca-foreground, var(--accent));
+  opacity: 1;
+  font-weight: 600;
+  font-size: 12px;
+}
+.about-landmark {
+  margin-top: auto;
+  padding: 10px 0 0;
+  border: 0;
+  border-radius: 2px;
+  background: transparent;
+  color: var(--orca-foreground, var(--accent));
+  font-size: 11px;
+  text-align: left;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  min-height: 36px;
+}
+.building-select {
+  position: absolute;
+  inset: 0 0 12px;
+  width: 100%;
+  padding: 0;
+  background: transparent !important;
+  border: 0;
+  pointer-events: auto;
+  cursor: pointer;
+}
+.building-select:hover {
+  outline: none !important;
+  filter: brightness(1.12);
+}
+.building-select:focus-visible {
+  outline: 2px solid var(--orca-ring, #f3e5a3) !important;
+}
+.world-tile:has(.building-select:hover) .building-label,
+.world-tile:has(.building-select:focus-visible) .building-label {
+  opacity: 1;
+}
+.landmark-detail {
+  width: min(500px, calc(100vw - 32px));
+  max-height: calc(100dvh - 40px);
+  padding: 30px;
+  border: 1px solid var(--line);
+  border-radius: var(--orca-radius, 6px);
+  background: var(--orca-popover, var(--paper));
+  color: var(--orca-popover-foreground, var(--ink));
+  box-shadow: 0 16px 65px #152d3655;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+.landmark-detail::backdrop {
+  background: #172e2bc2;
+}
+.detail-close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  font-size: 20px;
+  padding: 3px 12px;
+}
+.detail-art {
+  width: min(220px, 100%);
+  height: 200px;
+  margin: 4px auto 20px;
+}
+.detail-art svg {
+  width: 100%;
+  height: 100%;
+}
+.detail-country {
+  color: var(--orca-foreground, var(--accent));
+  font-weight: 600;
+  font-size: 13px;
+}
+.landmark-detail h2 {
+  font-size: 30px;
+  margin: 8px 0 16px;
+}
+#detail-description {
+  font-size: 15px;
+  line-height: 1.8;
+}
+.detail-source {
+  border-top: 1px solid var(--line);
+  padding-top: 16px;
+  font-size: 11px;
+}
+.detail-source a {
+  color: var(--orca-foreground, var(--accent));
+  text-underline-offset: 3px;
+  overflow-wrap: anywhere;
+}
+@media (max-width: 420px) {
+  .landmark-detail {
+    padding: 24px;
+  }
+  .landmark-detail h2 {
+    font-size: 26px;
+  }
+}
+
+/* Ordinal numbers and a four-slot scale communicate rarity without color. */
+[data-tier='common'] {
+  --rarity-ink: #46613d;
+  --rarity-wash: #e0e7ce;
+  --rarity-line: #9eaf86;
+}
+[data-tier='rare'] {
+  --rarity-ink: #245e82;
+  --rarity-wash: #d8e8ee;
+  --rarity-line: #86afc1;
+}
+[data-tier='epic'] {
+  --rarity-ink: #754581;
+  --rarity-wash: #eaddf0;
+  --rarity-line: #b594c1;
+}
+[data-tier='legendary'] {
+  --rarity-ink: #825710;
+  --rarity-wash: #f4e5b7;
+  --rarity-line: #c1a35c;
+}
+.rarity-badge,
+.card .rarity-badge {
+  display: inline-flex;
+  align-items: center;
+  align-self: flex-start;
+  gap: 5px;
+  padding: 4px 8px;
+  border: 1px solid var(--rarity-line);
+  border-radius: 3px 7px 3px 3px;
+  color: var(--rarity-ink);
+  background: var(--rarity-wash);
+  font:
+    600 10px 'Avenir Next',
+    'Trebuchet MS',
+    sans-serif;
+  opacity: 1;
+  white-space: nowrap;
+}
+.rarity-badge span {
+  opacity: 1;
+}
+.rarity-badge .rarity-number {
+  font:
+    bold 12px Georgia,
+    serif;
+  min-width: 13px;
+  text-align: center;
+}
+.rarity-badge .rarity-name {
+  font-size: 10px;
+}
+.rarity-scale {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  margin-left: 2px;
+}
+.rarity-scale i {
+  display: block;
+  width: 6px;
+  height: 9px;
+  border: 1px solid currentColor;
+  border-radius: 1px;
+  background: transparent;
+}
+.rarity-scale i.filled {
+  background: currentColor;
+}
+.rarity-guide {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px 12px;
+  margin: 16px 0 10px;
+  font-size: 12px;
+  font-weight: 600;
+}
+.rarity-guide span {
+  font-size: 11px;
+  font-weight: 400;
+}
+.rarity-filters .rarity-badge {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+}
+.rarity-filters button {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+}
+.card {
+  border-top: 2px solid var(--rarity-line);
+}
+.card[hidden] {
+  display: none;
+}
+.card:not(.locked)[data-tier='epic'],
+.card:not(.locked)[data-tier='legendary'] {
+  background: linear-gradient(
+    160deg,
+    color-mix(in srgb, var(--rarity-wash) 20%, transparent),
+    transparent 70%
+  );
+}
+.card:not(.locked)[data-tier='legendary'] .collect-action svg {
+  filter: drop-shadow(0 3px 7px #d6b35a50);
+}
+.discovery-notice {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 9px 12px;
+  border-left: 3px solid var(--rarity-line);
+  background: color-mix(in srgb, var(--rarity-wash) 13%, transparent);
+}
+.discovery-notice::before {
+  content: none;
+}
+.collection-progress {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+  margin: 16px 0;
+  font-size: 12px;
+}
+.collection-progress strong {
+  font:
+    normal 22px Georgia,
+    serif;
+  margin-right: 5px;
+}
+.collection-progress progress {
+  width: 190px;
+  height: 7px;
+  border: 0;
+  border-radius: 5px;
+  background: var(--line);
+  accent-color: var(--accent);
+}
+.collection-progress progress::-webkit-progress-bar {
+  background: var(--line);
+  border-radius: 5px;
+}
+.collection-progress progress::-webkit-progress-value {
+  background: var(--accent);
+  border-radius: 5px;
+}
+.collection-progress progress::-moz-progress-bar {
+  background: var(--accent);
+  border-radius: 5px;
+}
+.rarity-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.rarity-filters button {
+  font-size: 12px;
+  border-bottom: 3px solid var(--rarity-line, var(--line));
+}
+.rarity-filters small {
+  margin-left: 4px;
+  font-size: 11px;
+}
+.rarity-filters button[data-tier][aria-pressed='true'] {
+  background: var(--rarity-wash);
+  color: var(--rarity-ink);
+  border-color: var(--rarity-line);
+}
+.rarity-filters button[aria-pressed='true'] {
+  box-shadow: inset 0 0 0 1px currentColor;
+}
+.rarity-summary {
+  font-size: 11px;
+  margin: 12px 0 0;
+}
+.landmark-detail {
+  border-top: 4px solid var(--rarity-line, var(--line));
+}
+.detail-rarity p {
+  font-size: 11px;
+  margin: 8px 0 16px;
+}
+
+/* Owned artifacts gain presence; unowned silhouettes keep their rank but stay still. */
+.card {
+  isolation: isolate;
+}
+.card:not(.locked)[data-tier='rare'] {
+  background: linear-gradient(150deg, #5db2df1c, transparent 75%);
+  box-shadow: inset 0 2px 0 #78bfe9;
+}
+.card:not(.locked)[data-tier='epic'] {
+  background: radial-gradient(ellipse at 50% 32%, #b975d52b, transparent 65%);
+  box-shadow: inset 0 2px 0 #b981d2;
+}
+.card:not(.locked)[data-tier='legendary'] {
+  background: radial-gradient(ellipse at 50% 32%, #e8ba4e38, transparent 70%);
+  box-shadow:
+    inset 0 0 0 1px #cda44d,
+    inset 0 0 20px #dcb85e18;
+}
+.card:not(.locked)[data-tier='epic'] .collect-action svg {
+  filter: drop-shadow(0 0 7px #b377cc80);
+}
+.card:not(.locked)[data-tier='rare'] .collect-action svg {
+  filter: drop-shadow(0 2px 4px #66b5dc70);
+}
+.card:not(.locked)[data-tier='legendary']::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border: 2px solid #eac96e;
+  border-radius: 2px;
+  pointer-events: none;
+  animation: wonder-frame 5s ease-in-out infinite;
+}
+.card:not(.locked)[data-tier='legendary'] .rarity-badge,
+.discovery-notice[data-tier='legendary'] .rarity-badge {
+  background: linear-gradient(115deg, #f6df94, #fff3cc 45%, #e8c46a);
+  box-shadow: 0 0 10px #dcba5545;
+}
+.card:not(.locked)[data-tier='epic'] .rarity-badge {
+  background: linear-gradient(115deg, #e2caee, #f3e8fa, #d9b5e8);
+}
+.card:not(.locked)[data-tier='rare'] .rarity-badge {
+  background: linear-gradient(115deg, #c9e6f2, #edf9fb, #b9dce9);
+}
+.wonder-art {
+  overflow: visible;
+}
+.wonder-effects {
+  opacity: 0;
+  pointer-events: none;
+}
+:is(
+    .card:not(.locked),
+    .landmark-detail[data-owned='true'],
+    .world-object.building
+  )
+  .wonder-effects {
+  opacity: 1;
+}
+:is(
+    .card:not(.locked),
+    .landmark-detail[data-owned='true'],
+    .world-object.building
+  )
+  .wonder-body {
+  animation: wonder-levitate 4s ease-in-out infinite;
+}
+:is(
+    .card:not(.locked),
+    .landmark-detail[data-owned='true'],
+    .world-object.building
+  )
+  .wonder-orbit {
+  animation: wonder-orbit 12s linear infinite;
+  transform-origin: 0 0;
+}
+:is(
+    .card:not(.locked),
+    .landmark-detail[data-owned='true'],
+    .world-object.building
+  )
+  .wonder-spark {
+  animation: wonder-spark 4s ease-in-out infinite;
+}
+:is(
+    .card:not(.locked),
+    .landmark-detail[data-owned='true'],
+    .world-object.building
+  )
+  .spark-two {
+  animation-delay: -2s;
+}
+:is(
+    .card:not(.locked),
+    .landmark-detail[data-owned='true'],
+    .world-object.building
+  )
+  .wonder-shadow {
+  animation: wonder-shadow 4s ease-in-out infinite;
+  transform-origin: 64px 118px;
+}
+.landmark-detail[data-owned='true'][data-tier='legendary'] .detail-art {
+  width: min(240px, 100%);
+  height: 210px;
+  filter: drop-shadow(0 0 12px #e3b64d75);
+}
+.world-object.building[data-tier='legendary'] {
+  filter: drop-shadow(0 0 8px #f6cc6c80);
+}
+.discovery-notice[data-tier='legendary'] {
+  border-left: 4px double #d7b15d;
+  background: linear-gradient(110deg, #dcac4d26, transparent);
+}
+@keyframes wonder-levitate {
+  0%,
+  100% {
+    transform: translateY(-3px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+@keyframes wonder-orbit {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes wonder-spark {
+  0%,
+  100% {
+    opacity: 0.25;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+@keyframes wonder-shadow {
+  0%,
+  100% {
+    transform: scaleX(1);
+    opacity: 0.8;
+  }
+  50% {
+    transform: scaleX(0.72);
+    opacity: 0.45;
+  }
+}
+@keyframes wonder-frame {
+  0%,
+  100% {
+    opacity: 0.3;
+  }
+  50% {
+    opacity: 0.85;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .wonder-body,
+  .wonder-orbit,
+  .wonder-spark,
+  .wonder-shadow,
+  .card:not(.locked)[data-tier='legendary']::after {
+    animation: none !important;
+  }
+  :is(
+      .card:not(.locked),
+      .landmark-detail[data-owned='true'],
+      .world-object.building
+    )
+    .wonder-body {
+    transform: translateY(-6px);
+  }
+}
+.card:not(.locked)[data-tier='legendary'] .collect-action svg {
+  width: 94px;
+  height: 88px;
+  max-width: 100%;
+}
+.world-object.building[data-tier='legendary'] {
+  width: 110px;
+  height: 124px;
+}
+
+/* Keyboard focus is a host UI cue, including selected controls and map cells. */
+button:focus-visible,
+button[aria-pressed='true']:focus-visible,
+select:focus-visible,
+a:focus-visible,
+.ocean:focus-visible {
+  outline: 2px solid var(--orca-ring, var(--accent));
+  outline-offset: 3px;
+}
+.world-tile .cell:focus-visible {
+  background: color-mix(
+    in srgb,
+    var(--orca-ring, #fff1ad) 45%,
+    transparent
+  ) !important;
+  box-shadow: inset 0 0 0 2px var(--orca-ring, #fff1ad);
+}
+
+.backup-dialog {
+  box-sizing: border-box;
+  width: min(560px, calc(100vw - 28px));
+  max-height: calc(100dvh - 28px);
+  overflow: auto;
+  padding: 24px;
+  background: var(--orca-popover, var(--panel));
+  color: var(--orca-popover-foreground, var(--ink));
+  border: 1px solid var(--orca-border, var(--line));
+  border-radius: var(--orca-radius, 12px);
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+}
+.backup-dialog::backdrop {
+  background: #0008;
+}
+.backup-dialog h2 {
+  margin: 0 35px 12px 0;
+}
+.backup-dialog button {
+  margin: 8px 0;
+}
+.backup-dialog .backup-close {
+  float: right;
+  margin: 0;
+}
+.backup-dialog input[type='file'][hidden] {
+  display: none;
+}
+#backup-choose {
+  display: block;
+  margin: 12px 0;
+}
+.backup-dialog input[type='checkbox'] {
+  accent-color: var(--orca-primary, var(--ink));
+}
+.backup-dialog hr {
+  border: 0;
+  border-top: 1px solid var(--orca-border, var(--line));
+  margin: 20px 0;
+}
+.backup-dialog small {
+  display: block;
+  color: var(--orca-muted-foreground, var(--muted));
+}
+.backup-dialog :focus-visible {
+  outline: 2px solid var(--orca-ring, var(--ink));
+  outline-offset: 3px;
+}
+.backup-dialog [role='alert'] {
+  color: var(--orca-destructive, #b54232);
+}
+.backup-review {
+  border-top: 1px solid var(--orca-border, var(--line));
+  margin-top: 16px;
+}
+.backup-review label {
+  display: block;
+}
+
+/* Garden inventory uses the same host theme as the journal. */
+.workshop {
+  margin-top: 28px;
+}
+.workshop > p {
+  max-width: 75ch;
+  line-height: 1.6;
+}
+.material-balance {
+  white-space: nowrap;
+  color: var(--accent);
+}
+#decor-theme {
+  max-width: 100%;
+  padding: 8px 12px;
+  background: var(--panel);
+  color: var(--orca-card-foreground, var(--ink));
+  border: 1px solid var(--orca-input, var(--line));
+  border-radius: var(--orca-radius, 8px);
+}
+.decoration-shelf {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(195px, 1fr));
+  gap: 12px;
+  margin-top: 16px;
+}
+.decoration-card {
+  padding: 16px;
+  border: 1px solid var(--line);
+  background: var(--panel);
+  color: var(--orca-card-foreground, var(--ink));
+  border-radius: var(--orca-radius, 12px);
+}
+.decoration-card > svg {
+  width: 80px;
+  height: 104px;
+  display: block;
+  margin: 0 auto;
+}
+.decoration-card h3 {
+  font-size: 15px;
+  margin: 8px 0;
+}
+.decoration-card p,
+.decoration-card small {
+  font-size: 12px;
+  line-height: 1.5;
+  display: block;
+}
+.decoration-card > div {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-top: 12px;
+}
+.decoration-card button {
+  font-size: 12px;
+  padding: 8px;
+}
+.decoration-card[data-locked] > svg {
+  filter: grayscale(0.7);
+  opacity: 0.65;
+}
+.land-progress {
+  font-size: 13px;
+  color: var(--orca-muted-foreground, var(--ink));
+}
+.world-object.garden-object {
+  width: 72px;
+  height: 94px;
+}
+.world-object.garden-object.low-object {
+  width: 80px;
+  height: 104px;
+  top: 30px;
+}
+.reveal-bonus {
+  font-size: 12px;
+  line-height: 1.4;
+  max-width: 42ch;
+  margin: 6px auto;
+}
+@media (max-width: 480px) {
+  .decoration-shelf {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+  }
+  .decoration-card {
+    padding: 10px;
+  }
+  .decoration-card button {
+    width: 100%;
+  }
+}
+
+/* Keep the page at its current position while any native modal is open. */
+html {
+  scrollbar-gutter: stable;
+}
+html:has(dialog:modal),
+html:has(dialog:modal) body {
+  overflow: hidden;
+  overscroll-behavior: none;
+}
+dialog:modal {
+  overscroll-behavior: contain;
+}
+
+.editor-tools {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin: 10px 0;
+}
+.editor-tools [role='group'] {
+  display: flex;
+  gap: 4px;
+}
+.editor-tools small {
+  flex-basis: 100%;
+  color: var(--orca-muted-foreground, var(--ink));
+}
+.ocean[data-brush='true'] .cell {
+  cursor: cell;
+}
+.ocean .world-tile .cell.brush-preview {
+  background: #ffe8a5b3 !important;
+}
+
+/* The inventory lives in the island, like a satchel laid beside a journal. */
+.island-satchel {
+  position: absolute;
+  left: 18px;
+  top: 62px;
+  z-index: 24;
+  display: flex;
+  gap: 10px;
+}
+.satchel-item {
+  display: grid;
+  justify-items: center;
+  gap: 0;
+  min-width: 72px;
+  padding: 0 4px 4px;
+  border: 0;
+  background: transparent;
+  color: #fff2d3;
+  border-radius: 8px;
+  box-shadow: none;
+  transition: transform 0.15s ease;
+}
+.satchel-item svg {
+  width: 62px;
+  height: 60px;
+  filter: drop-shadow(0 3px 3px #183c3544);
+}
+.satchel-item span {
+  font:
+    italic 12px Georgia,
+    serif;
+  padding: 2px 7px;
+  background: #254c40c7;
+  border-radius: 3px 8px 3px 6px;
+}
+.satchel-item:hover:not(:disabled),
+.satchel-item[aria-expanded='true'] {
+  background: transparent;
+  outline: none;
+  transform: translateY(-3px);
+}
+.satchel-item[aria-expanded='true'] span {
+  background: #e6c88f;
+  color: #394e3c;
+}
+.satchel-item:focus-visible {
+  outline: 2px solid var(--orca-ring, #fff0bc);
+  outline-offset: 3px;
+}
+.canvas-inventory {
+  position: absolute;
+  z-index: 25;
+  left: 18px;
+  top: 154px;
+  bottom: 88px;
+  width: min(440px, calc(100% - 36px));
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  border: 1px solid var(--orca-border, var(--line));
+  border-radius: 7px 16px 10px 5px;
+  background: var(--orca-popover, var(--paper));
+  color: var(--orca-popover-foreground, var(--ink));
+  box-shadow:
+    3px 6px 0 #223e3926,
+    0 12px 32px #183c3933;
+  overflow: hidden;
+  text-align: left;
+  touch-action: pan-y;
+}
+.canvas-inventory[hidden],
+[data-inventory-page][hidden] {
+  display: none;
+}
+.inventory-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 12px 16px 9px;
+  border-bottom: 1px solid var(--line);
+  flex: none;
+}
+.inventory-heading small {
+  font:
+    9px 'Trebuchet MS',
+    sans-serif;
+  letter-spacing: 1px;
+  color: var(--orca-muted-foreground, var(--ink));
+}
+.inventory-heading h2 {
+  font:
+    23px Georgia,
+    serif;
+  margin: 3px 0 0;
+}
+#close-inventory {
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font-size: 25px;
+  padding: 3px 8px;
+}
+.inventory-scroll {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-gutter: stable;
+  padding: 0 14px 14px;
+}
+.inventory-hint {
+  flex: none;
+  margin: 0;
+  padding: 8px 14px;
+  border-top: 1px solid var(--line);
+  font-size: 11px;
+}
+.canvas-inventory section {
+  margin: 0;
+  padding: 0;
+  border-top: 0;
+}
+.canvas-inventory .section-title {
+  margin-top: 10px;
+}
+.canvas-inventory .section-title h2 {
+  display: none;
+}
+.canvas-inventory .section-title > span {
+  display: none;
+}
+.canvas-inventory .collection,
+.canvas-inventory .decoration-shelf {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  margin-top: 10px;
+}
+.canvas-inventory .card,
+.canvas-inventory .decoration-card {
+  padding: 10px;
+  border: 1px solid var(--line);
+  border-radius: 5px 8px 4px 6px;
+  min-width: 0;
+}
+.canvas-inventory .card svg {
+  width: 86px;
+  height: 86px;
+}
+.canvas-inventory .decoration-card > svg {
+  height: 82px;
+  width: 64px;
+}
+.canvas-inventory .decoration-card h3 {
+  font-size: 13px;
+}
+.canvas-inventory .decoration-card p,
+.canvas-inventory .decoration-card small {
+  font-size: 10px;
+}
+.canvas-inventory .decoration-card button {
+  padding: 7px;
+  font-size: 11px;
+}
+.canvas-inventory .about-landmark {
+  font-size: 10px;
+}
+.canvas-inventory .collection-progress {
+  margin-top: 10px;
+}
+.canvas-inventory .rarity-filters {
+  gap: 5px;
+}
+.canvas-inventory .rarity-filters button {
+  padding: 5px;
+}
+.canvas-inventory .rarity-summary,
+.canvas-inventory .rarity-guide {
+  font-size: 10px;
+}
+.ocean[data-inventory-open='true'] {
+  touch-action: pan-y;
+}
+.ocean[data-inventory-open='true'] .walk-controls {
+  visibility: hidden;
+}
+@media (max-width: 600px) {
+  .island-satchel {
+    left: 12px;
+    top: 58px;
+    gap: 4px;
+  }
+  .satchel-item {
+    min-width: 64px;
+  }
+  .satchel-item svg {
+    width: 52px;
+    height: 50px;
+  }
+  .satchel-item span {
+    font-size: 11px;
+  }
+  .canvas-inventory {
+    left: 10px;
+    top: 140px;
+    bottom: 88px;
+    width: calc(100% - 20px);
+  }
+  .inventory-heading {
+    padding: 9px 12px;
+  }
+  .inventory-heading h2 {
+    font-size: 21px;
+  }
+  .inventory-scroll {
+    padding: 0 8px 10px;
+  }
+  .inventory-hint {
+    padding: 6px 10px;
+    font-size: 10px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .satchel-item {
+    transition: none;
+  }
+}
+
+.canvas-inventory .collection-progress {
+  display: block;
+  margin: 10px 0 6px;
+  font-size: 11px;
+}
+.canvas-inventory .collection-progress strong {
+  font-size: 16px;
+}
+.canvas-inventory .collection-progress progress {
+  display: block;
+  width: 100%;
+  height: 4px;
+  margin-top: 5px;
+}
+.canvas-inventory .rarity-guide {
+  margin: 6px 0;
+}
+.canvas-inventory .rarity-guide span {
+  display: none;
+}
+.canvas-inventory .rarity-filters {
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  overscroll-behavior: contain;
+  padding-bottom: 5px;
+}
+.canvas-inventory .rarity-filters button {
+  flex: none;
+  white-space: nowrap;
+}
+.canvas-inventory .rarity-summary {
+  margin: 5px 0;
+  line-height: 1.4;
+}
+.workshop-help {
+  font-size: 11px;
+  margin: 6px 0 10px;
+}
+.workshop-help summary {
+  cursor: pointer;
+  color: var(--orca-muted-foreground, var(--ink));
+}
+.canvas-inventory .workshop > label {
+  font-size: 11px;
+}
+.canvas-inventory .workshop > select {
+  margin-top: 3px;
+}
+
+.treasure-chest {
+  position: relative;
+}
+.treasure-chest #ticket-count {
+  position: absolute;
+  top: 1px;
+  right: 0;
+  min-width: 23px;
+  height: 23px;
+  display: grid;
+  place-items: center;
+  padding: 0 4px;
+  border-radius: 50%;
+  font-size: 11px;
+  background: var(--orca-primary, #edd39a);
+  color: var(--orca-primary-foreground, #3e4d35);
+  border: 1px solid var(--orca-border, #7c724f);
+}
+.treasure-chest:disabled {
+  opacity: 0.65;
+}
+.treasure-chest:not(:disabled) svg {
+  filter: drop-shadow(0 0 7px #ffdb8b99);
+}
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+@media (max-width: 600px) {
+  .ocean .minimap {
+    top: 150px;
+  }
+  .ocean[data-inventory-open='true'] .minimap {
+    visibility: hidden;
+  }
+}
+
+/* A compact field desk stays in the canvas, outside the moving camera. */
+.canvas-editor {
+  position: absolute;
+  z-index: 23;
+  left: 18px;
+  bottom: 96px;
+  width: min(540px, calc(100% - 36px));
+  box-sizing: border-box;
+  padding: 10px 12px;
+  border: 1px solid var(--orca-border, var(--line));
+  border-radius: 5px 14px 6px 10px;
+  background: var(--orca-popover, var(--paper));
+  color: var(--orca-popover-foreground, var(--ink));
+  box-shadow:
+    2px 4px 0 #223e3926,
+    0 8px 24px #183c3926;
+  text-align: left;
+  touch-action: pan-y;
+  max-height: 42%;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+.canvas-editor .mode-controls {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.canvas-editor button {
+  padding: 6px 8px;
+  font-size: 12px;
+}
+.canvas-editor .mode-controls button {
+  border-color: transparent;
+  background: transparent;
+  color: inherit;
+}
+.canvas-editor .mode-controls button[aria-pressed='true'] {
+  background: var(--orca-accent, #d5dfbd);
+  color: var(--orca-accent-foreground, #344c37);
+  outline: none;
+}
+.canvas-editor .finish-arranging {
+  margin-left: auto;
+  border-color: var(--orca-border, var(--line));
+}
+.canvas-editor .placement-hint {
+  margin: 8px 0;
+  font-size: 12px;
+  line-height: 1.5;
+}
+.canvas-editor .editor-tools {
+  margin: 6px 0 0;
+  gap: 6px;
+}
+.canvas-editor .editor-tools small {
+  font-size: 10px;
+}
+.canvas-editor .tools {
+  margin: 8px 0 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.ocean[data-inventory-open='true'] .canvas-editor {
+  visibility: hidden;
+}
+.ocean[data-mode='walk'] .canvas-editor {
+  width: auto;
+  max-width: calc(100% - 36px);
+}
+.ocean[data-mode='walk'] .canvas-editor .editor-tools:has(button:disabled) {
+  display: none;
+}
+@media (max-width: 600px) {
+  .canvas-editor {
+    left: 10px;
+    bottom: 104px;
+    width: calc(100% - 20px);
+    padding: 8px;
+  }
+  .canvas-editor button {
+    font-size: 11px;
+  }
+}
+
+.canvas-editor .rotation-controls {
+  flex-wrap: wrap;
+  align-items: center;
+}
+.canvas-editor .piece-direction {
+  font-size: 11px;
+  padding: 0 4px;
+}
+
+/* Keep the mode desk above the two-row walking pad. */
+.ocean[data-mode='walk'] .canvas-editor {
+  bottom: 136px;
+}
+
+.inventory-finder {
+  flex: none;
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--orca-border, var(--line));
+}
+.inventory-search-row,
+.inventory-filter-row {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.inventory-search-row {
+  margin-bottom: 6px;
+}
+.inventory-finder input,
+.inventory-finder select {
+  min-width: 0;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 7px;
+  border: 1px solid var(--orca-border, var(--line));
+  border-radius: 5px;
+  background: var(--orca-input, var(--paper));
+  color: var(--orca-foreground, var(--ink));
+  font: inherit;
+  font-size: 12px;
+}
+.inventory-finder button {
+  flex: none;
+  padding: 6px;
+  font-size: 11px;
+}
+#clear-inventory-search {
+  font-size: 18px;
+  line-height: 1;
+}
+#inventory-results {
+  display: block;
+  margin-top: 5px;
+  font-size: 10px;
+  color: var(--orca-muted-foreground, var(--ink));
+}
+.inventory-empty {
+  padding: 18px 5px;
+  font-size: 13px;
+}
+.decoration-card[hidden],
+.inventory-empty[hidden],
+.inventory-finder [hidden] {
+  display: none;
+}
+@media (max-width: 600px) {
+  .inventory-finder {
+    padding: 7px 8px;
+  }
+  .inventory-filter-row {
+    flex-wrap: wrap;
+  }
+  .inventory-filter-row select {
+    flex: 1;
+    width: 0;
+    font-size: 11px;
+  }
+  .inventory-filter-row button {
+    font-size: 10px;
+  }
+}
+
+/* Use the labelled clear button instead of a second browser-specific icon. */
+#inventory-search::-webkit-search-cancel-button {
+  -webkit-appearance: none;
+}
+
+.treasure-actions {
+  position: relative;
+  padding-right: 56px;
+  align-self: start;
+}
+#draw-ten {
+  position: absolute;
+  right: 0;
+  bottom: 4px;
+  width: 54px;
+  padding: 4px;
+  font-size: 10px;
+  border-radius: 4px 9px 4px 8px;
+  border: 1px solid var(--orca-border, #baaa74);
+  background: var(--orca-secondary, #254c40);
+  color: var(--orca-secondary-foreground, #fff2d3);
+}
+#draw-ten:disabled {
+  opacity: 0.6;
+}
+#draw-ten:focus-visible {
+  outline: 2px solid var(--orca-ring, #fff0bc);
+  outline-offset: 3px;
+}
+
+.skip-discovery {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 7px;
+  border-radius: 4px;
+  background: var(--orca-secondary, #254c40);
+  color: var(--orca-secondary-foreground, #fff2d3);
+  font-size: 11px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.skip-discovery input {
+  width: 14px;
+  height: 14px;
+  margin: 0;
+  accent-color: var(--orca-primary, #e4ca8b);
+}
+.skip-discovery input:focus-visible {
+  outline: 2px solid var(--orca-ring, #fff0bc);
+  outline-offset: 3px;
+}
+.ocean[data-inventory-open='true'] .skip-discovery {
+  visibility: hidden;
+}

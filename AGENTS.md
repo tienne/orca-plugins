@@ -18,12 +18,17 @@ This file is the source of truth for repository instructions. Edit `AGENTS.md`; 
 - Validate the built artifact with `pnpm validate`. Source manifests refer to packaged entries, not source files.
 - Generate English demo screenshots with `pnpm nx run git-logs:screenshots`. Keep the DEMO label and use fixture data, not private repository data.
 
+## Orca plugin work: read first
+
+- Before creating, changing, debugging, or releasing an Orca plugin, read the installed CLI's version-matched guide with `skills get orca-plugin-authoring`. Use `ORCA_CLI_COMMAND` when set; otherwise resolve the executable through the orca-cli skill.
+- Read the relevant bundled references before implementation: manifest, host API, events, recipes, and workflow. Confirm API `Since` versions, minimum host version, capabilities, execution profiles, worker/frame boundaries, persistence, event delivery, and packaging limits. Do not assume APIs exist for panel placement or replacing the built-in diff.
+- Before publication, check the current official catalog and public-directory requirements, including permitted file types and sizes, root manifest layout, and version tags. Local CLI validation and public-directory acceptance are separate checks.
+
 ## Orca and Git boundaries
 
 - Keep Node, filesystem, and Git operations in the trusted worker. Frames use bundled local assets and communicate with their own worker.
 - Run Git with argument arrays. Validate repository boundaries, paths, and refs before access or execution.
 - Preserve action preparation, confirmation, state rechecks, and backup behavior when changing Git actions. Test mutations in disposable repositories.
-- Confirm Orca APIs and minimum versions against the installed CLI's version-matched guide and official docs. Do not assume APIs exist for panel placement or replacing the built-in diff.
 - Follow the user's authorization for plugin loading and execution access. Do not approve a code-executing plugin, publish a release, create a remote repository, or push without authorization for that action.
 - A plugin identity change can require separate execution approval. Follow the installed CLI approval result instead of assuming an old identity's approval transfers.
 

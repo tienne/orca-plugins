@@ -25,19 +25,32 @@ jobs:
           node-version: 24
           cache: pnpm
       - name: Lint workflows
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
-          curl --fail --location --silent --show-error https://github.com/rhysd/actionlint/releases/download/v1.7.11/actionlint_1.7.11_linux_amd64.tar.gz --output "$RUNNER_TEMP/actionlint.tar.gz"
+          if ! curl --fail --location --silent --show-error --retry 3 --retry-all-errors --retry-max-time 180 --connect-timeout 30 --max-time 60 https://github.com/rhysd/actionlint/releases/download/v1.7.11/actionlint_1.7.11_linux_amd64.tar.gz --output "$RUNNER_TEMP/actionlint.tar.gz"; then
+            gh api repos/rhysd/actionlint/releases/assets/355827683 --header 'Accept: application/octet-stream' > "$RUNNER_TEMP/actionlint.tar.gz"
+          fi
           echo "900919a84f2229bac68ca9cd4103ea297abc35e9689ebb842c6e34a3d1b01b0a  $RUNNER_TEMP/actionlint.tar.gz" | sha256sum --check
           tar -xzf "$RUNNER_TEMP/actionlint.tar.gz" -C "$RUNNER_TEMP" actionlint
           "$RUNNER_TEMP/actionlint"
       - run: pnpm install --frozen-lockfile
       - run: pnpm exec playwright install --with-deps chromium
       - run: pnpm nx run-many -t build typecheck test release-test ui-test -p git-logs --output-style=static
+      - run: pnpm nx run-many -t build typecheck test ui-test -p landmark-island --output-style=static
       - name: Save installable plugin
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: git-logs-${{ github.sha }}
           path: dist/plugins/git-logs/
+          if-no-files-found: error
+          include-hidden-files: true
+          retention-days: 14
+      - name: Save Orcatopia plugin
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: landmark-island-${{ github.sha }}
+          path: dist/plugins/landmark-island/
           if-no-files-found: error
           include-hidden-files: true
           retention-days: 14
