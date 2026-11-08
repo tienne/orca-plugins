@@ -1785,6 +1785,88 @@ test('page requests run one at a time, reload on stale cursors and reset on bran
   });
 });
 
+test('a failed reload after a stale cursor clears the notice and shows the first page error', async ({
+  page,
+}) => {
+  const { fixtureRepo } = await import('../src/ui/fixture');
+  await page.addInitScript((repo) => {
+    const commits = Array.from({ length: 450 }, (_, i) => ({
+      hash: `f${i.toString(16).padStart(7, '0')}`.padEnd(40, '0'),
+      parents:
+        i === 449
+          ? []
+          : [`f${(i + 1).toString(16).padStart(7, '0')}`.padEnd(40, '0')],
+      author: 'David',
+      date: '2026-11-04T09:20:00+09:00',
+      subject: `Reload failure commit ${i + 1}`,
+      refs: [],
+    }));
+    const firstPage = () => ({
+      ...repo,
+      head: commits[0].hash,
+      commits: commits.slice(0, 200),
+      hasMore: true,
+      nextCursor: 'c200',
+    });
+    let stale = false;
+    let reloadFailed = false;
+    window.orca = {
+      locale: 'en-US',
+      api: { major: 1, minor: 3 },
+      host: { has: () => true },
+      plugin: {
+        request: async <T>(name: string, raw: unknown) => {
+          if (name === 'active')
+            return {
+              status: 'connected',
+              repository: firstPage(),
+              workspace: {
+                id: 'fixture',
+                name: 'Fixture',
+                path: repo.root,
+                branch: repo.branch,
+              },
+            } as T;
+          if (name === 'changes')
+            return {
+              comparison: { kind: 'working' },
+              files: [],
+              left: 'HEAD',
+              right: '현재 작업 트리 · 디스크',
+            } as T;
+          if (name === 'log') {
+            const input = raw as { cursor?: string };
+            if (input.cursor === undefined) {
+              // 낡은 커서 오류 직후의 다시 불러오기만 실패시킨다.
+              if (stale && !reloadFailed) {
+                reloadFailed = true;
+                throw new Error('Reload failure fixture');
+              }
+              return firstPage() as T;
+            }
+            if (!stale) {
+              stale = true;
+              throw new Error(
+                'stale-cursor: 이력이 바뀌었습니다. 처음부터 다시 불러옵니다.',
+              );
+            }
+            return new Promise<T>(() => {});
+          }
+          throw new Error(`Unexpected request: ${name}`);
+        },
+      },
+    };
+  }, fixtureRepo);
+  await page.goto('/');
+  await expect(loadedCount(page)).toHaveText('200 / max 5,000');
+  await scrollListTo(page, 'bottom');
+  await expect(page.getByRole('alert')).toHaveText('Reload failure fixture');
+  await expect(
+    page.getByText('History changed. Reloading from the start.'),
+  ).toHaveCount(0);
+  await expect(page.locator('.page-notice')).toHaveCount(0);
+});
+
 test('loading stops at the 5,000 commit limit with a notice and a bounded DOM', async ({
   page,
 }) => {
@@ -2628,6 +2710,7 @@ test('arrow keys leave the commit menu to its own navigation', async ({
   await expect(selectedRow(page)).toHaveAttribute('data-index', '1');
   await page.keyboard.press('Escape');
   await expect(menu).toHaveCount(0);
+  await expect(commitAt(page, 3)).toBeFocused();
 });
 
 test('arrow keys leave the file menu to its own navigation and resume after it closes', async ({
@@ -2653,6 +2736,96 @@ test('arrow keys leave the file menu to its own navigation and resume after it c
     'aria-pressed',
     'true',
   );
+});
+
+test('clicking the commit menu title keeps Escape working and returns focus to the row', async ({
+  page,
+}) => {
+  await page.goto('/');
+  await expect(page.locator('.commit-row')).toHaveCount(6);
+  await commitAt(page, 1).click();
+  await commitAt(page, 3).click({ button: 'right' });
+  const menu = page.getByRole('menu', { name: '커밋 작업' });
+  await menu.locator('small').first().click();
+  await expect(menu).toBeFocused();
+  await page.keyboard.press('Escape');
+  await expect(menu).toHaveCount(0);
+  await expect(commitAt(page, 3)).toBeFocused();
+  await page.keyboard.press('ArrowDown');
+  await expect(selectedRow(page)).toHaveAttribute('data-index', '2');
+});
+
+test('clicking the file menu title keeps Escape working and returns focus to the row', async ({
+  page,
+}) => {
+  await page.goto('/?fixture=rename');
+  await expect(page.locator('.commit-row')).toHaveCount(5);
+  await page.locator('.file-row').nth(0).click();
+  await page.locator('.file-row').nth(1).click({ button: 'right' });
+  const menu = page.getByRole('menu');
+  await menu.locator('small').first().click();
+  await expect(menu).toBeFocused();
+  await page.keyboard.press('Escape');
+  await expect(menu).toHaveCount(0);
+  await expect(page.locator('.file-row').nth(1)).toBeFocused();
+  await page.keyboard.press('ArrowDown');
+  await expect(page.locator('.file-row').nth(1)).toHaveAttribute(
+    'aria-pressed',
+    'true',
+  );
+});
+
+test('Escape inside a menu stops at the menu instead of reaching document listeners', async ({
+  page,
+}) => {
+  await page.goto('/');
+  await expect(page.locator('.commit-row')).toHaveCount(6);
+  await page.evaluate(() => {
+    const seen: string[] = [];
+    Reflect.set(window, 'testEscapes', seen);
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape') seen.push(event.key);
+    });
+  });
+  const escapes = () =>
+    page.evaluate(() => (Reflect.get(window, 'testEscapes') as string[]).length);
+  await commitAt(page, 3).click({ button: 'right' });
+  const menu = page.getByRole('menu', { name: '커밋 작업' });
+  await expect(menu).toBeVisible();
+  await page.keyboard.press('Escape');
+  await expect(menu).toHaveCount(0);
+  expect(await escapes()).toBe(0);
+  // 메뉴 밖에서는 같은 키가 document까지 올라가므로 리스너가 살아 있는지 함께 확인한다.
+  await page.keyboard.press('Escape');
+  expect(await escapes()).toBe(1);
+});
+
+test('Tab closes the commit menu', async ({ page }) => {
+  await page.goto('/');
+  await expect(page.locator('.commit-row')).toHaveCount(6);
+  await commitAt(page, 3).click({ button: 'right' });
+  const menu = page.getByRole('menu', { name: '커밋 작업' });
+  await expect(menu).toBeVisible();
+  await page.keyboard.press('Tab');
+  await expect(menu).toHaveCount(0);
+});
+
+test('arrow keys pressed with focus on the menu itself go to the first or last item', async ({
+  page,
+}) => {
+  await page.goto('/');
+  await expect(page.locator('.commit-row')).toHaveCount(6);
+  await commitAt(page, 3).click({ button: 'right' });
+  const menu = page.getByRole('menu', { name: '커밋 작업' });
+  const items = menu.getByRole('menuitem');
+  await menu.locator('small').first().click();
+  await expect(menu).toBeFocused();
+  await page.keyboard.press('ArrowDown');
+  await expect(items.first()).toBeFocused();
+  await menu.locator('small').first().click();
+  await expect(menu).toBeFocused();
+  await page.keyboard.press('ArrowUp');
+  await expect(items.last()).toBeFocused();
 });
 
 test('arrow keys are ignored while an input has focus', async ({ page }) => {
