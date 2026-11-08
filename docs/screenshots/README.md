@@ -60,3 +60,12 @@ pnpm validate
 ```
 
 These are local introduction assets; creating them does not publish a marketplace listing or update a release candidate.
+
+### Eight new countries
+
+[Modern landmark artwork](orcatopia-modern-countries.png) shows the eight additions from Qatar, Azerbaijan, Kazakhstan, Bangladesh, Rwanda, Ghana, Panama and Uruguay. The DEMO contact sheet renders the bundled game artwork with English catalog labels. It is a browser fixture, not a photograph or native Orca capture. See the [research record](../modern-landmarks-research.md) for institutional sources.
+
+```sh
+pnpm nx run landmark-island:ui-test --grep='material artwork'
+cp test-results/landmark-island/modern-landmarks-59-demo.png docs/screenshots/orcatopia-modern-countries.png
+```

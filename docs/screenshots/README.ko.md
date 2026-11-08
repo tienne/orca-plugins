@@ -60,3 +60,12 @@ pnpm validate
 ```
 
 로컬 소개 자료이며, 이 이미지를 만들었다고 공개 디렉터리에 게시하거나 배포 후보를 갱신한 것은 아닙니다.
+
+### 새로운 8개국
+
+[현대 랜드마크 그림](orcatopia-modern-countries.png)은 카타르·아제르바이잔·카자흐스탄·방글라데시·르완다·가나·파나마·우루과이의 새 항목을 보여 줍니다. DEMO 모음 이미지는 게임에 포함된 그림과 영어 도감 이름을 렌더링합니다. 사진이나 네이티브 Orca 캡처가 아닌 브라우저 픽스처입니다. 기관별 출처는 [조사 기록](../modern-landmarks-research.ko.md)에 정리했습니다.
+
+```sh
+pnpm nx run landmark-island:ui-test --grep='material artwork'
+cp test-results/landmark-island/modern-landmarks-59-demo.png docs/screenshots/orcatopia-modern-countries.png
+```

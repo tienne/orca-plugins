@@ -4,6 +4,8 @@
 
 Status: internal allocation policy, revision 2, 2026-11-07. The user authorized a descending number of entries per tier. This revision supersedes draft 1's absolute-score tier bands. The 18/10/5/3 allocation is implemented in the source catalog; internal scores and reasons remain outside the player UI. This is an editorial prototype allocation using the latest conversational assessment, not a completed independent recognition or heritage study.
 
+Catalog update (2026-11-08): the allocation above describes the original 36 entries. The expanded catalog now has 59 entries at 30/19/7/3; the [modern-landmark research record](modern-landmarks-research.md) distinguishes the latest editorial additions from a full rubric reassessment.
+
 ## Purpose and limits
 
 Assign collection ranks consistently when adding or reassessing landmarks. These ranks are editorial game decisions, not an official heritage classification, measured public recognition or a ranking of cultures. A low collection rank can still describe a significant place worth discovering.

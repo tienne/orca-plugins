@@ -1,5 +1,5 @@
 import { build } from 'esbuild';
-import { mkdtemp, rm } from 'node:fs/promises';
+import { mkdtemp, readFile, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { pathToFileURL } from 'node:url';
@@ -67,10 +67,10 @@ try {
   const { decorations } = await import(
     pathToFileURL(join(dir, 'decorations.mjs'))
   );
-  assert.equal(landmarks.length, 51);
-  assert.equal(new Set(landmarks.map((l) => l.id)).size, 51);
-  assert.equal(new Set(landmarks.map((l) => l.code)).size, 48);
-  assert.equal(decorations.length, 110);
+  assert.equal(landmarks.length, 59);
+  assert.equal(new Set(landmarks.map((l) => l.id)).size, 59);
+  assert.equal(new Set(landmarks.map((l) => l.code)).size, 56);
+  assert.equal(decorations.length, 126);
   for (const code of ['KOR', 'SGP', 'ESP']) {
     const entries = landmarks.filter((l) => l.code === code);
     assert.equal(entries.length, 2);
@@ -81,8 +81,8 @@ try {
     );
   }
   for (const [tier, count, roll] of [
-    ['common', 25, 0.35],
-    ['rare', 16, 0.8],
+    ['common', 30, 0.35],
+    ['rare', 19, 0.8],
     ['epic', 7, 0.95],
     ['legendary', 3, 0.995],
   ]) {
@@ -128,6 +128,9 @@ try {
     translate('https://example.com/World%20Map', 'ko-KR'),
     'https://example.com/World%20Map',
   );
+  const koreanCatalog = JSON.parse(
+    await readFile('plugins/landmark-island/src/landmarks.ko.json', 'utf8'),
+  );
   for (const landmark of landmarks) {
     for (const field of [
       'name',
@@ -136,9 +139,9 @@ try {
       'description',
       'descriptionSourceName',
     ]) {
-      assert.notEqual(
+      assert.equal(
         translate(landmark[field], 'ko-KR'),
-        landmark[field],
+        koreanCatalog[landmark.id][field],
         `${landmark.id}.${field}`,
       );
       assert.equal(translate(landmark[field], 'en-US'), landmark[field]);
@@ -600,7 +603,7 @@ try {
   for (const landmark of landmarks)
     assert.equal(decorationQuantity(fullCatalog, `${landmark.id}-gift`), 1);
   console.log(
-    'PASS: all 51 catalog draws across 48 countries, 110 decorations, localized descriptions, full-catalog backup and unchanged land cap',
+    'PASS: all 59 catalog draws across 56 countries, 126 decorations, localized descriptions, full-catalog backup and unchanged land cap',
   );
 
   // The four focal pieces use the same ownership and durable craft ledger.
