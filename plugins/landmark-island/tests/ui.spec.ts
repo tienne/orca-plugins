@@ -408,6 +408,8 @@ test('hover wheel zoom needs no focus or modifier, anchors the pointer and leave
 test('field guide describes all landmarks, including unowned ones, without changing the save', async ({
   page,
 }) => {
+  // This traverses all 100 dialogs; per-action assertion timeouts stay unchanged.
+  test.setTimeout(90_000);
   await page.goto('/');
   const before = await page.evaluate(() =>
     localStorage.getItem('landmark-island-demo-v1'),

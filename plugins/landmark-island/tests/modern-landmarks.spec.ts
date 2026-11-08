@@ -136,6 +136,8 @@ for (const [start, end, theme] of [
   test(`country expansion ${start}–${end} draws new countries and preserves an existing collection`, async ({
     page,
   }) => {
+    // Each entry exercises draw, placement and both locales on shared CI CPUs.
+    test.setTimeout(60_000);
     await page.addInitScript(() => {
       const fixture = window as unknown as {
         modernRolls: number[];

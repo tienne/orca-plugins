@@ -428,9 +428,19 @@ for (const [width, language] of [
     expect(bounds.y + bounds.height).toBeLessThanOrEqual(
       ocean.y + ocean.height,
     );
-    const y = await page.evaluate(() => scrollY);
     await menu.hover();
+    const y = await page.evaluate(() => scrollY);
+    await menu.evaluate((element) => {
+      element.addEventListener(
+        'wheel',
+        () => {
+          (element as HTMLElement).dataset.wheelReceived = 'true';
+        },
+        { once: true },
+      );
+    });
     await page.mouse.wheel(0, 500);
+    await expect(menu).toHaveAttribute('data-wheel-received', 'true');
     expect(await page.evaluate(() => scrollY)).toBe(y);
     expect(await page.locator('.camera').getAttribute('style')).toBe(transform);
     await page.locator('.ocean').screenshot({
@@ -488,11 +498,9 @@ for (const [width, language] of [
     await expect(one()).toBeEnabled();
     await expect(ten()).toBeDisabled();
     await expect(page.locator('.repeat-balance')).toContainText('1');
-    await page
-      .locator('.treasure-results')
-      .screenshot({
-        path: `test-results/landmark-island/draw-again-${width}.png`,
-      });
+    await page.locator('.treasure-results').screenshot({
+      path: `test-results/landmark-island/draw-again-${width}.png`,
+    });
     await one().click();
     await expect(page.locator('.treasure-results')).toHaveCount(0);
     await expect(page.locator('.discovery-theatre')).toHaveCount(1);
