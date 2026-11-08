@@ -1,0 +1,25 @@
+Timezone reference locations: IANA Time Zone Database 2026f, public domain.
+https://www.iana.org/time-zones
+The bundled location table derives coordinates from zone.tab and aliases from
+tzdata.zi. Coordinates are converted to decimal degrees and rounded. A timezone
+reference city is not the user's precise location.
+
+Weather data: Open-Meteo, adapted under Creative Commons Attribution 4.0.
+https://open-meteo.com/en/docs
+https://creativecommons.org/licenses/by/4.0/
+Weather codes are simplified into sunny, cloudy, rain and snow game effects;
+these are model-based conditions, not an exact real-time observation.
+Data attribution is also shown beside available reports in the panel.
+
+API service terms and privacy (checked 2026-11-08):
+https://open-meteo.com/en/terms
+API access is subject to the provider’s service terms. The MIT code license
+does not grant rights to use a third-party API outside those terms.
+No credential is bundled.
+Hourly caching reduces requests but does not guarantee compliance with aggregate
+provider limits as the user population grows.
+
+The worker sends reference coordinates and weather query parameters. The API
+provider receives normal connection metadata, including the host IP address,
+and may retain request logs for up to 90 days under its published policy.
+No workspace identifiers, collection data or activity logs are sent by Orcatopia.

@@ -15,8 +15,13 @@ import { tmpdir } from 'node:os';
 import { join, resolve, relative, isAbsolute } from 'node:path';
 import { validateArtifact } from '../validate-plugin-artifact.mjs';
 
-const plugin = 'git-logs';
-const pluginPath = `plugins/${plugin}`;
+function pluginPathFor(plugin) {
+  invariant(
+    ['git-logs', 'landmark-island'].includes(plugin),
+    'Unsupported release plugin.',
+  );
+  return `plugins/${plugin}`;
+}
 const branch = 'release';
 const sha = /^[a-f0-9]{40}$/;
 const stableVersion = /^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)$/;
@@ -84,7 +89,7 @@ async function digestDirectory(root) {
   await walk(root);
   return hash.digest('hex');
 }
-function repositoryIdentity(repository) {
+function repositoryIdentity(repository, plugin) {
   const match =
     /^https:\/\/github\.com\/([A-Za-z0-9-]+)\/([A-Za-z0-9_.-]+)\.git$/.exec(
       repository,
@@ -126,7 +131,7 @@ function optionalRef(source, ref) {
 function commit(directory, message) {
   git(directory, [
     '-c',
-    'user.name=Git Logs release',
+    'user.name=Orca plugins release',
     '-c',
     'user.email=release@users.noreply.github.com',
     'commit',
@@ -135,7 +140,7 @@ function commit(directory, message) {
   ]);
   return git(directory, ['rev-parse', 'HEAD']);
 }
-function validateReleaseEntry(result, artifactCommit, version) {
+function validateReleaseEntry(result, artifactCommit, version, pluginPath) {
   invariant(
     result.sourcePath === pluginPath,
     'Orca returned a different plugin path.',
@@ -158,9 +163,11 @@ export async function prepareRelease({
   version,
   sourceCommit,
   orca = orcaJson,
+  plugin = 'git-logs',
 }) {
+  const pluginPath = pluginPathFor(plugin);
   source = await realpath(resolve(source));
-  const { owner, pluginKey } = repositoryIdentity(repository);
+  const { owner, pluginKey } = repositoryIdentity(repository, plugin);
   invariant(
     stableVersion.test(version) && version.length < 64,
     'Version must be stable x.y.z.',
@@ -184,7 +191,7 @@ export async function prepareRelease({
       built.id === plugin &&
       manifest.version === version &&
       built.version === version,
-    'Source and built manifest must match the requested git-logs version.',
+    'Source and built manifest must match the requested plugin and version.',
   );
   invariant(
     JSON.stringify(manifest) === JSON.stringify(built),
@@ -289,6 +296,7 @@ export async function prepareRelease({
       await orca(['release-entry', target]),
       artifactCommit,
       version,
+      pluginPath,
     );
     const catalogEntry = {
       id: pluginKey,
@@ -314,6 +322,7 @@ export async function prepareRelease({
       directory,
       repository,
       pluginKey,
+      plugin,
       version,
       tag,
       sourceCommit,
@@ -330,7 +339,9 @@ export async function prepareRelease({
 }
 
 export async function verifyCandidate(plan, { source, orca = orcaJson }) {
-  const identity = repositoryIdentity(plan.repository);
+  const plugin = plan.plugin ?? 'git-logs';
+  const pluginPath = pluginPathFor(plugin);
+  const identity = repositoryIdentity(plan.repository, plugin);
   invariant(
     plan.format === 1 &&
       plan.pluginKey === identity.pluginKey &&
@@ -480,6 +491,7 @@ export async function verifyCandidate(plan, { source, orca = orcaJson }) {
     await orca(['release-entry', target]),
     plan.catalogCommit,
     plan.version,
+    pluginPath,
   );
   invariant(
     JSON.stringify({ ...current, commit: plan.artifactCommit }) ===

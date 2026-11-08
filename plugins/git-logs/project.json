@@ -84,6 +84,13 @@
       "options": {
         "command": "node scripts/release-plugin.mjs --publish"
       }
+    },
+    "release-preflight": {
+      "executor": "nx:run-commands",
+      "cache": false,
+      "options": {
+        "command": "node scripts/release-preflight.mjs --plugin git-logs"
+      }
     }
   }
 }

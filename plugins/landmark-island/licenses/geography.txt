@@ -1,0 +1,14 @@
+World geometry: Natural Earth, 1:110m Admin 0 countries, public domain.
+https://www.naturalearthdata.com/about/terms-of-use/
+Source retrieved 2026-11-05:
+https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/ne_110m_admin_0_countries.geojson
+Converted from GeoJSON to local equirectangular SVG path strings, rounded to 0.01 display units. Boundaries are generalized; not a statement on disputed sovereignty.
+Landmark coordinates: Wikidata structured data, CC0. Individual entity URLs are recorded in src/landmarks.json and bundled into the application. Retrieved 2026-11-05 using Special:EntityData; P625 coordinates. Country metadata follows the named landmark's location. Coordinates are illustrative points, not navigation data.
+https://www.wikidata.org/wiki/Wikidata:Licensing
+Landmark illustrations: original miniature vector silhouettes, MIT (repository LICENSE).
+
+The 12 additional landmark coordinates were retrieved from Wikidata Special:EntityData on 2026-11-06. The Moai of Rapa Nui marker uses the island's representative point (Q14452); the Great Wall marker uses Wikidata's representative point for the wall (Q12501). These distributed sites do not have a single exact point. New descriptive text is an original summary of linked official heritage/tourism sources, checked 2026-11-06. No source photographs or illustrations are included.
+
+The next 12 coordinates (catalog entries 25–36) were retrieved from Wikidata Special:EntityData on 2026-11-06–07. Kinderdijk uses the windmill network item Q12012965, Sossusvlei uses the pan item Q1932730, and Kilimanjaro uses the mountain item Q7296. Coordinates for distributed places are representative points. Shwedagon’s descriptive reference is Myanmar’s Tentative List submission on the UNESCO site, not an inscription. All new illustrations and bilingual summaries are original; no third-party media were bundled.
+
+Eight modern-country additions (catalog entries 52–59) use Wikidata P625 coordinates retrieved 2026-11-08: Q3084218, Q43928, Q804210, Q497536, Q25043410, Q98410976, Q6034184 and Q377792. Coordinates are illustrative points rounded to six decimals. Original English/Korean descriptions summarize the linked museum, architect, parliament and tourism/convention sources. Black Star Gate is distinct from Independence Arch. All vector illustrations are original; no source images are bundled.

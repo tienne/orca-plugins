@@ -2,15 +2,21 @@ import { parseArgs } from 'node:util';
 import { resolve } from 'node:path';
 import { readFile, writeFile, lstat } from 'node:fs/promises';
 import { prepareRelease, publishRelease } from './release/plugin-release.mjs';
+import { requireReviewedHash } from './release/readiness.mjs';
 
 const { values } = parseArgs({
   options: {
+    plugin: { type: 'string' },
     source: { type: 'string', default: process.env.RELEASE_SOURCE || '.' },
     repository: { type: 'string', default: process.env.RELEASE_REPOSITORY },
     version: { type: 'string', default: process.env.RELEASE_VERSION },
     'source-sha': { type: 'string', default: process.env.RELEASE_SOURCE_SHA },
     report: { type: 'string', default: process.env.RELEASE_REPORT },
     plan: { type: 'string', default: process.env.RELEASE_PLAN },
+    'expected-hash': {
+      type: 'string',
+      default: process.env.RELEASE_EXPECTED_HASH,
+    },
     publish: { type: 'boolean', default: false },
   },
 });
@@ -19,9 +25,12 @@ try {
   if (values.publish) {
     if (!values.plan)
       throw new Error(
-        'Publishing requires --publish --plan <prepared JSON> and optional --source only.',
+        'Publishing requires --publish --plan <prepared JSON> and --expected-hash <reviewed hash> (or RELEASE_EXPECTED_HASH).',
       );
     const plan = JSON.parse(await readFile(resolve(values.plan), 'utf8'));
+    requireReviewedHash(plan, values['expected-hash']);
+    if (values.plugin && values.plugin !== (plan.plugin ?? 'git-logs'))
+      throw new Error('Requested plugin differs from the prepared plan.');
     await publishRelease(plan, { source });
     console.log(
       JSON.stringify({
@@ -54,6 +63,7 @@ try {
       repository: values.repository,
       version: values.version,
       sourceCommit: values['source-sha'],
+      plugin: values.plugin,
     });
     await writeFile(report, `${JSON.stringify(plan, null, 2)}\n`, {
       flag: 'wx',

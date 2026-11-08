@@ -3,9 +3,15 @@ name: Validate and promote a plugin
 on:
   workflow_call:
     inputs:
+      plugin:
+        type: string
+        default: git-logs
       version:
         required: true
         type: string
+      expected_hash:
+        type: string
+        default: ''
       publish:
         required: true
         type: boolean
@@ -17,14 +23,16 @@ jobs:
       github.ref == 'refs/heads/main' &&
       github.repository == 'tienne/orca-plugins' &&
       vars.ORCA_RELEASE_ENABLED == 'true'
-    runs-on: [self-hosted, macOS, orca-release]
+    runs-on: macos-15
     environment: ${{ inputs.publish && 'production' || 'release-preview' }}
     timeout-minutes: 15
     env:
       CI: 'true'
       NX_DAEMON: 'false'
-      ORCA_CLI_COMMAND: orca
       ORCA_RELEASE_INTEGRATION: '1'
+      RELEASE_EXPECTED_HASH: ${{ inputs.expected_hash }}
+      RELEASE_MODE: ${{ inputs.publish && 'publish' || 'preview' }}
+      RELEASE_PLUGIN: ${{ inputs.plugin }}
       RELEASE_VERSION: ${{ inputs.version }}
       RELEASE_SOURCE_SHA: ${{ github.sha }}
       RELEASE_REPOSITORY: https://github.com/${{ github.repository }}.git
@@ -39,7 +47,9 @@ jobs:
         run: |
           node --input-type=module <<'JS'
           import { readFileSync } from 'node:fs';
-          const manifest = JSON.parse(readFileSync('plugins/git-logs/orca-plugin.json', 'utf8'));
+          const plugin = process.env.RELEASE_PLUGIN;
+          if (!['git-logs', 'landmark-island'].includes(plugin)) throw new Error('Unsupported release plugin.');
+          const manifest = JSON.parse(readFileSync(`plugins/${plugin}/orca-plugin.json`, 'utf8'));
           if (!/^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)$/.test(process.env.RELEASE_VERSION) || manifest.version !== process.env.RELEASE_VERSION) {
             throw new Error('Commit the requested stable manifest version to main first.');
           }
@@ -50,14 +60,16 @@ jobs:
           node-version: 24
           cache: pnpm
       - run: pnpm install --frozen-lockfile
+      - name: Prepare pinned Orca CLI
+        run: bash scripts/release/setup-orca-macos.sh
       - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
         with:
-          name: git-logs-${{ github.sha }}
-          path: dist/plugins/git-logs/
+          name: ${{ inputs.plugin }}-${{ github.sha }}
+          path: dist/plugins/${{ inputs.plugin }}/
       - name: Verify Orca CLI and run release integration tests
         run: |
-          orca --version
-          pnpm nx run git-logs:release-test --output-style=static
+          "$ORCA_CLI_COMMAND" --version
+          pnpm nx run "$RELEASE_PLUGIN:release-test" --output-style=static
       - name: Fetch the current release base
         run: |
           if git ls-remote --exit-code --heads origin release > "$RUNNER_TEMP/release-ref.txt"; then
@@ -67,14 +79,14 @@ jobs:
             if [ "$status" -ne 2 ]; then exit "$status"; fi
           fi
       - name: Prepare and validate the candidate
-        run: pnpm nx run git-logs:release-prepare --output-style=static
+        run: pnpm nx run "$RELEASE_PLUGIN:release-prepare" --output-style=static
       - name: Summarize candidate
         run: |
           node --input-type=module <<'JS'
           import { readFileSync, appendFileSync } from 'node:fs';
           const plan = JSON.parse(readFileSync(process.env.RELEASE_REPORT, 'utf8'));
           appendFileSync(process.env.GITHUB_STEP_SUMMARY, [
-            '## Git Logs release candidate',
+            '## ' + plan.pluginKey + ' release candidate',
             '',
             '- Version: ' + plan.version,
             `- Source: ${plan.sourceCommit}`,
@@ -86,11 +98,16 @@ jobs:
             '',
           ].join('\n'));
           JS
+      - name: Recheck release configuration
+        env:
+          GH_TOKEN: ${{ github.token }}
+          ORCA_RELEASE_ENABLED: ${{ vars.ORCA_RELEASE_ENABLED }}
+        run: pnpm nx run "$RELEASE_PLUGIN:release-preflight" --mode="$RELEASE_MODE" --workflow
       - name: Publish branch and source tag
         if: inputs.publish
         env:
           RELEASE_PLAN: ${{ runner.temp }}/release-plan.json
-        run: pnpm nx run git-logs:release-publish --output-style=static
+        run: pnpm nx run "$RELEASE_PLUGIN:release-publish" --output-style=static
       - name: Save release plan
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
