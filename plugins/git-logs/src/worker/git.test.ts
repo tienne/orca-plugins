@@ -1781,8 +1781,6 @@ test('worker open saves range as version 2, reopens it, and keeps version 1 docu
     assert.equal(opened.length, 3);
   }));
 
-// ---- 기능이 맞물리는 경우: 필터, 페이징, follow, 태그, 문서 버전, 실행 경계 ----
-
 interface ImportCommit {
   author?: string;
   message: string;
