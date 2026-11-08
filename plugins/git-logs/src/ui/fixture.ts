@@ -1,10 +1,12 @@
-import type {
-  ChangeSet,
-  ChangedFile,
-  Comparison,
-  FileDiff,
-  LogFilter,
-  Repository,
+import {
+  LOAD_LIMIT,
+  PAGE_SIZE,
+  type ChangeSet,
+  type ChangedFile,
+  type Comparison,
+  type FileDiff,
+  type LogFilter,
+  type Repository,
 } from '../protocol';
 // English sample data is opt-in and available only in the browser demo.
 // Real commit messages, author names and file contents are never translated.
@@ -307,8 +309,6 @@ const generatedCount: Record<string, number> = {
   stale: 450,
   many: 5200,
 };
-const PAGE_SIZE = 200;
-const LOAD_LIMIT = 5000;
 let generated: Repository['commits'] | undefined;
 const pagedHash = (n: number) =>
   `f${n.toString(16).padStart(7, '0')}${hash(0).slice(8)}`.slice(0, 40);

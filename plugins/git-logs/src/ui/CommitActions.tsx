@@ -1,5 +1,6 @@
 import { t, useLocale } from './i18n';
 import { useEffect, useRef, useState } from 'react';
+import { handleMenuKey } from './menuKeys';
 import type {
   Commit,
   GitAction,
@@ -73,13 +74,8 @@ export function CommitActions({
     if (target && !dialog.current?.open) dialog.current?.showModal();
   }, [target]);
   useEffect(() => {
-    if (!menu) return;
-    menuRef.current?.querySelector<HTMLButtonElement>('button')?.focus();
-    const close = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') closeMenu();
-    };
-    document.addEventListener('keydown', close);
-    return () => document.removeEventListener('keydown', close);
+    if (menu)
+      menuRef.current?.querySelector<HTMLButtonElement>('button')?.focus();
   }, [menu]);
   const dismiss = () => {
     if (inFlight.current) return;
@@ -218,31 +214,9 @@ export function CommitActions({
               left: Math.max(8, Math.min(menu.x, window.innerWidth - 260)),
               top: Math.max(8, Math.min(menu.y, window.innerHeight - 480)),
             }}
-            onKeyDown={(event) => {
-              if (!['ArrowDown', 'ArrowUp', 'Home', 'End'].includes(event.key))
-                return;
-              event.preventDefault();
-              const items = [
-                ...event.currentTarget.querySelectorAll<HTMLButtonElement>(
-                  'button',
-                ),
-              ];
-              const index = items.indexOf(
-                document.activeElement as HTMLButtonElement,
-              );
-              items[
-                event.key === 'Home'
-                  ? 0
-                  : event.key === 'End'
-                    ? items.length - 1
-                    : (index +
-                        (event.key === 'ArrowDown' ? 1 : -1) +
-                        items.length) %
-                      items.length
-              ]?.focus();
-            }}
+            onKeyDown={(event) => handleMenuKey(event, closeMenu)}
           >
-            <small>
+            <small role="presentation">
               {menu.commit.hash.slice(0, 7)} {t('· 커밋 작업')}
             </small>
             {menuGroups.slice(0, 2).map(actionGroup)}

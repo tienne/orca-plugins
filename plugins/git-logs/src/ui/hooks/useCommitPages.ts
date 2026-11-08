@@ -1,5 +1,10 @@
 import { useEffect, useRef, useState, type MutableRefObject } from 'react';
-import type { Commit, Repository } from '../../protocol';
+import {
+  LOAD_LIMIT,
+  STALE_CURSOR_PREFIX,
+  type Commit,
+  type Repository,
+} from '../../protocol';
 import { request } from '../client';
 import { demo, message } from '../env';
 import { fixtureLog } from '../fixture';
@@ -9,10 +14,7 @@ import {
   type GraphRow,
   type GraphState,
 } from '../graph';
-import { effectiveFilter, logInput, type LogRequest } from './useRepository';
-
-export const LOAD_LIMIT = 5000;
-const STALE_PREFIX = 'stale-cursor:';
+import { effectiveFilter, logInput, type LogRequest } from '../logQuery';
 
 type Pages = {
   base: Repository | null;
@@ -68,7 +70,7 @@ type Options = {
   repo: Repository | null;
   logSeq: MutableRefObject<number>;
   loaded: MutableRefObject<LogRequest>;
-  reloadLog: () => void;
+  reloadLog: () => Promise<boolean>;
 };
 
 /** 첫 페이지(useRepository의 repo) 뒤로 다음 페이지를 누적한다. repo가 바뀌면 처음부터 다시 쌓는다. */
@@ -129,10 +131,15 @@ export function useCommitPages({ repo, logSeq, loaded, reloadLog }: Options) {
     } catch (e) {
       if (!stillCurrent()) return;
       const text = message(e);
-      if (text.startsWith(STALE_PREFIX)) {
+      if (text.startsWith(STALE_CURSOR_PREFIX)) {
+        // 다시 불러오기가 실패하면 repo가 안 바뀌어 안내가 남으므로 여기서 거둔다.
         staleReload.current = true;
         setNotice(text);
-        reloadLog();
+        void reloadLog().then((ok) => {
+          if (ok) return;
+          staleReload.current = false;
+          setNotice('');
+        });
       } else setPageError(text);
     } finally {
       inFlight.current = false;

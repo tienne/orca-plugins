@@ -1,5 +1,6 @@
 import { t } from './i18n';
 import { useEffect, useRef } from 'react';
+import { handleMenuKey } from './menuKeys';
 
 export interface FileMenu {
   path: string;
@@ -25,13 +26,8 @@ export function FileActions({
     if (origin?.isConnected) origin.focus();
   };
   useEffect(() => {
-    if (!menu) return;
-    menuRef.current?.querySelector<HTMLButtonElement>('button')?.focus();
-    const close = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') dismiss();
-    };
-    document.addEventListener('keydown', close);
-    return () => document.removeEventListener('keydown', close);
+    if (menu)
+      menuRef.current?.querySelector<HTMLButtonElement>('button')?.focus();
   }, [menu]);
   if (!menu) return null;
   return (
@@ -46,31 +42,9 @@ export function FileActions({
           left: Math.max(8, Math.min(menu.x, window.innerWidth - 260)),
           top: Math.max(8, Math.min(menu.y, window.innerHeight - 120)),
         }}
-        onKeyDown={(event) => {
-          if (!['ArrowDown', 'ArrowUp', 'Home', 'End'].includes(event.key))
-            return;
-          event.preventDefault();
-          const items = [
-            ...event.currentTarget.querySelectorAll<HTMLButtonElement>(
-              'button',
-            ),
-          ];
-          const index = items.indexOf(
-            document.activeElement as HTMLButtonElement,
-          );
-          items[
-            event.key === 'Home'
-              ? 0
-              : event.key === 'End'
-                ? items.length - 1
-                : (index +
-                    (event.key === 'ArrowDown' ? 1 : -1) +
-                    items.length) %
-                  items.length
-          ]?.focus();
-        }}
+        onKeyDown={(event) => handleMenuKey(event, dismiss)}
       >
-        <small title={menu.path}>
+        <small role="presentation" title={menu.path}>
           {menu.path.split('/').pop()} {t('· 파일 작업')}
         </small>
         <button

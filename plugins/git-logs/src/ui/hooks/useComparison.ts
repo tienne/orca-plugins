@@ -18,19 +18,7 @@ import {
 
 export type ComparisonState = ReturnType<typeof useComparison>;
 
-// range 문서만 version 2로 저장해 0.1.x가 모르는 문서를 열지 않게 한다. 워커와 같은 정책이다.
-export function descriptorVersion(
-  comparison: Comparison,
-): Descriptor['version'] {
-  return comparison.kind === 'range' ? 2 : 1;
-}
-export function checkDescriptorVersion(d: Partial<Descriptor>) {
-  if (
-    (d.version !== 1 && d.version !== 2) ||
-    (d.version === 1 && d.comparison?.kind === 'range')
-  )
-    throw new Error('지원하지 않는 비교 문서입니다.');
-}
+const COMMIT_SETTLE_MS = 80;
 
 // 이름이 바뀐 이력에서는 커밋마다 파일 경로가 달라 정확하지 않다. 못 찾으면 고르지 않는다.
 function historyFile(files: ChangedFile[], path: string) {
@@ -122,6 +110,8 @@ export function useComparisonLoader(
   useEffect(() => {
     if (!repo) return;
     let active = true;
+    // 워커 요청은 취소할 수 없어서, 방향키를 연속으로 누를 때는 멈춘 커밋만 요청하도록 잠깐 기다린다.
+    let timer: ReturnType<typeof setTimeout> | undefined;
     const history = comparison.kind === 'commit' ? historyPath.current : '';
     setLoadingFiles(true);
     setData(null);
@@ -154,7 +144,11 @@ export function useComparisonLoader(
                     ? comparison.commit
                     : fixtureSet.right,
               })
-      : request('changes', { repo: repo.root, comparison })
+      : comparison.kind === 'commit'
+        ? new Promise<void>((resolve) => {
+            timer = setTimeout(resolve, COMMIT_SETTLE_MS);
+          }).then(() => request('changes', { repo: repo.root, comparison }))
+        : request('changes', { repo: repo.root, comparison })
     )
       .then((result) => {
         if (active) {
@@ -180,6 +174,7 @@ export function useComparisonLoader(
       });
     return () => {
       active = false;
+      clearTimeout(timer);
     };
   }, [repo?.root, comparison, generation]);
   useEffect(() => {

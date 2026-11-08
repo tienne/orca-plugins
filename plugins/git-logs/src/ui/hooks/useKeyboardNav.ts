@@ -1,6 +1,7 @@
-import { useLayoutEffect, useRef, useState } from 'react';
+import { useLayoutEffect, useRef, useState, type SyntheticEvent } from 'react';
 
-export type FocusArea = 'graph' | 'files';
+// 'other'는 커밋 정보처럼 방향키 대상이 아닌 곳이다. 패널 모드에서는 이 영역들이 그래프 aside 안에 함께 있다.
+export type FocusArea = 'graph' | 'files' | 'other';
 
 interface Options {
   graph: {
@@ -30,6 +31,13 @@ function ownsArrowKeys(target: EventTarget | null) {
   return (
     !!target.closest(OWN_KEYS) || (target as HTMLElement).isContentEditable
   );
+}
+
+function areaOf(target: EventTarget | null): FocusArea {
+  if (!(target instanceof Element)) return 'graph';
+  if (target.closest('.files')) return 'files';
+  if (target.closest('.details')) return 'other';
+  return 'graph';
 }
 
 // 행이 보이는 가장 가까운 위치까지만 스크롤한다. 넘치는 쪽만 맞춰 불필요하게 목록이 튀지 않게 한다.
@@ -70,6 +78,7 @@ export function useKeyboardNav(options: Options) {
         )
       )
         return;
+      if (area === 'other') return;
       const step = event.key === 'ArrowDown' ? 1 : -1;
       if (area === 'graph') {
         const { count, selectedIndex, enabled, select } = o.graph;
@@ -128,12 +137,19 @@ export function useKeyboardNav(options: Options) {
   return {
     focusArea,
     graphArea: {
-      onMouseDown: () => switchArea('graph'),
-      onFocus: () => switchArea('graph'),
+      onMouseDown: (event: SyntheticEvent) => switchArea(areaOf(event.target)),
+      onFocus: (event: SyntheticEvent) => switchArea(areaOf(event.target)),
     },
+    // 패널 모드에서는 files가 graphArea 안에 있어서, 여기서 끊지 않으면 위로 올라가 graph로 덮인다.
     filesArea: {
-      onMouseDown: () => switchArea('files'),
-      onFocus: () => switchArea('files'),
+      onMouseDown: (event: SyntheticEvent) => {
+        event.stopPropagation();
+        switchArea('files');
+      },
+      onFocus: (event: SyntheticEvent) => {
+        event.stopPropagation();
+        switchArea('files');
+      },
     },
   };
 }

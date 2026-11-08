@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect, type Page } from '@playwright/test';
 test('packaged Monaco renders aligned read-only panes, local worker, navigation and themes', async ({
   page,
 }, info) => {
@@ -1498,6 +1498,7 @@ test('log filters reach the worker once after debounce, AND with the branch and 
     all: false,
     branchRef: 'refs/heads/feature/readable-diff',
     filter: { author: 'David' },
+    cancelKey: 'filter',
   });
   await expect(page.locator('.commit-row')).toHaveCount(3);
   await expect(page.locator('.commit-row svg')).toHaveCount(0);
@@ -1727,7 +1728,11 @@ test('page requests run one at a time, reload on stale cursors and reset on bran
   ).toBeVisible();
   await expect(loadedCount(page)).toHaveText('200 / max 5,000');
   const reload = (await calls()).at(-1)!;
-  expect(reload).toEqual({ repo: fixtureRepo.root, all: false });
+  expect(reload).toEqual({
+    repo: fixtureRepo.root,
+    all: false,
+    cancelKey: 'filter',
+  });
   await expect(page.getByRole('alert')).toHaveCount(0);
   await scrollListTo(page, 'bottom');
   await expect.poll(async () => (await pageCalls()).length).toBe(3);
@@ -2265,6 +2270,7 @@ test('right-clicking a changed file opens a file menu whose history item follows
     repo: fixtureRepo.root,
     all: false,
     filter: { path: 'src/ui/Timeline.tsx', follow: true },
+    cancelKey: 'filter',
   });
 });
 
@@ -2384,6 +2390,7 @@ test('all-branches scope drops follow before the request, shows a notice and res
     repo: fixtureRepo.root,
     all: true,
     filter: { path: 'src/ui/Timeline.tsx' },
+    cancelKey: 'filter',
   });
   expect(Object.keys((sent[1] as { filter: object }).filter)).toEqual(['path']);
   await expect(page.locator('.follow-note')).toHaveText(
@@ -2399,6 +2406,7 @@ test('all-branches scope drops follow before the request, shows a notice and res
     repo: fixtureRepo.root,
     all: false,
     filter: { path: 'src/ui/Timeline.tsx', follow: true },
+    cancelKey: 'filter',
   });
   await expect(page.locator('.follow-note')).toHaveCount(0);
   await expect(page.locator('.filter-chip')).toHaveText([
@@ -2904,4 +2912,120 @@ test('explicit fixture state: all-branches scope shows the rename tracking notic
   await page.getByRole('option', { name: '현재 브랜치', exact: true }).click();
   await expect(page.locator('.follow-note')).toHaveCount(0);
   await expect(page.locator('.commit-row')).toHaveCount(4);
+});
+
+// 패널 모드(window.orca)를 흉내 내는 목. changes 요청은 window.__changes에 커밋 해시를 쌓는다.
+async function installPanelOrca(page: Page) {
+  const { fixtureRepo, fixtureFiles, fixtureCommitMessage, fixtureDiff } =
+    await import('../src/ui/fixture');
+  const second = fixtureRepo.commits[1].hash;
+  const files = fixtureFiles({ kind: 'commit', commitHash: second });
+  await page.addInitScript(
+    ([repo, list, message, diffs]) => {
+      const seen: string[] = [];
+      (window as unknown as { __changes: string[] }).__changes = seen;
+      window.orca = {
+        locale: 'ko-KR',
+        api: { major: 1, minor: 3 },
+        host: { has: () => true },
+        plugin: {
+          request: async <T>(name: string, raw: unknown) => {
+            if (name === 'active')
+              return {
+                status: 'connected',
+                repository: repo,
+                workspace: {
+                  id: 'fixture',
+                  name: 'Fixture',
+                  path: repo.root,
+                  branch: repo.branch,
+                },
+              } as T;
+            if (name === 'changes') {
+              const comparison = (
+                raw as { comparison: { kind: string; commit?: string } }
+              ).comparison;
+              if (comparison.kind === 'commit' && comparison.commit)
+                seen.push(comparison.commit);
+              return {
+                comparison,
+                files: list,
+                left: 'parent',
+                right: 'commit',
+              } as T;
+            }
+            if (name === 'commitMessage') return message as T;
+            if (name === 'diff')
+              return diffs[(raw as { path: string }).path] as T;
+            throw new Error(`Unexpected request: ${name}`);
+          },
+        },
+      };
+    },
+    [
+      fixtureRepo,
+      files,
+      fixtureCommitMessage(second),
+      Object.fromEntries(files.map((f) => [f.path, fixtureDiff(f.path)])),
+    ] as const,
+  );
+  return { files, hashes: fixtureRepo.commits.map((commit) => commit.hash) };
+}
+
+test('panel layout: arrow keys after clicking the file list move the file, not the commit', async ({
+  page,
+}) => {
+  const { files } = await installPanelOrca(page);
+  await page.goto('/');
+  await expect(page.locator('.history[data-layout-kind="panel"]')).toHaveCount(
+    1,
+  );
+  await expect(page.locator('.commit-row')).toHaveCount(6);
+  await commitAt(page, 1).click();
+  await expect(page.locator('.file-row')).toHaveCount(files.length);
+  await page.locator('.file-row').nth(0).click();
+  await page.keyboard.press('ArrowDown');
+  await expect(page.locator('.file-row').nth(1)).toHaveAttribute(
+    'aria-pressed',
+    'true',
+  );
+  await expect(selectedRow(page)).toHaveAttribute('data-index', '1');
+  // 커밋 정보 영역을 누르면 방향키가 어느 목록도 움직이지 않는다.
+  await page.locator('.details .section-heading').first().click();
+  await page.keyboard.press('ArrowDown');
+  await expect(page.locator('.file-row').nth(1)).toHaveAttribute(
+    'aria-pressed',
+    'true',
+  );
+  await expect(selectedRow(page)).toHaveAttribute('data-index', '1');
+  // 그래프 행을 누르면 다시 커밋이 움직인다.
+  await commitAt(page, 1).click();
+  await page.keyboard.press('ArrowDown');
+  await expect(selectedRow(page)).toHaveAttribute('data-index', '2');
+});
+
+test('panel layout: holding ArrowDown requests changes only for the commit it stops on', async ({
+  page,
+}) => {
+  const { hashes } = await installPanelOrca(page);
+  await page.goto('/');
+  await expect(page.locator('.commit-row')).toHaveCount(6);
+  await commitAt(page, 1).click();
+  await expect(page.locator('.file-row').first()).toBeVisible();
+  await page.keyboard.press('ArrowDown');
+  await page.keyboard.press('ArrowDown');
+  await page.keyboard.press('ArrowDown');
+  await expect(selectedRow(page)).toHaveAttribute('data-index', '4');
+  await expect
+    .poll(() =>
+      page.evaluate(
+        () => (window as unknown as { __changes: string[] }).__changes,
+      ),
+    )
+    .toContain(hashes[4]);
+  const seen = await page.evaluate(
+    () => (window as unknown as { __changes: string[] }).__changes,
+  );
+  expect(seen).not.toContain(hashes[2]);
+  expect(seen).not.toContain(hashes[3]);
 });

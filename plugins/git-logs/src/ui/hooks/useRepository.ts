@@ -8,7 +8,9 @@ import type {
 import { request } from '../client';
 import { demo, editorMode, message, scenario } from '../env';
 import { fixtureLog, fixtureRepo } from '../fixture';
-import { checkDescriptorVersion, type ComparisonState } from './useComparison';
+import { checkDescriptorVersion } from '../../protocol';
+import { effectiveFilter, logInput, type LogRequest } from '../logQuery';
+import type { ComparisonState } from './useComparison';
 import { filterKey, hasFilter } from './useLogFilter';
 
 type Options = {
@@ -19,32 +21,6 @@ type Options = {
   filter: LogFilter;
   resetFilter: () => void;
 };
-
-export type LogRequest = { scope: string; filter: LogFilter };
-
-// 워커는 전체 브랜치 범위의 이름 변경 추적을 거부하므로 요청 전에 follow만 뺀다.
-export function effectiveFilter(
-  selection: string,
-  filter: LogFilter,
-): LogFilter {
-  if (selection !== 'all' || !filter.follow) return filter;
-  const rest = { ...filter };
-  delete rest.follow;
-  return rest;
-}
-
-export function logInput(repo: string, selection: string, filter: LogFilter) {
-  return {
-    repo,
-    all: selection === 'all',
-    ...(selection !== 'current' && selection !== 'all'
-      ? { branchRef: selection }
-      : {}),
-    ...(hasFilter(filter)
-      ? { filter: effectiveFilter(selection, filter) }
-      : {}),
-  };
-}
 
 export function useRepository({
   comparison: view,
@@ -271,8 +247,12 @@ export function useRepository({
       if (typeof stop === 'function') stop();
     };
   }, [autoTick]);
-  async function loadLog(next: string, keepComparison = false) {
-    if (!repo) return;
+  // true는 목록이 바뀌었거나 더 새 요청이 이어받은 경우이고, false는 요청이 실패해 이전 목록이 남은 경우다.
+  async function loadLog(
+    next: string,
+    keepComparison = false,
+  ): Promise<boolean> {
+    if (!repo) return false;
     const previous = scopeRef.current;
     const root = repo.root;
     const seq = ++logSeq.current;
@@ -283,20 +263,26 @@ export function useRepository({
     requestedFilter.current = filterKey(filter);
     if (demo) {
       refreshDemo(keepComparison);
-      return;
+      return true;
     }
     setBusy(true);
     setError('');
     try {
-      const updated = await request('log', logInput(root, next, filter));
-      if (seq !== logSeq.current || currentRoot.current !== root) return;
+      const updated = await request('log', {
+        ...logInput(root, next, filter),
+        cancelKey: 'filter',
+      });
+      if (seq !== logSeq.current || currentRoot.current !== root) return true;
       showLog(updated, { scope: next, filter }, keepComparison);
+      return true;
     } catch (e) {
       if (seq === logSeq.current && currentRoot.current === root) {
         scopeRef.current = previous;
         setScope(previous);
         setError(message(e));
+        return false;
       }
+      return true;
     } finally {
       if (seq === logSeq.current) setBusy(false);
     }
@@ -315,7 +301,7 @@ export function useRepository({
   }, [currentFilterKey, repo?.root]);
   // 페이지 커서가 낡았을 때 같은 조건으로 첫 페이지부터 다시 받는다.
   function reloadLog() {
-    void loadLog(scopeRef.current, true);
+    return loadLog(scopeRef.current, true);
   }
   function refresh() {
     if (editorMode) {

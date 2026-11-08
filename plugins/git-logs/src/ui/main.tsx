@@ -8,13 +8,13 @@ import {
 import {
   StrictMode,
   useEffect,
-  useLayoutEffect,
   useMemo,
   useRef,
   useState,
+  type CSSProperties,
 } from 'react';
 import { createRoot } from 'react-dom/client';
-import type { Commit } from '../protocol';
+import { LOAD_LIMIT, descriptorVersion, type Commit } from '../protocol';
 import { request } from './client';
 import { DiffView } from './DiffView';
 import { BranchPicker } from './BranchPicker';
@@ -22,19 +22,18 @@ import { PaneResizer, usePaneLayout } from './PaneResizer';
 import { CommitActions } from './CommitActions';
 import { FileActions, type FileMenu } from './FileActions';
 import { demo, editorMode, message, scenario } from './env';
-import {
-  descriptorVersion,
-  useComparison,
-  useComparisonLoader,
-} from './hooks/useComparison';
+import { useComparison, useComparisonLoader } from './hooks/useComparison';
 import { useRepository } from './hooks/useRepository';
-import { LOAD_LIMIT, useCommitPages } from './hooks/useCommitPages';
-import { useRowWindow } from './hooks/useRowWindow';
+import { useCommitPages } from './hooks/useCommitPages';
+import { ROW_HEIGHT, useRowWindow } from './hooks/useRowWindow';
+import { RefLabels } from './RefLabels';
 import { useKeyboardNav } from './hooks/useKeyboardNav';
 import { useCommitMenu } from './hooks/useCommitMenu';
 import { useCommitMessage } from './hooks/useCommitMessage';
 import { filterLabels, hasFilter, useLogFilter } from './hooks/useLogFilter';
 import './styles.css';
+const ROW_MID = ROW_HEIGHT / 2;
+const ROW_CURVE = (ROW_HEIGHT * 3) / 4;
 const colors = [
   'var(--graph-blue)',
   'var(--graph-purple)',
@@ -42,84 +41,6 @@ const colors = [
   'var(--graph-amber)',
   'var(--graph-pink)',
 ];
-const TAG_PREFIX = 'tag: ';
-const REF_GAP = 4;
-
-function RefLabels({ refs }: { refs: string[] }) {
-  const branches = refs.filter((ref) => !ref.startsWith(TAG_PREFIX));
-  const tags = refs
-    .filter((ref) => ref.startsWith(TAG_PREFIX))
-    .map((ref) => ref.slice(TAG_PREFIX.length));
-  return (
-    <span className="refs">
-      {branches.map((ref) => (
-        <em key={ref} title={ref}>
-          {ref}
-        </em>
-      ))}
-      {tags.length > 0 && <TagBadges tags={tags} />}
-    </span>
-  );
-}
-
-// 넘치는 뱃지는 숨기되 레이아웃에는 남겨 둔다. display:none으로 빼면 폭 측정이
-// 다음 계산에서 0이 되어 접힘 개수가 흔들린다.
-function TagBadges({ tags }: { tags: string[] }) {
-  const box = useRef<HTMLSpanElement>(null);
-  const [visible, setVisible] = useState(tags.length);
-  const tagKey = tags.join('\n');
-  useLayoutEffect(() => {
-    const el = box.current;
-    if (!el) return;
-    const fit = () => {
-      const widths = Array.from(
-        el.querySelectorAll<HTMLElement>('.tag-badge'),
-        (badge) => badge.offsetWidth,
-      );
-      const total =
-        widths.reduce((sum, w) => sum + w, 0) +
-        REF_GAP * Math.max(0, widths.length - 1);
-      if (total <= el.clientWidth) return setVisible(widths.length);
-      const moreWidth =
-        el.querySelector<HTMLElement>('.tag-more')!.offsetWidth + REF_GAP;
-      let count = 0;
-      let used = 0;
-      while (count < widths.length) {
-        const next = used + (count > 0 ? REF_GAP : 0) + widths[count];
-        if (next + moreWidth > el.clientWidth) break;
-        used = next;
-        count++;
-      }
-      setVisible(count);
-    };
-    fit();
-    const observer = new ResizeObserver(fit);
-    observer.observe(el);
-    return () => observer.disconnect();
-  }, [tagKey]);
-  return (
-    <span className="tag-badges" ref={box}>
-      {tags.map((tag, index) => (
-        <span
-          key={tag}
-          className="tag-badge"
-          title={`${TAG_PREFIX}${tag}`}
-          data-folded={index >= visible ? '' : undefined}
-        >
-          {tag}
-        </span>
-      ))}
-      <span
-        className="tag-more"
-        data-idle={visible >= tags.length ? '' : undefined}
-        title={tags.slice(visible).join(', ')}
-      >
-        +{tags.length - visible}
-      </span>
-    </span>
-  );
-}
-
 function App() {
   const locale = useLocale();
   const logFilter = useLogFilter();
@@ -655,6 +576,7 @@ function App() {
                 )}
                 <div
                   className="commit-list"
+                  style={{ '--row-height': `${ROW_HEIGHT}px` } as CSSProperties}
                   aria-busy={busy || pages.loading}
                   ref={setListElement}
                 >
@@ -722,13 +644,13 @@ function App() {
                           {!filtered && (
                             <svg
                               width={Math.min(110, graphWidth)}
-                              viewBox={`0 0 ${graphWidth} 64`}
+                              viewBox={`0 0 ${graphWidth} ${ROW_HEIGHT}`}
                               preserveAspectRatio="none"
-                              height="64"
+                              height={ROW_HEIGHT}
                               aria-hidden="true"
                             >
                               <path
-                                d={`M${12 + row.lane * 14} 0 V32`}
+                                d={`M${12 + row.lane * 14} 0 V${ROW_MID}`}
                                 stroke={colors[row.lane % colors.length]}
                                 fill="none"
                                 strokeWidth="2"
@@ -736,7 +658,7 @@ function App() {
                               {row.edges.map((edge, i) => (
                                 <path
                                   key={i}
-                                  d={`M${12 + edge.from * 14} ${edge.parent ? 32 : 0} C${12 + edge.from * 14} 48 ${12 + edge.to * 14} 48 ${12 + edge.to * 14} 64`}
+                                  d={`M${12 + edge.from * 14} ${edge.parent ? ROW_MID : 0} C${12 + edge.from * 14} ${ROW_CURVE} ${12 + edge.to * 14} ${ROW_CURVE} ${12 + edge.to * 14} ${ROW_HEIGHT}`}
                                   fill="none"
                                   stroke={
                                     colors[
