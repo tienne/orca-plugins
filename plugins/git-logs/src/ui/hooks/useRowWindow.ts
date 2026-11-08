@@ -13,23 +13,26 @@ export function useRowWindow(
   pinned: number[],
   resetKey: unknown,
 ) {
-  const [view, setView] = useState({ top: 0, height: 0, key: resetKey });
+  // 픽셀 단위 scrollTop이 아니라 행 경계로 저장해서, 같은 행 안의 스크롤은 렌더를 건너뛴다.
+  const [view, setView] = useState({ first: 0, end: 0, key: resetKey });
   const keyRef = useRef(resetKey);
   keyRef.current = resetKey;
   useLayoutEffect(() => {
     if (!element) return;
-    const update = () =>
+    const update = () => {
+      const next = {
+        first: Math.floor(element.scrollTop / ROW_HEIGHT),
+        end: Math.ceil((element.scrollTop + element.clientHeight) / ROW_HEIGHT),
+        key: keyRef.current,
+      };
       setView((current) =>
-        current.top === element.scrollTop &&
-        current.height === element.clientHeight &&
-        current.key === keyRef.current
+        current.first === next.first &&
+        current.end === next.end &&
+        current.key === next.key
           ? current
-          : {
-              top: element.scrollTop,
-              height: element.clientHeight,
-              key: keyRef.current,
-            },
+          : next,
       );
+    };
     update();
     element.addEventListener('scroll', update, { passive: true });
     const observer =
@@ -43,16 +46,18 @@ export function useRowWindow(
   useLayoutEffect(() => {
     if (!element) return;
     element.scrollTop = 0;
-    setView({ top: 0, height: element.clientHeight, key: resetKey });
+    setView({
+      first: 0,
+      end: Math.ceil(element.clientHeight / ROW_HEIGHT),
+      key: resetKey,
+    });
   }, [resetKey]);
   // 목록이 바뀐 렌더에서는 이전 스크롤 위치로 끝에 닿았다고 오판하지 않도록 맨 위로 본다.
-  const top = view.key === resetKey ? view.top : 0;
-  const height = view.height || FALLBACK_HEIGHT;
-  const firstVisible = Math.floor(top / ROW_HEIGHT);
-  const lastVisible = Math.min(
-    count - 1,
-    Math.ceil((top + height) / ROW_HEIGHT) - 1,
-  );
+  const current =
+    view.key === resetKey ? view : { first: 0, end: 0, key: resetKey };
+  const firstVisible = current.first;
+  const end = current.end || Math.ceil(FALLBACK_HEIGHT / ROW_HEIGHT);
+  const lastVisible = Math.min(count - 1, end - 1);
   const first = Math.max(0, firstVisible - OVERSCAN);
   const last = Math.min(count - 1, lastVisible + OVERSCAN);
   const indices = new Set<number>();
