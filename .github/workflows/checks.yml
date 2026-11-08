@@ -25,8 +25,12 @@ jobs:
           node-version: 24
           cache: pnpm
       - name: Lint workflows
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
-          curl --fail --location --silent --show-error https://github.com/rhysd/actionlint/releases/download/v1.7.11/actionlint_1.7.11_linux_amd64.tar.gz --output "$RUNNER_TEMP/actionlint.tar.gz"
+          if ! curl --fail --location --silent --show-error --retry 3 --retry-all-errors --retry-max-time 180 --connect-timeout 30 --max-time 60 https://github.com/rhysd/actionlint/releases/download/v1.7.11/actionlint_1.7.11_linux_amd64.tar.gz --output "$RUNNER_TEMP/actionlint.tar.gz"; then
+            gh api repos/rhysd/actionlint/releases/assets/355827683 --header 'Accept: application/octet-stream' > "$RUNNER_TEMP/actionlint.tar.gz"
+          fi
           echo "900919a84f2229bac68ca9cd4103ea297abc35e9689ebb842c6e34a3d1b01b0a  $RUNNER_TEMP/actionlint.tar.gz" | sha256sum --check
           tar -xzf "$RUNNER_TEMP/actionlint.tar.gz" -C "$RUNNER_TEMP" actionlint
           "$RUNNER_TEMP/actionlint"
