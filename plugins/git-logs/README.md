@@ -6,7 +6,7 @@ Explore Git logs with a Git tree visualization and commit graph, then compare fi
 
 Git Logs 0.1.1 requires Orca 1.4.248 or later and local Git.
 
-This source tree also contains read-only additions planned for 0.2.0: tag badges, filters for message, author, date, and path, paged history, comparison of any two commits, file history, and keyboard navigation. The manifest version is still 0.1.1, and 0.2.0 has not been versioned, tagged, or released. A 0.1.1 build does not include these features. Sections marked **(0.2.0, unreleased)** describe them. They do not change the existing commit actions, which still prepare, confirm, recheck, and back up as described below.
+This source tree also contains read-only additions planned for 0.2.0: tag badges, filters for message, author, date, and path, infinite scroll over paged history, comparison of any two commits, file history, and keyboard navigation. The manifest version is still 0.1.1, and 0.2.0 has not been versioned, tagged, or released. A 0.1.1 build does not include these features. Sections marked **(0.2.0, unreleased)** describe them. They do not change the existing commit actions, which still prepare, confirm, recheck, and back up as described below.
 
 ## Install
 
@@ -155,7 +155,7 @@ The UI, Monaco, SVG icons, and editor worker are bundled locally. There is no te
 
 The `local.git-logs` development build was approved and tested on macOS with Orca 1.4.248 for automatic repository connection, two open Diff tabs, Monaco rendering, and local Git exclusion of generated documents. The earlier identity was also checked in light and dark themes. Git actions were tested in temporary repositories. Other operating systems and Orca versions have not been verified.
 
-The 0.2.0 additions are covered by Git worker tests in temporary repositories and by browser tests that use fixture data. The browser demo does not execute Git, and this document records no check of these additions in a live Orca host. Response time was not measured on a large real repository, so no response-time target is promised.
+The 0.2.0 additions are covered by Git worker tests in temporary repositories and by browser tests that use fixture data. The browser demo does not execute Git, and this document records no check of these additions in a live Orca host. On 2026-11-08 the worker was called directly, once per case, against a local project repository of about 12,600 commits (not public). The first page took 0.26 seconds, filters took 0.13 to 0.19 seconds, and the page at offset 4,800 took 0.13 seconds. Results depend on the repository and hardware, so neither these values nor a response-time target is promised.
 
 ## Local installation
 
