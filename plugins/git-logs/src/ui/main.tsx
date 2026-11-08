@@ -173,7 +173,7 @@ function App() {
   useEffect(() => {
     if (!busy) pages.reachEnd(lastVisible);
   }, [pages.retry, commits.length, busy]);
-  const { body: commitBody, failed: commitBodyFailed } = useCommitMessage(
+  const { body: commitBody, error: commitBodyError } = useCommitMessage(
     repo?.root,
     selected?.hash,
   );
@@ -746,10 +746,17 @@ function App() {
                         <code>{selected.hash.slice(0, 7)}</code>
                       </div>
                       <pre>{commitBody ?? selected.subject}</pre>
-                      {commitBodyFailed && (
-                        <p className="commit-body-error" role="alert">
-                          {t('커밋 본문을 불러오지 못했습니다.')}
-                        </p>
+                      {commitBodyError !== undefined && (
+                        <>
+                          <p className="commit-body-error" role="alert">
+                            {t('커밋 본문을 불러오지 못했습니다.')}
+                          </p>
+                          {commitBodyError && (
+                            <small className="commit-body-error-reason">
+                              {t(commitBodyError)}
+                            </small>
+                          )}
+                        </>
                       )}
                       <small>
                         {selected.author} · {formatDate(selected.date, true)}

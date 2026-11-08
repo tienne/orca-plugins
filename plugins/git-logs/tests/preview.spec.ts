@@ -1299,6 +1299,9 @@ test('commit message failure keeps the subject and shows only an error note', as
   await expect(page.locator('.commit-body-error')).toHaveText(
     '커밋 본문을 불러오지 못했습니다.',
   );
+  await expect(page.locator('.commit-body-error-reason')).toHaveText(
+    'DEMO 커밋 본문 조회 실패 fixture',
+  );
   await expect(page.locator('.details pre')).toHaveText(
     'Merge branch feature/readable-diff',
   );

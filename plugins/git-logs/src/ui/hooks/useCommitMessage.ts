@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react';
 import { request } from '../client';
-import { demo, scenario } from '../env';
+import { demo, message, scenario } from '../env';
 import { fixtureCommitMessage } from '../fixture';
 
 interface Loaded {
   hash: string;
   message?: string;
-  failed?: boolean;
+  error?: string;
 }
 
 // 선택이 바뀐 뒤 도착한 응답은 hash가 달라 버려진다.
@@ -28,13 +28,13 @@ export function useCommitMessage(
       .then((result) => {
         if (active) setLoaded({ hash, message: result.message });
       })
-      .catch(() => {
-        if (active) setLoaded({ hash, failed: true });
+      .catch((e: unknown) => {
+        if (active) setLoaded({ hash, error: message(e) });
       });
     return () => {
       active = false;
     };
   }, [repoRoot, hash]);
   const current = loaded?.hash === hash ? loaded : null;
-  return { body: current?.message, failed: current?.failed === true };
+  return { body: current?.message, error: current?.error };
 }
