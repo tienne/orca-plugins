@@ -749,16 +749,14 @@ function App() {
                       </div>
                       <pre>{commitBody ?? selected.subject}</pre>
                       {commitBodyError !== undefined && (
-                        <>
-                          <p className="commit-body-error" role="alert">
-                            {t('커밋 본문을 불러오지 못했습니다.')}
-                          </p>
+                        <div className="commit-body-error" role="alert">
+                          <p>{t('커밋 본문을 불러오지 못했습니다.')}</p>
                           {commitBodyError && (
                             <small className="commit-body-error-reason">
                               {t(commitBodyError)}
                             </small>
                           )}
-                        </>
+                        </div>
                       )}
                       <small>
                         {selected.author} · {formatDate(selected.date, true)}

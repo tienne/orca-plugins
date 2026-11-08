@@ -492,12 +492,15 @@ main {
   font-size: 11px;
 }
 .details .commit-body-error {
-  margin: 0 0 10px;
+  margin-bottom: 10px;
+  color: var(--danger);
+}
+.details .commit-body-error p {
+  margin: 0;
   color: var(--danger);
 }
 .details .commit-body-error-reason {
   display: block;
-  margin: -6px 0 10px;
   color: var(--danger);
 }
 .details label {

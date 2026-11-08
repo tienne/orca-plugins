@@ -1291,17 +1291,17 @@ test('commit details show the subject first and fill in the body on selection', 
   );
   await expect(page.locator('.commit-body-error')).toHaveCount(0);
 });
-test('commit message failure keeps the subject and shows only an error note', async ({
+test('commit message failure keeps the subject and shows an error note with its cause inside the alert', async ({
   page,
 }) => {
   await page.goto('/?fixture=messageError');
   await page.locator('.commit-row', { hasText: 'Merge branch' }).click();
-  await expect(page.locator('.commit-body-error')).toHaveText(
+  await expect(page.locator('.commit-body-error p')).toHaveText(
     '커밋 본문을 불러오지 못했습니다.',
   );
-  await expect(page.locator('.commit-body-error-reason')).toHaveText(
-    'DEMO 커밋 본문 조회 실패 fixture',
-  );
+  await expect(
+    page.locator('.commit-body-error[role="alert"] .commit-body-error-reason'),
+  ).toHaveText('DEMO 커밋 본문 조회 실패 fixture');
   await expect(page.locator('.details pre')).toHaveText(
     'Merge branch feature/readable-diff',
   );
