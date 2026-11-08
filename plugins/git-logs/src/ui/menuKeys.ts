@@ -2,6 +2,11 @@ import type { KeyboardEvent } from 'react';
 
 const MOVE_KEYS = ['ArrowDown', 'ArrowUp', 'Home', 'End'];
 
+/** 메뉴를 닫은 뒤 연 행으로 포커스를 돌려 키보드 흐름이 끊기지 않게 한다. 행이 사라졌으면 아무것도 하지 않는다. */
+export function restoreFocus(origin: HTMLElement | undefined) {
+  if (origin?.isConnected) origin.focus();
+}
+
 /** 파일·커밋 메뉴가 같이 쓰는 키 처리. Esc와 Tab은 메뉴를 닫고, 방향키와 Home/End는 항목을 옮긴다.
  * Esc는 메뉴 요소에서 끊어 document의 keydown 리스너까지 번지지 않게 한다. */
 export function handleMenuKey(

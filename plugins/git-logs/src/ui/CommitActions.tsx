@@ -1,6 +1,6 @@
 import { t, useLocale } from './i18n';
 import { useEffect, useRef, useState } from 'react';
-import { handleMenuKey } from './menuKeys';
+import { handleMenuKey, restoreFocus } from './menuKeys';
 import type {
   Commit,
   GitAction,
@@ -85,11 +85,10 @@ export function CommitActions({
     setPlan(null);
     setError('');
   };
-  // 닫은 뒤에는 메뉴를 연 커밋 행으로 포커스를 돌려 키보드 흐름이 끊기지 않게 한다.
   const dismissMenu = () => {
     const origin = menu?.origin;
     closeMenu();
-    if (origin?.isConnected) origin.focus();
+    restoreFocus(origin);
   };
   function choose(next: GitAction) {
     if (!menu) return;

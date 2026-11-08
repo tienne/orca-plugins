@@ -1,6 +1,6 @@
 import { t } from './i18n';
 import { useEffect, useRef } from 'react';
-import { handleMenuKey } from './menuKeys';
+import { handleMenuKey, restoreFocus } from './menuKeys';
 
 export interface FileMenu {
   path: string;
@@ -19,11 +19,10 @@ export function FileActions({
   showHistory: (path: string) => void;
 }) {
   const menuRef = useRef<HTMLDivElement>(null);
-  // 닫은 뒤에는 메뉴를 연 파일 행으로 포커스를 돌려 키보드 흐름이 끊기지 않게 한다.
   const dismiss = () => {
     const origin = menu?.origin;
     closeMenu();
-    if (origin?.isConnected) origin.focus();
+    restoreFocus(origin);
   };
   useEffect(() => {
     if (menu)
