@@ -66,7 +66,7 @@ async function optional(root: string, args: string[], signal?: AbortSignal) {
   try {
     return (await git(root, args, undefined, signal)).toString().trim();
   } catch (e) {
-    // 취소는 빈 값으로 삼키지 않고 호출한 쪽까지 올려 보낸다.
+    // 취소는 빈 값으로 바꿔 넘기지 않고 호출한 쪽까지 올려 보낸다.
     if (signal?.aborted) throw e;
     return '';
   }
