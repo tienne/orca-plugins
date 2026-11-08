@@ -60,7 +60,7 @@ pnpm validate
 | `test`            | 임시 저장소의 Git 작업, 번역 문구, 산출물 규칙                           |
 | `ui-test`         | 패키징한 그래프, Diff, 테마, 언어, 키보드 조작, 레이아웃                 |
 | `validate-plugin` | 빌드 산출물의 Orca manifest 검증. `pnpm validate`로 전체 플러그인에 실행 |
-| `screenshots`     | 영문 DEMO의 라이트, 다크, 커밋 메뉴 화면 캡처                            |
+| `screenshots`     | 영문 DEMO의 라이트, 다크, 커밋 메뉴 화면 캡처와 소개 카드                |
 
 브라우저 검증은 설치된 Google Chrome을 사용합니다. Chromium을 사용하려면 `pnpm exec playwright install chromium`을 실행한 뒤 `PW_CHANNEL=chromium`을 설정하십시오. 테스트 결과는 `test-results/`에 저장됩니다.
 

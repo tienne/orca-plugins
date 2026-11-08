@@ -60,7 +60,7 @@ pnpm validate
 | `test`            | Git operations in temporary repositories, translations, and artifact rules                 |
 | `ui-test`         | Packaged graph, diff, themes, languages, keyboard controls, and layout                     |
 | `validate-plugin` | Orca manifest validation of the packaged plugin; `pnpm validate` runs this for all plugins |
-| `screenshots`     | English demo captures in light and dark themes, including the commit menu                  |
+| `screenshots`     | English demo captures in light and dark themes, the commit menu, and a product card        |
 
 Browser checks use an installed Google Chrome. To use Chromium, run `pnpm exec playwright install chromium`, then set `PW_CHANNEL=chromium`. Test output is written to `test-results/`.
 
