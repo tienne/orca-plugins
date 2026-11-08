@@ -3,15 +3,30 @@ import { mkdir, lstat as lstat4, writeFile, realpath as realpath4 } from "node:f
 import { randomUUID as randomUUID2 } from "node:crypto";
 import { join as join2 } from "node:path";
 
+// plugins/git-logs/src/protocol.ts
+var PAGE_SIZE = 200;
+var LOAD_LIMIT = 5e3;
+function descriptorVersion(comparison) {
+  return comparison.kind === "range" ? 2 : 1;
+}
+function checkDescriptorVersion(descriptor) {
+  const d = descriptor;
+  if (d?.version !== 1 && d?.version !== 2)
+    throw new Error("\uC9C0\uC6D0\uD558\uC9C0 \uC54A\uB294 \uBE44\uAD50 \uBB38\uC11C\uC785\uB2C8\uB2E4.");
+  if (d.version === 1 && d.comparison?.kind === "range")
+    throw new Error("\uC9C0\uC6D0\uD558\uC9C0 \uC54A\uB294 \uBE44\uAD50 \uBB38\uC11C\uC785\uB2C8\uB2E4.");
+}
+
 // plugins/git-logs/src/worker/git.ts
 import { constants } from "node:fs";
+import { createHash } from "node:crypto";
 import { execFile } from "node:child_process";
 import { promisify } from "node:util";
 import { realpath, lstat, open } from "node:fs/promises";
 import { isAbsolute, relative, resolve, sep } from "node:path";
 var exec = promisify(execFile);
 var LIMIT = 768 * 1024;
-async function git(root, args, timeout = 15e3) {
+async function git(root, args, timeout = 15e3, signal) {
   const env = { ...process.env };
   for (const key of Object.keys(env))
     if (key.startsWith("GIT_")) delete env[key];
@@ -36,6 +51,7 @@ async function git(root, args, timeout = 15e3) {
       encoding: "buffer",
       maxBuffer: 8 * 1024 * 1024,
       timeout,
+      signal,
       env: {
         ...env,
         GIT_OPTIONAL_LOCKS: "0",
@@ -48,10 +64,11 @@ async function git(root, args, timeout = 15e3) {
   );
   return result.stdout;
 }
-async function optional(root, args) {
+async function optional(root, args, signal) {
   try {
-    return (await git(root, args)).toString().trim();
-  } catch {
+    return (await git(root, args, void 0, signal)).toString().trim();
+  } catch (e) {
+    if (signal?.aborted) throw e;
     return "";
   }
 }
@@ -79,31 +96,157 @@ function validPath(path) {
   if (typeof path !== "string" || !path || path.includes("\0") || isAbsolute(path) || path.split(/[\\/]/).some((p) => p === ".." || p === ".git"))
     throw new Error("\uC798\uBABB\uB41C \uC800\uC7A5\uC18C \uC0C1\uB300 \uACBD\uB85C\uC785\uB2C8\uB2E4.");
 }
-async function commitHash(root, ref) {
+async function commitHash(root, ref, signal) {
   if (typeof ref !== "string" || !/^[a-f0-9]{40,64}$/.test(ref))
     throw new Error("\uC804\uCCB4 \uCEE4\uBC0B \uD574\uC2DC\uAC00 \uD544\uC694\uD569\uB2C8\uB2E4.");
-  const hash = (await git(root, ["rev-parse", "--verify", `${ref}^{commit}`])).toString().trim();
+  const hash = (await git(
+    root,
+    ["rev-parse", "--verify", `${ref}^{commit}`],
+    void 0,
+    signal
+  )).toString().trim();
   if (hash !== ref) throw new Error("\uCEE4\uBC0B\uC774 \uC77C\uCE58\uD558\uC9C0 \uC54A\uC2B5\uB2C8\uB2E4.");
   return hash;
 }
-async function log(root, all = false, branchRef) {
-  const head = await optional(root, ["rev-parse", "--verify", "HEAD"]);
-  const branch = await optional(root, [
-    "symbolic-ref",
-    "--short",
-    "-q",
-    "HEAD"
-  ]);
+async function commitMessage(root, commit) {
+  const hash = await commitHash(root, commit);
+  const raw = await git(root, ["show", "-s", "--format=%B", hash, "--"]);
+  return { message: raw.toString().trimEnd() };
+}
+var MAX_QUERY = 200;
+var MAX_PATH = 4096;
+var FORMAT = "--format=%H%x00%P%x00%an%x00%aI%x00%s%x00";
+function query(value, label) {
+  if (value === void 0 || value === null) return void 0;
+  if (typeof value !== "string") throw new Error("\uC798\uBABB\uB41C \uD544\uD130\uC785\uB2C8\uB2E4.");
+  const q = value.trim();
+  if (!q) return void 0;
+  if (q.length > MAX_QUERY)
+    throw new Error(`${label}\uB294 ${MAX_QUERY}\uC790 \uC774\uD558\uB85C \uC785\uB825\uD558\uC138\uC694.`);
+  if (/[\0\r\n]/.test(q))
+    throw new Error(`${label}\uC5D0 \uC904\uBC14\uAFC8\uC774\uB098 NUL \uBB38\uC790\uB97C \uC4F8 \uC218 \uC5C6\uC2B5\uB2C8\uB2E4.`);
+  return q;
+}
+function day(value) {
+  if (value === void 0 || value === null || value === "") return void 0;
+  if (typeof value !== "string" || !/^\d{4}-\d{2}-\d{2}$/.test(value))
+    throw new Error("\uB0A0\uC9DC\uB294 YYYY-MM-DD \uD615\uC2DD\uC758 \uC2E4\uC81C \uB0A0\uC9DC\uC5EC\uC57C \uD569\uB2C8\uB2E4.");
+  const date = /* @__PURE__ */ new Date(`${value}T00:00:00Z`);
+  if (Number.isNaN(date.getTime()) || date.toISOString().slice(0, 10) !== value)
+    throw new Error("\uB0A0\uC9DC\uB294 YYYY-MM-DD \uD615\uC2DD\uC758 \uC2E4\uC81C \uB0A0\uC9DC\uC5EC\uC57C \uD569\uB2C8\uB2E4.");
+  return value;
+}
+function validateFilter(filter, all = false) {
+  if (filter === void 0 || filter === null) return void 0;
+  if (typeof filter !== "object" || Array.isArray(filter))
+    throw new Error("\uC798\uBABB\uB41C \uD544\uD130\uC785\uB2C8\uB2E4.");
+  const f = filter;
+  const text2 = query(f.text, "\uAC80\uC0C9\uC5B4");
+  const author = query(f.author, "\uC791\uC131\uC790");
+  const since = day(f.since);
+  const until = day(f.until);
+  let path;
+  if (f.path !== void 0 && f.path !== null && f.path !== "") {
+    validPath(f.path);
+    if (f.path.length > MAX_PATH)
+      throw new Error("\uC798\uBABB\uB41C \uC800\uC7A5\uC18C \uC0C1\uB300 \uACBD\uB85C\uC785\uB2C8\uB2E4.");
+    path = f.path;
+  }
+  if (f.follow !== void 0 && typeof f.follow !== "boolean")
+    throw new Error("\uC798\uBABB\uB41C \uD544\uD130\uC785\uB2C8\uB2E4.");
+  if (f.follow === true && all)
+    throw new Error("\uC804\uCCB4 \uBE0C\uB79C\uCE58\uC5D0\uC11C\uB294 \uC774\uB984 \uBCC0\uACBD \uCD94\uC801\uC744 \uC4F8 \uC218 \uC5C6\uC2B5\uB2C8\uB2E4.");
+  const args = [];
+  if (text2) args.push(`--grep=${text2}`);
+  if (author) args.push(`--author=${author}`);
+  if (text2 || author) args.push("--fixed-strings", "--regexp-ignore-case");
+  if (since) args.push(`--since=${since} 00:00:00`);
+  if (until) args.push(`--until=${until} 23:59:59`);
+  if (!args.length && !path) return void 0;
+  return {
+    args,
+    path,
+    follow: f.follow === true && path !== void 0,
+    hashPrefix: text2 && /^[0-9a-f]{4,64}$/i.test(text2) ? text2.toLowerCase() : void 0
+  };
+}
+var STALE_CURSOR = "stale-cursor: \uC774\uB825\uC774 \uBC14\uB00C\uC5C8\uC2B5\uB2C8\uB2E4. \uCC98\uC74C\uBD80\uD130 \uB2E4\uC2DC \uBD88\uB7EC\uC635\uB2C8\uB2E4.";
+var BAD_CURSOR = "\uC798\uBABB\uB41C \uD398\uC774\uC9C0 \uCEE4\uC11C\uC785\uB2C8\uB2E4. \uCC98\uC74C\uBD80\uD130 \uB2E4\uC2DC \uBD88\uB7EC\uC624\uC138\uC694.";
+function encodeCursor(skip, snapshot) {
+  return Buffer.from(JSON.stringify({ skip, snapshot })).toString("base64url");
+}
+function decodeCursor(cursor, snapshot) {
+  if (cursor === void 0 || cursor === null) return void 0;
+  if (typeof cursor !== "string" || cursor.length > 512 || !/^[A-Za-z0-9_-]+$/.test(cursor))
+    throw new Error(BAD_CURSOR);
+  let value;
+  try {
+    value = JSON.parse(Buffer.from(cursor, "base64url").toString("utf8"));
+  } catch {
+    throw new Error(BAD_CURSOR);
+  }
+  if (typeof value !== "object" || value === null || Array.isArray(value))
+    throw new Error(BAD_CURSOR);
+  const { skip, snapshot: saved } = value;
+  if (typeof skip !== "number" || !Number.isInteger(skip) || skip < 0 || skip > LOAD_LIMIT || typeof saved !== "string")
+    throw new Error(BAD_CURSOR);
+  if (saved !== snapshot) throw new Error(STALE_CURSOR);
+  return skip;
+}
+function page(skip, fetched) {
+  const size = Math.min(PAGE_SIZE, LOAD_LIMIT - skip);
+  const taken = Math.min(size, fetched);
+  const next = skip + taken;
+  return { size, taken, next, hasMore: fetched > size && next < LOAD_LIMIT };
+}
+function parseCommits(raw, head, refs) {
+  const fields = raw.split("\0");
+  const commits = [];
+  for (let i = 0; i + 5 < fields.length; i += 5) {
+    const hash = fields[i].trim();
+    commits.push({
+      hash,
+      parents: fields[i + 1].split(" ").filter(Boolean),
+      author: fields[i + 2],
+      date: fields[i + 3],
+      subject: fields[i + 4].trimEnd(),
+      refs: [...hash === head ? ["HEAD"] : [], ...refs.get(hash) ?? []]
+    });
+  }
+  return commits;
+}
+async function readRefs(root, all, signal) {
   const refs = /* @__PURE__ */ new Map();
   const localBranches = [];
   const branches = [];
-  for (const line2 of (await git(root, [
-    "for-each-ref",
-    "--format=%(objectname)%09%(refname)%09%(symref)",
-    "refs/heads",
-    "refs/remotes"
-  ])).toString().trim().split("\n")) {
-    const [hash, name, symbolic] = line2.split("	");
+  const walked = [];
+  const extraWalked = [];
+  for (const line2 of (await git(
+    root,
+    [
+      "for-each-ref",
+      "--format=%(objectname)%09%(refname)%09%(symref)%09%(objecttype)%09%(*objectname)%09%(*objecttype)",
+      "refs/"
+    ],
+    void 0,
+    signal
+  )).toString().split("\n").filter(Boolean)) {
+    const [hash, name, symbolic, type, peeled, peeledType] = line2.split("	");
+    if (name?.startsWith("refs/tags/")) {
+      if (all) extraWalked.push(line2);
+      const target = type === "commit" ? hash : type === "tag" && peeledType === "commit" ? peeled : void 0;
+      if (target)
+        refs.set(target, [
+          ...refs.get(target) ?? [],
+          `tag: ${name.replace(/^refs\/tags\//, "")}`
+        ]);
+      continue;
+    }
+    if (!name?.startsWith("refs/heads/") && !name?.startsWith("refs/remotes/")) {
+      if (all) extraWalked.push(line2);
+      continue;
+    }
+    walked.push(line2);
     if (name?.startsWith("refs/heads/"))
       localBranches.push({ name: name.slice(11), hash });
     if (name && !symbolic)
@@ -119,38 +262,114 @@ async function log(root, all = false, branchRef) {
         name.replace(/^refs\/(heads|remotes)\//, "")
       ]);
   }
+  return { refs, localBranches, branches, walked, extraWalked };
+}
+function snapshotKey(input) {
+  const { head, walked, extra, all, branchRef, valid } = input;
+  return createHash("sha256").update(
+    JSON.stringify({
+      head,
+      refs: walked,
+      extra,
+      all,
+      branchRef: branchRef ?? null,
+      filter: valid ? { args: valid.args, path: valid.path ?? null, follow: valid.follow } : null
+    })
+  ).digest("hex");
+}
+async function placeHashMatch(root, commits, skip, hashPrefix, head, refs, signal) {
+  const match = await optional(
+    root,
+    ["rev-parse", "--verify", "--quiet", `${hashPrefix}^{commit}`],
+    signal
+  );
+  const found = /^[a-f0-9]{40,64}$/.test(match) && match.startsWith(hashPrefix);
+  if (found && skip > 0) {
+    const at = commits.findIndex((c) => c.hash === match);
+    if (at >= 0 && skip + at >= PAGE_SIZE) commits.splice(at, 1);
+  } else if (found && !commits.some((c) => c.hash === match))
+    commits.unshift(
+      ...parseCommits(
+        (await git(
+          root,
+          ["log", "-1", "--no-walk", FORMAT, match, "--"],
+          void 0,
+          signal
+        )).toString(),
+        head,
+        refs
+      )
+    );
+}
+async function log(root, all = false, branchRef, filter, cursor, signal) {
+  const valid = validateFilter(filter, all);
+  const [head, branch, refIndex] = await Promise.all([
+    optional(root, ["rev-parse", "--verify", "HEAD"], signal),
+    optional(root, ["symbolic-ref", "--short", "-q", "HEAD"], signal),
+    readRefs(root, all, signal)
+  ]);
+  const { refs, localBranches, branches, walked, extraWalked } = refIndex;
   const selected = branchRef === void 0 ? void 0 : branches.find((b) => b.ref === branchRef);
   if (branchRef !== void 0 && !selected)
     throw new Error("\uC120\uD0DD\uD55C \uBE0C\uB79C\uCE58\uB97C \uCC3E\uC744 \uC218 \uC5C6\uC2B5\uB2C8\uB2E4. \uC0C8\uB85C\uACE0\uCE68\uD558\uC138\uC694.");
-  const selectedHash = selected ? await commitHash(root, selected.hash) : void 0;
-  const raw = !head && !all && !selectedHash ? "" : (await git(root, [
-    "log",
-    "--topo-order",
-    "-200",
-    "--format=%H%x00%P%x00%an%x00%aI%x00%B%x00",
-    ...selectedHash ? [selectedHash] : all ? ["--all", ...head ? ["HEAD"] : []] : ["HEAD"],
-    "--"
-  ])).toString();
-  const fields = raw.split("\0");
-  const commits = [];
-  for (let i = 0; i + 5 < fields.length; i += 5) {
-    const hash = fields[i].trim();
-    commits.push({
-      hash,
-      parents: fields[i + 1].split(" ").filter(Boolean),
-      author: fields[i + 2],
-      date: fields[i + 3],
-      message: fields[i + 4].trimEnd(),
-      refs: [...hash === head ? ["HEAD"] : [], ...refs.get(hash) ?? []]
-    });
-  }
+  const selectedHash = selected ? await commitHash(root, selected.hash, signal) : void 0;
+  const snapshot = snapshotKey({
+    head,
+    walked,
+    extra: all ? extraWalked : [],
+    all,
+    branchRef,
+    valid
+  });
+  const skip = decodeCursor(cursor, snapshot) ?? 0;
+  const { size } = page(skip, 0);
+  const start = selectedHash ?? head;
+  const follow = valid?.follow === true && !!start && await optional(
+    root,
+    ["cat-file", "-t", `${start}:${valid.path}`],
+    signal
+  ) !== "tree";
+  const range = follow ? [`-${skip + size + 1}`] : [`--skip=${skip}`, `-${size + 1}`];
+  const raw = !head && !all && !selectedHash || size <= 0 ? "" : (await git(
+    root,
+    [
+      "--literal-pathspecs",
+      "log",
+      "--topo-order",
+      ...range,
+      FORMAT,
+      ...valid?.args ?? [],
+      ...follow ? ["--follow"] : [],
+      ...selectedHash ? [selectedHash] : all ? ["--all", ...head ? ["HEAD"] : []] : ["HEAD"],
+      "--",
+      ...valid?.path ? [valid.path] : []
+    ],
+    void 0,
+    signal
+  )).toString();
+  const parsed = parseCommits(raw, head, refs);
+  const fetched = follow ? parsed.slice(skip) : parsed;
+  const { taken, next, hasMore } = page(skip, fetched.length);
+  const commits = fetched.slice(0, taken);
+  if (valid?.hashPrefix)
+    await placeHashMatch(
+      root,
+      commits,
+      skip,
+      valid.hashPrefix,
+      head,
+      refs,
+      signal
+    );
   return {
     root,
     branch: branch || "Detached HEAD",
     head: head || null,
     commits,
     localBranches,
-    branches
+    branches,
+    hasMore,
+    ...hasMore ? { nextCursor: encodeCursor(next, snapshot) } : {}
   };
 }
 function parseNames(raw) {
@@ -165,9 +384,50 @@ function parseNames(raw) {
   }
   return files;
 }
+function limitFiles(files) {
+  if (files.length > 2e3)
+    throw new Error(
+      "\uBCC0\uACBD \uD30C\uC77C\uC774 2,000\uAC1C\uB97C \uCD08\uACFC\uD569\uB2C8\uB2E4. \uB354 \uC791\uC740 \uBE44\uAD50\uAC00 \uD544\uC694\uD569\uB2C8\uB2E4."
+    );
+  return files;
+}
+async function rangeChanges(root, input) {
+  const base = await commitHash(root, input.base);
+  const target = await commitHash(root, input.target);
+  const mergeBase = input.mergeBase === true;
+  let left = base;
+  if (mergeBase) {
+    const found = await optional(root, ["merge-base", base, target]);
+    if (!found) throw new Error("\uACF5\uD1B5 \uC870\uC0C1\uC774 \uC5C6\uC2B5\uB2C8\uB2E4.");
+    left = found;
+  }
+  if (left === target) throw new Error("\uAC19\uC740 \uCEE4\uBC0B\uC785\uB2C8\uB2E4.");
+  const files = limitFiles(
+    parseNames(
+      await git(root, [
+        "diff",
+        "--no-ext-diff",
+        "--no-textconv",
+        "-M",
+        "--name-status",
+        "-z",
+        left,
+        target,
+        "--"
+      ])
+    )
+  );
+  return {
+    comparison: { kind: "range", base, target, mergeBase },
+    files,
+    left,
+    right: target
+  };
+}
 async function changes(root, input) {
-  if (!input || !["working", "commit"].includes(input.kind))
+  if (!input || !["working", "commit", "range"].includes(input.kind))
     throw new Error("\uC798\uBABB\uB41C \uBE44\uAD50 \uBAA8\uB4DC\uC785\uB2C8\uB2E4.");
+  if (input.kind === "range") return rangeChanges(root, input);
   if (input.kind === "commit") {
     const hash = await commitHash(root, input.commit);
     const parents = (await git(root, ["show", "-s", "--format=%P", hash, "--"])).toString().trim().split(" ").filter(Boolean);
@@ -200,10 +460,7 @@ async function changes(root, input) {
         ]
       )
     );
-    if (files2.length > 2e3)
-      throw new Error(
-        "\uBCC0\uACBD \uD30C\uC77C\uC774 2,000\uAC1C\uB97C \uCD08\uACFC\uD569\uB2C8\uB2E4. \uB354 \uC791\uC740 \uBE44\uAD50\uAC00 \uD544\uC694\uD569\uB2C8\uB2E4."
-      );
+    limitFiles(files2);
     return {
       comparison: {
         kind: "commit",
@@ -362,9 +619,9 @@ async function diff(root, comparison, path) {
       modified: { kind: "special", text: "", bytes: 0 }
     };
   const c = set.comparison;
-  const base = c.kind === "commit" ? c.parent : c.head ?? void 0;
+  const base = c.kind === "range" ? set.left : c.kind === "commit" ? c.parent : c.head ?? void 0;
   const original = file.status === "A" ? missing() : await blob(root, base, file.oldPath ?? path);
-  const modified = c.kind === "commit" ? await blob(root, c.commit, path) : await disk(root, path);
+  const modified = c.kind === "range" ? await blob(root, c.target, path) : c.kind === "commit" ? await blob(root, c.commit, path) : await disk(root, path);
   return { file, original, modified };
 }
 
@@ -899,10 +1156,48 @@ function activate(orca) {
       message: result.truncated ? "workspace \uBAA9\uB85D\uC774 \uC77C\uBD80\uB9CC \uC81C\uACF5\uB418\uC5B4 \uC790\uB3D9 \uC5F0\uACB0\uC744 \uD655\uC815\uD560 \uC218 \uC5C6\uC2B5\uB2C8\uB2E4." : matches.length > 1 ? "\uC774\uB984\uACFC \uBE0C\uB79C\uCE58\uAC00 \uAC19\uC740 workspace\uAC00 \uC5EC\uB7EC \uAC1C\uC785\uB2C8\uB2E4. \uC5F0\uACB0\uD560 \uC6CC\uD06C\uD2B8\uB9AC\uB97C \uC120\uD0DD\uD558\uC138\uC694." : matches.length === 1 ? "\uD604\uC7AC workspace\uB294 \uB85C\uCEEC Git \uC6CC\uD06C\uD2B8\uB9AC\uAC00 \uC544\uB2D9\uB2C8\uB2E4. SSH\uB294 \uC9C0\uC6D0\uD558\uC9C0 \uC54A\uC2B5\uB2C8\uB2E4." : "\uD604\uC7AC workspace\uB97C \uC790\uB3D9\uC73C\uB85C \uC2DD\uBCC4\uD558\uC9C0 \uBABB\uD588\uC2B5\uB2C8\uB2E4. \uB85C\uCEEC \uC6CC\uD06C\uD2B8\uB9AC\uB97C \uC120\uD0DD\uD558\uC138\uC694."
     };
   });
-  handle(
-    "log",
-    async ({ repo, all, branchRef }) => log(check(repo), all === true, branchRef)
-  );
+  const filterRequests = /* @__PURE__ */ new Map();
+  const pageRequests = /* @__PURE__ */ new Map();
+  handle("log", async ({ repo, all, branchRef, filter, cursor, cancelKey }) => {
+    const root = check(repo);
+    if (cancelKey !== "filter") {
+      if (!cursor) return log(root, all === true, branchRef, filter, cursor);
+      const controller2 = new AbortController();
+      const pending2 = pageRequests.get(root) ?? /* @__PURE__ */ new Set();
+      pending2.add(controller2);
+      pageRequests.set(root, pending2);
+      try {
+        return await log(
+          root,
+          all === true,
+          branchRef,
+          filter,
+          cursor,
+          controller2.signal
+        );
+      } finally {
+        pending2.delete(controller2);
+        if (pending2.size === 0 && pageRequests.get(root) === pending2)
+          pageRequests.delete(root);
+      }
+    }
+    filterRequests.get(root)?.abort();
+    for (const pending2 of pageRequests.get(root) ?? []) pending2.abort();
+    const controller = new AbortController();
+    filterRequests.set(root, controller);
+    try {
+      return await log(
+        root,
+        all === true,
+        branchRef,
+        filter,
+        cursor,
+        controller.signal
+      );
+    } finally {
+      if (filterRequests.get(root) === controller) filterRequests.delete(root);
+    }
+  });
   handle(
     "prepare",
     async ({ repo, workspaceId, operation }) => operations.prepare(await mutationRoot(repo, workspaceId), operation)
@@ -914,6 +1209,10 @@ function activate(orca) {
       token,
       confirmation
     )
+  );
+  handle(
+    "commitMessage",
+    async ({ repo, commit }) => commitMessage(check(repo), commit)
   );
   handle("changes", async ({ repo, comparison }) => {
     const root = check(repo);
@@ -949,8 +1248,7 @@ function activate(orca) {
   handle("open", async ({ descriptor, workspaceId }) => {
     requireHost("editor.open");
     requireHost("workspace.open");
-    if (descriptor?.version !== 1)
-      throw new Error("\uC9C0\uC6D0\uD558\uC9C0 \uC54A\uB294 \uBE44\uAD50 \uBB38\uC11C\uC785\uB2C8\uB2E4.");
+    checkDescriptorVersion(descriptor);
     const root = check(descriptor.repo);
     if (!(await workspaces(root)).some((w) => w.id === workspaceId))
       throw new Error(
@@ -960,7 +1258,7 @@ function activate(orca) {
     if (descriptor.path && !set.files.some((f) => f.path === descriptor.path))
       throw new Error("\uBCC0\uACBD \uD30C\uC77C\uC774 \uC0AC\uB77C\uC84C\uC2B5\uB2C8\uB2E4. \uC0C8\uB85C\uACE0\uCE68\uD558\uC138\uC694.");
     const safe = {
-      version: 1,
+      version: descriptorVersion(set.comparison),
       repo: root,
       comparison: set.comparison,
       ...descriptor.path ? { path: descriptor.path } : {}
