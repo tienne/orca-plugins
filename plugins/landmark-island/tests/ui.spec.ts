@@ -211,8 +211,7 @@ test('walk, camera and weather are independent from collection ownership', async
   await expect(ocean).toHaveAttribute('data-follow', 'true');
   await page.getByLabel('Weather', { exact: true }).selectOption('2');
   await expect(ocean).toHaveAttribute('data-weather', 'rain');
-  await page.getByRole('button', { name: 'Change time of day' }).click();
-  await page.getByRole('button', { name: 'Change time of day' }).click();
+  await page.getByLabel('Time of day', { exact: true }).selectOption('2');
   await expect(ocean).toHaveAttribute('data-phase', 'night');
   await page.screenshot({
     path: 'test-results/landmark-island/rain-night-demo.png',
@@ -228,13 +227,14 @@ test('walk, camera and weather are independent from collection ownership', async
   await expect(page.locator('.world circle')).toHaveCount(1);
 });
 
-test('automatic climate cycles, manual override and reduced motion', async ({
+test('automatic weather cycles independently of manual daylight with reduced motion', async ({
   page,
 }) => {
   await page.clock.install();
   await page.emulateMedia({ reducedMotion: 'reduce' });
   await page.goto('/');
   const ocean = page.locator('.ocean');
+  await page.getByLabel('Time of day', { exact: true }).selectOption('1');
   await expect(ocean).toHaveAttribute('data-weather', 'sunny');
   await page.clock.runFor(30000);
   await expect(ocean).toHaveAttribute('data-weather', 'cloudy');
@@ -1168,7 +1168,7 @@ test('host theme tokens update reading and controls live while preserving game a
       'color',
       rgb(tokens['primary-foreground']),
     );
-    await expect(page.locator('.climate-controls select')).toHaveCSS(
+    await expect(page.locator('#weather')).toHaveCSS(
       'border-top-color',
       rgb(tokens.input),
     );

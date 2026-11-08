@@ -14,7 +14,7 @@
   gap: 8px;
   flex-wrap: wrap;
 }
-.climate-controls label {
+.climate-field {
   display: flex;
   align-items: center;
   gap: 7px;

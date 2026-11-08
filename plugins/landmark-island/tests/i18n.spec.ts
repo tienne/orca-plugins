@@ -123,7 +123,7 @@ test('Korean browser fixture covers discovery, placement, decorations, dynamic w
     .click();
   await page.locator('#weather').selectOption('2');
   await expect(page.locator('.forecast')).toContainText('비');
-  await page.locator('#daylight').click();
+  await page.locator('#daylight').selectOption('1');
   await expect(page.locator('.forecast')).toContainText('노을');
   const before = await page.evaluate(() =>
     localStorage.getItem('landmark-island-demo-v1'),

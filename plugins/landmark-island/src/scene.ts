@@ -13,13 +13,24 @@ import {
 import { minimap } from './terrain-art';
 const weatherNames = ['Sunny', 'Cloudy', 'Rain', 'Snow'] as const;
 const phases = ['Day', 'Sunset', 'Night', 'Dawn'] as const;
+// Use the renderer's local timezone, without location access or a weather service.
+function deviceDaylight(now = new Date()) {
+  const hour = now.getHours();
+  const phase = hour < 5 || hour >= 19 ? 2 : hour < 7 ? 3 : hour < 17 ? 0 : 1;
+  const next = new Date(now);
+  const boundary = [5, 7, 17, 19].find((h) => h > hour);
+  if (boundary === undefined) next.setDate(next.getDate() + 1);
+  next.setHours(boundary ?? 5, 0, 0, 0);
+  return { phase, nextAt: next.getTime() };
+}
 // Original woodland adventurer with a green tunic, blue scarf, and travel pack.
 const person = `<svg viewBox="0 0 40 60" aria-hidden="true"><ellipse cx="20" cy="55" rx="14" ry="4" fill="#244b343d"/><g class="walker-body" stroke="#344c37" stroke-linejoin="round"><path class="leg left-leg" d="M15 40v12l-3 1" stroke="#69503a" stroke-width="6" stroke-linecap="round"/><path class="leg right-leg" d="M25 40v12l3 1" stroke="#69503a" stroke-width="6" stroke-linecap="round"/><rect x="7" y="24" width="26" height="21" rx="6" fill="#9b7950" stroke-width="1.3"/><path d="M13 25Q8 30 8 43l12 4 12-4-5-18z" fill="#3c8053" stroke-width="1.4"/><path d="M14 27l-3 15 9 3V26z" fill="#78ac60" stroke="none"/><path d="M10 38l21 1" stroke="#72543c" stroke-width="4"/><rect x="19" y="37" width="4" height="4" fill="#e3c276" stroke="#8b713e" stroke-width=".7"/><path d="M10 30L6 38m24-8 4 8" stroke="#edc69a" stroke-width="5" stroke-linecap="round"/><path d="M11 14q0-9 10-9 11 1 10 12l-2 7q-9 9-17 0z" fill="#f2d2a4" stroke-width="1.2"/><path d="M9 18Q6 8 13 6l-1-4 9 3 7-3-1 4q9 4 5 14l-4-6-6 2-1-5-6 5-2-2-2 7z" fill="#886143" stroke="#5e5035" stroke-width="1"/><path d="M12 9l7-2m4 1 5 3" stroke="#bb955d" stroke-width="2" stroke-linecap="round"/><circle cx="16" cy="20" r="1" fill="#344634" stroke="none"/><circle cx="25" cy="20" r="1" fill="#344634" stroke="none"/><path d="M19 25q2 1 4-1" fill="none" stroke="#b58160"/><path d="M12 26q9 5 17 0l-5 7-9-2z" fill="#73b4b7" stroke-width=".8"/><path d="M26 30l6 7-7-2" fill="#93c9bb" stroke="none"/><path d="M12 31l16 12" stroke="#e4d8a5" stroke-width="2"/><path d="M27 38l8 1-1 9-9-1z" fill="#bc9a60" stroke-width="1"/></g></svg>`;
 export class IslandScene {
   mode: 'walk' | 'build' = 'walk';
   cell = 30;
   weather = 0;
-  phase = 0;
+  phase: number = deviceDaylight().phase;
+  deviceTime = true;
   automatic = true;
   zoom = 1;
   x = 0;
@@ -28,10 +39,9 @@ export class IslandScene {
   private focusX = project(30).x;
   private focusY = project(30).y;
   private cleanup = () => {};
-  private climateTicks = 0;
   private nextClimateAt = Date.now() + 30000;
   markup() {
-    return `<div class="scene-controls"><div class="climate-controls"><label for="weather">Weather</label><select id="weather"><option value="auto" ${this.automatic ? 'selected' : ''}>Auto · island forecast</option>${weatherNames.map((w, i) => `<option value="${i}" ${!this.automatic && this.weather === i ? 'selected' : ''}>${w}</option>`).join('')}</select><button id="daylight" aria-label="Change time of day">${phases[this.phase]}</button></div></div>`;
+    return `<div class="scene-controls"><div class="climate-controls"><div class="climate-field"><label for="weather">Weather</label><select id="weather"><option value="auto" ${this.automatic ? 'selected' : ''}>Auto · island forecast</option>${weatherNames.map((w, i) => `<option value="${i}" ${!this.automatic && this.weather === i ? 'selected' : ''}>${w}</option>`).join('')}</select></div><div class="climate-field"><label for="daylight">Time of day</label><select id="daylight"><option value="auto" ${this.deviceTime ? 'selected' : ''}>Auto · device time</option>${phases.map((phase, i) => `<option value="${i}" ${!this.deviceTime && this.phase === i ? 'selected' : ''}>${phase}</option>`).join('')}</select></div></div></div>`;
   }
   modeMarkup() {
     return `<div class="mode-controls" role="group" aria-label="Island mode"><button data-mode="walk" aria-pressed="${this.mode === 'walk'}">Explore island</button><button data-mode="build" aria-pressed="${this.mode === 'build'}">Arrange landmarks</button>${this.mode === 'build' ? '<button class="finish-arranging" data-mode="walk">Done arranging</button>' : ''}</div>`;
@@ -119,9 +129,27 @@ export class IslandScene {
     const climate = () => {
       ocean.dataset.weather = weatherNames[this.weather].toLowerCase();
       ocean.dataset.phase = phases[this.phase].toLowerCase();
+      ocean.dataset.timeSource = this.deviceTime ? 'device' : 'manual';
       ocean.querySelector('.forecast')!.textContent =
-        `${['☀', '☁', '☂', '❄'][this.weather]} ${weatherNames[this.weather]} · ${phases[this.phase]}${this.automatic ? ' · Auto' : ''}`;
-      root.querySelector('#daylight')!.textContent = phases[this.phase];
+        `${['☀', '☁', '☂', '❄'][this.weather]} ${weatherNames[this.weather]} · ${phases[this.phase]}${this.deviceTime ? ' · Device time' : ''}${this.automatic ? ' · Auto weather' : ''}`;
+    };
+    let daylightTimer: ReturnType<typeof setTimeout> | undefined;
+    const syncDaylight = () => {
+      clearTimeout(daylightTimer);
+      if (!this.deviceTime) return;
+      const now = new Date();
+      const { phase, nextAt } = deviceDaylight(now);
+      if (this.phase !== phase) {
+        this.phase = phase;
+        climate();
+      }
+      // Schedule the next local boundary rather than polling a clock. Recompute
+      // after visibility/focus/pageshow to recover from sleep or timezone changes.
+      if (!document.hidden)
+        daylightTimer = setTimeout(
+          syncDaylight,
+          Math.max(1, nextAt - now.getTime()),
+        );
     };
     const finish = () => {
       walking = false;
@@ -172,6 +200,7 @@ export class IslandScene {
           : 'Select a landmark or decoration, then a cell · Drag to pan · Scroll to zoom';
     position();
     updateCamera();
+    syncDaylight();
     climate();
     root.querySelectorAll<HTMLButtonElement>('button[data-mode]').forEach(
       (b) =>
@@ -186,8 +215,11 @@ export class IslandScene {
       if (!this.automatic) this.weather = Number(value);
       climate();
     };
-    root.querySelector<HTMLButtonElement>('#daylight')!.onclick = () => {
-      this.phase = (this.phase + 1) % 4;
+    root.querySelector<HTMLSelectElement>('#daylight')!.onchange = (e) => {
+      const value = (e.target as HTMLSelectElement).value;
+      this.deviceTime = value === 'auto';
+      if (!this.deviceTime) this.phase = Number(value);
+      syncDaylight();
       climate();
     };
     root.querySelector<HTMLButtonElement>('#zoom-in')!.onclick = () => {
@@ -534,9 +566,7 @@ export class IslandScene {
     const advanceClimate = () => {
       this.nextClimateAt = Date.now() + 30000;
       if (this.automatic && !document.hidden) {
-        this.climateTicks++;
         this.weather = (this.weather + 1) % 4;
-        if (this.climateTicks % 2 === 0) this.phase = (this.phase + 1) % 4;
         climate();
       }
       auto = setTimeout(advanceClimate, 30000);
@@ -546,6 +576,7 @@ export class IslandScene {
       Math.max(0, this.nextClimateAt - Date.now()),
     );
     const visibility = () => {
+      syncDaylight();
       if (document.hidden) clearStroke();
       if (document.hidden && walking) {
         clearTimeout(stepTimer);
@@ -553,6 +584,8 @@ export class IslandScene {
       }
     };
     document.addEventListener('visibilitychange', visibility, { signal });
+    window.addEventListener('focus', syncDaylight, { signal });
+    window.addEventListener('pageshow', syncDaylight, { signal });
     const resize = new ResizeObserver(() => updateCamera());
     resize.observe(ocean);
     this.cleanup = () => {
@@ -562,6 +595,7 @@ export class IslandScene {
       controller.abort();
       clearTimeout(stepTimer);
       clearTimeout(auto);
+      clearTimeout(daylightTimer);
       clearTimeout(wheelTimer);
       resize.disconnect();
     };
