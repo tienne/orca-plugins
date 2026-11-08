@@ -13,10 +13,9 @@ Data attribution is also shown beside available reports in the panel.
 
 API service terms and privacy (checked 2026-11-08):
 https://open-meteo.com/en/terms
-The free API is restricted to non-commercial use. The proposed first release
-has no advertising, subscriptions or paid features. Commercial deployment needs
-an appropriate service arrangement; the MIT code license does not grant rights
-to use a third-party API outside that API's terms. No credential is bundled.
+API access is subject to the provider’s service terms. The MIT code license
+does not grant rights to use a third-party API outside those terms.
+No credential is bundled.
 Hourly caching reduces requests but does not guarantee compliance with aggregate
 provider limits as the user population grows.
 

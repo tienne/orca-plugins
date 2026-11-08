@@ -23,8 +23,8 @@ change a user's island, publish a tag or establish a directory listing.
 
 ## Weather release condition
 
-The proposed first release is free and non-commercial, without advertising,
-subscriptions or paid features. Keep the existing hourly Open-Meteo integration
+The user confirmed a free, non-commercial first release on 2026-11-08, without advertising,
+subscriptions or paid features. This operating decision is kept in the release checklist, not used as product marketing copy. Keep the existing hourly Open-Meteo integration
 under that condition. Free software is not automatically non-commercial in every
 deployment; commercial use must satisfy the provider's separate service terms.
 Do not embed a shared paid API key in the downloadable plugin. A commercial
@@ -124,4 +124,4 @@ was 6,207,356 bytes before and 6,207,900 bytes after. Saved progress stayed iden
 These are local headless measurements, not total CPU, GPU, native memory or proof
 of long-term leak freedom. The observed +544-byte heap difference is diagnostic.
 
-Both artifacts passed `pnpm validate`. Orcatopia is 15 files / 3,830,546 bytes, with no font files. `plugin inspect` reports the same two capabilities and trusted-worker execution; no execution approval was granted. `plugin check` passed validation but returned no rendered panel scenarios for this HTML panel, so it is not native interaction evidence.
+Both artifacts passed `pnpm validate`. At that checkpoint Orcatopia was 15 files / 3,830,546 bytes, with no font files. `plugin inspect` reports the same two capabilities and trusted-worker execution; no execution approval was granted. `plugin check` passed validation but returned no rendered panel scenarios for this HTML panel, so it is not native interaction evidence.
