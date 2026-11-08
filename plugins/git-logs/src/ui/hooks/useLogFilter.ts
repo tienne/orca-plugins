@@ -6,6 +6,7 @@ export type FilterField = 'text' | 'author' | 'since' | 'until' | 'path';
 type FilterInput = Record<FilterField, string> & { follow: boolean };
 
 const DEBOUNCE_MS = 300;
+const COMPOSING_DEBOUNCE_MS = 600;
 const fields: FilterField[] = ['text', 'author', 'since', 'until', 'path'];
 const empty: FilterInput = {
   text: '',
@@ -58,11 +59,11 @@ export function useLogFilter() {
     setFilter((current) =>
       filterKey(current) === filterKey(next) ? current : next,
     );
-  // 한글 조합 중인 글자가 `git log --author` 인자로 나가지 않게 조합이 끝날 때까지 적용을 미룬다.
+  // 조합 중인 글자는 다음 자모가 붙으면 바뀌므로 덜 찬 음절이 필터 인자로 나가는 일을 줄이려고 조합 중에는 더 오래 기다린다.
   const composing = useRef(false);
   useEffect(() => {
-    if (composing.current) return;
-    const timer = setTimeout(() => apply(normalize(input)), DEBOUNCE_MS);
+    const delay = composing.current ? COMPOSING_DEBOUNCE_MS : DEBOUNCE_MS;
+    const timer = setTimeout(() => apply(normalize(input)), delay);
     return () => clearTimeout(timer);
   }, [input]);
   const chips = fields
@@ -80,7 +81,7 @@ export function useLogFilter() {
       ...(field === 'path' ? { follow: false } : {}),
     }));
   }
-  // 조합이 끝나도 입력 값이 그대로면 effect가 다시 돌지 않아서, 같은 값을 다시 넣어 디바운스를 새로 시작한다.
+  // 조합이 끝나도 입력 값이 그대로면 effect가 다시 돌지 않는다. 같은 값을 다시 넣어 디바운스를 새로 시작한다.
   function composition(field: FilterField) {
     return {
       onCompositionStart: () => {

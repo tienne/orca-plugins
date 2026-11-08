@@ -1521,7 +1521,7 @@ test('log filters reach the worker once after debounce, AND with the branch and 
   await expect(page.getByRole('alert')).toHaveCount(0);
 });
 
-test('log filter waits for Korean IME composition to end before reaching the worker', async ({
+test('log filter waits longer during Korean IME composition and applies a composition left unconfirmed', async ({
   page,
 }) => {
   const { fixtureRepo } = await import('../src/ui/fixture');
@@ -1570,13 +1570,15 @@ test('log filter waits for Korean IME composition to end before reaching the wor
   await author.dispatchEvent('compositionstart');
   await author.fill('ㄱ');
   await author.fill('궈');
-  await page.waitForTimeout(600);
+  await page.waitForTimeout(400);
   expect(await calls()).toHaveLength(0);
   await expect(author).toHaveValue('궈');
   await author.fill('권');
-  await author.dispatchEvent('compositionend');
   await expect.poll(async () => (await calls()).length).toBe(1);
   expect((await calls())[0]).toMatchObject({ filter: { author: '권' } });
+  await author.dispatchEvent('compositionend');
+  await page.waitForTimeout(400);
+  expect(await calls()).toHaveLength(1);
 });
 
 // 가상화된 목록에서 DOM에 남아도 되는 행 수: 보이는 행 + 위아래 여유 8행씩 + 고정(선택·포커스) 2행.
