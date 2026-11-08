@@ -36,6 +36,7 @@ export function FileActions({
       <div
         ref={menuRef}
         role="menu"
+        tabIndex={-1}
         aria-label={t('파일 작업')}
         className="commit-menu"
         style={{

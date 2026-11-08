@@ -867,6 +867,9 @@ footer span {
   color: var(--popover-fg);
   box-shadow: 0 4px 12px color-mix(in srgb, var(--fg) 10%, transparent);
 }
+.commit-menu:focus {
+  outline: none;
+}
 .commit-menu small {
   display: block;
   padding: 5px 8px;

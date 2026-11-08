@@ -14,6 +14,7 @@ export interface CommitMenu {
   commit: Commit;
   x: number;
   y: number;
+  origin: HTMLElement;
 }
 const labels: Record<GitAction, string> = {
   checkout: '체크아웃…',
@@ -84,6 +85,12 @@ export function CommitActions({
     setPlan(null);
     setError('');
   };
+  // 닫은 뒤에는 메뉴를 연 커밋 행으로 포커스를 돌려 키보드 흐름이 끊기지 않게 한다.
+  const dismissMenu = () => {
+    const origin = menu?.origin;
+    closeMenu();
+    if (origin?.isConnected) origin.focus();
+  };
   function choose(next: GitAction) {
     if (!menu) return;
     setTarget(menu.commit);
@@ -96,13 +103,14 @@ export function CommitActions({
     setError('');
     setResult(null);
     setRefreshError('');
-    closeMenu();
+    // showModal이 이 시점의 포커스를 기억하므로, 닫은 뒤 커밋 행으로 돌아오도록 먼저 행에 둔다.
+    dismissMenu();
   }
   // 기준이 없을 때도 항목은 포커스를 받아야 방향키 이동이 끊기지 않아 disabled 대신 aria-disabled를 쓴다.
   function pick(action: () => void, needsBase = false) {
     if (!menu || (needsBase && !hasBase)) return;
     action();
-    closeMenu();
+    dismissMenu();
   }
   const actionGroup = (group: (typeof menuGroups)[number]) => (
     <div
@@ -204,17 +212,18 @@ export function CommitActions({
     <>
       {menu && (
         <>
-          <div className="context-dismiss" onPointerDown={closeMenu} />
+          <div className="context-dismiss" onPointerDown={dismissMenu} />
           <div
             ref={menuRef}
             role="menu"
+            tabIndex={-1}
             aria-label={t('커밋 작업')}
             className="commit-menu"
             style={{
               left: Math.max(8, Math.min(menu.x, window.innerWidth - 260)),
               top: Math.max(8, Math.min(menu.y, window.innerHeight - 480)),
             }}
-            onKeyDown={(event) => handleMenuKey(event, closeMenu)}
+            onKeyDown={(event) => handleMenuKey(event, dismissMenu)}
           >
             <small role="presentation">
               {menu.commit.hash.slice(0, 7)} {t('· 커밋 작업')}

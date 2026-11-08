@@ -621,6 +621,7 @@ function App() {
                               commit,
                               x: event.clientX || rect.left + 24,
                               y: event.clientY || rect.top + 20,
+                              origin: event.currentTarget,
                             });
                           }}
                           onKeyDown={(event) => {
@@ -637,6 +638,7 @@ function App() {
                                 commit,
                                 x: rect.left + 24,
                                 y: rect.top + 20,
+                                origin: event.currentTarget,
                               });
                             }
                           }}
