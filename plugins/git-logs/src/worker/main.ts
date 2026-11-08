@@ -2,15 +2,27 @@ import { mkdir, lstat, writeFile, realpath } from 'node:fs/promises';
 import { randomUUID } from 'node:crypto';
 import { join } from 'node:path';
 import type {
+  Comparison,
   Descriptor,
   Requests,
   WorkerApi,
   WorkspaceContext,
   WorkspaceChoice,
 } from '../protocol';
-import { changes, diff, log, repository, git } from './git';
+import { changes, commitMessage, diff, log, repository, git } from './git';
 import { createOperations } from './operations';
 import { ensureLocalIgnore } from './local-ignore';
+// range 문서만 version 2로 올려 0.1.x가 해석하지 못하는 문서를 거부하게 한다.
+export function descriptorVersion(comparison: Comparison): 1 | 2 {
+  return comparison.kind === 'range' ? 2 : 1;
+}
+export function checkDescriptorVersion(descriptor: unknown): void {
+  const d = descriptor as Partial<Descriptor> | null | undefined;
+  if (d?.version !== 1 && d?.version !== 2)
+    throw new Error('지원하지 않는 비교 문서입니다.');
+  if (d.version === 1 && d.comparison?.kind === 'range')
+    throw new Error('지원하지 않는 비교 문서입니다.');
+}
 export default function activate(orca: WorkerApi): void {
   function requireHost(name: string) {
     if (orca.api?.major !== 1 || orca.api.minor < 3 || !orca.host.has(name))
@@ -205,8 +217,8 @@ export default function activate(orca: WorkerApi): void {
             : '현재 workspace를 자동으로 식별하지 못했습니다. 로컬 워크트리를 선택하세요.',
     };
   });
-  handle('log', async ({ repo, all, branchRef }) =>
-    log(check(repo), all === true, branchRef),
+  handle('log', async ({ repo, all, branchRef, filter, cursor }) =>
+    log(check(repo), all === true, branchRef, filter, cursor),
   );
   handle('prepare', async ({ repo, workspaceId, operation }) =>
     operations.prepare(await mutationRoot(repo, workspaceId), operation),
@@ -217,6 +229,9 @@ export default function activate(orca: WorkerApi): void {
       token,
       confirmation,
     ),
+  );
+  handle('commitMessage', async ({ repo, commit }) =>
+    commitMessage(check(repo), commit),
   );
   handle('changes', async ({ repo, comparison }) => {
     const root = check(repo);
@@ -261,8 +276,7 @@ export default function activate(orca: WorkerApi): void {
   handle('open', async ({ descriptor, workspaceId }) => {
     requireHost('editor.open');
     requireHost('workspace.open');
-    if (descriptor?.version !== 1)
-      throw new Error('지원하지 않는 비교 문서입니다.');
+    checkDescriptorVersion(descriptor);
     const root = check(descriptor.repo);
     if (!(await workspaces(root)).some((w) => w.id === workspaceId))
       throw new Error(
@@ -272,7 +286,7 @@ export default function activate(orca: WorkerApi): void {
     if (descriptor.path && !set.files.some((f) => f.path === descriptor.path))
       throw new Error('변경 파일이 사라졌습니다. 새로고침하세요.');
     const safe: Descriptor = {
-      version: 1,
+      version: descriptorVersion(set.comparison),
       repo: root,
       comparison: set.comparison,
       ...(descriptor.path ? { path: descriptor.path } : {}),

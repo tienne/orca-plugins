@@ -1,4 +1,5 @@
 import { constants } from 'node:fs';
+import { createHash } from 'node:crypto';
 import { execFile } from 'node:child_process';
 import { promisify } from 'node:util';
 import { realpath, lstat, open } from 'node:fs/promises';
@@ -12,6 +13,7 @@ import type {
   FileSide,
   Repository,
   BranchRef,
+  LogFilter,
 } from '../protocol';
 const exec = promisify(execFile);
 const LIMIT = 768 * 1024;
@@ -109,11 +111,161 @@ export async function commitHash(root: string, ref: string): Promise<string> {
   if (hash !== ref) throw new Error('커밋이 일치하지 않습니다.');
   return hash;
 }
+export async function commitMessage(
+  root: string,
+  commit: string,
+): Promise<{ message: string }> {
+  const hash = await commitHash(root, commit);
+  const raw = await git(root, ['show', '-s', '--format=%B', hash, '--']);
+  return { message: raw.toString().trimEnd() };
+}
+const MAX_QUERY = 200;
+const MAX_PATH = 4096;
+const FORMAT = '--format=%H%x00%P%x00%an%x00%aI%x00%s%x00';
+export interface ValidFilter {
+  args: string[];
+  path?: string;
+  follow: boolean;
+  hashPrefix?: string;
+}
+function query(value: unknown, label: string): string | undefined {
+  if (value === undefined || value === null) return undefined;
+  if (typeof value !== 'string') throw new Error('잘못된 필터입니다.');
+  const q = value.trim();
+  if (!q) return undefined;
+  if (q.length > MAX_QUERY)
+    throw new Error(`${label}는 ${MAX_QUERY}자 이하로 입력하세요.`);
+  // 고정 문자열 검색에서도 줄바꿈은 패턴 구분자로 쪼개지므로 미리 막는다.
+  if (/[\0\r\n]/.test(q))
+    throw new Error(`${label}에 줄바꿈이나 NUL 문자를 쓸 수 없습니다.`);
+  return q;
+}
+function day(value: unknown): string | undefined {
+  if (value === undefined || value === null || value === '') return undefined;
+  if (typeof value !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(value))
+    throw new Error('날짜는 YYYY-MM-DD 형식의 실제 날짜여야 합니다.');
+  const date = new Date(`${value}T00:00:00Z`);
+  // 2월 30일처럼 Date가 다음 달로 넘겨 버리는 값을 왕복 비교로 거른다.
+  if (Number.isNaN(date.getTime()) || date.toISOString().slice(0, 10) !== value)
+    throw new Error('날짜는 YYYY-MM-DD 형식의 실제 날짜여야 합니다.');
+  return value;
+}
+export function validateFilter(
+  filter: unknown,
+  all = false,
+): ValidFilter | undefined {
+  if (filter === undefined || filter === null) return undefined;
+  if (typeof filter !== 'object' || Array.isArray(filter))
+    throw new Error('잘못된 필터입니다.');
+  const f = filter as LogFilter;
+  const text = query(f.text, '검색어');
+  const author = query(f.author, '작성자');
+  const since = day(f.since);
+  const until = day(f.until);
+  let path: string | undefined;
+  if (f.path !== undefined && f.path !== null && f.path !== '') {
+    validPath(f.path);
+    if (f.path.length > MAX_PATH)
+      throw new Error('잘못된 저장소 상대 경로입니다.');
+    path = f.path;
+  }
+  if (f.follow !== undefined && typeof f.follow !== 'boolean')
+    throw new Error('잘못된 필터입니다.');
+  if (f.follow === true && all)
+    throw new Error('전체 브랜치에서는 이름 변경 추적을 쓸 수 없습니다.');
+  const args: string[] = [];
+  if (text) args.push(`--grep=${text}`);
+  if (author) args.push(`--author=${author}`);
+  if (text || author) args.push('--fixed-strings', '--regexp-ignore-case');
+  // 날짜만 주면 Git이 현재 시각을 붙여 해석해 당일 커밋 일부가 빠진다.
+  if (since) args.push(`--since=${since} 00:00:00`);
+  if (until) args.push(`--until=${until} 23:59:59`);
+  if (!args.length && !path) return undefined;
+  return {
+    args,
+    path,
+    follow: f.follow === true && path !== undefined,
+    hashPrefix:
+      text && /^[0-9a-f]{4,64}$/i.test(text) ? text.toLowerCase() : undefined,
+  };
+}
+export const PAGE_SIZE = 200;
+export const LOAD_LIMIT = 5000;
+const STALE_CURSOR =
+  'stale-cursor: 이력이 바뀌었습니다. 처음부터 다시 불러옵니다.';
+const BAD_CURSOR = '잘못된 페이지 커서입니다. 처음부터 다시 불러오세요.';
+export function encodeCursor(skip: number, snapshot: string): string {
+  return Buffer.from(JSON.stringify({ skip, snapshot })).toString('base64url');
+}
+export function decodeCursor(
+  cursor: unknown,
+  snapshot: string,
+): number | undefined {
+  if (cursor === undefined || cursor === null) return undefined;
+  // Node의 base64url 디코더는 모르는 문자를 조용히 버리므로 문자 집합을 먼저 확인한다.
+  if (
+    typeof cursor !== 'string' ||
+    cursor.length > 512 ||
+    !/^[A-Za-z0-9_-]+$/.test(cursor)
+  )
+    throw new Error(BAD_CURSOR);
+  let value: unknown;
+  try {
+    value = JSON.parse(Buffer.from(cursor, 'base64url').toString('utf8'));
+  } catch {
+    throw new Error(BAD_CURSOR);
+  }
+  if (typeof value !== 'object' || value === null || Array.isArray(value))
+    throw new Error(BAD_CURSOR);
+  const { skip, snapshot: saved } = value as {
+    skip?: unknown;
+    snapshot?: unknown;
+  };
+  if (
+    typeof skip !== 'number' ||
+    !Number.isInteger(skip) ||
+    skip < 0 ||
+    skip > LOAD_LIMIT ||
+    typeof saved !== 'string'
+  )
+    throw new Error(BAD_CURSOR);
+  if (saved !== snapshot) throw new Error(STALE_CURSOR);
+  return skip;
+}
+export function page(skip: number, fetched: number) {
+  const size = Math.min(PAGE_SIZE, LOAD_LIMIT - skip);
+  const taken = Math.min(size, fetched);
+  const next = skip + taken;
+  return { size, taken, next, hasMore: fetched > size && next < LOAD_LIMIT };
+}
+function parseCommits(
+  raw: string,
+  head: string,
+  refs: Map<string, string[]>,
+): Commit[] {
+  const fields = raw.split('\0');
+  const commits: Commit[] = [];
+  for (let i = 0; i + 5 < fields.length; i += 5) {
+    const hash = fields[i].trim();
+    commits.push({
+      hash,
+      parents: fields[i + 1].split(' ').filter(Boolean),
+      author: fields[i + 2],
+      date: fields[i + 3],
+      subject: fields[i + 4].trimEnd(),
+      refs: [...(hash === head ? ['HEAD'] : []), ...(refs.get(hash) ?? [])],
+    });
+  }
+  return commits;
+}
 export async function log(
   root: string,
   all = false,
   branchRef?: string,
+  filter?: LogFilter,
+  cursor?: string,
 ): Promise<Repository> {
+  const valid = validateFilter(filter, all);
   const head = await optional(root, ['rev-parse', '--verify', 'HEAD']);
   const branch = await optional(root, [
     'symbolic-ref',
@@ -124,18 +276,36 @@ export async function log(
   const refs = new Map<string, string[]>();
   const localBranches: { name: string; hash: string }[] = [];
   const branches: BranchRef[] = [];
+  const walked: string[] = [];
   for (const line of (
     await git(root, [
       'for-each-ref',
-      '--format=%(objectname)%09%(refname)%09%(symref)',
+      '--format=%(objectname)%09%(refname)%09%(symref)%09%(objecttype)%09%(*objectname)%09%(*objecttype)',
       'refs/heads',
       'refs/remotes',
+      'refs/tags',
     ])
   )
     .toString()
-    .trim()
-    .split('\n')) {
-    const [hash, name, symbolic] = line.split('\t');
+    .split('\n')
+    .filter(Boolean)) {
+    const [hash, name, symbolic, type, peeled, peeledType] = line.split('\t');
+    if (name?.startsWith('refs/tags/')) {
+      // 태그 목록 자체는 브랜치 피커에 노출하지 않고, 커밋 라벨로만 붙인다.
+      const target =
+        type === 'commit'
+          ? hash
+          : type === 'tag' && peeledType === 'commit'
+            ? peeled
+            : undefined;
+      if (target)
+        refs.set(target, [
+          ...(refs.get(target) ?? []),
+          `tag: ${name.replace(/^refs\/tags\//, '')}`,
+        ]);
+      continue;
+    }
+    walked.push(line);
     if (name?.startsWith('refs/heads/'))
       localBranches.push({ name: name.slice(11), hash });
     if (name && !symbolic)
@@ -160,36 +330,85 @@ export async function log(
   const selectedHash = selected
     ? await commitHash(root, selected.hash)
     : undefined;
-  // NUL fields preserve tabs/newlines in messages. Git adds one LF between records.
+  // 워커는 재시작마다 메모리를 잃으므로 같은 이력인지는 요청마다 다시 계산해 비교한다.
+  const snapshot = createHash('sha256')
+    .update(
+      JSON.stringify({
+        head,
+        refs: walked,
+        all,
+        branchRef: branchRef ?? null,
+        filter: valid
+          ? { args: valid.args, path: valid.path ?? null, follow: valid.follow }
+          : null,
+      }),
+    )
+    .digest('hex');
+  const skip = decodeCursor(cursor, snapshot) ?? 0;
+  const { size } = page(skip, 0);
+  // 디렉터리에 --follow를 걸면 이력이 엉뚱하게 끊기므로 파일일 때만 켠다.
+  const start = selectedHash ?? head;
+  const follow =
+    valid?.follow === true &&
+    !!start &&
+    (await optional(root, ['cat-file', '-t', `${start}:${valid.path}`])) !==
+      'tree';
+  // --follow와 --skip을 함께 쓰면 skip이 경로에 안 걸리는 커밋까지 세고, 건너뛴 구간의
+  // 이름 변경도 놓친다. follow일 때는 처음부터 받아 앞 skip개를 JS에서 잘라낸다(상한 5,000이라 비용 제한적).
+  const range = follow
+    ? [`-${skip + size + 1}`]
+    : [`--skip=${skip}`, `-${size + 1}`];
+  // NUL 구분자로 제목의 탭 문자도 손실 없이 받는다. Git adds one LF between records.
   const raw =
-    !head && !all && !selectedHash
+    (!head && !all && !selectedHash) || size <= 0
       ? ''
       : (
           await git(root, [
+            '--literal-pathspecs',
             'log',
             '--topo-order',
-            '-200',
-            '--format=%H%x00%P%x00%an%x00%aI%x00%B%x00',
+            ...range,
+            FORMAT,
+            ...(valid?.args ?? []),
+            ...(follow ? ['--follow'] : []),
             ...(selectedHash
               ? [selectedHash]
               : all
                 ? ['--all', ...(head ? ['HEAD'] : [])]
                 : ['HEAD']),
             '--',
+            ...(valid?.path ? [valid.path] : []),
           ])
         ).toString();
-  const fields = raw.split('\0');
-  const commits: Commit[] = [];
-  for (let i = 0; i + 5 < fields.length; i += 5) {
-    const hash = fields[i].trim();
-    commits.push({
-      hash,
-      parents: fields[i + 1].split(' ').filter(Boolean),
-      author: fields[i + 2],
-      date: fields[i + 3],
-      message: fields[i + 4].trimEnd(),
-      refs: [...(hash === head ? ['HEAD'] : []), ...(refs.get(hash) ?? [])],
-    });
+  const parsed = parseCommits(raw, head, refs);
+  const fetched = follow ? parsed.slice(skip) : parsed;
+  const { taken, next, hasMore } = page(skip, fetched.length);
+  const commits = fetched.slice(0, taken);
+  if (valid?.hashPrefix) {
+    const match = await optional(root, [
+      'rev-parse',
+      '--verify',
+      '--quiet',
+      `${valid.hashPrefix}^{commit}`,
+    ]);
+    // 같은 이름의 ref로 풀린 경우는 해시 검색이 아니므로 버린다.
+    const found =
+      /^[a-f0-9]{40,64}$/.test(match) && match.startsWith(valid.hashPrefix);
+    // 첫 페이지 범위 밖의 일치 커밋은 첫 페이지 맨 위에 이미 붙었으므로 뒷 페이지에서는 뺀다.
+    // skip은 Git 출력 행 기준이라 여기서 빼도 다음 커서 위치는 어긋나지 않는다.
+    if (found && skip > 0) {
+      const at = commits.findIndex((c) => c.hash === match);
+      if (at >= 0 && skip + at >= PAGE_SIZE) commits.splice(at, 1);
+    } else if (found && !commits.some((c) => c.hash === match))
+      commits.unshift(
+        ...parseCommits(
+          (
+            await git(root, ['log', '-1', '--no-walk', FORMAT, match, '--'])
+          ).toString(),
+          head,
+          refs,
+        ),
+      );
   }
   return {
     root,
@@ -198,6 +417,8 @@ export async function log(
     commits,
     localBranches,
     branches,
+    hasMore,
+    ...(hasMore ? { nextCursor: encodeCursor(next, snapshot) } : {}),
   };
 }
 export function parseNames(raw: Buffer): ChangedFile[] {
@@ -212,12 +433,56 @@ export function parseNames(raw: Buffer): ChangedFile[] {
   }
   return files;
 }
+function limitFiles(files: ChangedFile[]) {
+  if (files.length > 2000)
+    throw new Error(
+      '변경 파일이 2,000개를 초과합니다. 더 작은 비교가 필요합니다.',
+    );
+  return files;
+}
+async function rangeChanges(
+  root: string,
+  input: Extract<Comparison, { kind: 'range' }>,
+): Promise<ChangeSet> {
+  const base = await commitHash(root, input.base);
+  const target = await commitHash(root, input.target);
+  const mergeBase = input.mergeBase === true;
+  let left = base;
+  if (mergeBase) {
+    const found = await optional(root, ['merge-base', base, target]);
+    if (!found) throw new Error('공통 조상이 없습니다.');
+    left = found;
+  }
+  if (left === target) throw new Error('같은 커밋입니다.');
+  const files = limitFiles(
+    parseNames(
+      await git(root, [
+        'diff',
+        '--no-ext-diff',
+        '--no-textconv',
+        '-M',
+        '--name-status',
+        '-z',
+        left,
+        target,
+        '--',
+      ]),
+    ),
+  );
+  return {
+    comparison: { kind: 'range', base, target, mergeBase },
+    files,
+    left,
+    right: target,
+  };
+}
 export async function changes(
   root: string,
   input: Comparison,
 ): Promise<ChangeSet> {
-  if (!input || !['working', 'commit'].includes(input.kind))
+  if (!input || !['working', 'commit', 'range'].includes(input.kind))
     throw new Error('잘못된 비교 모드입니다.');
+  if (input.kind === 'range') return rangeChanges(root, input);
   if (input.kind === 'commit') {
     const hash = await commitHash(root, input.commit);
     const parents = (await git(root, ['show', '-s', '--format=%P', hash, '--']))
@@ -256,10 +521,7 @@ export async function changes(
             ],
       ),
     );
-    if (files.length > 2000)
-      throw new Error(
-        '변경 파일이 2,000개를 초과합니다. 더 작은 비교가 필요합니다.',
-      );
+    limitFiles(files);
     return {
       comparison: {
         kind: 'commit',
@@ -446,14 +708,22 @@ export async function diff(
       modified: { kind: 'special', text: '', bytes: 0 },
     };
   const c = set.comparison;
-  const base = c.kind === 'commit' ? c.parent : (c.head ?? undefined);
+  // range의 왼쪽은 mergeBase 여부에 따라 바뀌므로 changes()가 확정한 left를 쓴다.
+  const base =
+    c.kind === 'range'
+      ? set.left
+      : c.kind === 'commit'
+        ? c.parent
+        : (c.head ?? undefined);
   const original =
     file.status === 'A'
       ? missing()
       : await blob(root, base, file.oldPath ?? path);
   const modified =
-    c.kind === 'commit'
-      ? await blob(root, c.commit, path)
-      : await disk(root, path);
+    c.kind === 'range'
+      ? await blob(root, c.target, path)
+      : c.kind === 'commit'
+        ? await blob(root, c.commit, path)
+        : await disk(root, path);
   return { file, original, modified };
 }

@@ -1,14 +1,15 @@
 export interface Commit {
   hash: string;
   parents: string[];
-  message: string;
+  subject: string;
   author: string;
   date: string;
   refs: string[];
 }
 export type Comparison =
   | { kind: 'working'; head?: string | null }
-  | { kind: 'commit'; commit: string; parent?: string };
+  | { kind: 'commit'; commit: string; parent?: string }
+  | { kind: 'range'; base: string; target: string; mergeBase?: boolean };
 export interface ChangedFile {
   path: string;
   oldPath?: string;
@@ -41,6 +42,14 @@ export interface BranchRef {
   hash: string;
   kind: 'local' | 'remote';
 }
+export interface LogFilter {
+  text?: string;
+  author?: string;
+  since?: string;
+  until?: string;
+  path?: string;
+  follow?: boolean;
+}
 export interface Repository {
   root: string;
   branch: string;
@@ -48,9 +57,12 @@ export interface Repository {
   commits: Commit[];
   localBranches?: { name: string; hash: string }[];
   branches?: BranchRef[];
+  nextCursor?: string;
+  hasMore?: boolean;
 }
 export interface Descriptor {
-  version: 1;
+  // range 비교 문서만 2를 써서 0.1.x가 모르는 문서를 열지 않게 한다.
+  version: 1 | 2;
   repo: string;
   comparison: Comparison;
   path?: string;
@@ -125,8 +137,18 @@ export interface Requests {
     output: ActiveConnection;
   };
   log: {
-    input: { repo: string; all?: boolean; branchRef?: string };
+    input: {
+      repo: string;
+      all?: boolean;
+      branchRef?: string;
+      filter?: LogFilter;
+      cursor?: string;
+    };
     output: Repository;
+  };
+  commitMessage: {
+    input: { repo: string; commit: string };
+    output: { message: string };
   };
   changes: {
     input: { repo: string; comparison: Comparison };
