@@ -2838,7 +2838,7 @@ test('Tab closes the commit menu', async ({ page }) => {
   await expect(menu).toBeVisible();
   await page.keyboard.press('Tab');
   await expect(menu).toHaveCount(0);
-  // 닫으면서 행으로 돌린 포커스에서 Tab이 다음 행으로 넘어가 body로 빠지지 않는다.
+  // 메뉴를 닫으면 포커스가 연 행(3번)으로 돌아가고, 같은 Tab이 거기서 다음 행(4번)으로 넘어간다. body로 빠지지 않는다.
   await expect(commitAt(page, 4)).toBeFocused();
 });
 
