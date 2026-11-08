@@ -19,7 +19,7 @@ import {
   weights,
   type State,
 } from './game';
-import { revealDiscovery } from './reveal';
+import { revealDiscovery, revealResults, type DiscoveryReward } from './reveal';
 import { art } from './art';
 import { IslandScene } from './scene';
 import { terrain } from './terrain-art';
@@ -165,21 +165,24 @@ async function request(name: string, input: unknown = {}) {
       ? game.snapshot()
       : name === 'island.draw'
         ? game.redeem(input)
-        : name === 'island.craft'
-          ? game.craft(input)
-          : name === 'island.layout'
-            ? game.replaceLayout(input)
-            : name === 'island.paint'
-              ? game.paint(input)
-              : name === 'island.rotate'
-                ? game.rotate(input)
-                : name === 'island.decorate'
-                  ? game.decorate(input)
-                  : game.place(input));
+        : name === 'island.drawMany'
+          ? game.redeemMany(input)
+          : name === 'island.craft'
+            ? game.craft(input)
+            : name === 'island.layout'
+              ? game.replaceLayout(input)
+              : name === 'island.paint'
+                ? game.paint(input)
+                : name === 'island.rotate'
+                  ? game.rotate(input)
+                  : name === 'island.decorate'
+                    ? game.decorate(input)
+                    : game.place(input));
   return validate(result);
 }
 let loaded = false;
 let pendingTicket: string | undefined;
+let pendingTickets: string[] | undefined;
 const undoStack: { before: Layout; after: Layout }[] = [];
 async function run(
   action: () => Promise<State>,
@@ -214,74 +217,134 @@ async function run(
     render();
   }
 }
-async function useTicket() {
-  if (busy) return;
-  const ticketId = pendingTicket ?? availableTickets(state)[0]?.workspaceId;
-  if (!ticketId) return;
-  pendingTicket = ticketId;
+function placeDiscovery(id: string) {
+  selected = id;
+  editLayer = 'objects';
+  brushEnabled = false;
+  selectedDecor = '';
+  from = undefined;
+  moving = false;
+  moveBlocked = false;
+  scene.mode = 'build';
+  view = 'island';
+  inventoryTab = undefined;
+  render();
+  root.querySelector<HTMLElement>('.ocean')?.focus({ preventScroll: true });
+}
+async function useTicket(amount: 1 | 10 = 1) {
+  if (
+    busy ||
+    (amount === 1 && pendingTickets) ||
+    (amount === 10 && pendingTicket)
+  )
+    return;
+  const ids =
+    amount === 10
+      ? (pendingTickets ??
+        availableTickets(state)
+          .slice(0, 10)
+          .map((t) => t.workspaceId))
+      : [pendingTicket ?? availableTickets(state)[0]?.workspaceId].filter(
+          (id): id is string => !!id,
+        );
+  if (ids.length !== amount) return;
+  if (amount === 10) pendingTickets = ids;
+  else pendingTicket = ids[0];
   view = 'island';
   if (inventoryTab) setInventory(undefined, false);
-  let discovery:
-    | {
-        landmark: (typeof landmarks)[number];
-        count: number;
-        rewardNote: string;
-      }
-    | undefined;
+  let rewards: DiscoveryReward[] | undefined;
   busy = true;
   error = '';
   render();
   try {
-    const next = await request('island.draw', { ticketId });
-    const reward = next.receipts.find((r) => r.workspaceId === ticketId);
-    if (!reward)
+    const next = await request(
+      amount === 10 ? 'island.drawMany' : 'island.draw',
+      amount === 10 ? { ticketIds: ids } : { ticketId: ids[0] },
+    );
+    if (ids.some((id) => !next.receipts.some((r) => r.workspaceId === id)))
       throw Error(
         'Draw result was not returned. Retry to recover this ticket.',
       );
+    // Receipt order, rather than the final quantity, distinguishes the first
+    // discovery from copies in this batch and survives response-loss retries.
+    const seen = new Map<string, number>();
+    const results = new Map<string, DiscoveryReward>();
+    for (const receipt of next.receipts) {
+      const count = (seen.get(receipt.landmark) ?? 0) + 1;
+      seen.set(receipt.landmark, count);
+      if (!ids.includes(receipt.workspaceId)) continue;
+      const landmark = landmarks.find((l) => l.id === receipt.landmark)!;
+      const gift = decorations.find(
+        (d) => d.landmark === landmark.id && d.gift,
+      )!;
+      results.set(receipt.workspaceId, {
+        landmark,
+        count,
+        isNew: count === 1,
+        rewardNote:
+          count > 1
+            ? `+${DUPLICATE_MATERIALS} materials · Your landmark is kept`
+            : `${gift.name} gifted · Theme unlocked`,
+      });
+    }
+    rewards = ids.map((id) => results.get(id)!);
     const addedLand = islandLand(next).length - islandLand(state).length;
     state = next;
     pendingTicket = undefined;
-    const landmark = landmarks.find((l) => l.id === reward.landmark)!;
-    const count = quantity(state, landmark.id);
-    message = `${count > 1 ? 'Duplicate discovered' : 'New discovery'}: ${landmark.name} · owned ×${count}`;
-    const gift = decorations.find((d) => d.landmark === landmark.id && d.gift)!;
-    const rewardNote =
-      count > 1
-        ? `+${DUPLICATE_MATERIALS} materials · Your landmark is kept`
-        : `${gift.name} gifted · Theme unlocked${addedLand > 0 ? ` · +${addedLand} land tiles` : ''}`;
-    message += ` · ${rewardNote}`;
-    discovery = { landmark, count, rewardNote };
+    pendingTickets = undefined;
+    if (amount === 1) {
+      const reward = rewards[0];
+      if (addedLand > 0) reward.rewardNote += ` · +${addedLand} land tiles`;
+      message = `${reward.isNew ? 'New discovery' : 'Duplicate discovered'}: ${reward.landmark.name} · owned ×${reward.count} · ${reward.rewardNote}`;
+    } else {
+      const fresh = rewards.filter((r) => r.isNew).length;
+      message = `10 treasures opened · ${fresh} new discoveries · +${(10 - fresh) * DUPLICATE_MATERIALS} materials`;
+    }
   } catch (e) {
-    error = `${String(e)} · Retry discovery to recover the same ticket.`;
+    error = `${String(e)} · ${amount === 10 ? 'Retry 10 treasures to recover the same tickets.' : 'Retry discovery to recover the same ticket.'}`;
   } finally {
     busy = false;
     render();
   }
-  if (discovery) {
-    const { landmark, count, rewardNote } = discovery;
+  if (!rewards) return;
+  const container = root.querySelector<HTMLElement>('.ocean')!;
+  const animate = (r: DiscoveryReward) => r.isNew;
+  if (amount === 1) {
+    const r = rewards[0];
     revealDiscovery(
-      landmark,
-      count,
-      rarityBadge(landmark.tier),
-      () => {
-        selected = landmark.id;
-        editLayer = 'objects';
-        brushEnabled = false;
-        selectedDecor = '';
-        from = undefined;
-        moving = false;
-        moveBlocked = false;
-        scene.mode = 'build';
-        view = 'island';
-        inventoryTab = undefined;
-        render();
-        root
-          .querySelector<HTMLElement>('.ocean')
-          ?.focus({ preventScroll: true });
-      },
-      { rewardNote, container: root.querySelector<HTMLElement>('.ocean')! },
+      r.landmark,
+      r.count,
+      rarityBadge(r.landmark.tier),
+      () => placeDiscovery(r.landmark.id),
+      { rewardNote: r.rewardNote, container, animate: animate(r) },
     );
+    return;
   }
+  const allRewards = rewards;
+  const highlights = rewards.filter(animate);
+  const summary = () =>
+    revealResults(allRewards, rarityBadge, placeDiscovery, container);
+  const nextHighlight = (index: number) => {
+    const r = highlights[index];
+    if (!r) return summary();
+    revealDiscovery(
+      r.landmark,
+      r.count,
+      rarityBadge(r.landmark.tier),
+      () => {},
+      {
+        container,
+        rewardNote: r.rewardNote,
+        batch: {
+          index: index + 1,
+          total: highlights.length,
+          onClose: (action) =>
+            action === 'results' ? summary() : nextHighlight(index + 1),
+        },
+      },
+    );
+  };
+  nextHighlight(0);
 }
 let decorTheme = 'unlocked';
 let pendingCraft: { id: string; decoration: string } | undefined;
@@ -423,7 +486,7 @@ const chestArt = `<svg viewBox="0 0 72 70" aria-hidden="true"><ellipse cx="36" c
 function canvasInventory() {
   const tickets = availableTickets(state).length;
   const drawLabel = pendingTicket ? 'Retry discovery' : 'Use ticket · Discover';
-  return `<div class="island-satchel" role="group" aria-label="Island collections"><button class="satchel-item" data-inventory="decorations" aria-label="Open decorations" aria-controls="canvas-inventory" aria-expanded="${inventoryTab === 'decorations'}">${satchelArt}<span>Decorations</span></button><button class="satchel-item" data-inventory="landmarks" aria-label="Open landmarks" aria-controls="canvas-inventory" aria-expanded="${inventoryTab === 'landmarks'}">${journalArt}<span>Landmarks</span></button><button id="draw-ticket" class="satchel-item treasure-chest" aria-label="${drawLabel}" aria-describedby="treasure-help" aria-haspopup="dialog" title="${pendingTicket ? 'Recover the same discovery without spending another ticket' : tickets ? 'Use 1 exploration ticket to discover a landmark' : 'Create a worktree to earn an exploration ticket'}" ${!loaded || (!tickets && !pendingTicket) ? 'disabled' : ''}>${chestArt}<span>${pendingTicket ? 'Retry' : 'Treasure'}</span><b id="ticket-count" aria-label="${tickets} exploration tickets">${tickets}</b></button><span id="treasure-help" class="visually-hidden">${tickets} exploration tickets available. Create a worktree to earn a ticket. Opening treasure uses one ticket. The result is saved before the animation.</span></div><aside id="canvas-inventory" class="canvas-inventory" aria-label="Island inventory" ${inventoryTab ? '' : 'hidden'}><div class="inventory-heading"><div><small>THE EXPLORER’S SATCHEL</small><h2 id="inventory-title">${inventoryTab === 'landmarks' ? 'Landmark journal' : 'Garden treasures'}</h2></div><button id="close-inventory" aria-label="Close inventory">×</button></div>${inventoryFinder()}<div class="inventory-scroll" data-inventory-tab="${inventoryTab ?? 'decorations'}"><div data-inventory-page="decorations" ${inventoryTab === 'decorations' ? '' : 'hidden'}>${workshop()}</div><div data-inventory-page="landmarks" ${inventoryTab === 'landmarks' ? '' : 'hidden'}>${collection()}</div><p class="inventory-empty" hidden>No matching items. Try another name or reset the filters.</p></div><p class="inventory-hint">Choose a piece to place it on your island.</p></aside>`;
+  return `<div class="island-satchel" role="group" aria-label="Island collections"><button class="satchel-item" data-inventory="decorations" aria-label="Open decorations" aria-controls="canvas-inventory" aria-expanded="${inventoryTab === 'decorations'}">${satchelArt}<span>Decorations</span></button><button class="satchel-item" data-inventory="landmarks" aria-label="Open landmarks" aria-controls="canvas-inventory" aria-expanded="${inventoryTab === 'landmarks'}">${journalArt}<span>Landmarks</span></button><div class="treasure-actions"><button id="draw-ticket" class="satchel-item treasure-chest" aria-label="${drawLabel}" aria-describedby="treasure-help" aria-haspopup="dialog" title="${pendingTicket ? 'Recover the same discovery without spending another ticket' : tickets ? 'Use 1 exploration ticket to discover a landmark' : 'Create a worktree to earn an exploration ticket'}" ${!loaded || !!pendingTickets || (!tickets && !pendingTicket) ? 'disabled' : ''}>${chestArt}<span>${pendingTicket ? 'Retry' : 'Treasure'}</span><b id="ticket-count" aria-label="${tickets} exploration tickets">${tickets}</b></button><button id="draw-ten" aria-haspopup="dialog" aria-describedby="treasure-help" aria-label="${pendingTickets ? 'Retry 10 treasures' : 'Open 10 treasures'}" title="Open 10 treasures with 10 exploration tickets. Only newly discovered landmarks play an animation, at every tier." ${!loaded || !!pendingTicket || (!pendingTickets && tickets < 10) ? 'disabled' : ''}>${pendingTickets ? 'Retry ×10' : 'Open ×10'}</button></div><span id="treasure-help" class="visually-hidden">${tickets} exploration tickets available. Create a worktree to earn a ticket. Open one treasure with one ticket, or 10 with 10 tickets. Results are saved before any animation.</span></div><aside id="canvas-inventory" class="canvas-inventory" aria-label="Island inventory" ${inventoryTab ? '' : 'hidden'}><div class="inventory-heading"><div><small>THE EXPLORER’S SATCHEL</small><h2 id="inventory-title">${inventoryTab === 'landmarks' ? 'Landmark journal' : 'Garden treasures'}</h2></div><button id="close-inventory" aria-label="Close inventory">×</button></div>${inventoryFinder()}<div class="inventory-scroll" data-inventory-tab="${inventoryTab ?? 'decorations'}"><div data-inventory-page="decorations" ${inventoryTab === 'decorations' ? '' : 'hidden'}>${workshop()}</div><div data-inventory-page="landmarks" ${inventoryTab === 'landmarks' ? '' : 'hidden'}>${collection()}</div><p class="inventory-empty" hidden>No matching items. Try another name or reset the filters.</p></div><p class="inventory-hint">Choose a piece to place it on your island.</p></aside>`;
 }
 function setInventory(tab: typeof inventoryTab, focus = true) {
   const scroll = root.querySelector<HTMLElement>('.inventory-scroll');
@@ -975,6 +1038,8 @@ function render() {
     void run(() => request('island.read'));
   root.querySelector<HTMLButtonElement>('#draw-ticket')!.onclick = () =>
     void useTicket();
+  root.querySelector<HTMLButtonElement>('#draw-ten')!.onclick = () =>
+    void useTicket(10);
   const expedition = root.querySelector<HTMLButtonElement>('#expedition');
   if (expedition)
     expedition.onclick = () =>
@@ -1132,6 +1197,7 @@ async function openBackups() {
         : await game.restore(input);
       loaded = true;
       pendingTicket = undefined;
+      pendingTickets = undefined;
       pendingCraft = undefined;
       undoStack.length = 0;
       selected = '';

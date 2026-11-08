@@ -5,10 +5,15 @@ async function openInventory(page: Page, kind: 'decorations' | 'landmarks') {
   const menu = page.locator(`[data-inventory="${kind}"]`);
   if ((await menu.getAttribute('aria-expanded')) !== 'true') await menu.click();
 }
+async function skipAnimation(page: Page) {
+  await expect(page.locator('.discovery-theatre')).toBeVisible();
+  const skip = page.getByRole('button', { name: 'Skip animation' });
+  if (await skip.isVisible()) await skip.click();
+}
 async function demoDiscovery(page: Page) {
   await page.getByRole('button', { name: 'Demo worktree' }).click();
   await page.getByRole('button', { name: 'Use ticket · Discover' }).click();
-  await page.getByRole('button', { name: 'Skip animation' }).click();
+  await skipAnimation(page);
   await page.getByRole('button', { name: 'Keep exploring' }).click();
 }
 
@@ -847,7 +852,8 @@ test('failed save retains ticket; retry and Escape reveal without charging again
   await expect(page.locator('#ticket-count')).toHaveText('1');
   await page.getByRole('button', { name: 'Retry discovery' }).click();
   await expect(page.locator('.discovery-theatre')).toBeVisible();
-  await page.keyboard.press('Escape');
+  if (await page.locator('.reveal-skip').isVisible())
+    await page.keyboard.press('Escape');
   await expect(page.locator('.discovery-result')).toBeVisible();
   await page.keyboard.press('Escape');
   await expect(page.locator('#ticket-count')).toHaveText('0');
@@ -880,7 +886,7 @@ test('Treasure, Marvel and Wonder reveal distinct effects with accessible ranks'
     const theatre = page.locator('.discovery-theatre');
     await expect(theatre).toHaveAttribute('data-tier', tier);
     const before = await theatre.boundingBox();
-    await page.getByRole('button', { name: 'Skip animation' }).click();
+    await skipAnimation(page);
     const after = await theatre.boundingBox();
     expect(Math.abs(before!.height - after!.height)).toBeLessThan(2);
     await expect(
@@ -997,6 +1003,8 @@ test('cinematic discovery reveals rarity before artwork, then information and ac
   await page.getByRole('button', { name: 'Keep exploring' }).click();
   await page.getByRole('button', { name: 'Demo worktree' }).click();
   await page.locator('#draw-ticket').click();
+  await expect(theatre).toHaveClass(/static-discovery/);
+  await expect(theatre.locator('.reveal-skip')).toBeHidden();
   await page.clock.runFor(2200);
   await page.emulateMedia({ reducedMotion: 'reduce' });
   await expect(theatre).toHaveAttribute('data-phase', 'complete');
@@ -1031,7 +1039,7 @@ test('standalone reveal preview replays every rarity without accessing the save'
   const theatre = page.locator('.discovery-theatre');
   await expect(theatre).toHaveAttribute('data-tier', 'legendary');
   await expect(page.locator('.ocean')).toHaveCount(0);
-  await page.getByRole('button', { name: 'Skip animation' }).click();
+  await skipAnimation(page);
   await expect(theatre).toContainText('Preview only · No ticket used');
   await expect(
     theatre.getByRole('button', { name: 'Place on island' }),
@@ -1039,7 +1047,7 @@ test('standalone reveal preview replays every rarity without accessing the save'
   await page.getByRole('button', { name: 'Replay animation' }).click();
   await expect(theatre).toHaveCount(1);
   await expect(theatre).toHaveAttribute('data-phase', 'invitation');
-  await page.getByRole('button', { name: 'Skip animation' }).click();
+  await skipAnimation(page);
   await page.getByRole('button', { name: 'Choose rarity' }).click();
   for (const tier of ['common', 'rare', 'epic', 'legendary']) {
     await page.locator(`[data-preview-tier=${tier}]`).click();
@@ -1212,7 +1220,7 @@ test('host theme tokens update reading and controls live while preserving game a
   ).toBe(save);
   await page.getByRole('button', { name: 'Demo worktree' }).click();
   await page.locator('#draw-ticket').click();
-  await page.getByRole('button', { name: 'Skip animation' }).click();
+  await skipAnimation(page);
   await expect(page.locator('.discovery-theatre')).toHaveCSS(
     'background-color',
     'rgb(23, 32, 51)',
@@ -1926,7 +1934,7 @@ test('all modals scroll internally without moving the page and release the lock 
     else {
       await page.locator('#expedition').click();
       await page.locator('#draw-ticket').click();
-      await page.getByRole('button', { name: 'Skip animation' }).click();
+      await skipAnimation(page);
     }
     const modal = page.locator('dialog:modal');
     await expect(modal).toHaveCount(1);
@@ -2365,7 +2373,7 @@ test('treasure opens and reveals inside the canvas, keeps scrolling local and re
     );
   };
   await contained();
-  await page.getByRole('button', { name: 'Skip animation' }).click();
+  await skipAnimation(page);
   await expect(theatre.getByRole('heading')).toHaveText('Eiffel Tower');
   await page.screenshot({
     path: 'test-results/landmark-island/canvas-treasure-desktop.png',
@@ -2722,7 +2730,7 @@ for (const notification of ['before response', 'during reveal'])
     );
     await page.waitForTimeout(150);
     await expect(theatre).toBeVisible();
-    await page.getByRole('button', { name: 'Skip animation' }).click();
+    await skipAnimation(page);
     await expect(theatre.getByRole('heading')).toHaveText(
       'Great Pyramid of Giza',
     );
@@ -3188,11 +3196,9 @@ for (const theme of ['light', 'dark'])
       await finder.evaluate((el) => el.scrollWidth <= el.clientWidth),
     ).toBe(true);
     await expect(page.locator('#inventory-search')).toBeInViewport();
-    await page
-      .locator('.canvas-inventory')
-      .screenshot({
-        path: `test-results/landmark-island/inventory-finder-${theme}.png`,
-      });
+    await page.locator('.canvas-inventory').screenshot({
+      path: `test-results/landmark-island/inventory-finder-${theme}.png`,
+    });
     await openInventory(page, 'landmarks');
     await page.locator('#inventory-search').fill('Qatar');
     await expect(page.locator('.collection .card:visible')).toHaveCount(1);

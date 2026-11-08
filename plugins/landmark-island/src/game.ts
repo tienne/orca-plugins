@@ -379,6 +379,32 @@ export class Game {
       return s;
     });
   }
+  redeemMany(input: unknown) {
+    return this.queue(async (s) => {
+      const ids = (input as { ticketIds?: unknown } | null)?.ticketIds;
+      if (
+        !Array.isArray(ids) ||
+        ids.length !== 10 ||
+        ids.some((id) => typeof id !== 'string' || !id || id.length > 256) ||
+        new Set(ids).size !== 10
+      )
+        throw Error('Choose 10 different exploration tickets.');
+      // Check the whole request before drawing anything. Replayed IDs retain
+      // their original rewards, including after a restart or overlapping draw.
+      if (ids.some((id) => !s.tickets.some((t) => t.workspaceId === id)))
+        throw Error('One or more tickets are not available.');
+      const unused = ids.filter(
+        (id) => !s.receipts.some((r) => r.workspaceId === id),
+      );
+      if (!unused.length) return s;
+      const at = new Date().toISOString();
+      for (const workspaceId of unused)
+        s.receipts.push({ workspaceId, landmark: draw(this.random), at });
+      // One durable write: a failed save cannot consume only part of the batch.
+      await this.store.write(s);
+      return s;
+    });
+  }
   craft(input: unknown) {
     return this.queue(async (s) => {
       const p = input as { id?: unknown; decoration?: unknown } | null;

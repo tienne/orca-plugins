@@ -1,5 +1,6 @@
 import { art } from './art';
 import type { landmarks } from './game';
+import { DUPLICATE_MATERIALS } from './decorations';
 import './reveal.css';
 
 // Presentation only: the worker has already committed the ticket and reward.
@@ -10,6 +11,12 @@ export function revealDiscovery(
   onPlace: () => void,
   options: {
     preview?: boolean;
+    animate?: boolean;
+    batch?: {
+      index: number;
+      total: number;
+      onClose: (action: 'continue' | 'results') => void;
+    };
     rewardNote?: string;
     container?: HTMLElement;
   } = {},
@@ -66,6 +73,19 @@ export function revealDiscovery(
     dialog.querySelector('.discovery-result > small')!.textContent =
       'Your collection is unchanged';
   }
+  let batchAction: 'continue' | 'results' = 'results';
+  if (options.batch) {
+    dialog.querySelector('.discovery-heading > span')!.textContent =
+      `New discovery ${options.batch.index} of ${options.batch.total}`;
+    const all = document.createElement('button');
+    all.className = 'reveal-all';
+    all.textContent = 'View all 10 results';
+    all.onclick = () => dialog.close();
+    dialog.querySelector('.discovery-heading')!.append(all);
+    dialog.querySelector('.reveal-keep')!.textContent = 'Continue';
+    dialog.querySelector('.reveal-place')!.textContent = 'View all 10 results';
+  }
+  if (options.animate === false) dialog.classList.add('static-discovery');
   const container = options.container;
   let observer: ResizeObserver | undefined;
   const fitCanvas = () => {
@@ -120,15 +140,21 @@ export function revealDiscovery(
   };
   dialog.querySelector<HTMLButtonElement>('.reveal-skip')!.onclick = () =>
     finish(true);
-  dialog.querySelector<HTMLButtonElement>('.reveal-keep')!.onclick = () =>
+  dialog.querySelector<HTMLButtonElement>('.reveal-keep')!.onclick = () => {
+    batchAction = 'continue';
     dialog.close();
+  };
   dialog.querySelector<HTMLButtonElement>('.reveal-place')!.onclick = () => {
+    if (options.batch) {
+      dialog.close();
+      return;
+    }
     placing = true;
     dialog.close();
     onPlace();
   };
   dialog.addEventListener('cancel', (event) => {
-    if (!revealed) {
+    if (!revealed && !options.batch) {
       event.preventDefault();
       finish(true);
     }
@@ -147,6 +173,10 @@ export function revealDiscovery(
       window.removeEventListener('scroll', fitCanvas, true);
       preference.removeEventListener('change', reduce);
       dialog.remove();
+      if (options.batch) {
+        options.batch.onClose(batchAction);
+        return;
+      }
       if (placing) return;
       const target =
         opener?.isConnected &&
@@ -186,6 +216,10 @@ export function revealDiscovery(
       }, at),
     );
   };
+  if (options.animate === false) {
+    finish(true);
+    return;
+  }
   phase(800, 'journey', 'Following a path beyond the horizon…');
   phase(omenAt, 'omen', 'Something stirs beyond the horizon…');
   phase(burstAt, 'burst');
@@ -193,4 +227,83 @@ export function revealDiscovery(
   phase(detailsAt, 'details');
   timers.push(setTimeout(() => finish(), readyAt));
   reduce();
+}
+
+export type DiscoveryReward = {
+  landmark: (typeof landmarks)[number];
+  count: number;
+  isNew: boolean;
+  rewardNote: string;
+};
+
+// Presentation only; closing, skipping or placing never redeems another ticket.
+export function revealResults(
+  rewards: DiscoveryReward[],
+  badge: (tier: string) => string,
+  onPlace: (id: string) => void,
+  container: HTMLElement,
+) {
+  const dialog = document.createElement('dialog');
+  dialog.className = 'discovery-theatre canvas-discovery treasure-results';
+  dialog.setAttribute('aria-labelledby', 'treasure-results-title');
+  dialog.innerHTML = `<header class="results-heading"><div><small>THE EXPLORER’S ATLAS</small><h2 id="treasure-results-title">10 treasures opened</h2><p class="results-totals"></p><small>Saved to your collection</small></div><button class="results-close" autofocus>Keep exploring</button></header><div class="results-grid"></div>`;
+  const fresh = rewards.filter((r) => r.isNew).length;
+  dialog.querySelector('.results-totals')!.textContent =
+    `${fresh} new discoveries · ${rewards.length - fresh} duplicates · +${(rewards.length - fresh) * DUPLICATE_MATERIALS} materials`;
+  let placing = false;
+  for (const reward of rewards) {
+    const { landmark } = reward;
+    const card = document.createElement('article');
+    card.className = 'treasure-result';
+    card.dataset.tier = landmark.tier;
+    card.dataset.new = String(reward.isNew);
+    card.innerHTML = `<div class="result-art" aria-hidden="true">${art(landmark.id)}</div><p class="result-new"></p><div>${badge(landmark.tier)}</div><h3></h3><p class="result-country"></p><p class="result-reward"></p><button>Place on island</button>`;
+    card.querySelector('.result-new')!.textContent = reward.isNew
+      ? 'New discovery'
+      : 'Duplicate discovered';
+    card.querySelector('h3')!.textContent = landmark.name;
+    card.querySelector('.result-country')!.textContent = landmark.country;
+    card.querySelector('.result-reward')!.textContent = reward.rewardNote;
+    card.querySelector('button')!.onclick = () => {
+      placing = true;
+      dialog.close();
+      onPlace(landmark.id);
+    };
+    dialog.querySelector('.results-grid')!.append(card);
+  }
+  const fit = () => {
+    const bounds = container.getBoundingClientRect();
+    const left = Math.max(0, bounds.left),
+      top = Math.max(0, bounds.top);
+    dialog.style.left = `${left}px`;
+    dialog.style.top = `${top}px`;
+    dialog.style.width = `${Math.max(1, Math.min(document.documentElement.clientWidth, bounds.right) - left)}px`;
+    dialog.style.height = `${Math.max(1, Math.min(window.innerHeight, bounds.bottom) - top)}px`;
+  };
+  container.scrollIntoView({ block: 'center', behavior: 'instant' });
+  container.append(dialog);
+  const observer = new ResizeObserver(fit);
+  observer.observe(container);
+  window.addEventListener('resize', fit);
+  window.addEventListener('scroll', fit, true);
+  dialog.querySelector<HTMLButtonElement>('.results-close')!.onclick = () =>
+    dialog.close();
+  dialog.addEventListener(
+    'close',
+    () => {
+      observer.disconnect();
+      window.removeEventListener('resize', fit);
+      window.removeEventListener('scroll', fit, true);
+      dialog.remove();
+      if (!placing)
+        (
+          container.querySelector<HTMLElement>('#draw-ten:not(:disabled)') ??
+          container.querySelector<HTMLElement>('#draw-ticket:not(:disabled)') ??
+          container.querySelector<HTMLElement>('[data-inventory=landmarks]')
+        )?.focus({ preventScroll: true });
+    },
+    { once: true },
+  );
+  dialog.showModal();
+  fit();
 }

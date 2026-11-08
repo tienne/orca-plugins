@@ -913,3 +913,124 @@
     padding: 16px 12px;
   }
 }
+
+/* Duplicate discoveries go straight to a still result. */
+.static-discovery *,
+.treasure-results * {
+  animation: none !important;
+  transition: none !important;
+}
+.discovery-heading {
+  flex-wrap: wrap;
+}
+.discovery-theatre.treasure-results {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  text-align: left;
+}
+.results-heading {
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  gap: 16px;
+  flex: none;
+  padding-bottom: 16px;
+}
+.results-heading h2 {
+  font:
+    28px Georgia,
+    serif;
+  margin: 8px 0;
+}
+.results-heading small,
+.result-country {
+  color: var(--orca-muted-foreground, #c6cbb1);
+}
+.results-heading p {
+  margin: 6px 0;
+}
+.results-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  align-content: start;
+  gap: 12px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  min-height: 0;
+  padding: 4px 4px 12px;
+}
+.treasure-result {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 14px 10px;
+  border: 1px solid var(--orca-border, #61745a);
+  background: var(--orca-card, #20372c);
+  color: var(--orca-card-foreground, #f5e8c5);
+  border-radius: var(--orca-radius, 8px);
+}
+.treasure-result[data-new='true'] {
+  border-color: var(--orca-ring, #d4bc7c);
+}
+.result-art {
+  width: 110px;
+  height: 100px;
+}
+.result-art svg {
+  width: 100%;
+  height: 100%;
+}
+.treasure-result h3 {
+  font:
+    18px Georgia,
+    serif;
+  margin: 10px 0 4px;
+}
+.treasure-result p {
+  font-size: 12px;
+  margin: 6px 0;
+}
+.treasure-result .result-new {
+  font-weight: 600;
+}
+.treasure-result .result-reward {
+  line-height: 1.5;
+  margin-bottom: 14px;
+}
+.treasure-result button {
+  margin-top: auto;
+}
+@media (max-width: 600px) {
+  .results-heading {
+    gap: 8px;
+    padding-bottom: 10px;
+  }
+  .results-heading h2 {
+    font-size: 22px;
+  }
+  .results-heading p {
+    font-size: 12px;
+  }
+  .results-heading button {
+    padding: 8px;
+    font-size: 12px;
+  }
+  .results-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+  }
+  .treasure-result {
+    padding: 12px 6px;
+    overflow-wrap: anywhere;
+  }
+  .treasure-result .rarity-badge {
+    font-size: 10px;
+    gap: 4px;
+  }
+  .treasure-result button {
+    padding: 8px;
+    font-size: 12px;
+  }
+}

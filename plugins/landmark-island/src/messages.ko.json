@@ -609,5 +609,22 @@
   "Reset filters": "필터 초기화",
   "{count} matching items": "{count}개 항목",
   "No matching items. Try another name or reset the filters.": "맞는 항목이 없어요. 다른 이름으로 검색하거나 필터를 초기화하세요.",
-  "All garden sets": "모든 정원 세트"
+  "All garden sets": "모든 정원 세트",
+  "Open 10 treasures": "보물상자 10개 열기",
+  "Retry 10 treasures": "보물상자 10개 다시 확인",
+  "Open ×10": "10개 열기",
+  "Retry ×10": "10개 재시도",
+  "{count} exploration tickets available. Create a worktree to earn a ticket. Open one treasure with one ticket, or 10 with 10 tickets. Results are saved before any animation.": "탐험권 {count}장이 있습니다. 워크트리를 만들면 탐험권을 받습니다. 한 장으로 보물상자 1개, 열 장으로 10개를 엽니다. 결과는 연출 전에 저장됩니다.",
+  "Choose 10 different exploration tickets.": "서로 다른 탐험권 10장을 선택하세요.",
+  "One or more tickets are not available.": "사용할 수 없는 탐험권이 포함되어 있습니다.",
+  "Retry 10 treasures to recover the same tickets.": "보물상자 10개 재시도로 같은 탐험권의 결과를 확인하세요.",
+  "New discovery {count} of {total}": "새로운 발견 {count}/{total}",
+  "View all 10 results": "10개 결과 모두 보기",
+  "Continue": "계속",
+  "10 treasures opened": "보물상자 10개 개봉 완료",
+  "{count} new discoveries": "새로운 발견 {count}종",
+  "{count} duplicates": "중복 {count}개",
+  "New discovery": "새로운 발견",
+  "Duplicate discovered": "중복 발견",
+  "Open 10 treasures with 10 exploration tickets. Only newly discovered landmarks play an animation, at every tier.": "탐험권 10장으로 보물상자 10개를 엽니다. 등급과 관계없이 처음 발견한 랜드마크만 연출을 재생합니다."
 }

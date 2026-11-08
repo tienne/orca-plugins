@@ -193,6 +193,84 @@ try {
     }
   }
   assert.ok(project(at(12, 13)).depth > project(at(12, 12)).depth);
+  // Ten-ticket draws commit once, validate before randomness, and replay safely.
+  {
+    let batchState = empty(),
+      batchWrites = 0,
+      randomCalls = 0;
+    let saveMode = 'ok';
+    const batchStore = {
+      read: async () => structuredClone(batchState),
+      write: async (next) => {
+        if (saveMode === 'fail') throw Error('batch disk full');
+        batchState = structuredClone(next);
+        batchWrites++;
+        if (saveMode === 'lost') {
+          saveMode = 'ok';
+          throw Error('batch response lost');
+        }
+      },
+    };
+    const batchGame = new Game(batchStore, () => {
+      randomCalls++;
+      return 0;
+    });
+    for (let i = 0; i < 20; i++)
+      await batchGame.acquire({ workspaceId: `batch-${i}`, kind: 'worktree' });
+    const ticketIds = batchState.tickets.slice(0, 10).map((t) => t.workspaceId);
+    for (const input of [
+      null,
+      {},
+      { ticketIds: ticketIds.slice(1) },
+      { ticketIds: [...ticketIds, 'batch-10'] },
+      { ticketIds: Array(10).fill(ticketIds[0]) },
+      { ticketIds: [...ticketIds.slice(1), 42] },
+      { ticketIds: [...ticketIds.slice(1), 'missing'] },
+    ])
+      await assert.rejects(batchGame.redeemMany(input));
+    assert.equal(randomCalls, 0);
+    assert.equal(batchWrites, 20);
+    saveMode = 'fail';
+    await assert.rejects(batchGame.redeemMany({ ticketIds }), /disk full/);
+    assert.equal(batchState.receipts.length, 0);
+    assert.equal(availableTickets(batchState).length, 20);
+    saveMode = 'ok';
+    await Promise.all([
+      batchGame.redeemMany({ ticketIds }),
+      batchGame.redeemMany({ ticketIds }),
+      batchGame.redeem({ ticketId: ticketIds[0] }),
+    ]);
+    assert.equal(batchWrites, 21);
+    assert.equal(batchState.receipts.length, 10);
+    assert.equal(materials(batchState), 9 * 3);
+    const first = structuredClone(batchState.receipts);
+    const calls = randomCalls;
+    await new Game(batchStore, () => {
+      throw Error('must not reroll');
+    }).redeemMany({ ticketIds });
+    assert.deepEqual(batchState.receipts, first);
+    assert.equal(randomCalls, calls);
+    const overlap = batchState.tickets.slice(5, 15).map((t) => t.workspaceId);
+    await batchGame.redeemMany({ ticketIds: overlap });
+    assert.equal(batchState.receipts.length, 15);
+    assert.deepEqual(batchState.receipts.slice(0, 10), first);
+    saveMode = 'lost';
+    const last = batchState.tickets.slice(10).map((t) => t.workspaceId);
+    await assert.rejects(
+      batchGame.redeemMany({ ticketIds: last }),
+      /response lost/,
+    );
+    const committed = structuredClone(batchState);
+    await new Game(batchStore, () => {
+      throw Error('must not reroll');
+    }).redeemMany({ ticketIds: last });
+    assert.deepEqual(batchState, committed);
+    assert.equal(availableTickets(batchState).length, 0);
+    assert.equal(batchState.receipts.length, 20);
+    console.log(
+      'PASS: atomic ten-ticket draw, invalid IDs, failures, overlapping requests and restart/response-loss replay',
+    );
+  }
   let value = null,
     writes = 0,
     fail = false;
@@ -516,6 +594,7 @@ try {
     'island.backup',
     'island.restore',
     'island.draw',
+    'island.drawMany',
     'island.craft',
     'island.layout',
     'island.paint',
@@ -539,6 +618,15 @@ try {
   assert.equal((await handlers['island.read']()).receipts.length, 43);
   assert.equal(availableTickets(await handlers['island.read']()).length, 0);
   assert.ok(posted);
+  const hostBatchIds = Array.from({ length: 10 }, (_, i) => `host-batch-${i}`);
+  for (const workspaceId of hostBatchIds)
+    await events['workspace.created']({ workspaceId, kind: 'worktree' });
+  const beforeBatchPost = posted;
+  await handlers['island.drawMany']({ ticketIds: hostBatchIds });
+  assert.equal(posted, beforeBatchPost + 1);
+  assert.equal((await handlers['island.read']()).receipts.length, 53);
+  await handlers['island.drawMany']({ ticketIds: hostBatchIds });
+  assert.equal((await handlers['island.read']()).receipts.length, 53);
   const hostBefore = await handlers['island.read']();
   assert.deepEqual(
     decodeBackup(await handlers['island.backup']({})).state,
