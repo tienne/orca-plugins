@@ -44,7 +44,7 @@ The graph shows recent commits with parent relationships, HEAD, branch and tag l
 
 Dates use the commit's committer date, while the list shows the author date. The two can differ after a rebase or cherry-pick.
 
-Search text, filters, and the selected branch scope combine with AND. For example, selecting a branch and typing an author shows only that author's commits on that branch. Requests are sent after a short pause in typing, and a late response for older input is discarded. Active filters appear as chips; remove one with its **×** or use **Clear all**.
+Search text, filters, and the selected branch scope combine with AND. For example, selecting a branch and typing an author shows only that author's commits on that branch. Requests are sent after a short pause in typing, and a late response for older input is discarded. While a Korean or other input method is still composing a character, the pause is a little longer. Active filters appear as chips; remove one with its **×** or use **Clear all**.
 
 While search text or any filter is active, the graph heading reads **Search results · graph hidden** and no graph lines are drawn. Commits left out of the results would otherwise produce false connections.
 

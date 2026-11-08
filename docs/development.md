@@ -103,7 +103,7 @@ Shallow repositories expose only local history. Partial clones are rejected to a
 
 ### Log filters and paging (0.2.0, unreleased)
 
-The `log` request takes `repo`, `all`, `branchRef`, an optional `filter`, and an optional `cursor`. The response adds `nextCursor` and `hasMore` to the existing fields. `filter` is `{ text, author, since, until, path, follow }`, each field optional. The UI sends it after a 300 ms pause and sends only well-formed dates.
+The `log` request takes `repo`, `all`, `branchRef`, an optional `filter`, and an optional `cursor`. The response adds `nextCursor` and `hasMore` to the existing fields. `filter` is `{ text, author, since, until, path, follow }`, each field optional. The UI sends it after a 300 ms pause and sends only well-formed dates. While an input method such as Korean is composing a character, it waits 600 ms instead and sends the value as composed so far.
 
 Tags are read from `refs/tags` in the same `for-each-ref` call and attached to commit rows as `tag: <name>` labels. A tag counts when it points to a commit or is an annotated tag whose target is a commit. Tags are not added to `branches`, so they stay out of the branch picker and out of the cursor snapshot below.
 

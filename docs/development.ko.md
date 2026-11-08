@@ -103,7 +103,7 @@ Shallow 저장소는 로컬 이력만 보여 줍니다. Partial clone은 자동 
 
 ### 로그 필터와 페이지 (0.2.0, 미공개)
 
-`log` 요청은 `repo`, `all`, `branchRef`, 선택 필드인 `filter`와 `cursor`를 받습니다. 응답에는 기존 필드에 `nextCursor`와 `hasMore`가 추가됩니다. `filter`는 `{ text, author, since, until, path, follow }`이며 모든 필드가 선택입니다. UI는 입력을 300ms 멈춘 뒤 요청하고 형식이 맞는 날짜만 보냅니다.
+`log` 요청은 `repo`, `all`, `branchRef`, 선택 필드인 `filter`와 `cursor`를 받습니다. 응답에는 기존 필드에 `nextCursor`와 `hasMore`가 추가됩니다. `filter`는 `{ text, author, since, until, path, follow }`이며 모든 필드가 선택입니다. UI는 입력을 300ms 멈춘 뒤 요청하고 형식이 맞는 날짜만 보냅니다. 한글처럼 입력기가 글자를 조합하는 중에는 600ms를 기다린 뒤 그때까지 조합된 값으로 요청합니다.
 
 태그는 같은 `for-each-ref` 호출에서 `refs/tags`를 함께 읽어 커밋 행에 `tag: <이름>` 라벨로 붙입니다. 커밋을 가리키는 태그나, 대상이 커밋인 주석 태그만 대상입니다. 태그는 `branches`에 넣지 않으므로 브랜치 선택창과 아래 커서 스냅샷에서 제외됩니다.
 
