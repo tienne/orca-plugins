@@ -256,7 +256,7 @@
   "비교 기준 해제": "Clear comparison base",
   "기준: {p0}": "Base: {p0}",
   "공통 조상 기준으로 비교": "Compare from common ancestor",
-  "끄면 기준과 대상을 직접 비교하고, 켜면 두 지점의 공통 조상에서 대상까지의 변경을 봅니다.": "Off compares the base and target directly. On shows changes from their common ancestor to the target.",
+  "끄면 기준과 대상을 직접 비교하고 켜면 두 지점의 공통 조상에서 대상까지의 변경을 봅니다.": "Off compares the base and target directly. On shows changes from their common ancestor to the target.",
   "공통 조상이 없습니다.": "No common ancestor.",
   "같은 커밋입니다.": "Both sides are the same commit.",
   "파일 작업": "File actions",
