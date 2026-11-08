@@ -30,9 +30,9 @@ test('Orcatopia showcase keeps legacy storage and shows an English fixture islan
   ])
     acquire(landmark);
   fixture.placements = [
-    { landmark: 'eiffel', cell: at(12, 4)! },
+    { landmark: 'eiffel', cell: at(9, 7)! },
     { landmark: 'fuji', cell: at(6, 6)! },
-    { landmark: 'taj', cell: at(16, 10)! },
+    { landmark: 'taj', cell: at(14, 9)! },
     { landmark: 'kinderdijk', cell: at(6, 15)! },
     { landmark: 'petra', cell: at(17, 16)! },
   ];
@@ -57,7 +57,6 @@ test('Orcatopia showcase keeps legacy storage and shows an English fixture islan
     ['taj-special', 10, 9],
     ['taj-special', 12, 9],
     ['taj-pavilion', 13, 13],
-    ['taj-pavilion', 9, 13],
     ['fuji-pond', 9, 10],
     ['fuji-pond', 13, 10],
     ['eiffel-special', 9, 12, 1],
@@ -87,13 +86,11 @@ test('Orcatopia showcase keeps legacy storage and shows an English fixture islan
     ['eiffel-rose-arch', 10, 4],
     ['eiffel-rose-arch', 14, 4],
     ['eiffel-special', 13, 6, 2],
-    ['belem-special', 14, 7],
     ['eiffel-gift', 10, 6],
     ['eiffel-gift', 14, 6],
     ['fuji-gift', 9, 3],
     ['fuji-gift', 13, 3],
     ['fuji-gift', 15, 4],
-    ['opera-special', 19, 9],
     ['eiffel-special', 19, 10, 3],
     ['colosseum-gift', 19, 6],
     ['colosseum-gift', 20, 8],
@@ -109,7 +106,6 @@ test('Orcatopia showcase keeps legacy storage and shows an English fixture islan
     ['angkor-fern-bed', 4, 14],
     ['angkor-fern-bed', 4, 16],
     ['colosseum-special', 9, 17],
-    ['colosseum-special', 13, 17],
     ['eiffel-gift', 10, 19],
     ['eiffel-gift', 12, 19],
     ['eiffel-rose-arch', 10, 20],
@@ -145,7 +141,12 @@ test('Orcatopia showcase keeps legacy storage and shows an English fixture islan
   for (const tile of land) {
     const { col, row } = tile;
     if (reserved.has(tile.id) || promenade(col, row)) continue;
-    const formal = col >= 9 && col <= 14 && row >= 9 && row <= 14;
+    const formal =
+      col >= 9 &&
+      col <= 14 &&
+      row >= 9 &&
+      row <= 14 &&
+      (row === 9 || row === 14 || col === 9 || col === 14);
     const border =
       ((row === 7 || row === 16) && col >= 8 && col <= 14) ||
       ((col === 7 || col === 16) && row >= 8 && row <= 15) ||
@@ -244,6 +245,8 @@ test('Orcatopia showcase keeps legacy storage and shows an English fixture islan
       await page.goto('/?lang=ko');
       await page.locator('#overview').click();
     }
+    // Capture a closer garden view using the game's camera controls.
+    for (let step = 0; step < 3; step++) await page.locator('#zoom-in').click();
     const canvas = await page.locator('.ocean').screenshot();
     await cover.setContent(introductionHtml(canvas.toString('base64'), locale));
     await expect(cover.locator('.screen img')).toBeVisible();

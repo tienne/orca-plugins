@@ -20,15 +20,15 @@ export function introductionHtml(screenshot: string, locale: 'en' | 'ko') {
     * { box-sizing: border-box; }
     html, body { margin: 0; width: 1600px; height: 1000px; overflow: hidden; }
     body { background: #f0eddc; color: #294c46; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
-    .cover { position: relative; width: 1600px; height: 1000px; isolation: isolate; background: radial-gradient(ellipse at 80% 30%, #d9e8d8 0, transparent 58%), linear-gradient(135deg, #f4efdd, #e9e8d6); }
-    .landscape { position: absolute; inset: 0; width: 100%; height: 100%; z-index: -1; }
-    .copy { position: absolute; left: 86px; top: 180px; width: 500px; }
-    .mark { display: block; width: 126px; height: 126px; margin-bottom: 30px; }
+    .cover { position: relative; width: 1600px; height: 1000px; isolation: isolate; background: #f4f0e4; }
+    .landscape { position: absolute; inset: 0; width: 100%; height: 100%; z-index: -1; opacity: .35; }
+    .copy { position: absolute; left: 78px; top: 214px; width: 480px; }
+    .mark { display: block; width: 92px; height: 92px; margin-bottom: 32px; }
     .eyebrow { position: absolute; top: 90px; left: 90px; font-size: 15px; letter-spacing: 3px; color: #648176; }
-    h1 { font-family: Georgia, 'Times New Roman', serif; font-size: 90px; font-weight: 500; letter-spacing: -5px; line-height: 1.05; margin: 0 0 32px; }
+    h1 { font-family: Georgia, 'Times New Roman', serif; font-size: 84px; font-weight: 500; letter-spacing: -5px; line-height: 1.05; margin: 0 0 32px; }
     h2 { font-family: ${korean ? '-apple-system, BlinkMacSystemFont, sans-serif' : "Georgia, 'Times New Roman', serif"}; font-weight: ${korean ? '500' : '400'}; font-size: ${korean ? '38px' : '43px'}; letter-spacing: -1.2px; line-height: 1.35; margin: 0 0 26px; color: #467b6b; }
     .description { font-size: 23px; line-height: 1.65; color: #67776c; margin: 0; }
-    .screen { position: absolute; left: 650px; top: 186px; width: 875px; margin: 0; padding: 12px; background: #faf6e9; border: 1px solid #bfcbb7; border-radius: 26px; box-shadow: 0 28px 64px #345c4824, 0 3px 8px #345c4814; transform: rotate(-2deg); }
+    .screen { position: absolute; left: 610px; top: 122px; width: 930px; margin: 0; padding: 8px; background: #faf6e9; border: 1px solid #bfcbb7; border-radius: 26px; box-shadow: 0 28px 64px #345c4824, 0 3px 8px #345c4814;  }
     .screen img { display: block; width: 100%; height: auto; border-radius: 16px; }
     .demo { position: absolute; top: 28px; left: 50%; transform: translateX(-50%); height: fit-content; padding: 6px 10px; border-radius: 5px; background: #f9f5e8ed; color: #42685c; font-size: 11px; font-weight: 600; letter-spacing: 1.3px; }
     .footer { position: absolute; left: 90px; bottom: 80px; font-size: 16px; color: #6e8476; }

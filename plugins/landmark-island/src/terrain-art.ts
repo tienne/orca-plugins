@@ -1,5 +1,5 @@
 import { art } from './art';
-import { project, SIZE, WORLD_W, WORLD_H, type Tile } from './world';
+import { project, at, SIZE, WORLD_W, WORLD_H, type Tile } from './world';
 import { landmarks, islandLand, type State } from './game';
 import { decorationById, decorationArt } from './decorations';
 // Original silhouettes with irregular ink contours and layered wash colors.
@@ -18,6 +18,8 @@ const colors: Record<Tile['kind'], string[]> = {
   rock: ['#b1baa1', '#adb79d', '#b6bfa6'],
 };
 export function terrain(state: State, selectedCell?: number) {
+  const land = islandLand(state);
+  const heights = new Map(land.map((tile) => [tile.id, tile.height]));
   const floors = new Map(state.floors.map((p) => [p.cell, p.decoration]));
   const rotations = new Map(
     state.decorations.map((p) => [p.cell, p.rotation ?? 0]),
@@ -47,6 +49,16 @@ export function terrain(state: State, selectedCell?: number) {
           ? decorationById(floor)!.color
           : colors[t.kind][(t.col * 7 + t.row * 3) % colors[t.kind].length],
         h = t.height + 14;
+      // Internal faces are hidden by adjacent land. Draw only exposed cliffs,
+      // including the shorter drops between terraces, so lawns stay continuous.
+      const drop = (col: number, row: number) => {
+        const neighbour = at(col, row);
+        const height =
+          neighbour === undefined ? undefined : heights.get(neighbour);
+        return height === undefined ? h : Math.max(0, t.height - height);
+      };
+      const leftDrop = drop(t.col, t.row + 1);
+      const rightDrop = drop(t.col + 1, t.row);
       const label = `Cell ${t.id + 1}: ${landmark ? landmark.name : ornament ? ornament.name : floor ? decorationById(floor)!.name : 'empty'}`;
       const decoration = id
         ? `<div class="world-object building" data-tier="${landmark!.tier}" data-depth="${p.depth}"><button class="building-select" data-site="${t.id}" aria-label="Landmark: ${landmark!.name}" title="${landmark!.name} · ${landmark!.country}">${art(id)}</button><span class="building-label">${landmark!.name} · ${landmark!.country}</span></div>`
@@ -55,7 +67,7 @@ export function terrain(state: State, selectedCell?: number) {
           : t.prop && !floor
             ? `<div class="world-object ${t.prop}${t.prop === 'rock' && t.kind === 'rock' ? ' ruin' : ''}" aria-hidden="true">${t.prop === 'pine' ? tree(true) : t.prop === 'oak' ? tree(false) : t.prop === 'rock' ? (t.kind === 'rock' ? ruin : rock) : flowers}</div>`
             : '';
-      return `<div class="world-tile" style="left:${p.x - 40}px;top:${p.y - 20}px;z-index:${p.depth}" data-world-cell="${t.id}"><svg class="tile-base" ${floor ? `data-decoration="${floor}" data-floor="${floor}"` : ''} width="80" height="${40 + h}" viewBox="0 0 80 ${40 + h}" aria-hidden="true"><path d="M0 20L40 40V${40 + h}L0 ${20 + h}Z" fill="${t.kind === 'sand' ? '#cdb68a' : '#7f8d5b'}"/><path d="M40 40L80 20V${20 + h}L40 ${40 + h}Z" fill="${t.kind === 'sand' ? '#bda880' : '#5e754e'}"/><path d="M0 20L40 0 80 20 40 40Z" fill="${fill}"/>${t.kind === 'grass' && t.id % 3 === 0 ? '<path d="M18 21l2-4 1 4m38 1 3-4" stroke="#809d64" stroke-width="1" fill="none"/>' : ''}${t.kind === 'path' && floor !== 'path' ? '<path d="M8 20l16-8 14 7-16 8zm32 2 17-8 15 7-17 9z" fill="#d5d3b2" stroke="#8b9c7b" stroke-width=".8" opacity=".7"/><path d="M22 16l4 2-3 3m34 1 5-2" fill="none" stroke="#8b9c7b" stroke-width=".8"/>' : ''}</svg><button class="cell ${id || ornament ? 'occupied' : ''} ${selectedCell === t.id ? 'selected' : ''}" data-cell="${t.id}" aria-label="${label}" title="${landmark?.name ?? ornament?.name ?? t.region}" tabindex="-1"></button>${decoration}</div>`;
+      return `<div class="world-tile" style="left:${p.x - 40}px;top:${p.y - 20}px;z-index:${p.depth}" data-world-cell="${t.id}"><svg class="tile-base" ${floor ? `data-decoration="${floor}" data-floor="${floor}"` : ''} width="80" height="${40 + h}" viewBox="0 0 80 ${40 + h}" aria-hidden="true">${leftDrop ? `<path d="M0 20L40 40V${40 + leftDrop}L0 ${20 + leftDrop}Z" fill="${t.kind === 'sand' ? '#cdb68a' : '#7f8d5b'}"/>` : ''}${rightDrop ? `<path d="M40 40L80 20V${20 + rightDrop}L40 ${40 + rightDrop}Z" fill="${t.kind === 'sand' ? '#bda880' : '#5e754e'}"/>` : ''}<path d="M0 20L40 0 80 20 40 40Z" fill="${fill}"/>${t.kind === 'grass' && t.id % 3 === 0 ? '<path d="M18 21l2-4 1 4m38 1 3-4" stroke="#809d64" stroke-width="1" fill="none"/>' : ''}${t.kind === 'path' && floor !== 'path' ? '<path d="M8 20l16-8 14 7-16 8zm32 2 17-8 15 7-17 9z" fill="#d5d3b2" stroke="#8b9c7b" stroke-width=".8" opacity=".7"/><path d="M22 16l4 2-3 3m34 1 5-2" fill="none" stroke="#8b9c7b" stroke-width=".8"/>' : ''}</svg><button class="cell ${id || ornament ? 'occupied' : ''} ${selectedCell === t.id ? 'selected' : ''}" data-cell="${t.id}" aria-label="${label}" title="${landmark?.name ?? ornament?.name ?? t.region}" tabindex="-1"></button>${decoration}</div>`;
     })
     .join(
       '',

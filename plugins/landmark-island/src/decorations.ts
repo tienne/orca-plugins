@@ -494,6 +494,47 @@ function furnitureArt(d: Decoration, rotation: number) {
   faces.sort((a, b) => depth(a.points) - depth(b.points));
   return `<svg class="decoration-art" viewBox="0 0 80 104" aria-hidden="true"><ellipse cx="40" cy="90" rx="31" ry="9" fill="#244e3825"/>${faces.map((f) => `<polygon points="${f.points.map(([x, y, z]) => `${40 + (x - y) * 0.65},${86 + (x + y) * 0.32 - z}`).join(' ')}" fill="${f.fill}" stroke="#53624d" stroke-width=".7" stroke-linejoin="round"/>`).join('')}</svg>`;
 }
+// Low planting keeps views across paths open; small blossoms sit in layered foliage.
+function flowerBedArt(color: string) {
+  const blooms = [
+    [17, 74],
+    [27, 65],
+    [39, 73],
+    [49, 62],
+    [61, 74],
+    [29, 82],
+    [49, 83],
+  ];
+  return `<ellipse cx="40" cy="84" rx="31" ry="11" fill="#49694b" stroke="none"/>
+    <g fill="#759765" stroke="#57764f" stroke-width=".5">
+      <ellipse cx="22" cy="78" rx="15" ry="8"/><ellipse cx="43" cy="70" rx="18" ry="9"/>
+      <ellipse cx="57" cy="80" rx="15" ry="9"/><ellipse cx="38" cy="85" rx="18" ry="7"/>
+    </g>
+    ${blooms
+      .map(
+        ([x, y], i) => `<g transform="translate(${x} ${y})">
+      <path d="M0 4v9m0-4q-8-7-8-1 4 4 8 3m0-6q8-6 8-1-4 4-8 3" fill="#94b57a" stroke="#486e49" stroke-width=".7"/>
+      <g fill="${i % 3 === 0 ? '#f5e8cf' : color}" stroke="none">
+        ${[0, 72, 144, 216, 288].map((angle) => `<ellipse cy="-2.8" rx="2.5" ry="3.4" transform="rotate(${angle})"/>`).join('')}
+      </g><circle r="1.7" fill="#d8af64" stroke="none"/>
+    </g>`,
+      )
+      .join('')}
+    <path d="M12 84l5 2m17 4 6 1m17-4 5-2m-28-8 4 1" stroke="#bed09c" stroke-width="1" fill="none"/>`;
+}
+function gardenTreeArt(color: string) {
+  return `<path d="M34 93q7-25 3-50l8-1q-4 29 5 50z" fill="#8b785c" stroke="#6c694e" stroke-width=".8"/>
+    <path d="M40 74L22 46m19 15 17-26" fill="none" stroke="#8b785c" stroke-width="3"/>
+    <g fill="${color}" stroke="#526e4b" stroke-width=".6">
+      <path d="M11 58Q1 49 10 38Q6 25 21 23Q25 9 39 15Q50 6 59 20Q73 19 72 34Q84 43 72 55Q76 69 60 70Q50 81 37 72Q20 78 17 65Q9 65 11 58Z"/>
+    </g>
+    <path d="M12 54q15 10 26 1t34-5q4 16-15 19-13 9-23 1-20 3-22-16" fill="#354f43" opacity=".16" stroke="none"/>
+    <g fill="#fff3d6" opacity=".2" stroke="none">
+      <ellipse cx="25" cy="32" rx="13" ry="9"/><ellipse cx="44" cy="25" rx="12" ry="8"/>
+      <ellipse cx="57" cy="40" rx="12" ry="9"/><ellipse cx="27" cy="49" rx="10" ry="7"/>
+    </g>
+    <path d="m19 31 3-2m7-6 3 1m7-5 3 1m9 8 4-1m9 13 3 2m-44 8 4 1m7-8 3-2m11 11 4-2m-13 15 3 1m18-9 4-2" stroke="#f4e9c9" opacity=".5" stroke-width="1.3" stroke-linecap="round" fill="none"/>`;
+}
 export function decorationArt(id: string, rotation = 0) {
   const d = decorationById(id)!;
   if (canRotate(id)) return furnitureArt(d, rotation);
@@ -501,9 +542,8 @@ export function decorationArt(id: string, rotation = 0) {
     grass:
       '<path d="M5 78L40 58 75 78 40 98Z"/><path d="M20 78l3-8 3 8m17 6 4-10 3 9m8-8 3-7 2 8" fill="none" stroke="#547644"/>',
     path: '<path d="M5 78L40 58 75 78 40 98Z"/><path d="M16 78l21-12m2 25 23-14" stroke="#e4cfaa"/>',
-    tree: '<path d="M36 90l2-40h6l2 40" fill="#8e7255"/><path d="M12 58Q0 42 17 34 10 17 30 20 35 3 48 17 66 10 66 31 83 40 67 53 70 72 49 67 34 82 26 66 9 73 12 58Z"/><path d="M20 37q10-14 21-9m6-4 10 7M18 54l7 3m18 2 15-6" fill="none" stroke="#e2e9b0" opacity=".6"/>',
-    flowers:
-      '<path d="M8 80L40 63 72 80 40 96Z" fill="#728f58"/><path d="M22 82V64m18 22V55m18 27V64" stroke="#4e744a" stroke-width="3"/><g stroke="#9d755d"><circle cx="22" cy="61" r="8"/><circle cx="40" cy="53" r="9"/><circle cx="58" cy="62" r="8"/></g><g fill="#f8dd8d" stroke="none"><circle cx="22" cy="61" r="3"/><circle cx="40" cy="53" r="3"/><circle cx="58" cy="62" r="3"/></g>',
+    tree: gardenTreeArt(d.color),
+    flowers: flowerBedArt(d.color),
     lamp: '<path d="M29 90h22l-6-7H35zM38 83V37h4v46"/><path d="M27 17l13-8 13 8-4 25H31Z"/><path d="M32 20h16l-3 17H35Z" fill="#f7db83"/><path d="M40 18v20M25 18h30" stroke="#354e4e"/><circle cx="40" cy="27" r="16" fill="#ffdf8b" opacity=".12" stroke="none"/>',
     bench:
       '<path d="M12 68v20m48-15v20m-39-23v16m47-20v18" stroke="#5b6354" stroke-width="4"/><path d="M10 65l45-9 17 10-46 12Z"/><path d="M12 63V43l45-9v20Z"/><path d="M17 48l35-7m-34 15 34-7" stroke="#e8d3ac" fill="none"/>',
