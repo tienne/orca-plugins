@@ -626,5 +626,6 @@
   "{count} duplicates": "중복 {count}개",
   "New discovery": "새로운 발견",
   "Duplicate discovered": "중복 발견",
-  "Open 10 treasures with 10 exploration tickets. Only newly discovered landmarks play an animation, at every tier.": "탐험권 10장으로 보물상자 10개를 엽니다. 등급과 관계없이 처음 발견한 랜드마크만 연출을 재생합니다."
+  "Open 10 treasures with 10 exploration tickets. Only newly discovered landmarks play an animation, at every tier.": "탐험권 10장으로 보물상자 10개를 엽니다. 등급과 관계없이 처음 발견한 랜드마크만 연출을 재생합니다.",
+  "When checked, both single and ten-ticket draws show results immediately.": "체크하면 한 개·10개 열기 모두 연출 없이 결과를 바로 보여줍니다."
 }

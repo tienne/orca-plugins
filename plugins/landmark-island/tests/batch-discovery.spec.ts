@@ -280,3 +280,64 @@ test('ten treasures keep host notifications queued through highlights and summar
     ),
   ).toBe(1);
 });
+
+for (const language of ['en', 'ko'])
+  test(`skip checkbox controls single and ten-ticket discoveries without changing rewards (${language})`, async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width: 360, height: 800 });
+    await seed(page, 12, [...Array(20).fill(0), 0.8, 0, 0.999, 0]);
+    await page.goto(`/?lang=${language}`);
+    const skip = page.getByRole('checkbox', {
+      name: language === 'ko' ? '연출 건너뛰기' : 'Skip animation',
+      exact: true,
+    });
+    await expect(skip).not.toBeChecked();
+    const camera = await page.locator('.camera').getAttribute('style');
+    await skip.focus();
+    await page.keyboard.press('Space');
+    await expect(skip).toBeChecked();
+    expect(await page.locator('.camera').getAttribute('style')).toBe(camera);
+    await page.locator('[data-inventory=landmarks]').click();
+    await page.locator('#close-inventory').click();
+    await page.locator('#refresh').click();
+    await expect(skip).toBeChecked();
+    const bounds = (await page.locator('.skip-discovery').boundingBox())!;
+    const ocean = (await page.locator('.ocean').boundingBox())!;
+    expect(bounds.x + bounds.width).toBeLessThanOrEqual(ocean.x + ocean.width);
+    await page
+      .locator('.ocean')
+      .screenshot({
+        path: `test-results/landmark-island/skip-checkbox-${language}.png`,
+      });
+    await page.locator('#draw-ten').click();
+    await expect(page.locator('.treasure-results')).toBeVisible();
+    await expect(page.locator('.treasure-result[data-new=true]')).toHaveCount(
+      1,
+    );
+    await expect(page.locator('.reveal-skip')).toHaveCount(0);
+    expect((await saved(page)).receipts).toHaveLength(10);
+    await page.locator('.results-close').click();
+    await expect(skip).toBeChecked();
+    await skip.uncheck();
+    await page.locator('#draw-ticket').click();
+    await expect(page.locator('.discovery-theatre')).not.toHaveClass(
+      /static-discovery/,
+    );
+    await expect(page.locator('.reveal-skip')).toBeVisible();
+    await page.locator('.reveal-skip').click();
+    await page.locator('.reveal-keep').click();
+    await expect(skip).not.toBeChecked();
+    await skip.check();
+    await page.locator('#draw-ticket').click();
+    await expect(page.locator('.discovery-theatre')).toHaveClass(
+      /static-discovery/,
+    );
+    await expect(page.locator('.reveal-skip')).toBeHidden();
+    await expect(page.locator('.reveal-actions')).toBeVisible();
+    await page.locator('.reveal-keep').click();
+    expect(
+      (await saved(page)).receipts.map((r: { landmark: string }) => r.landmark),
+    ).toEqual([...Array(10).fill('liberty'), 'eiffel', 'petra']);
+    await expect(skip).toBeChecked();
+  });

@@ -183,6 +183,7 @@ async function request(name: string, input: unknown = {}) {
 let loaded = false;
 let pendingTicket: string | undefined;
 let pendingTickets: string[] | undefined;
+let skipDiscovery = false;
 const undoStack: { before: Layout; after: Layout }[] = [];
 async function run(
   action: () => Promise<State>,
@@ -308,7 +309,7 @@ async function useTicket(amount: 1 | 10 = 1) {
   }
   if (!rewards) return;
   const container = root.querySelector<HTMLElement>('.ocean')!;
-  const animate = (r: DiscoveryReward) => r.isNew;
+  const animate = (r: DiscoveryReward) => r.isNew && !skipDiscovery;
   if (amount === 1) {
     const r = rewards[0];
     revealDiscovery(
@@ -486,7 +487,7 @@ const chestArt = `<svg viewBox="0 0 72 70" aria-hidden="true"><ellipse cx="36" c
 function canvasInventory() {
   const tickets = availableTickets(state).length;
   const drawLabel = pendingTicket ? 'Retry discovery' : 'Use ticket · Discover';
-  return `<div class="island-satchel" role="group" aria-label="Island collections"><button class="satchel-item" data-inventory="decorations" aria-label="Open decorations" aria-controls="canvas-inventory" aria-expanded="${inventoryTab === 'decorations'}">${satchelArt}<span>Decorations</span></button><button class="satchel-item" data-inventory="landmarks" aria-label="Open landmarks" aria-controls="canvas-inventory" aria-expanded="${inventoryTab === 'landmarks'}">${journalArt}<span>Landmarks</span></button><div class="treasure-actions"><button id="draw-ticket" class="satchel-item treasure-chest" aria-label="${drawLabel}" aria-describedby="treasure-help" aria-haspopup="dialog" title="${pendingTicket ? 'Recover the same discovery without spending another ticket' : tickets ? 'Use 1 exploration ticket to discover a landmark' : 'Create a worktree to earn an exploration ticket'}" ${!loaded || !!pendingTickets || (!tickets && !pendingTicket) ? 'disabled' : ''}>${chestArt}<span>${pendingTicket ? 'Retry' : 'Treasure'}</span><b id="ticket-count" aria-label="${tickets} exploration tickets">${tickets}</b></button><button id="draw-ten" aria-haspopup="dialog" aria-describedby="treasure-help" aria-label="${pendingTickets ? 'Retry 10 treasures' : 'Open 10 treasures'}" title="Open 10 treasures with 10 exploration tickets. Only newly discovered landmarks play an animation, at every tier." ${!loaded || !!pendingTicket || (!pendingTickets && tickets < 10) ? 'disabled' : ''}>${pendingTickets ? 'Retry ×10' : 'Open ×10'}</button></div><span id="treasure-help" class="visually-hidden">${tickets} exploration tickets available. Create a worktree to earn a ticket. Open one treasure with one ticket, or 10 with 10 tickets. Results are saved before any animation.</span></div><aside id="canvas-inventory" class="canvas-inventory" aria-label="Island inventory" ${inventoryTab ? '' : 'hidden'}><div class="inventory-heading"><div><small>THE EXPLORER’S SATCHEL</small><h2 id="inventory-title">${inventoryTab === 'landmarks' ? 'Landmark journal' : 'Garden treasures'}</h2></div><button id="close-inventory" aria-label="Close inventory">×</button></div>${inventoryFinder()}<div class="inventory-scroll" data-inventory-tab="${inventoryTab ?? 'decorations'}"><div data-inventory-page="decorations" ${inventoryTab === 'decorations' ? '' : 'hidden'}>${workshop()}</div><div data-inventory-page="landmarks" ${inventoryTab === 'landmarks' ? '' : 'hidden'}>${collection()}</div><p class="inventory-empty" hidden>No matching items. Try another name or reset the filters.</p></div><p class="inventory-hint">Choose a piece to place it on your island.</p></aside>`;
+  return `<div class="island-satchel" role="group" aria-label="Island collections"><button class="satchel-item" data-inventory="decorations" aria-label="Open decorations" aria-controls="canvas-inventory" aria-expanded="${inventoryTab === 'decorations'}">${satchelArt}<span>Decorations</span></button><button class="satchel-item" data-inventory="landmarks" aria-label="Open landmarks" aria-controls="canvas-inventory" aria-expanded="${inventoryTab === 'landmarks'}">${journalArt}<span>Landmarks</span></button><div class="treasure-actions"><button id="draw-ticket" class="satchel-item treasure-chest" aria-label="${drawLabel}" aria-describedby="treasure-help" aria-haspopup="dialog" title="${pendingTicket ? 'Recover the same discovery without spending another ticket' : tickets ? 'Use 1 exploration ticket to discover a landmark' : 'Create a worktree to earn an exploration ticket'}" ${!loaded || !!pendingTickets || (!tickets && !pendingTicket) ? 'disabled' : ''}>${chestArt}<span>${pendingTicket ? 'Retry' : 'Treasure'}</span><b id="ticket-count" aria-label="${tickets} exploration tickets">${tickets}</b></button><button id="draw-ten" aria-haspopup="dialog" aria-describedby="treasure-help" aria-label="${pendingTickets ? 'Retry 10 treasures' : 'Open 10 treasures'}" title="Open 10 treasures with 10 exploration tickets. Only newly discovered landmarks play an animation, at every tier." ${!loaded || !!pendingTicket || (!pendingTickets && tickets < 10) ? 'disabled' : ''}>${pendingTickets ? 'Retry ×10' : 'Open ×10'}</button></div><span id="treasure-help" class="visually-hidden">${tickets} exploration tickets available. Create a worktree to earn a ticket. Open one treasure with one ticket, or 10 with 10 tickets. Results are saved before any animation.</span><label class="skip-discovery" title="When checked, both single and ten-ticket draws show results immediately."><input id="skip-discovery" type="checkbox" ${skipDiscovery ? 'checked' : ''} ${busy ? 'disabled' : ''}><span>Skip animation</span></label></div><aside id="canvas-inventory" class="canvas-inventory" aria-label="Island inventory" ${inventoryTab ? '' : 'hidden'}><div class="inventory-heading"><div><small>THE EXPLORER’S SATCHEL</small><h2 id="inventory-title">${inventoryTab === 'landmarks' ? 'Landmark journal' : 'Garden treasures'}</h2></div><button id="close-inventory" aria-label="Close inventory">×</button></div>${inventoryFinder()}<div class="inventory-scroll" data-inventory-tab="${inventoryTab ?? 'decorations'}"><div data-inventory-page="decorations" ${inventoryTab === 'decorations' ? '' : 'hidden'}>${workshop()}</div><div data-inventory-page="landmarks" ${inventoryTab === 'landmarks' ? '' : 'hidden'}>${collection()}</div><p class="inventory-empty" hidden>No matching items. Try another name or reset the filters.</p></div><p class="inventory-hint">Choose a piece to place it on your island.</p></aside>`;
 }
 function setInventory(tab: typeof inventoryTab, focus = true) {
   const scroll = root.querySelector<HTMLElement>('.inventory-scroll');
@@ -1040,6 +1041,11 @@ function render() {
     void useTicket();
   root.querySelector<HTMLButtonElement>('#draw-ten')!.onclick = () =>
     void useTicket(10);
+  root.querySelector<HTMLInputElement>('#skip-discovery')!.onchange = (
+    event,
+  ) => {
+    skipDiscovery = (event.currentTarget as HTMLInputElement).checked;
+  };
   const expedition = root.querySelector<HTMLButtonElement>('#expedition');
   if (expedition)
     expedition.onclick = () =>

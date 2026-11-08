@@ -1823,3 +1823,32 @@ dialog:modal {
   outline: 2px solid var(--orca-ring, #fff0bc);
   outline-offset: 3px;
 }
+
+.skip-discovery {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 7px;
+  border-radius: 4px;
+  background: var(--orca-secondary, #254c40);
+  color: var(--orca-secondary-foreground, #fff2d3);
+  font-size: 11px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.skip-discovery input {
+  width: 14px;
+  height: 14px;
+  margin: 0;
+  accent-color: var(--orca-primary, #e4ca8b);
+}
+.skip-discovery input:focus-visible {
+  outline: 2px solid var(--orca-ring, #fff0bc);
+  outline-offset: 3px;
+}
+.ocean[data-inventory-open='true'] .skip-discovery {
+  visibility: hidden;
+}
