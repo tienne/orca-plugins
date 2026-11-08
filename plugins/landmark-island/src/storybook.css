@@ -1711,3 +1711,12 @@ dialog:modal {
     font-size: 11px;
   }
 }
+
+.canvas-editor .rotation-controls {
+  flex-wrap: wrap;
+  align-items: center;
+}
+.canvas-editor .piece-direction {
+  font-size: 11px;
+  padding: 0 4px;
+}

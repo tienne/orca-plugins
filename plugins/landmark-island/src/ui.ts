@@ -91,6 +91,8 @@ let state: State = empty(),
   brushEnabled = false,
   placementRotation = 0,
   from: number | undefined,
+  moving = false,
+  moveBlocked = false,
   busy = false,
   message =
     'New worktree → one exploration ticket. Use a ticket to discover a landmark.',
@@ -266,6 +268,8 @@ async function useTicket() {
         brushEnabled = false;
         selectedDecor = '';
         from = undefined;
+        moving = false;
+        moveBlocked = false;
         scene.mode = 'build';
         view = 'island';
         inventoryTab = undefined;
@@ -381,10 +385,10 @@ function editorTools() {
     selectedDecor &&
     (isFloor(selectedDecor) ||
       decorationById(selectedDecor)?.shape === 'flowers');
-  return `<div class="editor-tools" aria-label="Island editing tools"><button id="undo-layout" ${!undoStack.length ? 'disabled' : ''}>Undo layout${undoStack.length ? ` · ${undoStack.length}` : ''}</button>${scene.mode === 'build' ? `<div role="group" aria-label="Edit layer"><button data-edit-layer="objects" aria-pressed="${editLayer === 'objects'}">Objects</button><button data-edit-layer="floor" aria-pressed="${editLayer === 'floor'}">Floor</button></div>${paintable ? `<button id="brush-toggle" aria-pressed="${brushEnabled}">Brush · ${brushEnabled ? 'On' : 'Off'}</button>` : ''}${rotatable ? `<button id="rotate-piece">Rotate · ${(current ? (current.rotation ?? 0) : placementRotation) * 90}°</button>` : ''}${selectedDecor || selected ? '<button id="stop-placing">Cancel selection</button>' : ''}<small>${editLayer === 'floor' ? 'Floor layer · Paint beneath objects' : 'Object layer · Floors stay in place'}${selectedDecor && canRotate(selectedDecor) ? ` · Facing ${placementRotation * 90}°` : ''}</small>` : ''}</div>`;
+  return `<div class="editor-tools" aria-label="Island editing tools"><button id="undo-layout" ${!undoStack.length ? 'disabled' : ''}>Undo layout${undoStack.length ? ` · ${undoStack.length}` : ''}</button>${scene.mode === 'build' ? `<div role="group" aria-label="Edit layer"><button data-edit-layer="objects" aria-pressed="${editLayer === 'objects'}">Objects</button><button data-edit-layer="floor" aria-pressed="${editLayer === 'floor'}">Floor</button></div>${paintable ? `<button id="brush-toggle" aria-pressed="${brushEnabled}">Brush · ${brushEnabled ? 'On' : 'Off'}</button>` : ''}${rotatable || from !== undefined ? `<div class="rotation-controls" role="group" aria-label="Piece rotation"><button id="rotate-left" data-rotate="-1" ${!rotatable || moving ? 'disabled' : ''}>Rotate left</button><button id="rotate-piece" data-rotate="1" ${!rotatable || moving ? 'disabled' : ''}>Rotate right</button>${rotatable ? `<span class="piece-direction">${(current ? (current.rotation ?? 0) : placementRotation) * 90}°</span>` : '<small>This piece has a fixed orientation.</small>'}</div>` : ''}${selectedDecor || selected ? '<button id="stop-placing">Cancel selection</button>' : ''}<small>${editLayer === 'floor' ? 'Floor layer · Paint beneath objects' : 'Object layer · Floors stay in place'}${selectedDecor && canRotate(selectedDecor) ? ` · Facing ${placementRotation * 90}°` : ''}</small>` : ''}</div>`;
 }
 function canvasEditor() {
-  return `<aside class="canvas-editor" aria-label="Island arrangement">${scene.modeMarkup()}${scene.mode === 'build' ? `<p class="placement-hint" aria-live="polite">${from !== undefined ? 'Choose an empty cell to move the selected piece.' : selectedDecor ? (isFloor(selectedDecor) ? `Lay ${decorationById(selectedDecor)!.name} on any unlocked tile, including beneath objects.` : `Place ${decorationById(selectedDecor)!.name} on an empty cell.`) : selected ? `Place ${escape(landmarks.find((l) => l.id === selected)!.name)} on an empty cell.` : 'Open the satchel or journal on the island to choose a piece.'}</p>` : ''}${editorTools()}${from !== undefined ? '<div class="tools"><button id="remove">Return to collection</button><button id="cancel">Cancel move</button></div>' : ''}</aside>`;
+  return `<aside class="canvas-editor" aria-label="Island arrangement">${scene.modeMarkup()}${scene.mode === 'build' ? `<p class="placement-hint" aria-live="polite">${from !== undefined ? (moving ? (moveBlocked ? 'That tile is occupied. Choose another destination.' : editLayer === 'floor' ? 'Choose a tile without flooring to move the selected piece.' : 'Choose an empty cell to move the selected piece.') : 'Piece selected. Choose Move or a rotation direction from the menu.') : selectedDecor ? (isFloor(selectedDecor) ? `Lay ${decorationById(selectedDecor)!.name} on any unlocked tile, including beneath objects.` : `Place ${decorationById(selectedDecor)!.name} on an empty cell.`) : selected ? `Place ${escape(landmarks.find((l) => l.id === selected)!.name)} on an empty cell.` : 'Open the satchel or journal on the island to choose a piece.'}</p>` : ''}${editorTools()}${from !== undefined ? `<div class="tools">${moving ? '' : '<button id="move-piece">Move</button><button id="remove">Return to collection</button>'}<button id="cancel">${moving ? 'Cancel move' : 'Cancel selection'}</button></div>` : ''}</aside>`;
 }
 function render() {
   const previousScroll = root.querySelector<HTMLElement>('.inventory-scroll');
@@ -446,6 +450,8 @@ function render() {
         selected = '';
         selectedDecor = '';
         from = undefined;
+        moving = false;
+        moveBlocked = false;
         render();
       }),
   );
@@ -459,6 +465,8 @@ function render() {
         selectedDecor = '';
         scene.mode = 'build';
         from = undefined;
+        moving = false;
+        moveBlocked = false;
         view = 'island';
         render();
         root
@@ -481,24 +489,49 @@ function render() {
           edit('island.decorate', { cell, decoration, layer: 'floor' });
           return;
         }
-        if (p) {
-          from = cell;
-          selected = '';
-          selectedDecor = '';
-          render();
+        if (from !== undefined && moving) {
+          if (p) {
+            moveBlocked = true;
+            render();
+            return;
+          }
+          const origin = from;
+          const name =
+            editLayer === 'floor' ||
+            state.decorations.some((p) => p.cell === origin)
+              ? 'island.decorate'
+              : 'island.place';
+          const expected = layout(state);
+          void run(async () => {
+            const next = await request(name, {
+              cell,
+              from: origin,
+              layer: editLayer,
+              expected,
+            });
+            from = undefined;
+            moving = false;
+            moveBlocked = false;
+            return next;
+          }, 'edit');
           return;
         }
-        if (from !== undefined) {
-          const origin = from;
-          from = undefined;
-          edit(
-            editLayer === 'floor' ||
-              state.decorations.some((p) => p.cell === origin)
-              ? 'island.decorate'
-              : 'island.place',
-            { cell, from: origin, layer: editLayer },
-          );
-        } else if (selectedDecor) {
+        if (p) {
+          from = cell;
+          moving = false;
+          moveBlocked = false;
+          selected = '';
+          selectedDecor = '';
+          brushEnabled = false;
+          render();
+          root
+            .querySelector<HTMLElement>('#move-piece')
+            ?.focus({ preventScroll: true });
+          return;
+        }
+        // Selecting a piece is not permission to move it. Empty clicks leave it in place.
+        if (from !== undefined) return;
+        if (selectedDecor) {
           const decoration = selectedDecor;
           if (!brushEnabled) selectedDecor = '';
           edit('island.decorate', {
@@ -539,6 +572,8 @@ function render() {
         placementRotation = 0;
         selected = '';
         from = undefined;
+        moving = false;
+        moveBlocked = false;
         scene.mode = 'build';
         render();
         root
@@ -567,6 +602,8 @@ function render() {
         editLayer = button.dataset.editLayer as typeof editLayer;
         selected = selectedDecor = '';
         from = undefined;
+        moving = false;
+        moveBlocked = false;
         brushEnabled = false;
         render();
       };
@@ -584,19 +621,31 @@ function render() {
       brushEnabled = false;
       render();
     };
-  const rotate = root.querySelector<HTMLButtonElement>('#rotate-piece');
-  if (rotate)
-    rotate.onclick = () => {
-      if (from !== undefined) {
-        const current = state.decorations.find((p) => p.cell === from)!;
-        edit('island.rotate', {
-          cell: from,
-          rotation: ((current.rotation ?? 0) + 1) % 4,
-        });
-      } else {
-        placementRotation = (placementRotation + 1) % 4;
-        render();
-      }
+  root
+    .querySelectorAll<HTMLButtonElement>('[data-rotate]')
+    .forEach((button) => {
+      button.onclick = () => {
+        const step = Number(button.dataset.rotate);
+        if (from !== undefined) {
+          const current = state.decorations.find((p) => p.cell === from);
+          if (!current || !canRotate(current.decoration) || moving) return;
+          edit('island.rotate', {
+            cell: from,
+            rotation: ((current.rotation ?? 0) + step + 4) % 4,
+          });
+        } else {
+          placementRotation = (placementRotation + step + 4) % 4;
+          render();
+        }
+      };
+    });
+  const move = root.querySelector<HTMLButtonElement>('#move-piece');
+  if (move)
+    move.onclick = () => {
+      moving = true;
+      moveBlocked = false;
+      render();
+      root.querySelector<HTMLElement>('.ocean')?.focus({ preventScroll: true });
     };
   const undo = root.querySelector<HTMLButtonElement>('#undo-layout');
   if (undo)
@@ -605,6 +654,8 @@ function render() {
       if (!entry) return;
       selected = selectedDecor = '';
       from = undefined;
+      moving = false;
+      moveBlocked = false;
       brushEnabled = false;
       void run(async () => {
         const next = await request('island.layout', {
@@ -678,6 +729,8 @@ function render() {
       selected = '';
       selectedDecor = '';
       from = undefined;
+      moving = false;
+      moveBlocked = false;
       brushEnabled = false;
       inventoryTab = undefined;
       render();
@@ -710,6 +763,8 @@ function render() {
     remove.onclick = () => {
       const cell = from;
       from = undefined;
+      moving = false;
+      moveBlocked = false;
       edit(
         editLayer === 'floor' || state.decorations.some((p) => p.cell === cell)
           ? 'island.decorate'
@@ -720,8 +775,13 @@ function render() {
   const cancel = root.querySelector<HTMLButtonElement>('#cancel');
   if (cancel)
     cancel.onclick = () => {
-      from = undefined;
+      if (!moving) from = undefined;
+      moving = false;
+      moveBlocked = false;
       render();
+      root
+        .querySelector<HTMLElement>('#move-piece')
+        ?.focus({ preventScroll: true });
     };
   root.querySelector<HTMLButtonElement>('#backups')!.onclick = () =>
     void openBackups();
@@ -891,6 +951,8 @@ async function openBackups() {
       selected = '';
       selectedDecor = '';
       from = undefined;
+      moving = false;
+      moveBlocked = false;
       error = '';
       message = 'Island restored from backup.';
       clearReview();

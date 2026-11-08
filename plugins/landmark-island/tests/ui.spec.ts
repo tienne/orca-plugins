@@ -47,6 +47,34 @@ test('demo acquisition, duplicate, placement, move, removal and persistent map',
     .getByRole('button', { name: 'Cell 2: empty', exact: true })
     .click();
   await expect(
+    page.getByRole('button', { name: 'Cell 1: Eiffel Tower', exact: true }),
+  ).toBeVisible();
+  await expect(page.locator('.placement-hint')).toContainText(
+    'Piece selected.',
+  );
+  await expect(page.locator('#rotate-left')).toBeDisabled();
+  await expect(page.locator('#rotate-piece')).toBeDisabled();
+  await page.locator('#move-piece').click();
+  await expect(page.locator('.placement-hint')).toContainText(
+    'Choose an empty cell',
+  );
+  await page
+    .getByRole('button', { name: 'Cell 1: Eiffel Tower', exact: true })
+    .click();
+  await expect(page.locator('.placement-hint')).toContainText('occupied');
+  await page.locator('#cancel').click();
+  await expect(page.locator('#move-piece')).toBeVisible();
+  await page
+    .getByRole('button', { name: 'Cell 2: empty', exact: true })
+    .click();
+  await expect(
+    page.getByRole('button', { name: 'Cell 1: Eiffel Tower', exact: true }),
+  ).toBeVisible();
+  await page.locator('#move-piece').click();
+  await page
+    .getByRole('button', { name: 'Cell 2: empty', exact: true })
+    .click();
+  await expect(
     page.getByRole('button', { name: 'Cell 2: Eiffel Tower', exact: true }),
   ).toBeVisible();
   await page.reload();
@@ -446,6 +474,7 @@ test('a placed building opens its story during exploration and stays movable in 
   await expect(
     page.getByRole('button', { name: 'Return to collection' }),
   ).toBeVisible();
+  await page.locator('#move-piece').click();
   await page
     .getByRole('button', { name: 'Cell 33: empty', exact: true })
     .click();
@@ -1709,6 +1738,7 @@ test('new discoveries grow land, gifts unlock sets, duplicates craft chosen deco
   await page
     .getByRole('button', { name: 'Cell 1: Paris lantern', exact: true })
     .click();
+  await page.locator('#move-piece').click();
   await page
     .getByRole('button', { name: 'Cell 2: empty', exact: true })
     .click();
@@ -2032,12 +2062,26 @@ test('floors overlap furniture; four directions, movement and undo preserve the 
     await page.locator('#rotate-piece').click();
     const art = page.locator('[data-world-cell="1"] .garden-object');
     await expect(art).toHaveAttribute('data-rotation', String(rotation % 4));
-    await expect(page.locator('#rotate-piece')).toHaveText(
-      `Rotate · ${(rotation % 4) * 90}°`,
+    await expect(page.locator('.piece-direction')).toHaveText(
+      `${(rotation % 4) * 90}°`,
     );
     views.add(await art.innerHTML());
   }
   expect(views.size).toBe(4);
+  await page.locator('#rotate-left').click();
+  await expect(
+    page.locator('[data-world-cell="1"] .garden-object'),
+  ).toHaveAttribute('data-rotation', '0');
+  await page.locator('#rotate-left').click();
+  await expect(
+    page.locator('[data-world-cell="1"] .garden-object'),
+  ).toHaveAttribute('data-rotation', '3');
+  await page.locator('#rotate-piece').click();
+  await page.locator('#rotate-piece').click();
+  await expect(
+    page.locator('[data-world-cell="1"] .garden-object'),
+  ).toHaveAttribute('data-rotation', '1');
+  await page.locator('#move-piece').click();
   await page
     .getByRole('button', { name: 'Cell 3: empty', exact: true })
     .click();
@@ -2735,6 +2779,12 @@ for (const width of [1000, 360])
       .click();
     await expect(desk.locator('#remove')).toBeVisible();
     await expect(desk.locator('#cancel')).toBeVisible();
+    expect(await desk.evaluate((el) => el.scrollWidth <= el.clientWidth)).toBe(
+      true,
+    );
+    await ocean.screenshot({
+      path: `test-results/landmark-island/piece-menu-${width}.png`,
+    });
     await desk.locator('#cancel').click();
     const bounds = await desk.boundingBox();
     const canvas = await ocean.boundingBox();
