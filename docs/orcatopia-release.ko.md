@@ -85,8 +85,8 @@ UI와 동봉 고지에 출처 및 네 가지 게임 날씨로 변환했다는 �
 게시 시 검토한 미리보기의 콘텐츠 해시를 요구합니다. 게시 직전에 환경 규칙도
 다시 확인합니다. `pnpm nx run landmark-island:release-preflight --mode=publish`로
 GitHub 설정을 바꾸지 않고 점검할 수 있습니다. 환경 설정과 첫 호스팅 미리보기 실행은
-[배포 절차](releases.ko.md)를 따릅니다. 로컬 워크플로 변경은 아직 리뷰와
-`main` 반영이 필요하며 자동 배포를 실행하지 않았습니다.
+[배포 절차](releases.ko.md)를 따라 검토한 `main` 소스로 실행합니다. 소스 통합은
+[PR #5](https://github.com/tienne/orca-plugins/pull/5)에서 추적합니다.
 
 2026-11-08 자동화 검증에서는 배포·설정·워크플로 테스트 41개를 모의 검증기로,
 같은 41개를 설치된 실제 Orca CLI로 통과했습니다. 고정한 actionlint 1.7.11과
@@ -99,10 +99,9 @@ Orca 1.4.252 CLI로 각각 테스트 41개를 다시 통과했습니다. CI에�
 검증도 통과했습니다. actionlint 1.7.11과 셸 문법 검사도 통과했습니다.
 GitHub 원격 실행이 아닌 로컬 검증이며 개발용 Mac에 러너 서비스를 설치하지 않았습니다.
 
-최근 확인한 원격 CI는 소스 `2bb2565378f6886043741d560ad66c6056ba8c0c`에서 성공했으나
-이 워크트리의 출시 검증은 아닙니다.
-[확인한 실행](https://github.com/tienne/orca-plugins/actions/runs/42431209389).
-새 원격 실행·소스 푸시·머지는 하지 않았습니다.
+검토하는 정확한 소스 SHA의 [CI](https://github.com/tienne/orca-plugins/actions/workflows/ci.yml)와
+[배포 미리보기](https://github.com/tienne/orca-plugins/actions/workflows/release.yml) 결과를
+확인합니다. 이전 소스의 성공 결과가 새 후보를 검증하지는 않으며 미리보기는 게시가 아닙니다.
 
 커밋·빌드 후 [기존 후보 준비 명령](releases.ko.md#orcatopia-배포-후보)을 사용합니다.
 릴리스 기준을 갱신하고 새 후보의 패키지·카탈로그를 검증하며 기준 대비 Git Logs

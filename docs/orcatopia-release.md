@@ -94,8 +94,8 @@ The prepared automation now checks setup before CI, defaults to preview and
 requires the reviewed preview content hash for publication. It rechecks environment
 rules before publishing. Run `pnpm nx run landmark-island:release-preflight --mode=publish`
 to inspect setup without changing GitHub. Follow the [release procedure](releases.md)
-to configure the environments and run the first hosted preview. These local workflow changes
-still need review and inclusion on `main`; no automated release has been dispatched.
+to configure the environments and run a hosted preview from the reviewed `main` source.
+Source integration is tracked in [PR #5](https://github.com/tienne/orca-plugins/pull/5).
 
 Automation verification on 2026-11-08 passed 41 release/setup/workflow tests with
 the mock validator and another 41 with the installed Orca CLI. Pinned actionlint
@@ -109,10 +109,10 @@ standalone package validation also passed with network access denied. Actionlint
 1.7.11 and shell syntax checks passed. This was local verification, not a hosted
 GitHub run. No runner service was installed on the developer's Mac.
 
-The latest observed hosted CI passed at source
-`2bb2565378f6886043741d560ad66c6056ba8c0c`; it is not this worktree's release check.
-[Observed run](https://github.com/tienne/orca-plugins/actions/runs/42431209389).
-No new hosted run was dispatched and this source has not been pushed or merged.
+Check [CI](https://github.com/tienne/orca-plugins/actions/workflows/ci.yml) and
+[release previews](https://github.com/tienne/orca-plugins/actions/workflows/release.yml)
+for the exact source SHA being considered. A successful run on an older source
+does not validate a newer candidate. A preview is not a publication.
 
 Use the [existing preparation commands](releases.md#orcatopia-candidates) after
 committing and building. Refresh the release base, generate a new candidate,
