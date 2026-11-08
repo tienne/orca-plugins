@@ -590,5 +590,7 @@
   "This piece has a fixed orientation.": "이 기물은 방향이 고정되어 있어요.",
   "Piece selected. Choose Move or a rotation direction from the menu.": "기물을 선택했어요. 메뉴에서 이동 또는 회전 방향을 선택하세요.",
   "That tile is occupied. Choose another destination.": "이미 사용 중인 칸이에요. 다른 목적지를 선택하세요.",
-  "Choose a tile without flooring to move the selected piece.": "바닥이 깔려 있지 않은 칸을 눌러 이동하세요."
+  "Choose a tile without flooring to move the selected piece.": "바닥이 깔려 있지 않은 칸을 눌러 이동하세요.",
+  "Select floor beneath": "아래 바닥 선택",
+  "Floor selected. Choose Move, then click a destination without flooring.": "바닥 타일을 선택했어요. 이동을 누른 뒤 바닥이 없는 목적지를 클릭하세요."
 }

@@ -2817,3 +2817,103 @@ for (const width of [1000, 360])
     await desk.getByRole('button', { name: '꾸미기 완료' }).click();
     await expect(ocean).toHaveAttribute('data-mode', 'walk');
   });
+
+test('floor tiles use explicit move menus and remain independent of objects above', async ({
+  page,
+}) => {
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await page.goto('/?lang=en');
+  const save = validate({
+    version: 3,
+    landFloor: 0,
+    crafts: [],
+    tickets: [{ workspaceId: 'floor-menu', at: '2026-11-08' }],
+    receipts: [
+      { workspaceId: 'floor-menu', landmark: 'eiffel', at: '2026-11-08' },
+    ],
+    placements: [{ landmark: 'eiffel', cell: 0 }],
+    decorations: [
+      { decoration: 'path', cell: 0 },
+      { decoration: 'stonepath', cell: 1 },
+      { decoration: 'oak', cell: 2 },
+    ],
+  });
+  await page.evaluate(
+    (save) =>
+      localStorage.setItem('landmark-island-demo-v1', JSON.stringify(save)),
+    save,
+  );
+  await page.reload();
+  await page.locator('button[data-mode=build]').click();
+  await page
+    .getByRole('button', { name: 'Cell 2: Stone paving', exact: true })
+    .click();
+  await expect(page.locator('[data-edit-layer=floor]')).toHaveAttribute(
+    'aria-pressed',
+    'true',
+  );
+  await expect(page.locator('.placement-hint')).toContainText(
+    'Floor selected.',
+  );
+  await page.locator('#cancel').click();
+  await page.locator('[data-edit-layer=objects]').click();
+  await page
+    .getByRole('button', { name: 'Cell 1: Eiffel Tower', exact: true })
+    .click();
+  await page.getByRole('button', { name: 'Select floor beneath' }).click();
+  await expect(page.locator('.placement-hint')).toContainText(
+    'Floor selected.',
+  );
+  await page
+    .getByRole('button', { name: 'Cell 3: Garden oak', exact: true })
+    .click();
+  await expect(
+    page.locator('[data-world-cell="0"] [data-floor=path]'),
+  ).toHaveCount(1);
+  await page.locator('#move-piece').click();
+  await expect(page.locator('.placement-hint')).toContainText(
+    'Choose a tile without flooring',
+  );
+  await page
+    .getByRole('button', { name: 'Cell 2: Stone paving', exact: true })
+    .click();
+  await expect(page.locator('.placement-hint')).toContainText('occupied');
+  await page.locator('#cancel').click();
+  await expect(
+    page.locator('[data-world-cell="0"] [data-floor=path]'),
+  ).toHaveCount(1);
+  await page.locator('#move-piece').click();
+  await page
+    .getByRole('button', { name: 'Cell 3: Garden oak', exact: true })
+    .click();
+  await expect(
+    page.locator('[data-world-cell="0"] [data-floor=path]'),
+  ).toHaveCount(0);
+  await expect(
+    page.locator('[data-world-cell="2"] [data-floor=path]'),
+  ).toHaveCount(1);
+  await expect(page.locator('[data-world-cell="0"] .building')).toHaveCount(1);
+  await expect(
+    page.locator('[data-world-cell="2"] [data-decoration=oak]'),
+  ).toHaveCount(1);
+  await page.reload();
+  await expect(
+    page.locator('[data-world-cell="2"] [data-floor=path]'),
+  ).toHaveCount(1);
+  await page.locator('button[data-mode=build]').click();
+  await page.locator('[data-edit-layer=floor]').click();
+  await page
+    .getByRole('button', { name: 'Cell 3: Garden oak', exact: true })
+    .click();
+  await page.locator('#remove').click();
+  await expect(
+    page.locator('[data-world-cell="2"] [data-floor=path]'),
+  ).toHaveCount(0);
+  await expect(
+    page.locator('[data-world-cell="2"] [data-decoration=oak]'),
+  ).toHaveCount(1);
+  await page.locator('#undo-layout').click();
+  await expect(
+    page.locator('[data-world-cell="2"] [data-floor=path]'),
+  ).toHaveCount(1);
+});
