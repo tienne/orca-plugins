@@ -4,7 +4,7 @@ English · [한국어](development.ko.md)
 
 This guide records the host integration, Git behavior, and release requirements for Git Logs. For everyday use, read the [plugin guide](../plugins/git-logs/README.md). Commands below run from the repository root.
 
-The source tree contains read-only additions planned for 0.2.0: tag badges, log filters, infinite scroll over paged history, two-commit comparison, file history, and keyboard navigation. The manifest version is still 0.1.1 and 0.2.0 is unreleased. The additions do not change `prepare`/`execute`, `operations.ts`, or the manifest's capabilities, minimum Orca version, or execution profile.
+The source tree contains read-only additions planned for 0.2.0: tag badges, log filters, infinite scroll over paged history, two-commit comparison, file history, and keyboard navigation. The manifest version is 0.2.0, which is not yet tagged or published. The additions do not change `prepare`/`execute`, `operations.ts`, or the manifest's capabilities, minimum Orca version, or execution profile.
 
 ## Build and verify
 

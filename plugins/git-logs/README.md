@@ -4,9 +4,9 @@ English · [한국어](README.ko.md)
 
 Explore Git logs with a Git tree visualization and commit graph, then compare files in a read-only side-by-side diff. Commit actions are available from the graph's context menu.
 
-Git Logs 0.1.1 requires Orca 1.4.248 or later and local Git.
+Git Logs 0.2.0 requires Orca 1.4.248 or later and local Git.
 
-This source tree also contains read-only additions planned for 0.2.0: tag badges, filters for message, author, date, and path, infinite scroll over paged history, comparison of any two commits, file history, and keyboard navigation. The manifest version is still 0.1.1, and 0.2.0 has not been versioned, tagged, or released. A 0.1.1 build does not include these features. Sections marked **(0.2.0, unreleased)** describe them. They do not change the existing commit actions, which still prepare, confirm, recheck, and back up as described below.
+This source tree also contains read-only additions planned for 0.2.0: tag badges, filters for message, author, date, and path, infinite scroll over paged history, comparison of any two commits, file history, and keyboard navigation. The manifest version is 0.2.0, but it has not been tagged or published. Versions up to 0.1.1 do not include these features. Sections marked **(0.2.0, unreleased)** describe them. They do not change the existing commit actions, which still prepare, confirm, recheck, and back up as described below.
 
 ## Install
 
