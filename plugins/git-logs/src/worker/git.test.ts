@@ -2161,6 +2161,7 @@ test('log는 이미 취소된 signal을 받으면 git을 돌리지 않고 거부
     controller.abort();
     await assert.rejects(
       log(root, false, undefined, undefined, undefined, controller.signal),
+      { name: 'AbortError' },
     );
     // 취소가 다음 요청에 번지지 않는다.
     assert.equal((await log(root)).commits.length, 5);
@@ -2172,7 +2173,9 @@ test('commitHash도 이미 취소된 signal을 받으면 거부한다', () =>
     const hash = (await log(root)).head!;
     const controller = new AbortController();
     controller.abort();
-    await assert.rejects(commitHash(root, hash, controller.signal));
+    await assert.rejects(commitHash(root, hash, controller.signal), {
+      name: 'AbortError',
+    });
     assert.equal(await commitHash(root, hash), hash);
   }));
 
@@ -2200,6 +2203,10 @@ test('같은 저장소에 cancelKey가 filter인 log 요청이 겹치면 앞 요
       200,
     );
     assert.equal(earlyResult.status, 'rejected');
+    assert.equal(
+      (earlyResult as PromiseRejectedResult).reason.name,
+      'AbortError',
+    );
 
     // 키 없는 페이징 요청은 진행 중인 필터 요청을 취소하지 않는다.
     const pending = filtered({ author: 'Alice' });
