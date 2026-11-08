@@ -48,6 +48,8 @@ Promotion runs only for manually dispatched `main` workflows in `tienne/orca-plu
 
 `scripts/release/setup-orca-macos.sh` downloads the official [Orca 1.4.252 Apple Silicon archive](https://github.com/stablyai/orca/releases/tag/v1.4.252), checks its pinned SHA-256 before extraction, and verifies the CLI version. It sets `ORCA_CLI_COMMAND` for subsequent steps and does not launch the app or install it in `/Applications`. Only the standalone `plugin validate` and `plugin release-entry` commands are needed; neither loads or approves plugin code. When updating Orca, review the version and checksum together and rerun real CLI integration tests. A local download/setup check is not proof that a GitHub-hosted job passed; the first hosted preview still needs to run after these changes reach `main`.
 
+Both actionlint and Orca downloads retry connection errors within a bounded retry window. If the release download URL remains unavailable, `gh api` downloads the same pinned asset ID through GitHub's official API using the job token. The same SHA-256 check must pass before extraction on either path. Local setup needs an authenticated `gh` session or `GH_TOKEN` for this fallback. When updating a tool, review its version, asset ID and checksum together.
+
 ### Read-only setup audit
 
 After configuration, run:

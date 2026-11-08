@@ -48,6 +48,8 @@ Ubuntu CI의 배포 테스트는 Orca 모의 어댑터로 배포 로직을 검�
 
 `scripts/release/setup-orca-macos.sh`가 공식 [Orca 1.4.252 Apple Silicon 압축 파일](https://github.com/stablyai/orca/releases/tag/v1.4.252)을 내려받아 압축 해제 전에 고정한 SHA-256을 확인하고 CLI 버전도 대조합니다. 이후 단계용 `ORCA_CLI_COMMAND`를 설정하며 앱 실행이나 `/Applications` 설치는 하지 않습니다. 독립 실행되는 `plugin validate`와 `plugin release-entry`만 필요하고 플러그인 코드를 로드하거나 승인하지 않습니다. Orca 버전을 바꿀 때는 버전과 체크섬을 함께 검토하고 실제 CLI 통합 테스트를 다시 실행합니다. 로컬 다운로드·설치 검증만으로 GitHub 실행 성공을 주장할 수는 없으며, `main` 반영 후 첫 호스팅 미리보기 실행이 필요합니다.
 
+actionlint와 Orca 다운로드는 정해진 재시도 시간 안에서 연결 오류를 재시도합니다. 릴리스 다운로드 주소가 계속 실패하면 `gh api`가 작업 토큰으로 GitHub 공식 API에서 같은 고정 자산 ID를 내려받습니다. 어느 경로든 압축 해제 전에 같은 SHA-256 검사를 통과해야 합니다. 로컬에서 대체 경로를 쓰려면 인증된 `gh` 세션이나 `GH_TOKEN`이 필요합니다. 도구를 업데이트할 때 버전·자산 ID·체크섬을 함께 검토합니다.
+
 ### 읽기 전용 설정 검사
 
 설정 후 다음을 실행합니다.

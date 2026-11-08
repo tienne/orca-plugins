@@ -15,9 +15,12 @@ orca_setup_dir="$(mktemp -d "$RUNNER_TEMP/orca-cli.XXXXXX")"
 readonly orca_setup_dir
 orca_archive="$orca_setup_dir/orca.zip"
 
-curl --fail --location --silent --show-error --retry 3 --retry-all-errors --retry-max-time 600 --connect-timeout 30 --max-time 300 \
+if ! curl --fail --location --silent --show-error --retry 3 --retry-all-errors --retry-max-time 300 --connect-timeout 30 --max-time 180 \
   "https://github.com/stablyai/orca/releases/download/v${orca_version}/Orca-${orca_version}-arm64-mac.zip" \
-  --output "$orca_archive"
+  --output "$orca_archive"; then
+  gh api repos/stablyai/orca/releases/assets/719522197 \
+    --header 'Accept: application/octet-stream' > "$orca_archive"
+fi
 printf '%s  %s\n' "$orca_sha256" "$orca_archive" | shasum -a 256 --check
 ditto -x -k "$orca_archive" "$orca_setup_dir"
 rm "$orca_archive"
