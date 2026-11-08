@@ -1,5 +1,5 @@
 import { renderIsland } from './render-island';
-import { startLocalization } from './i18n';
+import { startLocalization, translate } from './i18n';
 import {
   Game,
   layout,
@@ -286,14 +286,7 @@ async function useTicket() {
 let decorTheme = 'unlocked';
 let pendingCraft: { id: string; decoration: string } | undefined;
 function workshop() {
-  const visible = decorations.filter((d) =>
-    decorTheme === 'unlocked'
-      ? !d.landmark || quantity(state, d.landmark) > 0
-      : decorTheme === 'basics'
-        ? !d.landmark
-        : d.landmark === decorTheme,
-  );
-  return `<section class="workshop" aria-label="Decoration workshop"><div class="section-title"><h2><small>The garden workshop</small>Make this place yours</h2><strong class="material-balance">${materials(state)} materials</strong></div><details class="workshop-help"><summary>About gifts &amp; materials</summary><p>Basics are free. Every first discovery gifts one decoration and opens its set. Each duplicate brings ${DUPLICATE_MATERIALS} materials; your landmark stays yours.</p></details><label for="decor-theme">Garden set</label> <select id="decor-theme"><option value="unlocked">All unlocked sets</option><option value="basics">Free essentials</option>${landmarks.map((l) => `<option value="${l.id}">${l.country} · ${l.name}${quantity(state, l.id) ? '' : ' · Locked'}</option>`).join('')}</select><div class="decoration-shelf">${visible
+  return `<section class="workshop" aria-label="Decoration workshop"><div class="section-title"><h2><small>The garden workshop</small>Make this place yours</h2><strong class="material-balance">${materials(state)} materials</strong></div><details class="workshop-help"><summary>About gifts &amp; materials</summary><p>Basics are free. Every first discovery gifts one decoration and opens its set. Each duplicate brings ${DUPLICATE_MATERIALS} materials; your landmark stays yours.</p></details><label for="decor-theme">Garden set</label> <select id="decor-theme"><option value="unlocked">All unlocked sets</option><option value="all">All garden sets</option><option value="basics">Free essentials</option>${landmarks.map((l) => `<option value="${l.id}">${l.country} · ${l.name}${quantity(state, l.id) ? '' : ' · Locked'}</option>`).join('')}</select><div class="decoration-shelf">${decorations
     .map((d) => {
       const unlocked = !d.landmark || quantity(state, d.landmark) > 0;
       const count = decorationQuantity(state, d.id);
@@ -312,19 +305,125 @@ function collection() {
       const count = quantity(state, l.id),
         available =
           count - state.placements.filter((p) => p.landmark === l.id).length;
-      return `<article class="card ${!count ? 'locked' : ''}" data-tier="${l.tier}">${rarityBadge(l.tier)}<button class="collect-action" data-landmark="${l.id}" aria-pressed="${selected === l.id}" ${available < 1 ? 'disabled' : ''}>${art(l.id)}<strong>${escape(l.name)}</strong><span class="card-country">${escape(l.country)}</span><span>${escape(l.region)}</span><small>${count ? `Owned ×${count} · ${available} available` : 'Not discovered yet'}</small></button><button class="about-landmark" data-info="${l.id}" aria-label="About ${escape(l.name)}" aria-haspopup="dialog">About this landmark ↗</button></article>`;
+      return `<article class="card ${!count ? 'locked' : ''}" data-catalog-id="${l.id}" data-tier="${l.tier}">${rarityBadge(l.tier)}<button class="collect-action" data-landmark="${l.id}" aria-pressed="${selected === l.id}" ${available < 1 ? 'disabled' : ''}>${art(l.id)}<strong>${escape(l.name)}</strong><span class="card-country">${escape(l.country)}</span><span>${escape(l.region)}</span><small>${count ? `Owned ×${count} · ${available} available` : 'Not discovered yet'}</small></button><button class="about-landmark" data-info="${l.id}" aria-label="About ${escape(l.name)}" aria-haspopup="dialog">About this landmark ↗</button></article>`;
     })
     .join('')}</div></section>`;
 }
 let inventoryTab: 'decorations' | 'landmarks' | undefined;
 const inventoryScroll = { decorations: 0, landmarks: 0 };
+type InventoryKind = 'decorations' | 'landmarks';
+const inventoryFilters: Record<
+  InventoryKind,
+  { query: string; stock: string; category: string }
+> = {
+  decorations: { query: '', stock: 'all', category: 'all' },
+  landmarks: { query: '', stock: 'all', category: 'all' },
+};
+const normalizeSearch = (value: string) =>
+  value
+    .normalize('NFKD')
+    .replace(/\p{M}/gu, '')
+    .normalize('NFC')
+    .toLowerCase()
+    .replace(/\s+/gu, '');
+const searchTerms = (values: string[]) =>
+  normalizeSearch(
+    values.flatMap((value) => [value, translate(value, 'ko-KR')]).join(' '),
+  );
+const landmarkSearch = new Map(
+  landmarks.map((l) => [l.id, searchTerms([l.name, l.country, l.region])]),
+);
+const decorSearch = new Map(
+  decorations.map((d) => [
+    d.id,
+    searchTerms([d.name]) +
+      (d.landmark
+        ? landmarkSearch.get(d.landmark)
+        : searchTerms(['Free essentials'])),
+  ]),
+);
+function inventoryFinder() {
+  return `<div class="inventory-finder"><label class="visually-hidden" for="inventory-search">Search inventory</label><div class="inventory-search-row"><input id="inventory-search" type="search" placeholder="Search name or country" autocomplete="off" spellcheck="false"/><button id="clear-inventory-search" aria-label="Clear search">×</button></div><div class="inventory-filter-row"><label class="visually-hidden" for="inventory-stock">Inventory availability</label><select id="inventory-stock"><option value="all">All items</option><option value="owned">Owned items</option><option value="available">Ready to place</option></select><label class="visually-hidden" for="inventory-category">Decoration category</label><select id="inventory-category"><option value="all">All categories</option><option value="tiles">Tiles</option><option value="plants">Plants</option><option value="furniture">Furniture &amp; structures</option><option value="water">Water features</option></select><button id="reset-inventory-filters">Reset filters</button></div><small id="inventory-results" aria-live="polite"></small></div>`;
+}
+function applyInventoryFilters() {
+  const matches = (index: string, query: string) =>
+    query
+      .trim()
+      .split(/\s+/u)
+      .every((term) => index.includes(normalizeSearch(term)));
+  const stockMatches = (stock: string, count: number, available: number) =>
+    stock === 'all' || (stock === 'owned' ? count > 0 : available > 0);
+  let landmarkCount = 0,
+    decorCount = 0;
+  const lf = inventoryFilters.landmarks,
+    df = inventoryFilters.decorations;
+  root.querySelectorAll<HTMLElement>('[data-catalog-id]').forEach((card) => {
+    const id = card.dataset.catalogId!;
+    const count = quantity(state, id);
+    const available =
+      count - state.placements.filter((p) => p.landmark === id).length;
+    card.hidden = !(
+      matches(landmarkSearch.get(id)!, lf.query) &&
+      stockMatches(lf.stock, count, available) &&
+      (rarityFilter === 'all' || card.dataset.tier === rarityFilter)
+    );
+    if (!card.hidden) landmarkCount++;
+  });
+  root.querySelectorAll<HTMLElement>('[data-decor-card]').forEach((card) => {
+    const d = decorationById(card.dataset.decorCard!)!;
+    const count = decorationQuantity(state, d.id);
+    const available =
+      count -
+      (isFloor(d.id) ? state.floors : state.decorations).filter(
+        (p) => p.decoration === d.id,
+      ).length;
+    const category = isFloor(d.id)
+      ? 'tiles'
+      : ['tree', 'palm', 'flowers', 'fernBed'].includes(d.shape)
+        ? 'plants'
+        : ['pond', 'fountain'].includes(d.shape)
+          ? 'water'
+          : 'furniture';
+    const inTheme =
+      decorTheme === 'all' ||
+      (decorTheme === 'unlocked'
+        ? !d.landmark || quantity(state, d.landmark) > 0
+        : decorTheme === 'basics'
+          ? !d.landmark
+          : d.landmark === decorTheme);
+    card.hidden = !(
+      inTheme &&
+      matches(decorSearch.get(d.id)!, df.query) &&
+      stockMatches(df.stock, count, available) &&
+      (df.category === 'all' || df.category === category)
+    );
+    if (!card.hidden) decorCount++;
+  });
+  const kind = inventoryTab ?? 'decorations';
+  const filters = inventoryFilters[kind];
+  const input = root.querySelector<HTMLInputElement>('#inventory-search')!;
+  if (input.value !== filters.query) input.value = filters.query;
+  root.querySelector<HTMLSelectElement>('#inventory-stock')!.value =
+    filters.stock;
+  const category = root.querySelector<HTMLSelectElement>(
+    '#inventory-category',
+  )!;
+  category.hidden = kind !== 'decorations';
+  category.value = filters.category;
+  const count = kind === 'landmarks' ? landmarkCount : decorCount;
+  root.querySelector('#inventory-results')!.textContent =
+    `${count} matching items`;
+  const empty = root.querySelector<HTMLElement>('.inventory-empty')!;
+  empty.hidden = count !== 0;
+}
+
 const satchelArt = `<svg viewBox="0 0 72 70" aria-hidden="true"><ellipse cx="36" cy="64" rx="27" ry="4" fill="#193c3933"/><path d="M24 18V12q12-10 24 0v6" fill="none" stroke="#654e38" stroke-width="5"/><path d="M12 23q24-8 48 0l3 35q-26 12-54 0z" fill="#ab8051" stroke="#654e38" stroke-width="2"/><path d="M10 22q26-12 52 0L55 40q-18 7-38 0z" fill="#ceab70" stroke="#765b3d" stroke-width="2"/><path d="M18 26q18-6 36 0M16 49l1 9m39-9-1 9" fill="none" stroke="#ecd6a3" stroke-width="1.5"/><path d="M31 32h10v18H31z" fill="#816344"/><rect x="31" y="38" width="10" height="8" rx="2" fill="#e8c879" stroke="#654e38"/><path d="M48 18q-4-14 8-15 1 11-8 15" fill="#7c9c5c" stroke="#516b48"/><path d="M47 22l8-15" stroke="#516b48"/></svg>`;
 const journalArt = `<svg viewBox="0 0 72 70" aria-hidden="true"><ellipse cx="36" cy="64" rx="26" ry="4" fill="#193c3933"/><path d="M15 12L52 7l8 45-40 9z" fill="#607c6a" stroke="#3b554c" stroke-width="2"/><path d="M21 15l28-4 7 38-32 7z" fill="#f0e4bf" stroke="#ab9c73"/><path d="M15 12l6 45 5 4-7-46z" fill="#9e7951"/><path d="M24 28l25-4m-23 10 25-4m-22 16 23-4" stroke="#b7aa82"/><path d="M33 38l5-19 9 17-7-3z" fill="#86a17c" stroke="#61755f"/><circle cx="40" cy="28" r="2" fill="#f6ecc9"/><path d="M43 51l2 14 5-5 5 3-3-14" fill="#af6950"/><path d="M17 20l4-1m-2 10 4-1m-2 10 4-1m-2 10 4-1" stroke="#e4c591" stroke-width="2"/></svg>`;
 const chestArt = `<svg viewBox="0 0 72 70" aria-hidden="true"><ellipse cx="36" cy="64" rx="29" ry="4" fill="#193c3933"/><path d="M9 34h54v25q-27 9-54 0z" fill="#98623b" stroke="#563f2c" stroke-width="2"/><path d="M9 34V23Q10 7 36 7t27 16v11z" fill="#bd9155" stroke="#563f2c" stroke-width="2"/><path d="M10 26h52M10 46h52M11 55h50" stroke="#785333" stroke-width="2"/><path d="M18 11v51m36-51v51" stroke="#e2bf70" stroke-width="6"/><path d="M9 34h54" stroke="#ebcb80" stroke-width="5"/><rect x="29" y="29" width="14" height="17" rx="3" fill="#edcf83" stroke="#785333"/><path d="M36 34a2 2 0 1 0 0 4v4" fill="none" stroke="#664d30" stroke-width="2"/><path d="M34 10l2-5 2 5 5 2-5 2-2 5-2-5-5-2z" fill="#fff1bb"/></svg>`;
 function canvasInventory() {
   const tickets = availableTickets(state).length;
   const drawLabel = pendingTicket ? 'Retry discovery' : 'Use ticket · Discover';
-  return `<div class="island-satchel" role="group" aria-label="Island collections"><button class="satchel-item" data-inventory="decorations" aria-label="Open decorations" aria-controls="canvas-inventory" aria-expanded="${inventoryTab === 'decorations'}">${satchelArt}<span>Decorations</span></button><button class="satchel-item" data-inventory="landmarks" aria-label="Open landmarks" aria-controls="canvas-inventory" aria-expanded="${inventoryTab === 'landmarks'}">${journalArt}<span>Landmarks</span></button><button id="draw-ticket" class="satchel-item treasure-chest" aria-label="${drawLabel}" aria-describedby="treasure-help" aria-haspopup="dialog" title="${pendingTicket ? 'Recover the same discovery without spending another ticket' : tickets ? 'Use 1 exploration ticket to discover a landmark' : 'Create a worktree to earn an exploration ticket'}" ${!loaded || (!tickets && !pendingTicket) ? 'disabled' : ''}>${chestArt}<span>${pendingTicket ? 'Retry' : 'Treasure'}</span><b id="ticket-count" aria-label="${tickets} exploration tickets">${tickets}</b></button><span id="treasure-help" class="visually-hidden">${tickets} exploration tickets available. Create a worktree to earn a ticket. Opening treasure uses one ticket. The result is saved before the animation.</span></div><aside id="canvas-inventory" class="canvas-inventory" aria-label="Island inventory" ${inventoryTab ? '' : 'hidden'}><div class="inventory-heading"><div><small>THE EXPLORER’S SATCHEL</small><h2 id="inventory-title">${inventoryTab === 'landmarks' ? 'Landmark journal' : 'Garden treasures'}</h2></div><button id="close-inventory" aria-label="Close inventory">×</button></div><div class="inventory-scroll" data-inventory-tab="${inventoryTab ?? 'decorations'}"><div data-inventory-page="decorations" ${inventoryTab === 'decorations' ? '' : 'hidden'}>${workshop()}</div><div data-inventory-page="landmarks" ${inventoryTab === 'landmarks' ? '' : 'hidden'}>${collection()}</div></div><p class="inventory-hint">Choose a piece to place it on your island.</p></aside>`;
+  return `<div class="island-satchel" role="group" aria-label="Island collections"><button class="satchel-item" data-inventory="decorations" aria-label="Open decorations" aria-controls="canvas-inventory" aria-expanded="${inventoryTab === 'decorations'}">${satchelArt}<span>Decorations</span></button><button class="satchel-item" data-inventory="landmarks" aria-label="Open landmarks" aria-controls="canvas-inventory" aria-expanded="${inventoryTab === 'landmarks'}">${journalArt}<span>Landmarks</span></button><button id="draw-ticket" class="satchel-item treasure-chest" aria-label="${drawLabel}" aria-describedby="treasure-help" aria-haspopup="dialog" title="${pendingTicket ? 'Recover the same discovery without spending another ticket' : tickets ? 'Use 1 exploration ticket to discover a landmark' : 'Create a worktree to earn an exploration ticket'}" ${!loaded || (!tickets && !pendingTicket) ? 'disabled' : ''}>${chestArt}<span>${pendingTicket ? 'Retry' : 'Treasure'}</span><b id="ticket-count" aria-label="${tickets} exploration tickets">${tickets}</b></button><span id="treasure-help" class="visually-hidden">${tickets} exploration tickets available. Create a worktree to earn a ticket. Opening treasure uses one ticket. The result is saved before the animation.</span></div><aside id="canvas-inventory" class="canvas-inventory" aria-label="Island inventory" ${inventoryTab ? '' : 'hidden'}><div class="inventory-heading"><div><small>THE EXPLORER’S SATCHEL</small><h2 id="inventory-title">${inventoryTab === 'landmarks' ? 'Landmark journal' : 'Garden treasures'}</h2></div><button id="close-inventory" aria-label="Close inventory">×</button></div>${inventoryFinder()}<div class="inventory-scroll" data-inventory-tab="${inventoryTab ?? 'decorations'}"><div data-inventory-page="decorations" ${inventoryTab === 'decorations' ? '' : 'hidden'}>${workshop()}</div><div data-inventory-page="landmarks" ${inventoryTab === 'landmarks' ? '' : 'hidden'}>${collection()}</div><p class="inventory-empty" hidden>No matching items. Try another name or reset the filters.</p></div><p class="inventory-hint">Choose a piece to place it on your island.</p></aside>`;
 }
 function setInventory(tab: typeof inventoryTab, focus = true) {
   const scroll = root.querySelector<HTMLElement>('.inventory-scroll');
@@ -352,6 +451,7 @@ function setInventory(tab: typeof inventoryTab, focus = true) {
     scroll.dataset.inventoryTab = tab;
     scroll.scrollTop = inventoryScroll[tab];
   }
+  applyInventoryFilters();
   const ocean = root.querySelector<HTMLElement>('.ocean');
   if (ocean) {
     ocean.dataset.inventoryOpen = String(Boolean(tab));
@@ -400,8 +500,14 @@ function render() {
   const focused = document.activeElement as HTMLElement | null;
   const focusSelector = focused?.matches('[data-craft]')
     ? `[data-craft="${focused.dataset.craft}"]`
-    : focused?.id === 'decor-theme'
-      ? '#decor-theme'
+    : focused?.id &&
+        [
+          'decor-theme',
+          'inventory-search',
+          'inventory-stock',
+          'inventory-category',
+        ].includes(focused.id)
+      ? `#${focused.id}`
       : undefined;
   const owned = landmarks.filter((l) => quantity(state, l.id) > 0);
   const latest = landmarks.find(
@@ -422,10 +528,6 @@ function render() {
       button.disabled = busy;
     });
   const filterCollection = () => {
-    root.querySelectorAll<HTMLElement>('.card').forEach((card) => {
-      card.hidden =
-        rarityFilter !== 'all' && card.dataset.tier !== rarityFilter;
-    });
     root
       .querySelectorAll<HTMLButtonElement>('[data-tier-filter]')
       .forEach((button) => {
@@ -438,6 +540,7 @@ function render() {
     root.querySelector('.rarity-summary')!.textContent = rarity
       ? `${rarity.numeral} ${rarity.name} · Rarity ${rarity.rank}/4 · ${weights[rarity.id]}% tier chance per draw · ${owned.filter((l) => l.tier === rarity.id).length} of ${landmarks.filter((l) => l.tier === rarity.id).length} discovered`
       : 'Four rarity tiers · Counts track unique landmarks, not duplicate copies.';
+    applyInventoryFilters();
   };
   root
     .querySelectorAll<HTMLButtonElement>('[data-tier-filter]')
@@ -448,6 +551,62 @@ function render() {
       };
     });
   filterCollection();
+  const updateFinder = () => {
+    applyInventoryFilters();
+    root.querySelector<HTMLElement>('.inventory-scroll')!.scrollTop = 0;
+    inventoryScroll[inventoryTab ?? 'decorations'] = 0;
+  };
+  const search = root.querySelector<HTMLInputElement>('#inventory-search')!;
+  search.oninput = () => {
+    const kind = inventoryTab ?? 'decorations';
+    inventoryFilters[kind].query = search.value;
+    // Searching starts across the full catalog, including discoverable locked sets.
+    if (
+      kind === 'decorations' &&
+      search.value.trim() &&
+      decorTheme === 'unlocked'
+    ) {
+      decorTheme = 'all';
+      root.querySelector<HTMLSelectElement>('#decor-theme')!.value = 'all';
+    }
+    updateFinder();
+  };
+  root.querySelector<HTMLButtonElement>('#clear-inventory-search')!.onclick =
+    () => {
+      inventoryFilters[inventoryTab ?? 'decorations'].query = '';
+      updateFinder();
+      search.focus({ preventScroll: true });
+    };
+  root.querySelector<HTMLSelectElement>('#inventory-stock')!.onchange = (
+    event,
+  ) => {
+    inventoryFilters[inventoryTab ?? 'decorations'].stock = (
+      event.target as HTMLSelectElement
+    ).value;
+    updateFinder();
+  };
+  root.querySelector<HTMLSelectElement>('#inventory-category')!.onchange = (
+    event,
+  ) => {
+    inventoryFilters.decorations.category = (
+      event.target as HTMLSelectElement
+    ).value;
+    updateFinder();
+  };
+  root.querySelector<HTMLButtonElement>('#reset-inventory-filters')!.onclick =
+    () => {
+      const kind = inventoryTab ?? 'decorations';
+      inventoryFilters[kind] = { query: '', stock: 'all', category: 'all' };
+      if (kind === 'landmarks') rarityFilter = 'all';
+      else {
+        decorTheme = 'unlocked';
+        root.querySelector<HTMLSelectElement>('#decor-theme')!.value =
+          decorTheme;
+      }
+      filterCollection();
+      updateFinder();
+      search.focus({ preventScroll: true });
+    };
   root.querySelectorAll<HTMLButtonElement>('button').forEach((b) => {
     if (busy) b.disabled = true;
   });

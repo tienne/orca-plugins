@@ -3076,3 +3076,137 @@ test('placing on the explorer does not recenter an editing camera', async ({
     .click();
   await expect(camera).not.toHaveAttribute('style', before!);
 });
+
+test('inventory search combines bilingual names, countries, ownership and categories without replacing the scene', async ({
+  page,
+}) => {
+  await page.goto('/?lang=en');
+  const save = validate({
+    version: 2,
+    tickets: ['eiffel', 'fuji'].map((id) => ({
+      workspaceId: id,
+      at: '2026-11-08',
+    })),
+    receipts: ['eiffel', 'fuji'].map((landmark) => ({
+      workspaceId: landmark,
+      landmark,
+      at: '2026-11-08',
+    })),
+    placements: [{ landmark: 'eiffel', cell: 0 }],
+  });
+  await page.evaluate(
+    (save) =>
+      localStorage.setItem('landmark-island-demo-v1', JSON.stringify(save)),
+    save,
+  );
+  await page.reload();
+  await openInventory(page, 'landmarks');
+  const search = page.locator('#inventory-search');
+  await page.evaluate(() => {
+    (window as any).finderInput = document.querySelector('#inventory-search');
+    (window as any).finderCamera = document.querySelector('.camera');
+  });
+  await search.fill('프랑스 에펠');
+  await expect(page.locator('.collection .card:visible')).toHaveCount(1);
+  await expect(page.locator('[data-catalog-id=eiffel]')).toBeVisible();
+  await expect(search).toBeFocused();
+  expect(
+    await page.evaluate(
+      () =>
+        (window as any).finderInput ===
+          document.querySelector('#inventory-search') &&
+        (window as any).finderCamera === document.querySelector('.camera'),
+    ),
+  ).toBe(true);
+  await page.locator('#inventory-stock').selectOption('available');
+  await expect(page.locator('.inventory-empty')).toBeVisible();
+  await expect(page.locator('#inventory-results')).toHaveText(
+    '0 matching items',
+  );
+  await page.locator('#reset-inventory-filters').click();
+  await page.locator('#inventory-stock').selectOption('owned');
+  await expect(page.locator('.collection .card:visible')).toHaveCount(2);
+  await search.fill('FUJI');
+  await expect(page.locator('.collection .card:visible')).toHaveCount(1);
+  await page.locator('[data-landmark=fuji]').click();
+  await openInventory(page, 'landmarks');
+  await expect(search).toHaveValue('FUJI');
+  await expect(page.locator('#inventory-stock')).toHaveValue('owned');
+  await openInventory(page, 'decorations');
+  await expect(search).toHaveValue('');
+  await search.fill('cafe');
+  await expect(page.locator('#decor-theme')).toHaveValue('all');
+  await expect(page.locator('.decoration-card:visible')).toHaveCount(1);
+  await expect(page.locator('[data-decor-card=eiffel-special]')).toBeVisible();
+  await page.locator('#inventory-stock').selectOption('owned');
+  await expect(page.locator('.inventory-empty')).toBeVisible();
+  await page.locator('#reset-inventory-filters').click();
+  await page.locator('#inventory-category').selectOption('tiles');
+  await page.locator('#inventory-stock').selectOption('available');
+  await expect(page.locator('.decoration-card:visible')).toHaveCount(3);
+  await search.fill('돌바닥');
+  await expect(page.locator('.decoration-card:visible')).toHaveCount(1);
+  await expect(page.locator('[data-decor-card=stonepath]')).toBeVisible();
+  await page.locator('#close-inventory').click();
+  await openInventory(page, 'landmarks');
+  await expect(search).toHaveValue('FUJI');
+  await openInventory(page, 'decorations');
+  await expect(search).toHaveValue('돌바닥');
+  await expect(page.locator('#inventory-category')).toHaveValue('tiles');
+  await expect(page.locator('#inventory-stock')).toHaveValue('available');
+  await search.fill('no-such-place');
+  await expect(page.locator('.inventory-empty')).toBeVisible();
+  await page.locator('#clear-inventory-search').click();
+  await expect(search).toHaveValue('');
+  await expect(page.locator('.decoration-card:visible')).toHaveCount(3);
+  expect(
+    await page.evaluate(() =>
+      JSON.parse(localStorage.getItem('landmark-island-demo-v1')!),
+    ),
+  ).toEqual(save);
+});
+
+for (const theme of ['light', 'dark'])
+  test(`Korean inventory finder fits narrow ${theme} panels and finds locked sets`, async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width: 360, height: 800 });
+    await page.goto('/?lang=ko');
+    await page.evaluate(
+      (theme) => (document.documentElement.className = theme),
+      theme,
+    );
+    await openInventory(page, 'decorations');
+    await page.locator('#inventory-search').fill('Qatar');
+    await expect(page.locator('.decoration-card:visible')).toHaveCount(2);
+    await expect(page.locator('#inventory-results')).toHaveText('2개 항목');
+    await expect(
+      page.locator('.decoration-card:visible button[data-decor-place]').first(),
+    ).toBeDisabled();
+    const finder = page.locator('.inventory-finder');
+    expect(
+      await finder.evaluate((el) => el.scrollWidth <= el.clientWidth),
+    ).toBe(true);
+    await expect(page.locator('#inventory-search')).toBeInViewport();
+    await page
+      .locator('.canvas-inventory')
+      .screenshot({
+        path: `test-results/landmark-island/inventory-finder-${theme}.png`,
+      });
+    await openInventory(page, 'landmarks');
+    await page.locator('#inventory-search').fill('Qatar');
+    await expect(page.locator('.collection .card:visible')).toHaveCount(1);
+    await expect(page.locator('[data-catalog-id=nmoq]')).toContainText(
+      '카타르 국립박물관',
+    );
+    await page.locator('[data-tier-filter=common]').click();
+    await expect(page.locator('.inventory-empty')).toBeVisible();
+    await page.locator('#reset-inventory-filters').click();
+    await expect(page.locator('[data-tier-filter=all]')).toHaveAttribute(
+      'aria-pressed',
+      'true',
+    );
+    await expect(page.locator('.collection .card:visible')).toHaveCount(
+      landmarks.length,
+    );
+  });

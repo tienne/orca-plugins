@@ -592,5 +592,22 @@
   "That tile is occupied. Choose another destination.": "이미 사용 중인 칸이에요. 다른 목적지를 선택하세요.",
   "Choose a tile without flooring to move the selected piece.": "바닥이 깔려 있지 않은 칸을 눌러 이동하세요.",
   "Select floor beneath": "아래 바닥 선택",
-  "Floor selected. Choose Move, then click a destination without flooring.": "바닥 타일을 선택했어요. 이동을 누른 뒤 바닥이 없는 목적지를 클릭하세요."
+  "Floor selected. Choose Move, then click a destination without flooring.": "바닥 타일을 선택했어요. 이동을 누른 뒤 바닥이 없는 목적지를 클릭하세요.",
+  "Search inventory": "보관함 검색",
+  "Search name or country": "이름 또는 국가로 검색",
+  "Clear search": "검색어 지우기",
+  "Inventory availability": "보유 및 배치 상태",
+  "Decoration category": "장식 종류",
+  "All items": "전체 항목",
+  "Owned items": "보유 중",
+  "Ready to place": "배치 가능",
+  "All categories": "모든 종류",
+  "Tiles": "타일",
+  "Plants": "식물",
+  "Furniture & structures": "가구·시설",
+  "Water features": "물 장식",
+  "Reset filters": "필터 초기화",
+  "{count} matching items": "{count}개 항목",
+  "No matching items. Try another name or reset the filters.": "맞는 항목이 없어요. 다른 이름으로 검색하거나 필터를 초기화하세요.",
+  "All garden sets": "모든 정원 세트"
 }
