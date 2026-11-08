@@ -24,6 +24,7 @@ import {
   changes,
   diff,
   commitMessage,
+  commitHash,
   validateFilter,
   encodeCursor,
   page,
@@ -2163,6 +2164,16 @@ test('log는 이미 취소된 signal을 받으면 git을 돌리지 않고 거부
     );
     // 취소가 다음 요청에 번지지 않는다.
     assert.equal((await log(root)).commits.length, 5);
+  }));
+
+test('commitHash도 이미 취소된 signal을 받으면 거부한다', () =>
+  fixture(async (root) => {
+    await chain(root, 2, (i) => ({ message: `c${i}` }));
+    const hash = (await log(root)).head!;
+    const controller = new AbortController();
+    controller.abort();
+    await assert.rejects(commitHash(root, hash, controller.signal));
+    assert.equal(await commitHash(root, hash), hash);
   }));
 
 test('같은 저장소에 cancelKey가 filter인 log 요청이 겹치면 앞 요청만 취소되고 페이징 요청은 영향이 없다', () =>

@@ -108,10 +108,21 @@ function validPath(path: string) {
   )
     throw new Error('잘못된 저장소 상대 경로입니다.');
 }
-export async function commitHash(root: string, ref: string): Promise<string> {
+export async function commitHash(
+  root: string,
+  ref: string,
+  signal?: AbortSignal,
+): Promise<string> {
   if (typeof ref !== 'string' || !/^[a-f0-9]{40,64}$/.test(ref))
     throw new Error('전체 커밋 해시가 필요합니다.');
-  const hash = (await git(root, ['rev-parse', '--verify', `${ref}^{commit}`]))
+  const hash = (
+    await git(
+      root,
+      ['rev-parse', '--verify', `${ref}^{commit}`],
+      undefined,
+      signal,
+    )
+  )
     .toString()
     .trim();
   if (hash !== ref) throw new Error('커밋이 일치하지 않습니다.');
@@ -391,7 +402,12 @@ async function placeHashMatch(
     commits.unshift(
       ...parseCommits(
         (
-          await git(root, ['log', '-1', '--no-walk', FORMAT, match, '--'])
+          await git(
+            root,
+            ['log', '-1', '--no-walk', FORMAT, match, '--'],
+            undefined,
+            signal,
+          )
         ).toString(),
         head,
         refs,
@@ -425,7 +441,7 @@ export async function log(
   if (branchRef !== undefined && !selected)
     throw new Error('선택한 브랜치를 찾을 수 없습니다. 새로고침하세요.');
   const selectedHash = selected
-    ? await commitHash(root, selected.hash)
+    ? await commitHash(root, selected.hash, signal)
     : undefined;
   // 워커는 재시작마다 메모리를 잃으므로 같은 이력인지는 요청마다 다시 계산해 비교한다.
   const snapshot = snapshotKey({
