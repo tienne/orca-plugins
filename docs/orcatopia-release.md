@@ -8,12 +8,15 @@ change a user's island, publish a tag or establish a directory listing.
 ## Package and product
 
 - Display name: Orcatopia; internal ID: `landmark-island`; minimum Orca: 1.4.248.
-- 67 landmarks across 64 catalog countries; 35 Discovery, 22 Treasure, 7 Marvel,
+- 100 landmarks across 97 catalog countries; 56 Discovery, 32 Treasure, 9 Marvel,
   3 Wonder. Tier probabilities remain 70/23/6/1 percent.
-- 142 decorations and up to 318 land tiles; movement, camera follow, canvas
+- 208 decorations and up to 1,044 land tiles; movement, camera follow, canvas
   placement, independent floor/object layers and bilingual inventory search.
+  Click a landmark for Move and two-facing rotation; select Move, then a destination.
+  Save schema v5 preserves landmark facing and migrates earlier saves.
 - Worktree-created tickets, single/ten-ticket draws, new-discovery animation at
-  every tier and a skip checkbox. No purchases, guaranteed rare drops or pity.
+  every tier, a skip checkbox, distinct new/duplicate results and repeat 1/10 draws
+  with insufficient-ticket controls. No purchases, guaranteed rare drops or pity.
 - Device-clock daylight, hourly timezone-reference weather, local save and file
   backup/restore. English/Korean follow Orca's locale.
 - Trusted Node worker with `workspace:read` and `storage:own`; no new grants.
@@ -147,3 +150,35 @@ These are local headless measurements, not total CPU, GPU, native memory or proo
 of long-term leak freedom. The observed +544-byte heap difference is diagnostic.
 
 Both artifacts passed `pnpm validate`. At that checkpoint Orcatopia was 15 files / 3,830,546 bytes, with no font files. `plugin inspect` reports the same two capabilities and trusted-worker execution; no execution approval was granted. `plugin check` passed validation but returned no rendered panel scenarios for this HTML panel, so it is not native interaction evidence.
+
+## Release audit on 2026-11-09 (KST)
+
+The current local release scope includes 100 landmarks, 208 decorations, up to
+1,044 land tiles, landmark action menus and facing persistence, the treasure
+choice menu, distinct new/duplicate results and repeat draws. Existing marketing
+images show an earlier sample garden, not the current maximum island; the manifest
+caption describes sample progress accordingly.
+
+The read-only publish preflight passed with the existing `tienne` credential,
+without changing the active GitHub account. `ORCA_RELEASE_ENABLED=true`, exact
+`main` environment branch rules and production reviewers were verified. The active
+`wad-kwonyunhak` credential could not read the variable (HTTP 403); that was an
+access limitation, not evidence that deployment was disabled.
+
+Remote `main` was `2808d878e46d5a73e3071e64cc68aade443973cc`. Its latest successful
+publication was Git Logs 0.2.0, not Orcatopia. The remote catalog contained only
+Git Logs and no `landmark-island/v0.1.0` tag existed. Preserve that latest release
+base when preparing Orcatopia. The local candidate still needs source integration
+and hosted checks/preview on the resulting exact main commit before publication.
+Native installation, restart and update verification remains pending as above.
+
+The current [directory instructions](https://www.onorca.dev/plugins/add) and
+[listing policy](https://github.com/stablyai/orca/blob/main/docs/reference/plugin-listing-policy.md)
+were rechecked. Custom-catalog publication does not itself establish public search
+availability. No push, main merge, production deployment or execution approval was
+performed during this audit.
+
+Current-source local verification passed build, typecheck, worker/state tests,
+all 93 browser scenarios and all 41 release/setup/workflow tests (mock adapter).
+The installed Orca validator accepted the built package. These results do not
+represent a hosted preview or the deferred native installation checks.

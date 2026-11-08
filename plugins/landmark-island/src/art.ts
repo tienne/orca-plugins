@@ -783,6 +783,121 @@ export function art(id: string) {
       ${surface('M47 118V77h34v41z', 'stone')}${rows(5, (i) => `<path d="M${50 + i * 6} 83h3v24h-3z" fill="#faf1da"/>`)}${arch(59, 98, 10, 21, '#485748')}
       ${line('M3 84h122M12 63h104M25 43h78M39 27h50M4 113h40m40 0h39', '#fff6df', 2)}<path d="M44 77l20-8 20 8z" fill="#c8c1a7"/>
       ${line('M40 121h48M44 118h40M48 115h32', '#9aa58b', 1)}${line('M64 26V13', '#838b76', 0.8)}<path d="M65 14h9v5h-9z" fill="#b4ad78"/>`;
+  } else if (id === 'lalibela') {
+    body = `${surface('M5 91l31-25 79 7 8 41-65 12-53-14z', 'sandstone', 'grain')}<path d="M22 92l30-18 49 6 7 30-48 10-38-13z" fill="#6c4f40"/>${surface('M43 113V78l-13-4V60l17-6V40l31 3v16l17 4v18l-16-2v35l-19 5z', 'sandstone')}${surface('M30 60l17-6V40l31 3v16l17 4-19 8v15l-29-6V66z', 'stone')}${line('M51 45l22 2v14l16 4-18 4v12l-19-5V63l-15-3 15-4z', '#f5d3aa', 1.2)}${rows(3, (i) => arch(49 + i * 10, 87, 4, 13))}${line('M12 100l5-20m88 12 3 13', '#d1a180', 1)}`;
+  } else if (id === 'djenne') {
+    body = `${surface('M6 116V76h114v40z', 'sandstone', 'grain')}${[22, 61, 99].map((x, i) => `${surface(`M${x - 10} 116l3-66 7-${i === 1 ? 28 : 17} 7 ${i === 1 ? 28 : 17} 4 66z`, 'sandstone', 'grain')}${line(`M${x} ${i === 1 ? 20 : 31}v-8`, '#7c5c3c', 2)}<circle cx="${x}" cy="${i === 1 ? 12 : 23}" r="3" fill="#d8c99e"/>${rows(6, (j) => line(`M${x - 13} ${58 + j * 8}h27`, '#594936', 2))}`).join('')}${rows(8, (i) => surface(`M${8 + i * 14} 116l3-34 4-3 3 37z`, 'dune', 'grain'))}${arch(54, 87, 15, 29, '#443b2b')}${line('M5 117h117', '#e7bd8f', 2)}`;
+  } else if (id === 'leptis') {
+    body = `${surface('M5 117l26-16 90 6 4 12-91 6z')}${surface('M35 108V39h60v69h-15V67H51v41z')}${surface('M30 36h71v11H30zM37 25h57v13H37z')}${arch(51, 47, 28, 55, '#465349')}${rows(4, (i) => `${surface(`M${12 + i * 29} 113V58h6v55z`)}${surface(`M${9 + i * 29} 55h12v6H${9 + i * 29}z`)}`)}${line('M36 31h58M32 40h67M42 53v50m46-50v50', '#f5e7c5', 1.4)}<path d="M89 114l12-7 14 7z" fill="#83916d"/>`;
+  } else if (id === 'eljem') {
+    body = `<ellipse cx="64" cy="63" rx="55" ry="25" fill="#746c54"/><ellipse cx="64" cy="63" rx="38" ry="14" fill="#3f5145"/>${surface('M9 63q55 38 110 0v42q-55 34-110 0z')}${surface('M9 63V45q17-17 43-19v25q-25 2-43 12z')}${surface('M85 31q21 6 34 19v13L85 55z')}${rows(3, (r) => rows(12, (c) => arch(13 + c * 9, 66 + Math.sin((c / 11) * Math.PI) * 16 + r * 12, 5.5, 9)))}${rows(3, (r) => line(`M9 ${72 + r * 12}q55 34 110 0`, '#f0d9b2', 1.5))}${line('M10 45q17-17 42-19m33 5q20 5 33 19', '#fff0ce', 1.2)}`;
+  } else if (id === 'meroe') {
+    body = `<path d="M2 117q26-23 59-5t65 1v11H2" fill="${url('dune')}"/>${[
+      [14, 47, 45],
+      [47, 18, 55],
+      [87, 48, 38],
+    ]
+      .map(
+        ([x, y, w]) =>
+          `${surface(`M${x} 115l${w / 2}-${115 - y} ${w / 2} ${115 - y}z`, 'stone')}<path d="M${x + w / 2} ${y}l4 ${115 - y}h${w / 2 - 4}z" fill="#89704c"/>${surface(`M${x + w / 2 - 8} 117v-17h17v17z`, 'sandstone')}${arch(x + w / 2 - 3, 104, 6, 13, '#4a4030')}${rows(7, (i) => line(`M${x + w / 2 - 5 - i * 2} ${y + 20 + i * 8}h${10 + i * 4}`, '#8e7654', 0.6))}`,
+      )
+      .join('')}`;
+  } else if (id === 'timgad') {
+    body = `${surface('M8 116V32h111v84h-16V72H83v44H45V72H25v44z')}${arch(48, 45, 32, 72, '#34483c')}${arch(13, 72, 25, 44, '#3c4c3f')}${arch(89, 72, 25, 44, '#3c4c3f')}${surface('M5 30h118v13H5zM15 15h98v16H15z')}${[10, 38, 83, 111].map((x) => `${surface(`M${x} 115V46h6v69z`)}${line(`M${x + 2} 49v62`, '#f3e1bd', 1.5)}`).join('')}${surface('M7 116h114v7H7z')}${line('M16 20h96M6 35h116M46 48q18-20 36 0', '#eeddba', 1.2)}`;
+  } else if (id === 'renaissance') {
+    body = `${surface('M10 117l24-20h58l26 20z', 'grass', 'grain')}${surface('M37 109l10-12h34l11 12z', 'stone')}${surface('M46 100l8-34-10-24 8-17 13-2 11 17-2 23 15 35-14 3-14-27-4 29z', 'copper', 'grain')}<circle cx="59" cy="16" r="9" fill="${url('copper')}"/><path d="M69 35l22-10 12-14 7 5-12 19-24 12" fill="${url('copper')}"/>${surface('M37 99l-8-30 7-25 13-3 6 21-9 20 5 19z', 'copper', 'grain')}<circle cx="39" cy="33" r="7" fill="${url('copper')}"/><path d="M34 49L17 65l-5-4 18-24M91 23l-6-13 7-5 8 12 13-16 4 4-13 22z" fill="${url('copper')}"/><circle cx="90" cy="4" r="5" fill="${url('copper')}"/>${line('M55 31l-4 12 10 20m-23-16-4 22 8 22m23-59 6 9 18-9', '#d9c9a3', 1.2)}`;
+  } else if (id === 'yamoussoukro') {
+    body = `${surface('M5 109h118v12H5z', 'marble')}${rows(13, (i) => `${surface(`M${8 + i * 8.6} 109V76h4v33z`, 'marble')}`)}${surface('M3 72q61-24 122 0v6q-61-20-122 0z', 'marble')}${surface('M38 110V66h52v44z', 'marble')}${surface('M34 66Q35 34 64 27q29 7 30 39z', 'marble', 'tiles')}<path d="M64 28q-8 18-7 38h-23q1-30 30-38" fill="#fff9e4" opacity=".5"/>${surface('M57 28V17h14v11z', 'marble')}${line('M64 17V5m-5 6h10M35 67h59M38 73h52', '#a28c63', 1.5)}${arch(55, 81, 18, 29)}${rows(3, (i) => arch(41 + i * 17, 70, 10, 11))}`;
+  } else if (id === 'mbanzakongo') {
+    body = `${surface('M3 117l24-15 92 4 6 17H3z', 'grass', 'grain')}${surface('M16 111V56l16-18 18 18v55z', 'stone')}${arch(25, 70, 16, 41, '#43513e')}${surface('M50 110V59h58v49z', 'stone')}${surface('M108 108V47l10 7v51z', 'stone')}${rows(4, (i) => arch(57 + i * 12, 72, 7, 29, '#4f5943'))}${line('M18 57l14-16 16 16M52 61h54M53 109h54', '#e5d5b2', 1.3)}<path d="M52 59l6-7 4 6 11-10 7 11 9-5 5 5" fill="#c1ac85"/>${line('M11 116l10-4m80 3 12-7', '#779466', 3)}`;
+  } else if (id === 'rila') {
+    body = `${surface('M5 111V63h117v49z', 'marble')}${rows(12, (i) => arch(9 + i * 9.5, 78, 7, 28, '#6b4e3f'))}${line('M6 70h116M7 76h113', '#994c43', 4)}${surface('M29 111V60h73v51z', 'marble')}${[42, 65, 88].map((x, i) => `${surface(`M${x - 8} 62V42h16v20z`, 'sandstone')}<path d="M${x - 11} 43q11-${i === 1 ? 26 : 20} 22 0z" fill="${url('slate')}"/>${line(`M${x} ${i === 1 ? 22 : 28}v-8m-3 3h6`, '#ad9565', 1)}`).join('')}${rows(6, (i) => arch(34 + i * 10, 79, 7, 31, '#574e40'))}${rows(4, (i) => line(`M30 ${68 + i * 10}h72`, '#a95749', 2))}${surface('M8 60l15-19 15 19z', 'slate')}`;
+  } else if (id === 'mostar') {
+    body = `<path d="M2 115q31-17 62-1t62-4v15H2z" fill="#619e9c"/>${surface('M4 107V75Q64 9 124 75v32h-9V80Q64 31 13 80v27z', 'marble')}${line('M6 75Q64 9 122 75M13 79Q64 29 115 79', '#eee6ca', 2)}${rows(
+      17,
+      (i) => {
+        const a = (Math.PI * (i + 1)) / 18;
+        return line(
+          `M${64 - 55 * Math.cos(a)} ${79 - 42 * Math.sin(a)}l${-6 * Math.cos(a)} ${-11 * Math.sin(a)}`,
+          '#a79e82',
+          0.8,
+        );
+      },
+    )}${surface('M4 101V55h17v46zM107 101V57h17v44z')}${surface('M1 55l12-14 12 14zM104 57l12-14 12 14z', 'slate')}${arch(9, 67, 6, 16)}${arch(112, 69, 6, 16)}${line('M21 115h28m29 4h26', '#c5e1d4', 1)}`;
+  } else if (id === 'sava') {
+    body = `${surface('M11 116V83h106v33z', 'marble')}${surface('M31 114V57h66v57z', 'marble')}${surface('M47 59V42h34v17z', 'marble')}<path d="M42 42Q43 14 64 12q22 2 23 30z" fill="${url('copper')}"/>${[23, 105].map((x) => `${surface(`M${x - 9} 85V64h18v21z`, 'marble')}<path d="M${x - 12} 64q12-27 24 0z" fill="${url('copper')}"/>`).join('')}${line('M64 14V2m-5 6h10M42 43h45M32 60h64', '#a9976e', 1.5)}${arch(52, 79, 24, 36)}${[17, 91].map((x) => arch(x, 91, 17, 24)).join('')}${rows(5, (i) => arch(37 + i * 11, 65, 7, 12))}`;
+  } else if (id === 'bled') {
+    body = `<ellipse cx="64" cy="116" rx="62" ry="11" fill="#77b5b2"/>${surface('M9 112l15-17 15-8 43 2 31 23-45 9z', 'grass', 'grain')}${surface('M30 103V71h57v32z', 'marble')}${surface('M24 72l32-21 36 21z', 'sandstone', 'tiles')}${surface('M77 104V43h17v61z', 'marble')}${surface('M74 43l11-22 12 22z', 'slate')}${line('M85 22V12m-3 5h6', '#9d8a5d', 1)}${arch(81, 48, 8, 13)}${rows(4, (i) => arch(36 + i * 12, 80, 7, 17))}<path d="M48 106l-8 11h13l5-10z" fill="#e7d6b5"/>${line('M7 118h22m61 3h27', '#e1eee0', 1)}<path d="M18 102l6-23 7 23m72 4 5-20 7 20" fill="#4d7c59"/>`;
+  } else if (id === 'trakai') {
+    body = `<ellipse cx="64" cy="117" rx="62" ry="10" fill="#73a2a6"/>${surface('M13 111V77h104v36z', 'sandstone')}${[22, 104].map((x) => `${surface(`M${x - 10} 114V63h20v51z`, 'sandstone')}<path d="M${x - 14} 63l14-23 14 23z" fill="#865043"/>${arch(x - 3, 76, 6, 16)}`).join('')}${surface('M47 106V38h35v68z', 'sandstone')}${surface('M41 38l23-28 24 28z', 'sandstone', 'tiles')}${rows(3, (i) => arch(53 + i * 9, 48, 5, 11))}${rows(2, (i) => arch(54 + i * 12, 67, 6, 12))}${arch(56, 87, 16, 22)}${line('M14 79h32m37 0h32M45 39h40', '#e2b48e', 1)}<path d="M59 109h13l8 17H50z" fill="#baa180"/>`;
+  } else if (id === 'blackheads') {
+    body = `${surface('M18 117V61h87v56z', 'sandstone')}${surface('M15 63h13V51h10V39h10V27h12V15h14v12h10v12h10v12h12v12z', 'sandstone')}${surface('M87 117V76h27v41z', 'marble')}${rows(3, (r) => rows(5, (c) => arch(26 + c * 15, 68 + r * 15, 7, 11)))}${line('M20 64h84M29 51h66M41 38h43M50 26h26', '#f5e5c6', 2)}<circle cx="66" cy="47" r="8" fill="#335b61" stroke="#e0c182" stroke-width="2"/>${line('M66 42v5l4 2', '#f8e9be', 1.3)}${[35, 65, 94].map((x) => `<path d="M${x} 96v12" stroke="#d8c496" stroke-width="4"/>`).join('')}${arch(59, 100, 14, 17, '#3f4b3c')}`;
+  } else if (id === 'tallinn') {
+    body = `${surface('M12 113V66h99v47z', 'marble')}${surface('M6 67l27-28h59l27 28z', 'sandstone', 'tiles')}${rows(8, (i) => arch(19 + i * 11, 89, 8, 24))}${rows(6, (i) => arch(22 + i * 14, 71, 6, 12))}${surface('M96 107V30h11v77z', 'marble')}<path d="M93 31l8-20 9 20zM100 12V0" fill="#5b7f71" stroke="#536f5e"/>${arch(99, 37, 5, 12)}${line('M12 68h98M13 86h98M15 114h97', '#e8dcc1', 1.5)}`;
+  } else if (id === 'taktsang') {
+    body = `${surface('M9 123l3-46 18-19 2-35 24-16 13 17 17-9 21 25 14 83z', 'mountain', 'grain')}${line('M25 37l10 16-8 25 7 39m59-85-8 21 9 18-6 26', '#c2bba3', 1)}${[
+      [17, 74, 34],
+      [48, 54, 35],
+      [80, 76, 31],
+    ]
+      .map(
+        ([x, y, w]) =>
+          `${surface(`M${x} ${y + 31}V${y}h${w}v31z`, 'marble')}<path d="M${x - 4} ${y}l${w / 2 + 4}-13 ${w / 2 + 4} 13-3 5H${x}z" fill="${url('gold')}"/><path d="M${x} ${y + 8}h${w}v7H${x}z" fill="#a04f40"/>${rows(3, (i) => arch(x + 4 + i * 10, y + 19, 5, 9))}`,
+      )
+      .join('')}${line('M10 110h38m33-2h38', '#e1d6b4', 2)}`;
+  } else if (id === 'xiengthong') {
+    body = `${surface('M15 115V74h98v41z', 'sandstone')}<path d="M22 80h85v29H22z" fill="#754d38"/>${rows(7, (i) => line(`M${27 + i * 12} 79v32`, '#cfb36c', 3))}${[79, 63, 48].map((y, i) => `${surface(`M${5 + i * 10} ${y}Q36 ${y - 5} 60 ${y - 24}h8q21 19 ${55 - i * 10} 24l-6 7H${11 + i * 10}z`, 'slate', 'tiles')}${line(`M${5 + i * 10} ${y}q59 17 ${118 - i * 20} 0`, '#d5b65a', 2)}`).join('')}${line('M61 24l3-17 4 17M7 78l-4-9m118 9 4-9', '#e1c978', 1.5)}${surface('M9 116h112v6H9z', 'stone')}`;
+  } else if (id === 'watarun') {
+    const prang = (x: number, y: number, w: number, h: number) =>
+      `${surface(`M${x - w / 2} ${y + h}l3-${h * 0.25} 4-3 2-${h * 0.3} 4-7 ${w / 2 - 13}-${h * 0.45 - 10} ${w / 2 - 13} ${h * 0.45 - 10} 4 7 2 ${h * 0.3} 4 3 3 ${h * 0.25}z`, 'marble', 'tiles')}${rows(8, (i) => line(`M${x - w / 2 + 4 + i * 1.1} ${y + h - (i * h) / 10}h${w - 8 - i * 2.2}`, i % 2 ? '#8faaa0' : '#c7b37d', 1.7))}`;
+    body = `${prang(22, 61, 34, 56)}${prang(104, 61, 34, 56)}${prang(64, 8, 60, 110)}${surface('M18 116h92v7H18z', 'marble')}${line('M64 10V0m-3 6h6', '#a78f5b', 1.2)}${arch(57, 85, 14, 25)}`;
+  } else if (id === 'badshahi') {
+    body = `${surface('M4 116h120v7H4z', 'sandstone')}${surface('M23 114V69h82v45z', 'sandstone')}${[39, 64, 89].map((x, i) => `${surface(`M${x - 10} 70V58h20v12z`, 'marble')}<path d="M${x - 13} 59Q${x - 16} ${i === 1 ? 31 : 39} ${x} ${i === 1 ? 26 : 34}Q${x + 16} ${i === 1 ? 31 : 39} ${x + 13} 59z" fill="${url('marble')}"/>`).join('')}${[10, 114].map((x) => `${surface(`M${x - 4} 116V30h8v86z`, 'sandstone')}<path d="M${x - 7} 31q7-16 14 0z" fill="${url('marble')}"/>${rows(4, (i) => line(`M${x - 6} ${44 + i * 18}h12`, '#ecd9bd', 2))}`).join('')}${arch(53, 82, 22, 32)}${[31, 85].map((x) => arch(x, 85, 12, 25)).join('')}${line('M24 74h80M48 112V82q16-17 32 0v30', '#ecd5b6', 1)}`;
+  } else if (id === 'golestan') {
+    body = `${surface('M5 116V68h118v48z', 'marble')}${surface('M28 68V35h73v33z', 'stone')}${surface('M24 34h81v8H24z', 'marble')}${[31, 89].map((x) => `${surface(`M${x} 68V24h10v44z`, 'stone')}<path d="M${x - 3} 24l8-12 8 12z" fill="${url('slate')}"/>`).join('')}${rows(8, (i) => arch(11 + i * 14, 80, 10, 25, '#486f72'))}${rows(5, (i) => arch(40 + i * 10, 47, 6, 15, '#38686e'))}${rows(6, (i) => `<path d="M${9 + i * 19} 109l8-5 8 5-8 5z" fill="#639b9c"/>`)}${line('M7 73h114M29 43h70M8 116h112', '#d5b675', 2)}<ellipse cx="64" cy="121" rx="27" ry="5" fill="#8bbdb5"/>`;
+  } else if (id === 'chinggis') {
+    body = `${surface('M13 112q51-28 102 0v10H13z', 'marble')}${rows(12, (i) => line(`M${18 + i * 8} 113v9`, '#81948d', 1.3))}${surface('M32 101l5-30 10-15 33-2 19 17-3 29h-9l-3-25-31 1-12 25z', 'titanium', 'grain')}<path d="M78 59l3-28 8-13 14 8-4 15-11 4 2 22zM37 64L18 76l-3 20 7-3 5-14 17-7" fill="${url('titanium')}"/>${surface('M48 64l2-30 8-12 14 2 7 16-9 25z', 'titanium', 'grain')}<circle cx="64" cy="15" r="8" fill="${url('titanium')}"/><path d="M52 13l12-10 11 9z" fill="#a5b2ac"/>${line('M54 38l16 14 15-13M49 65h30M87 22l8 5M39 77l-3 21m53-21 3 20', '#f2ecd4', 1.6)}`;
+  } else if (id === 'tikal') {
+    body = `<path d="M0 117l8-20 9 14 7-23 11 29m58 0 9-26 7 17 12-24 7 33" fill="#436f4c"/>${rows(
+      9,
+      (i) => {
+        const y = 113 - i * 7;
+        return surface(
+          `M${16 + i * 3.7} ${y}h${96 - i * 7.4}v8H${16 + i * 3.7}z`,
+          'slate',
+        );
+      },
+    )}${surface('M45 52V24h37v28z', 'stone')}${surface('M47 25V10l17-8 16 8v15z', 'slate')}${arch(56, 30, 15, 22, '#263c32')}<path d="M59 53h10l13 69H45z" fill="#b4b297"/>${rows(17, (i) => line(`M${59 - i * 0.8} ${56 + i * 3.8}h${10 + i * 1.6}`, '#687565', 0.9))}${line('M48 12l16-7 14 7M45 26h37', '#e5d7b2', 1.1)}`;
+  } else if (id === 'copan') {
+    body = `${rows(6, (i) => surface(`M${4 + i * 6} ${115 - i * 9}h${89 - i * 12}v9H${4 + i * 6}z`, 'stone'))}${surface('M33 62V43h32v19z', 'slate')}${arch(43, 46, 12, 16)}${surface('M88 116V37l11-8 11 8v79z', 'stone', 'grain')}${rows(8, (i) => `<path d="M91 ${43 + i * 8}h15v5H91z" fill="none" stroke="#796c50" stroke-width=".8"/><circle cx="98" cy="${46 + i * 8}" r="1.8" fill="#796c50"/>`)}${rows(5, (i) => rows(6, (j) => line(`M${14 + i * 6 + j * 2} ${109 - i * 9}h3`, '#8d7958', 1)))}${line('M89 37l10-7 10 7M87 116h25', '#eee0b7', 1.3)}`;
+  } else if (id === 'joyaceren') {
+    body = `${surface('M3 116l27-14 91 4 4 17H3z', 'grass', 'grain')}${[
+      [14, 70, 39],
+      [67, 82, 43],
+    ]
+      .map(
+        ([x, y, w]) =>
+          `${surface(`M${x} ${y + 34}V${y}h${w}v34z`, 'dune', 'grain')}<path d="M${x - 7} ${y}l${w / 2 + 7}-25 ${w / 2 + 7} 25-5 5H${x - 2}z" fill="${url('iron')}"/>${rows(7, (i) => line(`M${x - 3 + (i * (w + 6)) / 6} ${y}L${x + w / 2} ${y - 22}`, '#d4b68a', 0.8))}${arch(x + w / 2 - 5, y + 12, 10, 22)}${line(`M${x + 3} ${y + 25}h8`, '#dfbc8d', 1)}`,
+      )
+      .join(
+        '',
+      )}<path d="M8 113l3-16m-3 8-6-5m9 3 6-5" fill="none" stroke="#6a8652" stroke-width="2"/>`;
+  } else if (id === 'arenal') {
+    body = `${surface('M4 116l22-26 20-38 17-29 10 2 22 49 29 42z', 'mountain', 'grain')}<path d="M65 24L31 114H7l19-24 20-38z" fill="#7f9875" opacity=".6"/>${line('M60 33l8-5 7 4M62 44l-18 39-9 19m41-55 12 37 13 18', '#acb29a', 1.3)}<path d="M4 115l10-12 8 6 8-16 10 13 10-8 12 11 10-9 12 12 13-8 11 9 9-8 7 12v7H4z" fill="#447355"/>${line('M16 113l4-5m37 7 5-4m29 6 5-3', '#8bb17a', 1.5)}<path d="M65 25q-10-9 2-13t-2-10" fill="none" stroke="#e4e1ca" stroke-width="3" opacity=".6"/>`;
+  } else if (id === 'cartagena') {
+    body = `${surface('M3 116V85h122v31z', 'gold', 'grain')}${rows(3, (i) => arch(10 + i * 42, 89, 25, 27))}${surface('M48 88V42h33v46z', 'gold', 'grain')}<path d="M44 43l20-23 21 23z" fill="#a67a4e"/>${surface('M52 43V27h25v16z', 'gold', 'grain')}<path d="M50 27l14-19 15 19z" fill="#8d775a"/>${line('M64 9V1M44 44h40M48 82h33M3 85h122', '#f7df9e', 1.5)}<circle cx="64" cy="59" r="11" fill="#f0e3be" stroke="#786a50" stroke-width="1.2"/>${line('M64 52v7l5 3', '#514c39', 1.6)}${rows(4, (i) => line(`M${52 + i * 8} 74v6`, '#876d44', 1.2))}`;
+  } else if (id === 'quitofrancisco') {
+    body = `${surface('M8 115V64h112v51z', 'marble')}${surface('M40 115V55l24-19 24 19v60z', 'stone')}${[14, 97].map((x) => `${surface(`M${x} 66V27h17v39z`, 'marble')}${arch(x + 4, 34, 9, 17)}<path d="M${x - 3} 27l11-17 12 17z" fill="${url('slate')}"/>`).join('')}${arch(52, 79, 24, 36)}${rows(2, (i) => arch(21 + i * 74, 80, 12, 25))}${line('M40 58l24-18 24 18M10 68h29m49 0h30M43 72h42M13 113h104', '#e9dbbc', 1.8)}<circle cx="64" cy="60" r="6" fill="#6e806f"/>${surface('M3 117h122v7H3z', 'stone')}`;
+  } else if (id === 'tiwanaku') {
+    body = `${surface('M3 115l22-13 95 7 5 14H3z', 'grass', 'grain')}${surface('M22 115V39h82v76H80V73H48v42z', 'slate')}${surface('M18 36h90v30H18z', 'stone')}${rows(3, (r) => rows(11, (c) => `<path d="M${23 + c * 7} ${40 + r * 7}l3-2 3 2v3l-3 1-3-1z" fill="none" stroke="#786e51" stroke-width=".8"/>`))}${line('M23 68h23v44M82 112V68h20M20 36h86', '#d9caa7', 1.5)}<path d="M59 41h14v17H59z" fill="#8a7d60"/>${line('M62 45h8m-4-3v13m-4-4h8', '#d1bd95', 1)}${surface('M5 117h118v6H5z', 'stone')}`;
+  } else if (id === 'sanssouci') {
+    body = `${surface('M4 117l14-10h91l15 10z', 'grass', 'grain')}${surface('M12 108V53h105v55z', 'stone')}${rows(8, (i) => arch(17 + i * 12, 59, 8, 20))}${rows(8, (i) => arch(17 + i * 12, 85, 8, 23))}${surface('M43 108V39h42v69z', 'stone')}${arch(53, 47, 22, 24, '#4a5546')}${arch(54, 84, 20, 24, '#4a5546')}${line('M13 80h103M44 40h40M43 76h42', '#e6d7b5', 2)}<path d="M43 39l7-7 8 4 8-10 8 12 11 1" fill="#bdaa84"/>${surface('M44 109h40l16 13H28z', 'marble')}${rows(4, (i) => line(`M${43 - i * 3} ${111 + i * 3}h${42 + i * 6}`, '#8b927b', 1))}`;
+  } else if (id === 'nanmadol') {
+    body = `<path d="M0 112q25-9 49 0t49 0t30 0v15H0z" fill="#649b9b"/>${surface('M9 110l25-17 86 8-24 21z', 'slate', 'grain')}${rows(7, (i) => `${surface(`M16 ${106 - i * 8}l30-17 62 11v6l-62-9-30 16z`, 'slate', 'grain')}${line(`M17 ${107 - i * 8}l29-17 60 11`, '#b0b8a1', 1)}`)}<path d="M45 90V53l37 6v37z" fill="#304e45"/>${rows(6, (i) => surface(`M90 ${106 - i * 8}l20-12 10 3v6l-20 12z`, 'slate', 'grain'))}${line('M5 120h20m83 1h17', '#cce3d4', 1.2)}<path d="M112 44l4-25 5 27" fill="#669167"/>`;
+  } else if (id === 'pngparliament') {
+    body = `${surface('M12 117V79h107v38z', 'stone')}${surface('M24 115V61l40-45 40 45v54z', 'sandstone', 'grain')}<path d="M10 83Q40 48 64 4q21 44 54 79L64 28z" fill="${url('iron')}"/><path d="M26 75L64 29l38 46v37H26z" fill="#a16d4a"/>${rows(6, (i) => `<path d="M${32 + i * 11} 76v34" stroke="#d5b57a" stroke-width="4"/>`)}<path d="M44 64l20-25 20 25-20 14z" fill="#d2aa65"/><path d="M51 62l13-13 13 13-13 9z" fill="#6e6048"/>${arch(54, 86, 21, 28)}${line('M12 83Q40 48 64 5q21 44 54 78M26 114h76', '#e1bd87', 1.5)}${surface('M6 118h116v6H6z', 'marble')}`;
+  } else if (id === 'tongapalace') {
+    body = `${surface('M8 115V74h112v41z', 'marble')}${surface('M4 74l24-24h73l23 24z', 'sandstone', 'tiles')}${surface('M49 114V41h30v73z', 'marble')}<path d="M44 42l20-21 20 21z" fill="#a66f58"/>${line('M64 23V5', '#8c8268', 1.2)}<path d="M65 6h17v9H65z" fill="#b16e60"/><path d="M67 8h6v4h-6z" fill="#efe7cf"/>${rows(7, (i) => `${surface(`M${15 + i * 15} 114V84h3v30z`, 'marble')}`)}${rows(6, (i) => arch(17 + i * 17, 88, 9, 17))}${arch(58, 51, 13, 20)}${arch(57, 89, 15, 25)}${line('M10 81h108M51 77h26M8 115h112', '#a7b4a3', 1.3)}<path d="M55 115h19l11 9H44z" fill="#cac3a9"/>`;
   } else if (id === 'giza') {
     body = `${surface('M6 112L56 18l66 94z')}
       <path d="M56 18l16 94h50z" fill="#8c704c" opacity=".6"/><path d="M56 18l-7 14 9-1z" fill="#f4e5c0"/>

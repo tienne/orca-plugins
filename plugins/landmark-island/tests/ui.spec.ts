@@ -1,9 +1,29 @@
+import { openTreasure } from './treasure-menu';
 import { test, expect, type Page } from '@playwright/test';
 import { landTiles, landAtLevel } from '../src/world';
 import { validate, landmarks } from '../src/game';
 async function openInventory(page: Page, kind: 'decorations' | 'landmarks') {
   const menu = page.locator(`[data-inventory="${kind}"]`);
   if ((await menu.getAttribute('aria-expanded')) !== 'true') await menu.click();
+}
+async function clickExposedEmptyCell(page: Page) {
+  const cell = await page
+    .locator('.cell:not(.occupied)')
+    .evaluateAll((buttons) => {
+      return buttons
+        .find((button) => {
+          const box = button.getBoundingClientRect();
+          return (
+            document.elementFromPoint(
+              box.x + box.width / 2,
+              box.y + box.height / 2,
+            ) === button
+          );
+        })
+        ?.getAttribute('data-cell');
+    });
+  expect(cell).toBeTruthy();
+  await page.locator(`[data-cell="${cell}"]`).click();
 }
 async function skipAnimation(page: Page) {
   await expect(page.locator('.discovery-theatre')).toBeVisible();
@@ -12,7 +32,8 @@ async function skipAnimation(page: Page) {
 }
 async function demoDiscovery(page: Page) {
   await page.getByRole('button', { name: 'Demo worktree' }).click();
-  await page.getByRole('button', { name: 'Use ticket · Discover' }).click();
+  await openTreasure(page);
+  await page.getByRole('button', { name: 'Open 1 treasure' }).click();
   await skipAnimation(page);
   await page.getByRole('button', { name: 'Keep exploring' }).click();
 }
@@ -48,17 +69,15 @@ test('demo acquisition, duplicate, placement, move, removal and persistent map',
   await expect(
     page.getByRole('button', { name: 'Return to collection' }),
   ).toBeVisible();
-  await page
-    .getByRole('button', { name: 'Cell 2: empty', exact: true })
-    .click();
+  await clickExposedEmptyCell(page);
   await expect(
     page.getByRole('button', { name: 'Cell 1: Eiffel Tower', exact: true }),
   ).toBeVisible();
   await expect(page.locator('.placement-hint')).toContainText(
     'Piece selected.',
   );
-  await expect(page.locator('#rotate-left')).toBeDisabled();
-  await expect(page.locator('#rotate-piece')).toBeDisabled();
+  await expect(page.locator('#rotate-left')).toBeEnabled();
+  await expect(page.locator('#rotate-piece')).toBeEnabled();
   await page.locator('#move-piece').click();
   await expect(page.locator('.placement-hint')).toContainText(
     'Choose an empty cell',
@@ -69,9 +88,7 @@ test('demo acquisition, duplicate, placement, move, removal and persistent map',
   await expect(page.locator('.placement-hint')).toContainText('occupied');
   await page.locator('#cancel').click();
   await expect(page.locator('#move-piece')).toBeVisible();
-  await page
-    .getByRole('button', { name: 'Cell 2: empty', exact: true })
-    .click();
+  await clickExposedEmptyCell(page);
   await expect(
     page.getByRole('button', { name: 'Cell 1: Eiffel Tower', exact: true }),
   ).toBeVisible();
@@ -391,6 +408,8 @@ test('hover wheel zoom needs no focus or modifier, anchors the pointer and leave
 test('field guide describes all landmarks, including unowned ones, without changing the save', async ({
   page,
 }) => {
+  // This traverses all 100 dialogs; per-action assertion timeouts stay unchanged.
+  test.setTimeout(90_000);
   await page.goto('/');
   const before = await page.evaluate(() =>
     localStorage.getItem('landmark-island-demo-v1'),
@@ -437,7 +456,7 @@ test('field guide describes all landmarks, including unowned ones, without chang
   await expect(dialog).not.toBeVisible();
 });
 
-test('a placed building opens its story during exploration and stays movable in arrange mode', async ({
+test('a placed building opens actions first and exposes its story without losing placement', async ({
   page,
 }) => {
   await page.addInitScript(() =>
@@ -460,6 +479,8 @@ test('a placed building opens its story during exploration and stays movable in 
     .getByRole('button', { name: 'Landmark: Taj Mahal', exact: true })
     .click();
   const dialog = page.getByRole('dialog', { name: 'Taj Mahal', exact: true });
+  await expect(page.locator('.piece-menu')).toBeVisible();
+  await page.locator('#inspect-piece').click();
   await expect(dialog).toBeVisible();
   await expect(dialog).toContainText('India · Agra');
   await expect(dialog).toContainText('Mumtaz Mahal');
@@ -490,6 +511,8 @@ test('a placed building opens its story during exploration and stays movable in 
   await page
     .getByRole('button', { name: 'Cell 33: Taj Mahal', exact: true })
     .click();
+  await expect(page.locator('.piece-menu')).toBeVisible();
+  await page.locator('#inspect-piece').click();
   await expect(dialog).toBeVisible();
 });
 
@@ -538,9 +561,9 @@ test('rarity filters, discoveries and progress distinguish unique landmarks from
   );
   const camera = await page.locator('.camera').getAttribute('style');
   for (const [tier, visible, collected, chance, rank, name] of [
-    ['common', 35, 0, 70, 1, 'Discovery'],
-    ['rare', 22, 0, 23, 2, 'Treasure'],
-    ['epic', 7, 0, 6, 3, 'Marvel'],
+    ['common', 56, 0, 70, 1, 'Discovery'],
+    ['rare', 32, 0, 23, 2, 'Treasure'],
+    ['epic', 9, 0, 6, 3, 'Marvel'],
     ['legendary', 3, 1, 1, 4, 'Wonder'],
   ] as const) {
     const filter = page.locator(`[data-tier-filter="${tier}"]`);
@@ -718,6 +741,8 @@ for (const wonder of landmarks.filter((l) => l.tier === 'legendary'))
         exact: true,
       })
       .click();
+    await page.locator('#inspect-piece').click();
+    await expect(page.locator('.landmark-detail')).toBeVisible();
     const detailBody = page.locator('.detail-art .wonder-body');
     const detailStart = await detailBody.evaluate(
       (el) => getComputedStyle(el).transform,
@@ -775,6 +800,7 @@ test('tickets accumulate before drawing; map reveal commits once and survives re
   );
   await page.reload();
   await expect(page.locator('#ticket-count')).toHaveText('3');
+  await openTreasure(page);
   await page.locator('#draw-ticket').evaluate((button: HTMLButtonElement) => {
     button.click();
     button.click();
@@ -805,6 +831,7 @@ test('tickets accumulate before drawing; map reveal commits once and survives re
   await expect(
     page.getByRole('button', { name: 'Cell 1: Eiffel Tower', exact: true }),
   ).toBeVisible();
+  await openTreasure(page);
   await page.locator('#draw-ticket').click();
   await expect(theatre).toBeVisible();
   await page.reload();
@@ -815,6 +842,7 @@ test('tickets accumulate before drawing; map reveal commits once and survives re
   await expect(theatre).toHaveCount(0);
   await page.emulateMedia({ reducedMotion: 'reduce' });
   await page.setViewportSize({ width: 360, height: 800 });
+  await openTreasure(page);
   await page.locator('#draw-ticket').click();
   await expect(theatre.locator('.discovery-result')).toBeVisible();
   await expect(
@@ -844,6 +872,7 @@ test('failed save retains ticket; retry and Escape reveal without charging again
       throw Error('Fixture storage failure');
     };
   });
+  await openTreasure(page);
   await page.locator('#draw-ticket').click();
   await expect(page.getByRole('alert')).toContainText(
     'Fixture storage failure',
@@ -882,6 +911,7 @@ test('Treasure, Marvel and Wonder reveal distinct effects with accessible ranks'
       (window as typeof window & { fixtureRoll: number }).fixtureRoll = roll;
     }, roll);
     await page.getByRole('button', { name: 'Demo worktree' }).click();
+    await openTreasure(page);
     await page.locator('#draw-ticket').click();
     const theatre = page.locator('.discovery-theatre');
     await expect(theatre).toHaveAttribute('data-tier', tier);
@@ -931,6 +961,7 @@ test('cinematic discovery reveals rarity before artwork, then information and ac
   });
   await page.goto('/');
   await page.getByRole('button', { name: 'Demo worktree' }).click();
+  await openTreasure(page);
   await page.locator('#draw-ticket').click();
   const theatre = page.locator('.discovery-theatre');
   const result = theatre.locator('.discovery-result');
@@ -1002,6 +1033,7 @@ test('cinematic discovery reveals rarity before artwork, then information and ac
   });
   await page.getByRole('button', { name: 'Keep exploring' }).click();
   await page.getByRole('button', { name: 'Demo worktree' }).click();
+  await openTreasure(page);
   await page.locator('#draw-ticket').click();
   await expect(theatre).toHaveClass(/static-discovery/);
   await expect(theatre.locator('.reveal-skip')).toBeHidden();
@@ -1219,6 +1251,7 @@ test('host theme tokens update reading and controls live while preserving game a
     await page.evaluate(() => localStorage.getItem('landmark-island-demo-v1')),
   ).toBe(save);
   await page.getByRole('button', { name: 'Demo worktree' }).click();
+  await openTreasure(page);
   await page.locator('#draw-ticket').click();
   await skipAnimation(page);
   await expect(page.locator('.discovery-theatre')).toHaveCSS(
@@ -1569,6 +1602,7 @@ test('host backup export calls saveAs only from a fresh click and reports cancel
 test('material artwork keeps local paint references isolated across collection, copies and details', async ({
   page,
 }) => {
+  test.setTimeout(90_000);
   const svgErrors: string[] = [];
   page.on('console', (message) => {
     if (
@@ -1678,8 +1712,8 @@ test('material artwork keeps local paint references isolated across collection, 
         return `<article>${svg}<strong>${name}</strong><small>${country}</small></article>`;
       })
       .join('');
-    document.body.innerHTML = `<main id="art-review"><h1>DEMO · Eight new countries</h1><div>${cards}</div></main>`;
-  }, landmarks.slice(59));
+    document.body.innerHTML = `<main id="art-review"><h1>DEMO · 33 new destinations</h1><div>${cards}</div></main>`;
+  }, landmarks.slice(67));
   await page.addStyleTag({
     content: `
     body { margin: 0; background: #ede9d3; color: #344b3d; }
@@ -1694,7 +1728,7 @@ test('material artwork keeps local paint references isolated across collection, 
   });
   await expect(page.locator('#art-review')).toHaveCount(1);
   await page.locator('#art-review').screenshot({
-    path: 'test-results/landmark-island/landmarks-67-demo.png',
+    path: 'test-results/landmark-island/landmarks-100-demo.png',
   });
 });
 
@@ -1706,7 +1740,7 @@ test('new discoveries grow land, gifts unlock sets, duplicates craft chosen deco
     Math.random = () => {
       const tierRoll =
         (window as unknown as { fixtureRoll?: number }).fixtureRoll ?? 0.8;
-      return roll++ % 2 === 0 ? tierRoll : tierRoll === 0.71 ? 3.5 / 22 : 0;
+      return roll++ % 2 === 0 ? tierRoll : tierRoll === 0.71 ? 3.5 / 32 : 0;
     };
   });
   await page.goto('/');
@@ -1933,6 +1967,7 @@ test('all modals scroll internally without moving the page and release the lock 
     } else if (kind === 'backup') await page.locator('#backups').click();
     else {
       await page.locator('#expedition').click();
+      await openTreasure(page);
       await page.locator('#draw-ticket').click();
       await skipAnimation(page);
     }
@@ -2263,7 +2298,9 @@ test('canvas inventories contain scrolling, preserve camera, and hand selection 
   await scroll.evaluate((e) => {
     e.scrollTop = 0;
   });
-  const heading = (await page.locator('.inventory-heading').boundingBox())!;
+  const heading = (await page
+    .locator('.canvas-inventory .inventory-heading')
+    .boundingBox())!;
   await page.mouse.move(heading.x + 30, heading.y + 20);
   await page.mouse.wheel(0, 180);
   await expect
@@ -2355,6 +2392,7 @@ test('treasure opens and reveals inside the canvas, keeps scrolling local and re
   await expect(page.locator('.ocean #draw-ticket')).toBeDisabled();
   await page.locator('#expedition').click();
   await expect(page.locator('.ocean #ticket-count')).toHaveText('1');
+  await openTreasure(page);
   await page.locator('#draw-ticket').click();
   const theatre = page.locator('.ocean > .discovery-theatre');
   await expect(theatre).toBeVisible();
@@ -2396,7 +2434,7 @@ test('treasure opens and reveals inside the canvas, keeps scrolling local and re
   expect(await page.evaluate(() => window.scrollY)).toBe(y);
   await page.getByRole('button', { name: 'Keep exploring' }).click();
   await expect(theatre).toHaveCount(0);
-  await expect(page.locator('[data-inventory=landmarks]')).toBeFocused();
+  await expect(page.locator('#open-treasure')).toBeFocused();
   await expect(page.locator('#ticket-count')).toHaveText('0');
   const saved = await page.evaluate(() =>
     JSON.parse(localStorage.getItem('landmark-island-demo-v1')!),
@@ -2578,6 +2616,7 @@ for (const wave of [
         ],
       );
       await page.getByRole('button', { name: 'Demo worktree' }).click();
+      await openTreasure(page);
       await page.locator('#draw-ticket').click();
       await expect(page.locator('.discovery-result h2')).toHaveText(entry.name);
       await expect(page.locator('.discovery-result')).toContainText(
@@ -2594,8 +2633,8 @@ for (const wave of [
         page.locator(`[data-decor-card="${entry.id}-gift"]`),
       ).toContainText('Owned ×1');
     }
-    await expect(page.locator('.cell')).toHaveCount(318);
-    await expect(page.locator('.land-progress')).toContainText(
+    await expect(page.locator('.cell')).toHaveCount(landAtLevel(13).length);
+    await expect(page.locator('.land-progress')).not.toContainText(
       'Your whole island is open.',
     );
     await openInventory(page, 'landmarks');
@@ -2717,6 +2756,7 @@ for (const notification of ['before response', 'during reveal'])
       { notification },
     );
     await page.goto('/');
+    await openTreasure(page);
     await page.locator('#draw-ticket').click();
     const theatre = page.locator('.ocean > .discovery-theatre');
     await expect(theatre).toBeVisible();
@@ -2785,15 +2825,15 @@ for (const width of [1000, 360])
     await page
       .getByRole('button', { name: 'Cell 1: Earth path', exact: true })
       .click();
-    await expect(desk.locator('#remove')).toBeVisible();
-    await expect(desk.locator('#cancel')).toBeVisible();
+    await expect(page.locator('.piece-menu #remove')).toBeVisible();
+    await expect(page.locator('.piece-menu #cancel')).toBeVisible();
     expect(await desk.evaluate((el) => el.scrollWidth <= el.clientWidth)).toBe(
       true,
     );
     await ocean.screenshot({
       path: `test-results/landmark-island/piece-menu-${width}.png`,
     });
-    await desk.locator('#cancel').click();
+    await page.locator('.piece-menu #cancel').click();
     const bounds = await desk.boundingBox();
     const canvas = await ocean.boundingBox();
     expect(bounds!.x).toBeGreaterThanOrEqual(canvas!.x);

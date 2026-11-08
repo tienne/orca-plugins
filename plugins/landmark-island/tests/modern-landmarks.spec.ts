@@ -1,3 +1,4 @@
+import { openTreasure } from './treasure-menu';
 import { test, expect } from '@playwright/test';
 import { empty, landmarks, validate } from '../src/game';
 import korean from '../src/landmarks.ko.json';
@@ -48,6 +49,7 @@ test('modern discoveries share countries while keeping individual gifts, placeme
       ],
     );
     await page.getByRole('button', { name: 'Demo worktree' }).click();
+    await openTreasure(page);
     await page.locator('#draw-ticket').click();
     await expect(page.locator('.discovery-result h2')).toHaveText(entry.name);
     await expect(
@@ -127,10 +129,15 @@ test('modern discoveries share countries while keeping individual gifts, placeme
 for (const [start, end, theme] of [
   [51, 59, 'nmoq'],
   [59, 67, 'taipei101'],
+  [67, 78, 'lalibela'],
+  [78, 89, 'sava'],
+  [89, 100, 'copan'],
 ] as const)
-  test(`country expansion ${start}–${end} draws eight new countries and preserves an existing collection`, async ({
+  test(`country expansion ${start}–${end} draws new countries and preserves an existing collection`, async ({
     page,
   }) => {
+    // Each entry exercises draw, placement and both locales on shared CI CPUs.
+    test.setTimeout(60_000);
     await page.addInitScript(() => {
       const fixture = window as unknown as {
         modernRolls: number[];
@@ -158,7 +165,8 @@ for (const [start, end, theme] of [
     const modern = landmarks.slice(start, end);
     const draw = async (entry: (typeof modern)[number]) => {
       const pool = landmarks.filter((l) => l.tier === entry.tier);
-      const tierRoll = entry.tier === 'common' ? 0.35 : 0.8;
+      const tierRoll =
+        entry.tier === 'common' ? 0.35 : entry.tier === 'rare' ? 0.8 : 0.96;
       await page.evaluate(
         ([tier, item]) => {
           const fixture = window as unknown as {
@@ -174,6 +182,7 @@ for (const [start, end, theme] of [
         ],
       );
       await page.getByRole('button', { name: 'Demo worktree' }).click();
+      await openTreasure(page);
       await page.locator('#draw-ticket').click();
       await expect(page.locator('.discovery-result h2')).toHaveText(entry.name);
       await expect(
@@ -192,12 +201,14 @@ for (const [start, end, theme] of [
         .getByRole('button', { name: `Cell ${i + 2}: empty`, exact: true })
         .click();
     }
-    await expect(page.locator('.stats strong').nth(0)).toContainText('9');
+    await expect(page.locator('.stats strong').nth(0)).toContainText(
+      String(modern.length + 1),
+    );
     await expect(page.locator('.stats strong').nth(2)).toHaveText(
-      '9 countries',
+      `${modern.length + 1} countries`,
     );
     await page.getByRole('button', { name: 'World Map', exact: true }).click();
-    await expect(page.locator('.world circle')).toHaveCount(9);
+    await expect(page.locator('.world circle')).toHaveCount(modern.length + 1);
     for (const country of modern.map((entry) => entry.country)) {
       const row = page
         .locator('.countries')
@@ -209,7 +220,7 @@ for (const [start, end, theme] of [
     await draw(modern[0]);
     await draw(modern[0]);
     await expect(page.locator('.stats strong').nth(2)).toHaveText(
-      '9 countries',
+      `${modern.length + 1} countries`,
     );
     await expect(page.locator('.material-balance')).toHaveText('6 materials');
     await page.locator('[data-inventory=decorations]').click();
@@ -218,7 +229,10 @@ for (const [start, end, theme] of [
     await expect(page.locator('.material-balance')).toHaveText('0 materials');
     await page.locator(`[data-decor-place=${theme}-special]`).click();
     await page
-      .getByRole('button', { name: 'Cell 10: empty', exact: true })
+      .getByRole('button', {
+        name: `Cell ${modern.length + 2}: empty`,
+        exact: true,
+      })
       .click();
     await page.reload();
     await expect(
@@ -227,7 +241,7 @@ for (const [start, end, theme] of [
     const stored = await page.evaluate(() =>
       JSON.parse(localStorage.getItem('landmark-island-demo-v1')!),
     );
-    expect(stored.receipts).toHaveLength(11);
+    expect(stored.receipts).toHaveLength(modern.length + 3);
     expect(stored.receipts.slice(0, 1)).toEqual(save.receipts);
     expect(stored.placements).toContainEqual(save.placements[0]);
     for (const [i, entry] of modern.entries())

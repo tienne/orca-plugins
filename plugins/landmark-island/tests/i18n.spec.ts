@@ -1,3 +1,4 @@
+import { openTreasure } from './treasure-menu';
 import { test, expect, type Page } from '@playwright/test';
 import { empty } from '../src/game';
 
@@ -100,12 +101,14 @@ test('Korean browser fixture covers discovery, placement, decorations, dynamic w
     Math.random = () => (roll++ % 2 === 0 ? 0.8 : 0);
   });
   await page.goto('/?lang=ko-KR');
+  await openTreasure(page);
   await expect(
-    page.getByRole('button', { name: '탐험권 사용 · 발견하기' }),
+    page.getByRole('button', { name: '보물상자 1개 열기' }),
   ).toBeDisabled();
   await page.getByRole('button', { name: '데모 워크트리' }).click();
   await expect(page.getByRole('status')).toContainText('탐험권을 받았어요');
-  await page.getByRole('button', { name: '탐험권 사용 · 발견하기' }).click();
+  await openTreasure(page);
+  await page.getByRole('button', { name: '보물상자 1개 열기' }).click();
   await page.getByRole('button', { name: '연출 건너뛰기' }).click();
   await expect(page.locator('.discovery-result h2')).toHaveText('에펠탑');
   await expect(page.locator('.reveal-bonus')).toContainText('파리 등불 선물');
@@ -188,6 +191,7 @@ test('language changes keep a running reveal and backup confirmation intact and 
   });
   await page.goto('/?lang=ko');
   await page.locator('#expedition').click();
+  await openTreasure(page);
   await page.locator('#draw-ticket').click();
   const theatre = page.locator('.discovery-theatre');
   await expect(theatre).toBeVisible();

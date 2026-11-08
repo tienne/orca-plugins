@@ -4,7 +4,7 @@
 
 Status: internal allocation policy, revision 2, 2026-11-07. The user authorized a descending number of entries per tier. This revision supersedes draft 1's absolute-score tier bands. The 18/10/5/3 allocation is implemented in the source catalog; internal scores and reasons remain outside the player UI. This is an editorial prototype allocation using the latest conversational assessment, not a completed independent recognition or heritage study.
 
-Catalog update (2026-11-08): the allocation above describes the original 36 entries. The expanded catalog now has 67 entries at 35/22/7/3; the [latest expansion research record](landmark-expansion-67.md) distinguishes the latest editorial additions from a full rubric reassessment.
+Catalog update (2026-11-08): the allocation above describes the original 36 entries. The expanded catalog now has 100 entries at 56/32/9/3; the [latest expansion research record](landmark-expansion-100.md) distinguishes the latest editorial additions from a full rubric reassessment.
 
 ## Purpose and limits
 

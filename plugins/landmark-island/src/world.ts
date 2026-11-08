@@ -1,5 +1,8 @@
 /** Stable world addresses: the original 36 cells remain the central 6×6 plaza. */
-export const SIZE = 24;
+export const SIZE = 40;
+export const WORLD_OFFSET = 8;
+export const MAX_LAND_LEVEL = 100;
+const LEGACY_SIZE = 24;
 export const TILE_W = 80,
   TILE_H = 40;
 export const WORLD_W = SIZE * TILE_W + 160,
@@ -17,8 +20,8 @@ export type Tile = {
 const coordinates: [number, number][] = [];
 for (let row = 9; row < 15; row++)
   for (let col = 9; col < 15; col++) coordinates.push([col, row]);
-for (let row = 0; row < SIZE; row++)
-  for (let col = 0; col < SIZE; col++)
+for (let row = 0; row < LEGACY_SIZE; row++)
+  for (let col = 0; col < LEGACY_SIZE; col++)
     if (!(col >= 9 && col < 15 && row >= 9 && row < 15))
       coordinates.push([col, row]);
 export const tiles: Tile[] = coordinates.map(([col, row], id) => {
@@ -73,6 +76,44 @@ export const tiles: Tile[] = coordinates.map(([col, row], id) => {
           : null;
   return { id, col, row, land, height, kind, region, prop };
 });
+// Keep the original 576 addresses and every existing land tile intact.
+// New addresses are appended; former coastal water joins the outer gardens.
+const legacyLand = new Set(tiles.filter((t) => t.land).map((t) => t.id));
+function outerTile(col: number, row: number, id: number): Tile {
+  const edge = Math.hypot((col - 11.5) / 18.6, (row - 11.5) / 18.1);
+  const coast =
+    1 + Math.sin(col * 0.8 + row * 0.5) * 0.025 + Math.cos(row * 1.1) * 0.02;
+  const lake = Math.hypot(col - 17, row - 7) < 1.8;
+  const land = edge < coast && !lake;
+  const path = col === 11 || col === 12 || row === 12;
+  const kind = edge > 0.94 ? 'sand' : path ? 'path' : 'grass';
+  return {
+    id,
+    col,
+    row,
+    land,
+    height: edge > 0.94 ? 4 : 16,
+    kind,
+    region:
+      row < 0
+        ? 'Northern Orchard'
+        : col > 23
+          ? 'Sunrise Gardens'
+          : row > 23
+            ? 'Southern Wildflowers'
+            : 'Western Grove',
+    prop:
+      land && kind === 'grass' && Math.abs(col * 17 + row * 31) % 13 === 0
+        ? 'flowers'
+        : null,
+  };
+}
+for (const tile of tiles)
+  if (!tile.land) Object.assign(tile, outerTile(tile.col, tile.row, tile.id));
+for (let row = -WORLD_OFFSET; row < SIZE - WORLD_OFFSET; row++)
+  for (let col = -WORLD_OFFSET; col < SIZE - WORLD_OFFSET; col++)
+    if (col < 0 || row < 0 || col >= LEGACY_SIZE || row >= LEGACY_SIZE)
+      tiles.push(outerTile(col, row, tiles.length));
 export const landTiles = tiles.filter((t) => t.land);
 const byCoordinate = new Map(tiles.map((t) => [`${t.col},${t.row}`, t.id]));
 export const at = (col: number, row: number) =>
@@ -116,8 +157,9 @@ export function project(id: number) {
   const t = tiles[id];
   return {
     x: WORLD_W / 2 + ((t.col - t.row) * TILE_W) / 2,
-    y: 120 + ((t.col + t.row) * TILE_H) / 2 - t.height,
-    depth: (t.col + t.row) * 100 + t.col * 2,
+    y: 120 + ((t.col + t.row + WORLD_OFFSET * 2) * TILE_H) / 2 - t.height,
+    depth:
+      (t.col + t.row + WORLD_OFFSET * 2) * 100 + (t.col + WORLD_OFFSET) * 2,
   };
 }
 export const solidProps = new Set(
@@ -132,6 +174,15 @@ const expansionOrder = Array.from({ length: 36 }, (_, i) => i);
 const reached = new Set(expansionOrder);
 for (let i = 0; i < expansionOrder.length; i++) {
   for (const id of neighbours(expansionOrder[i])) {
+    if (legacyLand.has(id) && !reached.has(id)) {
+      reached.add(id);
+      expansionOrder.push(id);
+    }
+  }
+}
+const legacyCount = expansionOrder.length;
+for (let i = 0; i < expansionOrder.length; i++) {
+  for (const id of neighbours(expansionOrder[i])) {
     if (!reached.has(id)) {
       reached.add(id);
       expansionOrder.push(id);
@@ -141,7 +192,15 @@ for (let i = 0; i < expansionOrder.length; i++) {
 export const expansionLevel = new Map(
   expansionOrder.map((id, rank) => [
     id,
-    rank < 36 ? 0 : Math.ceil(((rank - 35) * 12) / (landTiles.length - 36)),
+    rank < 36
+      ? 0
+      : rank < legacyCount
+        ? Math.ceil(((rank - 35) * 12) / (legacyCount - 36))
+        : 12 +
+          Math.ceil(
+            ((rank - legacyCount + 1) * (MAX_LAND_LEVEL - 12)) /
+              (landTiles.length - legacyCount),
+          ),
   ]),
 );
 export function landAtLevel(level: number) {
