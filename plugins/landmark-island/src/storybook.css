@@ -1720,3 +1720,8 @@ dialog:modal {
   font-size: 11px;
   padding: 0 4px;
 }
+
+/* Keep the mode desk above the two-row walking pad. */
+.ocean[data-mode='walk'] .canvas-editor {
+  bottom: 136px;
+}

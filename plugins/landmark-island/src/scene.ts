@@ -28,6 +28,8 @@ export class IslandScene {
   private focusX = project(30).x;
   private focusY = project(30).y;
   private cleanup = () => {};
+  private climateTicks = 0;
+  private nextClimateAt = Date.now() + 30000;
   markup() {
     return `<div class="scene-controls"><div class="climate-controls"><label for="weather">Weather</label><select id="weather"><option value="auto" ${this.automatic ? 'selected' : ''}>Auto · island forecast</option>${weatherNames.map((w, i) => `<option value="${i}" ${!this.automatic && this.weather === i ? 'selected' : ''}>${w}</option>`).join('')}</select><button id="daylight" aria-label="Change time of day">${phases[this.phase]}</button></div></div>`;
   }
@@ -73,15 +75,14 @@ export class IslandScene {
         .map((p) => p.cell),
       ...state.placements.map((p) => p.cell),
     ]);
-    let stepTimer: ReturnType<typeof setTimeout> | undefined,
-      ticks = 0;
+    let stepTimer: ReturnType<typeof setTimeout> | undefined;
     let walking = false;
     let wheelTimer: ReturnType<typeof setTimeout> | undefined;
     if (this.cell < 0 || blocked.has(this.cell))
       this.cell = islandLand(state).find((t) => !blocked.has(t.id))?.id ?? -1;
-    const updateCamera = () => {
+    const updateCamera = (center = false) => {
       this.zoom = Math.max(0.12, Math.min(1.8, this.zoom));
-      if (this.follow && this.cell >= 0) {
+      if (this.follow && (this.mode === 'walk' || center) && this.cell >= 0) {
         const p = project(this.cell);
         this.focusX = p.x;
         this.focusY = p.y;
@@ -201,12 +202,12 @@ export class IslandScene {
       this.zoom = 1;
       this.x = this.y = 0;
       this.follow = true;
-      updateCamera();
+      updateCamera(true);
     };
     root.querySelector<HTMLButtonElement>('#follow-player')!.onclick = () => {
       this.follow = true;
       this.x = this.y = 0;
-      updateCamera();
+      updateCamera(true);
     };
     root.querySelector<HTMLButtonElement>('#overview')!.onclick = () => {
       this.follow = false;
@@ -529,13 +530,21 @@ export class IslandScene {
       },
       { passive: false, signal },
     );
-    const auto = setInterval(() => {
-      if (!this.automatic || document.hidden) return;
-      ticks++;
-      this.weather = (this.weather + 1) % 4;
-      if (ticks % 2 === 0) this.phase = (this.phase + 1) % 4;
-      climate();
-    }, 30000);
+    let auto: ReturnType<typeof setTimeout>;
+    const advanceClimate = () => {
+      this.nextClimateAt = Date.now() + 30000;
+      if (this.automatic && !document.hidden) {
+        this.climateTicks++;
+        this.weather = (this.weather + 1) % 4;
+        if (this.climateTicks % 2 === 0) this.phase = (this.phase + 1) % 4;
+        climate();
+      }
+      auto = setTimeout(advanceClimate, 30000);
+    };
+    auto = setTimeout(
+      advanceClimate,
+      Math.max(0, this.nextClimateAt - Date.now()),
+    );
     const visibility = () => {
       if (document.hidden) clearStroke();
       if (document.hidden && walking) {
@@ -544,13 +553,15 @@ export class IslandScene {
       }
     };
     document.addEventListener('visibilitychange', visibility, { signal });
-    const resize = new ResizeObserver(updateCamera);
+    const resize = new ResizeObserver(() => updateCamera());
     resize.observe(ocean);
     this.cleanup = () => {
       clearStroke();
+      finish();
+      camera.style.removeProperty('transition');
       controller.abort();
       clearTimeout(stepTimer);
-      clearInterval(auto);
+      clearTimeout(auto);
       clearTimeout(wheelTimer);
       resize.disconnect();
     };

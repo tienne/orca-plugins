@@ -2917,3 +2917,162 @@ test('floor tiles use explicit move menus and remain independent of objects abov
     page.locator('[data-world-cell="2"] [data-floor=path]'),
   ).toHaveCount(1);
 });
+
+test('placement saves keep the live island and ambient animations connected', async ({
+  page,
+}) => {
+  await page.goto('/?lang=en');
+  const save = validate({
+    version: 2,
+    tickets: ['eiffel', 'petra'].map((id) => ({
+      workspaceId: id,
+      at: '2026-11-08',
+    })),
+    receipts: ['eiffel', 'petra'].map((landmark) => ({
+      workspaceId: landmark,
+      landmark,
+      at: '2026-11-08',
+    })),
+    placements: [
+      { landmark: 'eiffel', cell: 0 },
+      { landmark: 'petra', cell: 35 },
+    ],
+  });
+  await page.evaluate(
+    (save) =>
+      localStorage.setItem('landmark-island-demo-v1', JSON.stringify(save)),
+    save,
+  );
+  await page.reload();
+  await page.getByRole('button', { name: 'Show whole island' }).click();
+  await page.evaluate(() => new Promise(requestAnimationFrame));
+  await page.evaluate(() => {
+    const selectors = [
+      '.ocean',
+      '.camera',
+      '.world-ground',
+      '.atmosphere',
+      '.cloud-one',
+      '.walker',
+      '[data-world-cell="35"] .building',
+      '[data-world-cell="20"]',
+    ];
+    const nodes = selectors.map((selector) =>
+      document.querySelector(selector)!,
+    );
+    const cloud = document.querySelector('.cloud-one')!.getAnimations()[0];
+    const state = {
+      selectors,
+      nodes,
+      cloud,
+      start: cloud.startTime,
+      transform: (document.querySelector('.camera') as HTMLElement).style
+        .transform,
+      detached: false,
+    };
+    (window as any).liveIsland = state;
+    new MutationObserver((records) => {
+      for (const record of records)
+        for (const removed of record.removedNodes)
+          if (nodes.some((node) => removed === node || removed.contains(node)))
+            state.detached = true;
+    }).observe(document.querySelector('#app')!, {
+      childList: true,
+      subtree: true,
+    });
+    (window as any).floorBuilding = document.querySelector(
+      '[data-world-cell="0"] .building',
+    );
+  });
+  await openInventory(page, 'decorations');
+  await page.locator('[data-decor-place=path]').click();
+  await page
+    .getByRole('button', { name: 'Cell 1: Eiffel Tower', exact: true })
+    .click();
+  await expect(
+    page.locator('[data-world-cell="0"] [data-floor=path]'),
+  ).toHaveCount(1);
+  expect(
+    await page.evaluate(
+      () =>
+        (window as any).floorBuilding ===
+        document.querySelector('[data-world-cell="0"] .building'),
+    ),
+  ).toBe(true);
+  await page.locator('[data-edit-layer=objects]').click();
+  await page
+    .getByRole('button', { name: 'Cell 1: Eiffel Tower', exact: true })
+    .click();
+  await page.locator('#move-piece').click();
+  await page
+    .getByRole('button', { name: 'Cell 4: empty', exact: true })
+    .click();
+  await expect(page.locator('[data-world-cell="3"] .building')).toHaveCount(1);
+  await page.locator('#undo-layout').click();
+  await expect(page.locator('[data-world-cell="0"] .building')).toHaveCount(1);
+  expect(
+    await page.evaluate(() => {
+      const state = (window as any).liveIsland;
+      return {
+        connected: state.nodes.every(
+          (node: Node, i: number) =>
+            node.isConnected &&
+            node === document.querySelector(state.selectors[i]),
+        ),
+        detached: state.detached,
+        sameAnimation:
+          document.querySelector('.cloud-one')!.getAnimations()[0] ===
+            state.cloud && state.cloud.startTime === state.start,
+        sameCamera:
+          (document.querySelector('.camera') as HTMLElement).style.transform ===
+          state.transform,
+      };
+    }),
+  ).toEqual({
+    connected: true,
+    detached: false,
+    sameAnimation: true,
+    sameCamera: true,
+  });
+});
+
+test('editing does not restart the automatic weather countdown', async ({
+  page,
+}) => {
+  await page.clock.install();
+  await page.goto('/?lang=en');
+  await page.clock.fastForward(20000);
+  await openInventory(page, 'decorations');
+  await page.locator('[data-decor-place=path]').click();
+  await page
+    .getByRole('button', { name: 'Cell 1: empty', exact: true })
+    .click();
+  await page.clock.fastForward(11000);
+  await expect(page.locator('.ocean')).toHaveAttribute(
+    'data-weather',
+    'cloudy',
+  );
+});
+
+test('placing on the explorer does not recenter an editing camera', async ({
+  page,
+}) => {
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await page.goto('/?lang=en');
+  const camera = page.locator('.camera');
+  const before = await camera.getAttribute('style');
+  await openInventory(page, 'decorations');
+  await page.locator('[data-decor-place=oak]').click();
+  await page
+    .getByRole('button', { name: 'Cell 31: empty', exact: true })
+    .click();
+  await expect(
+    page.locator('[data-world-cell="30"] [data-decoration=oak]'),
+  ).toHaveCount(1);
+  await expect(page.locator('.walker')).not.toHaveAttribute('data-cell', '30');
+  await expect(camera).toHaveAttribute('style', before!);
+  await page
+    .getByRole('button', { name: 'Follow explorer', exact: true })
+    .click();
+  await expect(camera).not.toHaveAttribute('style', before!);
+});

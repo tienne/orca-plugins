@@ -30,6 +30,8 @@ Schema v1/v2/v3 saves are validated and read as v4. Existing grass/path decorati
 
 The 126-decoration catalog includes four focal garden pieces: **Moonlit koi pond** (Mount Fuji, 9 materials), **Marble garden pavilion** (Taj Mahal, 12), **Rose-covered archway** (Eiffel Tower, 9), and **Fern sanctuary** (Angkor Wat, 6). Own the corresponding landmark to unlock its workshop theme, then craft the piece from duplicate materials. Each occupies one cell, blocks walking, and can be moved or returned to inventory. These pieces have fixed orientation and static original vector artwork. Their crafting and placement records are included in file backups; builds predating these items cannot restore backups containing them.
 
+Placement edits preserve the live island, camera and ambient animation elements. Only changed floors and objects are replaced; unchanged landmarks continue their animations. Editing keeps the current camera framing even if an obstacle requires the explorer to move to another free tile. Returning to exploration resumes camera following. Saves and menu changes do not restart the automatic weather countdown.
+
 ## Language
 
 The plugin follows Orca's public `orca.locale` setting. Korean and English are supported; missing, malformed or other languages fall back to English. The plugin checks for changes every 500 ms and when the frame regains focus or visibility because the installed host API documents no locale-change event.
