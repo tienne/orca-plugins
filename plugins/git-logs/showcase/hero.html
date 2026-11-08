@@ -58,14 +58,12 @@
         width: 92px;
         height: 92px;
         border-radius: 22px;
-        background: #17263c;
-        display: grid;
-        place-items: center;
         box-shadow: 0 10px 24px rgba(23, 38, 60, 0.22);
       }
       .icon svg {
-        width: 58px;
-        height: 58px;
+        display: block;
+        width: 92px;
+        height: 92px;
       }
       h1 {
         margin: 36px 0 0;
@@ -119,26 +117,7 @@
   <body>
     <div class="eyebrow">Git history in Orca</div>
     <div class="copy">
-      <div class="icon">
-        <svg
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-        >
-          <rect
-            x="2"
-            y="3"
-            width="20"
-            height="18"
-            rx="2"
-            stroke="#719EEA"
-            stroke-width="1.8"
-          />
-          <path d="M12 3v18M5 12h4" stroke="#719EEA" stroke-width="1.8" />
-          <path d="M15 12h4m-2-2v4" stroke="#42B8A2" stroke-width="1.8" />
-        </svg>
-      </div>
+      <div class="icon">{{ICON}}</div>
       <h1>Git Logs</h1>
       <p class="tagline">Your whole history,<br />one panel away.</p>
       <ul>
