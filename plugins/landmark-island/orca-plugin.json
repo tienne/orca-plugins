@@ -9,6 +9,20 @@
   "pluginApi": 1,
   "main": "worker.js",
   "license": "MIT",
+  "author": { "name": "tienne", "url": "https://github.com/tienne" },
+  "repository": "https://github.com/tienne/orca-plugins",
+  "icon": "assets/orcatopia-icon.png",
+  "cover": {
+    "path": "assets/orcatopia-introduction.png",
+    "alt": "Orcatopia — A little escape between tasks, with a DEMO garden screen"
+  },
+  "screenshots": [
+    {
+      "path": "assets/orcatopia-island.png",
+      "alt": "English DEMO of an expanded island with landmark gardens, paths, ponds and canvas menus",
+      "caption": "A fully expanded garden using game assets and sample progress. Browser demo, not a live Orca save."
+    }
+  ],
   "capabilities": [{ "kind": "workspace:read" }, { "kind": "storage:own" }],
   "contributes": {
     "events": [{ "on": "workspace.created" }],

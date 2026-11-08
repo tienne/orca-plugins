@@ -56,6 +56,10 @@ if (plugin === 'git-logs')
 
 if (plugin === 'landmark-island') {
   await copyFile(
+    resolve(source, 'licenses/weather.txt'),
+    resolve(output, 'licenses/weather.txt'),
+  );
+  await copyFile(
     resolve(source, 'licenses/geography.txt'),
     resolve(output, 'licenses/geography.txt'),
   );
@@ -64,6 +68,8 @@ if (plugin === 'landmark-island') {
   for (const name of [
     'orcatopia-introduction.png',
     'orcatopia-introduction.ko.png',
+    'orcatopia-icon.png',
+    'orcatopia-island.png',
   ])
     await copyFile(
       resolve(source, 'assets', name),

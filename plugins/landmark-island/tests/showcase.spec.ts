@@ -1,4 +1,5 @@
 import { introductionHtml } from './introduction';
+import { writeFile } from 'node:fs/promises';
 import { test, expect } from '@playwright/test';
 import { empty, validate, islandLand } from '../src/game';
 import { decorationById, DUPLICATE_MATERIALS } from '../src/decorations';
@@ -252,6 +253,8 @@ test('Orcatopia showcase keeps legacy storage and shows an English fixture islan
   await page.setViewportSize({ width: 1280, height: 1100 });
   await page.emulateMedia({ reducedMotion: 'reduce' });
   await page.goto('/?lang=en');
+  await page.locator('#daylight').selectOption('0');
+  await page.locator('#weather').selectOption('0');
   await expect(page).toHaveTitle('Orcatopia');
   await expect(
     page.getByRole('heading', { name: 'Orcatopia', exact: true }),
@@ -274,6 +277,8 @@ test('Orcatopia showcase keeps legacy storage and shows an English fixture islan
   for (const locale of ['en', 'ko'] as const) {
     if (locale === 'ko') {
       await page.goto('/?lang=ko');
+      await page.locator('#daylight').selectOption('0');
+      await page.locator('#weather').selectOption('0');
       await page.locator('#overview').click();
     }
     // Capture a closer garden view using the game's camera controls.
@@ -290,5 +295,84 @@ test('Orcatopia showcase keeps legacy storage and shows an English fixture islan
       path: `test-results/landmark-island/orcatopia-introduction${locale === 'ko' ? '.ko' : ''}.png`,
     });
   }
+  // Render the existing vector emblem at the directory's square icon size.
+  await cover.locator('.mark').evaluate((mark: SVGElement) => {
+    mark.style.width = '256px';
+    mark.style.height = '256px';
+  });
+  await cover.locator('.mark').screenshot({
+    path: 'test-results/landmark-island/orcatopia-icon.png',
+  });
   await cover.close();
+  if (process.env.ORCATOPIA_PROFILE === '1') {
+    test.setTimeout(180_000);
+    await page.bringToFront();
+    expect(await page.evaluate(() => document.visibilityState)).toBe('visible');
+    await page.emulateMedia({ reducedMotion: 'no-preference' });
+    const runningAnimations = () =>
+      page.evaluate(
+        () =>
+          document
+            .getAnimations()
+            .filter((animation) => animation.playState === 'running').length,
+      );
+    expect(await runningAnimations()).toBeGreaterThan(0);
+    const client = await page.context().newCDPSession(page);
+    await client.send('Performance.enable');
+    const measure = async () => {
+      const { metrics } = await client.send('Performance.getMetrics');
+      return Object.fromEntries(
+        metrics.map(({ name, value }) => [name, value]),
+      );
+    };
+    await client.send('HeapProfiler.collectGarbage');
+    const initial = await measure();
+    const samples = [];
+    let previous = initial;
+    for (const mode of ['animated', 'animated', 'animated', 'reduced-motion']) {
+      if (mode === 'reduced-motion')
+        await page.emulateMedia({ reducedMotion: 'reduce' });
+      await page.waitForTimeout(30_000);
+      const current = await measure();
+      samples.push({
+        mode,
+        seconds: current.Timestamp - previous.Timestamp,
+        mainThreadBusyPercent:
+          (100 * (current.TaskDuration - previous.TaskDuration)) /
+          (current.Timestamp - previous.Timestamp),
+        heapBytes: current.JSHeapUsedSize,
+        domNodes: current.Nodes,
+        runningAnimations: await runningAnimations(),
+      });
+      previous = current;
+    }
+    await client.send('HeapProfiler.collectGarbage');
+    const final = await measure();
+    await expect(page.locator('.cell.occupied')).toHaveCount(
+      save.placements.length + save.decorations.length,
+    );
+    expect(
+      await page.evaluate(() =>
+        JSON.parse(localStorage.getItem('landmark-island-demo-v1')!),
+      ),
+    ).toEqual(save);
+    await writeFile(
+      'test-results/landmark-island/idle-profile.json',
+      JSON.stringify(
+        {
+          environment:
+            'Headless Chromium browser fixture; renderer main thread only, excludes GPU/Orca and real weather',
+          landTiles: land.length,
+          landmarks: save.placements.length,
+          decorations: save.decorations.length,
+          initialHeapBytesAfterGC: initial.JSHeapUsedSize,
+          finalHeapBytesAfterGC: final.JSHeapUsedSize,
+          samples,
+        },
+        null,
+        2,
+      ) + '\n',
+    );
+    await client.detach();
+  }
 });

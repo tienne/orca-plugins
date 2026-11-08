@@ -54,6 +54,8 @@ cp test-results/landmark-island/orcatopia-island-demo.png docs/screenshots/orcat
 pnpm nx run landmark-island:ui-test --grep='Orcatopia showcase'
 cp test-results/landmark-island/orcatopia-introduction.png plugins/landmark-island/assets/orcatopia-introduction.png
 cp test-results/landmark-island/orcatopia-introduction.ko.png plugins/landmark-island/assets/orcatopia-introduction.ko.png
+cp test-results/landmark-island/orcatopia-icon.png plugins/landmark-island/assets/orcatopia-icon.png
+cp test-results/landmark-island/orcatopia-island-demo.png plugins/landmark-island/assets/orcatopia-island.png
 cp test-results/landmark-island/orcatopia-island-demo.png docs/screenshots/orcatopia-island.png
 pnpm nx run landmark-island:build
 pnpm validate
@@ -69,3 +71,5 @@ pnpm validate
 pnpm nx run landmark-island:ui-test --grep='material artwork'
 cp test-results/landmark-island/modern-landmarks-59-demo.png docs/screenshots/orcatopia-modern-countries.png
 ```
+
+manifest는 영문 소개를 커버, 같은 벡터 문양에서 렌더링한 256 × 256 PNG를 아이콘, 전체 영문 DEMO 정원을 스크린샷으로 사용합니다. 촬영 시 맑은 낮을 명시적으로 선택해 기기 시각에 따라 출시 이미지가 바뀌지 않습니다. 한국어·영어 소개를 모두 동봉하며 이미지 크기와 파일 용량은 설치된 Orca 검증기로 확인합니다.

@@ -124,7 +124,7 @@ References: [Orca authoring](https://github.com/stablyai/orca/blob/main/docs/ref
 
 **Release Orca Plugin** now has a `plugin` selector. Its default remains `git-logs`; select `landmark-island` for Orcatopia. CI checks and uploads both plugins separately. Promotion validates the selected plugin against an allowlist, uses the artifact from the same source SHA and runs release integration tests. Both plugins share the release concurrency group and branch. Preview remains the default; this change does not configure the runner, environments or repository permissions.
 
-Orcatopia keeps internal ID `landmark-island`, initially at `0.1.0`. Its catalog identity is `tienne.landmark-island`, source tag is `landmark-island/v0.1.0`, and package path is `plugins/landmark-island`. Candidate preparation preserves Git Logs files, catalog history and provenance. Do not use the generic `vX.Y.Z` public-directory tags reserved for Git Logs. A separate public-directory listing for Orcatopia is not prepared.
+Orcatopia keeps internal ID `landmark-island`, initially at `0.1.0`. Its catalog identity is `tienne.landmark-island`, source tag is `landmark-island/v0.1.0`, and package path is `plugins/landmark-island`. Candidate preparation preserves Git Logs files, catalog history and provenance. Do not use the generic `vX.Y.Z` public-directory tags reserved for Git Logs. The first release is prepared for this custom catalog. A separate public-directory listing must use a separate repository with the package at its root; no repository has been created. See the [Orcatopia release checklist](orcatopia-release.md).
 
 After committing and building, refresh the local release base with `git fetch --no-tags origin refs/heads/release:refs/remotes/origin/release`. Then prepare locally:
 
@@ -141,7 +141,7 @@ Use a new report filename on every attempt. Preparation writes a candidate in a 
 
 Before publication, finish native panel clicking, full Orca restart persistence, and clean installation/update checks in an isolated profile or with an exported backup. The development identity `local.landmark-island` and catalog identity `tienne.landmark-island` need separate execution approval and save transfer through the existing backup UI. Do not assume approval or storage transfers automatically. These checks remain pending; changing the display name alone preserves the development identity.
 
-The [English plugin guide](../plugins/landmark-island/README.md) records gameplay and limitations. The [demo images](screenshots/README.md) are browser fixtures, not host verification. Release notes for 0.1.0: worktree-earned tickets, 36 collectible landmarks in four tiers, an expanding island, decoration crafting, a canvas treasure reveal, Korean/English UI, and local backup/restore. No cloud account, telemetry or purchases are included.
+The [English plugin guide](../plugins/landmark-island/README.md) records gameplay and limitations. The [demo images](screenshots/README.md) are browser fixtures, not host verification. Release notes for 0.1.0: worktree-earned tickets; 67 landmarks across 64 catalog countries in four tiers; 142 decorations; a 318-tile expanding island; canvas placement and bilingual inventory search; single/ten-ticket discovery with a skip checkbox; device daylight and hourly timezone weather; Korean/English UI; and local backup/restore. No cloud account, telemetry or purchases are included.
 
 ### Local preparation checks (2026-11-07)
 

@@ -124,7 +124,7 @@ ORCA_RELEASE_INTEGRATION=1 ORCA_CLI_COMMAND=orca pnpm nx run git-logs:release-te
 
 **Release Orca Plugin**에 `plugin` 선택 항목을 추가했습니다. 기본값은 기존 `git-logs`이며 Orcatopia는 `landmark-island`를 선택합니다. CI는 두 플러그인을 각각 검사하고 업로드합니다. 배포 작업은 허용된 플러그인인지 확인하고 같은 소스 SHA의 산출물을 사용하며 실제 Orca CLI 통합 테스트를 실행합니다. 두 플러그인은 같은 릴리스 동시 실행 그룹과 브랜치를 공유합니다. 기본 동작은 미리보기이며 러너·환경 보호·저장소 권한을 자동 설정하지 않습니다.
 
-Orcatopia의 내부 ID는 `landmark-island`, 최초 버전은 `0.1.0`입니다. 카탈로그 정체성은 `tienne.landmark-island`, 소스 태그는 `landmark-island/v0.1.0`, 패키지 경로는 `plugins/landmark-island`입니다. 후보 준비는 Git Logs 파일·카탈로그 이력·출처 정보를 보존합니다. Git Logs 공개 디렉터리에 예약된 일반 `vX.Y.Z` 태그를 사용하지 마세요. Orcatopia의 별도 공개 디렉터리 등록은 아직 준비하지 않았습니다.
+Orcatopia의 내부 ID는 `landmark-island`, 최초 버전은 `0.1.0`입니다. 카탈로그 정체성은 `tienne.landmark-island`, 소스 태그는 `landmark-island/v0.1.0`, 패키지 경로는 `plugins/landmark-island`입니다. 후보 준비는 Git Logs 파일·카탈로그 이력·출처 정보를 보존합니다. Git Logs 공개 디렉터리에 예약된 일반 `vX.Y.Z` 태그를 사용하지 마세요. 첫 출시는 이 사용자 카탈로그 기준으로 준비합니다. 별도 공개 디렉터리 등록에는 패키지가 루트에 있는 별도 저장소를 사용해야 하며, 저장소는 생성하지 않았습니다. [Orcatopia 출시 점검표](orcatopia-release.ko.md)를 참고하세요.
 
 커밋과 빌드 후 `git fetch --no-tags origin refs/heads/release:refs/remotes/origin/release`로 로컬 릴리스 기준을 갱신하고 다음과 같이 후보를 만듭니다.
 
@@ -141,7 +141,7 @@ pnpm nx run landmark-island:release-prepare
 
 게시 전에 실제 패널 클릭, Orca 전체 재시작 후 저장 유지, 신규 설치·업데이트를 격리 프로필이나 내보낸 백업을 준비한 환경에서 확인해야 합니다. 개발 정체성 `local.landmark-island`와 카탈로그 정체성 `tienne.landmark-island`는 실행 승인이 각각 필요하며 기존 백업 UI로 저장을 옮깁니다. 승인과 저장 공간이 자동 승계된다고 가정하지 마세요. 이 검증은 아직 미완료이며 표시 이름만 바꾸는 것은 개발 정체성을 유지합니다.
 
-게임 기능과 제한은 [한국어 플러그인 안내](../plugins/landmark-island/README.ko.md), 브라우저 fixture 이미지는 [데모 이미지 안내](screenshots/README.ko.md)에 기록합니다. 이미지는 실제 호스트 검증 증거가 아닙니다. 0.1.0 릴리스 노트: 워크트리로 얻는 탐험권, 4개 등급의 랜드마크 36종, 확장되는 섬, 장식 제작, 캔버스 보물상자 연출, 한국어·영어 UI와 로컬 백업·복원. 클라우드 계정·행동 분석·구매 기능은 포함하지 않습니다.
+게임 기능과 제한은 [한국어 플러그인 안내](../plugins/landmark-island/README.ko.md), 브라우저 fixture 이미지는 [데모 이미지 안내](screenshots/README.ko.md)에 기록합니다. 이미지는 실제 호스트 검증 증거가 아닙니다. 0.1.0 릴리스 노트: 워크트리로 얻는 탐험권, 64개 국가 분류의 랜드마크 67종과 4개 등급, 장식 142종, 최대 318칸 섬, 캔버스 배치와 두 언어 목록 검색, 단일·10개 뽑기와 연출 건너뛰기 체크박스, 기기 낮과 밤·시간별 타임존 날씨, 한국어·영어 UI와 로컬 백업·복원. 클라우드 계정·행동 분석·구매 기능은 포함하지 않습니다.
 
 ### 로컬 준비 검증 (2026-11-07)
 

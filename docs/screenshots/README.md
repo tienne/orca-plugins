@@ -54,6 +54,8 @@ The reproducible layout is `plugins/landmark-island/tests/introduction.ts`; the 
 pnpm nx run landmark-island:ui-test --grep='Orcatopia showcase'
 cp test-results/landmark-island/orcatopia-introduction.png plugins/landmark-island/assets/orcatopia-introduction.png
 cp test-results/landmark-island/orcatopia-introduction.ko.png plugins/landmark-island/assets/orcatopia-introduction.ko.png
+cp test-results/landmark-island/orcatopia-icon.png plugins/landmark-island/assets/orcatopia-icon.png
+cp test-results/landmark-island/orcatopia-island-demo.png plugins/landmark-island/assets/orcatopia-island.png
 cp test-results/landmark-island/orcatopia-island-demo.png docs/screenshots/orcatopia-island.png
 pnpm nx run landmark-island:build
 pnpm validate
@@ -69,3 +71,5 @@ These are local introduction assets; creating them does not publish a marketplac
 pnpm nx run landmark-island:ui-test --grep='material artwork'
 cp test-results/landmark-island/modern-landmarks-59-demo.png docs/screenshots/orcatopia-modern-countries.png
 ```
+
+The manifest now uses the English introduction as its cover, the 256 × 256 PNG rendered from the same vector emblem as its icon, and the full English DEMO garden as its screenshot. Captures explicitly select sunny daytime, so device time does not change release artwork. Both introduction languages remain bundled. All image dimensions and file sizes are checked by the installed Orca validator.
