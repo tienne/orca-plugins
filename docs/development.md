@@ -4,7 +4,7 @@ English · [한국어](development.ko.md)
 
 This guide records the host integration, Git behavior, and release requirements for Git Logs. For everyday use, read the [plugin guide](../plugins/git-logs/README.md). Commands below run from the repository root.
 
-The source tree contains read-only additions planned for 0.2.0: tag badges, log filters, infinite scroll over paged history, two-commit comparison, file history, and keyboard navigation. The manifest version is 0.2.0, which is not yet tagged or published. The additions do not change `prepare`/`execute`, `operations.ts`, or the manifest's capabilities, minimum Orca version, or execution profile.
+Git Logs 0.2.0 added read-only features: tag badges, log filters, infinite scroll over paged history, two-commit comparison, file history, and keyboard navigation. Version 0.2.0 was released on 2026-11-08, and 0.2.1 only corrects documentation wording. The additions do not change `prepare`/`execute`, `operations.ts`, or the manifest's capabilities, minimum Orca version, or execution profile.
 
 ## Build and verify
 
@@ -101,7 +101,7 @@ Text diffs support UTF-8 files up to 768 KiB and at most 2,000 changed files. Ad
 
 Shallow repositories expose only local history. Partial clones are rejected to avoid implicit object fetching. There is no fetch, SSH access, remote file access, or Git LFS download.
 
-### Log filters and paging (0.2.0, unreleased)
+### Log filters and paging (since 0.2.0)
 
 The `log` request takes `repo`, `all`, `branchRef`, an optional `filter`, and an optional `cursor`. The response adds `nextCursor` and `hasMore` to the existing fields. `filter` is `{ text, author, since, until, path, follow }`, each field optional. The UI sends it after a 300 ms pause and sends only well-formed dates. While an input method such as Korean is composing a character, it waits 600 ms instead and sends the value as composed so far.
 
@@ -127,7 +127,7 @@ A `log` request that reads the first page (including filter changes and refreshe
 
 The list carries only commit subjects. `commitMessage` takes `repo` and a full `commit` hash and returns `{ message }` from `git show -s --format=%B`. The UI requests it when a commit is selected and shows the subject first. A failed request leaves the subject in place with an error note and the cause of the failure, and a late response for an earlier selection is discarded.
 
-### Two-commit comparison (0.2.0, unreleased)
+### Two-commit comparison (since 0.2.0)
 
 A `range` comparison is `{ kind: 'range', base, target, mergeBase? }`. `base` and `target` must be full commit hashes; an abbreviated hash or a ref name is rejected with the same error as other comparisons. By default the left side is `base`. With `mergeBase: true`, the worker runs `git merge-base base target` and uses its result as the left side; no result fails with a no-common-ancestor error. The same-commit check runs after that replacement, so it also fires when `target` is an ancestor of `base` with `mergeBase: true`. The file list comes from `git diff --no-ext-diff --no-textconv -M --name-status -z <left> <target> --`. The response normalizes `mergeBase` to a boolean and reports the resolved left hash as `left` and the target as `right`. A per-file `diff` request recomputes the change set, so its left side follows the same rule.
 

@@ -4,7 +4,7 @@
 
 Git Logs의 호스트 연결 방식, Git 동작, 배포 조건을 정리한 문서입니다. 사용법은 [플러그인 안내](../plugins/git-logs/README.ko.md)를 참고하십시오. 명령은 저장소 루트에서 실행합니다.
 
-이 소스에는 0.2.0용 읽기 전용 기능이 들어 있습니다. 태그 뱃지, 로그 필터, 이력을 나눠 불러오는 무한 스크롤, 두 커밋 비교, 파일 히스토리, 키보드 이동입니다. manifest 버전은 0.2.0이며 아직 태그를 붙이거나 공개하지 않았습니다. 이 기능은 `prepare`/`execute`, `operations.ts`, manifest의 capabilities, 최소 Orca 버전, 실행 프로필을 바꾸지 않습니다.
+Git Logs 0.2.0부터 읽기 전용 기능이 추가됐습니다. 태그 뱃지, 로그 필터, 이력을 나눠 불러오는 무한 스크롤, 두 커밋 비교, 파일 히스토리, 키보드 이동입니다. 0.2.0은 2026-11-08에 릴리스했고 0.2.1은 문서 표현만 바로잡았습니다. 이 기능은 `prepare`/`execute`, `operations.ts`, manifest의 capabilities, 최소 Orca 버전, 실행 프로필을 바꾸지 않습니다.
 
 ## 빌드와 검증
 
@@ -101,7 +101,7 @@ Worker는 `workspace.created`, `workspace.changed`를 구독합니다. 생성 �
 
 Shallow 저장소는 로컬 이력만 보여 줍니다. Partial clone은 자동 객체 fetch를 피하기 위해 거절합니다. Fetch, SSH 접근, 원격 파일 접근, Git LFS 다운로드는 없습니다.
 
-### 로그 필터와 페이지 (0.2.0, 미공개)
+### 로그 필터와 페이지 (0.2.0부터)
 
 `log` 요청은 `repo`, `all`, `branchRef`, 선택 필드인 `filter`와 `cursor`를 받습니다. 응답에는 기존 필드에 `nextCursor`와 `hasMore`가 추가됩니다. `filter`는 `{ text, author, since, until, path, follow }`이며 모든 필드가 선택입니다. UI는 입력을 300ms 멈춘 뒤 요청하고 형식이 맞는 날짜만 보냅니다. 한글처럼 입력기가 글자를 조합하는 중에는 600ms를 기다린 뒤 그때까지 조합된 값으로 요청합니다.
 
@@ -127,7 +127,7 @@ Shallow 저장소는 로컬 이력만 보여 줍니다. Partial clone은 자동 
 
 목록은 커밋 제목만 싣습니다. `commitMessage`는 `repo`와 전체 `commit` 해시를 받아 `git show -s --format=%B`의 결과를 `{ message }`로 돌려줍니다. UI는 커밋을 선택할 때 요청하며 제목을 먼저 보여 줍니다. 요청이 실패하면 제목은 유지하고 실패 안내와 오류 원인을 표시하며 앞서 선택했던 커밋의 늦은 응답은 버립니다.
 
-### 두 커밋 비교 (0.2.0, 미공개)
+### 두 커밋 비교 (0.2.0부터)
 
 `range` 비교는 `{ kind: 'range', base, target, mergeBase? }`입니다. `base`와 `target`은 전체 커밋 해시여야 하며 줄인 해시나 ref 이름은 다른 비교와 같은 오류로 거절합니다. 기본 왼쪽은 `base`입니다. `mergeBase: true`이면 worker가 `git merge-base base target`을 실행해 그 결과를 왼쪽으로 쓰고 결과가 없으면 공통 조상 없음 오류로 실패합니다. 같은 커밋 검사는 이 대체 뒤에 실행하므로 `mergeBase: true`에서 `target`이 `base`의 조상일 때도 같은 오류가 납니다. 파일 목록은 `git diff --no-ext-diff --no-textconv -M --name-status -z <left> <target> --`로 만듭니다. 응답은 `mergeBase`를 boolean으로 정규화하고 확정한 왼쪽 해시를 `left`, target을 `right`로 돌려줍니다. 파일별 `diff` 요청도 변경 목록을 다시 계산하므로 같은 규칙으로 왼쪽이 정해집니다.
 
