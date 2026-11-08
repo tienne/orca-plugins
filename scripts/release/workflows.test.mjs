@@ -26,7 +26,7 @@ test('CI uses hosted runners for pull requests and runs all required Nx checks',
   assert.ok(commands.includes('playwright install --with-deps chromium'));
 });
 
-test('release defaults to read-only preview and gates the self-hosted runner on trusted manual main runs', async () => {
+test('release defaults to read-only preview and gates hosted promotion on trusted manual main runs', async () => {
   const release = await load('release'),
     promote = await load('promote');
   assert.deepEqual(Object.keys(release.on), ['workflow_dispatch']);
@@ -35,7 +35,7 @@ test('release defaults to read-only preview and gates the self-hosted runner on 
   assert.equal(release.jobs.publish.permissions.contents, 'write');
   assert.equal(release.concurrency['cancel-in-progress'], false);
   const job = promote.jobs.promote;
-  assert.deepEqual(job['runs-on'], ['self-hosted', 'macOS', 'orca-release']);
+  assert.equal(job['runs-on'], 'macos-15');
   for (const guard of [
     'workflow_dispatch',
     'refs/heads/main',
@@ -66,6 +66,43 @@ test('external actions are pinned to commit hashes', async () => {
   }
 });
 
+test('configuration preflight precedes builds and protected promotion, with hash checked at publish', async () => {
+  const release = await load('release');
+  const promote = await load('promote');
+  assert.equal(release.jobs.preflight['runs-on'], 'ubuntu-latest');
+  assert.equal(release.jobs.preflight.permissions.actions, 'read');
+  assert.equal(release.jobs.preflight.permissions.contents, 'read');
+  assert.equal(release.jobs.checks.needs, 'preflight');
+  for (const name of ['preview', 'publish']) {
+    assert.equal(release.jobs[name].needs, 'checks');
+    assert.equal(release.jobs[name].permissions.actions, 'read');
+  }
+  assert.equal(release.on.workflow_dispatch.inputs.expected_hash.default, '');
+  assert.equal(
+    release.jobs.publish.with.expected_hash,
+    '${{ inputs.expected_hash }}',
+  );
+  assert.equal(
+    promote.jobs.promote.env.RELEASE_EXPECTED_HASH,
+    '${{ inputs.expected_hash }}',
+  );
+  assert.equal(
+    promote.jobs.promote.environment,
+    "${{ inputs.publish && 'production' || 'release-preview' }}",
+  );
+  const steps = promote.jobs.promote.steps;
+  const recheck = steps.findIndex(
+    (s) => s.name === 'Recheck release configuration',
+  );
+  const publish = steps.findIndex(
+    (s) => s.name === 'Publish branch and source tag',
+  );
+  assert.ok(recheck >= 0 && recheck < publish);
+  assert.ok(steps[recheck].run.includes(':release-preflight'));
+  for (const step of release.jobs.preflight.steps)
+    assert.ok(!step.run?.includes('${{ inputs.'));
+});
+
 test('both plugins are checked and selectable, with Git Logs still the release default', async () => {
   const checks = await load('checks');
   const commands = checks.jobs.check.steps
@@ -92,4 +129,29 @@ test('both plugins are checked and selectable, with Git Logs still the release d
       step.run?.includes("['git-logs', 'landmark-island'].includes(plugin)"),
     ),
   );
+});
+
+test('promotion installs the pinned CLI before validation without launching the app', async () => {
+  const {
+    jobs: { promote: job },
+  } = await load('promote');
+  const setup = job.steps.findIndex(
+    (step) => step.name === 'Prepare pinned Orca CLI',
+  );
+  const validate = job.steps.findIndex(
+    (step) => step.name === 'Verify Orca CLI and run release integration tests',
+  );
+  assert.ok(setup >= 0 && setup < validate);
+  assert.equal(job.env.ORCA_CLI_COMMAND, undefined);
+  assert.ok(job.steps[validate].run.includes('"$ORCA_CLI_COMMAND" --version'));
+  const script = await readFile('scripts/release/setup-orca-macos.sh', 'utf8');
+  assert.ok(
+    script.indexOf('shasum -a 256 --check') < script.indexOf('ditto -x -k'),
+  );
+  assert.match(script, /orca_version='1\.4\.252'/);
+  assert.match(script, /orca_sha256='[a-f0-9]{64}'/);
+  assert.ok(script.includes('actual_version'));
+  assert.ok(script.includes('>> "$GITHUB_ENV"'));
+  assert.ok(!script.includes('open -a'));
+  assert.ok(!script.includes('plugin enable'));
 });

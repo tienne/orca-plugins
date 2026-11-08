@@ -13,6 +13,10 @@ on:
         description: 'Stable version already committed to main (for example 0.1.0)'
         required: true
         type: string
+      expected_hash:
+        description: 'Content hash from the reviewed preview (required for publish)'
+        type: string
+        default: ''
       publish:
         description: 'Push the release branch and source tag after validation'
         type: boolean
@@ -26,7 +30,34 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  preflight:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: read
+      actions: read
+    env:
+      ORCA_RELEASE_ENABLED: ${{ vars.ORCA_RELEASE_ENABLED }}
+      RELEASE_VERSION: ${{ inputs.version }}
+      RELEASE_EXPECTED_HASH: ${{ inputs.expected_hash }}
+      RELEASE_PLUGIN: ${{ inputs.plugin }}
+      RELEASE_MODE: ${{ inputs.publish && 'publish' || 'preview' }}
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+      - uses: pnpm/action-setup@f40ffcd9367d9f12939873eb1018b921a783ffaa # v4
+      - uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
+        with:
+          node-version: 24
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - name: Check release configuration
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          case "$RELEASE_PLUGIN" in git-logs|landmark-island) ;; *) exit 1 ;; esac
+          pnpm nx run "$RELEASE_PLUGIN:release-preflight" --mode="$RELEASE_MODE" --workflow
   checks:
+    needs: preflight
     if: github.ref == 'refs/heads/main'
     uses: ./.github/workflows/checks.yml
     permissions:
@@ -44,6 +75,7 @@ jobs:
       publish: false
     permissions:
       contents: read
+      actions: read
   publish:
     needs: checks
     if: >-
@@ -55,5 +87,7 @@ jobs:
       plugin: ${{ inputs.plugin }}
       version: ${{ inputs.version }}
       publish: true
+      expected_hash: ${{ inputs.expected_hash }}
     permissions:
       contents: write
+      actions: read

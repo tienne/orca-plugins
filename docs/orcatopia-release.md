@@ -82,10 +82,32 @@ previews, failed writes and retries; they do not replace this host verification.
 
 ## CI and candidate checks
 
-Read-only GitHub audit on 2026-11-08 found no deployment environments. Configure
-`release-preview` and protected `production` before automated publication.
-The API returned HTTP 403 for runners and `ORCA_RELEASE_ENABLED`, so their actual
-configuration remains unverified. No GitHub settings were changed.
+On 2026-11-08, configured `release-preview` and `production` with an exact
+`main` deployment branch rule. Production requires review by repository owner
+`tienne`; preview needs no deployment review. The owner may approve their own
+manually dispatched production run. No production run or approval was performed.
+The default GitHub account was not switched. Promotion uses GitHub-hosted
+`macos-15` with a pinned Orca CLI; no self-hosted runner registration is needed.
+The activation variable will be enabled after the reviewed workflow reaches `main`.
+
+The prepared automation now checks setup before CI, defaults to preview and
+requires the reviewed preview content hash for publication. It rechecks environment
+rules before publishing. Run `pnpm nx run landmark-island:release-preflight --mode=publish`
+to inspect setup without changing GitHub. Follow the [release procedure](releases.md)
+to configure the environments and run the first hosted preview. These local workflow changes
+still need review and inclusion on `main`; no automated release has been dispatched.
+
+Automation verification on 2026-11-08 passed 41 release/setup/workflow tests with
+the mock validator and another 41 with the installed Orca CLI. Pinned actionlint
+1.7.11 and formatting checks passed. Publication tests used disposable local bare
+repositories. The real read-only setup audit correctly reported not ready.
+
+After switching promotion to hosted macOS, all 41 tests passed again with the
+mock adapter and the freshly downloaded, checksum-verified Orca 1.4.252 CLI.
+The same setup script used by CI extracted the CLI into a temporary directory;
+standalone package validation also passed with network access denied. Actionlint
+1.7.11 and shell syntax checks passed. This was local verification, not a hosted
+GitHub run. No runner service was installed on the developer's Mac.
 
 The latest observed hosted CI passed at source
 `2bb2565378f6886043741d560ad66c6056ba8c0c`; it is not this worktree's release check.
