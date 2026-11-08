@@ -1194,7 +1194,7 @@ a:focus-visible,
   max-width: 100%;
   padding: 8px 12px;
   background: var(--panel);
-  color: var(--orca-card-foreground, var(--ink));
+  color: var(--orca-popover-foreground, var(--ink));
   border: 1px solid var(--orca-input, var(--line));
   border-radius: var(--orca-radius, 8px);
 }
@@ -1208,7 +1208,7 @@ a:focus-visible,
   padding: 16px;
   border: 1px solid var(--line);
   background: var(--panel);
-  color: var(--orca-card-foreground, var(--ink));
+  color: var(--orca-popover-foreground, var(--ink));
   border-radius: var(--orca-radius, 12px);
 }
 .decoration-card > svg {
@@ -1404,7 +1404,8 @@ dialog:modal {
     serif;
   margin: 3px 0 0;
 }
-#close-inventory {
+#close-inventory,
+#close-treasure {
   border: 0;
   background: transparent;
   color: inherit;
@@ -1799,45 +1800,76 @@ dialog:modal {
   -webkit-appearance: none;
 }
 
-.treasure-actions {
-  position: relative;
-  padding-right: 56px;
-  align-self: start;
-}
-#draw-ten {
+.treasure-menu {
   position: absolute;
-  right: 0;
-  bottom: 4px;
-  width: 54px;
-  padding: 4px;
-  font-size: 10px;
-  border-radius: 4px 9px 4px 8px;
-  border: 1px solid var(--orca-border, #baaa74);
-  background: var(--orca-secondary, #254c40);
-  color: var(--orca-secondary-foreground, #fff2d3);
+  z-index: 45;
+  top: 142px;
+  left: 18px;
+  width: min(320px, calc(100% - 36px));
+  max-height: calc(100% - 180px);
+  overflow: auto;
+  overscroll-behavior: contain;
+  border: 1px solid var(--orca-border, var(--line));
+  border-radius: var(--orca-radius, 12px);
+  background: var(--orca-popover, var(--paper));
+  color: var(--orca-popover-foreground, var(--ink));
+  box-shadow: 0 14px 40px #183b3933;
 }
-#draw-ten:disabled {
-  opacity: 0.6;
+.treasure-menu[hidden] {
+  display: none;
 }
-#draw-ten:focus-visible {
-  outline: 2px solid var(--orca-ring, #fff0bc);
-  outline-offset: 3px;
+.treasure-menu-body {
+  padding: 14px;
 }
-
+.treasure-menu p {
+  margin: 0 0 12px;
+  font-size: 12px;
+  line-height: 1.5;
+}
+.treasure-menu .treasure-balance {
+  font-size: 19px;
+  font-weight: 700;
+}
+.treasure-choices {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin: 16px 0;
+}
+.treasure-choices button {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 7px;
+  padding: 14px 8px;
+}
+.treasure-choices button:disabled {
+  opacity: 0.5;
+}
+.treasure-choices strong {
+  font-size: 17px;
+}
+.treasure-choices small {
+  font-size: 11px;
+}
+.treasure-menu .treasure-note {
+  margin: 12px 0 0;
+  color: var(--orca-muted-foreground, var(--ink));
+}
 .skip-discovery {
-  position: absolute;
-  top: calc(100% + 4px);
-  left: 0;
   display: flex;
   align-items: center;
-  gap: 6px;
-  padding: 4px 7px;
-  border-radius: 4px;
-  background: var(--orca-secondary, #254c40);
-  color: var(--orca-secondary-foreground, #fff2d3);
-  font-size: 11px;
+  gap: 7px;
+  font-size: 12px;
   cursor: pointer;
-  white-space: nowrap;
+}
+@media (max-width: 600px) {
+  .treasure-menu {
+    left: 10px;
+    top: 130px;
+    width: calc(100% - 20px);
+    max-height: calc(100% - 160px);
+  }
 }
 .skip-discovery input {
   width: 14px;
@@ -1849,6 +1881,63 @@ dialog:modal {
   outline: 2px solid var(--orca-ring, #fff0bc);
   outline-offset: 3px;
 }
-.ocean[data-inventory-open='true'] .skip-discovery {
-  visibility: hidden;
+
+/* An object is selected first; only Move arms destination selection. */
+.piece-menu {
+  position: absolute;
+  z-index: 46;
+  width: min(230px, calc(100% - 20px));
+  max-height: calc(100% - 20px);
+  overflow: auto;
+  overscroll-behavior: contain;
+  box-sizing: border-box;
+  padding: 10px;
+  border: 1px solid var(--orca-border, var(--line));
+  border-radius: var(--orca-radius, 10px);
+  background: var(--orca-popover, var(--paper));
+  color: var(--orca-popover-foreground, var(--ink));
+  box-shadow: 0 8px 26px #173e3940;
+  display: grid;
+  gap: 7px;
+}
+.piece-menu[hidden],
+.ocean[data-inventory-open='true'] .piece-menu {
+  display: none;
+}
+.piece-heading {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  justify-content: space-between;
+}
+.piece-heading strong {
+  font-size: 13px;
+}
+.piece-heading button {
+  padding: 2px 7px;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font-size: 20px;
+}
+.piece-menu button {
+  font-size: 12px;
+}
+.piece-menu button:disabled {
+  opacity: 0.45;
+}
+.piece-rotation {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 5px;
+}
+.piece-menu small {
+  font-size: 10px;
+  color: var(--orca-muted-foreground, var(--ink));
+}
+.world-tile:has(.cell.selected) .world-object {
+  filter: drop-shadow(0 0 4px #ffdf76);
+}
+.building[data-rotation='1'] .building-select {
+  transform: scaleX(-1);
 }

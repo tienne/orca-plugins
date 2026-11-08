@@ -1,3 +1,4 @@
+import { openTreasure } from './treasure-menu';
 import { test, expect, type Page } from '@playwright/test';
 import { empty } from '../src/game';
 
@@ -40,6 +41,7 @@ test('ten treasures require ten tickets, save once, classify batch duplicates an
   await expect(page.locator('#draw-ten')).toBeDisabled();
   await page.getByRole('button', { name: 'Demo worktree' }).click();
   await expect(page.locator('#draw-ten')).toBeEnabled();
+  await openTreasure(page);
   await page.locator('#draw-ten').evaluate((button: HTMLButtonElement) => {
     button.click();
     button.click();
@@ -53,12 +55,27 @@ test('ten treasures require ten tickets, save once, classify batch duplicates an
   await expect(dialog.locator('.treasure-result')).toHaveCount(10);
   await expect(dialog.locator('[data-new=true]')).toHaveCount(1);
   await expect(dialog.locator('[data-new=false]')).toHaveCount(9);
+  await expect(
+    dialog.getByRole('button', { name: 'Place on island', exact: true }),
+  ).toHaveCount(1);
+  await expect(
+    dialog.getByRole('button', { name: 'Place another copy', exact: true }),
+  ).toHaveCount(9);
+  await expect(dialog.locator('[data-new=true] .discovery-status')).toHaveText(
+    'New discovery',
+  );
+  await expect(
+    dialog.locator('[data-new=false] .discovery-status').first(),
+  ).toHaveText('Already discovered');
   await expect(dialog.locator('.results-totals')).toHaveText(
     '1 new discoveries · 9 duplicates · +27 materials',
   );
   await expect(page.locator('.reveal-skip')).toHaveCount(0);
   expect((await saved(page)).receipts).toHaveLength(10);
-  await dialog.getByRole('button', { name: 'Place on island' }).first().click();
+  await dialog
+    .getByRole('button', { name: 'Place another copy' })
+    .first()
+    .click();
   await expect(dialog).toHaveCount(0);
   await expect(page.locator('.ocean')).toHaveAttribute('data-mode', 'build');
   await page
@@ -70,6 +87,19 @@ test('ten treasures require ten tickets, save once, classify batch duplicates an
   await page.reload();
   await expect(page.locator('#ticket-count')).toHaveText('0');
   expect((await saved(page)).receipts).toHaveLength(10);
+  await page.getByRole('button', { name: 'Demo worktree' }).click();
+  await openTreasure(page);
+  await page.locator('#draw-ticket').click();
+  await expect(page.locator('.discovery-status')).toHaveText(
+    'Already discovered',
+  );
+  await expect(page.locator('.reveal-place')).toHaveText('Place another copy');
+  await expect(page.locator('.discovery-theatre')).toHaveClass(
+    /static-discovery/,
+  );
+  await page
+    .locator('.discovery-theatre')
+    .screenshot({ path: 'test-results/landmark-island/duplicate-result.png' });
 });
 
 test('ten treasures animate first discoveries at every tier and skip duplicates', async ({
@@ -87,6 +117,7 @@ test('ten treasures animate first discoveries at every tier and skip duplicates'
     ['petra'],
   );
   await page.goto('/');
+  await openTreasure(page);
   await page.locator('#draw-ten').click();
   const theatre = page.locator('.discovery-theatre:not(.treasure-results)');
   expect((await saved(page)).receipts).toHaveLength(11);
@@ -118,7 +149,7 @@ test('ten treasures animate first discoveries at every tier and skip duplicates'
     '4 new discoveries · 6 duplicates · +18 materials',
   );
   await page.keyboard.press('Escape');
-  await expect(page.locator('[data-inventory=landmarks]')).toBeFocused();
+  await expect(page.locator('#open-treasure')).toBeFocused();
   expect((await saved(page)).receipts).toHaveLength(11);
 });
 
@@ -136,6 +167,7 @@ for (const outcome of ['failed write', 'lost response'] as const)
         throw Error('Fixture batch save failure');
       };
     }, outcome);
+    await openTreasure(page);
     await page.locator('#draw-ten').click();
     await expect(page.getByRole('alert')).toContainText(
       'Fixture batch save failure',
@@ -148,6 +180,7 @@ for (const outcome of ['failed write', 'lost response'] as const)
       outcome === 'failed write' ? 0 : 10,
     );
     await page.getByRole('button', { name: 'Refresh' }).click();
+    await openTreasure(page);
     await page.locator('#draw-ten').click();
     await expect(page.locator('.discovery-theatre')).toHaveAttribute(
       'data-tier',
@@ -166,8 +199,9 @@ for (const outcome of ['failed write', 'lost response'] as const)
     ).toEqual(Array.from({ length: 10 }, (_, i) => `ten-${i}`));
     await page.getByRole('button', { name: 'Keep exploring' }).click();
     await expect(page.locator('#ticket-count')).toHaveText('10');
-    await expect(page.locator('#draw-ten')).toBeFocused();
+    await expect(page.locator('#open-treasure')).toBeFocused();
     // All ten are now duplicates, even though they are Wonders.
+    await openTreasure(page);
     await page.locator('#draw-ten').click();
     await expect(page.locator('.treasure-results')).toBeVisible();
     await expect(page.locator('.treasure-result[data-new=true]')).toHaveCount(
@@ -184,6 +218,7 @@ for (const width of [1000, 360])
     await page.emulateMedia({ reducedMotion: 'reduce' });
     await seed(page);
     await page.goto('/?lang=ko');
+    await openTreasure(page);
     await page.getByRole('button', { name: '보물상자 10개 열기' }).click();
     await page
       .getByRole('button', { name: '10개 결과 모두 보기' })
@@ -197,6 +232,15 @@ for (const width of [1000, 360])
       '새로운 발견 1종 · 중복 9개 · 재료 +27개',
     );
     const bounds = await dialog.boundingBox();
+    await expect(
+      dialog.getByRole('button', { name: '섬에 배치', exact: true }),
+    ).toHaveCount(1);
+    await expect(
+      dialog.getByRole('button', { name: '하나 더 배치', exact: true }),
+    ).toHaveCount(9);
+    await expect(
+      dialog.locator('[data-new=false] .discovery-status').first(),
+    ).toHaveText('이미 발견한 랜드마크');
     expect(bounds!.x).toBeGreaterThanOrEqual(0);
     expect(bounds!.x + bounds!.width).toBeLessThanOrEqual(width);
     expect(await dialog.evaluate((e) => e.scrollWidth <= e.clientWidth)).toBe(
@@ -259,6 +303,7 @@ test('ten treasures keep host notifications queued through highlights and summar
     };
   }, state);
   await page.goto('/');
+  await openTreasure(page);
   await page.locator('#draw-ten').click();
   await expect(page.locator('.discovery-theatre')).toHaveAttribute(
     'data-tier',
@@ -292,24 +337,26 @@ for (const language of ['en', 'ko'])
       name: language === 'ko' ? '연출 건너뛰기' : 'Skip animation',
       exact: true,
     });
+    await openTreasure(page);
     await expect(skip).not.toBeChecked();
     const camera = await page.locator('.camera').getAttribute('style');
     await skip.focus();
     await page.keyboard.press('Space');
+    await openTreasure(page);
     await expect(skip).toBeChecked();
     expect(await page.locator('.camera').getAttribute('style')).toBe(camera);
     await page.locator('[data-inventory=landmarks]').click();
     await page.locator('#close-inventory').click();
     await page.locator('#refresh').click();
+    await openTreasure(page);
     await expect(skip).toBeChecked();
     const bounds = (await page.locator('.skip-discovery').boundingBox())!;
     const ocean = (await page.locator('.ocean').boundingBox())!;
     expect(bounds.x + bounds.width).toBeLessThanOrEqual(ocean.x + ocean.width);
-    await page
-      .locator('.ocean')
-      .screenshot({
-        path: `test-results/landmark-island/skip-checkbox-${language}.png`,
-      });
+    await page.locator('.ocean').screenshot({
+      path: `test-results/landmark-island/skip-checkbox-${language}.png`,
+    });
+    await openTreasure(page);
     await page.locator('#draw-ten').click();
     await expect(page.locator('.treasure-results')).toBeVisible();
     await expect(page.locator('.treasure-result[data-new=true]')).toHaveCount(
@@ -318,8 +365,10 @@ for (const language of ['en', 'ko'])
     await expect(page.locator('.reveal-skip')).toHaveCount(0);
     expect((await saved(page)).receipts).toHaveLength(10);
     await page.locator('.results-close').click();
+    await openTreasure(page);
     await expect(skip).toBeChecked();
     await skip.uncheck();
+    await openTreasure(page);
     await page.locator('#draw-ticket').click();
     await expect(page.locator('.discovery-theatre')).not.toHaveClass(
       /static-discovery/,
@@ -327,8 +376,10 @@ for (const language of ['en', 'ko'])
     await expect(page.locator('.reveal-skip')).toBeVisible();
     await page.locator('.reveal-skip').click();
     await page.locator('.reveal-keep').click();
+    await openTreasure(page);
     await expect(skip).not.toBeChecked();
     await skip.check();
+    await openTreasure(page);
     await page.locator('#draw-ticket').click();
     await expect(page.locator('.discovery-theatre')).toHaveClass(
       /static-discovery/,
@@ -339,5 +390,152 @@ for (const language of ['en', 'ko'])
     expect(
       (await saved(page)).receipts.map((r: { landmark: string }) => r.landmark),
     ).toEqual([...Array(10).fill('liberty'), 'eiffel', 'petra']);
+    await openTreasure(page);
     await expect(skip).toBeChecked();
   });
+
+for (const [width, language] of [
+  [1000, 'en'],
+  [360, 'ko'],
+] as const)
+  test(`treasure menu groups choices without spending tickets at ${width}px`, async ({
+    page,
+  }) => {
+    await seed(page, 9);
+    await page.setViewportSize({ width, height: 900 });
+    await page.goto(`/?lang=${language}`);
+    const before = await saved(page);
+    const camera = await page.locator('.camera').elementHandle();
+    const transform = await page.locator('.camera').getAttribute('style');
+    await expect(page.locator('#draw-ten')).toBeHidden();
+    await expect(page.locator('#skip-discovery')).toBeHidden();
+    await openTreasure(page);
+    const menu = page.locator('#treasure-menu');
+    await expect(menu).toBeVisible();
+    await expect(page.locator('#draw-ticket')).toBeEnabled();
+    await expect(page.locator('#draw-ten')).toBeDisabled();
+    await expect(page.locator('.treasure-balance')).toContainText('9');
+    await expect(page.locator('#draw-ticket strong')).toHaveText(
+      language === 'ko' ? '1개 열기' : 'Open 1',
+    );
+    await expect(page.locator('#draw-ten strong')).toHaveText(
+      language === 'ko' ? '10개 열기' : 'Open 10',
+    );
+    const bounds = (await menu.boundingBox())!;
+    const ocean = (await page.locator('.ocean').boundingBox())!;
+    expect(bounds.x).toBeGreaterThanOrEqual(ocean.x);
+    expect(bounds.x + bounds.width).toBeLessThanOrEqual(ocean.x + ocean.width);
+    expect(bounds.y + bounds.height).toBeLessThanOrEqual(
+      ocean.y + ocean.height,
+    );
+    const y = await page.evaluate(() => scrollY);
+    await menu.hover();
+    await page.mouse.wheel(0, 500);
+    expect(await page.evaluate(() => scrollY)).toBe(y);
+    expect(await page.locator('.camera').getAttribute('style')).toBe(transform);
+    await page.locator('.ocean').screenshot({
+      path: `test-results/landmark-island/treasure-menu-${language}.png`,
+    });
+    await page.keyboard.press('Escape');
+    await expect(menu).toBeHidden();
+    await expect(page.locator('#open-treasure')).toBeFocused();
+    await openTreasure(page);
+    await page.locator('[data-inventory=landmarks]').click();
+    await expect(menu).toBeHidden();
+    await openTreasure(page);
+    await expect(page.locator('.canvas-inventory')).toBeHidden();
+    await page.locator('#open-treasure').click();
+    await expect(menu).toBeHidden();
+    expect(await saved(page)).toEqual(before);
+    expect(
+      await camera!.evaluate(
+        (node) => node === document.querySelector('.camera'),
+      ),
+    ).toBe(true);
+    await page.locator('#expedition').click();
+    await openTreasure(page);
+    await expect(page.locator('#draw-ten')).toBeEnabled();
+  });
+
+for (const [width, language] of [
+  [1000, 'en'],
+  [360, 'ko'],
+] as const)
+  test(`draw again chains single and ten results and disables unaffordable draws at ${width}px`, async ({
+    page,
+  }) => {
+    await seed(page, 12);
+    await page.setViewportSize({ width, height: 800 });
+    await page.emulateMedia({ reducedMotion: 'reduce' });
+    await page.goto(`/?lang=${language}`);
+    await openTreasure(page);
+    await page.locator('#draw-ticket').click();
+    const one = () => page.locator('.discovery-theatre [data-draw-again="1"]');
+    const ten = () => page.locator('.discovery-theatre [data-draw-again="10"]');
+    await expect(one()).toBeEnabled();
+    await expect(ten()).toBeEnabled();
+    await expect(one()).toHaveText(
+      language === 'ko' ? '1개 더 뽑기' : 'Draw 1 more',
+    );
+    await expect(page.locator('.repeat-balance')).toContainText('11');
+    // Double clicks must not turn one selection into two requests.
+    await ten().evaluate((button: HTMLButtonElement) => {
+      button.click();
+      button.click();
+    });
+    await expect(page.locator('.treasure-results')).toBeVisible();
+    expect((await saved(page)).receipts).toHaveLength(11);
+    await expect(one()).toBeEnabled();
+    await expect(ten()).toBeDisabled();
+    await expect(page.locator('.repeat-balance')).toContainText('1');
+    await page
+      .locator('.treasure-results')
+      .screenshot({
+        path: `test-results/landmark-island/draw-again-${width}.png`,
+      });
+    await one().click();
+    await expect(page.locator('.treasure-results')).toHaveCount(0);
+    await expect(page.locator('.discovery-theatre')).toHaveCount(1);
+    await expect(one()).toBeDisabled();
+    await expect(ten()).toBeDisabled();
+    await expect(page.locator('.repeat-balance')).toContainText('0');
+    expect((await saved(page)).receipts).toHaveLength(12);
+    await one().evaluate((button: HTMLButtonElement) => button.click());
+    expect((await saved(page)).receipts).toHaveLength(12);
+    await page.locator('.reveal-keep').click();
+    await expect(page.locator('#open-treasure')).toBeFocused();
+  });
+
+test('draw again uses exact ten-ticket threshold and preserves a failed draw for retry', async ({
+  page,
+}) => {
+  await seed(page, 11);
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await page.goto('/');
+  await openTreasure(page);
+  await page.locator('#draw-ticket').click();
+  await expect(page.locator('[data-draw-again="10"]')).toBeEnabled();
+  await page.locator('[data-draw-again="1"]').click();
+  await expect(page.locator('.repeat-balance')).toHaveText(
+    'Tickets remaining: 9',
+  );
+  await expect(page.locator('[data-draw-again="10"]')).toBeDisabled();
+  await page.evaluate(() => {
+    const original = Storage.prototype.setItem;
+    Storage.prototype.setItem = function (key, value) {
+      Storage.prototype.setItem = original;
+      throw Error('Fixture repeat save failure');
+    };
+  });
+  await page.locator('[data-draw-again="1"]').click();
+  await expect(page.getByRole('alert')).toContainText(
+    'Fixture repeat save failure',
+  );
+  await expect(page.locator('.discovery-theatre')).toHaveCount(0);
+  expect((await saved(page)).receipts).toHaveLength(2);
+  await page.locator('#draw-ticket').click();
+  await expect(page.locator('.repeat-balance')).toHaveText(
+    'Tickets remaining: 8',
+  );
+  expect((await saved(page)).receipts).toHaveLength(3);
+});

@@ -82,6 +82,8 @@ export function renderIsland(root: HTMLElement, markup: string) {
     '.walk-controls',
     '.island-satchel',
     '.canvas-inventory',
+    '.treasure-menu',
+    '.piece-menu',
     '.canvas-editor',
   ]) {
     const current = ocean.querySelector(selector);

@@ -1,7 +1,7 @@
 import { introductionHtml } from './introduction';
 import { writeFile } from 'node:fs/promises';
 import { test, expect } from '@playwright/test';
-import { empty, validate, islandLand } from '../src/game';
+import { empty, validate, islandLand, landmarks } from '../src/game';
 import { decorationById, DUPLICATE_MATERIALS } from '../src/decorations';
 import { at, landAtLevel, landTiles, neighbours } from '../src/world';
 
@@ -14,7 +14,7 @@ test('Orcatopia showcase keeps legacy storage and shows an English fixture islan
     fixture.tickets.push({ workspaceId, at: '2026-11-07' });
     fixture.receipts.push({ workspaceId, landmark, at: '2026-11-07' });
   };
-  // Fifteen collected themes provide varied planting; twelve already unlock all land.
+  // The original garden remains in the central 318 tiles; the full collection unlocks its outer grounds.
   for (const landmark of [
     'eiffel',
     'taj',
@@ -33,6 +33,9 @@ test('Orcatopia showcase keeps legacy storage and shows an English fixture islan
     'chichen',
   ])
     acquire(landmark);
+  for (const landmark of landmarks)
+    if (!fixture.receipts.some((r) => r.landmark === landmark.id))
+      acquire(landmark.id);
   fixture.placements = [
     { landmark: 'eiffel', cell: at(9, 7)! },
     { landmark: 'fuji', cell: at(6, 6)! },
@@ -40,7 +43,7 @@ test('Orcatopia showcase keeps legacy storage and shows an English fixture islan
     { landmark: 'kinderdijk', cell: at(6, 15)! },
     { landmark: 'petra', cell: at(17, 16)! },
   ];
-  const land = landAtLevel(12);
+  const land = landAtLevel(100);
   // The inner promenade and outer ramble join at a central open cross.
   const promenade = (col: number, row: number) =>
     col === 11 ||
@@ -229,8 +232,8 @@ test('Orcatopia showcase keeps legacy storage and shows an English fixture islan
     acquire('eiffel');
   const save = validate(fixture);
   expect(islandLand(save)).toHaveLength(landTiles.length);
-  expect(landTiles).toHaveLength(318);
-  expect(save.floors).toHaveLength(318);
+  expect(landTiles).toHaveLength(1044);
+  expect(save.floors).toHaveLength(1044);
   // Every walkable lawn and path must remain reachable in the decorated layout.
   const blocked = new Set([
     ...save.placements.map((p) => p.cell),

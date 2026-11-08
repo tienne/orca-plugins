@@ -467,5 +467,236 @@
     "region": "부쿠레슈티",
     "description": "니콜라에 차우셰스쿠 집권기에 지은 부쿠레슈티의 거대한 궁전입니다. 넓은 테라스와 반복되는 열주, 대규모 의전 공간을 갖추었으며, 국가 기관을 한 건물에 모으려 했던 논쟁적인 사업의 역사를 담고 있습니다.",
     "descriptionSourceName": "루마니아 의회 국제회의센터"
+  },
+  "lalibela": {
+    "name": "랄리벨라 암굴 교회",
+    "country": "에티오피아",
+    "region": "랄리벨라",
+    "description": "랄리벨라의 중세 교회들은 바위를 아래로 파내어 만들었습니다. 도랑과 통로로 연결된 에티오피아의 순례지이며, 십자가 모양의 성 게오르기오스 교회가 특히 인상적입니다.",
+    "descriptionSourceName": "유네스코 세계유산센터"
+  },
+  "djenne": {
+    "name": "젠네 대모스크",
+    "country": "말리",
+    "region": "젠네",
+    "description": "니제르강 내륙 삼각주의 교역 도시 젠네에서 대모스크는 흙 건축의 중심을 이룹니다. 버팀벽과 벽 밖으로 뻗은 목재가 독특한 외관을 만듭니다.",
+    "descriptionSourceName": "유네스코 세계유산센터"
+  },
+  "leptis": {
+    "name": "렙티스 마그나",
+    "country": "리비아",
+    "region": "알쿰스",
+    "description": "지중해 연안의 이 도시는 로마 제국 시대, 특히 이곳 출신 황제 셉티미우스 세베루스 때 크게 발전했습니다. 남아 있는 기둥과 공공건물, 항구가 고대 도시의 규모를 보여줍니다.",
+    "descriptionSourceName": "유네스코 세계유산센터"
+  },
+  "eljem": {
+    "name": "엘젬 원형극장",
+    "country": "튀니지",
+    "region": "엘젬",
+    "description": "3세기에 세워진 로마 원형극장이 엘젬 마을 위로 솟아 있습니다. 층층이 이어지는 석조 아치와 열린 경기장은 로마 시대 북아프리카의 대규모 공연 문화를 보여줍니다.",
+    "descriptionSourceName": "유네스코 세계유산센터"
+  },
+  "meroe": {
+    "name": "메로에 피라미드",
+    "country": "수단",
+    "region": "메로에",
+    "description": "나일강 인근 쿠시 왕국의 왕실 묘역에는 날씬한 피라미드가 솟아 있습니다. 사원과 주거 유적은 아프리카와 지중해 세계를 잇던 문명의 흔적을 전합니다.",
+    "descriptionSourceName": "유네스코 세계유산센터"
+  },
+  "timgad": {
+    "name": "팀가드 트라야누스 개선문",
+    "country": "알제리",
+    "region": "팀가드",
+    "description": "아우레스산맥 기슭의 팀가드는 서기 100년에 로마 식민도시로 세워졌습니다. 격자형 거리와 공공건물 유적 사이에 남은 개선문이 고대 도시 계획의 모습을 전합니다.",
+    "descriptionSourceName": "유네스코 세계유산센터"
+  },
+  "renaissance": {
+    "name": "아프리카 르네상스 기념상",
+    "country": "세네갈",
+    "region": "다카르",
+    "description": "다카르 해안 언덕 위에 청동빛의 거대한 가족 조각상이 솟아 있습니다. 수평선을 향한 인물들의 자세가 세네갈 수도의 현대적인 상징을 이룹니다.",
+    "descriptionSourceName": "공식 안내"
+  },
+  "yamoussoukro": {
+    "name": "야무수크로 평화의 성모 대성당",
+    "country": "코트디부아르",
+    "region": "야무수크로",
+    "description": "피에르 파쿠리가 설계한 야무수크로의 대성당은 넓은 돔과 길게 펼쳐진 열주가 특징입니다. 로마 성 베드로 대성당에서 영감을 받은 종교 건축이 정원과 어우러집니다.",
+    "descriptionSourceName": "공식 안내"
+  },
+  "mbanzakongo": {
+    "name": "음반자콩고",
+    "country": "앙골라",
+    "region": "자이르주",
+    "description": "콩고 왕국의 옛 수도에는 왕실과 종교, 일상의 흔적이 남아 있습니다. 대성당 폐허를 비롯한 도시 유적은 콩고 전통과 유럽 문화가 만난 역사를 보여줍니다.",
+    "descriptionSourceName": "유네스코 세계유산센터"
+  },
+  "rila": {
+    "name": "릴라 수도원",
+    "country": "불가리아",
+    "region": "릴라산맥",
+    "description": "성 요한의 전통에서 시작된 릴라 수도원은 불가리아의 종교와 문학의 중심이 되었습니다. 산속 안뜰의 아치 회랑과 19세기 건물들이 화려하게 장식된 교회를 감쌉니다.",
+    "descriptionSourceName": "유네스코 세계유산센터"
+  },
+  "mostar": {
+    "name": "모스타르 옛 다리",
+    "country": "보스니아 헤르체고비나",
+    "region": "모스타르",
+    "description": "높은 석조 아치가 모스타르의 네레트바강 양쪽을 잇습니다. 1990년대 전쟁으로 파괴된 뒤 2004년에 재건되어 건축적 상징이자 화해의 의미를 담고 있습니다.",
+    "descriptionSourceName": "유네스코 세계유산센터"
+  },
+  "sava": {
+    "name": "성 사바 성당",
+    "country": "세르비아",
+    "region": "베오그라드",
+    "description": "성 사바 성당은 베오그라드의 대표적인 정교회 건축입니다. 밝은 외벽 위로 큰 중앙 돔과 작은 돔들이 솟아 있고, 주변 광장은 모임과 저녁 산책의 장소가 됩니다.",
+    "descriptionSourceName": "공식 안내"
+  },
+  "bled": {
+    "name": "블레드섬 성당",
+    "country": "슬로베니아",
+    "region": "블레드호",
+    "description": "블레드호의 작은 섬 위에는 성당과 종탑이 서 있습니다. 물을 건너 만나는 이 섬은 오랜 종교적 역사와 호수, 숲, 주변 산이 어우러지는 풍경을 지녔습니다.",
+    "descriptionSourceName": "공식 안내"
+  },
+  "trakai": {
+    "name": "트라카이섬 성",
+    "country": "리투아니아",
+    "region": "갈베호",
+    "description": "트라카이 갈베호의 섬 위에 붉은 벽돌 탑들이 솟아 있습니다. 리투아니아 중세 통치자들의 역사를 품은 성은 복원을 거쳐 안뜰과 가파른 지붕의 모습을 되찾았습니다.",
+    "descriptionSourceName": "공식 안내"
+  },
+  "blackheads": {
+    "name": "검은 머리 전당",
+    "country": "라트비아",
+    "region": "리가",
+    "description": "리가 시청 광장의 화려한 건물은 역사적인 상인 단체인 검은 머리 형제단의 흔적을 전합니다. 재건된 정면에는 계단형 박공과 다채로운 건축 장식이 어우러집니다.",
+    "descriptionSourceName": "공식 안내"
+  },
+  "tallinn": {
+    "name": "탈린 시청",
+    "country": "에스토니아",
+    "region": "탈린",
+    "description": "탈린의 중세 시청은 구시가지 시장 광장 곁에 서 있습니다. 가느다란 탑과 가파른 지붕, 지상층의 아치 회랑이 발트해 교역 도시의 독특한 모습을 보여줍니다.",
+    "descriptionSourceName": "공식 안내"
+  },
+  "taktsang": {
+    "name": "파로 탁상 사원",
+    "country": "부탄",
+    "region": "파로 계곡",
+    "description": "호랑이 둥지로 알려진 탁상 사원은 파로 계곡 위 절벽에 자리 잡았습니다. 흰 벽과 금빛 지붕이 암벽과 어우러져 부탄을 대표하는 성스러운 풍경을 이룹니다.",
+    "descriptionSourceName": "공식 안내"
+  },
+  "xiengthong": {
+    "name": "왓 시엥통",
+    "country": "라오스",
+    "region": "루앙프라방",
+    "description": "메콩강 가까이에 16세기에 세워진 왓 시엥통은 루앙프라방의 중요한 사원입니다. 낮게 겹쳐진 지붕과 섬세한 장식이 이 도시의 사원 건축 전통을 보여줍니다.",
+    "descriptionSourceName": "공식 안내"
+  },
+  "watarun": {
+    "name": "왓 아룬",
+    "country": "태국",
+    "region": "방콕",
+    "description": "왓 아룬은 방콕 차오프라야강 곁에 자리한 사원입니다. 중앙 프랑과 주변 탑들이 화려한 윤곽을 이루며 톤부리와 방콕 시대에 걸친 왕실 사원의 역사를 전합니다.",
+    "descriptionSourceName": "공식 안내"
+  },
+  "badshahi": {
+    "name": "바드샤히 모스크",
+    "country": "파키스탄",
+    "region": "라호르",
+    "description": "무굴 황제 아우랑제브 때 건설된 모스크로 라호르 요새 옆에 있습니다. 붉은 사암 벽과 밝은 돔, 모서리의 높은 미나레트가 넓은 안뜰을 둘러쌉니다.",
+    "descriptionSourceName": "유네스코 세계유산센터"
+  },
+  "golestan": {
+    "name": "골레스탄 궁전",
+    "country": "이란",
+    "region": "테헤란",
+    "description": "테헤란의 골레스탄 궁전은 카자르 왕조의 왕실 중심지였습니다. 궁전과 정원에는 페르시아의 공예 전통과 유럽에서 전해진 미술 및 건축의 영향이 함께 담겨 있습니다.",
+    "descriptionSourceName": "유네스코 세계유산센터"
+  },
+  "chinggis": {
+    "name": "칭기즈 칸 기마상",
+    "country": "몽골",
+    "region": "촌진볼독",
+    "description": "울란바토르 동쪽 촌진볼독에 거대한 칭기즈 칸 기마상이 서 있습니다. 밝은 금속 인물상과 원형 기단이 탁 트인 초원 위로 현대적인 윤곽을 드러냅니다.",
+    "descriptionSourceName": "공식 안내"
+  },
+  "tikal": {
+    "name": "티칼",
+    "country": "과테말라",
+    "region": "페텐",
+    "description": "마야의 주요 도시였던 티칼에는 가파른 신전 피라미드가 숲 위로 솟아 있습니다. 광장과 궁전, 조각 기념물은 과테말라 열대 생태계 속에서 고대 도시와 의례의 풍경을 전합니다.",
+    "descriptionSourceName": "유네스코 세계유산센터"
+  },
+  "copan": {
+    "name": "코판",
+    "country": "온두라스",
+    "region": "코판 계곡",
+    "description": "코판은 정교한 석비와 제단이 광장을 장식하는 마야의 주요 도시였습니다. 상형문자 계단에 남은 긴 기록은 기념비적 건축과 왕실의 역사를 연결합니다.",
+    "descriptionSourceName": "유네스코 세계유산센터"
+  },
+  "joyaceren": {
+    "name": "호야 데 세렌",
+    "country": "엘살바도르",
+    "region": "라리베르타드",
+    "description": "호야 데 세렌에서는 화산재가 마야 농촌 마을을 보존했습니다. 주거지와 저장 공간, 일상 노동의 흔적을 통해 왕실 기념물이 아닌 평범한 사람들의 생활을 가까이 들여다볼 수 있습니다.",
+    "descriptionSourceName": "유네스코 세계유산센터"
+  },
+  "arenal": {
+    "name": "아레날 화산",
+    "country": "코스타리카",
+    "region": "라포르투나",
+    "description": "가파른 원뿔형 아레날 화산이 라포르투나 인근 숲 위로 솟아 있습니다. 국립공원으로 보호되는 화산 지형에는 옛 용암류와 코스타리카의 다양한 야생생물 서식지가 남아 있습니다.",
+    "descriptionSourceName": "공식 안내"
+  },
+  "cartagena": {
+    "name": "카르타헤나 시계탑",
+    "country": "콜롬비아",
+    "region": "카르타헤나 데 인디아스",
+    "description": "시계탑은 카르타헤나 성벽 도시로 들어가는 관문 위에 서 있습니다. 세 통로가 구시가지와 주변 거리를 연결하며, 시계는 도시의 익숙한 상징이 되었습니다.",
+    "descriptionSourceName": "공식 안내"
+  },
+  "quitofrancisco": {
+    "name": "키토 산프란시스코 성당",
+    "country": "에콰도르",
+    "region": "키토",
+    "description": "산프란시스코 성당과 수도원은 키토의 역사적인 종교 건축을 이룹니다. 원주민의 공예와 유럽 전통이 함께 발전한 키토 미술의 문화적 교류를 보여줍니다.",
+    "descriptionSourceName": "유네스코 세계유산센터"
+  },
+  "tiwanaku": {
+    "name": "티와나쿠",
+    "country": "볼리비아",
+    "region": "라파스주",
+    "description": "고지대의 티와나쿠는 영향력 있는 선콜럼버스 문명의 수도였습니다. 거대한 석조 기단과 조각된 거석, 태양의 문이 독특한 건축 및 의례 전통을 전합니다.",
+    "descriptionSourceName": "유네스코 세계유산센터"
+  },
+  "sanssouci": {
+    "name": "상수시 궁전",
+    "country": "아이티",
+    "region": "밀로",
+    "description": "아이티 북부 밀로 인근에 상수시 궁전의 폐허가 남아 있습니다. 독립 후 앙리 크리스토프 때 건설된 궁전은 새 아이티 국가의 지향을 담은 기념물군의 일부입니다.",
+    "descriptionSourceName": "유네스코 세계유산센터"
+  },
+  "nanmadol": {
+    "name": "난마돌",
+    "country": "미크로네시아",
+    "region": "폰페이",
+    "description": "폰페이 연안의 인공 섬들 위에 거대한 현무암 벽이 서 있습니다. 수로로 연결된 의례 중심지는 서태평양 사우델레우르 왕조의 권력과 건축 전통을 보여줍니다.",
+    "descriptionSourceName": "유네스코 세계유산센터"
+  },
+  "pngparliament": {
+    "name": "파푸아뉴기니 국회의사당",
+    "country": "파푸아뉴기니",
+    "region": "포트모르즈비",
+    "description": "파푸아뉴기니 국회의사당은 자국의 전통 건축을 바탕으로 설계되었습니다. 대담한 지붕과 조각 장식이 현대 국가 기관의 공간에 지역 문화의 전통을 담아냅니다.",
+    "descriptionSourceName": "공식 안내"
+  },
+  "tongapalace": {
+    "name": "통가 왕궁",
+    "country": "통가",
+    "region": "누쿠알로파",
+    "description": "통가의 수도 누쿠알로파 해안 가까이에 왕궁이 자리 잡고 있습니다. 밝은 목조 건물과 정원이 오늘날까지 이어지는 통가 왕실의 상징을 이룹니다.",
+    "descriptionSourceName": "공식 안내"
   }
 }

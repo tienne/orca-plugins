@@ -1,5 +1,5 @@
 import landmarks from './landmarks.json';
-import { isLand, expansionLevel, landAtLevel } from './world';
+import { isLand, expansionLevel, landAtLevel, MAX_LAND_LEVEL } from './world';
 import {
   decorationById,
   DUPLICATE_MATERIALS,
@@ -8,11 +8,11 @@ import {
 } from './decorations';
 export { landmarks };
 export const weights = { common: 70, rare: 23, epic: 6, legendary: 1 };
-export type Placement = { landmark: string; cell: number };
+export type Placement = { landmark: string; cell: number; rotation?: number };
 export type Receipt = { workspaceId: string; landmark: string; at: string };
 export type Ticket = { workspaceId: string; at: string };
 export type State = {
-  version: 4;
+  version: 5;
   floors: { decoration: string; cell: number }[];
   landFloor: number;
   crafts: { id: string; decoration: string }[];
@@ -22,7 +22,7 @@ export type State = {
   placements: Placement[];
 };
 export const empty = (): State => ({
-  version: 4,
+  version: 5,
   floors: [],
   landFloor: 0,
   crafts: [],
@@ -71,7 +71,11 @@ export function validate(value: unknown): State {
   const version = (value as { version?: number }).version;
   const s = raw;
   if (
-    (version !== 1 && version !== 2 && version !== 3 && version !== 4) ||
+    (version !== 1 &&
+      version !== 2 &&
+      version !== 3 &&
+      version !== 4 &&
+      version !== 5) ||
     !Array.isArray(s.receipts) ||
     !Array.isArray(s.placements)
   )
@@ -98,7 +102,8 @@ export function validate(value: unknown): State {
       !p ||
       !isLand(p.cell) ||
       cells.has(p.cell) ||
-      !landmarks.some((l) => l.id === p.landmark)
+      !landmarks.some((l) => l.id === p.landmark) ||
+      (p.rotation !== undefined && p.rotation !== 0 && p.rotation !== 1)
     )
       throw Error('Invalid placement');
     cells.add(p.cell);
@@ -128,27 +133,29 @@ export function validate(value: unknown): State {
   if (s.receipts.some((r) => !earned.has(r.workspaceId)))
     throw Error('Reward has no matching ticket');
   const landFloor =
-    version === 3 || version === 4
+    version === 3 || version === 4 || version === 5
       ? s.landFloor
       : Math.max(
           0,
           ...s.placements.map((p) => expansionLevel.get(p.cell) ?? 0),
         );
-  const crafts = version === 3 || version === 4 ? s.crafts : [];
-  const oldDecor = version === 3 || version === 4 ? s.decorations : [];
+  const crafts =
+    version === 3 || version === 4 || version === 5 ? s.crafts : [];
+  const oldDecor =
+    version === 3 || version === 4 || version === 5 ? s.decorations : [];
   if (!Array.isArray(oldDecor)) throw Error('Invalid decoration placements');
   const floors =
-    version === 4
+    version === 4 || version === 5
       ? s.floors
       : oldDecor.filter((p) => p && isFloor(p.decoration));
   const decor =
-    version === 4
+    version === 4 || version === 5
       ? oldDecor
       : oldDecor.filter((p) => !p || !isFloor(p.decoration));
   if (
     !Number.isInteger(landFloor) ||
     landFloor < 0 ||
-    landFloor > 12 ||
+    landFloor > MAX_LAND_LEVEL ||
     !Array.isArray(crafts) ||
     !Array.isArray(decor) ||
     !Array.isArray(floors)
@@ -204,7 +211,7 @@ export function validate(value: unknown): State {
     floorCells.add(p.cell);
   }
   return structuredClone({
-    version: 4,
+    version: 5,
     floors: floors.map(({ decoration, cell }) => ({ decoration, cell })),
     landFloor,
     crafts: crafts.map(({ id, decoration }) => ({ id, decoration })),
@@ -219,7 +226,11 @@ export function validate(value: unknown): State {
       landmark,
       at,
     })),
-    placements: s.placements.map(({ landmark, cell }) => ({ landmark, cell })),
+    placements: s.placements.map(({ landmark, cell, rotation }) => ({
+      landmark,
+      cell,
+      ...(rotation ? { rotation } : {}),
+    })),
   });
 }
 export type Layout = Pick<State, 'placements' | 'decorations' | 'floors'>;
@@ -449,15 +460,19 @@ export class Game {
     return this.queue(async (s) => {
       checkLayout(s, input);
       const p = input as { cell?: number; rotation?: number } | null;
-      const item = s.decorations.find((d) => d.cell === p?.cell);
+      const item =
+        s.placements.find((d) => d.cell === p?.cell) ??
+        s.decorations.find((d) => d.cell === p?.cell);
       if (
         !item ||
-        !canRotate(item.decoration) ||
+        ('decoration' in item && !canRotate(item.decoration)) ||
         !Number.isInteger(p?.rotation) ||
         p!.rotation! < 0 ||
-        p!.rotation! > 3
+        p!.rotation! > ('landmark' in item ? 1 : 3)
       )
-        throw Error('Choose a bench or gate and a valid direction');
+        throw Error(
+          'Choose a piece that supports turning and a valid direction',
+        );
       item.rotation = p!.rotation;
       const next = validate(s);
       await this.store.write(next);

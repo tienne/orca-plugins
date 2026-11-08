@@ -10,6 +10,7 @@ import {
   project,
   solidProps,
   WORLD_W,
+  WORLD_OFFSET,
   WORLD_H,
 } from './world';
 import { minimap } from './terrain-art';
@@ -68,12 +69,13 @@ export class IslandScene {
     state: State,
     onMode: () => void,
     busy: boolean,
-    onInspect: (id: string) => void,
+    onInspect: (cell: number) => void,
     brush?: {
       decoration: string;
       available: number;
       onStroke: (cells: number[]) => void;
     },
+    onCameraChange?: () => void,
   ) {
     this.cleanup();
     const ocean = root.querySelector<HTMLElement>('.ocean');
@@ -121,6 +123,7 @@ export class IslandScene {
         .querySelector('#follow-player')!
         .setAttribute('aria-pressed', String(this.follow));
       ocean.dataset.follow = String(this.follow);
+      onCameraChange?.();
     };
     const position = () => {
       walker.hidden = this.cell < 0;
@@ -132,8 +135,8 @@ export class IslandScene {
       walker.style.top = `${p.y}px`;
       walker.style.zIndex = String(p.depth + 1);
       const dot = ocean.querySelector('.mini-player')!;
-      dot.setAttribute('cx', String(tile.col * 4 + 2));
-      dot.setAttribute('cy', String(tile.row * 4 + 2));
+      dot.setAttribute('cx', String((tile.col + WORLD_OFFSET) * 4 + 2));
+      dot.setAttribute('cy', String((tile.row + WORLD_OFFSET) * 4 + 2));
       ocean.querySelector('.scene-location')!.textContent = tile.region;
       updateCamera();
     };
@@ -377,7 +380,7 @@ export class IslandScene {
         document
           .elementFromPoint(clientX, clientY)
           ?.closest(
-            '.island-satchel,.canvas-inventory,.canvas-editor,.discovery-theatre',
+            '.island-satchel,.treasure-menu,.piece-menu,.canvas-inventory,.canvas-editor,.discovery-theatre',
           )
       )
         return;
@@ -469,7 +472,7 @@ export class IslandScene {
       (e) => {
         if (
           (e.target as Element).closest(
-            '.camera-controls,.walk-controls,.minimap,.island-satchel,.canvas-inventory,.canvas-editor,.discovery-theatre',
+            '.camera-controls,.walk-controls,.minimap,.island-satchel,.treasure-menu,.piece-menu,.canvas-inventory,.canvas-editor,.discovery-theatre',
           ) ||
           e.button !== 0
         )
@@ -553,7 +556,7 @@ export class IslandScene {
       (e) => {
         if (
           (e.target as Element).closest(
-            '.camera-controls,.walk-controls,.minimap,.island-satchel,.canvas-inventory,.canvas-editor,.discovery-theatre',
+            '.camera-controls,.walk-controls,.minimap,.island-satchel,.treasure-menu,.piece-menu,.canvas-inventory,.canvas-editor,.discovery-theatre',
           )
         )
           return;
@@ -569,11 +572,13 @@ export class IslandScene {
           e.stopImmediatePropagation();
           if (busy) return;
           const cellId = Number(cell.dataset.cell ?? cell.dataset.site);
-          const placed = state.placements.find((p) => p.cell === cellId);
+          const placed =
+            state.placements.find((p) => p.cell === cellId) ??
+            state.decorations.find((p) => p.cell === cellId);
           if (placed) {
             clearTimeout(stepTimer);
             finish();
-            onInspect(placed.landmark);
+            onInspect(cellId);
           } else walk(cellId);
         }
       },
@@ -584,7 +589,7 @@ export class IslandScene {
       (e) => {
         if (
           (e.target as Element).closest(
-            '.island-satchel,.canvas-inventory,.canvas-editor,.discovery-theatre',
+            '.island-satchel,.treasure-menu,.piece-menu,.canvas-inventory,.canvas-editor,.discovery-theatre',
           )
         )
           return;

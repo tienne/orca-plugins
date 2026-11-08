@@ -20,7 +20,7 @@
     {
       "path": "assets/orcatopia-island.png",
       "alt": "English DEMO of an expanded island with landmark gardens, paths, ponds and canvas menus",
-      "caption": "A fully expanded garden using game assets and sample progress. Browser demo, not a live Orca save."
+      "caption": "A sample garden using game assets and sample progress. Browser demo, not a live Orca save."
     }
   ],
   "capabilities": [{ "kind": "workspace:read" }, { "kind": "storage:own" }],

@@ -3,6 +3,39 @@ import type { landmarks } from './game';
 import { DUPLICATE_MATERIALS } from './decorations';
 import './reveal.css';
 
+type DrawAgain = {
+  tickets: number;
+  onDraw: (amount: 1 | 10) => void;
+};
+
+function drawAgainControls(
+  options: DrawAgain,
+  choose: (amount: 1 | 10) => void,
+) {
+  const section = document.createElement('section');
+  section.className = 'repeat-draw';
+  section.setAttribute('aria-label', 'Draw again');
+  const balance = document.createElement('p');
+  balance.className = 'repeat-balance';
+  balance.textContent = `Tickets remaining: ${options.tickets}`;
+  section.append(balance);
+  const actions = document.createElement('div');
+  for (const amount of [1, 10] as const) {
+    const button = document.createElement('button');
+    button.dataset.drawAgain = String(amount);
+    button.textContent = amount === 1 ? 'Draw 1 more' : 'Draw 10 more';
+    button.disabled = options.tickets < amount;
+    button.onclick = () => {
+      if (button.disabled) return;
+      actions.querySelectorAll('button').forEach((b) => (b.disabled = true));
+      choose(amount);
+    };
+    actions.append(button);
+  }
+  section.append(actions);
+  return section;
+}
+
 // Presentation only: the worker has already committed the ticket and reward.
 export function revealDiscovery(
   landmark: (typeof landmarks)[number],
@@ -19,12 +52,14 @@ export function revealDiscovery(
     };
     rewardNote?: string;
     container?: HTMLElement;
+    drawAgain?: DrawAgain;
   } = {},
 ) {
   const opener = document.activeElement as HTMLElement | null;
   const dialog = document.createElement('dialog');
   dialog.className = 'discovery-theatre';
   dialog.dataset.tier = landmark.tier;
+  dialog.dataset.new = String(count === 1);
   dialog.setAttribute('aria-label', 'A new destination');
   // Each phase has a distinct job: travel, rarity cue, transition, artwork,
   // then information and actions. The reward was committed before any phase.
@@ -58,6 +93,14 @@ export function revealDiscovery(
   dialog.querySelector('.reveal-country')!.textContent =
     `${landmark.country} · ${landmark.region}`;
   dialog.querySelector('h2')!.textContent = landmark.name;
+  if (!options.preview) {
+    const status = document.createElement('p');
+    status.className = 'discovery-status';
+    status.textContent = count === 1 ? 'New discovery' : 'Already discovered';
+    dialog.querySelector('.discovery-result')!.prepend(status);
+    dialog.querySelector('.reveal-place')!.textContent =
+      count === 1 ? 'Place on island' : 'Place another copy';
+  }
   dialog.querySelector('.reveal-quantity')!.textContent =
     count > 1
       ? `Another piece of the world · Owned ×${count}`
@@ -114,9 +157,18 @@ export function revealDiscovery(
   } else document.body.append(dialog);
   let revealed = false;
   let placing = false;
+  let nextDraw: 1 | 10 | undefined;
   const timers: ReturnType<typeof setTimeout>[] = [];
   const result = dialog.querySelector<HTMLElement>('.discovery-result')!;
   const actions = dialog.querySelector<HTMLElement>('.reveal-actions')!;
+  if (options.drawAgain && !options.preview && !options.batch)
+    actions.append(
+      drawAgainControls(options.drawAgain, (amount) => {
+        if (!dialog.open || nextDraw) return;
+        nextDraw = amount;
+        dialog.close();
+      }),
+    );
   const caption = dialog.querySelector<HTMLElement>('.journey-caption')!;
   const showDetails = () => {
     result.hidden = false;
@@ -173,6 +225,10 @@ export function revealDiscovery(
       window.removeEventListener('scroll', fitCanvas, true);
       preference.removeEventListener('change', reduce);
       dialog.remove();
+      if (nextDraw) {
+        options.drawAgain!.onDraw(nextDraw);
+        return;
+      }
       if (options.batch) {
         options.batch.onClose(batchAction);
         return;
@@ -180,10 +236,11 @@ export function revealDiscovery(
       if (placing) return;
       const target =
         opener?.isConnected &&
+        !opener.closest('[hidden]') &&
         opener.matches('button:not(:disabled), a[href], [tabindex]')
           ? opener
           : (container?.querySelector<HTMLButtonElement>(
-              '#draw-ticket:not(:disabled)',
+              '#open-treasure:not(:disabled)',
             ) ??
             container?.querySelector<HTMLButtonElement>(
               '[data-inventory=landmarks]',
@@ -242,6 +299,7 @@ export function revealResults(
   badge: (tier: string) => string,
   onPlace: (id: string) => void,
   container: HTMLElement,
+  drawAgain?: DrawAgain,
 ) {
   const dialog = document.createElement('dialog');
   dialog.className = 'discovery-theatre canvas-discovery treasure-results';
@@ -251,16 +309,29 @@ export function revealResults(
   dialog.querySelector('.results-totals')!.textContent =
     `${fresh} new discoveries · ${rewards.length - fresh} duplicates · +${(rewards.length - fresh) * DUPLICATE_MATERIALS} materials`;
   let placing = false;
+  let nextDraw: 1 | 10 | undefined;
+  if (drawAgain)
+    dialog.append(
+      drawAgainControls(drawAgain, (amount) => {
+        if (!dialog.open || nextDraw) return;
+        nextDraw = amount;
+        dialog.close();
+      }),
+    );
   for (const reward of rewards) {
     const { landmark } = reward;
     const card = document.createElement('article');
     card.className = 'treasure-result';
     card.dataset.tier = landmark.tier;
     card.dataset.new = String(reward.isNew);
-    card.innerHTML = `<div class="result-art" aria-hidden="true">${art(landmark.id)}</div><p class="result-new"></p><div>${badge(landmark.tier)}</div><h3></h3><p class="result-country"></p><p class="result-reward"></p><button>Place on island</button>`;
+    card.innerHTML = `<p class="result-new discovery-status"></p><div class="result-art" aria-hidden="true">${art(landmark.id)}</div><div>${badge(landmark.tier)}</div><h3></h3><p class="result-country"></p><p class="result-owned"></p><p class="result-reward"></p><button></button>`;
     card.querySelector('.result-new')!.textContent = reward.isNew
       ? 'New discovery'
-      : 'Duplicate discovered';
+      : 'Already discovered';
+    card.querySelector('.result-owned')!.textContent = `Owned ×${reward.count}`;
+    card.querySelector('button')!.textContent = reward.isNew
+      ? 'Place on island'
+      : 'Place another copy';
     card.querySelector('h3')!.textContent = landmark.name;
     card.querySelector('.result-country')!.textContent = landmark.country;
     card.querySelector('.result-reward')!.textContent = reward.rewardNote;
@@ -295,10 +366,15 @@ export function revealResults(
       window.removeEventListener('resize', fit);
       window.removeEventListener('scroll', fit, true);
       dialog.remove();
+      if (nextDraw) {
+        drawAgain!.onDraw(nextDraw);
+        return;
+      }
       if (!placing)
         (
-          container.querySelector<HTMLElement>('#draw-ten:not(:disabled)') ??
-          container.querySelector<HTMLElement>('#draw-ticket:not(:disabled)') ??
+          container.querySelector<HTMLElement>(
+            '#open-treasure:not(:disabled)',
+          ) ??
           container.querySelector<HTMLElement>('[data-inventory=landmarks]')
         )?.focus({ preventScroll: true });
     },

@@ -4,6 +4,7 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { pathToFileURL } from 'node:url';
 import assert from 'node:assert/strict';
+import { createHash } from 'node:crypto';
 import { testWeather } from './test-landmark-weather.mjs';
 const dir = await mkdtemp(join(tmpdir(), 'landmark-test-'));
 try {
@@ -71,10 +72,10 @@ try {
   const { decorations } = await import(
     pathToFileURL(join(dir, 'decorations.mjs'))
   );
-  assert.equal(landmarks.length, 67);
-  assert.equal(new Set(landmarks.map((l) => l.id)).size, 67);
-  assert.equal(new Set(landmarks.map((l) => l.code)).size, 64);
-  assert.equal(decorations.length, 142);
+  assert.equal(landmarks.length, 100);
+  assert.equal(new Set(landmarks.map((l) => l.id)).size, 100);
+  assert.equal(new Set(landmarks.map((l) => l.code)).size, 97);
+  assert.equal(decorations.length, 208);
   for (const code of ['KOR', 'SGP', 'ESP']) {
     const entries = landmarks.filter((l) => l.code === code);
     assert.equal(entries.length, 2);
@@ -85,9 +86,9 @@ try {
     );
   }
   for (const [tier, count, roll] of [
-    ['common', 35, 0.35],
-    ['rare', 22, 0.8],
-    ['epic', 7, 0.95],
+    ['common', 56, 0.35],
+    ['rare', 32, 0.8],
+    ['epic', 9, 0.95],
     ['legendary', 3, 0.995],
   ]) {
     const pool = landmarks.filter((l) => l.tier === tier);
@@ -165,11 +166,41 @@ try {
       ).includes('T01:02'),
     );
   const { route } = await import(pathToFileURL(join(dir, 'walk.mjs')));
-  const { tiles, landTiles, neighbours, solidProps, isLand, project, at } =
-    await import(pathToFileURL(join(dir, 'world.mjs')));
-  assert.equal(tiles.length, 576);
-  assert.equal(landTiles.length, 318);
-  assert.equal(new Set(tiles.map((t) => `${t.col},${t.row}`)).size, 576);
+  const {
+    tiles,
+    landTiles,
+    landAtLevel,
+    expansionLevel,
+    WORLD_W,
+    WORLD_H,
+    neighbours,
+    solidProps,
+    isLand,
+    project,
+    at,
+  } = await import(pathToFileURL(join(dir, 'world.mjs')));
+  assert.equal(tiles.length, 1600);
+  assert.equal(landTiles.length, 1044);
+  assert.equal(new Set(tiles.map((t) => `${t.col},${t.row}`)).size, 1600);
+  const digest = (value) =>
+    createHash('sha256').update(JSON.stringify(value)).digest('hex');
+  assert.equal(
+    digest(tiles.slice(0, 576).map(({ id, col, row }) => ({ id, col, row }))),
+    '37a522f6b88221beebbc915a7d69de57c640ebfb93382de2a772061a4c5f7635',
+  );
+  assert.equal(
+    digest(
+      landAtLevel(12).map((t) => ({ ...t, level: expansionLevel.get(t.id) })),
+    ),
+    'cc702bdb20281bbd056d4bcd4a83b376991930db66c7840c3b650bfe5361000e',
+  );
+  for (const tile of landTiles) {
+    const p = project(tile.id);
+    assert.ok(
+      p.x >= 40 && p.x <= WORLD_W - 40 && p.y >= 20 && p.y <= WORLD_H - 20,
+    );
+    assert.ok(p.depth >= 0);
+  }
   for (let id = 0; id < 36; id++) {
     assert.equal(tiles[id].col, 9 + (id % 6));
     assert.equal(tiles[id].row, 9 + Math.floor(id / 6));
@@ -327,7 +358,7 @@ try {
       landmark: 'eiffel',
     })),
   });
-  assert.equal(oldSave.version, 4);
+  assert.equal(oldSave.version, 5);
   assert.equal(availableTickets(oldSave).length, 0);
   assert.equal(oldSave.placements.length, 36);
   let legacy = {
@@ -344,7 +375,7 @@ try {
   await legacyGame.acquire({ workspaceId: 'w0', kind: 'worktree' });
   assert.equal(legacy.version, 1); // reads / duplicate delivery do not rewrite saves
   await legacyGame.acquire({ workspaceId: 'new-worktree', kind: 'worktree' });
-  assert.equal(legacy.version, 4);
+  assert.equal(legacy.version, 5);
   assert.equal(availableTickets(legacy).length, 1);
   assert.deepEqual(legacy.receipts, value.receipts);
   assert.deepEqual(legacy.placements, value.placements);
@@ -664,16 +695,22 @@ try {
     const s = fixture(landmarks.slice(0, count).map((l) => l.id));
     const land = new Set(islandLand(s).map((t) => t.id));
     assert.ok([...priorLand].every((id) => land.has(id)));
-    assert.equal(land.size, 36 + Math.floor((Math.min(count, 12) * 282) / 12));
+    assert.equal(
+      land.size,
+      count <= 12
+        ? 36 + Math.floor((count * 282) / 12)
+        : 318 + Math.floor(((count - 12) * 726) / 88),
+    );
     const blocked = new Set(
       landTiles.filter((t) => !land.has(t.id)).map((t) => t.id),
     );
-    for (const id of land)
-      if (id !== 0)
-        assert.ok(
-          route(0, id, blocked).length,
-          `Disconnected stage ${count} cell ${id}`,
-        );
+    const connected = new Set([0]);
+    for (const id of connected)
+      for (const next of neighbours(id))
+        if (!blocked.has(next)) connected.add(next);
+    assert.equal(connected.size, land.size, `Disconnected stage ${count}`);
+    if (count > 0)
+      assert.ok(land.size > priorLand.size, `No growth at discovery ${count}`);
     priorLand = land;
   }
 
@@ -691,12 +728,21 @@ try {
     (d, i) => (d.cell = landTiles[landmarks.length + i].id),
   );
   assert.deepEqual(decodeBackup(encodeBackup(fullCatalog)).state, fullCatalog);
-  assert.equal(islandLand(fullCatalog).length, 318);
+  assert.equal(islandLand(fullCatalog).length, 1044);
   assert.equal(materials(fullCatalog), 0);
+  fullCatalog.floors = landTiles.map((t) => ({
+    decoration: 'path',
+    cell: t.id,
+  }));
+  assert.deepEqual(decodeBackup(encodeBackup(fullCatalog)).state, fullCatalog);
+  assert.ok(
+    new TextEncoder().encode(encodeBackup(fullCatalog)).length <
+      MAX_BACKUP_BYTES,
+  );
   for (const landmark of landmarks)
     assert.equal(decorationQuantity(fullCatalog, `${landmark.id}-gift`), 1);
   console.log(
-    'PASS: all 67 catalog draws across 64 countries, 142 decorations, localized descriptions, full-catalog backup and unchanged land cap',
+    'PASS: all 100 catalog draws across 97 countries, 208 decorations, localized descriptions, full-catalog backup and preserved legacy land',
   );
 
   // The four focal pieces use the same ownership and durable craft ledger.
@@ -863,7 +909,7 @@ try {
   assert.throws(() =>
     validate({ ...garden, crafts: [...garden.crafts, garden.crafts[0]] }),
   );
-  assert.throws(() => validate({ ...garden, landFloor: 13 }));
+  assert.throws(() => validate({ ...garden, landFloor: 101 }));
   assert.throws(() =>
     validate({
       ...garden,
@@ -882,7 +928,33 @@ try {
   assert.equal(garden.decorations.find((p) => p.cell === 5).rotation, 3);
   assert.deepEqual(decodeBackup(encodeBackup(garden)).state, garden);
   await assert.rejects(gardener.rotate({ cell: 5, rotation: 4 }));
-  await assert.rejects(gardener.rotate({ cell: 4, rotation: 1 }));
+  await assert.rejects(gardener.rotate({ cell: 4, rotation: 2 }));
+  const oldV4 = { ...structuredClone(garden), version: 4 };
+  assert.deepEqual(validate(oldV4), garden);
+  const beforeFacing = layout(garden);
+  const facingReceipts = structuredClone(garden.receipts);
+  await gardener.rotate({ cell: 4, rotation: 1, expected: beforeFacing });
+  assert.equal(garden.placements.find((p) => p.cell === 4).rotation, 1);
+  assert.deepEqual(garden.receipts, facingReceipts);
+  assert.deepEqual(decodeBackup(encodeBackup(garden)).state, garden);
+  await assert.rejects(
+    gardener.rotate({ cell: 4, rotation: 0, expected: beforeFacing }),
+  );
+  await gardener.place({ from: 4, cell: 6, expected: layout(garden) });
+  assert.equal(garden.placements.find((p) => p.cell === 6).rotation, 1);
+  await gardener.place({ from: 6, cell: 4, expected: layout(garden) });
+  await gardener.replaceLayout({
+    expected: layout(garden),
+    layout: beforeFacing,
+  });
+  assert.deepEqual(layout(garden), beforeFacing);
+  for (const rotation of [-1, 2, 0.5, '1', null])
+    assert.throws(() =>
+      validate({
+        ...garden,
+        placements: garden.placements.map((p) => ({ ...p, rotation })),
+      }),
+    );
   const beforeStroke = layout(garden);
   await gardener.paint({
     decoration: 'stonepath',
@@ -945,7 +1017,7 @@ try {
   const migratedV3 = validate(oldV3);
   assert.deepEqual(migratedV3.floors, [{ cell: 0, decoration: 'path' }]);
   assert.deepEqual(migratedV3.decorations, []);
-  assert.equal(migratedV3.version, 4);
+  assert.equal(migratedV3.version, 5);
   assert.throws(() =>
     validate({ ...garden, floors: [{ cell: 0, decoration: 'oak' }] }),
   );
