@@ -1,8 +1,8 @@
 import { introductionHtml } from './introduction';
 import { test, expect } from '@playwright/test';
-import { empty, validate } from '../src/game';
+import { empty, validate, islandLand } from '../src/game';
 import { decorationById, DUPLICATE_MATERIALS } from '../src/decorations';
-import { at, landAtLevel } from '../src/world';
+import { at, landAtLevel, landTiles, neighbours } from '../src/world';
 
 test('Orcatopia showcase keeps legacy storage and shows an English fixture island', async ({
   page,
@@ -13,88 +13,163 @@ test('Orcatopia showcase keeps legacy storage and shows an English fixture islan
     fixture.tickets.push({ workspaceId, at: '2026-11-07' });
     fixture.receipts.push({ workspaceId, landmark, at: '2026-11-07' });
   };
-  for (const landmark of ['eiffel', 'taj', 'petra', 'fuji']) acquire(landmark);
+  // Twelve collected destinations unlock the complete island through normal rules.
+  for (const landmark of [
+    'eiffel',
+    'taj',
+    'petra',
+    'fuji',
+    'kinderdijk',
+    'angkor',
+    'stonehenge',
+    'hagia',
+    'sagrada',
+    'opera',
+    'colosseum',
+    'belem',
+  ])
+    acquire(landmark);
   fixture.placements = [
-    { landmark: 'eiffel', cell: at(9, 7)! },
-    { landmark: 'taj', cell: at(14, 9)! },
-    { landmark: 'petra', cell: at(15, 14)! },
+    { landmark: 'eiffel', cell: at(12, 4)! },
+    { landmark: 'fuji', cell: at(6, 6)! },
+    { landmark: 'taj', cell: at(16, 10)! },
+    { landmark: 'kinderdijk', cell: at(6, 15)! },
+    { landmark: 'petra', cell: at(17, 16)! },
   ];
-  // A promenade loops around four planted courts, with open cross paths.
-  const land = landAtLevel(4);
+  const land = landAtLevel(12);
+  // The inner promenade and outer ramble join at a central open cross.
   const promenade = (col: number, row: number) =>
     col === 11 ||
     row === 11 ||
-    ((row === 8 || row === 14) && col >= 8 && col <= 14) ||
-    ((col === 8 || col === 14) && row >= 8 && row <= 14);
+    ((row === 8 || row === 15) && col >= 8 && col <= 15) ||
+    ((col === 8 || col === 15) && row >= 8 && row <= 15) ||
+    (row === 5 && col >= 7 && col <= 15) ||
+    (row === 18 && col >= 5 && col <= 18) ||
+    (col === 5 && row >= 8 && row <= 18) ||
+    (col === 18 && row >= 10 && row <= 18);
   for (const tile of land)
     fixture.floors.push({
       cell: tile.id,
       decoration: promenade(tile.col, tile.row) ? 'stonepath' : 'grass',
     });
   const garden: [string, number, number, number?][] = [
-    // Cherry grove and water garden, with benches facing the ponds.
-    ['fuji-pond', 9, 10],
-    ['fuji-pond', 9, 12],
-    ['fuji-gift', 7, 9],
-    ['fuji-gift', 7, 12],
-    ['fuji-gift', 7, 14],
-    ['fuji-gift', 9, 15],
-    ['fuji-gift', 13, 15],
-    ['fuji-gift', 9, 6],
-    ['fuji-gift', 12, 6],
-    ['fuji-gift', 15, 8],
-    ['eiffel-special', 10, 10, 1],
-    ['eiffel-special', 10, 12, 1],
-    // A pavilion and matching fountains anchor the formal flower garden.
-    ['taj-pavilion', 13, 13],
+    // Central parterre: open sight lines, paired water features and flower beds.
+    ['taj-special', 10, 9],
     ['taj-special', 12, 9],
-    ['taj-special', 12, 12],
-    ['eiffel-special', 13, 10, 3],
-    ['eiffel-special', 12, 15, 2],
-    ['eiffel-rose-arch', 11, 16],
-    ['eiffel-rose-arch', 6, 11],
-    ['eiffel-rose-arch', 15, 11],
-    // Paired lanterns mark the garden entrances, without filling the paths.
-    ['eiffel-gift', 10, 15],
-    ['eiffel-gift', 12, 16],
+    ['taj-pavilion', 13, 13],
+    ['taj-pavilion', 9, 13],
+    ['fuji-pond', 9, 10],
+    ['fuji-pond', 13, 10],
+    ['eiffel-special', 9, 12, 1],
+    ['eiffel-special', 13, 12, 3],
+    ['eiffel-rose-arch', 10, 16],
+    ['eiffel-rose-arch', 12, 16],
+    ['eiffel-gift', 10, 14],
+    ['eiffel-gift', 12, 14],
     ['eiffel-gift', 7, 10],
-    ['eiffel-gift', 7, 13],
-    ['eiffel-gift', 10, 7],
-    ['eiffel-gift', 13, 8],
-    ['eiffel-gift', 15, 10],
-    ['eiffel-gift', 15, 12],
-    ['petra-gift', 16, 13],
-    ['petra-gift', 14, 15],
-    ['petra-special', 16, 14],
-    // Green canopies frame the pink grove and soften the outer lawns.
-    ['oak', 6, 12],
-    ['oak', 16, 10],
-    ['oak', 13, 6],
-    ['fuji-gift', 10, 17],
-    ['fuji-gift', 13, 16],
-    ['taj-gift', 9, 16],
-    ['taj-gift', 10, 16],
-    ['taj-gift', 14, 16],
-    ['taj-gift', 14, 7],
-    ['taj-gift', 10, 6],
-    ['taj-gift', 13, 7],
+    ['eiffel-gift', 7, 12],
+    ['eiffel-gift', 16, 12],
+    ['eiffel-gift', 14, 10],
+    // A cherry grove descends from the mountain to a quiet pond terrace.
+    ['fuji-pond', 4, 9],
+    ['fuji-pond', 6, 10],
+    ['fuji-gift', 4, 7],
+    ['fuji-gift', 6, 8],
+    ['fuji-gift', 8, 6],
+    ['fuji-gift', 4, 12],
+    ['fuji-gift', 6, 13],
+    ['fuji-gift', 7, 9],
+    ['fuji-special', 7, 7],
+    ['eiffel-special', 4, 10, 1],
+    ['angkor-fern-bed', 5, 6],
+    ['angkor-fern-bed', 7, 6],
+    // Rose garden behind the tower; fountains and benches face the lagoon.
+    ['eiffel-rose-arch', 10, 4],
+    ['eiffel-rose-arch', 14, 4],
+    ['eiffel-special', 13, 6, 2],
+    ['belem-special', 14, 7],
+    ['eiffel-gift', 10, 6],
+    ['eiffel-gift', 14, 6],
+    ['fuji-gift', 9, 3],
+    ['fuji-gift', 13, 3],
+    ['fuji-gift', 15, 4],
+    ['opera-special', 19, 9],
+    ['eiffel-special', 19, 10, 3],
+    ['colosseum-gift', 19, 6],
+    ['colosseum-gift', 20, 8],
+    ['taj-pavilion', 19, 13],
+    ['belem-gift', 19, 12],
+    // A windmill meadow, a woodland rest and an oasis at the southern shore.
+    ['kinderdijk-special', 7, 16],
+    ['eiffel-special', 6, 17, 1],
+    ['fuji-gift', 4, 15],
+    ['fuji-gift', 7, 18],
+    ['angkor-gift', 3, 13],
+    ['angkor-gift', 3, 16],
+    ['angkor-fern-bed', 4, 14],
+    ['angkor-fern-bed', 4, 16],
+    ['colosseum-special', 9, 17],
+    ['colosseum-special', 13, 17],
+    ['eiffel-gift', 10, 19],
+    ['eiffel-gift', 12, 19],
+    ['eiffel-rose-arch', 10, 20],
+    ['eiffel-rose-arch', 12, 20],
+    ['fuji-gift', 8, 19],
+    ['fuji-gift', 14, 19],
+    ['petra-gift', 16, 15],
+    ['petra-gift', 19, 16],
+    ['petra-gift', 16, 18],
+    ['petra-special', 19, 18],
+    ['belem-special', 16, 17],
+    ['eiffel-special', 15, 17, 3],
+    ['oak', 16, 13],
+    ['oak', 7, 4],
+    ['oak', 15, 6],
+    ['oak', 20, 12],
+    ['oak', 20, 15],
+    ['oak', 16, 4],
+    ['hagia-gift', 15, 3],
+    ['stonehenge-gift', 3, 9],
+    ['opera-gift', 19, 14],
+    ['opera-gift', 20, 14],
+    ['angkor-fern-bed', 17, 12],
   ];
-  // Low flower borders repeat around the courts; taller pieces stay spaced.
-  const reserved = new Set([
-    ...fixture.placements.map((p) => p.cell),
-    ...garden.map(([, col, row]) => at(col, row)!),
-  ]);
+  const reserved = new Set(fixture.placements.map((p) => p.cell));
+  for (const [, col, row] of garden) {
+    const cell = at(col, row)!;
+    expect(reserved.has(cell)).toBe(false);
+    reserved.add(cell);
+  }
+  // Repeated border planting ties the distinct gardens together. Keep lawn gaps
+  // between the formal beds and the trees, rather than filling every free cell.
   for (const tile of land) {
-    if (reserved.has(tile.id) || promenade(tile.col, tile.row)) continue;
     const { col, row } = tile;
-    if (
-      (col >= 9 && col <= 13 && row >= 9 && row <= 13) ||
-      (row === 7 && col >= 8 && col <= 13) ||
-      (row === 15 && col >= 8 && col <= 14) ||
-      (col === 15 && row >= 9 && row <= 13) ||
-      (col === 7 && row >= 9 && row <= 14)
-    )
-      garden.push(['taj-gift', col, row]);
+    if (reserved.has(tile.id) || promenade(col, row)) continue;
+    const formal = col >= 9 && col <= 14 && row >= 9 && row <= 14;
+    const border =
+      ((row === 7 || row === 16) && col >= 8 && col <= 14) ||
+      ((col === 7 || col === 16) && row >= 8 && row <= 15) ||
+      (row === 6 && col >= 9 && col <= 14) ||
+      (row === 19 && col >= 9 && col <= 15);
+    const meadow = col >= 6 && col <= 9 && row >= 16 && row <= 17;
+    if (formal || border || meadow) {
+      const flower = meadow
+        ? 'kinderdijk-gift'
+        : row < 9
+          ? 'hagia-gift'
+          : col < 11
+            ? 'sagrada-gift'
+            : 'taj-gift';
+      garden.push([flower, col, row]);
+    } else if (
+      col % 3 === 0 &&
+      row % 3 === 0 &&
+      neighbours(tile.id).length === 4
+    ) {
+      garden.push([col < 11 ? 'fuji-gift' : 'colosseum-gift', col, row]);
+    } else if ((col + row * 2) % 11 === 0 && row > 6) {
+      garden.push([col < 8 ? 'angkor-fern-bed' : 'stonehenge-gift', col, row]);
+    }
   }
   const used = new Map<string, number>();
   for (const [decoration, col, row, rotation] of garden) {
@@ -120,6 +195,25 @@ test('Orcatopia showcase keeps legacy storage and shows an English fixture islan
   for (let i = 0; i < Math.ceil(cost / DUPLICATE_MATERIALS); i++)
     acquire('eiffel');
   const save = validate(fixture);
+  expect(islandLand(save)).toHaveLength(landTiles.length);
+  expect(landTiles).toHaveLength(318);
+  expect(save.floors).toHaveLength(318);
+  // Every walkable lawn and path must remain reachable in the decorated layout.
+  const blocked = new Set([
+    ...save.placements.map((p) => p.cell),
+    ...save.decorations
+      .filter((p) => !decorationById(p.decoration)!.walkable)
+      .map((p) => p.cell),
+  ]);
+  const reached = new Set([at(11, 11)!]);
+  for (const cell of reached)
+    for (const next of neighbours(cell))
+      if (!blocked.has(next)) reached.add(next);
+  expect(
+    land
+      .filter((t) => !blocked.has(t.id) && !reached.has(t.id))
+      .map((t) => [t.col, t.row]),
+  ).toEqual([]);
   await page.addInitScript((save) => {
     localStorage.setItem('landmark-island-demo-v1', JSON.stringify(save));
   }, save);

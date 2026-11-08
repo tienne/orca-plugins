@@ -35,7 +35,7 @@ pnpm nx run git-logs:preview
 
 ## Orcatopia
 
-[orcatopia-island.png](orcatopia-island.png)은 에펠탑·타지마할·페트라 주변을 벚나무, 꽃밭, 석재 산책로, 대리석 분수, 카페 벤치와 가로등으로 꾸민 영문 정원 fixture입니다. 기존 게임 장식만 사용하며 보유 수량과 제작 기록을 검증한 배치입니다. 전체 페이지 캡처로 DEMO 표시를 유지합니다. 실제 사용자 저장이나 Orca 호스트 캡처가 아닙니다.
+[orcatopia-island.png](orcatopia-island.png)은 최대로 확장한 섬에 에펠탑·후지산·타지마할·킨더다이크·페트라와 벚꽃 숲, 화단, 석재 산책로, 분수, 파빌리온, 연못, 가로등을 배치한 영문 정원 fixture입니다. 기존 게임 장식만 사용하며 보유 수량과 제작 기록을 검증한 배치입니다. 전체 페이지 캡처로 DEMO 표시를 유지합니다. 실제 사용자 저장이나 Orca 호스트 캡처가 아닙니다.
 
 다음 명령으로 다시 생성하고 복사합니다.
 
@@ -48,7 +48,7 @@ cp test-results/landmark-island/orcatopia-island-demo.png docs/screenshots/orcat
 
 [영어 소개](../../plugins/landmark-island/assets/orcatopia-introduction.png)와 [한국어 소개](../../plugins/landmark-island/assets/orcatopia-introduction.ko.png)는 1600 × 1000 홍보 이미지입니다. 직접 그린 섬 아이콘, Orcatopia 제품명, 짧은 소개 문구와 실제 브라우저에서 촬영한 fixture 정원을 함께 보여 줍니다. 화면에는 DEMO 표시를 명시합니다. 시스템 글꼴과 로컬 SVG/CSS로 구성하며 다운로드한 폰트나 생성형 게임 화면은 포함하지 않습니다. 영어·한국어 플러그인 README의 첫 이미지로 각각 사용합니다. 설치 후에도 같은 상대 경로가 작동하도록 두 이미지를 패키지의 `assets/`에 포함합니다.
 
-재생성 가능한 레이아웃은 `plugins/landmark-island/tests/introduction.ts`에 있습니다. showcase 테스트에서 언어별 실제 게임 화면을 촬영한 뒤 소개 이미지를 구성합니다. 정원은 해금된 130칸 전체에 잔디와 순환 산책로, 교차하는 길을 배치합니다. 벚나무와 참나무가 두 개의 잉어 연못, 꽃 테두리, 분수 한 쌍, 파빌리온, 장미 아치 입구를 감쌉니다. 세 랜드마크는 간격을 두고 정원의 중심 경관으로 배치합니다. 유료 제작 장식은 정상 보유·제작 기록을 사용하며 실제 섬 저장 데이터는 변경하지 않습니다.
+재생성 가능한 레이아웃은 `plugins/landmark-island/tests/introduction.ts`에 있습니다. showcase 테스트에서 언어별 실제 게임 화면을 촬영한 뒤 소개 이미지를 구성합니다. 정원은 fixture의 12종 수집 기록으로 최대 318칸을 해금합니다. 랜드마크 5종 사이로 중앙 화단, 벚꽃 숲, 연못 쉼터, 풍차 초원과 해안 산책길을 조성합니다. 유료 제작 장식은 정상 보유·제작 기록을 사용합니다. showcase 테스트에서 최대 확장과 보행 연결성을 검증하며 실제 섬 저장 데이터는 변경하지 않습니다.
 
 ```sh
 pnpm nx run landmark-island:ui-test --grep='Orcatopia showcase'
