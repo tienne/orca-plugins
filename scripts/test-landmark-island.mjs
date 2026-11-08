@@ -67,10 +67,10 @@ try {
   const { decorations } = await import(
     pathToFileURL(join(dir, 'decorations.mjs'))
   );
-  assert.equal(landmarks.length, 59);
-  assert.equal(new Set(landmarks.map((l) => l.id)).size, 59);
-  assert.equal(new Set(landmarks.map((l) => l.code)).size, 56);
-  assert.equal(decorations.length, 126);
+  assert.equal(landmarks.length, 67);
+  assert.equal(new Set(landmarks.map((l) => l.id)).size, 67);
+  assert.equal(new Set(landmarks.map((l) => l.code)).size, 64);
+  assert.equal(decorations.length, 142);
   for (const code of ['KOR', 'SGP', 'ESP']) {
     const entries = landmarks.filter((l) => l.code === code);
     assert.equal(entries.length, 2);
@@ -81,8 +81,8 @@ try {
     );
   }
   for (const [tier, count, roll] of [
-    ['common', 30, 0.35],
-    ['rare', 19, 0.8],
+    ['common', 35, 0.35],
+    ['rare', 22, 0.8],
     ['epic', 7, 0.95],
     ['legendary', 3, 0.995],
   ]) {
@@ -691,7 +691,7 @@ try {
   for (const landmark of landmarks)
     assert.equal(decorationQuantity(fullCatalog, `${landmark.id}-gift`), 1);
   console.log(
-    'PASS: all 59 catalog draws across 56 countries, 126 decorations, localized descriptions, full-catalog backup and unchanged land cap',
+    'PASS: all 67 catalog draws across 64 countries, 142 decorations, localized descriptions, full-catalog backup and unchanged land cap',
   );
 
   // The four focal pieces use the same ownership and durable craft ledger.

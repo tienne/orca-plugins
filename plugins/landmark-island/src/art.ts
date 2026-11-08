@@ -674,6 +674,115 @@ export function art(id: string) {
         .join('')}
       ${line('M8 91q14-9 29-3M36 67q11-8 23-2M59 38q9-9 18 0M74 78q13-7 28-2M10 113q24 2 44-2t65 4', '#fcf8e9', 1.3)}
       ${rows(5, (i) => line(`M${17 + i * 5} ${108 - i * 0.3}v5`, '#9bafa9', 0.6))}<path d="M71 35V20l4 5-3 3" fill="none" stroke="#8e9b89" stroke-width="1"/>`;
+  } else if (id === 'taipei101') {
+    body = `${surface('M39 119V99h50v20z', 'glass', 'tiles')}<path d="M65 99h24v20H65z" fill="#426a69"/>
+      ${rows(8, (i) => {
+        const y = 22 + i * 10;
+        return `<path d="M43 ${y}h42l-4 9H47z" fill="${url('glass')}" stroke="#4c7771" stroke-width=".8"/><path d="M64 ${y}h21l-4 9H64z" fill="#4f7f7c"/>${line(`M44 ${y + 1}h39M48 ${y + 8}h32`, '#b9d7bd', 1.1)}${rows(5, (j) => line(`M${50 + j * 6} ${y + 2}v5`, '#d9e8ce', 0.55, 0.7))}<path d="M41 ${y}l3-3 3 3m34 0 3-3 3 3" fill="none" stroke="#739b89" stroke-width="1.5"/>`;
+      })}
+      ${surface('M53 22V13h22v9z', 'glass', 'tiles')}${line('M64 13V1M58 13V9h12v4', '#729b8f', 1.6, 1)}
+      <circle cx="44" cy="105" r="4" fill="#9cae89" stroke="#517972"/><circle cx="84" cy="105" r="4" fill="#9cae89" stroke="#517972"/>${surface('M32 119h64v5H32z', 'stone')}`;
+  } else if (id === 'registan') {
+    const portal = (x: number, y: number, w: number, h: number) =>
+      `${surface(`M${x} ${y + h}V${y}h${w}v${h}z`, 'sandstone')}<path d="M${x + 2} ${y + h - 2}V${y + 2}h${w - 4}v${h - 2}" fill="#5d97a2"/>${arch(x + w * 0.24, y + 10, w * 0.52, h - 10, '#294d58')}${rows(6, (i) => line(`M${x + 3} ${y + 5 + (i * (h - 8)) / 6}h3m${w - 9} 0h3`, '#d8c58a', 1.5, 0.9))}${line(`M${x + 6} ${y + 7}h${w - 12}`, '#e2d7a7', 1.5)}`;
+    body = `${surface('M4 106l60-20 60 20-60 21z', 'stone', 'tiles')}
+      <path d="M15 56V46q0-16 12-21 12 5 12 21v10zM89 56V46q0-16 12-21 12 5 12 21v10z" fill="#579da4" stroke="#417982" stroke-width="1"/>
+      ${line('M27 26v26M101 26v26M19 34q-3 10-2 17m18-17q3 10 2 17M93 34q-3 10-2 17m18-17q3 10 2 17', '#9ac4bb', 1)}
+      ${surface('M10 102V54h108v48z')}${portal(44, 43, 40, 55)}${portal(7, 58, 31, 48)}${portal(90, 58, 31, 48)}
+      ${[4, 39, 86, 120].map((x) => `${surface(`M${x - 2} 107V38h5v69z`, 'sandstone')}<path d="M${x - 3} 38l3-6 4 6z" fill="#609da5"/>${rows(6, (i) => line(`M${x - 2} ${47 + i * 9}h5`, '#72a5aa', 1.2))}`).join('')}
+      ${line('M42 106h44M37 112h54M32 117h64', '#eee1bf', 1.3)}`;
+  } else if (id === 'qaboos') {
+    const minaret = (x: number, top: number, base: number) =>
+      `${surface(`M${x - 3} ${base}V${top + 9}h6v${base - top - 9}z`, 'marble')}<path d="M${x - 4} ${top + 10}h8l-2-5h-4zM${x - 2} ${top + 5}v-4h4v4z" fill="${url('stone')}"/>${line(`M${x} ${top + 1}v-5`, '#bda86e', 0.8, 1)}${line(`M${x - 3} ${base - 18}h6M${x - 3} ${top + 15}h6`, '#9d987e', 0.8)}`;
+    body = `${minaret(104, 6, 108)}${minaret(31, 42, 97)}${minaret(90, 42, 97)}
+      ${surface('M6 112l58-17 58 17-58 13z', 'stone', 'tiles')}${surface('M18 106V77h92v29z', 'marble')}
+      ${surface('M40 104V66h48v38z', 'marble')}<path d="M42 65q-1-21 22-32 23 11 22 32z" fill="${url('gold')}" stroke="#b9a479" stroke-width=".6"/>
+      ${rows(7, (i) => line(`M${45 + i * 6} 63Q${48 + i * 5} 44 64 34`, '#f5e6b6', 0.65, 0.65))}${line('M64 33V27', '#b7a06f', 1)}
+      ${rows(4, (i) => arch(21 + i * 8, 84, 5, 18, '#74775e'))}${rows(4, (i) => arch(79 + i * 8, 84, 5, 18, '#74775e'))}${arch(55, 76, 18, 29, '#645f49')}${arch(59, 83, 10, 22, '#393f31')}
+      ${minaret(12, 45, 112)}${minaret(116, 45, 112)}${line('M18 106h92M20 78h88M40 67h48', '#fff7e4', 1.2)}`;
+  } else if (id === 'kuwaittowers') {
+    const sphere = (x: number, y: number, r: number) =>
+      `<circle cx="${x}" cy="${y}" r="${r}" fill="${url('copper')}" stroke="#4e7b76" stroke-width=".8"/>${rows(
+        5,
+        (i) => {
+          const yy = y - r + 3 + (i * (2 * r - 6)) / 4;
+          const w = Math.sqrt(Math.max(0, r * r - (yy - y) * (yy - y)));
+          return line(
+            `M${x - w} ${yy}q${w} 4 ${2 * w} 0`,
+            i % 2 ? '#8fc1bc' : '#476f73',
+            1,
+            0.7,
+          );
+        },
+      )}<path d="M${x - r * 0.4} ${y - r * 0.8}q${-r * 0.5} ${r * 0.7} 0 ${r * 1.4}" fill="none" stroke="#c0d7bd" stroke-width="1.4" opacity=".6"/>`;
+    body = `<path d="M5 116q55-12 116 0" fill="none" stroke="#7d9e99" stroke-width="7" opacity=".4"/>
+      ${surface('M102 116l5-85 2-10 2 10 4 85z', 'marble', 'grain')}
+      ${surface('M69 118l7-78h7l7 78z', 'marble', 'grain')}${sphere(79, 71, 16)}${line('M79 55V21', '#ced4ba', 2, 1)}
+      ${surface('M29 120l8-91h8l8 91z', 'marble', 'grain')}${sphere(41, 78, 23)}${sphere(41, 34, 12)}
+      ${line('M41 22V3M32 77h18m-19 3h20', '#d6dec7', 1.5, 0.85)}<path d="M30 32q11 3 22 0v4q-11 4-22 0z" fill="#4b7176"/>${line('M32 33h18', '#d5e5d4', 0.6)}
+      ${line('M33 112l3-16M47 112l-2-16M73 111l3-23', '#a5ae97', 0.8)}`;
+  } else if (id === 'bahrainwtc') {
+    body = `<path d="M10 118V92Q18 43 49 7L54 119z" fill="${url('glass')}" stroke="#71969b" stroke-width=".8"/><path d="M74 119L79 7q31 36 39 85v26z" fill="${url('glass')}" stroke="#71969b" stroke-width=".8"/>
+      <path d="M49 7l5 112H43zM79 7l-5 112h11z" fill="#436b79" opacity=".7"/>
+      ${rows(14, (i) => {
+        const y = 25 + i * 6;
+        const x = 49 - (y - 10) * 0.36;
+        return line(`M${x} ${y}H50M78 ${y}h${50 - x}`, '#dbe7d9', 0.65, 0.7);
+      })}
+      ${[49, 73, 96].map((y) => `<path d="M51 ${y}h26" stroke="#a5b9ae" stroke-width="3"/><g transform="translate(64 ${y})"><circle r="2" fill="#dce7de"/>${rows(3, (i) => `<path d="M0-1l-1-13 3 2L2-2z" transform="rotate(${i * 120})" fill="#ecebda" stroke="#718d8e" stroke-width=".5"/>`)}</g>`).join('')}
+      ${surface('M5 119h118v5H5z', 'stone')}${line('M12 117L49 8M79 8l36 109', '#eef0db', 1.4, 0.8)}`;
+  } else if (id === 'skytower') {
+    body = `${surface('M43 120l11-24V58h20v38l11 24z', 'marble', 'grain')}<path d="M64 59h10v37l11 24H67z" fill="#81918b" opacity=".6"/>
+      ${line('M49 117l9-21V61M79 117l-9-21V61', '#e9e8d8', 1.7)}
+      <path d="M39 51q25-11 50 0v8q-25 11-50 0z" fill="${url('glass')}" stroke="#658085" stroke-width=".8"/>
+      <ellipse cx="64" cy="50" rx="27" ry="7" fill="${url('marble')}"/><path d="M44 52q20 5 40 0v5q-20 7-40 0z" fill="#507c82"/>
+      ${rows(9, (i) => line(`M${46 + i * 4.5} 52v5`, '#c4dbce', 0.6))}
+      <path d="M50 44l5-7h18l5 7z" fill="${url('marble')}"/><path d="M56 37V25h16v12z" fill="${url('glass')}"/>
+      ${line('M64 25V2M60 25V12m8 13V12M54 37h20M39 60q25 11 50 0', '#a7bcb1', 1.3, 1)}${surface('M36 120h56v4H36z', 'slate', 'grain')}`;
+  } else if (id === 'tiranapyramid') {
+    body = `${surface('M4 107l60-22 60 22-60 19z', 'stone', 'tiles')}
+      <path d="M8 105L57 28h14l49 77-56 13z" fill="${url('marble')}" stroke="#9ba89f" stroke-width="1"/><path d="M64 30v86l56-11-49-77z" fill="#b5c1b6"/>
+      ${[15, 32, 49, 79, 96, 113]
+        .map(
+          (x) =>
+            `<path d="M${x} 106L64 30" stroke="#f6f4df" stroke-width="5"/>${rows(
+              11,
+              (i) => {
+                const t = (i + 1) / 12,
+                  xx = 64 + (x - 64) * t,
+                  yy = 30 + 76 * t;
+                return line(`M${xx - 2.5} ${yy}h5`, '#92a69c', 0.65, 0.8);
+              },
+            )}`,
+        )
+        .join('')}
+      ${[
+        [13, 91, '#e5a96c'],
+        [37, 103, '#b7b061'],
+        [91, 91, '#73abb1'],
+        [74, 110, '#d48072'],
+      ]
+        .map(
+          ([x, y, color]) =>
+            `<g transform="translate(${x} ${y})"><path d="M0 0l10-4 10 4-10 4z" fill="${color}"/><path d="M0 0v12l10 4V4z" fill="${color}"/><path d="M10 4l10-4v12l-10 4z" fill="#6b7770"/><path d="M3 4l4 2v7l-4-1z" fill="#425c59"/></g>`,
+        )
+        .join('')}
+      <path d="M57 28h14l-7-4z" fill="#edf0dc"/>`;
+  } else if (id === 'bucharestpalace') {
+    body = `${surface('M3 121V83h122v38z', 'marble')}${surface('M12 83V62h104v21z', 'marble')}${surface('M25 62V42h78v20z', 'marble')}${surface('M39 42V26h50v16z', 'marble')}
+      ${rows(4, (row) => {
+        const y = [32, 49, 69, 91][row],
+          x = [44, 30, 17, 8][row],
+          n = [7, 13, 17, 20][row];
+        return rows(
+          n,
+          (col) =>
+            `<path d="M${x + col * 5.5} ${y}h2.5v${row === 3 ? 17 : 8}h-2.5z" fill="#667468"/>${line(`M${x + col * 5.5 - 1} ${y - 2}v${row === 3 ? 21 : 12}`, '#f8f0da', 1.1, 0.9)}`,
+        );
+      })}
+      ${surface('M47 118V77h34v41z', 'stone')}${rows(5, (i) => `<path d="M${50 + i * 6} 83h3v24h-3z" fill="#faf1da"/>`)}${arch(59, 98, 10, 21, '#485748')}
+      ${line('M3 84h122M12 63h104M25 43h78M39 27h50M4 113h40m40 0h39', '#fff6df', 2)}<path d="M44 77l20-8 20 8z" fill="#c8c1a7"/>
+      ${line('M40 121h48M44 118h40M48 115h32', '#9aa58b', 1)}${line('M64 26V13', '#838b76', 0.8)}<path d="M65 14h9v5h-9z" fill="#b4ad78"/>`;
   } else if (id === 'giza') {
     body = `${surface('M6 112L56 18l66 94z')}
       <path d="M56 18l16 94h50z" fill="#8c704c" opacity=".6"/><path d="M56 18l-7 14 9-1z" fill="#f4e5c0"/>

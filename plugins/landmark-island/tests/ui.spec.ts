@@ -538,8 +538,8 @@ test('rarity filters, discoveries and progress distinguish unique landmarks from
   );
   const camera = await page.locator('.camera').getAttribute('style');
   for (const [tier, visible, collected, chance, rank, name] of [
-    ['common', 30, 0, 70, 1, 'Discovery'],
-    ['rare', 19, 0, 23, 2, 'Treasure'],
+    ['common', 35, 0, 70, 1, 'Discovery'],
+    ['rare', 22, 0, 23, 2, 'Treasure'],
     ['epic', 7, 0, 6, 3, 'Marvel'],
     ['legendary', 3, 1, 1, 4, 'Wonder'],
   ] as const) {
@@ -1679,7 +1679,7 @@ test('material artwork keeps local paint references isolated across collection, 
       })
       .join('');
     document.body.innerHTML = `<main id="art-review"><h1>DEMO · Eight new countries</h1><div>${cards}</div></main>`;
-  }, landmarks.slice(51));
+  }, landmarks.slice(59));
   await page.addStyleTag({
     content: `
     body { margin: 0; background: #ede9d3; color: #344b3d; }
@@ -1694,7 +1694,7 @@ test('material artwork keeps local paint references isolated across collection, 
   });
   await expect(page.locator('#art-review')).toHaveCount(1);
   await page.locator('#art-review').screenshot({
-    path: 'test-results/landmark-island/modern-landmarks-59-demo.png',
+    path: 'test-results/landmark-island/landmarks-67-demo.png',
   });
 });
 
@@ -1706,7 +1706,7 @@ test('new discoveries grow land, gifts unlock sets, duplicates craft chosen deco
     Math.random = () => {
       const tierRoll =
         (window as unknown as { fixtureRoll?: number }).fixtureRoll ?? 0.8;
-      return roll++ % 2 === 0 ? tierRoll : tierRoll === 0.71 ? 3.5 / 19 : 0;
+      return roll++ % 2 === 0 ? tierRoll : tierRoll === 0.71 ? 3.5 / 22 : 0;
     };
   });
   await page.goto('/');
