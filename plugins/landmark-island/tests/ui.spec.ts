@@ -970,6 +970,12 @@ test('cinematic discovery reveals rarity before artwork, then information and ac
     localStorage.getItem('landmark-island-demo-v1'),
   );
   await expect(theatre).toHaveAttribute('data-phase', 'invitation');
+  const camera = theatre.locator('.atlas-camera');
+  expect(
+    await camera.evaluate(
+      (e) => new DOMMatrix(getComputedStyle(e).transform).isIdentity,
+    ),
+  ).toBe(true);
   await page.clock.runFor(900);
   await expect(theatre).toHaveAttribute('data-phase', 'journey');
   expect(
@@ -983,15 +989,15 @@ test('cinematic discovery reveals rarity before artwork, then information and ac
     'opacity',
     '0',
   );
-  const cameraBefore = await theatre
-    .locator('.atlas-camera')
-    .evaluate((e) => getComputedStyle(e).transform);
-  await page.waitForTimeout(200);
-  expect(
-    await theatre
-      .locator('.atlas-camera')
-      .evaluate((e) => getComputedStyle(e).transform),
-  ).not.toBe(cameraBefore);
+  // The mocked clock controls reveal phases, while CSS transitions need a
+  // browser render. Wait for actual movement instead of sampling after 200 ms.
+  await expect
+    .poll(() =>
+      camera.evaluate(
+        (e) => new DOMMatrix(getComputedStyle(e).transform).isIdentity,
+      ),
+    )
+    .toBe(false);
   await page.clock.runFor(1300);
   await expect(theatre).toHaveAttribute('data-phase', 'omen');
   expect(
