@@ -35,6 +35,10 @@ export function CommitActions({
   closeMenu,
   changed,
   running,
+  hasBase,
+  setBase,
+  compareWithBase,
+  clearBase,
 }: {
   repo: Repository;
   workspaceId: string;
@@ -42,6 +46,10 @@ export function CommitActions({
   closeMenu: () => void;
   changed: () => Promise<void>;
   running: (value: boolean) => void;
+  hasBase: boolean;
+  setBase: (commit: Commit) => void;
+  compareWithBase: (commit: Commit) => void;
+  clearBase: () => void;
 }) {
   useLocale();
   const demo = !window.orca;
@@ -94,6 +102,26 @@ export function CommitActions({
     setRefreshError('');
     closeMenu();
   }
+  // 기준이 없을 때도 항목은 포커스를 받아야 방향키 이동이 끊기지 않아 disabled 대신 aria-disabled를 쓴다.
+  function pick(action: () => void, needsBase = false) {
+    if (!menu || (needsBase && !hasBase)) return;
+    action();
+    closeMenu();
+  }
+  const actionGroup = (group: (typeof menuGroups)[number]) => (
+    <div
+      key={group.label}
+      role="group"
+      aria-label={t(group.label)}
+      className="commit-menu-group"
+    >
+      {group.actions.map((item) => (
+        <button key={item} role="menuitem" onClick={() => choose(item)}>
+          {t(labels[item])}
+        </button>
+      ))}
+    </div>
+  );
   async function prepare() {
     if (!target || inFlight.current) return;
     setBusy(true);
@@ -188,7 +216,7 @@ export function CommitActions({
             className="commit-menu"
             style={{
               left: Math.max(8, Math.min(menu.x, window.innerWidth - 260)),
-              top: Math.max(8, Math.min(menu.y, window.innerHeight - 380)),
+              top: Math.max(8, Math.min(menu.y, window.innerHeight - 480)),
             }}
             onKeyDown={(event) => {
               if (!['ArrowDown', 'ArrowUp', 'Home', 'End'].includes(event.key))
@@ -217,24 +245,35 @@ export function CommitActions({
             <small>
               {menu.commit.hash.slice(0, 7)} {t('· 커밋 작업')}
             </small>
-            {menuGroups.map((group) => (
-              <div
-                key={group.label}
-                role="group"
-                aria-label={t(group.label)}
-                className="commit-menu-group"
+            {menuGroups.slice(0, 2).map(actionGroup)}
+            {/* 되돌리기·리셋 그룹이 계속 맨 끝(End 키 대상)이 되도록 비교 그룹을 그 앞에 둔다. */}
+            <div
+              role="group"
+              aria-label={t('비교')}
+              className="commit-menu-group"
+            >
+              <button
+                role="menuitem"
+                onClick={() => pick(() => setBase(menu.commit))}
               >
-                {group.actions.map((item) => (
-                  <button
-                    key={item}
-                    role="menuitem"
-                    onClick={() => choose(item)}
-                  >
-                    {t(labels[item])}
-                  </button>
-                ))}
-              </div>
-            ))}
+                {t('비교 기준으로 지정')}
+              </button>
+              <button
+                role="menuitem"
+                aria-disabled={!hasBase}
+                onClick={() => pick(() => compareWithBase(menu.commit), true)}
+              >
+                {t('지정한 커밋과 비교')}
+              </button>
+              <button
+                role="menuitem"
+                aria-disabled={!hasBase}
+                onClick={() => pick(clearBase, true)}
+              >
+                {t('기준 해제')}
+              </button>
+            </div>
+            {menuGroups.slice(2).map(actionGroup)}
           </div>
         </>
       )}
@@ -253,7 +292,7 @@ export function CommitActions({
               {t(labels[action]).replace('…', '')}
               {demo ? ' · DEMO' : ''}
             </h2>
-            <p className="operation-subject">{target.message.split('\n')[0]}</p>
+            <p className="operation-subject">{target.subject}</p>
             <dl>
               <dt>{t('저장소')}</dt>
               <dd>{repo.root}</dd>

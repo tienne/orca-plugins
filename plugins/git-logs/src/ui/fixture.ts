@@ -1,4 +1,11 @@
-import type { ChangeSet, FileDiff, Repository } from '../protocol';
+import type {
+  ChangeSet,
+  ChangedFile,
+  Comparison,
+  FileDiff,
+  LogFilter,
+  Repository,
+} from '../protocol';
 // English sample data is opt-in and available only in the browser demo.
 // Real commit messages, author names and file contents are never translated.
 const englishSample =
@@ -39,10 +46,7 @@ export const fixtureRepo: Repository = {
       parents: [hash(7), hash(6)],
       author: sample('서연', 'Alex Morgan'),
       date: '2026-11-04T09:20:00+09:00',
-      message: sample(
-        'Merge branch feature/readable-diff\n\n좌우 비교와 변경 탐색을 하나의 흐름으로 연결합니다.',
-        'Merge branch feature/readable-diff\n\nBring aligned comparison and change navigation into one view.',
-      ),
+      subject: 'Merge branch feature/readable-diff',
       refs: ['HEAD', 'main', 'origin/main'],
     },
     {
@@ -50,18 +54,15 @@ export const fixtureRepo: Repository = {
       parents: [hash(5)],
       author: 'David',
       date: '2026-11-04T08:30:00+09:00',
-      message: 'Improve empty states and keyboard focus',
-      refs: [],
+      subject: 'Improve empty states and keyboard focus',
+      refs: ['tag: v1.0.0'],
     },
     {
       hash: hash(6),
       parents: [hash(5)],
       author: sample('지우', 'Sam Taylor'),
       date: '2026-11-03T18:00:00+09:00',
-      message: sample(
-        'Add aligned side-by-side comparison\n\n공백 비교 옵션 및 동기 스크롤을 추가합니다.',
-        'Add aligned side-by-side comparison\n\nAdd whitespace options and synchronized scrolling.',
-      ),
+      subject: 'Add aligned side-by-side comparison',
       refs: ['feature/readable-diff', 'origin/feature/readable-diff'],
     },
     {
@@ -69,15 +70,15 @@ export const fixtureRepo: Repository = {
       parents: [hash(4)],
       author: 'David',
       date: '2026-11-03T14:12:00+09:00',
-      message: 'Extract repository connection controls',
-      refs: [],
+      subject: 'Extract repository connection controls',
+      refs: ['tag: v0.9.0', 'tag: v0.9.0-rc.1'],
     },
     {
       hash: hash(4),
       parents: [hash(3)],
       author: sample('서연', 'Alex Morgan'),
       date: '2026-11-02T11:10:00+09:00',
-      message: 'Handle binary and renamed files',
+      subject: 'Handle binary and renamed files',
       refs: [],
     },
     {
@@ -85,11 +86,28 @@ export const fixtureRepo: Repository = {
       parents: [],
       author: 'David',
       date: '2026-11-01T10:00:00+09:00',
-      message: 'Initial implementation',
+      subject: 'Initial implementation',
       refs: [],
     },
   ],
 };
+const fixtureBodies: Record<string, string> = {
+  [hash(8)]: sample(
+    '좌우 비교와 변경 탐색을 하나의 흐름으로 연결합니다.',
+    'Bring aligned comparison and change navigation into one view.',
+  ),
+  [hash(6)]: sample(
+    '공백 비교 옵션 및 동기 스크롤을 추가합니다.',
+    'Add whitespace options and synchronized scrolling.',
+  ),
+};
+// 본문이 없는 커밋은 워커처럼 제목만 돌려준다.
+export function fixtureCommitMessage(commitHash: string): { message: string } {
+  const commit = fixtureCommits().find((c) => c.hash === commitHash);
+  if (!commit) throw new Error('커밋을 찾을 수 없습니다.');
+  const body = fixtureBodies[commitHash];
+  return { message: body ? `${commit.subject}\n\n${body}` : commit.subject };
+}
 export const fixtureSet: ChangeSet = {
   comparison: { kind: 'working' },
   left: 'HEAD · main',
@@ -114,7 +132,11 @@ export const fixtureSet: ChangeSet = {
   ],
 };
 export function fixtureDiff(path: string): FileDiff {
-  const file = fixtureSet.files.find((f) => f.path === path)!;
+  const file = [
+    ...fixtureSet.files,
+    ...renameWorking,
+    ...Object.values(renameChanges).flat(),
+  ].find((f) => f.path === path)!;
   const original = {
     kind: 'text' as const,
     text: 'import { useState } from "react";\n\ninterface ComparisonOptions {\n  readOnly: boolean;\n}\n\nexport function DiffViewer() {\n  const [activeFile, setActiveFile] = useState(null);\n\n  const options = {\n    readOnly: false,\n    renderSideBySide: false,\n    fontSize: 12,\n  };\n\n  return (\n    <Comparison\n      file={activeFile}\n      options={options}\n    />\n  );\n}\n',
@@ -161,22 +183,264 @@ export function fixtureDiff(path: string): FileDiff {
   return { file, original, modified };
 }
 
-export function fixtureLog(scope: string): Repository {
+// 파일 히스토리 미리보기(?fixture=rename). src/ui/History.tsx가 Timeline.tsx로 이름을 바꾼 이력이다.
+const renameHash = (n: number) =>
+  `e${n}c3a9f0d17b24685e0ac91d3f7b52e8046a1c9d`.slice(0, 40);
+const renameCommits: Repository['commits'] = [
+  {
+    hash: renameHash(5),
+    parents: [renameHash(4)],
+    author: 'David',
+    date: '2026-11-06T10:00:00+09:00',
+    subject: 'Update README for the history view',
+    refs: ['HEAD', 'main', 'origin/main'],
+  },
+  {
+    hash: renameHash(4),
+    parents: [renameHash(3)],
+    author: 'David',
+    date: '2026-11-05T15:20:00+09:00',
+    subject: 'Polish timeline keyboard focus',
+    refs: ['tag: v1.1.0'],
+  },
+  {
+    hash: renameHash(3),
+    parents: [renameHash(2)],
+    author: sample('서연', 'Alex Morgan'),
+    date: '2026-11-04T11:40:00+09:00',
+    subject: 'Rename History to Timeline',
+    refs: [],
+  },
+  {
+    hash: renameHash(2),
+    parents: [renameHash(1)],
+    author: 'David',
+    date: '2026-11-03T09:05:00+09:00',
+    subject: 'Add history filters',
+    refs: [],
+  },
+  {
+    hash: renameHash(1),
+    parents: [],
+    author: 'David',
+    date: '2026-11-02T09:00:00+09:00',
+    subject: 'Add history view',
+    refs: [],
+  },
+];
+const renameChanges: Record<string, ChangedFile[]> = {
+  [renameHash(5)]: [{ path: 'README.md', status: 'M' }],
+  [renameHash(4)]: [
+    { path: 'src/ui/Timeline.tsx', status: 'M' },
+    { path: 'src/ui/focus.ts', status: 'M' },
+  ],
+  [renameHash(3)]: [
+    { path: 'src/connection.ts', status: 'M' },
+    { path: 'src/ui/Timeline.tsx', oldPath: 'src/ui/History.tsx', status: 'R' },
+  ],
+  [renameHash(2)]: [
+    { path: 'src/ui/filters.ts', status: 'A' },
+    { path: 'src/ui/History.tsx', status: 'M' },
+  ],
+  [renameHash(1)]: [{ path: 'src/ui/History.tsx', status: 'A' }],
+};
+const renameWorking: ChangedFile[] = [
+  { path: 'src/ui/Timeline.tsx', status: 'M', unstaged: true },
+  { path: 'README.md', status: 'M', unstaged: true },
+];
+// 비교 종류에 맞는 변경 파일. 이름 변경 이력 시나리오만 커밋마다 다른 파일을 돌려준다.
+export function fixtureFiles(comparison: Comparison): ChangedFile[] {
+  if (scenario() !== 'rename') return fixtureSet.files;
+  return comparison.kind === 'commit'
+    ? (renameChanges[comparison.commit] ?? [])
+    : renameWorking;
+}
+// follow면 최신 커밋부터 거슬러 올라가며 이름이 바뀐 이전 경로를 추적 대상에 더한다.
+function renamedNames(path: string, follow: boolean) {
+  const names = new Set([path]);
+  if (follow)
+    for (const commit of renameCommits)
+      for (const file of renameChanges[commit.hash] ?? [])
+        if (file.oldPath && names.has(file.path)) names.add(file.oldPath);
+  return names;
+}
+
+// 경로 필터 미리보기용으로 커밋마다 바꾼 파일을 정해 둔다.
+const fixturePaths: Record<string, string[]> = {
+  [hash(8)]: ['src/components/comparison/DiffViewer.tsx'],
+  [hash(7)]: ['src/ui/focus.ts'],
+  [hash(6)]: ['src/components/comparison/DiffViewer.tsx'],
+  [hash(5)]: ['src/connection.ts'],
+  [hash(4)]: ['src/components/comparison/DiffViewer.tsx', 'src/binary.ts'],
+  [hash(3)]: ['README.md', 'src/components/comparison/DiffViewer.tsx'],
+};
+// 워커의 git log 필터를 흉내 낸다. 날짜는 fixture에 committer date가 없어 표시 날짜로 대신한다.
+function matches(commit: Repository['commits'][number], filter: LogFilter) {
+  const includes = (value: string, query?: string) =>
+    !query || value.toLocaleLowerCase().includes(query.toLocaleLowerCase());
+  const day = commit.date.slice(0, 10);
+  const path = filter.path?.replace(/\/+$/, '');
+  const within = (file: string, targets: Set<string>) =>
+    [...targets].some((name) => file === name || file.startsWith(`${name}/`));
+  const names = path ? renamedNames(path, filter.follow === true) : undefined;
+  return (
+    includes(commit.subject, filter.text) &&
+    includes(commit.author, filter.author) &&
+    (!filter.since || day >= filter.since) &&
+    (!filter.until || day <= filter.until) &&
+    (!names ||
+      (scenario() === 'rename'
+        ? (renameChanges[commit.hash] ?? []).some(
+            (file) =>
+              within(file.path, names) ||
+              (!!file.oldPath && within(file.oldPath, names)),
+          )
+        : (fixturePaths[commit.hash] ?? []).some((file) =>
+            within(file, names),
+          )))
+  );
+}
+
+// 페이징 미리보기용 시나리오. paged·stale은 450개(200/200/50), many는 상한(5,000)을 넘는 이력이다.
+const generatedCount: Record<string, number> = {
+  paged: 450,
+  stale: 450,
+  many: 5200,
+};
+const PAGE_SIZE = 200;
+const LOAD_LIMIT = 5000;
+let generated: Repository['commits'] | undefined;
+const pagedHash = (n: number) =>
+  `f${n.toString(16).padStart(7, '0')}${hash(0).slice(8)}`.slice(0, 40);
+// 100행마다 15행 뒤로 이어지는 곁가지를 두어 페이지 경계(200행)를 넘는 그래프 선을 만든다.
+function fixtureCommits(): Repository['commits'] {
+  if (scenario() === 'rename') return renameCommits;
+  const count = generatedCount[scenario()];
+  if (!count) return fixtureRepo.commits;
+  generated ??= Array.from({ length: count }, (_, i) => ({
+    hash: pagedHash(i),
+    parents:
+      i === count - 1
+        ? []
+        : i % 100 === 90 && i + 15 < count
+          ? [pagedHash(i + 1), pagedHash(i + 15)]
+          : [pagedHash(i + 1)],
+    author: i % 3 ? 'David' : sample('서연', 'Alex Morgan'),
+    date: new Date(Date.UTC(2026, 10, 4, 0) - i * 3_600_000).toISOString(),
+    subject: `DEMO paged commit ${i + 1}`,
+    refs: i === 0 ? ['HEAD', 'main', 'origin/main'] : [],
+  }));
+  return generated;
+}
+function scenario() {
+  return typeof window === 'undefined' || window.orca
+    ? 'default'
+    : (new URLSearchParams(window.location.search).get('fixture') ?? 'default');
+}
+// stale 시나리오는 첫 다음 페이지 요청에서 한 번만 이력이 바뀐 것처럼 실패한다.
+let staleOnce = true;
+
+export function fixtureLog(
+  scope: string,
+  filter: LogFilter = {},
+  cursor?: string,
+): Repository {
+  const commits = fixtureCommits();
   const branch = fixtureRepo.branches?.find((branch) => branch.ref === scope);
-  if (!branch) return fixtureRepo;
+  const byHash = new Map(commits.map((commit) => [commit.hash, commit]));
   const reachable = new Set<string>();
-  const pending = [branch.hash];
+  // 생성 이력에서는 브랜치를 고르면 앞 50개를 건너뛴 지점부터 보여 준다.
+  const pending = branch
+    ? [commits === fixtureRepo.commits ? branch.hash : pagedHash(50)]
+    : [];
   while (pending.length) {
     const hash = pending.pop()!;
     if (reachable.has(hash)) continue;
     reachable.add(hash);
-    pending.push(
-      ...(fixtureRepo.commits.find((commit) => commit.hash === hash)?.parents ??
-        []),
-    );
+    pending.push(...(byHash.get(hash)?.parents ?? []));
   }
+  let skip = 0;
+  if (cursor !== undefined) {
+    const match = /^demo-(\d+)$/.exec(cursor);
+    if (!match || Number(match[1]) > LOAD_LIMIT)
+      throw new Error('잘못된 페이지 커서입니다. 처음부터 다시 불러오세요.');
+    if (scenario() === 'stale' && staleOnce) {
+      staleOnce = false;
+      throw new Error(
+        'stale-cursor: 이력이 바뀌었습니다. 처음부터 다시 불러옵니다.',
+      );
+    }
+    skip = Number(match[1]);
+  }
+  const matched = commits.filter(
+    (commit) =>
+      (!branch || reachable.has(commit.hash)) && matches(commit, filter),
+  );
+  const next = Math.min(skip + PAGE_SIZE, LOAD_LIMIT, matched.length);
+  const hasMore = next < matched.length && next < LOAD_LIMIT;
   return {
     ...fixtureRepo,
-    commits: fixtureRepo.commits.filter((commit) => reachable.has(commit.hash)),
+    head: commits[0]?.hash ?? null,
+    commits: matched.slice(skip, next),
+    hasMore,
+    ...(hasMore ? { nextCursor: `demo-${next}` } : {}),
+  };
+}
+
+// 첫 번째로 만나는 공통 조상을 쓴다. 미리보기용이라 가장 가까운 조상을 보장하지는 않는다.
+function fixtureMergeBase(base: string, target: string) {
+  const parents = new Map(
+    fixtureCommits().map((commit) => [commit.hash, commit.parents]),
+  );
+  const ancestors = new Set<string>();
+  const pending = [base];
+  while (pending.length) {
+    const hash = pending.pop()!;
+    if (ancestors.has(hash)) continue;
+    ancestors.add(hash);
+    pending.push(...(parents.get(hash) ?? []));
+  }
+  const queue = [target];
+  const seen = new Set<string>();
+  while (queue.length) {
+    const hash = queue.shift()!;
+    if (ancestors.has(hash)) return hash;
+    if (seen.has(hash)) continue;
+    seen.add(hash);
+    queue.push(...(parents.get(hash) ?? []));
+  }
+  return undefined;
+}
+
+// 워커 rangeChanges와 같은 순서로 오류를 낸다. unrelated 시나리오는 공통 조상이 없는 저장소를 흉내 낸다.
+export function fixtureRange(
+  comparison: Extract<Comparison, { kind: 'range' }>,
+): ChangeSet {
+  const known = new Set(fixtureCommits().map((commit) => commit.hash));
+  if (!known.has(comparison.base) || !known.has(comparison.target))
+    throw new Error('커밋을 찾을 수 없습니다.');
+  const mergeBase = comparison.mergeBase === true;
+  let left = comparison.base;
+  if (mergeBase) {
+    const found =
+      scenario() === 'unrelated'
+        ? undefined
+        : fixtureMergeBase(comparison.base, comparison.target);
+    if (!found) throw new Error('공통 조상이 없습니다.');
+    left = found;
+  }
+  if (left === comparison.target) throw new Error('같은 커밋입니다.');
+  const files = fixtureSet.files
+    .filter((file) => file.status !== '?')
+    .map(({ path, oldPath, status }) => ({
+      path,
+      status,
+      ...(oldPath ? { oldPath } : {}),
+    }));
+  return {
+    comparison: { ...comparison, mergeBase },
+    files: mergeBase ? files.slice(0, 2) : files,
+    left,
+    right: comparison.target,
   };
 }
