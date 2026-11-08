@@ -1,28 +1,18 @@
 import { mkdir, lstat, writeFile, realpath } from 'node:fs/promises';
 import { randomUUID } from 'node:crypto';
 import { join } from 'node:path';
-import type {
-  Comparison,
-  Descriptor,
-  Requests,
-  WorkerApi,
-  WorkspaceContext,
-  WorkspaceChoice,
+import {
+  checkDescriptorVersion,
+  descriptorVersion,
+  type Descriptor,
+  type Requests,
+  type WorkerApi,
+  type WorkspaceContext,
+  type WorkspaceChoice,
 } from '../protocol';
 import { changes, commitMessage, diff, log, repository, git } from './git';
 import { createOperations } from './operations';
 import { ensureLocalIgnore } from './local-ignore';
-// range 문서만 version 2로 올려 0.1.x가 해석하지 못하는 문서를 거부하게 한다.
-export function descriptorVersion(comparison: Comparison): 1 | 2 {
-  return comparison.kind === 'range' ? 2 : 1;
-}
-export function checkDescriptorVersion(descriptor: unknown): void {
-  const d = descriptor as Partial<Descriptor> | null | undefined;
-  if (d?.version !== 1 && d?.version !== 2)
-    throw new Error('지원하지 않는 비교 문서입니다.');
-  if (d.version === 1 && d.comparison?.kind === 'range')
-    throw new Error('지원하지 않는 비교 문서입니다.');
-}
 export default function activate(orca: WorkerApi): void {
   function requireHost(name: string) {
     if (orca.api?.major !== 1 || orca.api.minor < 3 || !orca.host.has(name))
@@ -217,9 +207,29 @@ export default function activate(orca: WorkerApi): void {
             : '현재 workspace를 자동으로 식별하지 못했습니다. 로컬 워크트리를 선택하세요.',
     };
   });
-  handle('log', async ({ repo, all, branchRef, filter, cursor }) =>
-    log(check(repo), all === true, branchRef, filter, cursor),
-  );
+  // 필터를 연달아 바꾸면 앞선 요청의 git 프로세스를 끊어 새 요청이 밀리지 않게 한다.
+  // 페이지 요청은 cancelKey를 보내지 않아 필터 요청을 끊지 않는다.
+  const filterRequests = new Map<string, AbortController>();
+  handle('log', async ({ repo, all, branchRef, filter, cursor, cancelKey }) => {
+    const root = check(repo);
+    if (cancelKey !== 'filter')
+      return log(root, all === true, branchRef, filter, cursor);
+    filterRequests.get(root)?.abort();
+    const controller = new AbortController();
+    filterRequests.set(root, controller);
+    try {
+      return await log(
+        root,
+        all === true,
+        branchRef,
+        filter,
+        cursor,
+        controller.signal,
+      );
+    } finally {
+      if (filterRequests.get(root) === controller) filterRequests.delete(root);
+    }
+  });
   handle('prepare', async ({ repo, workspaceId, operation }) =>
     operations.prepare(await mutationRoot(repo, workspaceId), operation),
   );

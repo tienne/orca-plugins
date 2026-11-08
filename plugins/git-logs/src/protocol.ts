@@ -143,6 +143,8 @@ export interface Requests {
       branchRef?: string;
       filter?: LogFilter;
       cursor?: string;
+      // 'filter'를 보내면 같은 저장소의 앞선 'filter' 요청을 취소한다.
+      cancelKey?: 'filter';
     };
     output: Repository;
   };
@@ -226,4 +228,23 @@ declare global {
   interface Window {
     orca?: FrameApi;
   }
+}
+
+// 워커와 UI가 같은 값을 쓴다. 따로 두면 한쪽만 바뀌어 페이징 상한과 오류 판별이 어긋난다.
+export const PAGE_SIZE = 200;
+export const LOAD_LIMIT = 5000;
+export const STALE_CURSOR_PREFIX = 'stale-cursor:';
+
+// range 문서만 version 2로 올려 0.1.x가 해석하지 못하는 문서를 거부하게 한다.
+export function descriptorVersion(
+  comparison: Comparison,
+): Descriptor['version'] {
+  return comparison.kind === 'range' ? 2 : 1;
+}
+export function checkDescriptorVersion(descriptor: unknown): void {
+  const d = descriptor as Partial<Descriptor> | null | undefined;
+  if (d?.version !== 1 && d?.version !== 2)
+    throw new Error('지원하지 않는 비교 문서입니다.');
+  if (d.version === 1 && d.comparison?.kind === 'range')
+    throw new Error('지원하지 않는 비교 문서입니다.');
 }

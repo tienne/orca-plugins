@@ -4,16 +4,18 @@ import { execFile } from 'node:child_process';
 import { promisify } from 'node:util';
 import { realpath, lstat, open } from 'node:fs/promises';
 import { isAbsolute, relative, resolve, sep } from 'node:path';
-import type {
-  ChangedFile,
-  ChangeSet,
-  Commit,
-  Comparison,
-  FileDiff,
-  FileSide,
-  Repository,
-  BranchRef,
-  LogFilter,
+import {
+  LOAD_LIMIT,
+  PAGE_SIZE,
+  type ChangedFile,
+  type ChangeSet,
+  type Commit,
+  type Comparison,
+  type FileDiff,
+  type FileSide,
+  type Repository,
+  type BranchRef,
+  type LogFilter,
 } from '../protocol';
 const exec = promisify(execFile);
 const LIMIT = 768 * 1024;
@@ -21,6 +23,7 @@ export async function git(
   root: string,
   args: string[],
   timeout = 15000,
+  signal?: AbortSignal,
 ): Promise<Buffer> {
   const env = { ...process.env };
   for (const key of Object.keys(env))
@@ -46,6 +49,7 @@ export async function git(
       encoding: 'buffer',
       maxBuffer: 8 * 1024 * 1024,
       timeout,
+      signal,
       env: {
         ...env,
         GIT_OPTIONAL_LOCKS: '0',
@@ -58,10 +62,12 @@ export async function git(
   );
   return result.stdout;
 }
-async function optional(root: string, args: string[]) {
+async function optional(root: string, args: string[], signal?: AbortSignal) {
   try {
-    return (await git(root, args)).toString().trim();
-  } catch {
+    return (await git(root, args, undefined, signal)).toString().trim();
+  } catch (e) {
+    // 취소는 빈 값으로 삼키지 않고 호출한 쪽까지 올려 보낸다.
+    if (signal?.aborted) throw e;
     return '';
   }
 }
@@ -189,8 +195,8 @@ export function validateFilter(
       text && /^[0-9a-f]{4,64}$/i.test(text) ? text.toLowerCase() : undefined,
   };
 }
-export const PAGE_SIZE = 200;
-export const LOAD_LIMIT = 5000;
+// i18n 검사가 소스의 한글 원문 리터럴로 번역 키를 찾아서 접두사를 보간하지 않고 풀어 쓴다.
+// 접두사가 STALE_CURSOR_PREFIX와 같은지는 git.test.ts가 확인한다.
 const STALE_CURSOR =
   'stale-cursor: 이력이 바뀌었습니다. 처음부터 다시 불러옵니다.';
 const BAD_CURSOR = '잘못된 페이지 커서입니다. 처음부터 다시 불러오세요.';
@@ -258,39 +264,43 @@ function parseCommits(
   }
   return commits;
 }
-export async function log(
+type RefIndex = {
+  refs: Map<string, string[]>;
+  localBranches: { name: string; hash: string }[];
+  branches: BranchRef[];
+  walked: string[];
+  extraWalked: string[];
+};
+// 브랜치 피커와 커밋 라벨, 페이지 스냅샷이 같이 쓰는 ref 목록을 한 번에 읽는다.
+async function readRefs(
   root: string,
-  all = false,
-  branchRef?: string,
-  filter?: LogFilter,
-  cursor?: string,
-): Promise<Repository> {
-  const valid = validateFilter(filter, all);
-  const head = await optional(root, ['rev-parse', '--verify', 'HEAD']);
-  const branch = await optional(root, [
-    'symbolic-ref',
-    '--short',
-    '-q',
-    'HEAD',
-  ]);
+  all: boolean,
+  signal?: AbortSignal,
+): Promise<RefIndex> {
   const refs = new Map<string, string[]>();
   const localBranches: { name: string; hash: string }[] = [];
   const branches: BranchRef[] = [];
   const walked: string[] = [];
+  // --all은 브랜치 밖의 태그, stash, notes도 걷는다. 목록에 보이지 않아도 움직이면 커서 위치가 밀린다.
+  const extraWalked: string[] = [];
   for (const line of (
-    await git(root, [
-      'for-each-ref',
-      '--format=%(objectname)%09%(refname)%09%(symref)%09%(objecttype)%09%(*objectname)%09%(*objecttype)',
-      'refs/heads',
-      'refs/remotes',
-      'refs/tags',
-    ])
+    await git(
+      root,
+      [
+        'for-each-ref',
+        '--format=%(objectname)%09%(refname)%09%(symref)%09%(objecttype)%09%(*objectname)%09%(*objecttype)',
+        'refs/',
+      ],
+      undefined,
+      signal,
+    )
   )
     .toString()
     .split('\n')
     .filter(Boolean)) {
     const [hash, name, symbolic, type, peeled, peeledType] = line.split('\t');
     if (name?.startsWith('refs/tags/')) {
+      if (all) extraWalked.push(line);
       // 태그 목록 자체는 브랜치 피커에 노출하지 않고, 커밋 라벨로만 붙인다.
       const target =
         type === 'commit'
@@ -303,6 +313,13 @@ export async function log(
           ...(refs.get(target) ?? []),
           `tag: ${name.replace(/^refs\/tags\//, '')}`,
         ]);
+      continue;
+    }
+    if (
+      !name?.startsWith('refs/heads/') &&
+      !name?.startsWith('refs/remotes/')
+    ) {
+      if (all) extraWalked.push(line);
       continue;
     }
     walked.push(line);
@@ -321,6 +338,86 @@ export async function log(
         name.replace(/^refs\/(heads|remotes)\//, ''),
       ]);
   }
+  return { refs, localBranches, branches, walked, extraWalked };
+}
+// 워커는 재시작마다 메모리를 잃으므로 같은 이력인지는 요청마다 다시 계산해 비교한다.
+function snapshotKey(input: {
+  head: string;
+  walked: string[];
+  extra: string[];
+  all: boolean;
+  branchRef?: string;
+  valid: ReturnType<typeof validateFilter>;
+}): string {
+  const { head, walked, extra, all, branchRef, valid } = input;
+  return createHash('sha256')
+    .update(
+      JSON.stringify({
+        head,
+        refs: walked,
+        extra,
+        all,
+        branchRef: branchRef ?? null,
+        filter: valid
+          ? { args: valid.args, path: valid.path ?? null, follow: valid.follow }
+          : null,
+      }),
+    )
+    .digest('hex');
+}
+// 해시로 검색한 커밋을 목록에 맞춰 넣는다. commits를 직접 고친다.
+async function placeHashMatch(
+  root: string,
+  commits: Commit[],
+  skip: number,
+  hashPrefix: string,
+  head: string,
+  refs: Map<string, string[]>,
+  signal?: AbortSignal,
+): Promise<void> {
+  const match = await optional(
+    root,
+    ['rev-parse', '--verify', '--quiet', `${hashPrefix}^{commit}`],
+    signal,
+  );
+  // 같은 이름의 ref로 풀린 경우는 해시 검색이 아니므로 버린다.
+  const found = /^[a-f0-9]{40,64}$/.test(match) && match.startsWith(hashPrefix);
+  // 첫 페이지 범위 밖의 일치 커밋은 첫 페이지 맨 위에 이미 붙었으므로 뒷 페이지에서는 뺀다.
+  // skip은 Git 출력 행 기준이라 여기서 빼도 다음 커서 위치는 어긋나지 않는다.
+  if (found && skip > 0) {
+    const at = commits.findIndex((c) => c.hash === match);
+    if (at >= 0 && skip + at >= PAGE_SIZE) commits.splice(at, 1);
+  } else if (found && !commits.some((c) => c.hash === match))
+    commits.unshift(
+      ...parseCommits(
+        (
+          await git(root, ['log', '-1', '--no-walk', FORMAT, match, '--'])
+        ).toString(),
+        head,
+        refs,
+      ),
+    );
+}
+export async function log(
+  root: string,
+  all = false,
+  branchRef?: string,
+  filter?: LogFilter,
+  cursor?: string,
+  signal?: AbortSignal,
+): Promise<Repository> {
+  const valid = validateFilter(filter, all);
+  const head = await optional(root, ['rev-parse', '--verify', 'HEAD'], signal);
+  const branch = await optional(
+    root,
+    ['symbolic-ref', '--short', '-q', 'HEAD'],
+    signal,
+  );
+  const { refs, localBranches, branches, walked, extraWalked } = await readRefs(
+    root,
+    all,
+    signal,
+  );
   const selected =
     branchRef === undefined
       ? undefined
@@ -331,19 +428,14 @@ export async function log(
     ? await commitHash(root, selected.hash)
     : undefined;
   // 워커는 재시작마다 메모리를 잃으므로 같은 이력인지는 요청마다 다시 계산해 비교한다.
-  const snapshot = createHash('sha256')
-    .update(
-      JSON.stringify({
-        head,
-        refs: walked,
-        all,
-        branchRef: branchRef ?? null,
-        filter: valid
-          ? { args: valid.args, path: valid.path ?? null, follow: valid.follow }
-          : null,
-      }),
-    )
-    .digest('hex');
+  const snapshot = snapshotKey({
+    head,
+    walked,
+    extra: all ? extraWalked : [],
+    all,
+    branchRef,
+    valid,
+  });
   const skip = decodeCursor(cursor, snapshot) ?? 0;
   const { size } = page(skip, 0);
   // 디렉터리에 --follow를 걸면 이력이 엉뚱하게 끊기므로 파일일 때만 켠다.
@@ -351,8 +443,11 @@ export async function log(
   const follow =
     valid?.follow === true &&
     !!start &&
-    (await optional(root, ['cat-file', '-t', `${start}:${valid.path}`])) !==
-      'tree';
+    (await optional(
+      root,
+      ['cat-file', '-t', `${start}:${valid.path}`],
+      signal,
+    )) !== 'tree';
   // --follow와 --skip을 함께 쓰면 skip이 경로에 안 걸리는 커밋까지 세고, 건너뛴 구간의
   // 이름 변경도 놓친다. follow일 때는 처음부터 받아 앞 skip개를 JS에서 잘라낸다(상한 5,000이라 비용 제한적).
   const range = follow
@@ -363,53 +458,42 @@ export async function log(
     (!head && !all && !selectedHash) || size <= 0
       ? ''
       : (
-          await git(root, [
-            '--literal-pathspecs',
-            'log',
-            '--topo-order',
-            ...range,
-            FORMAT,
-            ...(valid?.args ?? []),
-            ...(follow ? ['--follow'] : []),
-            ...(selectedHash
-              ? [selectedHash]
-              : all
-                ? ['--all', ...(head ? ['HEAD'] : [])]
-                : ['HEAD']),
-            '--',
-            ...(valid?.path ? [valid.path] : []),
-          ])
+          await git(
+            root,
+            [
+              '--literal-pathspecs',
+              'log',
+              '--topo-order',
+              ...range,
+              FORMAT,
+              ...(valid?.args ?? []),
+              ...(follow ? ['--follow'] : []),
+              ...(selectedHash
+                ? [selectedHash]
+                : all
+                  ? ['--all', ...(head ? ['HEAD'] : [])]
+                  : ['HEAD']),
+              '--',
+              ...(valid?.path ? [valid.path] : []),
+            ],
+            undefined,
+            signal,
+          )
         ).toString();
   const parsed = parseCommits(raw, head, refs);
   const fetched = follow ? parsed.slice(skip) : parsed;
   const { taken, next, hasMore } = page(skip, fetched.length);
   const commits = fetched.slice(0, taken);
-  if (valid?.hashPrefix) {
-    const match = await optional(root, [
-      'rev-parse',
-      '--verify',
-      '--quiet',
-      `${valid.hashPrefix}^{commit}`,
-    ]);
-    // 같은 이름의 ref로 풀린 경우는 해시 검색이 아니므로 버린다.
-    const found =
-      /^[a-f0-9]{40,64}$/.test(match) && match.startsWith(valid.hashPrefix);
-    // 첫 페이지 범위 밖의 일치 커밋은 첫 페이지 맨 위에 이미 붙었으므로 뒷 페이지에서는 뺀다.
-    // skip은 Git 출력 행 기준이라 여기서 빼도 다음 커서 위치는 어긋나지 않는다.
-    if (found && skip > 0) {
-      const at = commits.findIndex((c) => c.hash === match);
-      if (at >= 0 && skip + at >= PAGE_SIZE) commits.splice(at, 1);
-    } else if (found && !commits.some((c) => c.hash === match))
-      commits.unshift(
-        ...parseCommits(
-          (
-            await git(root, ['log', '-1', '--no-walk', FORMAT, match, '--'])
-          ).toString(),
-          head,
-          refs,
-        ),
-      );
-  }
+  if (valid?.hashPrefix)
+    await placeHashMatch(
+      root,
+      commits,
+      skip,
+      valid.hashPrefix,
+      head,
+      refs,
+      signal,
+    );
   return {
     root,
     branch: branch || 'Detached HEAD',

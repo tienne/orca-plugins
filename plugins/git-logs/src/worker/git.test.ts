@@ -27,8 +27,13 @@ import {
   validateFilter,
   encodeCursor,
   page,
-  LOAD_LIMIT,
 } from './git';
+import {
+  LOAD_LIMIT,
+  STALE_CURSOR_PREFIX,
+  checkDescriptorVersion,
+  descriptorVersion,
+} from '../protocol';
 import { layout } from '../ui/graph';
 import activate from './main';
 async function fixture(
@@ -1547,7 +1552,6 @@ test('page arithmetic caps the window at the load limit', () => {
   });
 });
 
-import { checkDescriptorVersion, descriptorVersion } from './main';
 async function branches(
   root: string,
   commit: (msg: string) => Promise<string>,
@@ -1821,6 +1825,14 @@ const revList = async (root: string, args: string[]) =>
     .filter(Boolean);
 const STALE = /^stale-cursor: 이력이 바뀌었습니다\. 처음부터 다시 불러옵니다\./;
 
+test('stale 커서 오류 문구는 UI가 판별하는 접두사로 시작한다', () => {
+  // worker와 fixture는 i18n 검사 때문에 원문을 풀어 쓰므로 접두사가 어긋나지 않게 여기서 묶는다.
+  assert.ok(
+    'stale-cursor: 이력이 바뀌었습니다.'.startsWith(STALE_CURSOR_PREFIX),
+  );
+  assert.ok(STALE.source.startsWith(`^${STALE_CURSOR_PREFIX}`));
+});
+
 test('필터와 페이징을 함께 쓴 뒤 ref가 움직이면 stale-cursor이고, 처음부터 다시 불러오면 중복도 누락도 없다', () =>
   fixture(async (root) => {
     await chain(root, 450, (i) => ({
@@ -1947,43 +1959,37 @@ test('follow와 페이징은 모든 커밋이 파일을 건드리고 이름 변�
     );
   }));
 // git log의 --skip은 --follow와 함께 쓰면 경로에 걸리지 않는 커밋까지 세므로 워커는 follow일 때 --skip을 쓰지 않는다.
-test(
-  'follow와 페이징은 파일을 건드리지 않는 커밋이 섞인 이력에서도 중복 없이 이어진다',
-  () =>
-    fixture(async (root) => {
-      await renamedHistory(root, 450, 100, true);
-      const expected = await followed(root, 'new.txt');
-      assert.equal(expected.length, 225);
-      const result = await pages(root, false, undefined, {
-        path: 'new.txt',
-        follow: true,
-      });
-      assert.deepEqual(hashesOf(result), expected);
-      assert.deepEqual(
-        result.map((r) => r.commits.length),
-        [200, 25],
-      );
-    }),
-);
+test('follow와 페이징은 파일을 건드리지 않는 커밋이 섞인 이력에서도 중복 없이 이어진다', () =>
+  fixture(async (root) => {
+    await renamedHistory(root, 450, 100, true);
+    const expected = await followed(root, 'new.txt');
+    assert.equal(expected.length, 225);
+    const result = await pages(root, false, undefined, {
+      path: 'new.txt',
+      follow: true,
+    });
+    assert.deepEqual(hashesOf(result), expected);
+    assert.deepEqual(
+      result.map((r) => r.commits.length),
+      [200, 25],
+    );
+  }));
 // --skip으로 건너뛴 커밋은 diff하지 않아 --follow가 그 안의 이름 변경을 놓치므로 처음부터 받아 잘라낸다.
-test(
-  'follow와 페이징은 이름 변경 커밋이 앞 페이지에 있어도 옛 이름 이력이 이어진다',
-  () =>
-    fixture(async (root) => {
-      await renamedHistory(root, 350, 250, false);
-      const expected = await followed(root, 'new.txt');
-      assert.equal(expected.length, 350);
-      const result = await pages(root, false, undefined, {
-        path: 'new.txt',
-        follow: true,
-      });
-      assert.deepEqual(hashesOf(result), expected);
-      assert.deepEqual(
-        result.map((r) => r.commits.length),
-        [200, 150],
-      );
-    }),
-);
+test('follow와 페이징은 이름 변경 커밋이 앞 페이지에 있어도 옛 이름 이력이 이어진다', () =>
+  fixture(async (root) => {
+    await renamedHistory(root, 350, 250, false);
+    const expected = await followed(root, 'new.txt');
+    assert.equal(expected.length, 350);
+    const result = await pages(root, false, undefined, {
+      path: 'new.txt',
+      follow: true,
+    });
+    assert.deepEqual(hashesOf(result), expected);
+    assert.deepEqual(
+      result.map((r) => r.commits.length),
+      [200, 150],
+    );
+  }));
 // 홀수 번째는 다른 파일만 건드리므로 짝수 번째만 세어 400커밋은 200개, 401커밋은 201개가 된다.
 test('follow와 페이징은 파일을 건드린 커밋이 정확히 200개면 한 페이지로 끝난다', () =>
   fixture(async (root) => {
@@ -2014,10 +2020,10 @@ test('follow와 페이징은 파일을 건드린 커밋이 201개면 200/1로 �
     assert.equal(indexOf(over[1].commits[0]), 0);
   }));
 
-test('태그를 추가하거나 지워도 페이징 스냅샷은 그대로여서 같은 커서가 계속 유효하다', () =>
+test('현재 브랜치 범위에서는 태그를 추가하거나 지워도 페이징 스냅샷이 그대로여서 같은 커서가 계속 유효하다', () =>
   fixture(async (root) => {
     await chain(root, 450, (i) => ({ message: `c${i}` }));
-    for (const all of [false, true]) {
+    for (const all of [false]) {
       const first = await log(root, all);
       const baseline = await log(
         root,
@@ -2075,6 +2081,127 @@ test('태그를 추가하거나 지워도 페이징 스냅샷은 그대로여서
       );
       assert.equal(removed.nextCursor, third);
     }
+  }));
+
+test('--all 범위에서는 태그나 stash 같은 브랜치 밖 ref가 움직이면 이전 커서를 거부한다', () =>
+  fixture(async (root) => {
+    await chain(root, 450, (i) => ({ message: `c${i}` }));
+    const first = await log(root, true);
+    const second = await log(
+      root,
+      true,
+      undefined,
+      undefined,
+      first.nextCursor,
+    );
+    const head = first.head!;
+    const snapshot = snapshotOf(first.nextCursor!);
+
+    // 브랜치에서 안 보이는 커밋만 가리키는 태그도 --all은 걷기 때문에 skip 위치가 밀린다.
+    await git(root, ['tag', 'v-tail', second.commits.at(-1)!.hash]);
+    await assert.rejects(
+      log(root, true, undefined, undefined, first.nextCursor),
+      { message: STALE },
+    );
+    const tagged = await log(root, true);
+    assert.notEqual(snapshotOf(tagged.nextCursor!), snapshot);
+    await git(root, ['tag', '-d', 'v-tail']);
+    assert.equal(
+      snapshotOf((await log(root, true)).nextCursor!),
+      snapshot,
+      '태그를 지우면 스냅샷이 원래대로 돌아와야 한다',
+    );
+
+    // 움직이는 태그: 같은 이름이 다른 커밋을 가리켜도 거부한다.
+    await git(root, ['tag', 'v-move', head]);
+    const withTag = await log(root, true);
+    await git(root, ['tag', '-f', 'v-move', `${head}~100`]);
+    await assert.rejects(
+      log(root, true, undefined, undefined, withTag.nextCursor),
+      { message: STALE },
+    );
+    await git(root, ['tag', '-d', 'v-move']);
+
+    // refs/stash도 --all이 걷는 ref다.
+    await writeFile(join(root, 'dirty.txt'), 'dirty\n');
+    await git(root, ['add', 'dirty.txt']);
+    const before = await log(root, true);
+    await git(root, ['stash', 'push', '-m', 'snapshot-test']);
+    await assert.rejects(
+      log(root, true, undefined, undefined, before.nextCursor),
+      { message: STALE },
+    );
+  }));
+
+test('현재 브랜치나 선택한 브랜치 범위의 커서는 태그가 움직여도 유효하다', () =>
+  fixture(async (root) => {
+    await chain(root, 450, (i) => ({ message: `c${i}` }));
+    const head = (await log(root)).head!;
+    for (const branchRef of [undefined, 'refs/heads/main']) {
+      const first = await log(root, false, branchRef);
+      await git(root, ['tag', 'v-a', head]);
+      await git(root, ['tag', '-f', 'v-a', `${head}~100`]);
+      const second = await log(
+        root,
+        false,
+        branchRef,
+        undefined,
+        first.nextCursor,
+      );
+      assert.equal(second.commits.length, 200);
+      await git(root, ['tag', '-d', 'v-a']);
+    }
+  }));
+
+test('log는 이미 취소된 signal을 받으면 git을 돌리지 않고 거부한다', () =>
+  fixture(async (root) => {
+    await chain(root, 5, (i) => ({ message: `c${i}` }));
+    const controller = new AbortController();
+    controller.abort();
+    await assert.rejects(
+      log(root, false, undefined, undefined, undefined, controller.signal),
+    );
+    // 취소가 다음 요청에 번지지 않는다.
+    assert.equal((await log(root)).commits.length, 5);
+  }));
+
+test('같은 저장소에 cancelKey가 filter인 log 요청이 겹치면 앞 요청만 취소되고 페이징 요청은 영향이 없다', () =>
+  fixture(async (root) => {
+    await chain(root, 450, (i) => ({
+      author: i % 2 ? 'Alice Kim' : 'Bob Lee',
+      message: `c${i}`,
+    }));
+    const worker = await connectedWorker(root);
+    const first = (await worker.call('log', { repo: root })) as Awaited<
+      ReturnType<typeof log>
+    >;
+    const filtered = (filter: { author: string }) =>
+      worker.call('log', { repo: root, filter, cancelKey: 'filter' });
+
+    // 앞 요청이 끝나기 전에 같은 키로 다음 요청이 오면 앞 것은 거부되고 뒤 것은 정상 응답한다.
+    const early = filtered({ author: 'Alice' });
+    const late = filtered({ author: 'Bob' });
+    const [earlyResult, lateResult] = await Promise.allSettled([early, late]);
+    assert.equal(lateResult.status, 'fulfilled');
+    assert.equal(
+      (lateResult as PromiseFulfilledResult<Awaited<ReturnType<typeof log>>>)
+        .value.commits.length,
+      200,
+    );
+    assert.equal(earlyResult.status, 'rejected');
+
+    // 키 없는 페이징 요청은 진행 중인 필터 요청을 취소하지 않는다.
+    const pending = filtered({ author: 'Alice' });
+    const paging = worker.call('log', {
+      repo: root,
+      cursor: first.nextCursor,
+    });
+    const [pendingResult, pagingResult] = await Promise.allSettled([
+      pending,
+      paging,
+    ]);
+    assert.equal(pendingResult.status, 'fulfilled');
+    assert.equal(pagingResult.status, 'fulfilled');
   }));
 
 // 워커 핸들러를 임시 레포에 연결한다. open이 쓴 문서는 opened 경로로 다시 읽는다.
