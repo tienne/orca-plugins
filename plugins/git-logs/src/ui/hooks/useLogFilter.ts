@@ -1,4 +1,5 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import type { CompositionEvent } from 'react';
 import type { LogFilter } from '../../protocol';
 
 export type FilterField = 'text' | 'author' | 'since' | 'until' | 'path';
@@ -57,7 +58,10 @@ export function useLogFilter() {
     setFilter((current) =>
       filterKey(current) === filterKey(next) ? current : next,
     );
+  // 한글 조합 중인 글자가 `git log --author` 인자로 나가지 않게 조합이 끝날 때까지 적용을 미룬다.
+  const composing = useRef(false);
   useEffect(() => {
+    if (composing.current) return;
     const timer = setTimeout(() => apply(normalize(input)), DEBOUNCE_MS);
     return () => clearTimeout(timer);
   }, [input]);
@@ -75,6 +79,18 @@ export function useLogFilter() {
       [field]: value,
       ...(field === 'path' ? { follow: false } : {}),
     }));
+  }
+  // 조합이 끝나도 입력 값이 그대로면 effect가 다시 돌지 않아서, 같은 값을 다시 넣어 디바운스를 새로 시작한다.
+  function composition(field: FilterField) {
+    return {
+      onCompositionStart: () => {
+        composing.current = true;
+      },
+      onCompositionEnd: (e: CompositionEvent<HTMLInputElement>) => {
+        composing.current = false;
+        change(field, e.currentTarget.value);
+      },
+    };
   }
   // 칩 해제는 명시적 조작이라 디바운스를 기다리지 않고 바로 반영한다.
   function clear(field: FilterField) {
@@ -96,5 +112,14 @@ export function useLogFilter() {
     setInput(empty);
     apply({});
   }
-  return { input, filter, chips, change, clear, clearAll, followFile };
+  return {
+    input,
+    filter,
+    chips,
+    change,
+    composition,
+    clear,
+    clearAll,
+    followFile,
+  };
 }

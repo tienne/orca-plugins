@@ -446,6 +446,7 @@ function App() {
                       maxLength={200}
                       value={logFilter.input.text}
                       onChange={(e) => logFilter.change('text', e.target.value)}
+                      {...logFilter.composition('text')}
                     />
                     <button
                       className="filter-toggle"
@@ -469,12 +470,14 @@ function App() {
                       onChange={(e) =>
                         logFilter.change('author', e.target.value)
                       }
+                      {...logFilter.composition('author')}
                     />
                     <input
                       aria-label={t('경로')}
                       placeholder={t('경로')}
                       value={logFilter.input.path}
                       onChange={(e) => logFilter.change('path', e.target.value)}
+                      {...logFilter.composition('path')}
                     />
                     <input
                       type="date"

@@ -1521,6 +1521,64 @@ test('log filters reach the worker once after debounce, AND with the branch and 
   await expect(page.getByRole('alert')).toHaveCount(0);
 });
 
+test('log filter waits for Korean IME composition to end before reaching the worker', async ({
+  page,
+}) => {
+  const { fixtureRepo } = await import('../src/ui/fixture');
+  await page.addInitScript((repo) => {
+    const calls: unknown[] = [];
+    Reflect.set(window, 'testLogCalls', calls);
+    window.orca = {
+      locale: 'ko-KR',
+      api: { major: 1, minor: 3 },
+      host: { has: () => true },
+      plugin: {
+        request: async <T>(name: string, raw: unknown) => {
+          if (name === 'active')
+            return {
+              status: 'connected',
+              repository: repo,
+              workspace: {
+                id: 'fixture',
+                name: 'Fixture',
+                path: repo.root,
+                branch: repo.branch,
+              },
+            } as T;
+          if (name === 'changes')
+            return {
+              comparison: { kind: 'working' },
+              files: [],
+              left: 'HEAD',
+              right: '현재 작업 트리 · 디스크',
+            } as T;
+          if (name === 'log') {
+            calls.push(raw);
+            return repo as T;
+          }
+          throw new Error(`Unexpected request: ${name}`);
+        },
+      },
+    };
+  }, fixtureRepo);
+  const calls = () =>
+    page.evaluate(() => Reflect.get(window, 'testLogCalls') as unknown[]);
+  await page.goto('/');
+  await expect(page.locator('.commit-row')).toHaveCount(6);
+  await page.getByRole('button', { name: '필터', exact: true }).click();
+  const author = page.getByLabel('작성자', { exact: true });
+  await author.dispatchEvent('compositionstart');
+  await author.fill('ㄱ');
+  await author.fill('궈');
+  await page.waitForTimeout(600);
+  expect(await calls()).toHaveLength(0);
+  await expect(author).toHaveValue('궈');
+  await author.fill('권');
+  await author.dispatchEvent('compositionend');
+  await expect.poll(async () => (await calls()).length).toBe(1);
+  expect((await calls())[0]).toMatchObject({ filter: { author: '권' } });
+});
+
 // 가상화된 목록에서 DOM에 남아도 되는 행 수: 보이는 행 + 위아래 여유 8행씩 + 고정(선택·포커스) 2행.
 async function rowBudget(page: import('@playwright/test').Page) {
   const height = await page
