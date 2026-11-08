@@ -30,7 +30,7 @@ pnpm validate                  # Orca validation of the built artifact
 
 Outside CI, `ui-test` reuses a server that is already listening on port 4173. If an older preview server is running there, the tests can exercise a stale build and report misleading results. Stop it before running `ui-test`.
 
-Browser tests use Google Chrome. For Chromium, run `pnpm exec playwright install chromium`, then set `PW_CHANNEL=chromium`. `preview` serves the build at `http://127.0.0.1:4173`; `pnpm dev` starts source development with hot reload. Without an Orca bridge, `?fixture=<name>` selects a demo state. The paging and comparison scenarios are `paged`, `stale`, `many`, `rename`, and `unrelated`. `src/ui/fixture.ts` keeps its own copies of the page size and load limit; update them together with the worker constants.
+Browser tests use Google Chrome. For Chromium, run `pnpm exec playwright install chromium`, then set `PW_CHANNEL=chromium`. `preview` serves the build at `http://127.0.0.1:4173`; `pnpm dev` starts source development with hot reload. Without an Orca bridge, `?fixture=<name>` selects a demo state. The paging and comparison scenarios are `paged`, `stale`, `many`, `rename`, and `unrelated`. `src/ui/fixture.ts` imports the page size and load limit from `protocol.ts`, so there are no copies to keep in sync.
 
 ## Code layout
 
@@ -125,7 +125,7 @@ A cursor fails as an invalid cursor in these cases: it is longer than 512 charac
 
 A `log` request that reads the first page (including filter changes and refreshes) sends `cancelKey: 'filter'`. The worker stops the Git run of an earlier `filter` request for the same repository and answers only the new one. Page requests carry no `cancelKey`, so they never cancel a filter request.
 
-The list carries only commit subjects. `commitMessage` takes `repo` and a full `commit` hash and returns `{ message }` from `git show -s --format=%B`. The UI requests it when a commit is selected and shows the subject first. A failed request leaves the subject in place with an error note, and a late response for an earlier selection is discarded.
+The list carries only commit subjects. `commitMessage` takes `repo` and a full `commit` hash and returns `{ message }` from `git show -s --format=%B`. The UI requests it when a commit is selected and shows the subject first. A failed request leaves the subject in place with an error note and the cause of the failure, and a late response for an earlier selection is discarded.
 
 ### Two-commit comparison (0.2.0, unreleased)
 
