@@ -423,17 +423,13 @@ export async function log(
   signal?: AbortSignal,
 ): Promise<Repository> {
   const valid = validateFilter(filter, all);
-  const head = await optional(root, ['rev-parse', '--verify', 'HEAD'], signal);
-  const branch = await optional(
-    root,
-    ['symbolic-ref', '--short', '-q', 'HEAD'],
-    signal,
-  );
-  const { refs, localBranches, branches, walked, extraWalked } = await readRefs(
-    root,
-    all,
-    signal,
-  );
+  // 세 호출은 서로 입력에 의존하지 않아 함께 돌린다.
+  const [head, branch, refIndex] = await Promise.all([
+    optional(root, ['rev-parse', '--verify', 'HEAD'], signal),
+    optional(root, ['symbolic-ref', '--short', '-q', 'HEAD'], signal),
+    readRefs(root, all, signal),
+  ]);
+  const { refs, localBranches, branches, walked, extraWalked } = refIndex;
   const selected =
     branchRef === undefined
       ? undefined
