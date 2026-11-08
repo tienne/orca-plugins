@@ -2692,3 +2692,78 @@ for (const notification of ['before response', 'during reveal'])
     ).toBe(1);
     expect(errors).toEqual([]);
   });
+
+for (const width of [1000, 360])
+  test(`canvas arrangement keeps tools local and completes without losing placement (${width}px)`, async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width, height: 900 });
+    await page.emulateMedia({ reducedMotion: 'reduce' });
+    await page.goto('/?lang=en');
+    await page.getByRole('button', { name: 'Show whole island' }).click();
+    const ocean = page.locator('.ocean');
+    const desk = ocean.locator('.canvas-editor');
+    await desk
+      .getByRole('button', { name: 'Arrange landmarks', exact: true })
+      .click();
+    await expect(ocean).toHaveAttribute('data-mode', 'build');
+    await expect(
+      desk.getByRole('button', { name: 'Done arranging' }),
+    ).toBeVisible();
+    await expect(page.locator('.island-section > .editor-tools')).toHaveCount(
+      0,
+    );
+    await page.locator('[data-inventory=decorations]').click();
+    await expect(desk).toBeHidden();
+    await page.locator('[data-decor-place=path]').click();
+    await expect(desk).toBeVisible();
+    await expect(desk.locator('.placement-hint')).toContainText(
+      'Lay Earth path',
+    );
+    const camera = await page.locator('.camera').getAttribute('style');
+    await desk.hover();
+    await page.mouse.wheel(0, 60);
+    await expect(page.locator('.camera')).toHaveAttribute('style', camera!);
+    await page
+      .getByRole('button', { name: 'Cell 1: empty', exact: true })
+      .click();
+    await expect(
+      page.locator('[data-world-cell="0"] [data-floor=path]'),
+    ).toHaveCount(1);
+    await page
+      .getByRole('button', { name: 'Cell 1: Earth path', exact: true })
+      .click();
+    await expect(desk.locator('#remove')).toBeVisible();
+    await expect(desk.locator('#cancel')).toBeVisible();
+    await desk.locator('#cancel').click();
+    const bounds = await desk.boundingBox();
+    const canvas = await ocean.boundingBox();
+    expect(bounds!.x).toBeGreaterThanOrEqual(canvas!.x);
+    expect(bounds!.x + bounds!.width).toBeLessThanOrEqual(
+      canvas!.x + canvas!.width,
+    );
+    expect(bounds!.y).toBeGreaterThanOrEqual(canvas!.y);
+    expect(bounds!.y + bounds!.height).toBeLessThanOrEqual(
+      canvas!.y + canvas!.height,
+    );
+    await ocean.screenshot({
+      path: `test-results/landmark-island/canvas-arrangement-${width}.png`,
+    });
+    await desk.getByRole('button', { name: 'Done arranging' }).click();
+    await expect(ocean).toHaveAttribute('data-mode', 'walk');
+    await expect(
+      desk.getByRole('button', { name: 'Explore island', exact: true }),
+    ).toBeFocused();
+    await expect(desk.locator('.placement-hint')).toHaveCount(0);
+    await page.reload();
+    await expect(
+      page.locator('[data-world-cell="0"] [data-floor=path]'),
+    ).toHaveCount(1);
+    await page.goto('/?lang=ko');
+    await desk.locator('[data-mode=build]').click();
+    await expect(
+      desk.getByRole('button', { name: '꾸미기 완료' }),
+    ).toBeVisible();
+    await desk.getByRole('button', { name: '꾸미기 완료' }).click();
+    await expect(ocean).toHaveAttribute('data-mode', 'walk');
+  });

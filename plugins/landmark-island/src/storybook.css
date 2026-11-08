@@ -1625,3 +1625,89 @@ dialog:modal {
     visibility: hidden;
   }
 }
+
+/* A compact field desk stays in the canvas, outside the moving camera. */
+.canvas-editor {
+  position: absolute;
+  z-index: 23;
+  left: 18px;
+  bottom: 96px;
+  width: min(540px, calc(100% - 36px));
+  box-sizing: border-box;
+  padding: 10px 12px;
+  border: 1px solid var(--orca-border, var(--line));
+  border-radius: 5px 14px 6px 10px;
+  background: var(--orca-popover, var(--paper));
+  color: var(--orca-popover-foreground, var(--ink));
+  box-shadow:
+    2px 4px 0 #223e3926,
+    0 8px 24px #183c3926;
+  text-align: left;
+  touch-action: pan-y;
+  max-height: 42%;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+.canvas-editor .mode-controls {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.canvas-editor button {
+  padding: 6px 8px;
+  font-size: 12px;
+}
+.canvas-editor .mode-controls button {
+  border-color: transparent;
+  background: transparent;
+  color: inherit;
+}
+.canvas-editor .mode-controls button[aria-pressed='true'] {
+  background: var(--orca-accent, #d5dfbd);
+  color: var(--orca-accent-foreground, #344c37);
+  outline: none;
+}
+.canvas-editor .finish-arranging {
+  margin-left: auto;
+  border-color: var(--orca-border, var(--line));
+}
+.canvas-editor .placement-hint {
+  margin: 8px 0;
+  font-size: 12px;
+  line-height: 1.5;
+}
+.canvas-editor .editor-tools {
+  margin: 6px 0 0;
+  gap: 6px;
+}
+.canvas-editor .editor-tools small {
+  font-size: 10px;
+}
+.canvas-editor .tools {
+  margin: 8px 0 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.ocean[data-inventory-open='true'] .canvas-editor {
+  visibility: hidden;
+}
+.ocean[data-mode='walk'] .canvas-editor {
+  width: auto;
+  max-width: calc(100% - 36px);
+}
+.ocean[data-mode='walk'] .canvas-editor .editor-tools:has(button:disabled) {
+  display: none;
+}
+@media (max-width: 600px) {
+  .canvas-editor {
+    left: 10px;
+    bottom: 104px;
+    width: calc(100% - 20px);
+    padding: 8px;
+  }
+  .canvas-editor button {
+    font-size: 11px;
+  }
+}

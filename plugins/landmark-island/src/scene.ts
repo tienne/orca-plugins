@@ -29,7 +29,10 @@ export class IslandScene {
   private focusY = project(30).y;
   private cleanup = () => {};
   markup() {
-    return `<div class="scene-controls"><div class="mode-controls" role="group" aria-label="Island mode"><button data-mode="walk" aria-pressed="${this.mode === 'walk'}">Explore island</button><button data-mode="build" aria-pressed="${this.mode === 'build'}">Arrange landmarks</button></div><div class="climate-controls"><label for="weather">Weather</label><select id="weather"><option value="auto" ${this.automatic ? 'selected' : ''}>Auto · island forecast</option>${weatherNames.map((w, i) => `<option value="${i}" ${!this.automatic && this.weather === i ? 'selected' : ''}>${w}</option>`).join('')}</select><button id="daylight" aria-label="Change time of day">${phases[this.phase]}</button></div></div>`;
+    return `<div class="scene-controls"><div class="climate-controls"><label for="weather">Weather</label><select id="weather"><option value="auto" ${this.automatic ? 'selected' : ''}>Auto · island forecast</option>${weatherNames.map((w, i) => `<option value="${i}" ${!this.automatic && this.weather === i ? 'selected' : ''}>${w}</option>`).join('')}</select><button id="daylight" aria-label="Change time of day">${phases[this.phase]}</button></div></div>`;
+  }
+  modeMarkup() {
+    return `<div class="mode-controls" role="group" aria-label="Island mode"><button data-mode="walk" aria-pressed="${this.mode === 'walk'}">Explore island</button><button data-mode="build" aria-pressed="${this.mode === 'build'}">Arrange landmarks</button>${this.mode === 'build' ? '<button class="finish-arranging" data-mode="walk">Done arranging</button>' : ''}</div>`;
   }
   layers(state: State) {
     return `<div class="atmosphere" aria-hidden="true"><div class="sunbeams"></div><div class="sun-moon"></div><div class="forest-motes">${Array.from({ length: 14 }, (_, i) => `<i style="--mx:${12 + ((i * 29) % 78)}%;--my:${26 + ((i * 17) % 55)}%;--md:-${i * 1.7}s"></i>`).join('')}</div><div class="stars">✦　　　·　　　　✧<br>　　✧　　　　✦　　　·</div><div class="cloud cloud-one"></div><div class="cloud cloud-two"></div><div class="cloud cloud-three"></div><div class="precipitation">${Array.from({ length: 32 }, (_, i) => `<i style="--x:${(i * 37) % 100}%;--delay:-${i * 0.31}s;--speed:${1 + (i % 5) * 0.25}s"></i>`).join('')}</div><div class="birds">⌁　⌁</div></div><div class="scene-hud"><span class="forecast"></span><span class="scene-location">YOUR LITTLE ESCAPE</span></div>${minimap(state)}<div class="camera-controls" role="group" aria-label="Island camera"><button id="zoom-out" aria-label="Zoom out">−</button><span id="zoom-value">100%</span><button id="zoom-in" aria-label="Zoom in">＋</button><button id="follow-player" aria-label="Follow explorer" aria-pressed="${this.follow}">◎</button><button id="camera-reset" aria-label="Reset camera">↺</button></div><div class="walk-controls" role="group" aria-label="Walk controls"><button data-step="north" aria-label="Walk north">↑</button><button data-step="west" aria-label="Walk west">←</button><button data-step="south" aria-label="Walk south">↓</button><button data-step="east" aria-label="Walk east">→</button></div><p class="walk-hint" aria-live="polite"></p>`;
@@ -281,7 +284,9 @@ export class IslandScene {
         !brush ||
         document
           .elementFromPoint(clientX, clientY)
-          ?.closest('.island-satchel,.canvas-inventory,.discovery-theatre')
+          ?.closest(
+            '.island-satchel,.canvas-inventory,.canvas-editor,.discovery-theatre',
+          )
       )
         return;
       const rect = ocean.getBoundingClientRect();
@@ -372,7 +377,7 @@ export class IslandScene {
       (e) => {
         if (
           (e.target as Element).closest(
-            '.camera-controls,.walk-controls,.minimap,.island-satchel,.canvas-inventory,.discovery-theatre',
+            '.camera-controls,.walk-controls,.minimap,.island-satchel,.canvas-inventory,.canvas-editor,.discovery-theatre',
           ) ||
           e.button !== 0
         )
@@ -456,7 +461,7 @@ export class IslandScene {
       (e) => {
         if (
           (e.target as Element).closest(
-            '.camera-controls,.walk-controls,.minimap,.island-satchel,.canvas-inventory,.discovery-theatre',
+            '.camera-controls,.walk-controls,.minimap,.island-satchel,.canvas-inventory,.canvas-editor,.discovery-theatre',
           )
         )
           return;
@@ -487,7 +492,7 @@ export class IslandScene {
       (e) => {
         if (
           (e.target as Element).closest(
-            '.island-satchel,.canvas-inventory,.discovery-theatre',
+            '.island-satchel,.canvas-inventory,.canvas-editor,.discovery-theatre',
           )
         )
           return;
