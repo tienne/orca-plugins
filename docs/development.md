@@ -4,6 +4,8 @@ English · [한국어](development.ko.md)
 
 This guide records the host integration, Git behavior, and release requirements for Git Logs. For everyday use, read the [plugin guide](../plugins/git-logs/README.md). Commands below run from the repository root.
 
+The source tree contains read-only additions planned for 0.2.0: tag badges, log filters, paged history, two-commit comparison, file history, and keyboard navigation. The manifest version is still 0.1.1 and 0.2.0 is unreleased. The additions do not change `prepare`/`execute`, `operations.ts`, or the manifest's capabilities, minimum Orca version, or execution profile.
+
 ## Build and verify
 
 Use Node.js 22.12+ or 24+, pnpm 10, Git, and the Orca CLI.
@@ -18,18 +20,29 @@ pnpm validate
 
 `test` runs Git cases in temporary repositories, translation checks, and artifact checks. `ui-test` exercises the packaged UI in a browser. Use [screenshot instructions](screenshots/README.md) to generate the English demo images.
 
-Browser tests use Google Chrome. For Chromium, run `pnpm exec playwright install chromium`, then set `PW_CHANNEL=chromium`. `preview` serves the build at `http://127.0.0.1:4173`; `pnpm dev` starts source development with hot reload.
+Run the targets separately when you need one result:
+
+```sh
+pnpm nx run git-logs:test      # Git/worker, translation, and artifact checks
+pnpm nx run git-logs:ui-test   # browser tests against the packaged UI and fixtures
+pnpm validate                  # Orca validation of the built artifact
+```
+
+Outside CI, `ui-test` reuses a server that is already listening on port 4173. If an older preview server is running there, the tests can exercise a stale build and report misleading results. Stop it before running `ui-test`.
+
+Browser tests use Google Chrome. For Chromium, run `pnpm exec playwright install chromium`, then set `PW_CHANNEL=chromium`. `preview` serves the build at `http://127.0.0.1:4173`; `pnpm dev` starts source development with hot reload. Without an Orca bridge, `?fixture=<name>` selects a demo state. The paging and comparison scenarios are `paged`, `stale`, `many`, `rename`, and `unrelated`. `src/ui/fixture.ts` keeps its own copies of the page size and load limit; update them together with the worker constants.
 
 ## Code layout
 
-| Path                               | Responsibility                                                           |
-| ---------------------------------- | ------------------------------------------------------------------------ |
-| `plugins/git-logs/src/ui`          | Graph, file list, Monaco diff, menus, themes, and browser fixtures       |
-| `plugins/git-logs/src/worker`      | Git reads and actions, path checks, comparison documents, and host calls |
-| `plugins/git-logs/src/protocol.ts` | UI/worker messages and the narrow Orca API types used by the plugin      |
-| `plugins/git-logs/src/i18n`        | English and Korean strings, locale selection, and translation tests      |
-| `scripts/build-plugin.mjs`         | Bundling and artifact checks                                             |
-| `plugins/git-logs/showcase`        | English demo capture scenarios                                           |
+| Path                               | Responsibility                                                                                  |
+| ---------------------------------- | ----------------------------------------------------------------------------------------------- |
+| `plugins/git-logs/src/ui`          | Graph, file list, Monaco diff, menus, themes, and browser fixtures                              |
+| `plugins/git-logs/src/ui/hooks`    | Panel state split from `main.tsx`: repository, filters, paging, comparison, keyboard navigation |
+| `plugins/git-logs/src/worker`      | Git reads and actions, path checks, comparison documents, and host calls                        |
+| `plugins/git-logs/src/protocol.ts` | UI/worker messages and the narrow Orca API types used by the plugin                             |
+| `plugins/git-logs/src/i18n`        | English and Korean strings, locale selection, and translation tests                             |
+| `scripts/build-plugin.mjs`         | Bundling and artifact checks                                                                    |
+| `plugins/git-logs/showcase`        | English demo capture scenarios                                                                  |
 
 The browser UI has no direct Node, filesystem, or Git access. It calls the same plugin's worker through `plugin.request`. The worker runs Git with argument arrays and validates repository boundaries, paths, and refs. Do not add shell command concatenation.
 
@@ -61,7 +74,7 @@ Custom editors receive document content, not a filesystem path. To open a diff, 
 
 The worker verifies each parent directory, rejects symlinks and paths outside the repository, and creates documents with `wx` and mode `0600`. Before creating a document it checks local Git exclusion; a failed check produces a warning without preventing document creation. It does not modify source files, the index, or shared `.gitignore` files. Documents remain until removed by the user or the worktree directory is deleted.
 
-A descriptor does not grant access to a repository by itself. The sidebar must connect that repository before the document can read it. An open editor keeps the document's repository and comparison across workspace changes.
+A descriptor does not grant access to a repository by itself. The sidebar must connect that repository before the document can read it. An open editor keeps the document's repository and comparison across workspace changes. Documents for two-commit comparisons use a newer `version`; see Descriptor versions under Git reads and comparisons.
 
 The custom editor requires an isolated desktop frame. Do not intercept ordinary file clicks or assume an API exists to replace Orca's built-in diff.
 
@@ -77,9 +90,9 @@ Setup failure does not block descriptor creation or opening Diff. The open respo
 
 ## Git reads and comparisons
 
-- Load up to 200 recent commits from parent relationships. Pin commit comparisons to full hashes.
+- Load commits from parent relationships in pages of 200, up to 5,000. Pin commit comparisons to full hashes.
 - Branch filtering resolves a canonical local or remote ref from a separately queried list. It never checks out the branch. Remote HEAD aliases are omitted; branch search shows up to 100 results.
-- Commit search applies to the loaded history and hides graph edges while filtering. Refresh retains a branch filter unless its ref has disappeared; a workspace switch resets it.
+- Text search and filters run in Git over the selected history, not over loaded rows, and the graph hides its edges while any of them is active. Refresh retains a branch filter unless its ref has disappeared; a workspace switch resets it.
 - Working tree comparison is HEAD versus the final file on disk. `staged`, `unstaged`, and `untracked` are status labels, not separate comparison modes. Omit changes whose final contents match HEAD.
 - A selected commit compares against its first parent unless another direct parent is chosen. The initial commit compares against an empty tree.
 - Saved files are the source of working tree contents. Unsaved buffers are not included. Reads are not an atomic snapshot; a changed HEAD can require a refresh.
@@ -87,6 +100,40 @@ Setup failure does not block descriptor creation or opening Diff. The open respo
 Text diffs support UTF-8 files up to 768 KiB and at most 2,000 changed files. Added, deleted, renamed, empty, and missing files are handled separately. Binary, non-UTF-8, oversized, symlink, submodule, and unmerged paths return status views. A file-mode-only change may have no text hunks.
 
 Shallow repositories expose only local history. Partial clones are rejected to avoid implicit object fetching. There is no fetch, SSH access, remote file access, or Git LFS download.
+
+### Log filters and paging (0.2.0, unreleased)
+
+The `log` request takes `repo`, `all`, `branchRef`, an optional `filter`, and an optional `cursor`. The response adds `nextCursor` and `hasMore` to the existing fields. `filter` is `{ text, author, since, until, path, follow }`, each field optional. The UI sends it after a 300 ms pause and sends only well-formed dates.
+
+Tags are read from `refs/tags` in the same `for-each-ref` call and attached to commit rows as `tag: <name>` labels. A tag counts when it points to a commit or is an annotated tag whose target is a commit. Tags are not added to `branches`, so they stay out of the branch picker and out of the cursor snapshot below.
+
+`validateFilter` runs before any Git call and enforces these rules:
+
+- `text` and `author` must be strings, are trimmed, and are ignored when empty. More than 200 characters, a newline, a carriage return, or NUL is rejected. Each value becomes a single argument, `--grep=<text>` or `--author=<text>`, together with `--fixed-strings` and `--regexp-ignore-case`. A value that starts with `--` cannot become an option.
+- `since` and `until` must match `YYYY-MM-DD` and survive a round trip through `Date`, so `2026-02-30` is rejected. They become `--since=<date> 00:00:00` and `--until=<date> 23:59:59` so the whole day is included. Git applies them to the committer date; the list shows the author date.
+- `path` goes through the repository-relative path check (no absolute path, `..`, `.git`, or NUL) and a 4,096-character limit. It is placed after `--`, and `--literal-pathspecs` is a global option before `log`, so pathspec magic such as `:(glob)` is not interpreted.
+- `follow` must be a boolean and only has effect with a `path`. The worker rejects it when `all` is set. It adds `--follow` only when the path is not a tree at the starting commit, because `--follow` is meant for a single file. The UI drops `follow` before the request when the scope is all branches; the worker check is the backstop.
+- A filter with no usable field returns the unfiltered list.
+
+When `text` is 4 to 64 hexadecimal characters, the worker also runs `rev-parse --verify --quiet <text>^{commit}`. The result counts only if it is a full hash that starts with that text, so a branch or tag with the same name does not match. The commit is added at the top of the first page when it is not already there, and later pages do not repeat it.
+
+Paging uses two constants in `git.ts`: `PAGE_SIZE = 200` and `LOAD_LIMIT = 5000`. The worker asks Git for one row more than the page size to detect another page, and caps the page at `LOAD_LIMIT - skip`. `hasMore` is true only when more rows exist and the next offset is below the limit; `nextCursor` is present only then. At the limit, `hasMore` is false and the UI shows a notice. Normal pages use `--skip`. With `follow`, `--skip` would count commits that do not touch the file and miss renames inside the skipped part, so the worker reads from the start and drops the first `skip` rows itself.
+
+The cursor is a base64url JSON object holding the offset and a snapshot hash. It is stateless because the worker loses memory on restart. The snapshot is a SHA-256 of the HEAD hash, every `refs/heads` and `refs/remotes` line from `for-each-ref`, the `all` flag, `branchRef`, and the normalized filter (arguments, path, `follow`). Tags are excluded, so adding or moving a tag does not invalidate a cursor. Moving any branch, even one outside the current scope, does. A cursor longer than 512 characters, outside the base64url alphabet, not valid JSON, or with an offset that is not an integer from 0 to the limit fails as an invalid cursor. A snapshot mismatch fails with a message that starts with `stale-cursor:`. The UI answers that error by loading from the first page again. It sends one page request at a time and drops a response that belongs to an earlier filter, branch, or reload.
+
+The list carries only commit subjects. `commitMessage` takes `repo` and a full `commit` hash and returns `{ message }` from `git show -s --format=%B`. The UI requests it when a commit is selected and shows the subject first. A failed request leaves the subject in place with an error note, and a late response for an earlier selection is discarded.
+
+### Two-commit comparison (0.2.0, unreleased)
+
+A `range` comparison is `{ kind: 'range', base, target, mergeBase? }`. `base` and `target` must be full commit hashes; an abbreviated hash or a ref name is rejected with the same error as other comparisons. By default the left side is `base`. With `mergeBase: true`, the worker runs `git merge-base base target` and uses its result as the left side; no result fails with a no-common-ancestor error. The same-commit check runs after that replacement, so it also fires when `target` is an ancestor of `base` with `mergeBase: true`. The file list comes from `git diff --no-ext-diff --no-textconv -M --name-status -z <left> <target> --`. The response normalizes `mergeBase` to a boolean and reports the resolved left hash as `left` and the target as `right`. A per-file `diff` request recomputes the change set, so its left side follows the same rule.
+
+The 2,000 changed-file limit and the 768 KiB per-file text limit apply to ranges in the same way as to commit comparisons. Exceeding the file limit returns an error instead of a partial list.
+
+The panel marks a base commit in UI state only. It is not stored in the worker or in a document. The menu items and chip are the only entry points; there is no picker for branch or tag names.
+
+### Descriptor versions
+
+`.orcadiff` documents carry `version`. The worker writes `2` for a `range` comparison and `1` for every other comparison. Both the worker and the editor accept 1 and 2, reject a version 1 document that contains a `range`, and reject any other version with an unsupported-document error. Git Logs 0.1.1 accepts only version 1, so it refuses version 2 documents. Documents written before 0.2.0 stay readable.
 
 ## Git action contract
 
@@ -140,6 +187,10 @@ Temporary Git repositories cover root and merge commits, current/all branch hist
 On 2026-11-05, local exclude checks added 14 temporary-repository cases, bringing the logic/translation/artifact suite to 48 cases. Browser coverage increased to 22 cases, including translated setup warnings that retain the graph. Workspace event delivery was exercised through fixture hosts; live delivery of the new subscriptions has not been verified.
 
 Before the rename, the approved development identity was tested on macOS with Orca 1.4.248 for repository connection, workspace selection, central tab opening, `document.session`, and Monaco rendering. Dark and light editor captures reported no frame errors or CSP blockage for local assets. Git action menus and confirmations were rendered without mutating a real user repository. On 2026-11-05, the renamed `local.git-logs` development build was approved and loaded. The active handler resolved the current local workspace; two generated descriptors opened separate central tabs. A live window capture showed the selected protocol file in Monaco with aligned sides, inline highlights, and folded unchanged regions. The generated documents passed `git check-ignore`; the tracked checkout stayed clean. Plugin logs and `plugin check` reported no errors. The old `local.git-tools` plugin was disabled to avoid duplicate editor registrations. Native accessibility inspection failed despite reported permission grants, so live context-menu input was not rechecked. Other operating systems, host versions, and remote hosts remain unverified.
+
+On 2026-11-08, the 0.2.0 read-only additions were checked with Git worker tests in temporary repositories and with browser tests against fixtures. The worker tests cover tag labels, filter validation and literal matching, date bounds, path and `follow` handling, paging in pages of 200 with cursor validation and stale cursors, the hash-prefix row, `commitMessage`, range comparisons with and without the merge-base option, same-commit and no-common-ancestor errors, over-limit file counts, and descriptor versions. The browser tests cover tag badges, filter chips and the hidden graph, infinite scroll and the 5,000-commit notice, stale-cursor reload, the comparison base menu and chip, the merge-base toggle, version 2 descriptors in the editor entry, the file history menu with rename tracking, and arrow-key navigation including the menu, picker, and input exceptions. These counts are not recorded as numbers here because they change with the suite; run the targets above for current results.
+
+Temporary-repository timing for filter and page requests during development was between 0.04 and 0.6 seconds. Repository size and hardware differ, so this is not a guarantee. Response time was not measured on a large real repository, and no response-time target is verified. The browser fixtures do not execute Git or run in Orca, and no live-host check of the 0.2.0 additions is recorded. The screenshots under `docs/screenshots` were not regenerated and do not show these additions.
 
 ## Package and release
 
