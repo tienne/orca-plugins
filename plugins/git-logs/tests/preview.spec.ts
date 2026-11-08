@@ -1362,6 +1362,10 @@ test('a late commit message response for a previous selection is discarded', asy
   const [first, second] = fixtureRepo.commits;
   await page.locator('.commit-row').nth(0).click();
   await expect(page.locator('.details pre')).toHaveText(first.subject);
+  // 선택이 멈춘 뒤에야 요청이 나가므로 첫 요청이 나간 걸 확인하고 두 번째를 고른다.
+  await expect
+    .poll(() => page.evaluate(() => Reflect.get(window, 'testPending')))
+    .toBe(1);
   await page.locator('.commit-row').nth(1).click();
   await expect(page.locator('.details pre')).toHaveText(second.subject);
   await expect
@@ -2506,10 +2510,6 @@ const commitAt = (page: import('@playwright/test').Page, index: number) =>
 const selectedFile = (page: import('@playwright/test').Page) =>
   page.locator('.file-row.selected');
 
-test('arrow keys move the selected commit one row at a time and stop at both ends', async ({
-  page,
-}) => {
-  await page.goto('/');
 test('canceling an action dialog returns focus to the commit row that opened the menu', async ({
   page,
 }) => {
@@ -2536,6 +2536,10 @@ test('canceling an action dialog returns focus to the commit row that opened the
   await expect(commitAt(page, 2)).toBeFocused();
 });
 
+test('arrow keys move the selected commit one row at a time and stop at both ends', async ({
+  page,
+}) => {
+  await page.goto('/');
   await expect(page.locator('.commit-row')).toHaveCount(6);
   await commitAt(page, 2).click();
   await expect(selectedRow(page)).toHaveAttribute('data-index', '2');
@@ -2834,10 +2838,6 @@ test('Tab closes the commit menu', async ({ page }) => {
   await expect(menu).toBeVisible();
   await page.keyboard.press('Tab');
   await expect(menu).toHaveCount(0);
-});
-
-test('arrow keys pressed with focus on the menu itself go to the first or last item', async ({
-  page,
   // 닫으면서 행으로 돌린 포커스에서 Tab이 다음 행으로 넘어가 body로 빠지지 않는다.
   await expect(commitAt(page, 4)).toBeFocused();
 });
@@ -2856,6 +2856,10 @@ test('Tab closes the file menu without dropping focus to the page', async ({
   await expect
     .poll(() => page.evaluate(() => document.activeElement?.tagName))
     .not.toBe('BODY');
+});
+
+test('arrow keys pressed with focus on the menu itself go to the first or last item', async ({
+  page,
 }) => {
   await page.goto('/');
   await expect(page.locator('.commit-row')).toHaveCount(6);

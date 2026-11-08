@@ -9,6 +9,7 @@ import type {
 } from '../../protocol';
 import { request } from '../client';
 import { demo, message, scenario } from '../env';
+import { COMMIT_SETTLE_MS } from '../timing';
 import {
   fixtureDiff,
   fixtureFiles,
@@ -17,8 +18,6 @@ import {
 } from '../fixture';
 
 export type ComparisonState = ReturnType<typeof useComparison>;
-
-const COMMIT_SETTLE_MS = 80;
 
 // 이름이 바뀐 이력에서는 커밋마다 파일 경로가 달라 정확하지 않다. 못 찾으면 고르지 않는다.
 function historyFile(files: ChangedFile[], path: string) {
@@ -110,7 +109,7 @@ export function useComparisonLoader(
   useEffect(() => {
     if (!repo) return;
     let active = true;
-    // 워커 요청은 취소할 수 없어서, 방향키를 연속으로 누를 때는 멈춘 커밋만 요청하도록 잠깐 기다린다.
+    // changes 요청은 취소할 수 없어서, 방향키를 연속으로 누를 때는 멈춘 커밋만 요청하도록 잠깐 기다린다.
     let timer: ReturnType<typeof setTimeout> | undefined;
     const history = comparison.kind === 'commit' ? historyPath.current : '';
     setLoadingFiles(true);
