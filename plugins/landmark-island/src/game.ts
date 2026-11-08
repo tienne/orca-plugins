@@ -492,7 +492,7 @@ export class Game {
         (!isFloor(d.id) && d.shape !== 'flowers') ||
         !Array.isArray(p?.cells) ||
         !p.cells.length ||
-        p.cells.length > 318 ||
+        p.cells.length > islandLand(s).length ||
         new Set(p.cells).size !== p.cells.length ||
         p.cells.some((cell) => !unlockedCell(s, cell))
       )

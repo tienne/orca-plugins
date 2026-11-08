@@ -730,6 +730,35 @@ try {
   assert.deepEqual(decodeBackup(encodeBackup(fullCatalog)).state, fullCatalog);
   assert.equal(islandLand(fullCatalog).length, 1044);
   assert.equal(materials(fullCatalog), 0);
+  let paintedIsland = structuredClone(fullCatalog);
+  let paintWrites = 0;
+  const fullIslandPainter = new Game({
+    read: async () => structuredClone(paintedIsland),
+    write: async (next) => {
+      paintedIsland = structuredClone(next);
+      paintWrites++;
+    },
+  });
+  await fullIslandPainter.paint({
+    decoration: 'path',
+    cells: landTiles.map((t) => t.id),
+    expected: layout(paintedIsland),
+  });
+  assert.equal(paintedIsland.floors.length, 1044);
+  assert.equal(paintWrites, 1);
+  const afterFullStroke = structuredClone(paintedIsland);
+  await assert.rejects(
+    fullIslandPainter.paint({
+      decoration: 'grass',
+      cells: [...landTiles.map((t) => t.id), 99999],
+      expected: layout(paintedIsland),
+    }),
+    /Invalid brush stroke/,
+  );
+  assert.deepEqual(paintedIsland, afterFullStroke);
+  assert.equal(paintWrites, 1);
+  assert.deepEqual(paintedIsland.placements, fullCatalog.placements);
+  assert.deepEqual(paintedIsland.receipts, fullCatalog.receipts);
   fullCatalog.floors = landTiles.map((t) => ({
     decoration: 'path',
     cell: t.id,

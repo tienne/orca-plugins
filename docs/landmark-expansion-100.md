@@ -48,7 +48,7 @@ Each addition has distinct original vector geometry/material treatment and two g
 
 The address grid is 40 × 40, with 1,044 usable land tiles. The first 12 discoveries retain the original 36→318 progression. Discoveries 13–100 open connected outer land, with 425/631/837/1,044 tiles at 25/50/75/100 discoveries. Regression checks preserve all 576 original addresses and all properties/unlock stages of the 318 original land tiles. New coordinates append to the list, preserving existing placements and the lake. Negative coordinates are accounted for in projection, minimap and depth ordering.
 
-Save schema remains 4. Existing collections above 12 distinct entries unlock the corresponding new land. Checks cover saving/restoring all 100 landmarks and first gifts, 1,044 floor coverings and the 256 KiB backup limit. Backups with new entries or outer addresses require this build or a later compatible build. No real user save or rewards were modified.
+The current save schema is v5, which adds landmark facing and reads earlier schemas; the land expansion preserves existing addresses. Existing collections above 12 distinct entries unlock the corresponding new land. Checks cover saving/restoring all 100 landmarks and first gifts, 1,044 floor coverings and the 256 KiB backup limit. Backups with new entries or outer addresses require this build or a later compatible build. No real user save or rewards were modified.
 
 ## Verification
 
