@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test';
-import { mkdir } from 'node:fs/promises';
+import { mkdir, readFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
 
 const output = resolve('docs/screenshots');
@@ -49,3 +49,22 @@ for (const theme of ['light', 'dark']) {
     expect(errors).toEqual([]);
   });
 }
+
+// 위 dark 캡처를 같은 파일 안에서 순서대로 이어받아 쓰므로 이 테스트는 맨 끝에 둔다.
+test('English hero card', async ({ page }) => {
+  const [template, icon, shot] = await Promise.all([
+    readFile(resolve('plugins/git-logs/showcase/hero.html'), 'utf8'),
+    readFile(resolve('plugins/git-logs/showcase/icon.svg'), 'utf8'),
+    readFile(resolve(output, 'git-logs-dark.png')),
+  ]);
+  await page.setContent(
+    template
+      .replace('{{ICON}}', icon)
+      .replace('{{SHOT}}', `data:image/png;base64,${shot.toString('base64')}`),
+  );
+  await expect(page.locator('.frame img')).toBeVisible();
+  await page.screenshot({
+    path: resolve(output, 'git-logs-hero.png'),
+    animations: 'disabled',
+  });
+});

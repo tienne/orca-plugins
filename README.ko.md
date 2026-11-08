@@ -8,7 +8,7 @@ pnpm, Nx, TypeScript, React, Vite, esbuild를 사용하는 Orca 플러그인 저
 
 | 플러그인                                                | 기능                                                  | 상태              |
 | ------------------------------------------------------- | ----------------------------------------------------- | ----------------- |
-| [Git Logs](plugins/git-logs/README.ko.md)               | 커밋 그래프, 브랜치와 커밋 검색, 좌우 Diff, 커밋 작업 | 0.1.1             |
+| [Git Logs](plugins/git-logs/README.ko.md)               | 커밋 그래프, 브랜치와 커밋 검색, 좌우 Diff, 커밋 작업 | 0.2.0             |
 | [Orcatopia](plugins/landmark-island/README.ko.md) | 워크트리 탐험, 랜드마크 수집, 섬 배치와 세계지도      | 미출시 프로토타입 |
 
 소스 브랜치의 카탈로그는 빈 템플릿입니다. 설치용 카탈로그와 빌드 파일은 `release` 브랜치에서 관리합니다. Orca의 **설정 → 플러그인 → ⋯ → Catalog sources…**에 `https://github.com/tienne/orca-plugins.git`과 ref `release`를 추가한 뒤 Git Logs를 설치하십시오. [설치·사용 안내](plugins/git-logs/README.ko.md#설치)에 권한과 사용 방법을 설명합니다.
@@ -61,7 +61,7 @@ pnpm validate
 | `test`            | 임시 저장소의 Git 작업, 번역 문구, 산출물 규칙                           |
 | `ui-test`         | 패키징한 그래프, Diff, 테마, 언어, 키보드 조작, 레이아웃                 |
 | `validate-plugin` | 빌드 산출물의 Orca manifest 검증. `pnpm validate`로 전체 플러그인에 실행 |
-| `screenshots`     | 영문 DEMO의 라이트, 다크, 커밋 메뉴 화면 캡처                            |
+| `screenshots`     | 영문 DEMO의 라이트, 다크, 커밋 메뉴 화면 캡처와 소개 카드                |
 
 브라우저 검증은 설치된 Google Chrome을 사용합니다. Chromium을 사용하려면 `pnpm exec playwright install chromium`을 실행한 뒤 `PW_CHANNEL=chromium`을 설정하십시오. 테스트 결과는 `test-results/`에 저장됩니다.
 

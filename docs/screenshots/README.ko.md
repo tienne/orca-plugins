@@ -9,6 +9,7 @@
 | [git-logs-dark.png](git-logs-dark.png)               | 다크 테마의 커밋 그래프, 커밋 정보, 변경 파일, 좌우 Diff |
 | [git-logs-light.png](git-logs-light.png)             | 같은 화면의 라이트 테마                                  |
 | [git-logs-commit-menu.png](git-logs-commit-menu.png) | 다크 테마의 커밋 우클릭 메뉴                             |
+| [git-logs-hero.png](git-logs-hero.png)               | 다크 캡처를 틀에 넣고 제목과 짧은 문구를 붙인 소개 카드  |
 
 모든 이미지는 1600 × 1000 PNG 파일입니다. 작성자, 메시지, 경로, 코드는 fixture 데이터입니다. 캡처할 때 Git 명령을 실행하지 않으며 Orca 플러그인 실행 승인도 필요하지 않습니다.
 
@@ -21,7 +22,7 @@ pnpm install
 pnpm nx run git-logs:screenshots
 ```
 
-플러그인을 빌드한 뒤 이미지 세 장을 `docs/screenshots/`에 저장합니다. 설치된 Google Chrome을 사용합니다. Chromium을 사용하려면 `pnpm exec playwright install chromium`을 실행하고 `PW_CHANNEL=chromium`을 설정하십시오.
+플러그인을 빌드한 뒤 이미지 네 장을 `docs/screenshots/`에 저장합니다. 설치된 Google Chrome을 사용합니다. Chromium을 사용하려면 `pnpm exec playwright install chromium`을 실행하고 `PW_CHANNEL=chromium`을 설정하십시오.
 
 ## DEMO 열기
 

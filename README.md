@@ -8,7 +8,7 @@ Orca plugins built with pnpm, Nx, TypeScript, React, Vite, and esbuild. Each dir
 
 | Plugin                                               | Features                                                                    | Status                |
 | ---------------------------------------------------- | --------------------------------------------------------------------------- | --------------------- |
-| [Git Logs](plugins/git-logs/README.md)               | Commit graph, branch and commit search, side-by-side diffs, commit actions  | 0.1.1                 |
+| [Git Logs](plugins/git-logs/README.md)               | Commit graph, branch and commit search, side-by-side diffs, commit actions  | 0.2.0                 |
 | [Orcatopia](plugins/landmark-island/README.md) | Worktree expeditions, collectible landmarks, island placement and world map | Unpublished prototype |
 
 The source-branch catalog is an empty template. The installable catalog and built plugins live on `release`. In Orca **Settings → Plugins → ⋯ → Catalog sources…**, add `https://github.com/tienne/orca-plugins.git` with ref `release`, then install Git Logs. See the [installation and usage guide](plugins/git-logs/README.md#install) for access and usage details.
@@ -61,7 +61,7 @@ pnpm validate
 | `test`            | Git operations in temporary repositories, translations, and artifact rules                 |
 | `ui-test`         | Packaged graph, diff, themes, languages, keyboard controls, and layout                     |
 | `validate-plugin` | Orca manifest validation of the packaged plugin; `pnpm validate` runs this for all plugins |
-| `screenshots`     | English demo captures in light and dark themes, including the commit menu                  |
+| `screenshots`     | English demo captures in light and dark themes, the commit menu, and a product card        |
 
 Browser checks use an installed Google Chrome. To use Chromium, run `pnpm exec playwright install chromium`, then set `PW_CHANNEL=chromium`. Test output is written to `test-results/`.
 

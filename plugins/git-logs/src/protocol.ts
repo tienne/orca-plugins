@@ -1,14 +1,15 @@
 export interface Commit {
   hash: string;
   parents: string[];
-  message: string;
+  subject: string;
   author: string;
   date: string;
   refs: string[];
 }
 export type Comparison =
   | { kind: 'working'; head?: string | null }
-  | { kind: 'commit'; commit: string; parent?: string };
+  | { kind: 'commit'; commit: string; parent?: string }
+  | { kind: 'range'; base: string; target: string; mergeBase?: boolean };
 export interface ChangedFile {
   path: string;
   oldPath?: string;
@@ -41,6 +42,14 @@ export interface BranchRef {
   hash: string;
   kind: 'local' | 'remote';
 }
+export interface LogFilter {
+  text?: string;
+  author?: string;
+  since?: string;
+  until?: string;
+  path?: string;
+  follow?: boolean;
+}
 export interface Repository {
   root: string;
   branch: string;
@@ -48,9 +57,12 @@ export interface Repository {
   commits: Commit[];
   localBranches?: { name: string; hash: string }[];
   branches?: BranchRef[];
+  nextCursor?: string;
+  hasMore?: boolean;
 }
 export interface Descriptor {
-  version: 1;
+  // range 비교 문서만 2를 써서 0.1.x가 모르는 문서를 열지 않게 한다.
+  version: 1 | 2;
   repo: string;
   comparison: Comparison;
   path?: string;
@@ -125,8 +137,20 @@ export interface Requests {
     output: ActiveConnection;
   };
   log: {
-    input: { repo: string; all?: boolean; branchRef?: string };
+    input: {
+      repo: string;
+      all?: boolean;
+      branchRef?: string;
+      filter?: LogFilter;
+      cursor?: string;
+      // 'filter'를 보내면 같은 저장소의 앞선 'filter' 요청과 진행 중인 다음 페이지 요청을 취소한다.
+      cancelKey?: 'filter';
+    };
     output: Repository;
+  };
+  commitMessage: {
+    input: { repo: string; commit: string };
+    output: { message: string };
   };
   changes: {
     input: { repo: string; comparison: Comparison };
@@ -204,4 +228,23 @@ declare global {
   interface Window {
     orca?: FrameApi;
   }
+}
+
+// 워커와 UI가 같은 값을 쓴다. 따로 두면 한쪽만 바뀌어 페이징 상한과 오류 판별이 어긋난다.
+export const PAGE_SIZE = 200;
+export const LOAD_LIMIT = 5000;
+export const STALE_CURSOR_PREFIX = 'stale-cursor:';
+
+// range 문서만 version 2로 올려 0.1.x가 해석하지 못하는 문서를 거부하게 한다.
+export function descriptorVersion(
+  comparison: Comparison,
+): Descriptor['version'] {
+  return comparison.kind === 'range' ? 2 : 1;
+}
+export function checkDescriptorVersion(descriptor: unknown): void {
+  const d = descriptor as Partial<Descriptor> | null | undefined;
+  if (d?.version !== 1 && d?.version !== 2)
+    throw new Error('지원하지 않는 비교 문서입니다.');
+  if (d.version === 1 && d.comparison?.kind === 'range')
+    throw new Error('지원하지 않는 비교 문서입니다.');
 }

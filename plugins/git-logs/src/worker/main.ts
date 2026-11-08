@@ -1,14 +1,16 @@
 import { mkdir, lstat, writeFile, realpath } from 'node:fs/promises';
 import { randomUUID } from 'node:crypto';
 import { join } from 'node:path';
-import type {
-  Descriptor,
-  Requests,
-  WorkerApi,
-  WorkspaceContext,
-  WorkspaceChoice,
+import {
+  checkDescriptorVersion,
+  descriptorVersion,
+  type Descriptor,
+  type Requests,
+  type WorkerApi,
+  type WorkspaceContext,
+  type WorkspaceChoice,
 } from '../protocol';
-import { changes, diff, log, repository, git } from './git';
+import { changes, commitMessage, diff, log, repository, git } from './git';
 import { createOperations } from './operations';
 import { ensureLocalIgnore } from './local-ignore';
 export default function activate(orca: WorkerApi): void {
@@ -205,9 +207,51 @@ export default function activate(orca: WorkerApi): void {
             : '현재 workspace를 자동으로 식별하지 못했습니다. 로컬 워크트리를 선택하세요.',
     };
   });
-  handle('log', async ({ repo, all, branchRef }) =>
-    log(check(repo), all === true, branchRef),
-  );
+  // 필터를 연달아 바꾸면 앞선 요청의 git 프로세스를 끊어 새 요청이 밀리지 않게 한다.
+  // 필터 요청은 같은 저장소에서 아직 도는 다음 페이지 요청도 함께 끊는다. 이미 버려질 결과라서다.
+  // 페이지 요청끼리는 서로 끊지 않는다.
+  const filterRequests = new Map<string, AbortController>();
+  const pageRequests = new Map<string, Set<AbortController>>();
+  handle('log', async ({ repo, all, branchRef, filter, cursor, cancelKey }) => {
+    const root = check(repo);
+    if (cancelKey !== 'filter') {
+      if (!cursor) return log(root, all === true, branchRef, filter, cursor);
+      const controller = new AbortController();
+      const pending = pageRequests.get(root) ?? new Set<AbortController>();
+      pending.add(controller);
+      pageRequests.set(root, pending);
+      try {
+        return await log(
+          root,
+          all === true,
+          branchRef,
+          filter,
+          cursor,
+          controller.signal,
+        );
+      } finally {
+        pending.delete(controller);
+        if (pending.size === 0 && pageRequests.get(root) === pending)
+          pageRequests.delete(root);
+      }
+    }
+    filterRequests.get(root)?.abort();
+    for (const pending of pageRequests.get(root) ?? []) pending.abort();
+    const controller = new AbortController();
+    filterRequests.set(root, controller);
+    try {
+      return await log(
+        root,
+        all === true,
+        branchRef,
+        filter,
+        cursor,
+        controller.signal,
+      );
+    } finally {
+      if (filterRequests.get(root) === controller) filterRequests.delete(root);
+    }
+  });
   handle('prepare', async ({ repo, workspaceId, operation }) =>
     operations.prepare(await mutationRoot(repo, workspaceId), operation),
   );
@@ -217,6 +261,9 @@ export default function activate(orca: WorkerApi): void {
       token,
       confirmation,
     ),
+  );
+  handle('commitMessage', async ({ repo, commit }) =>
+    commitMessage(check(repo), commit),
   );
   handle('changes', async ({ repo, comparison }) => {
     const root = check(repo);
@@ -261,8 +308,7 @@ export default function activate(orca: WorkerApi): void {
   handle('open', async ({ descriptor, workspaceId }) => {
     requireHost('editor.open');
     requireHost('workspace.open');
-    if (descriptor?.version !== 1)
-      throw new Error('지원하지 않는 비교 문서입니다.');
+    checkDescriptorVersion(descriptor);
     const root = check(descriptor.repo);
     if (!(await workspaces(root)).some((w) => w.id === workspaceId))
       throw new Error(
@@ -272,7 +318,7 @@ export default function activate(orca: WorkerApi): void {
     if (descriptor.path && !set.files.some((f) => f.path === descriptor.path))
       throw new Error('변경 파일이 사라졌습니다. 새로고침하세요.');
     const safe: Descriptor = {
-      version: 1,
+      version: descriptorVersion(set.comparison),
       repo: root,
       comparison: set.comparison,
       ...(descriptor.path ? { path: descriptor.path } : {}),
