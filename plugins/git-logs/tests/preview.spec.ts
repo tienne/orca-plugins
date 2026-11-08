@@ -2510,6 +2510,32 @@ test('arrow keys move the selected commit one row at a time and stop at both end
   page,
 }) => {
   await page.goto('/');
+test('canceling an action dialog returns focus to the commit row that opened the menu', async ({
+  page,
+}) => {
+  await page.goto('/');
+  await expect(page.locator('.commit-row')).toHaveCount(6);
+  const cancel = () =>
+    page
+      .getByRole('dialog')
+      .getByRole('button', { name: '취소', exact: true })
+      .click();
+  await commitAt(page, 3).click({ button: 'right' });
+  await page.getByRole('menuitem', { name: '체크아웃…', exact: true }).click();
+  await expect(page.getByRole('dialog')).toBeVisible();
+  await cancel();
+  await expect(page.getByRole('dialog')).toHaveCount(0);
+  await expect(commitAt(page, 3)).toBeFocused();
+
+  await commitAt(page, 2).focus();
+  await page.keyboard.press('Shift+F10');
+  await page.keyboard.press('Enter');
+  await expect(page.getByRole('dialog')).toBeVisible();
+  await page.keyboard.press('Escape');
+  await expect(page.getByRole('dialog')).toHaveCount(0);
+  await expect(commitAt(page, 2)).toBeFocused();
+});
+
   await expect(page.locator('.commit-row')).toHaveCount(6);
   await commitAt(page, 2).click();
   await expect(selectedRow(page)).toHaveAttribute('data-index', '2');
@@ -2812,6 +2838,24 @@ test('Tab closes the commit menu', async ({ page }) => {
 
 test('arrow keys pressed with focus on the menu itself go to the first or last item', async ({
   page,
+  // 닫으면서 행으로 돌린 포커스에서 Tab이 다음 행으로 넘어가 body로 빠지지 않는다.
+  await expect(commitAt(page, 4)).toBeFocused();
+});
+
+test('Tab closes the file menu without dropping focus to the page', async ({
+  page,
+}) => {
+  await page.goto('/?fixture=rename');
+  await expect(page.locator('.commit-row')).toHaveCount(5);
+  await page.locator('.file-row').nth(0).click();
+  await page.locator('.file-row').nth(1).click({ button: 'right' });
+  const menu = page.getByRole('menu');
+  await expect(menu).toBeVisible();
+  await page.keyboard.press('Tab');
+  await expect(menu).toHaveCount(0);
+  await expect
+    .poll(() => page.evaluate(() => document.activeElement?.tagName))
+    .not.toBe('BODY');
 }) => {
   await page.goto('/');
   await expect(page.locator('.commit-row')).toHaveCount(6);
