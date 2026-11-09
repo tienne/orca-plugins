@@ -4,7 +4,7 @@ English · [한국어](development.ko.md)
 
 This guide records the host integration, Git behavior, and release requirements for Git Logs. For everyday use, read the [plugin guide](../plugins/git-logs/README.md). Commands below run from the repository root.
 
-Git Logs 0.2.0 added read-only features: tag badges, log filters, infinite scroll over paged history, two-commit comparison, file history, and keyboard navigation. Version 0.2.0 was released on 2026-11-08, and 0.2.1 only corrects documentation wording. The additions do not change `prepare`/`execute`, `operations.ts`, or the manifest's capabilities, minimum Orca version, or execution profile.
+Git Logs 0.2.0 added read-only features: tag badges, log filters, infinite scroll over paged history, two-commit comparison, file history, and keyboard navigation. Version 0.2.0 was released on 2026-11-08, 0.2.1 only corrects documentation wording, and 0.2.2 ends graph lines at the commit dot when the list stops before a parent. The additions do not change `prepare`/`execute`, `operations.ts`, or the manifest's capabilities, minimum Orca version, or execution profile.
 
 ## Build and verify
 

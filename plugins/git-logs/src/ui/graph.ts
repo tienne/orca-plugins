@@ -43,3 +43,12 @@ export function layoutFrom(
 export function layout(commits: Commit[]): GraphRow[] {
   return layoutFrom(emptyGraph, commits).rows;
 }
+// 목록이 끝났는데 부모가 목록에 없는 레인(상한 절단, 얕은 클론)은 아래로 이어지는 선을 끊어 점에서 끝나게 한다.
+export function closeOpenLanes(rows: GraphRow[], open: string[]): GraphRow[] {
+  if (!open.length) return rows;
+  const dangling = new Set(open);
+  return rows.map((row) => {
+    const edges = row.edges.filter((edge) => !dangling.has(row.after[edge.to]));
+    return edges.length === row.edges.length ? row : { ...row, edges };
+  });
+}

@@ -372,6 +372,7 @@ test('dedicated editor entry subscribes to descriptor and renders a worker compa
       diff: fixtureDiff(fixtureSet.files[0].path),
     },
   );
+  await page.setViewportSize({ width: 1000, height: 700 });
   await page.goto('/editor.html');
   await expect(
     page.getByRole('heading', { name: 'Git Diff', exact: true }),
@@ -379,6 +380,16 @@ test('dedicated editor entry subscribes to descriptor and renders a worker compa
   await expect(page.getByText('2개 변경', { exact: true })).toBeVisible();
   await expect(page.getByLabel('로컬 Git 저장소 절대 경로')).toHaveCount(0);
   await expect(page.locator('.monaco-editor[role=code]')).toHaveCount(2);
+
+  // Monaco 루트가 1px 넘치면 스크롤바가 생겼다 사라지는 되먹임이 시작된다
+  await expect
+    .poll(() =>
+      page.locator('.diff-content').evaluate((element) => ({
+        horizontal: element.scrollWidth - element.clientWidth,
+        vertical: element.scrollHeight - element.clientHeight,
+      })),
+    )
+    .toEqual({ horizontal: 0, vertical: 0 });
 });
 
 test('sidebar auto-connects and follows workspace switches without asking for a path', async ({
@@ -1955,6 +1966,11 @@ test('loading stops at the 5,000 commit limit with a notice and a bounded DOM', 
     'data-index',
     '4999',
   );
+  // 상한에서 잘린 곁가지(i=4990의 두 번째 부모)는 아래로 이어지지 않고 점에서 끝난다.
+  const paths = (index: number) =>
+    page.locator(`.commit-row[data-index="${index}"] svg path`);
+  await expect(paths(4999)).toHaveCount(1);
+  await expect(paths(4995)).toHaveCount(2);
   const budget = await rowBudget(page);
   expect(await page.locator('.commit-row').count()).toBeLessThanOrEqual(budget);
   expect(
