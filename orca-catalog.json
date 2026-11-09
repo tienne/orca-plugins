@@ -128,6 +128,68 @@
           ]
         }
       ]
+    },
+    {
+      "id": "tienne.landmark-island",
+      "source": {
+        "kind": "git",
+        "url": "https://github.com/tienne/orca-plugins.git",
+        "ref": "release",
+        "path": "plugins/landmark-island"
+      },
+      "description": "Turn waiting time into a little island getaway. Earn tickets from new worktrees, discover world landmarks, and make the island your own.",
+      "categories": [
+        "developer-tools"
+      ],
+      "releases": [
+        {
+          "version": "0.1.0",
+          "commit": "ac80b97290e36655bcc7469574c2510970bdce74",
+          "contentHash": "a3cf496c7a82d3a20c81fb1402a9d936e341c99d98df19b9f5e5fddb2c114007",
+          "execution": "trusted-worker",
+          "minimumOrca": "1.4.248",
+          "name": "Orcatopia",
+          "contributes": [
+            {
+              "kind": "panels",
+              "name": "Orcatopia"
+            },
+            {
+              "kind": "events",
+              "name": "workspace.created"
+            }
+          ],
+          "capabilities": [
+            "workspace:read",
+            "storage:own"
+          ],
+          "images": {
+            "icon": {
+              "path": "plugins/landmark-island/assets/orcatopia-icon.png",
+              "alt": "Orcatopia",
+              "sha256": "e659ad5f625e5f3a4890d57758f468e44eed1ec689ab8810c0544e6d52ee1714",
+              "width": 256,
+              "height": 256
+            },
+            "cover": {
+              "path": "plugins/landmark-island/assets/orcatopia-introduction.png",
+              "alt": "Orcatopia — A little escape between tasks, with a DEMO garden screen",
+              "sha256": "feb99cba9d3291f7b59b36e63ad88ed7ba5c596cc3e37a301bba3a876f2438bf",
+              "width": 1600,
+              "height": 1000
+            },
+            "screenshots": [
+              {
+                "path": "plugins/landmark-island/assets/orcatopia-island.png",
+                "alt": "English DEMO of an expanded island with landmark gardens, paths, ponds and canvas menus",
+                "sha256": "13ddbeb02536865cdd11015ba2e95de1adf8f42de807d742b137d068b0888915",
+                "width": 1280,
+                "height": 1423
+              }
+            ]
+          }
+        }
+      ]
     }
   ]
 }
