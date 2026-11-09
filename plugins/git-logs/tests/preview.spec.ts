@@ -372,6 +372,7 @@ test('dedicated editor entry subscribes to descriptor and renders a worker compa
       diff: fixtureDiff(fixtureSet.files[0].path),
     },
   );
+  await page.setViewportSize({ width: 1000, height: 700 });
   await page.goto('/editor.html');
   await expect(
     page.getByRole('heading', { name: 'Git Diff', exact: true }),
@@ -379,6 +380,16 @@ test('dedicated editor entry subscribes to descriptor and renders a worker compa
   await expect(page.getByText('2개 변경', { exact: true })).toBeVisible();
   await expect(page.getByLabel('로컬 Git 저장소 절대 경로')).toHaveCount(0);
   await expect(page.locator('.monaco-editor[role=code]')).toHaveCount(2);
+
+  // Monaco 루트가 1px 넘치면 스크롤바가 생겼다 사라지는 되먹임이 시작된다
+  await expect
+    .poll(() =>
+      page.locator('.diff-content').evaluate((element) => ({
+        horizontal: element.scrollWidth - element.clientWidth,
+        vertical: element.scrollHeight - element.clientHeight,
+      })),
+    )
+    .toEqual({ horizontal: 0, vertical: 0 });
 });
 
 test('sidebar auto-connects and follows workspace switches without asking for a path', async ({

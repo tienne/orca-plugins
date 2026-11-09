@@ -748,6 +748,9 @@ button.secondary:hover:not(:disabled) {
 .monaco-container {
   flex: 1;
   min-height: 260px;
+  min-width: 0;
+  position: relative;
+  overflow: hidden;
 }
 .state {
   padding: 28px 20px;
