@@ -1955,6 +1955,11 @@ test('loading stops at the 5,000 commit limit with a notice and a bounded DOM', 
     'data-index',
     '4999',
   );
+  // 상한에서 잘린 곁가지(i=4990의 두 번째 부모)는 아래로 이어지지 않고 점에서 끝난다.
+  const paths = (index: number) =>
+    page.locator(`.commit-row[data-index="${index}"] svg path`);
+  await expect(paths(4999)).toHaveCount(1);
+  await expect(paths(4995)).toHaveCount(2);
   const budget = await rowBudget(page);
   expect(await page.locator('.commit-row').count()).toBeLessThanOrEqual(budget);
   expect(

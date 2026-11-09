@@ -1,4 +1,10 @@
-import { useEffect, useRef, useState, type MutableRefObject } from 'react';
+import {
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  type MutableRefObject,
+} from 'react';
 import {
   LOAD_LIMIT,
   STALE_CURSOR_PREFIX,
@@ -9,6 +15,7 @@ import { request } from '../client';
 import { demo, message } from '../env';
 import { fixtureLog } from '../fixture';
 import {
+  closeOpenLanes,
   emptyGraph,
   layoutFrom,
   type GraphRow,
@@ -157,9 +164,17 @@ export function useCommitPages({ repo, logSeq, loaded, reloadLog }: Options) {
   }
 
   const limitReached = !current.hasMore && current.commits.length >= LOAD_LIMIT;
+  // 더 불러올 게 남았으면 선을 이어 두고, 목록이 끝났을 때만 끊는다.
+  const rows = useMemo(
+    () =>
+      current.hasMore
+        ? current.rows
+        : closeOpenLanes(current.rows, current.graph.lanes),
+    [current.rows, current.graph, current.hasMore],
+  );
   return {
     commits: current.commits,
-    rows: current.rows,
+    rows,
     graphWidth: current.width,
     hasMore: current.hasMore,
     loading,

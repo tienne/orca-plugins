@@ -35,7 +35,7 @@ import {
   checkDescriptorVersion,
   descriptorVersion,
 } from '../protocol';
-import { layout } from '../ui/graph';
+import { closeOpenLanes, layout, layoutFrom } from '../ui/graph';
 import activate from './main';
 async function fixture(
   run: (
@@ -149,6 +149,26 @@ test('rename, delete and literal pathspec names compare correct sides', () =>
       'literal',
     );
   }));
+test('graph ends at the dot when the list stops before a parent', () => {
+  const commit = (hash: string, parents: string[]) =>
+    ({ hash, parents }) as Parameters<typeof layout>[0][number];
+  const { rows, state } = layoutFrom({ lanes: [] }, [
+    commit('c', ['b', 'x']),
+    commit('b', ['a']),
+  ]);
+  assert.deepEqual(state.lanes, ['a', 'x']);
+  const closed = closeOpenLanes(rows, state.lanes);
+  assert.deepEqual(
+    closed.map((row) => row.edges.length),
+    [1, 0],
+  );
+  assert.deepEqual(
+    rows.map((row) => row.edges.length),
+    [2, 2],
+  );
+  const full = layoutFrom({ lanes: [] }, [commit('b', ['a']), commit('a', [])]);
+  assert.equal(closeOpenLanes(full.rows, full.state.lanes), full.rows);
+});
 test('merge selects an actual parent; graph contains both parent edges', () =>
   fixture(async (root, commit) => {
     await writeFile(join(root, 'base'), 'base');
