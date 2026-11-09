@@ -4,9 +4,9 @@ English · [한국어](README.ko.md)
 
 Explore Git logs with a Git tree visualization and commit graph, then compare files in a read-only side-by-side diff. Commit actions are available from the graph's context menu.
 
-Git Logs 0.2.0 requires Orca 1.4.248 or later and local Git.
+Git Logs 0.2.1 requires Orca 1.4.248 or later and local Git.
 
-This source tree also contains read-only additions planned for 0.2.0: tag badges, filters for message, author, date, and path, infinite scroll over paged history, comparison of any two commits, file history, and keyboard navigation. The manifest version is 0.2.0, but it has not been tagged or published. Versions up to 0.1.1 do not include these features. Sections marked **(0.2.0, unreleased)** describe them. They do not change the existing commit actions, which still prepare, confirm, recheck, and back up as described below.
+Git Logs 0.2.0 added read-only features: tag badges, filters for message, author, date, and path, infinite scroll over paged history, comparison of any two commits, file history, and keyboard navigation. Version 0.2.1 only corrects documentation wording and changes no behavior. Versions up to 0.1.1 do not include these features. Sections marked **(since 0.2.0)** describe them. They do not change the existing commit actions, which still prepare, confirm, recheck, and back up as described below.
 
 ## Install
 
@@ -23,11 +23,11 @@ The plugin reads local Git repositories and files, writes comparison documents a
 3. Select a commit to read its full message and changed files.
 4. Double-click a file to open the central Diff tab, or focus the file and press **Enter**. A single click selects the file.
 
-The graph shows recent commits with parent relationships, HEAD, branch and tag labels, author, date, and hash. A 0.1.1 build loads up to 200 commits. With the 0.2.0 additions, the list loads 200 at a time as you scroll, up to 5,000 commits. Use the branch picker to show the current branch, all branches, or a specific local or remote branch. Choosing a branch changes the history filter; it does not check out that branch. Branch search uses a separate ref list, shows up to 100 results, and excludes symbolic remote HEAD aliases. Add more text to narrow a long list.
+The graph shows recent commits with parent relationships, HEAD, branch and tag labels, author, date, and hash. Git Logs 0.1.1 and earlier load up to 200 commits. From 0.2.0, the list loads 200 at a time as you scroll, up to 5,000 commits. Use the branch picker to show the current branch, all branches, or a specific local or remote branch. Choosing a branch changes the history filter; it does not check out that branch. Branch search uses a separate ref list, shows up to 100 results, and excludes symbolic remote HEAD aliases. Add more text to narrow a long list.
 
 **Refresh** reloads Git data. Switching Orca workspaces changes the connection and resets the branch filter. A refresh keeps the selected branch unless that ref has been deleted.
 
-## Search, filter, and page history (0.2.0, unreleased)
+## Search, filter, and page history (since 0.2.0)
 
 **Tags.** A tag that points to a commit appears as a badge on that commit's row. Annotated tags are resolved to the commit they point to. Badges are read-only: tags are not listed in the branch picker, and there is no way to create a tag.
 
@@ -70,7 +70,7 @@ These labels are not separate diff modes. **The working tree diff compares HEAD 
 
 The viewer aligns both sides and highlights changed lines and words. It supports synchronized scrolling, previous/next change, collapsed unchanged regions, and ignoring leading/trailing whitespace. Narrow views keep both panes and scroll code horizontally. Added, deleted, renamed, empty, and missing files are distinguished. Unsupported text comparisons show a file status instead of a misleading diff.
 
-## Compare any two commits (0.2.0, unreleased)
+## Compare any two commits (since 0.2.0)
 
 1. Right-click a commit, or focus it and press **Shift+F10**, then choose **Set as comparison base**. A **Base: `<hash>`** chip appears under the search box.
 2. Right-click another commit and choose **Compare with base commit**. The item is disabled until a base is set.
@@ -82,13 +82,13 @@ If the two commits have no common ancestor, the list shows **No common ancestor.
 
 The comparison points are commits in the list. Choosing a branch or tag by name is not implemented. To compare two releases, pick the commits that carry their tag badges; find older commits with search or filters first. The file count and size limits listed under Limits apply to these comparisons too.
 
-## File history (0.2.0, unreleased)
+## File history (since 0.2.0)
 
 Right-click a changed file, or focus it and press **Shift+F10**, then choose **History** in the file menu. The commit list is limited to commits that changed that path and follows renames, so history under earlier names is included. A chip shows **File: `<path>` (follows renames)**. Selecting a commit selects that file in its changed-file list when it can be matched by its path, its previous path, or because it is the only changed file. If no match is found, no file is selected. Remove the chip with its **×** to return to the full list; other filters stay.
 
 Typing in the **Path** field instead filters by that path without rename tracking. When the branch picker is set to all branches, rename tracking is not available: the list filters by path only, the chip reads **File: `<path>`**, and a note says that rename tracking is unavailable. Tracking returns when you select a branch.
 
-## Keyboard navigation (0.2.0, unreleased)
+## Keyboard navigation (since 0.2.0)
 
 Click the commit list or the changed-file list, then press **↑** or **↓** to move the selection. The area you clicked last receives the keys. Movement stops at the first and last rows. Moving down near the end of the loaded commits loads the next page. If the working tree row is selected, the first key press selects the first commit in the list. Arrow keys do nothing while a menu, the branch picker, a dialog, or a text field has focus; menus and the picker keep their own arrow-key handling. Combinations with Shift, Ctrl, Alt, or Cmd are ignored.
 
@@ -106,7 +106,7 @@ Right-click a commit, or focus it and press **Shift+F10**.
 | Revert      | Create a commit that reverses the selected commit                    |
 | Reset       | Move HEAD to the selected commit with soft, mixed, or hard mode      |
 
-The same menu has a Compare group with **Set as comparison base**, **Compare with base commit**, and **Clear base** (0.2.0, unreleased). These items only read history and do not run Git actions.
+The same menu has a Compare group with **Set as comparison base**, **Compare with base commit**, and **Clear base** (since 0.2.0). These items only read history and do not run Git actions.
 
 Choose the options, check the repository state, review the branch and target, then confirm execution. Actions require a clean index and working tree with no untracked files. Unsupported states and operations already in progress are rejected.
 
@@ -131,7 +131,7 @@ Drag the short handle to resize the commit details and file list. Arrow keys adj
 
 Git Logs is a `trusted-worker` plugin. **Its Node process runs with your user account's access to the machine**, including Git and file access. It requires approval before execution. `workspace:read` finds the current workspace, and `workspace:write` opens the workspace and Diff tab.
 
-Opening a Diff tab writes a JSON comparison document to `.orca/git-logs/*.orcadiff` inside the worktree. It records the repository, comparison, and selected file. A document for a two-commit comparison (0.2.0, unreleased) is saved as version 2, which Git Logs 0.1.x cannot open; documents for the working tree and single commits remain version 1. Documents remain while the worktree exists and are removed with its directory; closing a tab or removing only an Orca folder entry does not delete them.
+Opening a Diff tab writes a JSON comparison document to `.orca/git-logs/*.orcadiff` inside the worktree. It records the repository, comparison, and selected file. A document for a two-commit comparison (since 0.2.0) is saved as version 2, which Git Logs 0.1.x cannot open; documents for the working tree and single commits remain version 1. Documents remain while the worktree exists and are removed with its directory; closing a tab or removing only an Orca folder entry does not delete them.
 
 Git Logs checks local exclusion when a worktree is created, the active workspace changes, the sidebar connects, a comparison loads, or a Diff tab opens. It ensures `/.orca/git-logs/` is present once in the existing local `info/exclude` file found through Git. It preserves existing rules and does not edit tracked `.gitignore`, the index, or global Git configuration. Linked worktrees of the same local repository share this rule; other clones are unaffected. Already tracked documents are not untracked automatically, and legacy `.orca/git-tools/` files are outside this rule.
 
