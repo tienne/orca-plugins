@@ -79,6 +79,43 @@
       ],
       "releases": [
         {
+          "version": "0.2.2",
+          "commit": "536b968a879d273c2ef5981fa9fac1b47fb241dd",
+          "contentHash": "49e917d038504d6deb13a14f26eda7db6b19a079a84b920b2d9e3a4efefed150",
+          "execution": "trusted-worker",
+          "minimumOrca": "1.4.248",
+          "name": "Git Logs",
+          "contributes": [
+            {
+              "kind": "panels",
+              "name": "Git Logs"
+            },
+            {
+              "kind": "events",
+              "name": "workspace.created"
+            },
+            {
+              "kind": "events",
+              "name": "workspace.changed"
+            },
+            {
+              "kind": "customEditors",
+              "name": "Git Diff",
+              "detail": ".orcadiff"
+            }
+          ],
+          "capabilities": [
+            "workspace:read",
+            "workspace:write"
+          ],
+          "fileTypes": [
+            "orcadiff"
+          ],
+          "editorFileTypes": [
+            "orcadiff"
+          ]
+        },
+        {
           "version": "0.2.1",
           "commit": "55f787cb35000c5dd27208e989b3259897ec97fd",
           "contentHash": "8aeae04cf9eb320442470d69e4e220636c88bbcc8d473188c76097cef391ba69",
