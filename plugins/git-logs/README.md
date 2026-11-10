@@ -4,9 +4,9 @@ English · [한국어](README.ko.md)
 
 Explore Git logs with a Git tree visualization and commit graph, then compare files in a read-only side-by-side diff. Commit actions are available from the graph's context menu.
 
-Git Logs 0.2.1 requires Orca 1.4.248 or later and local Git.
+Git Logs 0.2.2 requires Orca 1.4.248 or later and local Git.
 
-Git Logs 0.2.0 added read-only features: tag badges, filters for message, author, date, and path, infinite scroll over paged history, comparison of any two commits, file history, and keyboard navigation. Version 0.2.1 only corrects documentation wording and changes no behavior. Versions up to 0.1.1 do not include these features. Sections marked **(since 0.2.0)** describe them. They do not change the existing commit actions, which still prepare, confirm, recheck, and back up as described below.
+Git Logs 0.2.0 added read-only features: tag badges, filters for message, author, date, and path, infinite scroll over paged history, comparison of any two commits, file history, and keyboard navigation. Version 0.2.1 only corrects documentation wording and changes no behavior. Version 0.2.2 ends graph lines at the commit dot when the list stops before a parent, and stops the diff pane scrollbars from appearing and disappearing repeatedly when the system always shows scrollbars. Versions up to 0.1.1 do not include these features. Sections marked **(since 0.2.0)** describe them. They do not change the existing commit actions, which still prepare, confirm, recheck, and back up as described below.
 
 ## Install
 
@@ -48,7 +48,7 @@ Search text, filters, and the selected branch scope combine with AND. For exampl
 
 While search text or any filter is active, the graph heading reads **Search results · graph hidden** and no graph lines are drawn. Commits left out of the results would otherwise produce false connections.
 
-**Paging.** Scroll until the end of the list is within 10 rows and the next 200 commits load automatically. There is no Load more button. Loading stops at 5,000 commits and a notice suggests search or filters for older commits. If the history changes between pages, for example after a new commit or a moved branch, Git Logs shows **History changed. Reloading from the start.** and loads the list again from the first page.
+**Paging.** Scroll until the end of the list is within 10 rows and the next 200 commits load automatically. There is no Load more button. Loading stops at 5,000 commits and a notice suggests search or filters for older commits. From 0.2.2, when the list ends before some parents were loaded (at the 5,000 limit or in a shallow clone), the lines toward those parents stop at the commit dot instead of running to the bottom of the list. If the history changes between pages, for example after a new commit or a moved branch, Git Logs shows **History changed. Reloading from the start.** and loads the list again from the first page.
 
 ## Compare files
 
