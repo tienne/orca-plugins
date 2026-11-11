@@ -24,6 +24,10 @@ pnpm nx run git-logs:screenshots
 
 The target builds the plugin and writes these four images to `docs/screenshots/`. It uses an installed Google Chrome. To use Chromium, run `pnpm exec playwright install chromium`, then set `PW_CHANNEL=chromium`.
 
+## Plugin page images
+
+The manifest uses `git-logs-hero.png` as the cover, and the dark, light and commit menu captures as screenshots; the dark and light ones are tagged so Orca shows each with its matching theme. The icon is a 256 × 256 PNG rendered from `plugins/git-logs/showcase/icon.svg`, the same emblem as the product card, and is committed at `plugins/git-logs/assets/git-logs-icon.png`. The build copies the four captures from `docs/screenshots/` into the package's `assets/`, so each image is stored once in the repository. The manifest paths point at the packaged files, which do not exist in the source tree. The installed Orca validator checks dimensions and file sizes: `pnpm nx run git-logs:validate-plugin`.
+
 ## Open the demo
 
 ```sh
