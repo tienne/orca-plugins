@@ -2,7 +2,7 @@
   "manifestVersion": 2,
   "id": "git-logs",
   "name": "Git Logs",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "description": "Explore Git logs in a visual Git tree and commit graph. Compare changes in a read-only side-by-side diff and run confirmed Git actions in Orca.",
   "repository": "https://github.com/tienne/orca-plugins",
   "icon": "assets/git-logs-icon.png",
