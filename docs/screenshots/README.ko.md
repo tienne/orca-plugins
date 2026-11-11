@@ -24,6 +24,10 @@ pnpm nx run git-logs:screenshots
 
 플러그인을 빌드한 뒤 이미지 네 장을 `docs/screenshots/`에 저장합니다. 설치된 Google Chrome을 사용합니다. Chromium을 사용하려면 `pnpm exec playwright install chromium`을 실행하고 `PW_CHANNEL=chromium`을 설정하십시오.
 
+## 플러그인 페이지 이미지
+
+manifest는 `git-logs-hero.png`를 커버로, 다크·라이트·커밋 메뉴 캡처를 스크린샷으로 사용합니다. 다크와 라이트에는 테마를 지정해 Orca 테마에 맞는 쪽만 보이게 합니다. 아이콘은 제품 카드와 같은 문양인 `plugins/git-logs/showcase/icon.svg`를 256 × 256 PNG로 렌더링해 `plugins/git-logs/assets/git-logs-icon.png`에 둡니다. 빌드가 캡처 네 장을 `docs/screenshots/`에서 패키지의 `assets/`로 복사하므로 저장소에는 이미지가 한 벌만 있습니다. manifest 경로는 패키지 안의 파일을 가리키며 소스 트리에는 없습니다. 이미지 크기와 파일 용량은 설치된 Orca 검증기로 확인합니다(`pnpm nx run git-logs:validate-plugin`).
+
 ## DEMO 열기
 
 ```sh
