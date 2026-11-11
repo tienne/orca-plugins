@@ -79,6 +79,82 @@
       ],
       "releases": [
         {
+          "version": "0.2.3",
+          "commit": "c832617b5801b3b7acb619497d8c267bff9d80ed",
+          "contentHash": "85003122c0fffdc48e9654a2d8a16cc60fb510eecd934d3e8279136651b15e43",
+          "execution": "trusted-worker",
+          "minimumOrca": "1.4.248",
+          "name": "Git Logs",
+          "contributes": [
+            {
+              "kind": "panels",
+              "name": "Git Logs"
+            },
+            {
+              "kind": "events",
+              "name": "workspace.created"
+            },
+            {
+              "kind": "events",
+              "name": "workspace.changed"
+            },
+            {
+              "kind": "customEditors",
+              "name": "Git Diff",
+              "detail": ".orcadiff"
+            }
+          ],
+          "capabilities": [
+            "workspace:read",
+            "workspace:write"
+          ],
+          "fileTypes": [
+            "orcadiff"
+          ],
+          "editorFileTypes": [
+            "orcadiff"
+          ],
+          "images": {
+            "icon": {
+              "path": "plugins/git-logs/assets/git-logs-icon.png",
+              "alt": "Git Logs",
+              "sha256": "2bda46f746064e2fa1f09d419173048c19299431e7f8af90288a49f1566eb974",
+              "width": 256,
+              "height": 256
+            },
+            "cover": {
+              "path": "plugins/git-logs/assets/git-logs-cover.png",
+              "alt": "Git Logs, a commit graph and side-by-side diff in Orca, shown with a DEMO capture",
+              "sha256": "11e455c49cd9b2b667decbc0c2e822694a479fd7a20eb75bf7b424509c5e66fd",
+              "width": 1600,
+              "height": 1000
+            },
+            "screenshots": [
+              {
+                "path": "plugins/git-logs/assets/git-logs-dark.png",
+                "alt": "English DEMO of the commit graph, changed files and side-by-side diff in dark mode",
+                "sha256": "cd3b1d3480350f1e85e056fb9c5c3123a5ec756710a0ca26dcdb6dc1cf667fd8",
+                "width": 1600,
+                "height": 1000
+              },
+              {
+                "path": "plugins/git-logs/assets/git-logs-light.png",
+                "alt": "English DEMO of the same view in light mode",
+                "sha256": "c3a0b5e3d02a19645c09d7c0d46257a2505cf3b1ba9e5ffee8831077ddfde758",
+                "width": 1600,
+                "height": 1000
+              },
+              {
+                "path": "plugins/git-logs/assets/git-logs-commit-menu.png",
+                "alt": "English DEMO of the commit context menu in dark mode",
+                "sha256": "f0e7290f4935f67be3a78a1981aa01776fa73da05935ad1bbbe544e7e36afc16",
+                "width": 1600,
+                "height": 1000
+              }
+            ]
+          }
+        },
+        {
           "version": "0.2.2",
           "commit": "536b968a879d273c2ef5981fa9fac1b47fb241dd",
           "contentHash": "49e917d038504d6deb13a14f26eda7db6b19a079a84b920b2d9e3a4efefed150",
