@@ -2,8 +2,33 @@
   "manifestVersion": 2,
   "id": "git-logs",
   "name": "Git Logs",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "description": "Explore Git logs in a visual Git tree and commit graph. Compare changes in a read-only side-by-side diff and run confirmed Git actions in Orca.",
+  "repository": "https://github.com/tienne/orca-plugins",
+  "icon": "assets/git-logs-icon.png",
+  "cover": {
+    "path": "assets/git-logs-cover.png",
+    "alt": "Git Logs, a commit graph and side-by-side diff in Orca, shown with a DEMO capture"
+  },
+  "screenshots": [
+    {
+      "path": "assets/git-logs-dark.png",
+      "alt": "English DEMO of the commit graph, changed files and side-by-side diff in dark mode",
+      "caption": "Commit graph and side-by-side diff in dark mode. Browser demo with sample data, not a live Orca capture.",
+      "theme": "dark"
+    },
+    {
+      "path": "assets/git-logs-light.png",
+      "alt": "English DEMO of the same view in light mode",
+      "caption": "The same view in light mode.",
+      "theme": "light"
+    },
+    {
+      "path": "assets/git-logs-commit-menu.png",
+      "alt": "English DEMO of the commit context menu in dark mode",
+      "caption": "Right-click a commit to open the confirmed Git actions."
+    }
+  ],
   "engines": {
     "orca": ">=1.4.248"
   },

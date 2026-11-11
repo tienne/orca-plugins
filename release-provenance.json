@@ -2,8 +2,8 @@
   "format": 1,
   "plugins": {
     "tienne.git-logs": {
-      "version": "0.2.2",
-      "sourceCommit": "a9000461cdb17c1223856337568c396040a9ef19",
+      "version": "0.2.3",
+      "sourceCommit": "e5817ec387bad64f739f9fe1f33fc8f4d36f5887",
       "repository": "https://github.com/tienne/orca-plugins.git",
       "path": "plugins/git-logs"
     },
