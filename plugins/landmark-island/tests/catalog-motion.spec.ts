@@ -1,6 +1,53 @@
 import { test, expect } from '@playwright/test';
 import { empty, landmarks, validate } from '../src/game';
 
+test('the scene preview pauses offscreen and filtered landmarks while retaining reduced motion', async ({
+  page,
+}) => {
+  await page.goto('/?preview=landmark-life&lang=en');
+  const before = await page.evaluate(() =>
+    localStorage.getItem('landmark-island-demo-v1'),
+  );
+  const cards = page.locator('.life-preview-card');
+  const first = cards.first();
+  const last = cards.last();
+  const running = (card: typeof first) =>
+    card
+      .locator('.landmark-art')
+      .evaluate(
+        (art) =>
+          art
+            .getAnimations({ subtree: true })
+            .filter((animation) => animation.playState === 'running').length,
+      );
+  await expect(cards).toHaveCount(300);
+  await first.scrollIntoViewIfNeeded();
+  await expect(first).toHaveAttribute('data-motion-visible', 'true');
+  await expect.poll(() => running(first)).toBeGreaterThan(0);
+  await expect.poll(() => running(last)).toBe(0);
+  await last.scrollIntoViewIfNeeded();
+  await expect(last).toHaveAttribute('data-motion-visible', 'true');
+  await expect.poll(() => running(last)).toBeGreaterThan(0);
+  await expect.poll(() => running(first)).toBe(0);
+  await page.locator('#life-preview-search').fill('greatwall');
+  const wall = page.locator('#scene-greatwall');
+  await wall.scrollIntoViewIfNeeded();
+  await expect.poll(() => running(wall)).toBeGreaterThan(0);
+  await expect(last).toBeHidden();
+  await expect.poll(() => running(last)).toBe(0);
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await expect
+    .poll(() =>
+      wall
+        .locator('.landmark-art')
+        .evaluate((art) => art.getAnimations({ subtree: true }).length),
+    )
+    .toBe(0);
+  expect(
+    await page.evaluate(() => localStorage.getItem('landmark-island-demo-v1')),
+  ).toBe(before);
+});
+
 test('the 300-landmark journal only animates visible cards across scrolling, filtering and rerenders', async ({
   page,
 }) => {

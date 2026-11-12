@@ -2,8 +2,15 @@ import { art } from './art';
 import { landmarks } from './game';
 import { translate } from './i18n';
 import { animationTiers, landmarkScenes } from './landmark-life';
+import { observeCatalogMotion } from './catalog-motion';
+
+let disposeMotion: (() => void) | undefined;
+window.addEventListener('pagehide', (event) => {
+  if (!event.persisted) disposeMotion?.();
+});
 
 export function renderLandmarkLifePreview(root: HTMLElement) {
+  disposeMotion?.();
   document.title = 'Orcatopia · Landmark Preview';
   const byId = new Map(landmarks.map((landmark) => [landmark.id, landmark]));
   const navigation = `<nav class="life-preview-nav" aria-label="${translate('Animation rarity')}">${animationTiers.map((tier) => `<a href="#tier-${tier.id}" data-preview-tier="${tier.id}">${translate(tier.name)}</a>`).join('')}</nav>`;
@@ -74,4 +81,8 @@ export function renderLandmarkLifePreview(root: HTMLElement) {
       input.focus();
     };
   update();
+  disposeMotion = observeCatalogMotion(
+    root.querySelector<HTMLElement>('.life-preview')!,
+    null,
+  );
 }
