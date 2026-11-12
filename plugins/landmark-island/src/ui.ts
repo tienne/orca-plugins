@@ -1,4 +1,5 @@
 import { renderIsland } from './render-island';
+import { observeCatalogMotion } from './catalog-motion';
 import { ExpeditionCamp } from './expedition-camp';
 import { observeExpedition, type Expedition } from './expeditions';
 import './expedition-camp.css';
@@ -766,7 +767,12 @@ function canvasEditor() {
     return `<aside class="canvas-editor moving-editor" aria-label="Island arrangement"><p class="placement-hint" aria-live="polite">${hint}</p><button id="cancel">Cancel move</button></aside>`;
   return `<aside class="canvas-editor" aria-label="Island arrangement">${scene.modeMarkup()}${scene.mode === 'build' ? `<p class="placement-hint" aria-live="polite">${hint}</p>` : ''}${editorTools()}${moving ? '<div class="tools"><button id="cancel">Cancel move</button></div>' : ''}</aside>`;
 }
+let disposeCatalogMotion: (() => void) | undefined;
+window.addEventListener('pagehide', (event) => {
+  if (!event.persisted) disposeCatalogMotion?.();
+});
 function render() {
+  disposeCatalogMotion?.();
   const previousScroll = root.querySelector<HTMLElement>('.inventory-scroll');
   if (previousScroll && inventoryTab && !previousScroll.closest('[hidden]'))
     inventoryScroll[
@@ -1189,6 +1195,9 @@ function render() {
     const scroll = root.querySelector<HTMLElement>('.inventory-scroll')!;
     scroll.scrollTop = inventoryScroll[inventoryTab];
   }
+  disposeCatalogMotion = observeCatalogMotion(
+    root.querySelector<HTMLElement>('.inventory-scroll')!,
+  );
   const ocean = root.querySelector<HTMLElement>('.ocean');
   if (ocean)
     ocean.dataset.inventoryOpen = String(treasureOpen || Boolean(inventoryTab));

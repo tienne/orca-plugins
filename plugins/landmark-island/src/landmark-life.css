@@ -15,6 +15,16 @@
 .landmark-life [class] {
   animation-play-state: var(--site-motion, paused);
 }
+:is(
+    .collection .card:not([data-motion-visible='true']),
+    .canvas-inventory[hidden] .card,
+    [data-inventory-page][hidden] .card,
+    .collection .card[hidden],
+    .inventory-scroll[data-motion-paused='true'] .card
+  )
+  :is(.landmark-art, .landmark-art *) {
+  animation-play-state: paused !important;
+}
 .wall-porter {
   animation: wall-carry-stone 8s linear infinite;
 }
