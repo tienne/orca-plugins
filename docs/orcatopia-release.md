@@ -32,6 +32,36 @@ the next run has a 45-minute budget and must pass for the final source commit.
 The sections below record the earlier 0.1.0 preparation and its historical checks.
 They are not verification evidence for 0.2.0.
 
+## Current distribution and native checkpoint (2026-11-12)
+
+The existing community installation resolves through Orca's community mirror to
+[`tienne/orcatopia`](https://github.com/tienne/orcatopia). Its root package and
+`vX.Y.Z` tags are the update path for that installation. Update this existing
+repository as well as the optional custom catalog; do not assume the monorepo
+catalog alone updates community installs. Generic tags in `tienne/orca-plugins`
+remain reserved for Git Logs.
+
+With explicit user approval, candidate `a3fcce5` was installed as
+`tienne.landmark-island` 0.2.0 after a private backup. Orca refused changing a
+community install directly to a Git source. Its supported removal step also
+removed the plugin storage directory, so the saved original bytes were restored
+before installing the candidate. The collection matched the backup immediately
+after installation. Later progress has been separately backed up and must not be
+replaced with the older pre-update backup. Restorable backup export was also
+validated through the worker against a read-only copy of the store.
+
+The real panel rendered the 300-entry catalog, existing island, residents and
+observed expedition records without capture errors. This is panel-render and
+storage evidence, not proof that every native interaction passed. The user
+explicitly deferred a full Orca application restart; do not quit the app for this
+release. Candidate-source installation is temporary: restore the community update
+route only when it offers 0.2.0 or newer, preserving the latest store during any
+required reinstall. Never downgrade a save containing new landmark IDs to 0.1.0.
+
+The first 45-minute-budget CI attempt passed 111 of 126 UI tests and timed out in 15. Offscreen preview motion and duplicate artwork inspection work are being
+reduced, with CI browser workers limited to one. This checkpoint is not a passing
+release gate and neither a tag nor a production catalog update is claimed.
+
 ## Historical 0.1.0 preparation
 
 This is an unpublished local candidate. Preparing it does not approve execution,
