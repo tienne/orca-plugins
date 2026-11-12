@@ -9,7 +9,7 @@ permissions:
 jobs:
   check:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 45
     env:
       CI: 'true'
       NX_DAEMON: 'false'
