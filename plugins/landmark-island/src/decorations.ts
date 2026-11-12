@@ -1,3 +1,5 @@
+import landmarks from './landmarks.json';
+import { enhancedId } from './landmark-variants';
 import { expandedDecorations } from './expanded-decorations';
 /** Bundled, fictional garden sets inspired by each landmark's surroundings. */
 export type Decoration = {
@@ -20,7 +22,8 @@ export type Decoration = {
     | 'pond'
     | 'pavilion'
     | 'roseArch'
-    | 'fernBed';
+    | 'fernBed'
+    | 'starMonument';
   color: string;
   walkable: boolean;
 };
@@ -800,6 +803,16 @@ export const decorations: Decoration[] = [
     walkable: false,
   },
   ...expandedDecorations,
+  ...landmarks.map((l, index): Decoration => ({
+    id: `${l.id}-plus-star`,
+    name: `${l.name} star monument`,
+    landmark: enhancedId(l.id),
+    cost: 9,
+    gift: true,
+    shape: 'starMonument',
+    color: `hsl(${(index * 137) % 360} 45% 62%)`,
+    walkable: false,
+  })),
 ];
 export const decorationById = (id: string) =>
   decorations.find((d) => d.id === id);
@@ -926,6 +939,7 @@ export function decorationArt(id: string, rotation = 0) {
   const d = decorationById(id)!;
   if (canRotate(id)) return furnitureArt(d, rotation);
   const shapes: Record<Decoration['shape'], string> = {
+    starMonument: `<path d="M8 87L40 68 72 87 40 103Z" fill="#9e8050"/><path d="M19 80L40 68 61 80 40 93Z" fill="#f0d796"/><path d="M32 78V55h16v23l-8 5z"/><path d="M40 8l9 20 22 3-16 16 4 23-19-11-20 11 4-23L8 31l23-3z"/><path d="M40 17v34L17 35l18-3z" fill="#fff0bd"/><path d="M40 59l9-31 22 3-16 16 4 23z" fill="#b38c51"/><circle cx="40" cy="38" r="5" fill="#fff9df"/>`,
     grass:
       '<path d="M5 78L40 58 75 78 40 98Z"/><path d="M20 78l3-8 3 8m17 6 4-10 3 9m8-8 3-7 2 8" fill="none" stroke="#547644"/>',
     path: '<path d="M5 78L40 58 75 78 40 98Z"/><path d="M16 78l21-12m2 25 23-14" stroke="#e4cfaa"/>',
