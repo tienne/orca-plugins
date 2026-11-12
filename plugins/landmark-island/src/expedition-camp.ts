@@ -37,7 +37,6 @@ export class ExpeditionCamp {
     private fixture = false,
   ) {}
 
-  /** 갱신된 응답이 과거 응답보다 늦게 도착해도 화면을 되돌리지 않는다. */
   async refresh(read: () => Promise<unknown>) {
     const revision = ++this.revision;
     try {
