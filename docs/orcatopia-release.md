@@ -2,6 +2,10 @@
 
 English · [한국어](orcatopia-release.ko.md)
 
+## 0.3.0 fusion candidate (2026-11-13)
+
+This candidate adds 300 fusion-only + variants and 300 exclusive star monuments, taking the decoration catalog to 908. Normal draw weights and tier assignments are unchanged. Schema v6 preserves historical discovery rewards and records idempotent fusion operations; v1–v5 migrate when read. The minimum host and requested capabilities remain unchanged from 0.2.0. Game/worker tests cover save failure, response loss, concurrent requests, restart replay, placement protection, migration and backup conservation. Fusion browser tests cover English/Korean, narrow screens, reduced motion and placement. Full UI, ship review and publication evidence must be recorded for the final source commit before release. A full Orca application restart remains deferred by the user's earlier instruction; do not quit their app to test this release.
+
 ## 0.2.0 candidate (2026-11-12)
 
 The existing custom catalog has published 0.1.0. The next release is 0.2.0,

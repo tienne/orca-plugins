@@ -1,3 +1,10 @@
+import {
+  collectibleLandmarks,
+  landmarkById,
+  enhancedId,
+  baseId,
+  isEnhanced,
+} from './landmark-variants';
 import { renderIsland } from './render-island';
 import { observeCatalogMotion } from './catalog-motion';
 import { ExpeditionCamp } from './expedition-camp';
@@ -20,6 +27,7 @@ import {
   availableTickets,
   landmarks,
   quantity,
+  discovered,
   weights,
   type State,
 } from './game';
@@ -44,9 +52,10 @@ const rarities = [
   { id: 'legendary', name: 'Wonder', rank: 4, numeral: 'IV' },
 ] as const;
 let rarityFilter = 'all';
-function rarityBadge(tier: string) {
+let variantFilter: 'normal' | 'plus' = 'normal';
+function rarityBadge(tier: string, enhanced = false) {
   const rarity = rarities.find((r) => r.id === tier)!;
-  return `<span class="rarity-badge" data-tier="${rarity.id}" role="img" aria-label="${rarity.name}, rarity ${rarity.rank} of 4" title="${rarity.name} · Rarity ${rarity.rank}/4"><span class="rarity-number" aria-hidden="true">${rarity.numeral}</span><span class="rarity-name" aria-hidden="true">${rarity.name}</span><span class="rarity-scale" aria-hidden="true">${Array.from({ length: 4 }, (_, i) => `<i class="${i < rarity.rank ? 'filled' : ''}"></i>`).join('')}</span></span>`;
+  return `<span class="rarity-badge" data-tier="${rarity.id}" role="img" aria-label="${rarity.name}, rarity ${rarity.rank}${enhanced ? '.5' : ''} of 4${enhanced ? '.5' : ''}" title="${rarity.name} · Rarity ${rarity.rank}${enhanced ? '.5' : ''}/4${enhanced ? '.5' : ''}"><span class="rarity-number" aria-hidden="true">${rarity.numeral}${enhanced ? '+' : ''}</span><span class="rarity-name" aria-hidden="true">${rarity.name}</span><span class="rarity-scale" aria-hidden="true">${Array.from({ length: 4 }, (_, i) => `<i class="${i < rarity.rank ? 'filled' : ''}"></i>`).join('')}</span></span>`;
 }
 import world from './world.json';
 import './style.css';
@@ -170,13 +179,40 @@ detail.addEventListener('close', () => {
   target?.focus({ preventScroll: true });
 });
 function showDetails(id: string) {
-  const landmark = landmarks.find((l) => l.id === id);
+  const landmark = landmarkById(id);
   if (!landmark) return;
   detailOpener = document.activeElement as HTMLElement | null;
   const rarity = rarities.find((r) => r.id === landmark.tier)!;
   detail.dataset.tier = rarity.id;
   detail.dataset.owned = String(quantity(state, id) > 0);
-  detail.innerHTML = `<button class="detail-close" aria-label="Close landmark details" autofocus>×</button><div class="detail-art">${art(id)}</div><p class="detail-country">${escape(landmark.country)} · ${escape(landmark.region)}</p><h2 id="detail-title">${escape(landmark.name)}</h2><div class="detail-rarity">${rarityBadge(landmark.tier)}<p>${weights[rarity.id]}% tier chance per draw · ${landmarks.filter((l) => l.tier === rarity.id).length} landmarks in this tier</p></div><p id="detail-description">${escape(landmark.description)}</p><p class="detail-source">Read more: <a href="${escape(landmark.descriptionSource)}" target="_blank" rel="noopener noreferrer">${escape(landmark.descriptionSourceName)} ↗</a></p>`;
+  detail.innerHTML = `<button class="detail-close" aria-label="Close landmark details" autofocus>×</button><div class="detail-art">${art(id)}</div><p class="detail-country">${escape(landmark.country)} · ${escape(landmark.region)}</p><h2 id="detail-title">${escape(landmark.name)}</h2><div class="detail-rarity">${rarityBadge(landmark.tier, isEnhanced(id))}<p>${isEnhanced(id) ? 'Fusion only · Half a rarity step above the normal version' : `${weights[rarity.id]}% tier chance per draw · ${landmarks.filter((l) => l.tier === rarity.id).length} landmarks in this tier`}</p></div><p id="detail-description">${escape(landmark.description)}</p><p class="detail-source">Read more: <a href="${escape(landmark.descriptionSource)}" target="_blank" rel="noopener noreferrer">${escape(landmark.descriptionSourceName)} ↗</a></p>`;
+  const stock = document.createElement('section');
+  stock.className = 'variant-details';
+  const count = quantity(state, id);
+  const placed = state.placements.filter((p) => p.landmark === id).length;
+  const normal = baseId(id);
+  stock.innerHTML = `<p>Owned ×${count} · ${count - placed} available · ${placed} placed</p><div><button data-detail-variant="${isEnhanced(id) ? normal : enhancedId(id)}">${isEnhanced(id) ? 'View normal version' : 'View + version'}</button>${!isEnhanced(id) ? `<button data-fusion="${id}" ${quantity(state, id) - placed < 2 && pendingFusion?.landmark !== id ? 'disabled' : ''}>${pendingFusion?.landmark === id ? 'Retry fusion' : 'Fuse 2 → 1 +'}</button>` : `<button data-plus-place ${count - placed < 1 ? 'disabled' : ''}>Place + on island</button><button data-plus-decor>View exclusive decoration</button>`}</div>`;
+  detail.append(stock);
+  stock.querySelector<HTMLButtonElement>('[data-detail-variant]')!.onclick =
+    () => showDetails(isEnhanced(id) ? normal : enhancedId(id));
+  stock
+    .querySelector<HTMLButtonElement>('[data-fusion]')
+    ?.addEventListener('click', () => {
+      detail.close();
+      prepareFusion(normal);
+    });
+  stock
+    .querySelector<HTMLButtonElement>('[data-plus-place]')
+    ?.addEventListener('click', () => {
+      detail.close();
+      placeDiscovery(id);
+    });
+  stock
+    .querySelector<HTMLButtonElement>('[data-plus-decor]')
+    ?.addEventListener('click', () => {
+      detail.close();
+      showPlusDecoration(normal);
+    });
   detail.querySelector<HTMLButtonElement>('.detail-close')!.onclick = () =>
     detail.close();
   if (!demo) {
@@ -217,17 +253,19 @@ async function request(name: string, input: unknown = {}) {
         ? game.redeem(input)
         : name === 'island.drawMany'
           ? game.redeemMany(input)
-          : name === 'island.craft'
-            ? game.craft(input)
-            : name === 'island.layout'
-              ? game.replaceLayout(input)
-              : name === 'island.paint'
-                ? game.paint(input)
-                : name === 'island.rotate'
-                  ? game.rotate(input)
-                  : name === 'island.decorate'
-                    ? game.decorate(input)
-                    : game.place(input));
+          : name === 'island.fuse'
+            ? game.fuse(input)
+            : name === 'island.craft'
+              ? game.craft(input)
+              : name === 'island.layout'
+                ? game.replaceLayout(input)
+                : name === 'island.paint'
+                  ? game.paint(input)
+                  : name === 'island.rotate'
+                    ? game.rotate(input)
+                    : name === 'island.decorate'
+                      ? game.decorate(input)
+                      : game.place(input));
   return validate(result);
 }
 let loaded = false;
@@ -416,29 +454,87 @@ async function useTicket(amount: 1 | 10 = 1) {
   };
   nextHighlight(0);
 }
+let pendingFusion: { id: string; landmark: string } | undefined;
+function showPlusDecoration(id: string) {
+  view = 'island';
+  decorTheme = enhancedId(id);
+  inventoryFilters.decorations = { query: '', stock: 'all', category: 'all' };
+  setInventory('decorations', false);
+  render();
+}
+function prepareFusion(id: string) {
+  if (busy || (pendingFusion && pendingFusion.landmark !== id)) return;
+  const landmark = landmarkById(id)!;
+  const first = !discovered(state, enhancedId(id));
+  const placed = state.placements.filter((p) => p.landmark === id).length;
+  const available = quantity(state, id) - placed;
+  const dialog = document.createElement('dialog');
+  dialog.className = 'fusion-confirm';
+  dialog.setAttribute('aria-labelledby', 'fusion-title');
+  dialog.innerHTML = `<h2 id="fusion-title">Fuse ${escape(landmark.name)} +</h2><div class="fusion-preview">${art(id)}<b>2 → 1</b>${art(enhancedId(id))}</div><p>Consume 2 unplaced normal copies → receive 1 + copy.</p><p>${available} available · ${placed} placed</p><p>Placed copies stay on the island. Materials and discovery rewards stay yours.</p><p>${rarities.find((r) => r.id === landmark.tier)!.numeral}+ · Half a rarity step higher · No ++ fusion</p><p>First fusion unlocks an exclusive star monument and gifts one copy.</p><p role="alert" class="fusion-error"></p><button data-confirm-fusion ${available < 2 && !pendingFusion ? 'disabled' : ''}>${pendingFusion ? 'Retry fusion' : 'Confirm fusion'}</button><button data-cancel-fusion>Cancel</button>`;
+  document.body.append(dialog);
+  dialog.addEventListener('close', () => dialog.remove(), { once: true });
+  dialog.querySelector<HTMLButtonElement>('[data-cancel-fusion]')!.onclick =
+    () => dialog.close();
+  dialog.querySelector<HTMLButtonElement>('[data-confirm-fusion]')!.onclick =
+    async () => {
+      if (busy) return;
+      pendingFusion ??= { id: crypto.randomUUID(), landmark: id };
+      let committed: State | undefined;
+      await run(async () => {
+        committed = await request('island.fuse', pendingFusion);
+        pendingFusion = undefined;
+        return committed;
+      });
+      if (!committed) {
+        dialog.querySelector('[role="alert"]')!.textContent = error;
+        dialog.querySelector('[data-confirm-fusion]')!.textContent =
+          'Retry fusion';
+        return;
+      }
+      dialog.close();
+      const plus = landmarkById(enhancedId(id))!;
+      revealDiscovery(
+        plus,
+        quantity(state, plus.id),
+        rarityBadge(plus.tier, true),
+        () => placeDiscovery(plus.id),
+        {
+          fusion: true,
+          rewardNote: first
+            ? 'Fusion complete · Exclusive star monument unlocked'
+            : 'Fusion complete · + copy saved · No additional gift',
+          onDetails: () => showDetails(plus.id),
+          onDecoration: () => showPlusDecoration(id),
+        },
+      );
+    };
+  dialog.showModal();
+}
 let decorTheme = 'unlocked';
 let pendingCraft: { id: string; decoration: string } | undefined;
 function workshop() {
-  return `<section class="workshop" aria-label="Decoration workshop"><div class="section-title"><h2><small>The garden workshop</small>Make this place yours</h2><strong class="material-balance">${materials(state)} materials</strong></div><details class="workshop-help"><summary>About gifts &amp; materials</summary><p>Basics are free. Every first discovery gifts one decoration and opens its set. Each duplicate brings ${DUPLICATE_MATERIALS} materials; your landmark stays yours.</p></details><label for="decor-theme">Garden set</label> <select id="decor-theme"><option value="unlocked">All unlocked sets</option><option value="all">All garden sets</option><option value="basics">Free essentials</option>${landmarks.map((l) => `<option value="${l.id}">${l.country} · ${l.name}${quantity(state, l.id) ? '' : ' · Locked'}</option>`).join('')}</select><div class="decoration-shelf">${decorations
+  return `<section class="workshop" aria-label="Decoration workshop"><div class="section-title"><h2><small>The garden workshop</small>Make this place yours</h2><strong class="material-balance">${materials(state)} materials</strong></div><details class="workshop-help"><summary>About gifts &amp; materials</summary><p>Basics are free. Every first discovery gifts one decoration and opens its set. Each duplicate brings ${DUPLICATE_MATERIALS} materials; your landmark stays yours.</p></details><label for="decor-theme">Garden set</label> <select id="decor-theme"><option value="unlocked">All unlocked sets</option><option value="all">All garden sets</option><option value="basics">Free essentials</option>${collectibleLandmarks.map((l) => `<option value="${l.id}">${l.country} · ${l.name}${discovered(state, l.id) ? '' : ' · Locked'}</option>`).join('')}</select><div class="decoration-shelf">${decorations
     .map((d) => {
-      const unlocked = !d.landmark || quantity(state, d.landmark) > 0;
+      const unlocked = !d.landmark || discovered(state, d.landmark);
       const count = decorationQuantity(state, d.id);
       const available =
         count - state.decorations.filter((p) => p.decoration === d.id).length;
-      return `<article class="decoration-card" data-decor-card="${d.id}" ${!unlocked ? 'data-locked="true"' : ''}>${decorationArt(d.id)}<h3>${d.name}</h3><p>${d.landmark ? landmarks.find((l) => l.id === d.landmark)!.name : 'Free essentials'}</p><small>${!unlocked ? `Discover its landmark to unlock${d.gift ? ' · First copy is a gift' : ''}` : !d.landmark ? 'Unlimited · Free to place' : `Owned ×${count} · ${available} available`}</small><div><button data-decor-place="${d.id}" aria-pressed="${selectedDecor === d.id}" ${!unlocked || available < 1 ? 'disabled' : ''}>Place</button>${d.landmark ? `<button data-craft="${d.id}" ${!unlocked || (pendingCraft ? pendingCraft.decoration !== d.id : materials(state) < d.cost) ? 'disabled' : ''}>${pendingCraft?.decoration === d.id ? 'Retry craft' : `Craft · ${d.cost} materials`}</button>` : ''}</div></article>`;
+      return `<article class="decoration-card" data-decor-card="${d.id}" ${!unlocked ? 'data-locked="true"' : ''}>${decorationArt(d.id)}<h3>${d.name}</h3><p>${d.landmark ? landmarkById(d.landmark)!.name : 'Free essentials'}</p><small>${!unlocked ? `Discover its landmark to unlock${d.gift ? ' · First copy is a gift' : ''}` : !d.landmark ? 'Unlimited · Free to place' : `Owned ×${count} · ${available} available`}</small><div><button data-decor-place="${d.id}" aria-pressed="${selectedDecor === d.id}" ${!unlocked || available < 1 ? 'disabled' : ''}>Place</button>${d.landmark ? `<button data-craft="${d.id}" ${!unlocked || (pendingCraft ? pendingCraft.decoration !== d.id : materials(state) < d.cost) ? 'disabled' : ''}>${pendingCraft?.decoration === d.id ? 'Retry craft' : `Craft · ${d.cost} materials`}</button>` : ''}</div></article>`;
     })
     .join(
       '',
     )}</div><p class="muted">Move or return decorations at no cost. Returned pieces stay in your inventory. Preview locked sets with the menu above.</p></section>`;
 }
 function collection() {
-  const owned = landmarks.filter((l) => quantity(state, l.id) > 0);
-  return `<section class="collection-section"><div class="section-title"><h2><small>Field notes</small> Your collection</h2><span>Souvenirs from faraway places</span></div><div class="collection-progress"><label for="discovery-progress"><strong>${owned.length} / ${landmarks.length}</strong> landmarks discovered${owned.length === landmarks.length ? ' · Collection complete' : ''}</label><progress id="discovery-progress" value="${owned.length}" max="${landmarks.length}"></progress></div><p class="rarity-guide">Rarity I → IV <span>More filled marks = rarer discoveries</span></p><div class="rarity-filters" role="group" aria-label="Collection rarity"><button data-tier-filter="all" aria-pressed="${rarityFilter === 'all'}">All <small>${owned.length}/${landmarks.length}</small></button>${rarities.map((r) => `<button data-tier-filter="${r.id}" data-tier="${r.id}" aria-pressed="${rarityFilter === r.id}">${rarityBadge(r.id)} <small>${owned.filter((l) => l.tier === r.id).length}/${landmarks.filter((l) => l.tier === r.id).length}</small></button>`).join('')}</div><p class="rarity-summary" aria-live="polite"></p><div class="collection">${landmarks
+  const owned = landmarks.filter((l) => discovered(state, l.id));
+  return `<section class="collection-section"><div class="section-title"><h2><small>Field notes</small> Your collection</h2><span>Souvenirs from faraway places</span></div><div class="collection-progress"><label for="discovery-progress"><strong>${owned.length} / ${landmarks.length}</strong> landmarks discovered${owned.length === landmarks.length ? ' · Collection complete' : ''}</label><progress id="discovery-progress" value="${owned.length}" max="${landmarks.length}"></progress></div><p class="rarity-guide">Rarity I → IV <span>More filled marks = rarer discoveries</span></p><div class="rarity-filters" role="group" aria-label="Collection rarity"><button data-tier-filter="all" aria-pressed="${rarityFilter === 'all'}">All <small>${owned.length}/${landmarks.length}</small></button>${rarities.map((r) => `<button data-tier-filter="${r.id}" data-tier="${r.id}" aria-pressed="${rarityFilter === r.id}">${rarityBadge(r.id)} <small>${owned.filter((l) => l.tier === r.id).length}/${landmarks.filter((l) => l.tier === r.id).length}</small></button>`).join('')}</div><p class="rarity-summary" aria-live="polite"></p><div class="variant-filters" role="group" aria-label="Landmark version"><button data-variant="normal" aria-pressed="${variantFilter === 'normal'}">Normal</button><button data-variant="plus" aria-pressed="${variantFilter === 'plus'}">+ versions</button></div><div class="collection">${collectibleLandmarks
+    .filter((l) => isEnhanced(l.id) === (variantFilter === 'plus'))
     .map((l) => {
       const count = quantity(state, l.id),
         available =
           count - state.placements.filter((p) => p.landmark === l.id).length;
-      return `<article class="card ${!count ? 'locked' : ''}" data-catalog-id="${l.id}" data-tier="${l.tier}">${rarityBadge(l.tier)}<button class="collect-action" data-landmark="${l.id}" aria-pressed="${selected === l.id}" ${available < 1 ? 'disabled' : ''}>${art(l.id)}<strong>${escape(l.name)}</strong><span class="card-country">${escape(l.country)}</span><span>${escape(l.region)}</span><small>${count ? `Owned ×${count} · ${available} available` : 'Not discovered yet'}</small></button><button class="about-landmark" data-info="${l.id}" aria-label="About ${escape(l.name)}" aria-haspopup="dialog">About this landmark ↗</button></article>`;
+      return `<article class="card ${!count ? 'locked' : ''}" data-catalog-id="${l.id}" data-tier="${l.tier}">${rarityBadge(l.tier, isEnhanced(l.id))}<button class="collect-action" data-landmark="${l.id}" aria-pressed="${selected === l.id}" ${available < 1 ? 'disabled' : ''}>${art(l.id)}<strong>${escape(l.name)}</strong><span class="card-country">${escape(l.country)}</span><span>${escape(l.region)}</span><small>${count ? `Owned ×${count} · ${available} available` : 'Not discovered yet'}</small></button><button class="about-landmark" data-info="${l.id}" aria-label="About ${escape(l.name)}" aria-haspopup="dialog">About this landmark ↗</button></article>`;
     })
     .join('')}</div></section>`;
 }
@@ -465,7 +561,10 @@ const searchTerms = (values: string[]) =>
     values.flatMap((value) => [value, translate(value, 'ko-KR')]).join(' '),
   );
 const landmarkSearch = new Map(
-  landmarks.map((l) => [l.id, searchTerms([l.name, l.country, l.region])]),
+  collectibleLandmarks.map((l) => [
+    l.id,
+    searchTerms([l.name, l.country, l.region]),
+  ]),
 );
 const decorSearch = new Map(
   decorations.map((d) => [
@@ -521,7 +620,7 @@ function applyInventoryFilters() {
     const inTheme =
       decorTheme === 'all' ||
       (decorTheme === 'unlocked'
-        ? !d.landmark || quantity(state, d.landmark) > 0
+        ? !d.landmark || discovered(state, d.landmark)
         : decorTheme === 'basics'
           ? !d.landmark
           : d.landmark === decorTheme);
@@ -691,7 +790,7 @@ function pieceMenu() {
     (p) => p.cell === from,
   );
   const item = landmark
-    ? landmarks.find((l) => l.id === landmark.landmark)
+    ? landmarkById(landmark.landmark)
     : decor
       ? decorationById(decor.decoration)
       : undefined;
@@ -761,7 +860,7 @@ function canvasEditor() {
           ? `Lay ${decorationById(selectedDecor)!.name} on any unlocked tile, including beneath objects.`
           : `Place ${decorationById(selectedDecor)!.name} on an empty cell.`
         : selected
-          ? `Place ${escape(landmarks.find((l) => l.id === selected)!.name)} on an empty cell.`
+          ? `Place ${escape(landmarkById(selected)!.name)} on an empty cell.`
           : 'Open the satchel or journal on the island to choose a piece.';
   if (moving)
     return `<aside class="canvas-editor moving-editor" aria-label="Island arrangement"><p class="placement-hint" aria-live="polite">${hint}</p><button id="cancel">Cancel move</button></aside>`;
@@ -794,7 +893,7 @@ function render() {
         ].includes(focused.id)
       ? `#${focused.id}`
       : undefined;
-  const owned = landmarks.filter((l) => quantity(state, l.id) > 0);
+  const owned = landmarks.filter((l) => discovered(state, l.id));
   const latest = landmarks.find(
     (l) => l.id === state.receipts.at(-1)?.landmark,
   );
@@ -1031,6 +1130,14 @@ function render() {
         root
           .querySelector<HTMLElement>('.ocean')
           ?.focus({ preventScroll: true });
+      };
+    });
+  root
+    .querySelectorAll<HTMLButtonElement>('[data-variant]')
+    .forEach((button) => {
+      button.onclick = () => {
+        variantFilter = button.dataset.variant as typeof variantFilter;
+        render();
       };
     });
   root.querySelectorAll<HTMLButtonElement>('[data-craft]').forEach((button) => {
@@ -1340,7 +1447,7 @@ const backupRequest = (previous = false) =>
     ? bridge.request<string>('island.backup', { previous })
     : game.exportBackup(previous);
 function saveSummary(s: State) {
-  return `${availableTickets(s).length} unused tickets · ${s.receipts.length} landmarks (${new Set(s.receipts.map((r) => r.landmark)).size} unique) · ${s.placements.length} placed · ${s.decorations.length} decorations placed · ${s.floors.length} floor tiles · ${materials(s)} materials · ${islandLand(s).length} land tiles`;
+  return `${availableTickets(s).length} unused tickets · ${s.receipts.length - s.fusions.length} landmarks (${collectibleLandmarks.filter((l) => quantity(s, l.id) > 0).length} unique) · ${s.placements.length} placed · ${s.decorations.length} decorations placed · ${s.floors.length} floor tiles · ${materials(s)} materials · ${islandLand(s).length} land tiles`;
 }
 async function openBackups() {
   if (busy || backupDialog.open) return;

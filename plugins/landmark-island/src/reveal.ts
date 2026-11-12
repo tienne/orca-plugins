@@ -43,6 +43,9 @@ export function revealDiscovery(
   badge: string,
   onPlace: () => void,
   options: {
+    fusion?: boolean;
+    onDetails?: () => void;
+    onDecoration?: () => void;
     preview?: boolean;
     animate?: boolean;
     batch?: {
@@ -59,6 +62,7 @@ export function revealDiscovery(
   const dialog = document.createElement('dialog');
   dialog.className = 'discovery-theatre';
   dialog.dataset.tier = landmark.tier;
+  if (options.fusion) dialog.classList.add('fusion-reveal');
   dialog.dataset.new = String(count === 1);
   dialog.setAttribute('aria-label', 'A new destination');
   // Each phase has a distinct job: travel, rarity cue, transition, artwork,
@@ -161,6 +165,25 @@ export function revealDiscovery(
   const timers: ReturnType<typeof setTimeout>[] = [];
   const result = dialog.querySelector<HTMLElement>('.discovery-result')!;
   const actions = dialog.querySelector<HTMLElement>('.reveal-actions')!;
+  for (const [label, callback] of [
+    ['View + details', options.onDetails],
+    ['View exclusive decoration', options.onDecoration],
+  ] as const) {
+    if (!callback) continue;
+    const button = document.createElement('button');
+    button.textContent = label;
+    button.onclick = () => {
+      dialog.close();
+      callback();
+    };
+    actions.append(button);
+  }
+  if (options.fusion) {
+    dialog.querySelector('.discovery-heading > span')!.textContent =
+      'LANDMARK FUSION';
+    dialog.querySelector('.invitation > span')!.textContent =
+      'TWO STORIES, ONE NEW LIGHT';
+  }
   if (options.drawAgain && !options.preview && !options.batch)
     actions.append(
       drawAgainControls(options.drawAgain, (amount) => {

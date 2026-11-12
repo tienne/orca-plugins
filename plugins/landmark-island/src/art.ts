@@ -1,4 +1,5 @@
 import landmarks from './landmarks.json';
+import { baseId, isEnhanced } from './landmark-variants';
 import { expandedLandmarkArt } from './expanded-art';
 import { landmarkLife } from './landmark-life';
 import { landmarkIntensity } from './landmark-intensity';
@@ -6,7 +7,17 @@ import { landmarkIntensity } from './landmark-intensity';
 // Material patterns use local SVG geometry, not raster noise or runtime downloads.
 // Every instance owns its paint IDs so cards, dialogs and island copies never collide.
 let instance = 0;
-export function art(id: string) {
+export function art(id: string): string {
+  if (isEnhanced(id))
+    return art(baseId(id))
+      .replace(
+        'class="landmark-art',
+        'data-enhanced="true" class="landmark-art enhanced-art',
+      )
+      .replace(
+        '</svg>',
+        '<g class="enhanced-aura" fill="none" stroke="#f4cd70" stroke-width="1.6"><ellipse cx="64" cy="111" rx="55" ry="11"/><ellipse cx="64" cy="111" rx="49" ry="7"/><path d="M13 39l3 7 7 3-7 3-3 7-3-7-7-3 7-3zM108 11l3 7 7 3-7 3-3 7-3-7-7-3 7-3zM103 78l2 5 5 2-5 2-2 5-2-5-5-2 5-2z" fill="#fff0bd"/></g></svg>',
+      );
   const prefix = `landmark-art-${++instance}`;
   const url = (name: string) => `url(#${prefix}-${name})`;
   const gradient = (name: string, light: string, mid: string, dark: string) =>
