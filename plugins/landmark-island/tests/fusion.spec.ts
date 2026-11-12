@@ -29,6 +29,9 @@ for (const [language, width] of [
     await page.locator('[data-info="eiffel"]').click();
     await page.locator('[data-fusion="eiffel"]').click();
     await expect(page.locator('.fusion-confirm')).toBeVisible();
+    await expect(page.locator('[data-cancel-fusion]')).toHaveText(
+      language === 'ko' ? '취소' : 'Cancel',
+    );
     await page.locator('[data-confirm-fusion]').click();
     await expect(page.locator('.fusion-reveal.revealed')).toBeVisible();
     await expect(
@@ -290,3 +293,29 @@ test('fusion keeps detail scenes unlocked and refresh recognizes a historic dupl
   );
   await expect(page.locator('.notice')).toContainText('owned ×1');
 });
+
+for (const [landmark, message] of [
+  ['eiffel+', '합성 기록이 올바르지 않습니다.'],
+  ['eiffel', '합성 횟수가 보유 수량을 초과합니다.'],
+] as const) {
+  test(`damaged fusion saves show a Korean reason without overwriting data (${landmark})`, async ({
+    page,
+  }) => {
+    const save = empty();
+    save.fusions.push({ id: 'damaged-fusion', landmark, at: '2026-11-13' });
+    const original = JSON.stringify(save);
+    await page.addInitScript(
+      (value) => localStorage.setItem('landmark-island-demo-v1', value),
+      original,
+    );
+    await page.goto('/?lang=ko');
+    await expect(page.getByRole('alert')).toContainText(message);
+    await page.locator('#refresh').click();
+    await expect(page.getByRole('alert')).toContainText(message);
+    expect(
+      await page.evaluate(() =>
+        localStorage.getItem('landmark-island-demo-v1'),
+      ),
+    ).toBe(original);
+  });
+}

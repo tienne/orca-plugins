@@ -846,5 +846,10 @@
   "Marvel, rarity 3.5 of 4.5": "경이, 희귀도 3.5 / 4.5",
   "Marvel · Rarity 3.5/4.5": "경이 · 희귀도 3.5/4.5",
   "Wonder, rarity 4.5 of 4.5": "불가사의, 희귀도 4.5 / 4.5",
-  "Wonder · Rarity 4.5/4.5": "불가사의 · 희귀도 4.5/4.5"
+  "Wonder · Rarity 4.5/4.5": "불가사의 · 희귀도 4.5/4.5",
+  "Cancel": "취소",
+  "Invalid fusion ledger": "합성 기록이 올바르지 않습니다.",
+  "Error: Invalid fusion ledger": "오류: 합성 기록이 올바르지 않습니다.",
+  "Fusion exceeds ownership": "합성 횟수가 보유 수량을 초과합니다.",
+  "Error: Fusion exceeds ownership": "오류: 합성 횟수가 보유 수량을 초과합니다."
 }
