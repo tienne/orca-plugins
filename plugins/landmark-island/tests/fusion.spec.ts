@@ -39,13 +39,11 @@ for (const [language, width] of [
       'animation-name',
       'none',
     );
-    await page
-      .locator('.fusion-reveal')
-      .screenshot({
-        path: `test-results/fusion-${language}.jpg`,
-        type: 'jpeg',
-        quality: 80,
-      });
+    await page.locator('.fusion-reveal').screenshot({
+      path: `test-results/fusion-${language}.jpg`,
+      type: 'jpeg',
+      quality: 80,
+    });
     await page
       .locator('.fusion-reveal .reveal-actions button')
       .filter({ hasText: language === 'ko' ? '+ 사전 보기' : 'View + details' })
@@ -139,4 +137,37 @@ test('failed fusion save retains a stable retry and commits once', async ({
         JSON.parse(localStorage.getItem('landmark-island-demo-v1')!).fusions,
     ),
   ).toHaveLength(1);
+});
+
+test('drawing after fusion reports current ownership and retains duplicate rewards', async ({
+  page,
+}) => {
+  const save = empty();
+  for (let i = 0; i < 3; i++)
+    save.tickets.push({ workspaceId: `draw-${i}`, at: '2026-11-13' });
+  save.receipts = save.tickets
+    .slice(0, 2)
+    .map((t) => ({ ...t, landmark: 'eiffel' }));
+  save.fusions = [{ id: 'prior-fusion', landmark: 'eiffel', at: '2026-11-13' }];
+  const { landmarks } = await import('../src/game');
+  const pool = landmarks.filter((l) => l.tier === 'rare');
+  const roll = (pool.findIndex((l) => l.id === 'eiffel') + 0.5) / pool.length;
+  await page.addInitScript(
+    ({ save, roll }) => {
+      localStorage.setItem('landmark-island-demo-v1', JSON.stringify(save));
+      let i = 0;
+      Math.random = () => [0.8, roll][i++ % 2];
+    },
+    { save, roll },
+  );
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await page.goto('/?lang=en');
+  await page.locator('#open-treasure').click();
+  await page.locator('#draw-ticket').click();
+  await expect(page.locator('.discovery-theatre.revealed')).toBeVisible();
+  await expect(page.locator('.discovery-status')).toHaveText(
+    'Already discovered',
+  );
+  await expect(page.locator('.reveal-quantity')).toContainText('Owned ×1');
+  await expect(page.locator('.reveal-bonus')).toContainText('+3 materials');
 });

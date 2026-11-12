@@ -43,6 +43,7 @@ export function revealDiscovery(
   badge: string,
   onPlace: () => void,
   options: {
+    isNew?: boolean;
     fusion?: boolean;
     onDetails?: () => void;
     onDecoration?: () => void;
@@ -58,12 +59,13 @@ export function revealDiscovery(
     drawAgain?: DrawAgain;
   } = {},
 ) {
+  const isNew = options.isNew ?? count === 1;
   const opener = document.activeElement as HTMLElement | null;
   const dialog = document.createElement('dialog');
   dialog.className = 'discovery-theatre';
   dialog.dataset.tier = landmark.tier;
   if (options.fusion) dialog.classList.add('fusion-reveal');
-  dialog.dataset.new = String(count === 1);
+  dialog.dataset.new = String(isNew);
   dialog.setAttribute('aria-label', 'A new destination');
   // Each phase has a distinct job: travel, rarity cue, transition, artwork,
   // then information and actions. The reward was committed before any phase.
@@ -100,15 +102,15 @@ export function revealDiscovery(
   if (!options.preview) {
     const status = document.createElement('p');
     status.className = 'discovery-status';
-    status.textContent = count === 1 ? 'New discovery' : 'Already discovered';
+    status.textContent = isNew ? 'New discovery' : 'Already discovered';
     dialog.querySelector('.discovery-result')!.prepend(status);
-    dialog.querySelector('.reveal-place')!.textContent =
-      count === 1 ? 'Place on island' : 'Place another copy';
+    dialog.querySelector('.reveal-place')!.textContent = isNew
+      ? 'Place on island'
+      : 'Place another copy';
   }
-  dialog.querySelector('.reveal-quantity')!.textContent =
-    count > 1
-      ? `Another piece of the world · Owned ×${count}`
-      : 'A new page in your collection';
+  dialog.querySelector('.reveal-quantity')!.textContent = !isNew
+    ? `Another piece of the world · Owned ×${count}`
+    : 'A new page in your collection';
   dialog.querySelector('.reveal-bonus')!.textContent = options.rewardNote ?? '';
   if (options.preview) {
     dialog.querySelector('.discovery-heading > span')!.textContent =
@@ -195,8 +197,9 @@ export function revealDiscovery(
   const caption = dialog.querySelector<HTMLElement>('.journey-caption')!;
   const showDetails = () => {
     result.hidden = false;
-    caption.textContent =
-      count > 1 ? 'A familiar wonder, found again' : 'A destination discovered';
+    caption.textContent = !isNew
+      ? 'A familiar wonder, found again'
+      : 'A destination discovered';
     dialog.setAttribute('aria-label', `${landmark.name} discovered`);
   };
   const finish = (skip = false) => {

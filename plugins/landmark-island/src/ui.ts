@@ -369,7 +369,7 @@ async function useTicket(amount: 1 | 10 = 1) {
       )!;
       results.set(receipt.workspaceId, {
         landmark,
-        count,
+        count: quantity(next, landmark.id),
         isNew: count === 1,
         rewardNote:
           count > 1
@@ -414,6 +414,7 @@ async function useTicket(amount: 1 | 10 = 1) {
       rarityBadge(r.landmark.tier),
       () => placeDiscovery(r.landmark.id),
       {
+        isNew: r.isNew,
         rewardNote: r.rewardNote,
         container,
         animate: animate(r),
@@ -442,6 +443,7 @@ async function useTicket(amount: 1 | 10 = 1) {
       () => {},
       {
         container,
+        isNew: r.isNew,
         rewardNote: r.rewardNote,
         batch: {
           index: index + 1,
