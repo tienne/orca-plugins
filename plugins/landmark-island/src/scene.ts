@@ -1,3 +1,4 @@
+import { IslandLife } from './island-life';
 import { route } from './walk';
 import { TimezoneWeather, type WeatherReader } from './weather-client';
 import { timezoneLocation } from './weather';
@@ -51,6 +52,7 @@ export class IslandScene {
   private focusX = project(30).x;
   private focusY = project(30).y;
   private cleanup = () => {};
+  private life = new IslandLife();
   private nextClimateAt = Date.now() + 30000;
   markup() {
     return `<div class="scene-controls"><div class="climate-controls"><div class="climate-field"><label for="weather">Weather</label><select id="weather"><option value="timezone" ${this.timezoneWeatherEnabled ? 'selected' : ''}>Timezone weather</option><option value="auto" ${this.automatic && !this.timezoneWeatherEnabled ? 'selected' : ''}>Auto · island forecast</option>${weatherNames.map((w, i) => `<option value="${i}" ${!this.automatic && !this.timezoneWeatherEnabled && this.weather === i ? 'selected' : ''}>${w}</option>`).join('')}</select></div><div class="climate-field"><label for="daylight">Time of day</label><select id="daylight"><option value="auto" ${this.deviceTime ? 'selected' : ''}>Auto · device time</option>${phases.map((phase, i) => `<option value="${i}" ${!this.deviceTime && this.phase === i ? 'selected' : ''}>${phase}</option>`).join('')}</select></div></div><p class="weather-status" ${this.timezoneWeatherEnabled ? '' : 'hidden'}><span class="weather-summary"></span> <span class="weather-updated"></span> <a class="weather-source" href="https://open-meteo.com/" target="_blank" rel="noopener noreferrer">Weather data: Open-Meteo (adapted)</a><span class="weather-link-status"></span></p></div>`;
@@ -79,7 +81,10 @@ export class IslandScene {
   ) {
     this.cleanup();
     const ocean = root.querySelector<HTMLElement>('.ocean');
-    if (!ocean) return;
+    if (!ocean) {
+      this.life.detach();
+      return;
+    }
     const controller = new AbortController(),
       signal = controller.signal;
     const camera = ocean.querySelector<HTMLElement>('.camera')!,
@@ -103,6 +108,14 @@ export class IslandScene {
     let wheelTimer: ReturnType<typeof setTimeout> | undefined;
     if (this.cell < 0 || blocked.has(this.cell))
       this.cell = islandLand(state).find((t) => !blocked.has(t.id))?.id ?? -1;
+    this.life.bind({
+      ground: ocean.querySelector<HTMLElement>('.world-ground')!,
+      state,
+      blocked,
+      player: this.cell,
+      mode: this.mode,
+      busy,
+    });
     const updateCamera = (center = false) => {
       this.zoom = Math.max(0.12, Math.min(1.8, this.zoom));
       if (this.follow && (this.mode === 'walk' || center) && this.cell >= 0) {
@@ -128,6 +141,7 @@ export class IslandScene {
     const position = () => {
       walker.hidden = this.cell < 0;
       walker.dataset.cell = String(this.cell);
+      this.life.explorerMoved(this.cell);
       if (this.cell < 0) return;
       const p = project(this.cell),
         tile = tiles[this.cell];
@@ -143,6 +157,7 @@ export class IslandScene {
     const climate = () => {
       ocean.dataset.weather = weatherNames[this.weather].toLowerCase();
       ocean.dataset.phase = phases[this.phase].toLowerCase();
+      this.life.climateChanged();
       ocean.dataset.timeSource = this.deviceTime ? 'device' : 'manual';
       ocean.querySelector('.forecast')!.textContent =
         `${['☀', '☁', '☂', '❄'][this.weather]} ${weatherNames[this.weather]} · ${phases[this.phase]}${this.deviceTime ? ' · Device time' : ''}${this.automatic && !this.timezoneWeatherEnabled ? ' · Auto weather' : ''}`;
@@ -664,6 +679,7 @@ export class IslandScene {
     const resize = new ResizeObserver(() => updateCamera());
     resize.observe(ocean);
     this.cleanup = () => {
+      this.life.suspend();
       this.timezoneWeather.stop();
       clearStroke();
       finish();

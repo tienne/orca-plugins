@@ -32,6 +32,7 @@ test('Orca locale wins over browser and preview settings; live changes preserve 
         on() {},
         async request(name: string) {
           fixture.calls.push(name);
+          if (name === 'island.expeditions') return [];
           return save;
         },
       },
@@ -84,7 +85,7 @@ test('Orca locale wins over browser and preview settings; live changes preserve 
         (name) => name !== 'island.weather',
       ),
     ),
-  ).toEqual(['island.read']);
+  ).toEqual(['island.read', 'island.expeditions']);
   await page.locator('#close-inventory').click();
   await page.getByRole('button', { name: '세계 지도', exact: true }).click();
   await expect(page.locator('.countries')).toContainText('프랑스');

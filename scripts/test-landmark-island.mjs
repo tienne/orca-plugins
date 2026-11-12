@@ -6,11 +6,13 @@ import { pathToFileURL } from 'node:url';
 import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
 import { testWeather } from './test-landmark-weather.mjs';
+import { testExpeditions } from './test-landmark-expeditions.mjs';
 const dir = await mkdtemp(join(tmpdir(), 'landmark-test-'));
 try {
   await build({
     entryPoints: [
       'plugins/landmark-island/src/game.ts',
+      'plugins/landmark-island/src/art.ts',
       'plugins/landmark-island/src/i18n.ts',
       'plugins/landmark-island/src/decorations.ts',
       'plugins/landmark-island/src/walk.ts',
@@ -27,6 +29,7 @@ try {
     outExtension: { '.js': '.mjs' },
   });
   await testWeather(dir);
+  await testExpeditions(dir);
   const {
     Game,
     layout,
@@ -72,13 +75,19 @@ try {
   const { decorations } = await import(
     pathToFileURL(join(dir, 'decorations.mjs'))
   );
-  assert.equal(landmarks.length, 100);
-  assert.equal(new Set(landmarks.map((l) => l.id)).size, 100);
-  assert.equal(new Set(landmarks.map((l) => l.code)).size, 97);
-  assert.equal(decorations.length, 208);
+  assert.equal(landmarks.length, 300);
+  assert.equal(
+    createHash('sha256')
+      .update(JSON.stringify(landmarks.slice(0, 100)))
+      .digest('hex'),
+    (await readFile('scripts/data/orcatopia-legacy100.sha256', 'utf8')).trim(),
+  );
+  assert.equal(new Set(landmarks.map((l) => l.id)).size, 300);
+  assert.equal(new Set(landmarks.map((l) => l.code)).size, 101);
+  assert.equal(decorations.length, 608);
   for (const code of ['KOR', 'SGP', 'ESP']) {
     const entries = landmarks.filter((l) => l.code === code);
-    assert.equal(entries.length, 2);
+    assert.ok(entries.length >= 2);
     assert.equal(new Set(entries.map((l) => l.country)).size, 1);
     assert.equal(
       new Set(entries.map((l) => translate(l.country, 'ko-KR'))).size,
@@ -86,10 +95,10 @@ try {
     );
   }
   for (const [tier, count, roll] of [
-    ['common', 56, 0.35],
-    ['rare', 32, 0.8],
-    ['epic', 9, 0.95],
-    ['legendary', 3, 0.995],
+    ['common', 153, 0.35],
+    ['rare', 115, 0.8],
+    ['epic', 24, 0.95],
+    ['legendary', 8, 0.995],
   ]) {
     const pool = landmarks.filter((l) => l.tier === tier);
     assert.equal(pool.length, count);
@@ -101,10 +110,34 @@ try {
       );
     }
   }
+  const { art } = await import(pathToFileURL(join(dir, 'art.mjs')));
+  const illustrations = new Map();
+  const repeatedGeometry = [];
+  for (const entry of landmarks.slice(100)) {
+    const markup = art(entry.id);
+    assert.ok(markup.includes('class="expanded-landmark"'), entry.id);
+    assert.ok(markup.includes(`data-landmark-life="${entry.id}"`), entry.id);
+    const geometry =
+      markup.match(/<g class="expanded-landmark"[\s\S]*?<\/g>/)?.[0] ?? '';
+    const signature = [
+      ...geometry.matchAll(
+        /(?: d|points|cx|cy|rx|ry|x|y|width|height)="([^"]+)"/g,
+      ),
+    ]
+      .map((m) => m[1])
+      .join('|');
+    const prior = illustrations.get(signature);
+    if (prior) repeatedGeometry.push(`${prior} / ${entry.id}`);
+    illustrations.set(signature, entry.id);
+  }
+  assert.deepEqual(repeatedGeometry, []);
   for (const landmark of landmarks) {
     assert.ok(Number.isFinite(landmark.lat) && Math.abs(landmark.lat) <= 90);
     assert.ok(Number.isFinite(landmark.lon) && Math.abs(landmark.lon) <= 180);
-    assert.match(landmark.source, /^https:\/\/www\.wikidata\.org\/wiki\/Q\d+$/);
+    assert.match(
+      landmark.source,
+      /^https:\/\/(?:www\.wikidata\.org\/wiki\/Q\d+|whc\.unesco\.org\/en\/list\/\d+\/)$/,
+    );
     assert.match(landmark.descriptionSource, /^https:\/\//);
     assert.ok(landmark.description.length > 100);
     const set = decorations.filter((d) => d.landmark === landmark.id);
@@ -623,7 +656,10 @@ try {
     events: { on: (n, f) => (events[n] = f) },
     log: () => {},
   });
-  assert.deepEqual(Object.keys(events), ['workspace.created']);
+  assert.deepEqual(Object.keys(events), [
+    'workspace.created',
+    'agent.status.changed',
+  ]);
   assert.deepEqual(Object.keys(handlers), [
     'island.weather',
     'island.read',
@@ -637,6 +673,8 @@ try {
     'island.rotate',
     'island.decorate',
     'island.place',
+    'island.expeditions',
+    'island.welcome',
   ]);
   await events['workspace.created']({
     workspaceId: 'background',
@@ -699,7 +737,7 @@ try {
       land.size,
       count <= 12
         ? 36 + Math.floor((count * 282) / 12)
-        : 318 + Math.floor(((count - 12) * 726) / 88),
+        : 318 + Math.floor(((Math.min(count, 100) - 12) * 726) / 88),
     );
     const blocked = new Set(
       landTiles.filter((t) => !land.has(t.id)).map((t) => t.id),
@@ -709,8 +747,9 @@ try {
       for (const next of neighbours(id))
         if (!blocked.has(next)) connected.add(next);
     assert.equal(connected.size, land.size, `Disconnected stage ${count}`);
-    if (count > 0)
+    if (count > 0 && count <= 100)
       assert.ok(land.size > priorLand.size, `No growth at discovery ${count}`);
+    if (count > 100) assert.equal(land.size, priorLand.size);
     priorLand = land;
   }
 
@@ -771,7 +810,7 @@ try {
   for (const landmark of landmarks)
     assert.equal(decorationQuantity(fullCatalog, `${landmark.id}-gift`), 1);
   console.log(
-    'PASS: all 100 catalog draws across 97 countries, 208 decorations, localized descriptions, full-catalog backup and preserved legacy land',
+    'PASS: all 300 catalog draws across 101 countries, 608 decorations, localized descriptions, full-catalog backup and preserved legacy land',
   );
 
   // The four focal pieces use the same ownership and durable craft ledger.

@@ -1,0 +1,1067 @@
+.landmark-life {
+  display: none;
+  pointer-events: none;
+}
+:is(
+    .card:not(.locked),
+    .landmark-detail[data-owned='true'],
+    .world-object.building,
+    .discovery-monument
+  )
+  .landmark-life {
+  display: inline;
+  --site-motion: running;
+}
+.landmark-life [class] {
+  animation-play-state: var(--site-motion, paused);
+}
+.wall-porter {
+  animation: wall-carry-stone 8s linear infinite;
+}
+.wall-porter .carried-stone {
+  animation: wall-deliver-stone 8s linear infinite;
+}
+.worker-leg-left,
+.worker-leg-right {
+  transform-box: fill-box;
+  transform-origin: 50% 0;
+  animation: site-worker-stride 0.6s ease-in-out infinite alternate;
+}
+.worker-leg-right {
+  animation-delay: -0.6s;
+}
+.worker-hammer {
+  transform-origin: 1px -9px;
+  animation: site-hammer 1.4s ease-in-out infinite;
+}
+.wall-hoist-load {
+  animation: wall-lift-stone 5s ease-in-out infinite;
+}
+.wall-new-stone {
+  animation: wall-place-stone 8s linear infinite;
+}
+.pyramid-haul {
+  animation: pyramid-pull-sledge 7s linear infinite;
+}
+.pyramid-set-stone {
+  animation: pyramid-place-stone 7s linear infinite;
+}
+.site-dust {
+  animation: site-stone-dust 1.4s ease-out infinite;
+}
+.pyramid-worksite > g:last-child .site-dust {
+  animation-duration: 7s;
+}
+@keyframes wall-carry-stone {
+  0%,
+  8% {
+    transform: translate(0, 0);
+  }
+  44%,
+  56% {
+    transform: translate(18px, -27px);
+  }
+  94%,
+  100% {
+    transform: translate(0, 0);
+  }
+}
+@keyframes wall-deliver-stone {
+  0%,
+  48%,
+  97%,
+  100% {
+    opacity: 1;
+  }
+  53%,
+  94% {
+    opacity: 0;
+  }
+}
+@keyframes wall-lift-stone {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  40%,
+  60% {
+    transform: translateY(-18px);
+  }
+}
+@keyframes wall-place-stone {
+  0%,
+  45%,
+  100% {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  52%,
+  94% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes site-worker-stride {
+  from {
+    transform: rotate(-18deg);
+  }
+  to {
+    transform: rotate(18deg);
+  }
+}
+@keyframes site-hammer {
+  0%,
+  100% {
+    transform: rotate(-28deg);
+  }
+  28% {
+    transform: rotate(-55deg);
+  }
+  45%,
+  60% {
+    transform: rotate(32deg);
+  }
+}
+@keyframes site-stone-dust {
+  0%,
+  42%,
+  100% {
+    opacity: 0;
+    transform: translateY(0) scale(0.6);
+  }
+  48% {
+    opacity: 0.85;
+  }
+  80% {
+    opacity: 0;
+    transform: translateY(-5px) scale(1.7);
+  }
+}
+@keyframes pyramid-pull-sledge {
+  0%,
+  100% {
+    opacity: 0;
+    transform: translate(0, 0);
+  }
+  8% {
+    opacity: 1;
+    transform: translate(0, 0);
+  }
+  75%,
+  88% {
+    opacity: 1;
+    transform: translate(22px, -32px);
+  }
+  96% {
+    opacity: 0;
+    transform: translate(22px, -32px);
+  }
+}
+@keyframes pyramid-place-stone {
+  0%,
+  73%,
+  100% {
+    opacity: 0;
+    transform: translateY(-3px);
+  }
+  82%,
+  94% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .landmark-life [class] {
+    animation: none;
+  }
+  .wall-porter {
+    transform: translate(9px, -13px);
+  }
+  .wall-hoist-load {
+    transform: translateY(-9px);
+  }
+  .pyramid-haul {
+    transform: translate(11px, -16px);
+  }
+  .site-dust {
+    opacity: 0;
+  }
+}
+
+.wall-hoist-rope {
+  transform-origin: 117px 56px;
+  animation: wall-pull-rope 5s ease-in-out infinite;
+}
+@keyframes wall-pull-rope {
+  0%,
+  100% {
+    transform: scaleY(1);
+  }
+  40%,
+  60% {
+    transform: scaleY(0.45);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .wall-hoist-rope {
+    transform: scaleY(0.73);
+  }
+}
+.life-preview {
+  max-width: 900px;
+  margin: 40px auto;
+  padding: 24px;
+}
+.life-preview > p {
+  line-height: 1.6;
+}
+.life-preview-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
+  gap: 24px;
+  margin: 28px 0;
+}
+.life-preview-card {
+  width: 100%;
+  max-height: none;
+  text-align: center;
+}
+.life-preview-card .detail-art {
+  width: min(100%, 300px);
+  height: 300px;
+  margin: 0 auto 20px;
+}
+.life-preview-card .detail-art svg {
+  width: 100%;
+  height: 100%;
+}
+.life-preview-card h2 {
+  font-size: 24px;
+}
+.life-preview-card p {
+  line-height: 1.6;
+}
+
+.eiffel-beacon {
+  transform-origin: 64px 9px;
+  animation: eiffel-sweep 7s ease-in-out infinite alternate;
+}
+.eiffel-light {
+  animation: eiffel-twinkle 3s ease-in-out infinite;
+  animation-delay: var(--life-delay);
+}
+.eiffel-star {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: eiffel-twinkle 2s ease-in-out infinite;
+}
+.fuji-cloud {
+  animation: fuji-cloud-drift 12s ease-in-out infinite alternate;
+}
+.fuji-cloud.cloud-lower {
+  animation-duration: 16s;
+  animation-delay: -6s;
+}
+.fuji-petal {
+  animation: fuji-blossom-fall 5s linear infinite;
+  animation-delay: var(--life-delay);
+}
+:is(
+    .card:not(.locked),
+    .landmark-detail[data-owned='true'],
+    .world-object.building,
+    .discovery-monument
+  )
+  .mill-sails {
+  transform-origin: 0px 18px;
+  animation: mill-sails-turn 16s linear infinite;
+}
+.mill-ducks {
+  animation: mill-ducks-paddle 13s linear infinite;
+}
+.opera-sailboat {
+  animation: opera-harbour-sail 14s linear infinite;
+}
+.opera-water {
+  animation: opera-water-shimmer 3s ease-in-out infinite alternate;
+}
+.merlion-stream {
+  animation: merlion-water-flow 1s linear infinite;
+}
+.merlion-splash {
+  animation: merlion-splash-bounce 0.8s ease-in-out infinite alternate;
+}
+.merlion-ripple {
+  animation: landmark-water-ripple 2.4s ease-out infinite;
+}
+.liberty-flame {
+  transform-origin: 36px 16px;
+  animation: liberty-torch-flicker 1.2s ease-in-out infinite alternate;
+}
+.liberty-glow {
+  animation: eiffel-twinkle 2s ease-in-out infinite;
+}
+.liberty-gulls {
+  animation: liberty-gulls-soar 8s ease-in-out infinite alternate;
+}
+.gull-wings {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: bird-wing-flap 1.4s ease-in-out infinite alternate;
+}
+.taj-peacock-tail {
+  transform-origin: 0px 0px;
+  animation: taj-peacock-fan 6s ease-in-out infinite;
+}
+.taj-pool {
+  animation: landmark-water-ripple 4s ease-out infinite;
+}
+@keyframes eiffel-sweep {
+  from {
+    transform: rotate(-28deg);
+  }
+  to {
+    transform: rotate(28deg);
+  }
+}
+@keyframes eiffel-twinkle {
+  0%,
+  100% {
+    opacity: 0.25;
+  }
+  35%,
+  55% {
+    opacity: 1;
+  }
+  45% {
+    opacity: 0.6;
+  }
+}
+@keyframes fuji-cloud-drift {
+  from {
+    transform: translateX(-4px);
+  }
+  to {
+    transform: translateX(20px);
+  }
+}
+@keyframes fuji-blossom-fall {
+  0% {
+    opacity: 0;
+    transform: translate(0, 0) rotate(0);
+  }
+  12%,
+  70% {
+    opacity: 0.9;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(30px, 20px) rotate(200deg);
+  }
+}
+@keyframes mill-sails-turn {
+  from {
+    transform: rotate(-35deg);
+  }
+  to {
+    transform: rotate(325deg);
+  }
+}
+@keyframes mill-ducks-paddle {
+  0% {
+    opacity: 0;
+    transform: translateX(0);
+  }
+  8% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(60px);
+  }
+}
+@keyframes opera-harbour-sail {
+  0% {
+    opacity: 0;
+    transform: translate(0, 0) rotate(-2deg);
+  }
+  8% {
+    opacity: 1;
+  }
+  45% {
+    transform: translate(43px, -1px) rotate(2deg);
+  }
+  92% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(96px, 0) rotate(-2deg);
+  }
+}
+@keyframes opera-water-shimmer {
+  from {
+    opacity: 0.3;
+    transform: translateX(-3px);
+  }
+  to {
+    opacity: 0.9;
+    transform: translateX(3px);
+  }
+}
+@keyframes merlion-water-flow {
+  to {
+    stroke-dashoffset: -28;
+  }
+}
+@keyframes merlion-splash-bounce {
+  from {
+    transform: translateY(0) scaleY(0.7);
+  }
+  to {
+    transform: translateY(-1px) scaleY(1.1);
+  }
+}
+@keyframes landmark-water-ripple {
+  from {
+    opacity: 0.9;
+    transform: scale(0.35);
+  }
+  to {
+    opacity: 0;
+    transform: scale(1.3);
+  }
+}
+@keyframes liberty-torch-flicker {
+  from {
+    transform: skewX(-7deg) scale(0.9, 1);
+  }
+  to {
+    transform: skewX(8deg) scale(1.05, 0.85);
+  }
+}
+@keyframes liberty-gulls-soar {
+  from {
+    transform: translate(0, 0);
+  }
+  to {
+    transform: translate(10px, -6px);
+  }
+}
+@keyframes bird-wing-flap {
+  from {
+    transform: scaleY(0.5);
+  }
+  to {
+    transform: scaleY(1.1);
+  }
+}
+@keyframes taj-peacock-fan {
+  0%,
+  100% {
+    transform: scaleX(0.55) rotate(-8deg);
+  }
+  35%,
+  65% {
+    transform: scaleX(1) rotate(5deg);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  :is(
+      .card:not(.locked),
+      .landmark-detail[data-owned='true'],
+      .world-object.building,
+      .discovery-monument
+    )
+    .mill-sails {
+    animation: none;
+  }
+  .landmark-life [class] {
+    animation: none;
+  }
+  .eiffel-light,
+  .eiffel-star {
+    opacity: 0.9;
+  }
+  .fuji-petal {
+    transform: translate(12px, 10px) rotate(45deg);
+    opacity: 0.8;
+  }
+  .mill-ducks {
+    transform: translateX(25px);
+  }
+  .opera-sailboat {
+    transform: translateX(45px);
+    opacity: 1;
+  }
+  .merlion-ripple,
+  .taj-pool {
+    opacity: 0.7;
+    transform: scale(0.9);
+  }
+  .liberty-glow {
+    opacity: 0.25;
+  }
+}
+
+.gladiator-left {
+  animation: arena-left-footwork 4s ease-in-out infinite;
+}
+.gladiator-right {
+  animation: arena-right-footwork 4s ease-in-out infinite;
+}
+.gladiator-sword {
+  transform-origin: 2px -9px;
+}
+.gladiator-left .gladiator-sword {
+  animation: arena-left-sword 4s ease-in-out infinite;
+}
+.gladiator-right .gladiator-sword {
+  animation: arena-right-sword 4s ease-in-out infinite;
+}
+.gladiator-left .gladiator-shield {
+  animation: arena-left-guard 4s ease-in-out infinite;
+}
+.gladiator-right .gladiator-shield {
+  animation: arena-right-guard 4s ease-in-out infinite;
+}
+.arena-clash {
+  animation: arena-sword-clash 4s linear infinite;
+}
+.arena-dust {
+  animation: arena-footstep-dust 4s ease-out infinite;
+}
+@keyframes arena-left-footwork {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  18%,
+  28% {
+    transform: translateX(3px);
+  }
+  40%,
+  50% {
+    transform: translateX(0);
+  }
+  58%,
+  72% {
+    transform: translateX(-2px);
+  }
+}
+@keyframes arena-right-footwork {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  18%,
+  32% {
+    transform: translateX(-2px);
+  }
+  50%,
+  66% {
+    transform: translateX(3px);
+  }
+  80% {
+    transform: translateX(0);
+  }
+}
+@keyframes arena-left-sword {
+  0%,
+  10%,
+  42%,
+  100% {
+    transform: rotate(-18deg);
+  }
+  24% {
+    transform: rotate(55deg);
+  }
+  30% {
+    transform: rotate(40deg);
+  }
+  56%,
+  74% {
+    transform: rotate(-35deg);
+  }
+}
+@keyframes arena-right-sword {
+  0%,
+  12%,
+  82%,
+  100% {
+    transform: rotate(-18deg);
+  }
+  18%,
+  34% {
+    transform: rotate(-35deg);
+  }
+  64% {
+    transform: rotate(55deg);
+  }
+  70% {
+    transform: rotate(40deg);
+  }
+}
+@keyframes arena-left-guard {
+  0%,
+  40%,
+  100% {
+    transform: translate(0, 0);
+  }
+  56%,
+  74% {
+    transform: translate(3px, -2px);
+  }
+}
+@keyframes arena-right-guard {
+  0%,
+  50%,
+  100% {
+    transform: translate(0, 0);
+  }
+  18%,
+  34% {
+    transform: translate(3px, -2px);
+  }
+}
+@keyframes arena-sword-clash {
+  0%,
+  20%,
+  28%,
+  60%,
+  68%,
+  100% {
+    opacity: 0;
+    transform: scale(0.6);
+  }
+  24% {
+    opacity: 1;
+    transform: translateX(7px) scale(1);
+  }
+  64% {
+    opacity: 1;
+    transform: translateX(-7px) scale(1);
+  }
+}
+@keyframes arena-footstep-dust {
+  0%,
+  10%,
+  35%,
+  50%,
+  75%,
+  100% {
+    opacity: 0;
+    transform: translateY(0);
+  }
+  18%,
+  58% {
+    opacity: 0.6;
+    transform: translateY(-1px);
+  }
+  28%,
+  68% {
+    opacity: 0;
+    transform: translateY(-3px);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .landmark-life [class] {
+    animation: none;
+  }
+  .arena-clash,
+  .arena-dust {
+    opacity: 0;
+  }
+  .gladiator-sword {
+    transform: rotate(-18deg);
+  }
+}
+
+.life-preview-tier > h2 {
+  margin: 40px 0 8px;
+  font-size: 28px;
+}
+.life-preview-tier > p {
+  color: var(--orca-muted-foreground, #647869);
+}
+.life-preview-card h3 {
+  font:
+    normal 24px Georgia,
+    serif;
+}
+.eiffel-light-wave {
+  animation: eiffel-show-wave 8s linear infinite;
+}
+.eiffel-camera-flash {
+  animation: eiffel-photo-moment 8s linear infinite;
+}
+.opera-stage-windows {
+  animation: opera-curtain-light 8s ease-in-out infinite;
+}
+.opera-music {
+  animation: opera-notes-rise 8s ease-out infinite;
+  animation-delay: var(--life-delay);
+}
+.taj-fountains {
+  animation: taj-fountain-bloom 6s ease-in-out infinite;
+}
+.taj-fountain-rings {
+  animation: taj-fountain-bloom 6s ease-in-out infinite;
+}
+.arena-spectator {
+  animation: arena-crowd-react 4s ease-in-out infinite;
+  animation-delay: var(--life-delay);
+}
+.petra-sunshaft {
+  animation: petra-canyon-sun 12s ease-in-out infinite;
+}
+.petra-facade-reveal {
+  animation: petra-carving-reveal 12s ease-in-out infinite;
+}
+.petra-caravan {
+  animation: petra-caravan-cross 12s linear infinite;
+}
+.caravan-legs {
+  transform-box: fill-box;
+  transform-origin: top center;
+  animation: caravan-walk 0.8s ease-in-out infinite alternate;
+}
+.angkor-vines {
+  animation: angkor-jungle-unfold 12s ease-in-out infinite;
+}
+.angkor-leaves {
+  transform-origin: 64px 110px;
+  animation: angkor-canopy-breathe 12s ease-in-out infinite;
+}
+.angkor-sanctuary-light {
+  animation: angkor-sanctuary-awaken 12s ease-in-out infinite;
+}
+.angkor-procession {
+  animation: angkor-pilgrims-walk 12s ease-in-out infinite alternate;
+}
+.angkor-lantern {
+  animation: angkor-lantern-rise 12s ease-in-out infinite;
+  animation-delay: var(--life-delay);
+}
+.machu-sunrise {
+  animation: machu-dawn-break 14s ease-in-out infinite;
+}
+.machu-cloud-sea {
+  animation: machu-cloud-part 14s ease-in-out infinite;
+}
+.machu-cloud-front {
+  animation: machu-mist-roll 14s ease-in-out infinite;
+}
+.machu-condor {
+  animation: machu-condor-circle 14s ease-in-out infinite;
+}
+.condor-wings {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: bird-wing-flap 3s ease-in-out infinite alternate;
+}
+@keyframes eiffel-show-wave {
+  from {
+    stroke-dashoffset: 180;
+    opacity: 0.2;
+  }
+  50% {
+    opacity: 1;
+  }
+  to {
+    stroke-dashoffset: -180;
+    opacity: 0.2;
+  }
+}
+@keyframes eiffel-photo-moment {
+  0%,
+  42%,
+  48%,
+  100% {
+    opacity: 0;
+  }
+  45% {
+    opacity: 1;
+  }
+}
+@keyframes opera-curtain-light {
+  0%,
+  100% {
+    opacity: 0.1;
+  }
+  30%,
+  70% {
+    opacity: 0.85;
+  }
+}
+@keyframes opera-notes-rise {
+  0%,
+  100% {
+    opacity: 0;
+    transform: translate(0, 0);
+  }
+  20%,
+  70% {
+    opacity: 0.8;
+  }
+  90% {
+    opacity: 0;
+    transform: translate(5px, -15px);
+  }
+}
+@keyframes taj-fountain-bloom {
+  0%,
+  100% {
+    opacity: 0.1;
+    transform: translateY(2px);
+  }
+  35%,
+  65% {
+    opacity: 0.9;
+    transform: translateY(0);
+  }
+}
+@keyframes arena-crowd-react {
+  0%,
+  16%,
+  40%,
+  56%,
+  80%,
+  100% {
+    transform: translateY(0);
+  }
+  26%,
+  66% {
+    transform: translateY(-2px);
+  }
+}
+@keyframes petra-canyon-sun {
+  0%,
+  100% {
+    opacity: 0;
+    transform: translateX(-14px);
+  }
+  35%,
+  65% {
+    opacity: 0.35;
+    transform: translateX(12px);
+  }
+}
+@keyframes petra-carving-reveal {
+  0%,
+  20%,
+  90%,
+  100% {
+    opacity: 0;
+  }
+  40%,
+  65% {
+    opacity: 0.85;
+  }
+}
+@keyframes petra-caravan-cross {
+  0% {
+    opacity: 0;
+    transform: translateX(0);
+  }
+  12%,
+  85% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(90px);
+  }
+}
+@keyframes caravan-walk {
+  from {
+    transform: skewX(-10deg);
+  }
+  to {
+    transform: skewX(10deg);
+  }
+}
+@keyframes angkor-jungle-unfold {
+  0%,
+  100% {
+    stroke-dashoffset: 120;
+    opacity: 0.35;
+  }
+  35%,
+  80% {
+    stroke-dashoffset: 0;
+    opacity: 1;
+  }
+}
+@keyframes angkor-canopy-breathe {
+  0%,
+  100% {
+    transform: scaleX(0.85);
+  }
+  40%,
+  70% {
+    transform: scaleX(1);
+  }
+}
+@keyframes angkor-sanctuary-awaken {
+  0%,
+  20%,
+  100% {
+    opacity: 0.1;
+  }
+  45%,
+  80% {
+    opacity: 0.9;
+  }
+}
+@keyframes angkor-pilgrims-walk {
+  from {
+    transform: translateX(-8px);
+  }
+  to {
+    transform: translateX(12px);
+  }
+}
+@keyframes angkor-lantern-rise {
+  0%,
+  100% {
+    opacity: 0;
+    transform: translate(0, 0);
+  }
+  15%,
+  70% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 0;
+    transform: translate(6px, -52px);
+  }
+}
+@keyframes machu-dawn-break {
+  0%,
+  100% {
+    opacity: 0.15;
+  }
+  35%,
+  70% {
+    opacity: 0.9;
+  }
+}
+@keyframes machu-cloud-part {
+  0%,
+  100% {
+    transform: translate(-8px, -7px);
+    opacity: 0.9;
+  }
+  40%,
+  65% {
+    transform: translate(6px, 6px);
+    opacity: 0.5;
+  }
+}
+@keyframes machu-mist-roll {
+  0%,
+  100% {
+    transform: translateX(6px);
+  }
+  50% {
+    transform: translateX(-6px);
+  }
+}
+@keyframes machu-condor-circle {
+  0%,
+  100% {
+    transform: translate(0, 3px) rotate(-7deg);
+  }
+  50% {
+    transform: translate(95px, -6px) rotate(7deg);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .landmark-life [class] {
+    animation: none;
+  }
+  .eiffel-camera-flash {
+    opacity: 0;
+  }
+  .opera-stage-windows {
+    opacity: 0.6;
+  }
+  .opera-music {
+    opacity: 0.6;
+  }
+  .petra-sunshaft {
+    opacity: 0.18;
+  }
+  .petra-facade-reveal {
+    opacity: 0.5;
+  }
+  .petra-caravan {
+    transform: translateX(40px);
+  }
+  .angkor-vines {
+    stroke-dashoffset: 0;
+  }
+  .angkor-sanctuary-light {
+    opacity: 0.6;
+  }
+  .angkor-lantern {
+    transform: translateY(-20px);
+  }
+  .machu-condor {
+    transform: translate(45px, -3px);
+  }
+  .machu-sunrise {
+    opacity: 0.6;
+  }
+}
+
+.life-preview-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 24px 0;
+}
+.life-preview-nav a {
+  padding: 8px 12px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  color: var(--ink);
+  text-decoration: none;
+}
+.life-preview-tier {
+  scroll-margin-top: 24px;
+}
+
+.life-preview-finder {
+  margin: 24px 0;
+}
+.life-preview-finder label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+.life-preview-finder > div {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.life-preview-finder input {
+  flex: 1 1 260px;
+  min-width: 0;
+  padding: 10px 12px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  color: var(--ink);
+  background: var(--paper);
+  font: inherit;
+}
+.life-preview-count {
+  font-size: 13px;
+}
+.life-preview-empty {
+  padding: 30px 0;
+}

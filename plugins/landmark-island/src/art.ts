@@ -1,4 +1,7 @@
 import landmarks from './landmarks.json';
+import { expandedLandmarkArt } from './expanded-art';
+import { landmarkLife } from './landmark-life';
+import { landmarkIntensity } from './landmark-intensity';
 // Original architectural illustrations, distributed under the repository MIT license.
 // Material patterns use local SVG geometry, not raster noise or runtime downloads.
 // Every instance owns its paint IDs so cards, dialogs and island copies never collide.
@@ -236,7 +239,7 @@ export function art(id: string) {
       ${line('M60 64l-9 49M69 64l12 48', '#fdf1d6', 1.1)}${surface('M31 118h66v5H31z', 'stone')}`;
   } else if (id === 'kinderdijk') {
     const mill = (x: number, y: number, scale: number) =>
-      `<g transform="translate(${x} ${y}) scale(${scale})">${surface('M-20 67l9-56h22l9 56z', 'sandstone')}${surface('M-14 13l3-10 11-7L11 3l3 10z', 'slate', 'grain')}${arch(-4, 48, 8, 19)}<path d="M-4 26h8v9h-8z" fill="#3a4d43"/>${line('M-4 30h8m-4-4v9', '#ede0ba', 0.7)}<g transform="rotate(-35 0 18)">${rows(4, (i) => `<g transform="rotate(${i * 90} 0 18)"><path d="M-2 18V-27h3v45z" fill="#503e2f"/><path d="M1-24h9V9H1z" fill="#d9c398" stroke="#715e43" stroke-width=".7"/>${rows(6, (j) => line(`M1 ${-21 + j * 5}h9`, '#77654b', 0.7, 1))}</g>`)}</g><circle cy="18" r="3.5" fill="#69583c"/>${line('M-18 66h36', '#ead7b0', 1.4)}</g>`;
+      `<g transform="translate(${x} ${y}) scale(${scale})">${surface('M-20 67l9-56h22l9 56z', 'sandstone')}${surface('M-14 13l3-10 11-7L11 3l3 10z', 'slate', 'grain')}${arch(-4, 48, 8, 19)}<path d="M-4 26h8v9h-8z" fill="#3a4d43"/>${line('M-4 30h8m-4-4v9', '#ede0ba', 0.7)}<g class="mill-sails" transform="rotate(-35 0 18)">${rows(4, (i) => `<g transform="rotate(${i * 90} 0 18)"><path d="M-2 18V-27h3v45z" fill="#503e2f"/><path d="M1-24h9V9H1z" fill="#d9c398" stroke="#715e43" stroke-width=".7"/>${rows(6, (j) => line(`M1 ${-21 + j * 5}h9`, '#77654b', 0.7, 1))}</g>`)}</g><circle cy="18" r="3.5" fill="#69583c"/>${line('M-18 66h36', '#ead7b0', 1.4)}</g>`;
     body = `<path d="M2 105q29-8 60 0t64-2v18H2z" fill="${url('grass')}"/><path d="M2 112q36-5 65 1t59-2v13H2z" fill="#6e9c9c"/>${mill(100, 59, 0.65)}${mill(48, 38, 1.12)}${line('M7 119h24m28 1h24m18-4h18', '#d5e1c8', 1)}`;
   } else if (id === 'hallgrim') {
     body = `${rows(9, (i) => {
@@ -729,7 +732,7 @@ export function art(id: string) {
         const x = 49 - (y - 10) * 0.36;
         return line(`M${x} ${y}H50M78 ${y}h${50 - x}`, '#dbe7d9', 0.65, 0.7);
       })}
-      ${[49, 73, 96].map((y) => `<path d="M51 ${y}h26" stroke="#a5b9ae" stroke-width="3"/><g transform="translate(64 ${y})"><circle r="2" fill="#dce7de"/>${rows(3, (i) => `<path d="M0-1l-1-13 3 2L2-2z" transform="rotate(${i * 120})" fill="#ecebda" stroke="#718d8e" stroke-width=".5"/>`)}</g>`).join('')}
+      ${[49, 73, 96].map((y) => `<path d="M51 ${y}h26" stroke="#a5b9ae" stroke-width="3"/><g transform="translate(64 ${y})"><circle r="2" fill="#dce7de"/><g class="catalog-turbine-rotor">${rows(3, (i) => `<path d="M0-1l-1-13 3 2L2-2z" transform="rotate(${i * 120})" fill="#ecebda" stroke="#718d8e" stroke-width=".5"/>`)}</g></g>`).join('')}
       ${surface('M5 119h118v5H5z', 'stone')}${line('M12 117L49 8M79 8l36 109', '#eef0db', 1.4, 0.8)}`;
   } else if (id === 'skytower') {
     body = `${surface('M43 120l11-24V58h20v38l11 24z', 'marble', 'grain')}<path d="M64 59h10v37l11 24H67z" fill="#81918b" opacity=".6"/>
@@ -914,10 +917,29 @@ export function art(id: string) {
       ${line('M6 112L56 18l16 94M6 112h116', '#f3dca8', 1, 0.85)}
       <path d="M42 57l5-7 4 7z" fill="#5b503c" opacity=".6"/>${line('M17 104l5-5m11-28 3-4m28 27 2 7m25-16 4 6', '#69583e', 0.85, 0.5)}`;
   }
-  const wonder =
-    landmarks.find((landmark) => landmark.id === id)?.tier === 'legendary';
+  body = expandedLandmarkArt(id, url) || body;
+  const life = landmarkLife(id);
+  const tier =
+    landmarks.find((landmark) => landmark.id === id)?.tier ?? 'common';
+  const wonder = tier === 'legendary';
+  const intensity = landmarkIntensity(tier, id, prefix);
   if (wonder) {
-    body = `<g class="wonder-body">${body}</g><g class="wonder-effects"><ellipse cx="64" cy="118" rx="61" ry="15" fill="none" stroke="#d7b46a" stroke-width=".7" opacity=".6"/><g transform="translate(64 72) scale(1 .55)"><g class="wonder-orbit"><path d="M58-8l10 6-2 12-12-4z" fill="${url('stone')}" stroke="#8c7450" stroke-width=".7"/><path d="M-60-10l10 4-2 12-12-6z" fill="${url('stone')}" stroke="#e1c895" stroke-width=".7"/><circle cx="0" cy="-64" r="2" fill="#f9e8ba"/><circle cx="0" cy="64" r="1.6" fill="#f9e8ba"/></g></g><path class="wonder-spark spark-one" d="M12 40v10m-5-5h10" stroke="#eee2bc" stroke-width="1"/><path class="wonder-spark spark-two" d="M114 28v8m-4-4h8" stroke="#edddb2" stroke-width="1"/></g>`;
+    body = `<g class="wonder-body">${body}</g>${life}<g class="wonder-effects"><ellipse cx="64" cy="118" rx="61" ry="15" fill="none" stroke="#d7b46a" stroke-width=".7" opacity=".6"/><g transform="translate(64 72) scale(1 .55)"><g class="wonder-orbit"><path d="M58-8l10 6-2 12-12-4z" fill="${url('stone')}" stroke="#8c7450" stroke-width=".7"/><path d="M-60-10l10 4-2 12-12-6z" fill="${url('stone')}" stroke="#e1c895" stroke-width=".7"/><path d="M39-40l7 3-1 8-8-3zM-46 32l8 3-2 7-7-3zM-40-35l5-3 4 6-5 3zM39 34l6-2 3 6-6 2z" fill="${url('stone')}" stroke="#d4be86" stroke-width=".6"/><circle cx="0" cy="-64" r="2" fill="#f9e8ba"/><circle cx="0" cy="64" r="1.6" fill="#f9e8ba"/></g></g><path class="wonder-spark spark-one" d="M12 40v10m-5-5h10" stroke="#eee2bc" stroke-width="1"/><path class="wonder-spark spark-two" d="M114 28v8m-4-4h8" stroke="#edddb2" stroke-width="1"/></g>`;
   }
-  return `<svg class="landmark-art${wonder ? ' wonder-art' : ''}" data-material-art="${id}" viewBox="${wonder ? '-20 -24 168 168' : '0 0 128 128'}" aria-hidden="true">${defs}<ellipse ${wonder ? 'class="wonder-shadow"' : ''} cx="64" cy="118" rx="53" ry="7" fill="#34372b" opacity=".17"/>${body}</svg>`;
+  if (!wonder) body += life;
+  // 회전하는 날개와 조명이 그림 가장자리에서 잘리지 않도록 여백을 확보한다.
+  const viewBox = wonder
+    ? '-20 -24 168 168'
+    : id && landmarks.findIndex((entry) => entry.id === id) >= 100
+      ? '-8 -12 144 144'
+      : ['sagrada', 'nanmadol', 'tikal'].includes(id)
+        ? '-8 -8 144 144'
+        : id === 'kinderdijk'
+          ? '-12 -8 152 144'
+          : id === 'eiffel'
+            ? '-8 -24 144 152'
+            : id === 'liberty'
+              ? '-4 -6 136 136'
+              : '0 0 128 128';
+  return `<svg class="landmark-art${wonder ? ' wonder-art' : ''}" data-material-art="${id}" data-animation-tier="${tier}" viewBox="${viewBox}" aria-hidden="true">${defs}${intensity.back}<ellipse ${wonder ? 'class="wonder-shadow"' : ''} cx="64" cy="118" rx="53" ry="7" fill="#34372b" opacity=".17"/>${body}${intensity.front}</svg>`;
 }

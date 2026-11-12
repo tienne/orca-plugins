@@ -1,0 +1,477 @@
+.world-object:is(.pine, .oak, .flowers) > svg,
+.garden-object[data-wind='plant'] .building-select > svg {
+  transform-origin: 50% 100%;
+  animation: island-wind-tree 18s ease-in-out infinite;
+  animation-delay: var(--wind-delay, 0s);
+}
+.wind-grass {
+  transform-origin: 40px 24px;
+  animation: island-wind-grass 18s ease-in-out infinite;
+  animation-delay: var(--wind-delay, 0s);
+}
+.ocean .world-banner {
+  transform-origin: 0 0;
+  animation: island-wind-banner 18s ease-in-out infinite;
+  animation-delay: var(--wind-delay, 0s);
+}
+.island-wind-field {
+  position: absolute;
+  inset: 0;
+  z-index: 9500;
+  pointer-events: none;
+  overflow: visible;
+}
+.island-wind-thread {
+  animation: island-wind-travel 18s ease-in-out infinite;
+}
+.island-water-ripple {
+  position: absolute;
+  width: 58px;
+  height: 18px;
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+}
+.island-water-ripple ellipse {
+  transform-origin: 30px 9px;
+  animation: island-wind-water 18s ease-in-out infinite;
+  animation-delay: var(--wind-delay, 0s);
+}
+.island-resident,
+.island-critter {
+  position: absolute;
+  pointer-events: none;
+  left: 0;
+  top: 0;
+}
+.island-resident {
+  width: 26px;
+  height: 38px;
+  transform: translate(-50%, -92%);
+  transition: transform 0.9s linear;
+}
+.island-resident svg,
+.island-critter svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
+}
+.resident-figure {
+  transform-origin: 16px 27px;
+}
+.island-resident[data-facing='left'] .resident-figure {
+  transform: scaleX(-1);
+}
+.resident-leg {
+  transform-box: fill-box;
+  transform-origin: top center;
+}
+.island-resident[data-action='walk'] .resident-leg,
+.island-resident[data-action='yield'] .resident-leg {
+  animation: island-resident-step 0.55s ease-in-out infinite alternate;
+}
+.island-resident .resident-leg-right {
+  animation-delay: -0.55s !important;
+}
+.resident-watering-arm {
+  transform-origin: 21px 22px;
+}
+.resident-water,
+.resident-camera-flash {
+  opacity: 0;
+}
+.island-resident[data-action='water'] .resident-watering-arm {
+  animation: island-resident-pour 2.8s ease-in-out infinite;
+}
+.island-resident[data-action='water'] .resident-water {
+  opacity: 0.9;
+  animation: island-water-pour 1.3s linear infinite;
+}
+.resident-camera-arm {
+  transform-origin: 21px 23px;
+}
+.island-resident[data-action='photo'] .resident-camera-arm {
+  transform: translateY(-7px) rotate(-8deg);
+}
+.island-resident[data-action='photo'] .resident-camera-flash {
+  animation: island-resident-photo 3.6s ease-in-out infinite;
+}
+.island-critter {
+  width: 20px;
+  height: 18px;
+  transform: translate(-50%, -80%);
+  transition:
+    left 3.2s ease-in-out,
+    top 3.2s ease-in-out;
+}
+.island-critter[data-kind='butterfly'] {
+  width: 20px;
+  height: 20px;
+  transform: translate(-50%, -100%);
+  transition-duration: 1.8s;
+}
+.critter-perch {
+  transform: translateY(var(--perch-y, 0px));
+  transition: transform 3.2s ease-in-out;
+}
+.bird-wing {
+  transform-origin: 11px 11px;
+}
+.island-critter[data-behavior='flee'] .critter-body {
+  animation: island-bird-lift 3.2s ease-in-out both;
+}
+.island-critter[data-behavior='flee'] .bird-wing {
+  animation: island-bird-flap 0.22s ease-in-out infinite alternate;
+}
+.island-critter[data-behavior='flee'] .critter-shadow {
+  opacity: 0.12;
+}
+.island-critter[data-kind='butterfly'] .critter-body {
+  animation: island-butterfly-hover 4s ease-in-out infinite;
+}
+.butterfly-wings {
+  transform-origin: 12px 12px;
+  animation: island-butterfly-flap 0.8s ease-in-out infinite alternate;
+}
+.island-critter[data-behavior='follow'] {
+  transition-duration: 0.42s;
+}
+.island-critter[data-kind='butterfly'] {
+  opacity: 1;
+  transition-property: left, top, opacity;
+}
+.ocean:is([data-weather='rain'], [data-weather='snow'])
+  .island-critter[data-kind='butterfly'] {
+  opacity: 0;
+}
+.ocean[data-life-paused='true'] :is(.island-resident, .island-critter) *,
+.ocean[data-life-hidden='true']
+  :is(.island-wind-field, .island-water-ripple, .wind-grass, .world-banner) {
+  animation-play-state: paused;
+}
+.ocean[data-life-paused='true'] :is(.island-resident, .island-critter) {
+  transition: none;
+}
+@keyframes island-wind-tree {
+  0%,
+  22%,
+  65%,
+  100% {
+    transform: rotate(0);
+  }
+  35% {
+    transform: rotate(-3.5deg) skewX(-1deg);
+  }
+  43% {
+    transform: rotate(-1deg);
+  }
+  51% {
+    transform: rotate(-4deg) skewX(-1.5deg);
+  }
+  59% {
+    transform: rotate(1deg);
+  }
+}
+@keyframes island-wind-grass {
+  0%,
+  22%,
+  65%,
+  100% {
+    transform: skewX(0);
+  }
+  35%,
+  51% {
+    transform: skewX(-13deg);
+  }
+  43%,
+  59% {
+    transform: skewX(4deg);
+  }
+}
+@keyframes island-wind-banner {
+  0%,
+  22%,
+  65%,
+  100% {
+    transform: skewY(0);
+  }
+  35%,
+  51% {
+    transform: skewY(-12deg) scaleX(1.08);
+  }
+  43%,
+  59% {
+    transform: skewY(5deg);
+  }
+}
+@keyframes island-wind-travel {
+  0%,
+  20%,
+  80%,
+  100% {
+    opacity: 0;
+    transform: translateX(-150px);
+  }
+  35% {
+    opacity: 0.55;
+  }
+  70% {
+    opacity: 0;
+    transform: translateX(470px);
+  }
+}
+@keyframes island-wind-water {
+  0%,
+  20%,
+  70%,
+  100% {
+    opacity: 0.1;
+    transform: scale(0.7);
+  }
+  40% {
+    opacity: 0.75;
+    transform: scale(1);
+  }
+  60% {
+    opacity: 0;
+    transform: scale(1.15);
+  }
+}
+@keyframes island-resident-step {
+  from {
+    transform: rotate(-17deg);
+  }
+  to {
+    transform: rotate(17deg);
+  }
+}
+@keyframes island-resident-pour {
+  0%,
+  100% {
+    transform: rotate(0);
+  }
+  25%,
+  75% {
+    transform: rotate(-14deg);
+  }
+}
+@keyframes island-water-pour {
+  to {
+    stroke-dashoffset: -12;
+  }
+}
+@keyframes island-resident-photo {
+  0%,
+  40%,
+  48%,
+  100% {
+    opacity: 0;
+  }
+  44% {
+    opacity: 1;
+  }
+}
+@keyframes island-bird-lift {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  25%,
+  65% {
+    transform: translateY(-34px);
+  }
+}
+@keyframes island-bird-flap {
+  from {
+    transform: scaleY(0.2);
+  }
+  to {
+    transform: scaleY(1.1);
+  }
+}
+@keyframes island-butterfly-hover {
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+  50% {
+    transform: translate(2px, -3px);
+  }
+}
+@keyframes island-butterfly-flap {
+  from {
+    transform: scaleX(0.3);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .world-object:is(.pine, .oak, .flowers) > svg,
+  .garden-object[data-wind='plant'] .building-select > svg,
+  .wind-grass,
+  .ocean .world-banner,
+  .island-wind-field *,
+  .island-water-ripple *,
+  .island-resident *,
+  .island-critter * {
+    animation: none !important;
+  }
+  .island-resident,
+  .island-critter,
+  .critter-perch {
+    transition: none !important;
+  }
+  .island-wind-thread,
+  .resident-camera-flash,
+  .resident-water {
+    opacity: 0 !important;
+  }
+}
+
+.ocean[data-life-hidden='true']
+  :is(
+    .island-wind-field *,
+    .island-water-ripple *,
+    .world-object:is(.pine, .oak, .flowers) > svg,
+    .garden-object[data-wind='plant'] .building-select > svg
+  ) {
+  animation-play-state: paused;
+}
+
+.island-water-detail {
+  pointer-events: none;
+}
+.island-water-detail ellipse {
+  transform-origin: 0 0;
+  animation: island-wind-water 18s ease-in-out infinite;
+  animation-delay: var(--wind-delay, 0s);
+}
+.ocean[data-life-hidden='true'] .island-water-detail ellipse {
+  animation-play-state: paused;
+}
+@media (prefers-reduced-motion: reduce) {
+  .island-water-detail ellipse {
+    animation: none !important;
+  }
+}
+
+.resident-seated-legs,
+.resident-umbrella,
+.resident-cold,
+.resident-lantern {
+  display: none;
+}
+.island-resident[data-action='sit'] > svg {
+  transform: translate(var(--seat-x), var(--seat-y));
+}
+.island-resident[data-action='sit'] :is(.resident-leg, .resident-shadow) {
+  display: none;
+}
+.island-resident[data-action='sit'] .resident-seated-legs {
+  display: inline;
+}
+.ocean[data-weather='rain'] .resident-umbrella,
+.ocean[data-weather='snow'] .resident-cold {
+  display: inline;
+}
+.ocean:is([data-weather='rain'], [data-weather='snow'])
+  :is(.resident-water, .resident-camera-flash) {
+  opacity: 0;
+  animation: none;
+}
+.ocean[data-weather='snow'] .island-resident .resident-cold {
+  transform-origin: 16px 25px;
+  animation: island-resident-shiver 1.8s ease-in-out infinite;
+}
+.ocean:is([data-phase='night'], [data-phase='sunset']) .resident-lantern {
+  display: inline;
+  filter: drop-shadow(0 0 3px #ffe4a3);
+}
+.island-night-light {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 1.5s ease;
+}
+.ocean:is([data-phase='night'], [data-phase='sunset']) .island-night-light {
+  opacity: 1;
+  filter: drop-shadow(0 0 5px #ffe5a080);
+}
+.island-firefly {
+  position: absolute;
+  width: 3px;
+  height: 3px;
+  pointer-events: none;
+  opacity: 0;
+}
+.island-firefly i {
+  display: block;
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: #f0f4b2;
+  box-shadow: 0 0 5px 2px #dcf1a870;
+}
+.ocean:is([data-phase='night'], [data-phase='sunset']):not(
+    [data-weather='rain']
+  ):not([data-weather='snow'])
+  .island-firefly {
+  opacity: 1;
+  animation: island-firefly-drift 9s ease-in-out infinite;
+  animation-delay: var(--firefly-delay);
+}
+.ocean:is([data-phase='night'], [data-phase='sunset']) .island-firefly i {
+  animation: island-firefly-glow 4.8s ease-in-out infinite;
+  animation-delay: var(--firefly-delay);
+}
+.ocean[data-life-paused='true'] :is(.island-firefly, .island-firefly i) {
+  animation-play-state: paused !important;
+}
+@keyframes island-firefly-drift {
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+  35% {
+    transform: translate(calc(14px * var(--firefly-drift)), -20px);
+  }
+  70% {
+    transform: translate(calc(-8px * var(--firefly-drift)), -9px);
+  }
+}
+@keyframes island-firefly-glow {
+  0%,
+  100% {
+    opacity: 0.2;
+  }
+  45%,
+  60% {
+    opacity: 1;
+  }
+}
+@keyframes island-resident-shiver {
+  0%,
+  75%,
+  100% {
+    transform: translateX(0);
+  }
+  80%,
+  90% {
+    transform: translateX(-0.65px);
+  }
+  85%,
+  95% {
+    transform: translateX(0.65px);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ocean .island-firefly,
+  .ocean .island-firefly i,
+  .ocean .resident-cold {
+    animation: none !important;
+  }
+  .island-night-light {
+    transition: none;
+  }
+}

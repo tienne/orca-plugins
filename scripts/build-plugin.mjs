@@ -82,6 +82,10 @@ if (plugin === 'landmark-island') {
     resolve(source, 'licenses/geography.txt'),
     resolve(output, 'licenses/geography.txt'),
   );
+  await copyFile(
+    resolve(source, 'licenses/heritage.txt'),
+    resolve(output, 'licenses/heritage.txt'),
+  );
   // README images use the same relative paths in source and installed artifacts.
   await mkdir(resolve(output, 'assets'), { recursive: true });
   for (const name of [

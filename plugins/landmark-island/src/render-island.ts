@@ -68,8 +68,11 @@ export function renderIsland(root: HTMLElement, markup: string) {
     );
     if (current.dataset.objectKey !== next.dataset.objectKey) {
       current.querySelector('.world-object')?.remove();
+      current.querySelector('.building-label')?.remove();
       const object = next.querySelector('.world-object');
       if (object) current.append(object);
+      const label = next.querySelector('.building-label');
+      if (label) current.append(label);
       current.dataset.objectKey = next.dataset.objectKey;
     }
   }

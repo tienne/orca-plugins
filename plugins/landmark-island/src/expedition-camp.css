@@ -1,0 +1,202 @@
+.expedition-camp {
+  position: absolute;
+  z-index: 34;
+  top: 166px;
+  left: 18px;
+  width: min(258px, calc(100% - 36px));
+  font-size: 11px;
+  color: var(--orca-card-foreground, var(--ink));
+  background: var(--orca-card, #f1e8cf);
+  border: 1px solid var(--orca-border, #b5bfa0);
+  border-radius: var(--orca-radius, 10px);
+  box-shadow: 0 3px 12px #173e3520;
+  max-height: 44%;
+  overflow: auto;
+  overscroll-behavior: contain;
+  cursor: default;
+}
+.expedition-camp summary {
+  padding: 8px 10px;
+  cursor: pointer;
+  font-weight: 700;
+}
+.expedition-camp summary:focus-visible,
+.expedition-camp button:focus-visible {
+  outline: 2px solid var(--orca-ring, #527b62);
+  outline-offset: -2px;
+}
+.expedition-list {
+  padding: 0 10px;
+}
+.expedition-row {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  justify-content: space-between;
+  padding: 7px 0;
+  border-top: 1px solid var(--orca-border, #b5bfa0);
+}
+.expedition-row span {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.expedition-camp button {
+  flex-shrink: 0;
+  font: inherit;
+  padding: 6px;
+  color: var(--orca-primary-foreground, #fff5d6);
+  background: var(--orca-primary, #446f59);
+  border: 1px solid var(--orca-border, #7d9981);
+  border-radius: 6px;
+  cursor: pointer;
+}
+.expedition-note {
+  padding: 0 10px 8px;
+  margin: 6px 0 0;
+  font-size: 10px;
+  color: var(--orca-muted-foreground, #65775d);
+}
+.expedition-member {
+  position: absolute;
+  width: 25px;
+  height: 36px;
+  pointer-events: none;
+  transform: translate(-50%, -92%);
+}
+.expedition-member svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+.expedition-member .resident-water,
+.expedition-member .resident-camera-flash {
+  display: none;
+}
+.expedition-member[data-state='working'] .resident-leg {
+  transform-origin: 16px 31px;
+  animation: expedition-march 0.8s ease-in-out infinite alternate;
+  animation-delay: var(--member-delay);
+}
+.expedition-member[data-state='working'] .resident-leg-right {
+  animation-direction: alternate-reverse;
+}
+.expedition-member[data-state='returning'] .resident-figure {
+  transform-origin: 16px 40px;
+  animation: expedition-greeting 2.4s ease-in-out infinite;
+}
+.expedition-signal {
+  position: absolute;
+  left: 17px;
+  top: -6px;
+  min-width: 13px;
+  padding: 0 2px;
+  border-radius: 5px;
+  text-align: center;
+  color: #365d46;
+  background: #f5e9b7;
+  font-size: 11px;
+  font-weight: 700;
+}
+.expedition-member[data-state='blocked'] .expedition-signal {
+  background: #edcb9a;
+}
+.expedition-homecoming {
+  position: absolute;
+  right: 22px;
+  bottom: 94px;
+  z-index: 35;
+  width: 155px;
+  pointer-events: none;
+  text-align: center;
+  animation: expedition-arrival 7.8s ease-in-out both;
+}
+.expedition-homecoming svg {
+  display: block;
+  width: 100%;
+  filter: drop-shadow(0 3px 4px #254d4540);
+}
+.expedition-homecoming span {
+  display: inline-block;
+  padding: 6px 9px;
+  border-radius: 8px;
+  font-size: 11px;
+  background: var(--orca-card, #f1e8cf);
+  color: var(--orca-card-foreground, #365d46);
+}
+.expedition-welcome-arm {
+  transform-origin: 64px 54px;
+  animation: expedition-wave 0.7s ease-in-out infinite alternate;
+}
+.ocean[data-life-paused='true']
+  :is(.expedition-member *, .expedition-homecoming, .expedition-homecoming *) {
+  animation-play-state: paused;
+}
+@keyframes expedition-march {
+  from {
+    transform: rotate(-10deg);
+  }
+  to {
+    transform: rotate(10deg);
+  }
+}
+@keyframes expedition-greeting {
+  0%,
+  70%,
+  100% {
+    transform: translateY(0);
+  }
+  35% {
+    transform: translateY(-3px);
+  }
+}
+@keyframes expedition-arrival {
+  0% {
+    opacity: 0;
+    transform: translate(90px, 10px);
+  }
+  15%,
+  80% {
+    opacity: 1;
+    transform: translate(0, 0);
+  }
+  90% {
+    opacity: 1;
+    transform: translate(0, 1px);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-20px, 2px);
+  }
+}
+@keyframes expedition-wave {
+  from {
+    transform: rotate(-15deg);
+  }
+  to {
+    transform: rotate(15deg);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .expedition-member *,
+  .expedition-homecoming,
+  .expedition-homecoming * {
+    animation: none !important;
+  }
+}
+@media (max-width: 600px) {
+  .expedition-camp {
+    top: 154px;
+    left: 12px;
+    width: min(230px, calc(100% - 24px));
+  }
+  .expedition-homecoming {
+    width: 120px;
+    bottom: 100px;
+    right: 12px;
+  }
+}
+.ocean[data-mode='build'] .expedition-camp,
+.ocean:has(.canvas-inventory:not([hidden]), .treasure-menu:not([hidden]))
+  .expedition-camp {
+  display: none;
+}

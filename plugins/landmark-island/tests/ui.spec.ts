@@ -114,7 +114,9 @@ test('demo acquisition, duplicate, placement, move, removal and persistent map',
   await page.getByRole('button', { name: 'World Map', exact: true }).click();
   await expect(page.locator('.world circle')).toHaveCount(1);
   await expect(page.locator('.world path.acquired')).toHaveCount(1);
-  await expect(page.locator('.countries')).toContainText('France 1/1');
+  await expect(page.locator('.countries')).toContainText(
+    `France 1/${landmarks.filter((entry) => entry.country === 'France').length}`,
+  );
   await page.screenshot({ path: 'test-results/landmark-island/map-demo.png' });
 });
 for (const theme of ['light', 'dark'])
@@ -187,7 +189,7 @@ test('walk, camera and weather are independent from collection ownership', async
     walker = page.getByRole('img', { name: 'Island explorer' });
   await expect(walker).toHaveAttribute('data-cell', '30');
   const buildingDepth = await page
-    .locator('[data-world-cell="31"]')
+    .locator('[data-world-cell="31"] .world-object')
     .evaluate((el) => Number(getComputedStyle(el).zIndex));
   expect(
     await walker.evaluate((el) => Number(getComputedStyle(el).zIndex)),
@@ -217,9 +219,9 @@ test('walk, camera and weather are independent from collection ownership', async
   const before = await camera.getAttribute('style');
   await ocean.scrollIntoViewIfNeeded();
   const box = (await ocean.boundingBox())!;
-  await page.mouse.move(box.x + 30, box.y + 180);
+  await page.mouse.move(box.x + 30, box.y + 300);
   await page.mouse.down();
-  await page.mouse.move(box.x + 90, box.y + 210, { steps: 8 });
+  await page.mouse.move(box.x + 90, box.y + 330, { steps: 8 });
   await page.mouse.up();
   expect(await camera.getAttribute('style')).not.toBe(before);
   await expect(ocean).toHaveAttribute('data-follow', 'false');
@@ -408,8 +410,8 @@ test('hover wheel zoom needs no focus or modifier, anchors the pointer and leave
 test('field guide describes all landmarks, including unowned ones, without changing the save', async ({
   page,
 }) => {
-  // This traverses all 100 dialogs; per-action assertion timeouts stay unchanged.
-  test.setTimeout(90_000);
+  // This traverses the complete catalog of dialogs; per-action assertion timeouts stay unchanged.
+  test.setTimeout(landmarks.length * 1000);
   await page.goto('/');
   const before = await page.evaluate(() =>
     localStorage.getItem('landmark-island-demo-v1'),
@@ -561,10 +563,10 @@ test('rarity filters, discoveries and progress distinguish unique landmarks from
   );
   const camera = await page.locator('.camera').getAttribute('style');
   for (const [tier, visible, collected, chance, rank, name] of [
-    ['common', 56, 0, 70, 1, 'Discovery'],
-    ['rare', 32, 0, 23, 2, 'Treasure'],
-    ['epic', 9, 0, 6, 3, 'Marvel'],
-    ['legendary', 3, 1, 1, 4, 'Wonder'],
+    ['common', 153, 0, 70, 1, 'Discovery'],
+    ['rare', 115, 0, 23, 2, 'Treasure'],
+    ['epic', 24, 0, 6, 3, 'Marvel'],
+    ['legendary', 8, 1, 1, 4, 'Wonder'],
   ] as const) {
     const filter = page.locator(`[data-tier-filter="${tier}"]`);
     await openInventory(page, 'landmarks');
@@ -678,7 +680,7 @@ for (const wonder of landmarks.filter((l) => l.tier === 'legendary'))
         .filter((l) => l.tier === 'legendary')
         .findIndex((l) => l.id === wonder.id) +
         0.5) /
-        3,
+        landmarks.filter((entry) => entry.tier === 'legendary').length,
     );
     await page.goto('/');
     const cardBody = page.locator(
@@ -1135,7 +1137,14 @@ test('host theme tokens update reading and controls live while preserving game a
     localStorage.getItem('landmark-island-demo-v1'),
   );
   const camera = await page.locator('.camera').getAttribute('style');
-  const art = await page.locator('.world-ground').innerHTML();
+  const terrainArt = () =>
+    page
+      .locator('.world-tile')
+      .evaluateAll((tiles) => tiles.map((tile) => tile.outerHTML));
+  const art = await terrainArt();
+  const actors = await page
+    .locator('.island-resident, .island-critter, .island-firefly')
+    .elementHandles();
   const water = await page
     .locator('.ocean')
     .evaluate((e) => getComputedStyle(e).backgroundImage);
@@ -1228,7 +1237,9 @@ test('host theme tokens update reading and controls live while preserving game a
       rgb(tokens['secondary-foreground']),
     );
     expect(await page.locator('.camera').getAttribute('style')).toBe(camera);
-    expect(await page.locator('.world-ground').innerHTML()).toBe(art);
+    expect(await terrainArt()).toEqual(art);
+    for (const actor of actors)
+      expect(await actor.evaluate((element) => element.isConnected)).toBe(true);
     expect(
       await page
         .locator('.ocean')
@@ -1608,7 +1619,7 @@ test('host backup export calls saveAs only from a fresh click and reports cancel
 test('material artwork keeps local paint references isolated across collection, copies and details', async ({
   page,
 }) => {
-  test.setTimeout(90_000);
+  test.setTimeout(240_000);
   const svgErrors: string[] = [];
   page.on('console', (message) => {
     if (
@@ -1645,7 +1656,7 @@ test('material artwork keeps local paint references isolated across collection, 
     landmarks.length,
   );
   await expect(page.locator('.building .landmark-art')).toHaveCount(2);
-  await expect(page.locator('.collection .wonder-art')).toHaveCount(3);
+  await expect(page.locator('.collection .wonder-art')).toHaveCount(8);
   for (const entry of landmarks) {
     await expect(
       page.locator(`[data-landmark="${entry.id}"] .wonder-body`),
@@ -1709,17 +1720,20 @@ test('material artwork keeps local paint references isolated across collection, 
   expect(svgErrors).toEqual([]);
   // An isolated contact sheet for reviewing the bundled artwork, not a product screen.
   await page.setViewportSize({ width: 1200, height: 420 });
-  await page.evaluate((entries) => {
-    const cards = entries
-      .map(({ id, name, country }) => {
-        const svg = document.querySelector(
-          `[data-landmark="${id}"] svg`,
-        )!.outerHTML;
-        return `<article>${svg}<strong>${name}</strong><small>${country}</small></article>`;
-      })
-      .join('');
-    document.body.innerHTML = `<main id="art-review"><h1>DEMO · 33 new destinations</h1><div>${cards}</div></main>`;
-  }, landmarks.slice(67));
+  await page.evaluate(
+    (entries) => {
+      const cards = entries
+        .map(({ id, name, country }) => {
+          const svg = document.querySelector(
+            `[data-landmark="${id}"] svg`,
+          )!.outerHTML;
+          return `<article>${svg}<strong>${name}</strong><small>${country}</small></article>`;
+        })
+        .join('');
+      document.body.innerHTML = `<main id="art-review"><h1>DEMO · 33 new destinations</h1><div>${cards}</div></main>`;
+    },
+    landmarks.slice(67, 100),
+  );
   await page.addStyleTag({
     content: `
     body { margin: 0; background: #ede9d3; color: #344b3d; }
@@ -1741,14 +1755,21 @@ test('material artwork keeps local paint references isolated across collection, 
 test('new discoveries grow land, gifts unlock sets, duplicates craft chosen decorations', async ({
   page,
 }) => {
-  await page.addInitScript(() => {
-    let roll = 0;
-    Math.random = () => {
-      const tierRoll =
-        (window as unknown as { fixtureRoll?: number }).fixtureRoll ?? 0.8;
-      return roll++ % 2 === 0 ? tierRoll : tierRoll === 0.71 ? 3.5 / 32 : 0;
-    };
-  });
+  await page.addInitScript(
+    (rareCount) => {
+      let roll = 0;
+      Math.random = () => {
+        const tierRoll =
+          (window as unknown as { fixtureRoll?: number }).fixtureRoll ?? 0.8;
+        return roll++ % 2 === 0
+          ? tierRoll
+          : tierRoll === 0.71
+            ? 3.5 / rareCount
+            : 0;
+      };
+    },
+    landmarks.filter((entry) => entry.tier === 'rare').length,
+  );
   await page.goto('/');
   await expect(page.locator('.cell')).toHaveCount(36);
   await expect(page.locator('.material-balance')).toHaveText('0 materials');
@@ -2497,9 +2518,9 @@ for (const reducedMotion of [false, true])
     await centered(30);
     await ocean.scrollIntoViewIfNeeded();
     let box = (await ocean.boundingBox())!;
-    await page.mouse.move(box.x + 30, box.y + 180);
+    await page.mouse.move(box.x + 30, box.y + 300);
     await page.mouse.down();
-    await page.mouse.move(box.x + 90, box.y + 210, { steps: 8 });
+    await page.mouse.move(box.x + 90, box.y + 330, { steps: 8 });
     await page.mouse.up();
     await expect(ocean).toHaveAttribute('data-follow', 'false');
     const pan = await camera.getAttribute('style');

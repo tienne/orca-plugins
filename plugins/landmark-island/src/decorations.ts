@@ -1,3 +1,4 @@
+import { expandedDecorations } from './expanded-decorations';
 /** Bundled, fictional garden sets inspired by each landmark's surroundings. */
 export type Decoration = {
   id: string;
@@ -798,6 +799,7 @@ export const decorations: Decoration[] = [
     color: '#719c72',
     walkable: false,
   },
+  ...expandedDecorations,
 ];
 export const decorationById = (id: string) =>
   decorations.find((d) => d.id === id);

@@ -75,7 +75,9 @@ test('modern discoveries share countries while keeping individual gifts, placeme
   for (const country of ['South Korea', 'Singapore', 'Spain']) {
     const row = page.locator('.countries > span').filter({ hasText: country });
     await expect(row).toHaveCount(1);
-    await expect(row).toHaveText(`${country} 2/2`);
+    await expect(row).toHaveText(
+      `${country} 2/${landmarks.filter((entry) => entry.country === country).length}`,
+    );
   }
   await page.getByRole('button', { name: 'My Island', exact: true }).click();
   await draw(modern[0]);
@@ -212,9 +214,14 @@ for (const [start, end, theme] of [
     for (const country of modern.map((entry) => entry.country)) {
       const row = page
         .locator('.countries')
-        .getByText(`${country} 1/1`, { exact: true });
+        .getByText(
+          `${country} 1/${landmarks.filter((entry) => entry.country === country).length}`,
+          { exact: true },
+        );
       await expect(row).toHaveCount(1);
-      await expect(row).toHaveText(`${country} 1/1`);
+      await expect(row).toHaveText(
+        `${country} 1/${landmarks.filter((entry) => entry.country === country).length}`,
+      );
     }
     await page.getByRole('button', { name: 'My Island', exact: true }).click();
     await draw(modern[0]);

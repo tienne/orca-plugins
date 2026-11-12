@@ -5,6 +5,7 @@ import { at, landTiles } from '../src/world';
 test('full collection fits the expanded island and outer placements survive moving and reload', async ({
   page,
 }) => {
+  test.setTimeout(120_000);
   const errors: string[] = [];
   page.on('pageerror', (error) => errors.push(error.message));
   const save = empty();
@@ -39,13 +40,13 @@ test('full collection fits the expanded island and outer placements survive movi
   await page.locator('#daylight').selectOption('0');
   await page.locator('#weather').selectOption('0');
   await expect(page.locator('.cell')).toHaveCount(1044);
-  await expect(page.locator('.building')).toHaveCount(100);
+  await expect(page.locator('.building')).toHaveCount(landmarks.length);
   await expect(page.locator('.land-progress')).toContainText(
     'Your whole island is open.',
   );
   await page.locator('#overview').click();
   await page.locator('.ocean').screenshot({
-    path: 'test-results/landmark-island/100-landmarks-full-island.png',
+    path: 'test-results/landmark-island/300-landmarks-full-island.png',
   });
   const camera = await page.locator('.camera').elementHandle();
   await page
@@ -68,7 +69,7 @@ test('full collection fits the expanded island and outer placements survive movi
   const stored = await page.evaluate(() =>
     JSON.parse(localStorage.getItem('landmark-island-demo-v1')!),
   );
-  expect(stored.placements).toHaveLength(100);
+  expect(stored.placements).toHaveLength(landmarks.length);
   expect(stored.placements).toContainEqual({
     landmark: 'lalibela',
     cell: destination,
@@ -99,7 +100,7 @@ test('full collection fits the expanded island and outer placements survive movi
     ),
   ).toBe(true);
   await narrow.locator('.ocean').screenshot({
-    path: 'test-results/landmark-island/100-landmarks-narrow.png',
+    path: 'test-results/landmark-island/300-landmarks-narrow.png',
   });
   await fresh.close();
   expect(errors).toEqual([]);

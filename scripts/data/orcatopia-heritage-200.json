@@ -1,0 +1,1602 @@
+[
+  {
+    "site": "80",
+    "officialName": "Mont-Saint-Michel and its Bay",
+    "country": "FR",
+    "lat": 48.63556,
+    "lon": -1.51056,
+    "region": "Europe and North America"
+  },
+  {
+    "site": "83",
+    "officialName": "Palace and Park of Versailles",
+    "country": "FR",
+    "lat": 48.805,
+    "lon": 2.119444,
+    "region": "Europe and North America"
+  },
+  {
+    "site": "81",
+    "officialName": "Chartres Cathedral",
+    "country": "FR",
+    "lat": 48.4475,
+    "lon": 1.487222,
+    "region": "Europe and North America"
+  },
+  {
+    "site": "162",
+    "officialName": "Amiens Cathedral",
+    "country": "FR",
+    "lat": 49.895,
+    "lon": 2.301667,
+    "region": "Europe and North America"
+  },
+  {
+    "site": "344",
+    "officialName": "Pont du Gard (Roman Aqueduct)",
+    "country": "FR",
+    "lat": 43.947222,
+    "lon": 4.535278,
+    "region": "Europe and North America"
+  },
+  {
+    "site": "228",
+    "officialName": "Historic Centre of Avignon: Papal Palace, Episcopal Ensemble and Avignon Bridge",
+    "country": "FR",
+    "lat": 43.952778,
+    "lon": 4.806111,
+    "region": "Europe and North America"
+  },
+  {
+    "site": "345",
+    "officialName": "Historic Fortified City of Carcassonne",
+    "country": "FR",
+    "lat": 43.207063,
+    "lon": 2.363656,
+    "region": "Europe and North America"
+  },
+  {
+    "site": "160",
+    "officialName": "Palace and Park of Fontainebleau",
+    "country": "FR",
+    "lat": 48.401944,
+    "lon": 2.698056,
+    "region": "Europe and North America"
+  },
+  {
+    "site": "1337",
+    "officialName": "Episcopal City of Albi",
+    "country": "FR",
+    "lat": 43.929167,
+    "lon": 2.144167,
+    "region": "Europe and North America"
+  },
+  {
+    "site": "601",
+    "officialName": "Cathedral of Notre-Dame, Former Abbey of Saint-Rémi and Palace of Tau, Reims",
+    "country": "FR",
+    "lat": 49.254,
+    "lon": 4.034,
+    "region": "Europe and North America"
+  },
+  {
+    "site": "164",
+    "officialName": "Arles, Roman and Romanesque Monuments",
+    "country": "FR",
+    "lat": 43.677639,
+    "lon": 4.630694,
+    "region": "Europe and North America"
+  },
+  {
+    "site": "1181",
+    "officialName": "Le Havre, the City Rebuilt by Auguste Perret",
+    "country": "FR",
+    "lat": 49.49278,
+    "lon": 0.1075,
+    "region": "Europe and North America"
+  },
+  {
+    "site": "996",
+    "officialName": "Historic Centre of Brugge",
+    "country": "BE",
+    "lat": 51.20891,
+    "lon": 3.22527,
+    "region": "Europe and North America"
+  },
+  {
+    "site": "857",
+    "officialName": "La Grand-Place, Brussels",
+    "country": "BE",
+    "lat": 50.84668,
+    "lon": 4.35242,
+    "region": "Europe and North America"
+  },
+  {
+    "site": "1009",
+    "officialName": "Notre-Dame Cathedral in Tournai",
+    "country": "BE",
+    "lat": 50.60603,
+    "lon": 3.38926,
+    "region": "Europe and North America"
+  },
+  {
+    "site": "292",
+    "officialName": "Cologne Cathedral",
+    "country": "DE",
+    "lat": 50.941111,
+    "lon": 6.957222,
+    "region": "Europe and North America"
+  },
+  {
+    "site": "3",
+    "officialName": "Aachen Cathedral",
+    "country": "DE",
+    "lat": 50.774747,
+    "lon": 6.08392,
+    "region": "Europe and North America"
+  },
+  {
+    "site": "168",
+    "officialName": "Speyer Cathedral",
+    "country": "DE",
+    "lat": 49.317222,
+    "lon": 8.442389,
+    "region": "Europe and North America"
+  },
+  {
+    "site": "897",
+    "officialName": "Wartburg Castle",
+    "country": "DE",
+    "lat": 50.966778,
+    "lon": 10.307,
+    "region": "Europe and North America"
+  },
+  {
+    "site": "624",
+    "officialName": "Town of Bamberg",
+    "country": "DE",
+    "lat": 49.891667,
+    "lon": 10.888889,
+    "region": "Europe and North America"
+  },
+  {
+    "site": "535",
+    "officialName": "Collegiate Church, Castle and Old Town of Quedlinburg",
+    "country": "DE",
+    "lat": 51.786806,
+    "lon": 11.136528,
+    "region": "Europe and North America"
+  },
+  {
+    "site": "546",
+    "officialName": "Maulbronn Monastery Complex",
+    "country": "DE",
+    "lat": 49.000997,
+    "lon": 8.806665,
+    "region": "Europe and North America"
+  },
+  {
+    "site": "687",
+    "officialName": "Völklingen Ironworks",
+    "country": "DE",
+    "lat": 49.248722,
+    "lon": 6.844222,
+    "region": "Europe and North America"
+  },
+  {
+    "site": "975",
+    "officialName": "Zollverein Coal Mine Industrial Complex in Essen",
+    "country": "DE",
+    "lat": 51.491389,
+    "lon": 7.046111,
+    "region": "Europe and North America"
+  },
+  {
+    "site": "729",
+    "officialName": "Bauhaus and its Sites in Weimar, Dessau and Bernau",
+    "country": "DE",
+    "lat": 51.665708,
+    "lon": 12.110309,
+    "region": "Europe and North America"
+  },
+  {
+    "site": "272",
+    "officialName": "Hanseatic City of Lübeck",
+    "country": "DE",
+    "lat": 53.865648,
+    "lon": 10.686481,
+    "region": "Europe and North America"
+  },
+  {
+    "site": "1726",
+    "officialName": "The Palaces of King Ludwig II of Bavaria: Neuschwanstein, Linderhof, Schachen and Herrenchiemsee",
+    "country": "DE",
+    "lat": 47.5575,
+    "lon": 10.749444,
+    "region": "Europe and North America"
+  },
+  {
+    "site": "395",
+    "officialName": "Piazza del Duomo, Pisa",
+    "country": "IT",
+    "lat": 43.723056,
+    "lon": 10.396389,
+    "region": "Europe and North America"
+  },
+  {
+    "site": "174",
+    "officialName": "Historic Centre of Florence",
+    "country": "IT",
+    "lat": 43.77306,
+    "lon": 11.25611,
+    "region": "Europe and North America"
+  },
+  {
+    "site": "394",
+    "officialName": "Venice and its Lagoon",
+    "country": "IT",
+    "lat": 45.434306,
+    "lon": 12.338944,
+    "region": "Europe and North America"
+  },
+  {
+    "site": "788",
+    "officialName": "Early Christian Monuments of Ravenna",
+    "country": "IT",
+    "lat": 44.414196,
+    "lon": 12.20465,
+    "region": "Europe and North America"
+  },
+  {
+    "site": "990",
+    "officialName": "Assisi, the Basilica of San Francesco and Other Franciscan Sites",
+    "country": "IT",
+    "lat": 43.064583,
+    "lon": 12.5975,
+    "region": "Europe and North America"
+  },
+  {
+    "site": "398",
+    "officialName": "Castel del Monte",
+    "country": "IT",
+    "lat": 41.084806,
+    "lon": 16.270944,
+    "region": "Europe and North America"
+  },
+  {
+    "site": "787",
+    "officialName": "The Trulli of Alberobello",
+    "country": "IT",
+    "lat": 40.784282,
+    "lon": 17.237938,
+    "region": "Europe and North America"
+  },
+  {
+    "site": "550",
+    "officialName": "Historic Centre of San Gimignano",
+    "country": "IT",
+    "lat": 43.46806,
+    "lon": 11.04167,
+    "region": "Europe and North America"
+  },
+  {
+    "site": "717",
+    "officialName": "Historic Centre of Siena",
+    "country": "IT",
+    "lat": 43.318611,
+    "lon": 11.331667,
+    "region": "Europe and North America"
+  },
+  {
+    "site": "842",
+    "officialName": "Cilento and Vallo di Diano National Park with the Archeological Sites of Paestum and Velia, and the Certosa di Padula",
+    "country": "IT",
+    "lat": 40.199352,
+    "lon": 15.281389,
+    "region": "Europe and North America"
+  },
+  {
+    "site": "829",
+    "officialName": "Archaeological Areas of Pompei, Herculaneum and Torre Annunziata",
+    "country": "IT",
+    "lat": 40.77716,
+    "lon": 14.416029,
+    "region": "Europe and North America"
+  },
+  {
+    "site": "670",
+    "officialName": "The Sassi and the Park of the Rupestrian Churches of Matera",
+    "country": "IT",
+    "lat": 40.666389,
+    "lon": 16.610278,
+    "region": "Europe and North America"
+  },
+  {
+    "site": "830",
+    "officialName": "Costiera Amalfitana",
+    "country": "IT",
+    "lat": 40.633333,
+    "lon": 14.602778,
+    "region": "Europe and North America"
+  },
+  {
+    "site": "549",
+    "officialName": "18th-Century Royal Palace at Caserta with the Park, the Aqueduct of Vanvitelli, and the San Leucio Complex",
+    "country": "IT",
+    "lat": 41.07333,
+    "lon": 14.32639,
+    "region": "Europe and North America"
+  },
+  {
+    "site": "1487",
+    "officialName": "Arab-Norman Palermo and the Cathedral Churches of Cefalú and Monreale",
+    "country": "IT",
+    "lat": 38.100867,
+    "lon": 13.424527,
+    "region": "Europe and North America"
+  },
+  {
+    "site": "1427",
+    "officialName": "Mount Etna",
+    "country": "IT",
+    "lat": 37.756111,
+    "lon": 14.996667,
+    "region": "Europe and North America"
+  },
+  {
+    "site": "1237",
+    "officialName": "The Dolomites",
+    "country": "IT",
+    "lat": 46.407685,
+    "lon": 11.818148,
+    "region": "Europe and North America"
+  },
+  {
+    "site": "314",
+    "officialName": "Alhambra, Generalife and Albayzín, Granada",
+    "country": "ES",
+    "lat": 37.176778,
+    "lon": -3.589917,
+    "region": "Europe and North America"
+  },
+  {
+    "site": "311",
+    "officialName": "Old Town of Segovia and its Aqueduct",
+    "country": "ES",
+    "lat": 40.948472,
+    "lon": -4.11675,
+    "region": "Europe and North America"
+  },
+  {
+    "site": "347",
+    "officialName": "Santiago de Compostela (Old Town)",
+    "country": "ES",
+    "lat": 42.870917,
+    "lon": -8.550042,
+    "region": "Europe and North America"
+  },
+  {
+    "site": "313",
+    "officialName": "Historic Centre of Cordoba",
+    "country": "ES",
+    "lat": 37.879194,
+    "lon": -4.779722,
+    "region": "Europe and North America"
+  },
+  {
+    "site": "379",
+    "officialName": "Historic City of Toledo",
+    "country": "ES",
+    "lat": 39.856944,
+    "lon": -4.024444,
+    "region": "Europe and North America"
+  },
+  {
+    "site": "348",
+    "officialName": "Old Town of Ávila with its Extra-Muros Churches",
+    "country": "ES",
+    "lat": 40.657098,
+    "lon": -4.698143,
+    "region": "Europe and North America"
+  },
+  {
+    "site": "781",
+    "officialName": "Historic Walled Town of Cuenca",
+    "country": "ES",
+    "lat": 40.07794,
+    "lon": -2.131365,
+    "region": "Europe and North America"
+  },
+  {
+    "site": "383",
+    "officialName": "Cathedral, Alcázar and Archivo de Indias in Seville",
+    "country": "ES",
+    "lat": 37.384713,
+    "lon": -5.992435,
+    "region": "Europe and North America"
+  },
+  {
+    "site": "316",
+    "officialName": "Burgos Cathedral",
+    "country": "ES",
+    "lat": 42.340733,
+    "lon": -3.704011,
+    "region": "Europe and North America"
+  },
+  {
+    "site": "664",
+    "officialName": "Archaeological Ensemble of Mérida",
+    "country": "ES",
+    "lat": 38.920458,
+    "lon": -6.330555,
+    "region": "Europe and North America"
+  },
+  {
+    "site": "803",
+    "officialName": "Las Médulas",
+    "country": "ES",
+    "lat": 42.443681,
+    "lon": -6.789611,
+    "region": "Europe and North America"
+  },
+  {
+    "site": "264",
+    "officialName": "Monastery of Batalha",
+    "country": "PT",
+    "lat": 39.65778,
+    "lon": -8.82694,
+    "region": "Europe and North America"
+  },
+  {
+    "site": "505",
+    "officialName": "Monastery of Alcobaça",
+    "country": "PT",
+    "lat": 39.55,
+    "lon": -8.97667,
+    "region": "Europe and North America"
+  },
+  {
+    "site": "723",
+    "officialName": "Cultural Landscape of Sintra",
+    "country": "PT",
+    "lat": 38.78333,
+    "lon": -9.41667,
+    "region": "Europe and North America"
+  },
+  {
+    "site": "361",
+    "officialName": "Historic Centre of Évora",
+    "country": "PT",
+    "lat": 38.57306,
+    "lon": -7.90778,
+    "region": "Europe and North America"
+  },
+  {
+    "site": "1046",
+    "officialName": "Alto Douro Wine Region",
+    "country": "PT",
+    "lat": 41.101667,
+    "lon": -7.798889,
+    "region": "Europe and North America"
+  },
+  {
+    "site": "1485",
+    "officialName": "The Forth Bridge",
+    "country": "GB",
+    "lat": 56.001111,
+    "lon": -3.388889,
+    "region": "Europe and North America"
+  },
+  {
+    "site": "488",
+    "officialName": "Tower of London",
+    "country": "GB",
+    "lat": 51.508056,
+    "lon": -0.076111,
+    "region": "Europe and North America"
+  },
+  {
+    "site": "426",
+    "officialName": "Palace of Westminster and Westminster Abbey including Saint Margaret’s Church",
+    "country": "GB",
+    "lat": 51.499,
+    "lon": -0.127,
+    "region": "Europe and North America"
+  },
+  {
+    "site": "428",
+    "officialName": "City of Bath",
+    "country": "GB",
+    "lat": 51.381306,
+    "lon": -2.359056,
+    "region": "Europe and North America"
+  },
+  {
+    "site": "370",
+    "officialName": "Durham Castle and Cathedral",
+    "country": "GB",
+    "lat": 54.774722,
+    "lon": -1.576111,
+    "region": "Europe and North America"
+  },
+  {
+    "site": "496",
+    "officialName": "Canterbury Cathedral, St Augustine's Abbey, and St Martin's Church",
+    "country": "GB",
+    "lat": 51.279019,
+    "lon": 1.088102,
+    "region": "Europe and North America"
+  },
+  {
+    "site": "425",
+    "officialName": "Blenheim Palace",
+    "country": "GB",
+    "lat": 51.841944,
+    "lon": -1.361389,
+    "region": "Europe and North America"
+  },
+  {
+    "site": "371",
+    "officialName": "Ironbridge Gorge",
+    "country": "GB",
+    "lat": 52.626389,
+    "lon": -2.472778,
+    "region": "Europe and North America"
+  },
+  {
+    "site": "369",
+    "officialName": "Giant's Causeway and Causeway Coast",
+    "country": "GB",
+    "lat": 55.240833,
+    "lon": -6.511667,
+    "region": "Europe and North America"
+  },
+  {
+    "site": "455",
+    "officialName": "Meteora",
+    "country": "GR",
+    "lat": 39.71667,
+    "lon": 21.63333,
+    "region": "Europe and North America"
+  },
+  {
+    "site": "439",
+    "officialName": "Imperial Palaces of the Ming and Qing Dynasties in Beijing and Shenyang",
+    "country": "CN",
+    "lat": 39.917118,
+    "lon": 116.397151,
+    "region": "Asia and the Pacific"
+  },
+  {
+    "site": "881",
+    "officialName": "Temple of Heaven: an Imperial Sacrificial Altar in Beijing",
+    "country": "CN",
+    "lat": 39.882167,
+    "lon": 116.406667,
+    "region": "Asia and the Pacific"
+  },
+  {
+    "site": "880",
+    "officialName": "Summer Palace, an Imperial Garden in Beijing",
+    "country": "CN",
+    "lat": 39.996944,
+    "lon": 116.268028,
+    "region": "Asia and the Pacific"
+  },
+  {
+    "site": "704",
+    "officialName": "Temple and Cemetery of Confucius and the Kong Family Mansion in Qufu",
+    "country": "CN",
+    "lat": 35.613215,
+    "lon": 116.994561,
+    "region": "Asia and the Pacific"
+  },
+  {
+    "site": "1003",
+    "officialName": "Longmen Grottoes",
+    "country": "CN",
+    "lat": 34.466667,
+    "lon": 112.466667,
+    "region": "Asia and the Pacific"
+  },
+  {
+    "site": "440",
+    "officialName": "Mogao Caves",
+    "country": "CN",
+    "lat": 40.13333,
+    "lon": 94.81667,
+    "region": "Asia and the Pacific"
+  },
+  {
+    "site": "707",
+    "officialName": "Historic Ensemble of the Potala Palace, Lhasa",
+    "country": "CN",
+    "lat": 29.652421,
+    "lon": 91.115109,
+    "region": "Asia and the Pacific"
+  },
+  {
+    "site": "637",
+    "officialName": "Jiuzhaigou Valley Scenic and Historic Interest Area",
+    "country": "CN",
+    "lat": 33.08333,
+    "lon": 103.91667,
+    "region": "Asia and the Pacific"
+  },
+  {
+    "site": "638",
+    "officialName": "Huanglong Scenic and Historic Interest Area",
+    "country": "CN",
+    "lat": 32.75417,
+    "lon": 103.82222,
+    "region": "Asia and the Pacific"
+  },
+  {
+    "site": "547",
+    "officialName": "Mount Huangshan",
+    "country": "CN",
+    "lat": 30.145333,
+    "lon": 118.155083,
+    "region": "Asia and the Pacific"
+  },
+  {
+    "site": "640",
+    "officialName": "Wulingyuan Scenic and Historic Interest Area",
+    "country": "CN",
+    "lat": 29.33333,
+    "lon": 110.5,
+    "region": "Asia and the Pacific"
+  },
+  {
+    "site": "1248",
+    "officialName": "South China Karst",
+    "country": "CN",
+    "lat": 26.638727,
+    "lon": 107.514352,
+    "region": "Asia and the Pacific"
+  },
+  {
+    "site": "703",
+    "officialName": "Mountain Resort and its Outlying Temples, Chengde",
+    "country": "CN",
+    "lat": 40.98694,
+    "lon": 117.93833,
+    "region": "Asia and the Pacific"
+  },
+  {
+    "site": "779",
+    "officialName": "Mount Emei Scenic Area, including Leshan Giant Buddha Scenic Area",
+    "country": "CN",
+    "lat": 29.544722,
+    "lon": 103.773333,
+    "region": "Asia and the Pacific"
+  },
+  {
+    "site": "1113",
+    "officialName": "Fujian Tulou",
+    "country": "CN",
+    "lat": 24.673222,
+    "lon": 117.076694,
+    "region": "Asia and the Pacific"
+  },
+  {
+    "site": "1112",
+    "officialName": "Kaiping Diaolou and Villages",
+    "country": "CN",
+    "lat": 22.318688,
+    "lon": 112.57115,
+    "region": "Asia and the Pacific"
+  },
+  {
+    "site": "1001",
+    "officialName": "Mount Qingcheng and the Dujiangyan Irrigation System",
+    "country": "CN",
+    "lat": 31.00167,
+    "lon": 103.60528,
+    "region": "Asia and the Pacific"
+  },
+  {
+    "site": "1443",
+    "officialName": "The Grand Canal",
+    "country": "CN",
+    "lat": 34.066935,
+    "lon": 117.569462,
+    "region": "Asia and the Pacific"
+  },
+  {
+    "site": "813",
+    "officialName": "Classical Gardens of Suzhou",
+    "country": "CN",
+    "lat": 31.294611,
+    "lon": 120.632417,
+    "region": "Asia and the Pacific"
+  },
+  {
+    "site": "811",
+    "officialName": "Old Town of Lijiang",
+    "country": "CN",
+    "lat": 26.911111,
+    "lon": 100.220833,
+    "region": "Asia and the Pacific"
+  },
+  {
+    "site": "734",
+    "officialName": "Historic Villages of Shirakawa-go and Gokayama",
+    "country": "JP",
+    "lat": 36.336111,
+    "lon": 136.907431,
+    "region": "Asia and the Pacific"
+  },
+  {
+    "site": "661",
+    "officialName": "Himeji-jo",
+    "country": "JP",
+    "lat": 34.833333,
+    "lon": 134.7,
+    "region": "Asia and the Pacific"
+  },
+  {
+    "site": "660",
+    "officialName": "Buddhist Monuments in the Horyu-ji Area",
+    "country": "JP",
+    "lat": 34.618639,
+    "lon": 135.740181,
+    "region": "Asia and the Pacific"
+  },
+  {
+    "site": "913",
+    "officialName": "Shrines and Temples of Nikko",
+    "country": "JP",
+    "lat": 36.7475,
+    "lon": 139.610556,
+    "region": "Asia and the Pacific"
+  },
+  {
+    "site": "776",
+    "officialName": "Itsukushima Shinto Shrine",
+    "country": "JP",
+    "lat": 34.294417,
+    "lon": 132.324639,
+    "region": "Asia and the Pacific"
+  },
+  {
+    "site": "688",
+    "officialName": "Historic Monuments of Ancient Kyoto (Kyoto, Uji and Otsu Cities)",
+    "country": "JP",
+    "lat": 35.005006,
+    "lon": 135.755168,
+    "region": "Asia and the Pacific"
+  },
+  {
+    "site": "870",
+    "officialName": "Historic Monuments of Ancient Nara",
+    "country": "JP",
+    "lat": 34.680992,
+    "lon": 135.816905,
+    "region": "Asia and the Pacific"
+  },
+  {
+    "site": "1277",
+    "officialName": "Hiraizumi – Temples, Gardens and Archaeological Sites Representing the Buddhist Pure Land",
+    "country": "JP",
+    "lat": 38.992889,
+    "lon": 141.110056,
+    "region": "Asia and the Pacific"
+  },
+  {
+    "site": "1246",
+    "officialName": "Iwami Ginzan Silver Mine and its Cultural Landscape",
+    "country": "JP",
+    "lat": 35.106349,
+    "lon": 132.406151,
+    "region": "Asia and the Pacific"
+  },
+  {
+    "site": "662",
+    "officialName": "Yakushima",
+    "country": "JP",
+    "lat": 30.315,
+    "lon": 130.508611,
+    "region": "Asia and the Pacific"
+  },
+  {
+    "site": "1193",
+    "officialName": "Shiretoko",
+    "country": "JP",
+    "lat": 43.94944,
+    "lon": 144.96583,
+    "region": "Asia and the Pacific"
+  },
+  {
+    "site": "736",
+    "officialName": "Seokguram Grotto and Bulguksa Temple",
+    "country": "KR",
+    "lat": 35.791498,
+    "lon": 129.349029,
+    "region": "Asia and the Pacific"
+  },
+  {
+    "site": "817",
+    "officialName": "Hwaseong Fortress",
+    "country": "KR",
+    "lat": 37.27222,
+    "lon": 127.00833,
+    "region": "Asia and the Pacific"
+  },
+  {
+    "site": "816",
+    "officialName": "Changdeokgung Palace Complex",
+    "country": "KR",
+    "lat": 37.578889,
+    "lon": 126.991111,
+    "region": "Asia and the Pacific"
+  },
+  {
+    "site": "737",
+    "officialName": "Haeinsa Temple Janggyeong Panjeon, the Depositories for the Tripitaka Koreana Woodblocks",
+    "country": "KR",
+    "lat": 35.801672,
+    "lon": 128.098711,
+    "region": "Asia and the Pacific"
+  },
+  {
+    "site": "738",
+    "officialName": "Jongmyo Shrine",
+    "country": "KR",
+    "lat": 37.574722,
+    "lon": 126.993611,
+    "region": "Asia and the Pacific"
+  },
+  {
+    "site": "1264",
+    "officialName": "Jeju Volcanic Island and Lava Tubes",
+    "country": "KR",
+    "lat": 33.467011,
+    "lon": 126.740916,
+    "region": "Asia and the Pacific"
+  },
+  {
+    "site": "1562",
+    "officialName": "Sansa, Buddhist Mountain Monasteries in Korea",
+    "country": "KR",
+    "lat": 35.958929,
+    "lon": 127.887063,
+    "region": "Asia and the Pacific"
+  },
+  {
+    "site": "1477",
+    "officialName": "Baekje Historic Areas",
+    "country": "KR",
+    "lat": 36.253924,
+    "lon": 127.005069,
+    "region": "Asia and the Pacific"
+  },
+  {
+    "site": "251",
+    "officialName": "Agra Fort",
+    "country": "IN",
+    "lat": 27.179806,
+    "lon": 78.021528,
+    "region": "Asia and the Pacific"
+  },
+  {
+    "site": "231",
+    "officialName": "Red Fort Complex",
+    "country": "IN",
+    "lat": 28.655556,
+    "lon": 77.240833,
+    "region": "Asia and the Pacific"
+  },
+  {
+    "site": "233",
+    "officialName": "Qutb Minar and its Monuments, Delhi",
+    "country": "IN",
+    "lat": 28.52583,
+    "lon": 77.18528,
+    "region": "Asia and the Pacific"
+  },
+  {
+    "site": "232",
+    "officialName": "Humayun's Tomb, Delhi",
+    "country": "IN",
+    "lat": 28.59333,
+    "lon": 77.25056,
+    "region": "Asia and the Pacific"
+  },
+  {
+    "site": "255",
+    "officialName": "Fatehpur Sikri",
+    "country": "IN",
+    "lat": 27.097528,
+    "lon": 77.6665,
+    "region": "Asia and the Pacific"
+  },
+  {
+    "site": "524",
+    "officialName": "Buddhist Monuments at Sanchi",
+    "country": "IN",
+    "lat": 23.47944,
+    "lon": 77.73972,
+    "region": "Asia and the Pacific"
+  },
+  {
+    "site": "242",
+    "officialName": "Ajanta Caves",
+    "country": "IN",
+    "lat": 20.553111,
+    "lon": 75.70025,
+    "region": "Asia and the Pacific"
+  },
+  {
+    "site": "243",
+    "officialName": "Ellora Caves",
+    "country": "IN",
+    "lat": 20.02639,
+    "lon": 75.17917,
+    "region": "Asia and the Pacific"
+  },
+  {
+    "site": "244",
+    "officialName": "Elephanta Caves",
+    "country": "IN",
+    "lat": 18.96667,
+    "lon": 72.93583,
+    "region": "Asia and the Pacific"
+  },
+  {
+    "site": "241",
+    "officialName": "Group of Monuments at Hampi",
+    "country": "IN",
+    "lat": 15.31444,
+    "lon": 76.47167,
+    "region": "Asia and the Pacific"
+  },
+  {
+    "site": "246",
+    "officialName": "Sun Temple, Konârak",
+    "country": "IN",
+    "lat": 19.8875,
+    "lon": 86.09472,
+    "region": "Asia and the Pacific"
+  },
+  {
+    "site": "249",
+    "officialName": "Group of Monuments at Mahabalipuram",
+    "country": "IN",
+    "lat": 12.621381,
+    "lon": 80.193785,
+    "region": "Asia and the Pacific"
+  },
+  {
+    "site": "240",
+    "officialName": "Khajuraho Group of Monuments",
+    "country": "IN",
+    "lat": 24.847193,
+    "lon": 79.930503,
+    "region": "Asia and the Pacific"
+  },
+  {
+    "site": "250",
+    "officialName": "Great Living Chola Temples",
+    "country": "IN",
+    "lat": 10.979518,
+    "lon": 79.312555,
+    "region": "Asia and the Pacific"
+  },
+  {
+    "site": "1605",
+    "officialName": "Jaipur City, Rajasthan",
+    "country": "IN",
+    "lat": 26.924278,
+    "lon": 75.821861,
+    "region": "Asia and the Pacific"
+  },
+  {
+    "site": "1338",
+    "officialName": "The Jantar Mantar, Jaipur",
+    "country": "IN",
+    "lat": 26.924722,
+    "lon": 75.825,
+    "region": "Asia and the Pacific"
+  },
+  {
+    "site": "922",
+    "officialName": "Rani-ki-Vav (the Queen’s Stepwell) at Patan, Gujarat",
+    "country": "IN",
+    "lat": 23.858889,
+    "lon": 72.101667,
+    "region": "Asia and the Pacific"
+  },
+  {
+    "site": "1645",
+    "officialName": "Dholavira: a Harappan City",
+    "country": "IN",
+    "lat": 23.888408,
+    "lon": 70.213303,
+    "region": "Asia and the Pacific"
+  },
+  {
+    "site": "1056",
+    "officialName": "Mahabodhi Temple Complex at Bodh Gaya",
+    "country": "IN",
+    "lat": 24.69528,
+    "lon": 84.99389,
+    "region": "Asia and the Pacific"
+  },
+  {
+    "site": "337",
+    "officialName": "Kaziranga National Park",
+    "country": "IN",
+    "lat": 26.666667,
+    "lon": 93.416667,
+    "region": "Asia and the Pacific"
+  },
+  {
+    "site": "798",
+    "officialName": "The Sundarbans",
+    "country": "BD",
+    "lat": 21.839118,
+    "lon": 89.472283,
+    "region": "Asia and the Pacific"
+  },
+  {
+    "site": "1588",
+    "officialName": "Bagan",
+    "country": "MM",
+    "lat": 21.142753,
+    "lon": 94.90038,
+    "region": "Asia and the Pacific"
+  },
+  {
+    "site": "576",
+    "officialName": "Historic City of Ayutthaya",
+    "country": "TH",
+    "lat": 14.34778,
+    "lon": 100.56056,
+    "region": "Asia and the Pacific"
+  },
+  {
+    "site": "574",
+    "officialName": "Historic Town of Sukhothai and Associated Historic Towns",
+    "country": "TH",
+    "lat": 16.980029,
+    "lon": 99.667878,
+    "region": "Asia and the Pacific"
+  },
+  {
+    "site": "481",
+    "officialName": "Vat Phou and Associated Ancient Settlements within the Champasak Cultural Landscape",
+    "country": "LA",
+    "lat": 14.848333,
+    "lon": 105.822222,
+    "region": "Asia and the Pacific"
+  },
+  {
+    "site": "1587",
+    "officialName": "Megalithic Jar Sites in Xiengkhuang – Plain of Jars",
+    "country": "LA",
+    "lat": 19.419223,
+    "lon": 103.227518,
+    "region": "Asia and the Pacific"
+  },
+  {
+    "site": "114",
+    "officialName": "Persepolis",
+    "country": "IR",
+    "lat": 29.93444,
+    "lon": 52.89028,
+    "region": "Asia and the Pacific"
+  },
+  {
+    "site": "75",
+    "officialName": "Grand Canyon National Park",
+    "country": "US",
+    "lat": 36.100833,
+    "lon": -112.090556,
+    "region": "Europe and North America"
+  },
+  {
+    "site": "28",
+    "officialName": "Yellowstone National Park",
+    "country": "US",
+    "lat": 44.46056,
+    "lon": -110.82778,
+    "region": "Europe and North America"
+  },
+  {
+    "site": "308",
+    "officialName": "Yosemite National Park",
+    "country": "US",
+    "lat": 37.746111,
+    "lon": -119.596667,
+    "region": "Europe and North America"
+  },
+  {
+    "site": "76",
+    "officialName": "Everglades National Park",
+    "country": "US",
+    "lat": 25.554444,
+    "lon": -80.996389,
+    "region": "Europe and North America"
+  },
+  {
+    "site": "150",
+    "officialName": "Mammoth Cave National Park",
+    "country": "US",
+    "lat": 37.187222,
+    "lon": -86.103056,
+    "region": "Europe and North America"
+  },
+  {
+    "site": "721",
+    "officialName": "Carlsbad Caverns National Park",
+    "country": "US",
+    "lat": 32.137471,
+    "lon": -104.538096,
+    "region": "Europe and North America"
+  },
+  {
+    "site": "27",
+    "officialName": "Mesa Verde National Park",
+    "country": "US",
+    "lat": 37.261667,
+    "lon": -108.485556,
+    "region": "Europe and North America"
+  },
+  {
+    "site": "492",
+    "officialName": "Taos Pueblo",
+    "country": "US",
+    "lat": 36.438,
+    "lon": -105.546,
+    "region": "Europe and North America"
+  },
+  {
+    "site": "353",
+    "officialName": "Chaco Culture",
+    "country": "US",
+    "lat": 36.054239,
+    "lon": -107.956428,
+    "region": "Europe and North America"
+  },
+  {
+    "site": "1466",
+    "officialName": "San Antonio Missions",
+    "country": "US",
+    "lat": 29.322222,
+    "lon": -98.423472,
+    "region": "Europe and North America"
+  },
+  {
+    "site": "1326",
+    "officialName": "Papahānaumokuākea",
+    "country": "US",
+    "lat": 25.34907,
+    "lon": -170.14582,
+    "region": "Europe and North America"
+  },
+  {
+    "site": "304",
+    "officialName": "Canadian Rocky Mountain Parks",
+    "country": "CA",
+    "lat": 51.424722,
+    "lon": -116.479722,
+    "region": "Europe and North America"
+  },
+  {
+    "site": "71",
+    "officialName": "Dinosaur Provincial Park",
+    "country": "CA",
+    "lat": 50.767778,
+    "lon": -111.492222,
+    "region": "Europe and North America"
+  },
+  {
+    "site": "741",
+    "officialName": "Old Town Lunenburg",
+    "country": "CA",
+    "lat": 44.376111,
+    "lon": -64.309167,
+    "region": "Europe and North America"
+  },
+  {
+    "site": "419",
+    "officialName": "Gros Morne National Park",
+    "country": "CA",
+    "lat": 49.6125,
+    "lon": -57.531389,
+    "region": "Europe and North America"
+  },
+  {
+    "site": "24",
+    "officialName": "Nahanni National Park",
+    "country": "CA",
+    "lat": 61.547222,
+    "lon": -125.589444,
+    "region": "Europe and North America"
+  },
+  {
+    "site": "414",
+    "officialName": "Pre-Hispanic City of Teotihuacan",
+    "country": "MX",
+    "lat": 19.69167,
+    "lon": -98.84167,
+    "region": "Latin America and the Caribbean"
+  },
+  {
+    "site": "411",
+    "officialName": "Pre-Hispanic City and National Park of Palenque",
+    "country": "MX",
+    "lat": 17.48333,
+    "lon": -92.05,
+    "region": "Latin America and the Caribbean"
+  },
+  {
+    "site": "791",
+    "officialName": "Pre-Hispanic Town of Uxmal",
+    "country": "MX",
+    "lat": 20.240072,
+    "lon": -89.66202,
+    "region": "Latin America and the Caribbean"
+  },
+  {
+    "site": "415",
+    "officialName": "Historic Centre of Oaxaca and Archaeological Site of Monte Albán",
+    "country": "MX",
+    "lat": 17.054134,
+    "lon": -96.7449,
+    "region": "Latin America and the Caribbean"
+  },
+  {
+    "site": "482",
+    "officialName": "Historic Town of Guanajuato and Adjacent Mines",
+    "country": "MX",
+    "lat": 21.01694,
+    "lon": -101.25556,
+    "region": "Latin America and the Caribbean"
+  },
+  {
+    "site": "585",
+    "officialName": "Historic Centre of Morelia",
+    "country": "MX",
+    "lat": 19.700927,
+    "lon": -101.190376,
+    "region": "Latin America and the Caribbean"
+  },
+  {
+    "site": "895",
+    "officialName": "Historic Fortified Town of Campeche",
+    "country": "MX",
+    "lat": 19.84639,
+    "lon": -90.53722,
+    "region": "Latin America and the Caribbean"
+  },
+  {
+    "site": "1061",
+    "officialName": "Ancient Maya City and Protected Tropical Forests of Calakmul, Campeche",
+    "country": "MX",
+    "lat": 18.053028,
+    "lon": -89.737283,
+    "region": "Latin America and the Caribbean"
+  },
+  {
+    "site": "303",
+    "officialName": "Iguazu National Park",
+    "country": "AR",
+    "lat": -25.577357,
+    "lon": -54.286073,
+    "region": "Latin America and the Caribbean"
+  },
+  {
+    "site": "445",
+    "officialName": "Brasilia",
+    "country": "BR",
+    "lat": -15.78333,
+    "lon": -47.9,
+    "region": "Latin America and the Caribbean"
+  },
+  {
+    "site": "124",
+    "officialName": "Historic Town of Ouro Preto",
+    "country": "BR",
+    "lat": -20.388889,
+    "lon": -43.505556,
+    "region": "Latin America and the Caribbean"
+  },
+  {
+    "site": "309",
+    "officialName": "Historic Centre of Salvador de Bahia",
+    "country": "BR",
+    "lat": -12.972917,
+    "lon": -38.512981,
+    "region": "Latin America and the Caribbean"
+  },
+  {
+    "site": "998",
+    "officialName": "Central Amazon Conservation Complex",
+    "country": "BR",
+    "lat": -2.28817,
+    "lon": -62.068366,
+    "region": "Latin America and the Caribbean"
+  },
+  {
+    "site": "145",
+    "officialName": "Los Glaciares National Park",
+    "country": "AR",
+    "lat": -50.0,
+    "lon": -73.24944,
+    "region": "Latin America and the Caribbean"
+  },
+  {
+    "site": "1116",
+    "officialName": "Quebrada de Humahuaca",
+    "country": "AR",
+    "lat": -23.199861,
+    "lon": -65.348861,
+    "region": "Latin America and the Caribbean"
+  },
+  {
+    "site": "700",
+    "officialName": "Lines and Geoglyphs of Nasca and Palpa",
+    "country": "PE",
+    "lat": -14.72583,
+    "lon": -75.14861,
+    "region": "Latin America and the Caribbean"
+  },
+  {
+    "site": "366",
+    "officialName": "Chan Chan Archaeological Zone",
+    "country": "PE",
+    "lat": -8.107836,
+    "lon": -79.074737,
+    "region": "Latin America and the Caribbean"
+  },
+  {
+    "site": "959",
+    "officialName": "Historic Quarter of the Seaport City of Valparaíso",
+    "country": "CL",
+    "lat": -33.040639,
+    "lon": -71.628,
+    "region": "Latin America and the Caribbean"
+  },
+  {
+    "site": "971",
+    "officialName": "Churches of Chiloé",
+    "country": "CL",
+    "lat": -42.502479,
+    "lon": -73.578385,
+    "region": "Latin America and the Caribbean"
+  },
+  {
+    "site": "88",
+    "officialName": "Nubian Monuments from Abu Simbel to Philae",
+    "country": "EG",
+    "lat": 22.337222,
+    "lon": 31.625806,
+    "region": "Arab States"
+  },
+  {
+    "site": "87",
+    "officialName": "Ancient Thebes with its Necropolis",
+    "country": "EG",
+    "lat": 25.716731,
+    "lon": 32.631102,
+    "region": "Arab States"
+  },
+  {
+    "site": "89",
+    "officialName": "Historic Cairo",
+    "country": "EG",
+    "lat": 30.026056,
+    "lon": 31.257617,
+    "region": "Arab States"
+  },
+  {
+    "site": "37",
+    "officialName": "Archaeological Site of Carthage",
+    "country": "TN",
+    "lat": 36.851658,
+    "lon": 10.328122,
+    "region": "Arab States"
+  },
+  {
+    "site": "499",
+    "officialName": "Kairouan",
+    "country": "TN",
+    "lat": 35.683444,
+    "lon": 10.095799,
+    "region": "Arab States"
+  },
+  {
+    "site": "794",
+    "officialName": "Dougga / Thugga",
+    "country": "TN",
+    "lat": 36.42361,
+    "lon": 9.22028,
+    "region": "Arab States"
+  },
+  {
+    "site": "836",
+    "officialName": "Archaeological Site of Volubilis",
+    "country": "MA",
+    "lat": 34.07389,
+    "lon": -5.55694,
+    "region": "Arab States"
+  },
+  {
+    "site": "170",
+    "officialName": "Medina of Fez",
+    "country": "MA",
+    "lat": 34.058847,
+    "lon": -4.981486,
+    "region": "Arab States"
+  },
+  {
+    "site": "331",
+    "officialName": "Medina of Marrakesh",
+    "country": "MA",
+    "lat": 31.622639,
+    "lon": -8.004444,
+    "region": "Arab States"
+  },
+  {
+    "site": "753",
+    "officialName": "Medina of Essaouira (formerly Mogador)",
+    "country": "MA",
+    "lat": 31.504903,
+    "lon": -9.778486,
+    "region": "Arab States"
+  },
+  {
+    "site": "15",
+    "officialName": "Aksum",
+    "country": "ET",
+    "lat": 14.13019,
+    "lon": 38.71861,
+    "region": "Africa"
+  },
+  {
+    "site": "9",
+    "officialName": "Simien National Park",
+    "country": "ET",
+    "lat": 13.183333,
+    "lon": 38.066667,
+    "region": "Africa"
+  },
+  {
+    "site": "1333",
+    "officialName": "Konso Cultural Landscape",
+    "country": "ET",
+    "lat": 5.3,
+    "lon": 37.4,
+    "region": "Africa"
+  },
+  {
+    "site": "509",
+    "officialName": "Mosi-oa-Tunya / Victoria Falls",
+    "country": "ZM",
+    "lat": -17.92453,
+    "lon": 25.85539,
+    "region": "Africa"
+  },
+  {
+    "site": "1432",
+    "officialName": "Okavango Delta",
+    "country": "BW",
+    "lat": -19.283333,
+    "lon": 22.9,
+    "region": "Africa"
+  },
+  {
+    "site": "156",
+    "officialName": "Serengeti National Park",
+    "country": "TZ",
+    "lat": -2.74,
+    "lon": 34.859,
+    "region": "Africa"
+  },
+  {
+    "site": "39",
+    "officialName": "Ngorongoro Conservation Area",
+    "country": "TZ",
+    "lat": -3.18722,
+    "lon": 35.54083,
+    "region": "Africa"
+  },
+  {
+    "site": "173",
+    "officialName": "Stone Town of Zanzibar",
+    "country": "TZ",
+    "lat": -6.16306,
+    "lon": 39.18917,
+    "region": "Africa"
+  },
+  {
+    "site": "916",
+    "officialName": "Robben Island",
+    "country": "ZA",
+    "lat": -33.8,
+    "lon": 18.366667,
+    "region": "Africa"
+  },
+  {
+    "site": "1021",
+    "officialName": "Tsodilo",
+    "country": "BW",
+    "lat": -18.75,
+    "lon": 21.733333,
+    "region": "Africa"
+  },
+  {
+    "site": "276",
+    "officialName": "Samarra Archaeological City",
+    "country": "IQ",
+    "lat": 34.233214,
+    "lon": 43.838049,
+    "region": "Arab States"
+  },
+  {
+    "site": "277",
+    "officialName": "Hatra",
+    "country": "IQ",
+    "lat": 35.58806,
+    "lon": 42.71833,
+    "region": "Arab States"
+  },
+  {
+    "site": "278",
+    "officialName": "Babylon",
+    "country": "IQ",
+    "lat": 32.541969,
+    "lon": 44.420833,
+    "region": "Arab States"
+  },
+  {
+    "site": "113",
+    "officialName": "Tchogha Zanbil",
+    "country": "IR",
+    "lat": 32.00857,
+    "lon": 48.522118,
+    "region": "Asia and the Pacific"
+  },
+  {
+    "site": "115",
+    "officialName": "Meidan Emam, Esfahan",
+    "country": "IR",
+    "lat": 32.65745,
+    "lon": 51.677778,
+    "region": "Asia and the Pacific"
+  },
+  {
+    "site": "1106",
+    "officialName": "Pasargadae",
+    "country": "IR",
+    "lat": 30.19383,
+    "lon": 53.16729,
+    "region": "Asia and the Pacific"
+  },
+  {
+    "site": "1544",
+    "officialName": "Historic City of Yazd",
+    "country": "IR",
+    "lat": 31.896111,
+    "lon": 54.364537,
+    "region": "Asia and the Pacific"
+  },
+  {
+    "site": "1018",
+    "officialName": "Ephesus",
+    "country": "TR",
+    "lat": 37.941389,
+    "lon": 27.340556,
+    "region": "Europe and North America"
+  },
+  {
+    "site": "1572",
+    "officialName": "Göbekli Tepe",
+    "country": "TR",
+    "lat": 37.223242,
+    "lon": 38.922364,
+    "region": "Europe and North America"
+  }
+]
