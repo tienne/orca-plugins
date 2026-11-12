@@ -1,3 +1,4 @@
+import { landmarkById } from './landmark-variants';
 import { art } from './art';
 import {
   project,
@@ -55,7 +56,7 @@ export function terrain(state: State, selectedCell?: number) {
       const p = project(t.id),
         id = placements.get(t.id),
         ornament = decor.get(t.id),
-        landmark = landmarks.find((l) => l.id === id),
+        landmark = id ? landmarkById(id) : undefined,
         fill = floor
           ? decorationById(floor)!.color
           : colors[t.kind][

@@ -1,4 +1,10 @@
 import landmarks from './landmarks.json';
+import {
+  landmarkById,
+  baseId,
+  enhancedId,
+  isEnhanced,
+} from './landmark-variants';
 import { isLand, expansionLevel, landAtLevel, MAX_LAND_LEVEL } from './world';
 import {
   decorationById,
@@ -12,7 +18,8 @@ export type Placement = { landmark: string; cell: number; rotation?: number };
 export type Receipt = { workspaceId: string; landmark: string; at: string };
 export type Ticket = { workspaceId: string; at: string };
 export type State = {
-  version: 5;
+  version: 6;
+  fusions: { id: string; landmark: string; at: string }[];
   floors: { decoration: string; cell: number }[];
   landFloor: number;
   crafts: { id: string; decoration: string }[];
@@ -22,7 +29,8 @@ export type State = {
   placements: Placement[];
 };
 export const empty = (): State => ({
-  version: 5,
+  version: 6,
+  fusions: [],
   floors: [],
   landFloor: 0,
   crafts: [],
@@ -32,7 +40,15 @@ export const empty = (): State => ({
   placements: [],
 });
 export function quantity(s: State, id: string) {
-  return s.receipts.filter((r) => r.landmark === id).length;
+  const fused = s.fusions.filter((f) => f.landmark === baseId(id)).length;
+  return isEnhanced(id)
+    ? fused
+    : s.receipts.filter((r) => r.landmark === id).length - fused * 2;
+}
+export function discovered(s: State, id: string) {
+  return isEnhanced(id)
+    ? s.fusions.some((f) => enhancedId(f.landmark) === id)
+    : s.receipts.some((r) => r.landmark === id);
 }
 export function islandLevel(s: State) {
   return Math.max(s.landFloor, new Set(s.receipts.map((r) => r.landmark)).size);
@@ -57,7 +73,7 @@ export function decorationQuantity(s: State, id: string) {
   if (!d) return 0;
   if (!d.landmark) return Infinity;
   return (
-    (d.gift && quantity(s, d.landmark) > 0 ? 1 : 0) +
+    (d.gift && discovered(s, d.landmark) ? 1 : 0) +
     s.crafts.filter((c) => c.decoration === id).length
   );
 }
@@ -75,7 +91,8 @@ export function validate(value: unknown): State {
       version !== 2 &&
       version !== 3 &&
       version !== 4 &&
-      version !== 5) ||
+      version !== 5 &&
+      version !== 6) ||
     !Array.isArray(s.receipts) ||
     !Array.isArray(s.placements)
   )
@@ -97,18 +114,40 @@ export function validate(value: unknown): State {
     ids.add(r.workspaceId);
     owned.set(r.landmark, (owned.get(r.landmark) ?? 0) + 1);
   }
+  const fusions = version === 6 ? s.fusions : [];
+  if (!Array.isArray(fusions)) throw Error('Invalid fusion ledger');
+  const fusionIds = new Set<string>();
+  const fusedCounts = new Map<string, number>();
+  for (const f of fusions) {
+    if (
+      !f ||
+      typeof f.id !== 'string' ||
+      !f.id ||
+      f.id.length > 128 ||
+      fusionIds.has(f.id) ||
+      !landmarks.some((l) => l.id === f.landmark) ||
+      typeof f.at !== 'string' ||
+      !Number.isFinite(Date.parse(f.at))
+    )
+      throw Error('Invalid fusion ledger');
+    fusionIds.add(f.id);
+    fusedCounts.set(f.landmark, (fusedCounts.get(f.landmark) ?? 0) + 1);
+    if (fusedCounts.get(f.landmark)! * 2 > (owned.get(f.landmark) ?? 0))
+      throw Error('Fusion exceeds ownership');
+  }
+  const inventory: State = { ...s, fusions };
   for (const p of s.placements) {
     if (
       !p ||
       !isLand(p.cell) ||
       cells.has(p.cell) ||
-      !landmarks.some((l) => l.id === p.landmark) ||
+      !landmarkById(p.landmark) ||
       (p.rotation !== undefined && p.rotation !== 0 && p.rotation !== 1)
     )
       throw Error('Invalid placement');
     cells.add(p.cell);
     placed.set(p.landmark, (placed.get(p.landmark) ?? 0) + 1);
-    if (placed.get(p.landmark)! > (owned.get(p.landmark) ?? 0))
+    if (placed.get(p.landmark)! > quantity(inventory, p.landmark))
       throw Error('Placement exceeds ownership');
   }
   // Legacy rewards are already redeemed tickets, never new free draws.
@@ -133,23 +172,27 @@ export function validate(value: unknown): State {
   if (s.receipts.some((r) => !earned.has(r.workspaceId)))
     throw Error('Reward has no matching ticket');
   const landFloor =
-    version === 3 || version === 4 || version === 5
+    version === 3 || version === 4 || version === 5 || version === 6
       ? s.landFloor
       : Math.max(
           0,
           ...s.placements.map((p) => expansionLevel.get(p.cell) ?? 0),
         );
   const crafts =
-    version === 3 || version === 4 || version === 5 ? s.crafts : [];
+    version === 3 || version === 4 || version === 5 || version === 6
+      ? s.crafts
+      : [];
   const oldDecor =
-    version === 3 || version === 4 || version === 5 ? s.decorations : [];
+    version === 3 || version === 4 || version === 5 || version === 6
+      ? s.decorations
+      : [];
   if (!Array.isArray(oldDecor)) throw Error('Invalid decoration placements');
   const floors =
-    version === 4 || version === 5
+    version === 4 || version === 5 || version === 6
       ? s.floors
       : oldDecor.filter((p) => p && isFloor(p.decoration));
   const decor =
-    version === 4 || version === 5
+    version === 4 || version === 5 || version === 6
       ? oldDecor
       : oldDecor.filter((p) => !p || !isFloor(p.decoration));
   if (
@@ -166,7 +209,7 @@ export function validate(value: unknown): State {
     const d = c && decorationById(c.decoration);
     if (
       !d?.landmark ||
-      !owned.has(d.landmark) ||
+      !discovered(inventory, d.landmark) ||
       typeof c.id !== 'string' ||
       !c.id ||
       c.id.length > 128 ||
@@ -175,7 +218,14 @@ export function validate(value: unknown): State {
       throw Error('Invalid crafting ledger');
     craftIds.add(c.id);
   }
-  const next: State = { ...s, landFloor, crafts, decorations: decor, floors };
+  const next: State = {
+    ...s,
+    fusions,
+    landFloor,
+    crafts,
+    decorations: decor,
+    floors,
+  };
   if (materials(next) < 0) throw Error('Not enough materials');
   for (const p of s.placements)
     if (!unlockedCell(next, p.cell)) throw Error('Land is not unlocked');
@@ -211,7 +261,8 @@ export function validate(value: unknown): State {
     floorCells.add(p.cell);
   }
   return structuredClone({
-    version: 5,
+    version: 6,
+    fusions: fusions.map(({ id, landmark, at }) => ({ id, landmark, at })),
     floors: floors.map(({ decoration, cell }) => ({ decoration, cell })),
     landFloor,
     crafts: crafts.map(({ id, decoration }) => ({ id, decoration })),
@@ -414,6 +465,41 @@ export class Game {
       // One durable write: a failed save cannot consume only part of the batch.
       await this.store.write(s);
       return s;
+    });
+  }
+  fuse(input: unknown) {
+    return this.queue(async (s) => {
+      const p = input as { id?: unknown; landmark?: unknown } | null;
+      if (
+        typeof p?.id !== 'string' ||
+        !p.id ||
+        p.id.length > 128 ||
+        typeof p.landmark !== 'string' ||
+        isEnhanced(p.landmark) ||
+        !landmarkById(p.landmark)
+      )
+        throw Error('Choose a normal landmark and a valid fusion request.');
+      const prior = s.fusions.find((f) => f.id === p.id);
+      if (prior) {
+        if (prior.landmark !== p.landmark)
+          throw Error('Fusion request was already used.');
+        return s;
+      }
+      const placed = s.placements.filter(
+        (item) => item.landmark === p.landmark,
+      ).length;
+      if (quantity(s, p.landmark) - placed < 2)
+        throw Error(
+          'Fusion needs two unplaced normal copies. Return placed copies first.',
+        );
+      s.fusions.push({
+        id: p.id,
+        landmark: p.landmark,
+        at: new Date().toISOString(),
+      });
+      const next = validate(s);
+      await this.store.write(next);
+      return next;
     });
   }
   craft(input: unknown) {

@@ -3294,10 +3294,16 @@ for (const theme of ['light', 'dark'])
     );
     await openInventory(page, 'decorations');
     await page.locator('#inventory-search').fill('Qatar');
-    await expect(page.locator('.decoration-card:visible')).toHaveCount(2);
-    await expect(page.locator('#inventory-results')).toHaveText('2개 항목');
+    await expect(page.locator('.decoration-card:visible')).toHaveCount(3);
+    await expect(page.locator('#inventory-results')).toHaveText('3개 항목');
     await expect(
       page.locator('.decoration-card:visible button[data-decor-place]').first(),
+    ).toBeDisabled();
+    await expect(
+      page.locator('[data-decor-card="nmoq-plus-star"]'),
+    ).toBeVisible();
+    await expect(
+      page.locator('[data-decor-card="nmoq-plus-star"] [data-craft]'),
     ).toBeDisabled();
     const finder = page.locator('.inventory-finder');
     expect(

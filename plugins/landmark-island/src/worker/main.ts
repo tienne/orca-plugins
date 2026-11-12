@@ -85,6 +85,11 @@ export default function activate(orca: Worker) {
     await notify();
     return state;
   });
+  orca.panels.handle('island.fuse', async (input) => {
+    const state = await game.fuse(input);
+    await notify();
+    return state;
+  });
   orca.panels.handle('island.craft', async (input) => {
     const state = await game.craft(input);
     await notify();

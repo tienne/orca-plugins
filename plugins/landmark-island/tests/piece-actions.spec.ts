@@ -55,7 +55,7 @@ for (const [width, language] of [
     await expect(
       page.locator('[data-world-cell="0"] .building'),
     ).toHaveAttribute('data-rotation', '1');
-    expect((await saved()).version).toBe(5);
+    expect((await saved()).version).toBe(6);
     await page.locator('#rotate-left').click();
     await expect(
       page.locator('[data-world-cell="0"] .building'),

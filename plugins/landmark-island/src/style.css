@@ -291,3 +291,72 @@ footer {
     font-size: 19px;
   }
 }
+
+.variant-details {
+  border-top: 1px solid var(--orca-border, var(--line, #b99554));
+  padding-top: 12px;
+}
+.variant-details > div,
+.variant-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.fusion-confirm {
+  max-width: min(540px, 90vw);
+  max-height: 85vh;
+  overflow: auto;
+  border: 2px solid var(--orca-border, var(--line, #b99554));
+  border-radius: var(--orca-radius, 18px);
+  padding: 24px;
+  background: var(--orca-popover, var(--panel, #fff6df));
+  color: var(--orca-popover-foreground, var(--ink, #413d30));
+}
+.fusion-confirm::backdrop {
+  background: #0008;
+}
+.fusion-preview {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.fusion-preview svg {
+  width: 36%;
+  height: 150px;
+}
+.enhanced-art {
+  filter: drop-shadow(0 0 5px #f4cd7080);
+}
+.enhanced-aura {
+  transform-origin: 64px 111px;
+  animation: enhanced-shimmer 3s ease-in-out infinite;
+}
+@keyframes enhanced-shimmer {
+  50% {
+    opacity: 0.55;
+    transform: scale(1.05);
+  }
+}
+.fusion-reveal {
+  border-color: var(--orca-border, #f4cd70);
+  box-shadow: 0 0 45px var(--orca-primary, #f4cd7070);
+}
+.fusion-reveal .discovery-halo {
+  filter: saturate(1.5);
+}
+.fusion-reveal .enhanced-art {
+  filter: drop-shadow(0 0 14px #f4cd70);
+}
+@media (prefers-reduced-motion: reduce) {
+  .enhanced-aura {
+    animation: none;
+  }
+}
+
+.fusion-confirm .fusion-error[role='alert'] {
+  color: var(--orca-destructive, #a33d35);
+}
+
+html.dark .fusion-confirm .fusion-error[role='alert'] {
+  color: var(--orca-destructive, #ffc1a3);
+}

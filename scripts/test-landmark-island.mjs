@@ -1,3 +1,4 @@
+import { testFusion } from './test-landmark-fusion.mjs';
 import { build } from 'esbuild';
 import { mkdtemp, readFile, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
@@ -75,6 +76,17 @@ try {
   const { decorations } = await import(
     pathToFileURL(join(dir, 'decorations.mjs'))
   );
+  await testFusion({
+    Game,
+    empty,
+    quantity: (await import(pathToFileURL(join(dir, 'game.mjs')))).quantity,
+    validate,
+    materials,
+    decorationQuantity,
+    encodeBackup,
+    decodeBackup,
+    landmarks,
+  });
   assert.equal(landmarks.length, 300);
   assert.equal(
     createHash('sha256')
@@ -84,7 +96,7 @@ try {
   );
   assert.equal(new Set(landmarks.map((l) => l.id)).size, 300);
   assert.equal(new Set(landmarks.map((l) => l.code)).size, 101);
-  assert.equal(decorations.length, 608);
+  assert.equal(decorations.length, 908);
   for (const code of ['KOR', 'SGP', 'ESP']) {
     const entries = landmarks.filter((l) => l.code === code);
     assert.ok(entries.length >= 2);
@@ -391,7 +403,7 @@ try {
       landmark: 'eiffel',
     })),
   });
-  assert.equal(oldSave.version, 5);
+  assert.equal(oldSave.version, 6);
   assert.equal(availableTickets(oldSave).length, 0);
   assert.equal(oldSave.placements.length, 36);
   let legacy = {
@@ -408,7 +420,7 @@ try {
   await legacyGame.acquire({ workspaceId: 'w0', kind: 'worktree' });
   assert.equal(legacy.version, 1); // reads / duplicate delivery do not rewrite saves
   await legacyGame.acquire({ workspaceId: 'new-worktree', kind: 'worktree' });
-  assert.equal(legacy.version, 5);
+  assert.equal(legacy.version, 6);
   assert.equal(availableTickets(legacy).length, 1);
   assert.deepEqual(legacy.receipts, value.receipts);
   assert.deepEqual(legacy.placements, value.placements);
@@ -667,6 +679,7 @@ try {
     'island.restore',
     'island.draw',
     'island.drawMany',
+    'island.fuse',
     'island.craft',
     'island.layout',
     'island.paint',
@@ -810,7 +823,7 @@ try {
   for (const landmark of landmarks)
     assert.equal(decorationQuantity(fullCatalog, `${landmark.id}-gift`), 1);
   console.log(
-    'PASS: all 300 catalog draws across 101 countries, 608 decorations, localized descriptions, full-catalog backup and preserved legacy land',
+    'PASS: all 300 catalog draws across 101 countries, 908 decorations, localized descriptions, full-catalog backup and preserved legacy land',
   );
 
   // The four focal pieces use the same ownership and durable craft ledger.
@@ -1085,7 +1098,7 @@ try {
   const migratedV3 = validate(oldV3);
   assert.deepEqual(migratedV3.floors, [{ cell: 0, decoration: 'path' }]);
   assert.deepEqual(migratedV3.decorations, []);
-  assert.equal(migratedV3.version, 5);
+  assert.equal(migratedV3.version, 6);
   assert.throws(() =>
     validate({ ...garden, floors: [{ cell: 0, decoration: 'oak' }] }),
   );
