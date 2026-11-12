@@ -2,7 +2,7 @@
   "manifestVersion": 2,
   "id": "landmark-island",
   "name": "Orcatopia",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Turn waiting time into a little island getaway. Earn tickets from new worktrees, discover world landmarks, and make the island your own.",
   "engines": {
     "orca": ">=1.4.248"
