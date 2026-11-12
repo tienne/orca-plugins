@@ -6,6 +6,8 @@ Status: internal allocation policy, revision 2, 2026-11-07. The user authorized 
 
 Catalog update (2026-11-08): the allocation above describes the original 36 entries. The expanded catalog now has 100 entries at 56/32/9/3; the [latest expansion research record](landmark-expansion-100.md) distinguishes the latest editorial additions from a full rubric reassessment.
 
+Catalog update (2026-11-12): the source catalog now contains 300 entries at 153/115/24/8. The additional 200 are explicit editorial game allocations in [the curated table](../scripts/data/orcatopia-expansion.tsv), following the prototype expansion approach rather than claiming a completed scored reassessment. Existing 100 entries retain their grades. Five new Wonders use distinctive built or natural landscapes: Mont-Saint-Michel, Neuschwanstein, the Forbidden City, Bagan and the Grand Canyon. These choices are not official UNESCO grades or measured recognition scores. Each catalog entry links to its UNESCO property, and the adapted source metadata is documented in [heritage credits](../plugins/landmark-island/licenses/heritage.txt). The scoring rubric below remains guidance for a formal reassessment; no invented scores have been added to the player interface or metadata.
+
 ## Purpose and limits
 
 Assign collection ranks consistently when adding or reassessing landmarks. These ranks are editorial game decisions, not an official heritage classification, measured public recognition or a ranking of cultures. A low collection rank can still describe a significant place worth discovering.
