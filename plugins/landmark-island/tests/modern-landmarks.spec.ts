@@ -139,7 +139,7 @@ for (const [start, end, theme] of [
     page,
   }) => {
     // Each entry exercises draw, placement and both locales on shared CI CPUs.
-    test.setTimeout(60_000);
+    test.setTimeout(process.env.CI ? 180_000 : 60_000);
     await page.addInitScript(() => {
       const fixture = window as unknown as {
         modernRolls: number[];

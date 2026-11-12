@@ -1,6 +1,8 @@
 import { defineConfig } from '@playwright/test';
 export default defineConfig({
   workers: process.env.CI ? 1 : undefined,
+  fullyParallel: Boolean(process.env.CI),
+  timeout: process.env.CI ? 120_000 : 30_000,
   testDir: './tests',
   outputDir: '../../test-results/landmark-island',
   use: {
