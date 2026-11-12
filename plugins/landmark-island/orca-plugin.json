@@ -2,14 +2,19 @@
   "manifestVersion": 2,
   "id": "landmark-island",
   "name": "Orcatopia",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Turn waiting time into a little island getaway. Earn tickets from new worktrees, discover world landmarks, and make the island your own.",
-  "engines": { "orca": ">=1.4.248" },
+  "engines": {
+    "orca": ">=1.4.248"
+  },
   "execution": "trusted-worker",
   "pluginApi": 1,
   "main": "worker.js",
   "license": "MIT",
-  "author": { "name": "tienne", "url": "https://github.com/tienne" },
+  "author": {
+    "name": "tienne",
+    "url": "https://github.com/tienne"
+  },
   "repository": "https://github.com/tienne/orca-plugins",
   "icon": "assets/orcatopia-icon.png",
   "cover": {
@@ -23,9 +28,26 @@
       "caption": "A sample garden using game assets and sample progress. Browser demo, not a live Orca save."
     }
   ],
-  "capabilities": [{ "kind": "workspace:read" }, { "kind": "storage:own" }],
+  "capabilities": [
+    {
+      "kind": "workspace:read"
+    },
+    {
+      "kind": "storage:own"
+    },
+    {
+      "kind": "agent:read"
+    }
+  ],
   "contributes": {
-    "events": [{ "on": "workspace.created" }],
+    "events": [
+      {
+        "on": "workspace.created"
+      },
+      {
+        "on": "agent.status.changed"
+      }
+    ],
     "panels": [
       {
         "id": "landmark-island",

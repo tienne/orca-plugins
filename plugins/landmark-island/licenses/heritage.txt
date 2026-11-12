@@ -1,0 +1,16 @@
+UNESCO World Heritage List metadata, UNESCO DataHub, dataset whc001.
+https://data.unesco.org/explore/assets/whc001/
+https://data.unesco.org/explore/assets/whc001/export/
+Retrieved 2026-11-12. Dataset license: Creative Commons Attribution-ShareAlike 4.0 International.
+https://creativecommons.org/licenses/by-sa/4.0/
+
+The selected and adapted metadata in scripts/data/orcatopia-heritage-200.json,
+the additional catalog facts for entries 101-300, and their factual translations
+are provided under CC BY-SA 4.0. Changes: selected 200 properties, shortened titles,
+converted country codes, rounded coordinates, selected named component points
+where appropriate, translated labels, and added original concise descriptions.
+For distributed properties, markers may represent the wider property rather than
+the exact facade illustrated. Each entry links to its UNESCO property page.
+No source photographs, maps, illustrations, videos or logos are bundled.
+Original miniature vector artwork, animation code and fictional garden designs
+are separately covered by the repository MIT license.
