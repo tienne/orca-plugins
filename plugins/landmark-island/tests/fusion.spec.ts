@@ -66,7 +66,9 @@ for (const [language, width] of [
     await page.locator('#overview').click();
     await page.locator('.cell[data-cell="2"]').click();
     await page.locator('[data-inventory="landmarks"]').click();
-    await page.locator('[data-variant="plus"]').click();
+    await page.locator('[data-variant="plus"]').focus();
+    await page.keyboard.press('Enter');
+    await expect(page.locator('[data-variant="plus"]')).toBeFocused();
     await page.locator('[data-landmark="eiffel+"]').click();
     await page.locator('.cell[data-cell="7"]').click();
     await page.reload();
@@ -102,6 +104,14 @@ test('failed fusion save retains a stable retry and commits once', async ({
       at: '2026-11-13',
     });
   }
+  for (let i = 0; i < 2; i++) {
+    save.tickets.push({ workspaceId: `petra-${i}`, at: '2026-11-13' });
+    save.receipts.push({
+      workspaceId: `petra-${i}`,
+      landmark: 'petra',
+      at: '2026-11-13',
+    });
+  }
   await page.addInitScript((s) => {
     localStorage.setItem('landmark-island-demo-v1', JSON.stringify(s));
     const set = Storage.prototype.setItem;
@@ -119,6 +129,7 @@ test('failed fusion save retains a stable retry and commits once', async ({
   await page.locator('[data-inventory="landmarks"]').click();
   await page.locator('[data-info="eiffel"]').click();
   await page.locator('[data-fusion]').click();
+  await page.evaluate(() => document.documentElement.classList.add('dark'));
   await page.locator('[data-confirm-fusion]').click();
   await expect(page.locator('.fusion-error')).toContainText(
     'Simulated disk full',
@@ -129,14 +140,52 @@ test('failed fusion save retains a stable retry and commits once', async ({
         JSON.parse(localStorage.getItem('landmark-island-demo-v1')!).fusions,
     ),
   ).toHaveLength(0);
+  const contrast = await page.locator('.fusion-error').evaluate((node) => {
+    const luminance = (value: string) => {
+      const rgb = value
+        .match(/\d+/g)!
+        .slice(0, 3)
+        .map(Number)
+        .map((v) => {
+          const c = v / 255;
+          return c <= 0.04045 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4;
+        });
+      return rgb[0] * 0.2126 + rgb[1] * 0.7152 + rgb[2] * 0.0722;
+    };
+    const a = luminance(getComputedStyle(node).color);
+    const b = luminance(
+      getComputedStyle(node.closest('dialog')!).backgroundColor,
+    );
+    return (Math.max(a, b) + 0.05) / (Math.min(a, b) + 0.05);
+  });
+  expect(contrast).toBeGreaterThanOrEqual(4.5);
+  await page.locator('[data-cancel-fusion]').click();
+  await page.locator('[data-info="petra"]').click();
+  await page.locator('[data-fusion="petra"]').click();
   await page.locator('[data-confirm-fusion]').click();
   await expect(page.locator('.fusion-reveal')).toBeVisible();
+  await page.locator('.fusion-reveal .reveal-keep').click();
+  await page.locator('[data-info="eiffel"]').click();
+  await expect(page.locator('[data-fusion="eiffel"]')).toHaveText(
+    'Retry fusion',
+  );
+  await page.locator('[data-fusion="eiffel"]').click();
+  await page.locator('[data-confirm-fusion]').click();
+  await expect(page.locator('.fusion-reveal')).toBeVisible();
+  await page.locator('.fusion-reveal .reveal-keep').click();
+  await expect(page.locator('[data-catalog-id="eiffel"]')).not.toHaveClass(
+    /locked/,
+  );
+  await expect(page.locator('[data-catalog-id="eiffel"]')).toContainText(
+    'Owned ×0',
+  );
+  await expect(page.locator('[data-landmark="eiffel"]')).toBeDisabled();
   expect(
     await page.evaluate(
       () =>
         JSON.parse(localStorage.getItem('landmark-island-demo-v1')!).fusions,
     ),
-  ).toHaveLength(1);
+  ).toHaveLength(2);
 });
 
 test('drawing after fusion reports current ownership and retains duplicate rewards', async ({

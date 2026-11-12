@@ -352,3 +352,7 @@ footer {
     animation: none;
   }
 }
+
+.fusion-confirm .fusion-error[role='alert'] {
+  color: #8f261e;
+}

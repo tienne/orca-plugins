@@ -191,7 +191,7 @@ function showDetails(id: string) {
   const count = quantity(state, id);
   const placed = state.placements.filter((p) => p.landmark === id).length;
   const normal = baseId(id);
-  stock.innerHTML = `<p>Owned ×${count} · ${count - placed} available · ${placed} placed</p><div><button data-detail-variant="${isEnhanced(id) ? normal : enhancedId(id)}">${isEnhanced(id) ? 'View normal version' : 'View + version'}</button>${!isEnhanced(id) ? `<button data-fusion="${id}" ${quantity(state, id) - placed < 2 && pendingFusion?.landmark !== id ? 'disabled' : ''}>${pendingFusion?.landmark === id ? 'Retry fusion' : 'Fuse 2 → 1 +'}</button>` : `<button data-plus-place ${count - placed < 1 ? 'disabled' : ''}>Place + on island</button><button data-plus-decor>View exclusive decoration</button>`}</div>`;
+  stock.innerHTML = `<p>Owned ×${count} · ${count - placed} available · ${placed} placed</p><div><button data-detail-variant="${isEnhanced(id) ? normal : enhancedId(id)}">${isEnhanced(id) ? 'View normal version' : 'View + version'}</button>${!isEnhanced(id) ? `<button data-fusion="${id}" ${quantity(state, id) - placed < 2 && !pendingFusions.has(id) ? 'disabled' : ''}>${pendingFusions.has(id) ? 'Retry fusion' : 'Fuse 2 → 1 +'}</button>` : `<button data-plus-place ${count - placed < 1 ? 'disabled' : ''}>Place + on island</button><button data-plus-decor>View exclusive decoration</button>`}</div>`;
   detail.append(stock);
   stock.querySelector<HTMLButtonElement>('[data-detail-variant]')!.onclick =
     () => showDetails(isEnhanced(id) ? normal : enhancedId(id));
@@ -456,7 +456,7 @@ async function useTicket(amount: 1 | 10 = 1) {
   };
   nextHighlight(0);
 }
-let pendingFusion: { id: string; landmark: string } | undefined;
+const pendingFusions = new Map<string, { id: string; landmark: string }>();
 function showPlusDecoration(id: string) {
   view = 'island';
   decorTheme = enhancedId(id);
@@ -465,7 +465,7 @@ function showPlusDecoration(id: string) {
   render();
 }
 function prepareFusion(id: string) {
-  if (busy || (pendingFusion && pendingFusion.landmark !== id)) return;
+  if (busy) return;
   const landmark = landmarkById(id)!;
   const first = !discovered(state, enhancedId(id));
   const placed = state.placements.filter((p) => p.landmark === id).length;
@@ -473,7 +473,7 @@ function prepareFusion(id: string) {
   const dialog = document.createElement('dialog');
   dialog.className = 'fusion-confirm';
   dialog.setAttribute('aria-labelledby', 'fusion-title');
-  dialog.innerHTML = `<h2 id="fusion-title">Fuse ${escape(landmark.name)} +</h2><div class="fusion-preview">${art(id)}<b>2 → 1</b>${art(enhancedId(id))}</div><p>Consume 2 unplaced normal copies → receive 1 + copy.</p><p>${available} available · ${placed} placed</p><p>Placed copies stay on the island. Materials and discovery rewards stay yours.</p><p>${rarities.find((r) => r.id === landmark.tier)!.numeral}+ · Half a rarity step higher · No ++ fusion</p><p>First fusion unlocks an exclusive star monument and gifts one copy.</p><p role="alert" class="fusion-error"></p><button data-confirm-fusion ${available < 2 && !pendingFusion ? 'disabled' : ''}>${pendingFusion ? 'Retry fusion' : 'Confirm fusion'}</button><button data-cancel-fusion>Cancel</button>`;
+  dialog.innerHTML = `<h2 id="fusion-title">Fuse ${escape(landmark.name)} +</h2><div class="fusion-preview">${art(id)}<b>2 → 1</b>${art(enhancedId(id))}</div><p>Consume 2 unplaced normal copies → receive 1 + copy.</p><p>${available} available · ${placed} placed</p><p>Placed copies stay on the island. Materials and discovery rewards stay yours.</p><p>${rarities.find((r) => r.id === landmark.tier)!.numeral}+ · Half a rarity step higher · No ++ fusion</p><p>First fusion unlocks an exclusive star monument and gifts one copy.</p><p role="alert" class="fusion-error"></p><button data-confirm-fusion ${available < 2 && !pendingFusions.has(id) ? 'disabled' : ''}>${pendingFusions.has(id) ? 'Retry fusion' : 'Confirm fusion'}</button><button data-cancel-fusion>Cancel</button>`;
   document.body.append(dialog);
   dialog.addEventListener('close', () => dialog.remove(), { once: true });
   dialog.querySelector<HTMLButtonElement>('[data-cancel-fusion]')!.onclick =
@@ -481,11 +481,15 @@ function prepareFusion(id: string) {
   dialog.querySelector<HTMLButtonElement>('[data-confirm-fusion]')!.onclick =
     async () => {
       if (busy) return;
-      pendingFusion ??= { id: crypto.randomUUID(), landmark: id };
+      const fusionRequest = pendingFusions.get(id) ?? {
+        id: crypto.randomUUID(),
+        landmark: id,
+      };
+      pendingFusions.set(id, fusionRequest);
       let committed: State | undefined;
       await run(async () => {
-        committed = await request('island.fuse', pendingFusion);
-        pendingFusion = undefined;
+        committed = await request('island.fuse', fusionRequest);
+        pendingFusions.delete(id);
         return committed;
       });
       if (!committed) {
@@ -536,7 +540,7 @@ function collection() {
       const count = quantity(state, l.id),
         available =
           count - state.placements.filter((p) => p.landmark === l.id).length;
-      return `<article class="card ${!count ? 'locked' : ''}" data-catalog-id="${l.id}" data-tier="${l.tier}">${rarityBadge(l.tier, isEnhanced(l.id))}<button class="collect-action" data-landmark="${l.id}" aria-pressed="${selected === l.id}" ${available < 1 ? 'disabled' : ''}>${art(l.id)}<strong>${escape(l.name)}</strong><span class="card-country">${escape(l.country)}</span><span>${escape(l.region)}</span><small>${count ? `Owned ×${count} · ${available} available` : 'Not discovered yet'}</small></button><button class="about-landmark" data-info="${l.id}" aria-label="About ${escape(l.name)}" aria-haspopup="dialog">About this landmark ↗</button></article>`;
+      return `<article class="card ${!discovered(state, l.id) ? 'locked' : ''}" data-catalog-id="${l.id}" data-tier="${l.tier}">${rarityBadge(l.tier, isEnhanced(l.id))}<button class="collect-action" data-landmark="${l.id}" aria-pressed="${selected === l.id}" ${available < 1 ? 'disabled' : ''}>${art(l.id)}<strong>${escape(l.name)}</strong><span class="card-country">${escape(l.country)}</span><span>${escape(l.region)}</span><small>${discovered(state, l.id) ? `Owned ×${count} · ${available} available` : 'Not discovered yet'}</small></button><button class="about-landmark" data-info="${l.id}" aria-label="About ${escape(l.name)}" aria-haspopup="dialog">About this landmark ↗</button></article>`;
     })
     .join('')}</div></section>`;
 }
@@ -880,21 +884,23 @@ function render() {
       previousScroll.dataset.inventoryTab as keyof typeof inventoryScroll
     ] = previousScroll.scrollTop;
   const focused = document.activeElement as HTMLElement | null;
-  const focusSelector = focused?.matches('[data-craft]')
-    ? `[data-craft="${focused.dataset.craft}"]`
-    : focused?.id &&
-        [
-          'decor-theme',
-          'inventory-search',
-          'inventory-stock',
-          'inventory-category',
-          'skip-discovery',
-          'close-treasure',
-          'draw-ticket',
-          'draw-ten',
-        ].includes(focused.id)
-      ? `#${focused.id}`
-      : undefined;
+  const focusSelector = focused?.matches('[data-variant]')
+    ? `[data-variant="${focused.dataset.variant}"]`
+    : focused?.matches('[data-craft]')
+      ? `[data-craft="${focused.dataset.craft}"]`
+      : focused?.id &&
+          [
+            'decor-theme',
+            'inventory-search',
+            'inventory-stock',
+            'inventory-category',
+            'skip-discovery',
+            'close-treasure',
+            'draw-ticket',
+            'draw-ten',
+          ].includes(focused.id)
+        ? `#${focused.id}`
+        : undefined;
   const owned = landmarks.filter((l) => discovered(state, l.id));
   const latest = landmarks.find(
     (l) => l.id === state.receipts.at(-1)?.landmark,
@@ -1581,6 +1587,7 @@ async function openBackups() {
       pendingTicket = undefined;
       pendingTickets = undefined;
       pendingCraft = undefined;
+      pendingFusions.clear();
       undoStack.length = 0;
       selected = '';
       selectedDecor = '';
