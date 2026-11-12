@@ -2,6 +2,10 @@ import { openTreasure } from './treasure-menu';
 import { test, expect, type Page } from '@playwright/test';
 import { landTiles, landAtLevel } from '../src/world';
 import { validate, landmarks } from '../src/game';
+const catalogBatches = Array.from(
+  { length: Math.ceil(landmarks.length / 100) },
+  (_, index) => landmarks.slice(index * 100, (index + 1) * 100),
+);
 async function openInventory(page: Page, kind: 'decorations' | 'landmarks') {
   const menu = page.locator(`[data-inventory="${kind}"]`);
   if ((await menu.getAttribute('aria-expanded')) !== 'true') await menu.click();
@@ -407,56 +411,65 @@ test('hover wheel zoom needs no focus or modifier, anchors the pointer and leave
   await expect(ocean).toHaveAttribute('data-follow', 'true');
 });
 
-test('field guide describes all landmarks, including unowned ones, without changing the save', async ({
-  page,
-}) => {
-  // This traverses the complete catalog of dialogs; per-action assertion timeouts stay unchanged.
-  test.setTimeout(landmarks.length * 1000);
-  await page.goto('/');
-  const before = await page.evaluate(() =>
-    localStorage.getItem('landmark-island-demo-v1'),
-  );
-  const entries = landmarks.map(({ id, name, country }) => [id, name, country]);
-  for (const [id, name, country] of entries) {
-    const about = page.locator(`[data-info="${id}"]`);
-    await expect(page.locator(`[data-landmark="${id}"]`)).toBeDisabled();
-    await openInventory(page, 'landmarks');
-    await about.click();
-    const dialog = page.getByRole('dialog', { name, exact: true });
-    await expect(dialog).toBeVisible();
-    await expect(dialog.locator('.detail-country')).toContainText(country);
-    expect(
-      (await dialog.locator('#detail-description').innerText()).length,
-    ).toBeGreaterThan(100);
-    await expect(dialog.getByRole('link')).toHaveAttribute(
-      'href',
-      /^https:\/\//,
+for (const [batch, catalogEntries] of catalogBatches.entries())
+  test(`field guide describes all landmarks, including unowned ones, without changing the save (batch ${batch + 1})`, async ({
+    page,
+  }) => {
+    test.setTimeout(180_000);
+    await page.goto('/');
+    const before = await page.evaluate(() =>
+      localStorage.getItem('landmark-island-demo-v1'),
     );
-    await expect(
-      dialog.getByRole('button', { name: 'Close landmark details' }),
-    ).toBeFocused();
-    await page.keyboard.press('Escape');
+    const entries = catalogEntries.map(({ id, name, country }) => [
+      id,
+      name,
+      country,
+    ]);
+    for (const [id, name, country] of entries) {
+      const about = page.locator(`[data-info="${id}"]`);
+      await expect(page.locator(`[data-landmark="${id}"]`)).toBeDisabled();
+      await openInventory(page, 'landmarks');
+      await about.click();
+      const dialog = page.getByRole('dialog', { name, exact: true });
+      await expect(dialog).toBeVisible();
+      await expect(dialog.locator('.detail-country')).toContainText(country);
+      expect(
+        (await dialog.locator('#detail-description').innerText()).length,
+      ).toBeGreaterThan(100);
+      await expect(dialog.getByRole('link')).toHaveAttribute(
+        'href',
+        /^https:\/\//,
+      );
+      await expect(
+        dialog.getByRole('button', { name: 'Close landmark details' }),
+      ).toBeFocused();
+      await page.keyboard.press('Escape');
+      await expect(dialog).not.toBeVisible();
+      await expect(about).toBeFocused();
+    }
+    expect(
+      await page.evaluate(() =>
+        localStorage.getItem('landmark-island-demo-v1'),
+      ),
+    ).toBe(before);
+    await expect(page.locator('.ocean')).toHaveAttribute('data-mode', 'walk');
+    if (batch > 0) return;
+    await page.setViewportSize({ width: 360, height: 800 });
+    await openInventory(page, 'landmarks');
+    await page.locator('[data-info="giza"]').click();
+    const dialog = page.getByRole('dialog');
+    const bounds = (await dialog.boundingBox())!;
+    expect(bounds.x).toBeGreaterThanOrEqual(0);
+    expect(bounds.x + bounds.width).toBeLessThanOrEqual(360);
+    expect(bounds.height).toBeLessThanOrEqual(760);
+    await page.screenshot({
+      path: 'test-results/landmark-island/details-mobile-demo.png',
+    });
+    await dialog
+      .getByRole('button', { name: 'Close landmark details' })
+      .click();
     await expect(dialog).not.toBeVisible();
-    await expect(about).toBeFocused();
-  }
-  expect(
-    await page.evaluate(() => localStorage.getItem('landmark-island-demo-v1')),
-  ).toBe(before);
-  await expect(page.locator('.ocean')).toHaveAttribute('data-mode', 'walk');
-  await page.setViewportSize({ width: 360, height: 800 });
-  await openInventory(page, 'landmarks');
-  await page.locator('[data-info="giza"]').click();
-  const dialog = page.getByRole('dialog');
-  const bounds = (await dialog.boundingBox())!;
-  expect(bounds.x).toBeGreaterThanOrEqual(0);
-  expect(bounds.x + bounds.width).toBeLessThanOrEqual(360);
-  expect(bounds.height).toBeLessThanOrEqual(760);
-  await page.screenshot({
-    path: 'test-results/landmark-island/details-mobile-demo.png',
   });
-  await dialog.getByRole('button', { name: 'Close landmark details' }).click();
-  await expect(dialog).not.toBeVisible();
-});
 
 test('a placed building opens actions first and exposes its story without losing placement', async ({
   page,
@@ -1616,164 +1629,154 @@ test('host backup export calls saveAs only from a fresh click and reports cancel
   );
 });
 
-test('material artwork keeps local paint references isolated across collection, copies and details', async ({
-  page,
-}) => {
-  test.setTimeout(240_000);
-  const svgErrors: string[] = [];
-  page.on('console', (message) => {
-    if (
-      message.type() === 'error' &&
-      /<path>|attribute d|SVG/i.test(message.text())
-    )
-      svgErrors.push(message.text());
-  });
-  const ids = [...landmarks.map((l) => l.id), 'giza'];
-  const save = {
-    version: 2,
-    tickets: ids.map((_, i) => ({
-      workspaceId: `art-fixture-${i}`,
-      at: '2026-11-06',
-    })),
-    receipts: ids.map((landmark, i) => ({
-      workspaceId: `art-fixture-${i}`,
-      landmark,
-      at: '2026-11-06',
-    })),
-    placements: [
-      { landmark: 'giza', cell: 0 },
-      { landmark: 'giza', cell: 1 },
-    ],
-  };
-  await page.emulateMedia({ reducedMotion: 'reduce' });
-  await page.goto('/');
-  await page.evaluate(
-    (s) => localStorage.setItem('landmark-island-demo-v1', JSON.stringify(s)),
-    save,
-  );
-  await page.reload();
-  await expect(page.locator('.collection .landmark-art')).toHaveCount(
-    landmarks.length,
-  );
-  await expect(page.locator('.building .landmark-art')).toHaveCount(2);
-  await expect(page.locator('.collection .wonder-art')).toHaveCount(8);
-  const inspectPaint = await page.evaluate(() => {
-    const inspect = (svgs: Element[], existing = new Set<string>()) => {
-      const ids = svgs.flatMap((svg) =>
-        [...svg.querySelectorAll('[id]')].map((node) => node.id),
-      );
-      const missing: string[] = [];
-      for (const svg of svgs)
-        svg.querySelectorAll('[fill],[stroke],[clip-path]').forEach((node) => {
-          for (const attribute of ['fill', 'stroke', 'clip-path']) {
-            const ref = node
-              .getAttribute(attribute)
-              ?.match(/^url\(#(.+)\)$/)?.[1];
-            if (ref && !svg.querySelector(`[id="${ref}"]`)) missing.push(ref);
-          }
-        });
-      return {
-        unique:
-          new Set(ids).size === ids.length &&
-          ids.every((id) => !existing.has(id)),
-        missing,
-      };
+for (const [batch, catalogEntries] of catalogBatches.entries())
+  test(`material artwork keeps local paint references isolated across collection, copies and details (batch ${batch + 1})`, async ({
+    page,
+  }) => {
+    test.setTimeout(240_000);
+    const svgErrors: string[] = [];
+    page.on('console', (message) => {
+      if (
+        message.type() === 'error' &&
+        /<path>|attribute d|SVG/i.test(message.text())
+      )
+        svgErrors.push(message.text());
+    });
+    const ids = [...landmarks.map((l) => l.id), 'giza'];
+    const save = {
+      version: 2,
+      tickets: ids.map((_, i) => ({
+        workspaceId: `art-fixture-${i}`,
+        at: '2026-11-06',
+      })),
+      receipts: ids.map((landmark, i) => ({
+        workspaceId: `art-fixture-${i}`,
+        landmark,
+        at: '2026-11-06',
+      })),
+      placements: [
+        { landmark: 'giza', cell: 0 },
+        { landmark: 'giza', cell: 1 },
+      ],
     };
-    const svgs = [...document.querySelectorAll('.landmark-art')];
-    const baseline = new Set(
-      svgs.flatMap((svg) =>
-        [...svg.querySelectorAll('[id]')].map((node) => node.id),
-      ),
+    await page.emulateMedia({ reducedMotion: 'reduce' });
+    await page.goto('/');
+    await page.evaluate(
+      (s) => localStorage.setItem('landmark-island-demo-v1', JSON.stringify(s)),
+      save,
     );
-    (
-      window as unknown as {
-        checkDetailPaint: (svg: Element) => ReturnType<typeof inspect>;
-      }
-    ).checkDetailPaint = (svg) => inspect([svg], baseline);
-    return inspect(svgs);
-  });
-  expect(inspectPaint).toEqual({ unique: true, missing: [] });
-  for (const entry of landmarks) {
-    await expect(
-      page.locator(`[data-landmark="${entry.id}"] .wonder-body`),
-    ).toHaveCount(entry.tier === 'legendary' ? 1 : 0);
-  }
-  // Previously saved Giza placements remain in place without the old Wonder effects.
-  await expect(page.locator('.building .wonder-art')).toHaveCount(0);
-
-  await page.setViewportSize({ width: 1200, height: 1000 });
-  await openInventory(page, 'landmarks');
-  await page.locator('.canvas-inventory').screenshot({
-    path: 'test-results/landmark-island/material-collection.png',
-  });
-  for (const id of [
-    'taj',
-    'colosseum',
-    'giza',
-    'gyeongbokgung',
-    'merlion',
-    'sagrada',
-    'greatwall',
-    'cn',
-    'atomium',
-    'basil',
-    'kilimanjaro',
-    'petra',
-    'angkor',
-    'machu',
-    ...landmarks.slice(36).map((l) => l.id),
-  ]) {
-    await openInventory(page, 'landmarks');
-    await page.locator(`[data-info=${id}]`).click();
-    const result = await page
-      .locator('.detail-art .landmark-art')
-      .evaluate((svg) =>
-        (
-          window as unknown as {
-            checkDetailPaint: (svg: Element) => {
-              unique: boolean;
-              missing: string[];
-            };
-          }
-        ).checkDetailPaint(svg),
+    await page.reload();
+    await expect(page.locator('.collection .landmark-art')).toHaveCount(
+      landmarks.length,
+    );
+    await expect(page.locator('.building .landmark-art')).toHaveCount(2);
+    await expect(page.locator('.collection .wonder-art')).toHaveCount(8);
+    const inspectPaint = await page.evaluate(() => {
+      const inspect = (svgs: Element[], existing = new Set<string>()) => {
+        const ids = svgs.flatMap((svg) =>
+          [...svg.querySelectorAll('[id]')].map((node) => node.id),
+        );
+        const missing: string[] = [];
+        for (const svg of svgs)
+          svg
+            .querySelectorAll('[fill],[stroke],[clip-path]')
+            .forEach((node) => {
+              for (const attribute of ['fill', 'stroke', 'clip-path']) {
+                const ref = node
+                  .getAttribute(attribute)
+                  ?.match(/^url\(#(.+)\)$/)?.[1];
+                if (ref && !svg.querySelector(`[id="${ref}"]`))
+                  missing.push(ref);
+              }
+            });
+        return {
+          unique:
+            new Set(ids).size === ids.length &&
+            ids.every((id) => !existing.has(id)),
+          missing,
+        };
+      };
+      const svgs = [...document.querySelectorAll('.landmark-art')];
+      const baseline = new Set(
+        svgs.flatMap((svg) =>
+          [...svg.querySelectorAll('[id]')].map((node) => node.id),
+        ),
       );
-    expect(result).toEqual({ unique: true, missing: [] });
-    await page.locator('.landmark-detail').screenshot({
-      path: `test-results/landmark-island/material-${id}.jpg`,
+      (
+        window as unknown as {
+          checkDetailPaint: (svg: Element) => ReturnType<typeof inspect>;
+        }
+      ).checkDetailPaint = (svg) => inspect([svg], baseline);
+      return inspect(svgs);
+    });
+    expect(inspectPaint).toEqual({ unique: true, missing: [] });
+    for (const entry of landmarks) {
+      await expect(
+        page.locator(`[data-landmark="${entry.id}"] .wonder-body`),
+      ).toHaveCount(entry.tier === 'legendary' ? 1 : 0);
+    }
+    // Previously saved Giza placements remain in place without the old Wonder effects.
+    await expect(page.locator('.building .wonder-art')).toHaveCount(0);
+
+    await page.setViewportSize({ width: 1200, height: 1000 });
+    await openInventory(page, 'landmarks');
+    await page.locator('.canvas-inventory').screenshot({
+      path: test.info().outputPath('material-collection.jpg'),
       quality: 80,
     });
-    await page.keyboard.press('Escape');
-  }
-  expect(
-    await page.evaluate(() =>
-      JSON.parse(localStorage.getItem('landmark-island-demo-v1')!),
-    ),
-  ).toEqual(save);
-  expect(svgErrors).toEqual([]);
-  expect(
-    await page.locator('.landmark-art [id]').evaluateAll((nodes) => {
-      const ids = nodes.map((node) => node.id);
-      return new Set(ids).size === ids.length;
-    }),
-  ).toBe(true);
-  // An isolated contact sheet for reviewing the bundled artwork, not a product screen.
-  await page.setViewportSize({ width: 1200, height: 420 });
-  await page.evaluate(
-    (entries) => {
-      const cards = entries
-        .map(({ id, name, country }) => {
-          const svg = document.querySelector(
-            `[data-landmark="${id}"] svg`,
-          )!.outerHTML;
-          return `<article>${svg}<strong>${name}</strong><small>${country}</small></article>`;
-        })
-        .join('');
-      document.body.innerHTML = `<main id="art-review"><h1>DEMO · 33 new destinations</h1><div>${cards}</div></main>`;
-    },
-    landmarks.slice(67, 100),
-  );
-  await page.addStyleTag({
-    content: `
+    for (const { id } of catalogEntries) {
+      await openInventory(page, 'landmarks');
+      await page.locator(`[data-info=${id}]`).click();
+      const result = await page
+        .locator('.detail-art .landmark-art')
+        .evaluate((svg) =>
+          (
+            window as unknown as {
+              checkDetailPaint: (svg: Element) => {
+                unique: boolean;
+                missing: string[];
+              };
+            }
+          ).checkDetailPaint(svg),
+        );
+      expect(result).toEqual({ unique: true, missing: [] });
+      await page.locator('.landmark-detail').screenshot({
+        path: `test-results/landmark-island/material-${id}.jpg`,
+        quality: 80,
+      });
+      await page.keyboard.press('Escape');
+    }
+    expect(
+      await page.evaluate(() =>
+        JSON.parse(localStorage.getItem('landmark-island-demo-v1')!),
+      ),
+    ).toEqual(save);
+    expect(svgErrors).toEqual([]);
+    expect(
+      await page.locator('.landmark-art [id]').evaluateAll((nodes) => {
+        const ids = nodes.map((node) => node.id);
+        return new Set(ids).size === ids.length;
+      }),
+    ).toBe(true);
+    if (batch > 0) return;
+    // An isolated contact sheet for reviewing the bundled artwork, not a product screen.
+    await page.setViewportSize({ width: 1200, height: 420 });
+    await page.evaluate(
+      (entries) => {
+        const cards = entries
+          .map(({ id, name, country }) => {
+            const svg = document.querySelector(
+              `[data-landmark="${id}"] svg`,
+            )!.outerHTML;
+            return `<article>${svg}<strong>${name}</strong><small>${country}</small></article>`;
+          })
+          .join('');
+        document.body.innerHTML = `<main id="art-review"><h1>DEMO · 33 new destinations</h1><div>${cards}</div></main>`;
+      },
+      landmarks.slice(67, 100),
+    );
+    await page.addStyleTag({
+      content: `
     body { margin: 0; background: #ede9d3; color: #344b3d; }
     #art-review { padding: 24px; font-family: sans-serif; }
     #art-review h1 { font-size: 22px; margin: 0 0 18px; }
@@ -1783,12 +1786,12 @@ test('material artwork keeps local paint references isolated across collection, 
     #art-review strong { font-size: 14px; margin-top: 6px; }
     #art-review small { font-size: 12px; color: #627159; }
   `,
+    });
+    await expect(page.locator('#art-review')).toHaveCount(1);
+    await page.locator('#art-review').screenshot({
+      path: 'test-results/landmark-island/landmarks-100-demo.png',
+    });
   });
-  await expect(page.locator('#art-review')).toHaveCount(1);
-  await page.locator('#art-review').screenshot({
-    path: 'test-results/landmark-island/landmarks-100-demo.png',
-  });
-});
 
 test('new discoveries grow land, gifts unlock sets, duplicates craft chosen decorations', async ({
   page,
