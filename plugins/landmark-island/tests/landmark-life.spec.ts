@@ -352,6 +352,10 @@ test('the complete catalog has unique localized living scenes, safe SVG artwork 
   await expect(page.locator('.life-preview-card')).toHaveCount(
     landmarks.length,
   );
+  await page.addStyleTag({
+    content:
+      '.life-preview-card .landmark-art, .life-preview-card .landmark-art * { animation-play-state: paused !important; }',
+  });
   for (const landmark of landmarks) {
     const card = page.locator(`#scene-${landmark.id}`);
     const art = card.locator('.detail-art');
@@ -366,7 +370,8 @@ test('the complete catalog has unique localized living scenes, safe SVG artwork 
       }
     });
     await art.screenshot({
-      path: test.info().outputPath(`catalog/${landmark.id}.png`),
+      path: test.info().outputPath(`catalog/${landmark.id}.jpg`),
+      quality: 80,
     });
   }
   expect(svgErrors).toEqual([]);

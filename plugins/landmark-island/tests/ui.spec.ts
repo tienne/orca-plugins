@@ -1657,6 +1657,42 @@ test('material artwork keeps local paint references isolated across collection, 
   );
   await expect(page.locator('.building .landmark-art')).toHaveCount(2);
   await expect(page.locator('.collection .wonder-art')).toHaveCount(8);
+  const inspectPaint = await page.evaluate(() => {
+    const inspect = (svgs: Element[], existing = new Set<string>()) => {
+      const ids = svgs.flatMap((svg) =>
+        [...svg.querySelectorAll('[id]')].map((node) => node.id),
+      );
+      const missing: string[] = [];
+      for (const svg of svgs)
+        svg.querySelectorAll('[fill],[stroke],[clip-path]').forEach((node) => {
+          for (const attribute of ['fill', 'stroke', 'clip-path']) {
+            const ref = node
+              .getAttribute(attribute)
+              ?.match(/^url\(#(.+)\)$/)?.[1];
+            if (ref && !svg.querySelector(`[id="${ref}"]`)) missing.push(ref);
+          }
+        });
+      return {
+        unique:
+          new Set(ids).size === ids.length &&
+          ids.every((id) => !existing.has(id)),
+        missing,
+      };
+    };
+    const svgs = [...document.querySelectorAll('.landmark-art')];
+    const baseline = new Set(
+      svgs.flatMap((svg) =>
+        [...svg.querySelectorAll('[id]')].map((node) => node.id),
+      ),
+    );
+    (
+      window as unknown as {
+        checkDetailPaint: (svg: Element) => ReturnType<typeof inspect>;
+      }
+    ).checkDetailPaint = (svg) => inspect([svg], baseline);
+    return inspect(svgs);
+  });
+  expect(inspectPaint).toEqual({ unique: true, missing: [] });
   for (const entry of landmarks) {
     await expect(
       page.locator(`[data-landmark="${entry.id}"] .wonder-body`),
@@ -1689,27 +1725,23 @@ test('material artwork keeps local paint references isolated across collection, 
   ]) {
     await openInventory(page, 'landmarks');
     await page.locator(`[data-info=${id}]`).click();
-    const result = await page.evaluate(() => {
-      const allIds = [...document.querySelectorAll('.landmark-art [id]')].map(
-        (e) => e.id,
-      );
-      const missing: string[] = [];
-      document.querySelectorAll('.landmark-art').forEach((svg) => {
-        svg.querySelectorAll('[fill],[stroke],[clip-path]').forEach((node) => {
-          for (const attribute of ['fill', 'stroke', 'clip-path']) {
-            const ref = node
-              .getAttribute(attribute)
-              ?.match(/^url\(#(.+)\)$/)?.[1];
-            if (ref && !svg.querySelector(`[id="${ref}"]`)) missing.push(ref);
+    const result = await page
+      .locator('.detail-art .landmark-art')
+      .evaluate((svg) =>
+        (
+          window as unknown as {
+            checkDetailPaint: (svg: Element) => {
+              unique: boolean;
+              missing: string[];
+            };
           }
-        });
-      });
-      return { unique: new Set(allIds).size === allIds.length, missing };
-    });
+        ).checkDetailPaint(svg),
+      );
     expect(result).toEqual({ unique: true, missing: [] });
-    await page
-      .locator('.landmark-detail')
-      .screenshot({ path: `test-results/landmark-island/material-${id}.png` });
+    await page.locator('.landmark-detail').screenshot({
+      path: `test-results/landmark-island/material-${id}.jpg`,
+      quality: 80,
+    });
     await page.keyboard.press('Escape');
   }
   expect(
@@ -1718,6 +1750,12 @@ test('material artwork keeps local paint references isolated across collection, 
     ),
   ).toEqual(save);
   expect(svgErrors).toEqual([]);
+  expect(
+    await page.locator('.landmark-art [id]').evaluateAll((nodes) => {
+      const ids = nodes.map((node) => node.id);
+      return new Set(ids).size === ids.length;
+    }),
+  ).toBe(true);
   // An isolated contact sheet for reviewing the bundled artwork, not a product screen.
   await page.setViewportSize({ width: 1200, height: 420 });
   await page.evaluate(
