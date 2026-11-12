@@ -58,9 +58,20 @@ release. Candidate-source installation is temporary: restore the community updat
 route only when it offers 0.2.0 or newer, preserving the latest store during any
 required reinstall. Never downgrade a save containing new landmark IDs to 0.1.0.
 
-The first 45-minute-budget CI attempt passed 111 of 126 UI tests and timed out in 15. Offscreen preview motion and duplicate artwork inspection work are being
-reduced, with CI browser workers limited to one. This checkpoint is not a passing
-release gate and neither a tag nor a production catalog update is claimed.
+The first CI attempt passed 111 of 126 UI tests and timed out in 15. The next
+run passed 119 of 131 in 40.2 minutes: all exhaustive descriptions, artwork and
+scene checks passed, while 12 long gameplay scenarios exhausted their total
+30/60-second budgets. CI now distributes all 131 tests across three independent
+machines, retaining one browser worker each. CI gameplay budgets are 120 seconds,
+or 180 seconds for the multi-country flows; assertion waits remain unchanged.
+Every shard must pass before promotion. The new remote result is still required.
+
+Candidate `79d1ffe` updated the existing 0.2.0 installation without an application
+restart or new grants. The native panel captured without errors and earlier state
+was retained, with only newly issued tickets added at the comparison checkpoint.
+The user confirmed playing the 20 new acquisitions and three new placements.
+Latest raw and restorable backups are private and separate from the pre-update
+backup. This is user-tested native draw/placement evidence, not a full restart test.
 
 ## Historical 0.1.0 preparation
 

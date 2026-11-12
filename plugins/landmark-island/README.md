@@ -4,7 +4,7 @@ English · [한국어](README.ko.md)
 
 ![Orcatopia — A little escape between tasks, with an English DEMO garden screen](assets/orcatopia-introduction.png)
 
-Orcatopia is a little island getaway between tasks in Orca. Earn exploration tickets when you create worktrees, discover world landmarks, and arrange a place of your own while you wait. This is an unpublished prototype requiring Orca 1.4.248+.
+Orcatopia is a little island getaway between tasks in Orca. Earn exploration tickets when you create worktrees, discover world landmarks, and arrange a place of your own while you wait. This version requires Orca 1.4.248+.
 
 ## Play
 
@@ -295,7 +295,7 @@ One plugin-local collection is shared across repositories/worktrees on this host
 
 Map data: [Natural Earth](https://www.naturalearthdata.com/about/terms-of-use/), public domain. Coordinates for the original 100 landmarks come from Wikidata under CC0. Coordinates for the additional 200 come from UNESCO DataHub under CC BY-SA 4.0. Source links are included in the bundled catalog. See [geography attribution](licenses/geography.txt) and [heritage metadata attribution](licenses/heritage.txt). Geometry is generalized, and small countries may not appear. Fictional island cells are unrelated to geographic coordinates.
 
-Deferred: terrain beyond the 1,044-tile world, cloud sync, trading, languages beyond Korean/English and collections above 300 landmarks. Nothing is published.
+Deferred: terrain beyond the 1,044-tile world, cloud sync, trading, languages beyond Korean/English and collections above 300 landmarks.
 
 ## Verification record (2026-11-05)
 
@@ -374,7 +374,7 @@ After adding full-catalog effect assertions, `pnpm nx run landmark-island:ui-tes
 
 The display name is now **Orcatopia**. The internal plugin ID and Nx project remain `landmark-island`. Storage keys, item IDs, draw probabilities and the `landmark-island-backup` format are unchanged; existing backups remain compatible.
 
-This is an unpublished candidate. The planned catalog identity is `tienne.landmark-island`, whereas the development installation uses `local.landmark-island`. These identities do not share storage or execution approval. Before switching, save a backup from the development panel. After installing and explicitly approving the catalog plugin, restore that file through Backups. Keep the original backup and avoid running both identities together, since they receive worktree events independently. Installation does not grant tickets for existing worktrees.
+The catalog identity is `tienne.landmark-island`, whereas the development installation uses `local.landmark-island`. These identities do not share storage or execution approval. Before switching, save a backup from the development panel. After installing and explicitly approving the catalog plugin, restore that file through Backups. Keep the original backup and avoid running both identities together, since they receive worktree events independently. Installation does not grant tickets for existing worktrees.
 
 Known release limits: actual Orca clicks and light-theme interaction remain deferred; a full application restart and a fresh catalog install/update have not been verified. Worker restart, duplicate event handling and persisted rewards were verified on the live host. The 2026-11-08 pre-release checkpoint passed all 82 browser scenarios, plus worker/state tests and package validation. Browser fixtures do not establish native host behavior. Events missed while disabled are not backfilled. Saves are local; cloud sync is not included.
 

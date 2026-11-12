@@ -28,7 +28,7 @@ Only stable `X.Y.Z` versions are supported. Update `plugins/git-logs/orca-plugin
 - actionlint checks workflow syntax and expressions. Its version and download checksum are pinned.
 - pnpm installs the lockfile dependencies with Node 24.
 - Nx runs build, typecheck, Git/translation/artifact tests, release tests, and browser UI tests.
-- Playwright uses Chromium and starts a fresh preview server in CI.
+- Playwright uses Chromium and starts a fresh preview server in CI. Orcatopia UI checks run in three independent shards with one browser worker each; promotion waits for every shard.
 - Successful runs save the installable plugin for 14 days. Browser results are retained for 7 days, including on failure.
 
 Ubuntu CI release tests use a mock Orca adapter for orchestration checks. They do not establish Orca schema or hash compatibility. The promotion job repeats the tests with the installed Orca CLI.
