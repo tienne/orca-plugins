@@ -2,6 +2,10 @@ import { openTreasure } from './treasure-menu';
 import { test, expect, type Page } from '@playwright/test';
 import { landTiles, landAtLevel } from '../src/world';
 import { validate, landmarks } from '../src/game';
+const catalogBatches = Array.from(
+  { length: Math.ceil(landmarks.length / 100) },
+  (_, index) => landmarks.slice(index * 100, (index + 1) * 100),
+);
 async function openInventory(page: Page, kind: 'decorations' | 'landmarks') {
   const menu = page.locator(`[data-inventory="${kind}"]`);
   if ((await menu.getAttribute('aria-expanded')) !== 'true') await menu.click();
@@ -114,7 +118,9 @@ test('demo acquisition, duplicate, placement, move, removal and persistent map',
   await page.getByRole('button', { name: 'World Map', exact: true }).click();
   await expect(page.locator('.world circle')).toHaveCount(1);
   await expect(page.locator('.world path.acquired')).toHaveCount(1);
-  await expect(page.locator('.countries')).toContainText('France 1/1');
+  await expect(page.locator('.countries')).toContainText(
+    `France 1/${landmarks.filter((entry) => entry.country === 'France').length}`,
+  );
   await page.screenshot({ path: 'test-results/landmark-island/map-demo.png' });
 });
 for (const theme of ['light', 'dark'])
@@ -187,7 +193,7 @@ test('walk, camera and weather are independent from collection ownership', async
     walker = page.getByRole('img', { name: 'Island explorer' });
   await expect(walker).toHaveAttribute('data-cell', '30');
   const buildingDepth = await page
-    .locator('[data-world-cell="31"]')
+    .locator('[data-world-cell="31"] .world-object')
     .evaluate((el) => Number(getComputedStyle(el).zIndex));
   expect(
     await walker.evaluate((el) => Number(getComputedStyle(el).zIndex)),
@@ -217,9 +223,9 @@ test('walk, camera and weather are independent from collection ownership', async
   const before = await camera.getAttribute('style');
   await ocean.scrollIntoViewIfNeeded();
   const box = (await ocean.boundingBox())!;
-  await page.mouse.move(box.x + 30, box.y + 180);
+  await page.mouse.move(box.x + 30, box.y + 300);
   await page.mouse.down();
-  await page.mouse.move(box.x + 90, box.y + 210, { steps: 8 });
+  await page.mouse.move(box.x + 90, box.y + 330, { steps: 8 });
   await page.mouse.up();
   expect(await camera.getAttribute('style')).not.toBe(before);
   await expect(ocean).toHaveAttribute('data-follow', 'false');
@@ -405,56 +411,65 @@ test('hover wheel zoom needs no focus or modifier, anchors the pointer and leave
   await expect(ocean).toHaveAttribute('data-follow', 'true');
 });
 
-test('field guide describes all landmarks, including unowned ones, without changing the save', async ({
-  page,
-}) => {
-  // This traverses all 100 dialogs; per-action assertion timeouts stay unchanged.
-  test.setTimeout(90_000);
-  await page.goto('/');
-  const before = await page.evaluate(() =>
-    localStorage.getItem('landmark-island-demo-v1'),
-  );
-  const entries = landmarks.map(({ id, name, country }) => [id, name, country]);
-  for (const [id, name, country] of entries) {
-    const about = page.locator(`[data-info="${id}"]`);
-    await expect(page.locator(`[data-landmark="${id}"]`)).toBeDisabled();
-    await openInventory(page, 'landmarks');
-    await about.click();
-    const dialog = page.getByRole('dialog', { name, exact: true });
-    await expect(dialog).toBeVisible();
-    await expect(dialog.locator('.detail-country')).toContainText(country);
-    expect(
-      (await dialog.locator('#detail-description').innerText()).length,
-    ).toBeGreaterThan(100);
-    await expect(dialog.getByRole('link')).toHaveAttribute(
-      'href',
-      /^https:\/\//,
+for (const [batch, catalogEntries] of catalogBatches.entries())
+  test(`field guide describes all landmarks, including unowned ones, without changing the save (batch ${batch + 1})`, async ({
+    page,
+  }) => {
+    test.setTimeout(180_000);
+    await page.goto('/');
+    const before = await page.evaluate(() =>
+      localStorage.getItem('landmark-island-demo-v1'),
     );
-    await expect(
-      dialog.getByRole('button', { name: 'Close landmark details' }),
-    ).toBeFocused();
-    await page.keyboard.press('Escape');
+    const entries = catalogEntries.map(({ id, name, country }) => [
+      id,
+      name,
+      country,
+    ]);
+    for (const [id, name, country] of entries) {
+      const about = page.locator(`[data-info="${id}"]`);
+      await expect(page.locator(`[data-landmark="${id}"]`)).toBeDisabled();
+      await openInventory(page, 'landmarks');
+      await about.click();
+      const dialog = page.getByRole('dialog', { name, exact: true });
+      await expect(dialog).toBeVisible();
+      await expect(dialog.locator('.detail-country')).toContainText(country);
+      expect(
+        (await dialog.locator('#detail-description').innerText()).length,
+      ).toBeGreaterThan(100);
+      await expect(dialog.getByRole('link')).toHaveAttribute(
+        'href',
+        /^https:\/\//,
+      );
+      await expect(
+        dialog.getByRole('button', { name: 'Close landmark details' }),
+      ).toBeFocused();
+      await page.keyboard.press('Escape');
+      await expect(dialog).not.toBeVisible();
+      await expect(about).toBeFocused();
+    }
+    expect(
+      await page.evaluate(() =>
+        localStorage.getItem('landmark-island-demo-v1'),
+      ),
+    ).toBe(before);
+    await expect(page.locator('.ocean')).toHaveAttribute('data-mode', 'walk');
+    if (batch > 0) return;
+    await page.setViewportSize({ width: 360, height: 800 });
+    await openInventory(page, 'landmarks');
+    await page.locator('[data-info="giza"]').click();
+    const dialog = page.getByRole('dialog');
+    const bounds = (await dialog.boundingBox())!;
+    expect(bounds.x).toBeGreaterThanOrEqual(0);
+    expect(bounds.x + bounds.width).toBeLessThanOrEqual(360);
+    expect(bounds.height).toBeLessThanOrEqual(760);
+    await page.screenshot({
+      path: 'test-results/landmark-island/details-mobile-demo.png',
+    });
+    await dialog
+      .getByRole('button', { name: 'Close landmark details' })
+      .click();
     await expect(dialog).not.toBeVisible();
-    await expect(about).toBeFocused();
-  }
-  expect(
-    await page.evaluate(() => localStorage.getItem('landmark-island-demo-v1')),
-  ).toBe(before);
-  await expect(page.locator('.ocean')).toHaveAttribute('data-mode', 'walk');
-  await page.setViewportSize({ width: 360, height: 800 });
-  await openInventory(page, 'landmarks');
-  await page.locator('[data-info="giza"]').click();
-  const dialog = page.getByRole('dialog');
-  const bounds = (await dialog.boundingBox())!;
-  expect(bounds.x).toBeGreaterThanOrEqual(0);
-  expect(bounds.x + bounds.width).toBeLessThanOrEqual(360);
-  expect(bounds.height).toBeLessThanOrEqual(760);
-  await page.screenshot({
-    path: 'test-results/landmark-island/details-mobile-demo.png',
   });
-  await dialog.getByRole('button', { name: 'Close landmark details' }).click();
-  await expect(dialog).not.toBeVisible();
-});
 
 test('a placed building opens actions first and exposes its story without losing placement', async ({
   page,
@@ -561,10 +576,10 @@ test('rarity filters, discoveries and progress distinguish unique landmarks from
   );
   const camera = await page.locator('.camera').getAttribute('style');
   for (const [tier, visible, collected, chance, rank, name] of [
-    ['common', 56, 0, 70, 1, 'Discovery'],
-    ['rare', 32, 0, 23, 2, 'Treasure'],
-    ['epic', 9, 0, 6, 3, 'Marvel'],
-    ['legendary', 3, 1, 1, 4, 'Wonder'],
+    ['common', 153, 0, 70, 1, 'Discovery'],
+    ['rare', 115, 0, 23, 2, 'Treasure'],
+    ['epic', 24, 0, 6, 3, 'Marvel'],
+    ['legendary', 8, 1, 1, 4, 'Wonder'],
   ] as const) {
     const filter = page.locator(`[data-tier-filter="${tier}"]`);
     await openInventory(page, 'landmarks');
@@ -678,7 +693,7 @@ for (const wonder of landmarks.filter((l) => l.tier === 'legendary'))
         .filter((l) => l.tier === 'legendary')
         .findIndex((l) => l.id === wonder.id) +
         0.5) /
-        3,
+        landmarks.filter((entry) => entry.tier === 'legendary').length,
     );
     await page.goto('/');
     const cardBody = page.locator(
@@ -1135,7 +1150,14 @@ test('host theme tokens update reading and controls live while preserving game a
     localStorage.getItem('landmark-island-demo-v1'),
   );
   const camera = await page.locator('.camera').getAttribute('style');
-  const art = await page.locator('.world-ground').innerHTML();
+  const terrainArt = () =>
+    page
+      .locator('.world-tile')
+      .evaluateAll((tiles) => tiles.map((tile) => tile.outerHTML));
+  const art = await terrainArt();
+  const actors = await page
+    .locator('.island-resident, .island-critter, .island-firefly')
+    .elementHandles();
   const water = await page
     .locator('.ocean')
     .evaluate((e) => getComputedStyle(e).backgroundImage);
@@ -1228,7 +1250,9 @@ test('host theme tokens update reading and controls live while preserving game a
       rgb(tokens['secondary-foreground']),
     );
     expect(await page.locator('.camera').getAttribute('style')).toBe(camera);
-    expect(await page.locator('.world-ground').innerHTML()).toBe(art);
+    expect(await terrainArt()).toEqual(art);
+    for (const actor of actors)
+      expect(await actor.evaluate((element) => element.isConnected)).toBe(true);
     expect(
       await page
         .locator('.ocean')
@@ -1605,123 +1629,154 @@ test('host backup export calls saveAs only from a fresh click and reports cancel
   );
 });
 
-test('material artwork keeps local paint references isolated across collection, copies and details', async ({
-  page,
-}) => {
-  test.setTimeout(90_000);
-  const svgErrors: string[] = [];
-  page.on('console', (message) => {
-    if (
-      message.type() === 'error' &&
-      /<path>|attribute d|SVG/i.test(message.text())
-    )
-      svgErrors.push(message.text());
-  });
-  const ids = [...landmarks.map((l) => l.id), 'giza'];
-  const save = {
-    version: 2,
-    tickets: ids.map((_, i) => ({
-      workspaceId: `art-fixture-${i}`,
-      at: '2026-11-06',
-    })),
-    receipts: ids.map((landmark, i) => ({
-      workspaceId: `art-fixture-${i}`,
-      landmark,
-      at: '2026-11-06',
-    })),
-    placements: [
-      { landmark: 'giza', cell: 0 },
-      { landmark: 'giza', cell: 1 },
-    ],
-  };
-  await page.emulateMedia({ reducedMotion: 'reduce' });
-  await page.goto('/');
-  await page.evaluate(
-    (s) => localStorage.setItem('landmark-island-demo-v1', JSON.stringify(s)),
-    save,
-  );
-  await page.reload();
-  await expect(page.locator('.collection .landmark-art')).toHaveCount(
-    landmarks.length,
-  );
-  await expect(page.locator('.building .landmark-art')).toHaveCount(2);
-  await expect(page.locator('.collection .wonder-art')).toHaveCount(3);
-  for (const entry of landmarks) {
-    await expect(
-      page.locator(`[data-landmark="${entry.id}"] .wonder-body`),
-    ).toHaveCount(entry.tier === 'legendary' ? 1 : 0);
-  }
-  // Previously saved Giza placements remain in place without the old Wonder effects.
-  await expect(page.locator('.building .wonder-art')).toHaveCount(0);
-
-  await page.setViewportSize({ width: 1200, height: 1000 });
-  await openInventory(page, 'landmarks');
-  await page.locator('.canvas-inventory').screenshot({
-    path: 'test-results/landmark-island/material-collection.png',
-  });
-  for (const id of [
-    'taj',
-    'colosseum',
-    'giza',
-    'gyeongbokgung',
-    'merlion',
-    'sagrada',
-    'greatwall',
-    'cn',
-    'atomium',
-    'basil',
-    'kilimanjaro',
-    'petra',
-    'angkor',
-    'machu',
-    ...landmarks.slice(36).map((l) => l.id),
-  ]) {
-    await openInventory(page, 'landmarks');
-    await page.locator(`[data-info=${id}]`).click();
-    const result = await page.evaluate(() => {
-      const allIds = [...document.querySelectorAll('.landmark-art [id]')].map(
-        (e) => e.id,
-      );
-      const missing: string[] = [];
-      document.querySelectorAll('.landmark-art').forEach((svg) => {
-        svg.querySelectorAll('[fill],[stroke],[clip-path]').forEach((node) => {
-          for (const attribute of ['fill', 'stroke', 'clip-path']) {
-            const ref = node
-              .getAttribute(attribute)
-              ?.match(/^url\(#(.+)\)$/)?.[1];
-            if (ref && !svg.querySelector(`[id="${ref}"]`)) missing.push(ref);
-          }
-        });
-      });
-      return { unique: new Set(allIds).size === allIds.length, missing };
+for (const [batch, catalogEntries] of catalogBatches.entries())
+  test(`material artwork keeps local paint references isolated across collection, copies and details (batch ${batch + 1})`, async ({
+    page,
+  }) => {
+    test.setTimeout(240_000);
+    const svgErrors: string[] = [];
+    page.on('console', (message) => {
+      if (
+        message.type() === 'error' &&
+        /<path>|attribute d|SVG/i.test(message.text())
+      )
+        svgErrors.push(message.text());
     });
-    expect(result).toEqual({ unique: true, missing: [] });
-    await page
-      .locator('.landmark-detail')
-      .screenshot({ path: `test-results/landmark-island/material-${id}.png` });
-    await page.keyboard.press('Escape');
-  }
-  expect(
-    await page.evaluate(() =>
-      JSON.parse(localStorage.getItem('landmark-island-demo-v1')!),
-    ),
-  ).toEqual(save);
-  expect(svgErrors).toEqual([]);
-  // An isolated contact sheet for reviewing the bundled artwork, not a product screen.
-  await page.setViewportSize({ width: 1200, height: 420 });
-  await page.evaluate((entries) => {
-    const cards = entries
-      .map(({ id, name, country }) => {
-        const svg = document.querySelector(
-          `[data-landmark="${id}"] svg`,
-        )!.outerHTML;
-        return `<article>${svg}<strong>${name}</strong><small>${country}</small></article>`;
-      })
-      .join('');
-    document.body.innerHTML = `<main id="art-review"><h1>DEMO · 33 new destinations</h1><div>${cards}</div></main>`;
-  }, landmarks.slice(67));
-  await page.addStyleTag({
-    content: `
+    const ids = [...landmarks.map((l) => l.id), 'giza'];
+    const save = {
+      version: 2,
+      tickets: ids.map((_, i) => ({
+        workspaceId: `art-fixture-${i}`,
+        at: '2026-11-06',
+      })),
+      receipts: ids.map((landmark, i) => ({
+        workspaceId: `art-fixture-${i}`,
+        landmark,
+        at: '2026-11-06',
+      })),
+      placements: [
+        { landmark: 'giza', cell: 0 },
+        { landmark: 'giza', cell: 1 },
+      ],
+    };
+    await page.emulateMedia({ reducedMotion: 'reduce' });
+    await page.goto('/');
+    await page.evaluate(
+      (s) => localStorage.setItem('landmark-island-demo-v1', JSON.stringify(s)),
+      save,
+    );
+    await page.reload();
+    await expect(page.locator('.collection .landmark-art')).toHaveCount(
+      landmarks.length,
+    );
+    await expect(page.locator('.building .landmark-art')).toHaveCount(2);
+    await expect(page.locator('.collection .wonder-art')).toHaveCount(8);
+    const inspectPaint = await page.evaluate(() => {
+      const inspect = (svgs: Element[], existing = new Set<string>()) => {
+        const ids = svgs.flatMap((svg) =>
+          [...svg.querySelectorAll('[id]')].map((node) => node.id),
+        );
+        const missing: string[] = [];
+        for (const svg of svgs)
+          svg
+            .querySelectorAll('[fill],[stroke],[clip-path]')
+            .forEach((node) => {
+              for (const attribute of ['fill', 'stroke', 'clip-path']) {
+                const ref = node
+                  .getAttribute(attribute)
+                  ?.match(/^url\(#(.+)\)$/)?.[1];
+                if (ref && !svg.querySelector(`[id="${ref}"]`))
+                  missing.push(ref);
+              }
+            });
+        return {
+          unique:
+            new Set(ids).size === ids.length &&
+            ids.every((id) => !existing.has(id)),
+          missing,
+        };
+      };
+      const svgs = [...document.querySelectorAll('.landmark-art')];
+      const baseline = new Set(
+        svgs.flatMap((svg) =>
+          [...svg.querySelectorAll('[id]')].map((node) => node.id),
+        ),
+      );
+      (
+        window as unknown as {
+          checkDetailPaint: (svg: Element) => ReturnType<typeof inspect>;
+        }
+      ).checkDetailPaint = (svg) => inspect([svg], baseline);
+      return inspect(svgs);
+    });
+    expect(inspectPaint).toEqual({ unique: true, missing: [] });
+    for (const entry of landmarks) {
+      await expect(
+        page.locator(`[data-landmark="${entry.id}"] .wonder-body`),
+      ).toHaveCount(entry.tier === 'legendary' ? 1 : 0);
+    }
+    // Previously saved Giza placements remain in place without the old Wonder effects.
+    await expect(page.locator('.building .wonder-art')).toHaveCount(0);
+
+    await page.setViewportSize({ width: 1200, height: 1000 });
+    await openInventory(page, 'landmarks');
+    await page.locator('.canvas-inventory').screenshot({
+      path: test.info().outputPath('material-collection.jpg'),
+      quality: 80,
+    });
+    for (const { id } of catalogEntries) {
+      await openInventory(page, 'landmarks');
+      await page.locator(`[data-info=${id}]`).click();
+      const result = await page
+        .locator('.detail-art .landmark-art')
+        .evaluate((svg) =>
+          (
+            window as unknown as {
+              checkDetailPaint: (svg: Element) => {
+                unique: boolean;
+                missing: string[];
+              };
+            }
+          ).checkDetailPaint(svg),
+        );
+      expect(result).toEqual({ unique: true, missing: [] });
+      await page.locator('.landmark-detail').screenshot({
+        path: `test-results/landmark-island/material-${id}.jpg`,
+        quality: 80,
+      });
+      await page.keyboard.press('Escape');
+    }
+    expect(
+      await page.evaluate(() =>
+        JSON.parse(localStorage.getItem('landmark-island-demo-v1')!),
+      ),
+    ).toEqual(save);
+    expect(svgErrors).toEqual([]);
+    expect(
+      await page.locator('.landmark-art [id]').evaluateAll((nodes) => {
+        const ids = nodes.map((node) => node.id);
+        return new Set(ids).size === ids.length;
+      }),
+    ).toBe(true);
+    if (batch > 0) return;
+    // An isolated contact sheet for reviewing the bundled artwork, not a product screen.
+    await page.setViewportSize({ width: 1200, height: 420 });
+    await page.evaluate(
+      (entries) => {
+        const cards = entries
+          .map(({ id, name, country }) => {
+            const svg = document.querySelector(
+              `[data-landmark="${id}"] svg`,
+            )!.outerHTML;
+            return `<article>${svg}<strong>${name}</strong><small>${country}</small></article>`;
+          })
+          .join('');
+        document.body.innerHTML = `<main id="art-review"><h1>DEMO · 33 new destinations</h1><div>${cards}</div></main>`;
+      },
+      landmarks.slice(67, 100),
+    );
+    await page.addStyleTag({
+      content: `
     body { margin: 0; background: #ede9d3; color: #344b3d; }
     #art-review { padding: 24px; font-family: sans-serif; }
     #art-review h1 { font-size: 22px; margin: 0 0 18px; }
@@ -1731,24 +1786,31 @@ test('material artwork keeps local paint references isolated across collection, 
     #art-review strong { font-size: 14px; margin-top: 6px; }
     #art-review small { font-size: 12px; color: #627159; }
   `,
+    });
+    await expect(page.locator('#art-review')).toHaveCount(1);
+    await page.locator('#art-review').screenshot({
+      path: 'test-results/landmark-island/landmarks-100-demo.png',
+    });
   });
-  await expect(page.locator('#art-review')).toHaveCount(1);
-  await page.locator('#art-review').screenshot({
-    path: 'test-results/landmark-island/landmarks-100-demo.png',
-  });
-});
 
 test('new discoveries grow land, gifts unlock sets, duplicates craft chosen decorations', async ({
   page,
 }) => {
-  await page.addInitScript(() => {
-    let roll = 0;
-    Math.random = () => {
-      const tierRoll =
-        (window as unknown as { fixtureRoll?: number }).fixtureRoll ?? 0.8;
-      return roll++ % 2 === 0 ? tierRoll : tierRoll === 0.71 ? 3.5 / 32 : 0;
-    };
-  });
+  await page.addInitScript(
+    (rareCount) => {
+      let roll = 0;
+      Math.random = () => {
+        const tierRoll =
+          (window as unknown as { fixtureRoll?: number }).fixtureRoll ?? 0.8;
+        return roll++ % 2 === 0
+          ? tierRoll
+          : tierRoll === 0.71
+            ? 3.5 / rareCount
+            : 0;
+      };
+    },
+    landmarks.filter((entry) => entry.tier === 'rare').length,
+  );
   await page.goto('/');
   await expect(page.locator('.cell')).toHaveCount(36);
   await expect(page.locator('.material-balance')).toHaveText('0 materials');
@@ -2497,9 +2559,9 @@ for (const reducedMotion of [false, true])
     await centered(30);
     await ocean.scrollIntoViewIfNeeded();
     let box = (await ocean.boundingBox())!;
-    await page.mouse.move(box.x + 30, box.y + 180);
+    await page.mouse.move(box.x + 30, box.y + 300);
     await page.mouse.down();
-    await page.mouse.move(box.x + 90, box.y + 210, { steps: 8 });
+    await page.mouse.move(box.x + 90, box.y + 330, { steps: 8 });
     await page.mouse.up();
     await expect(ocean).toHaveAttribute('data-follow', 'false');
     const pan = await camera.getAttribute('style');

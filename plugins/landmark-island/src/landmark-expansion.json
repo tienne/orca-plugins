@@ -1,0 +1,2002 @@
+[
+  {
+    "id": "montsaintmichel",
+    "name": "Mont-Saint-Michel",
+    "nameKo": "몽생미셸",
+    "shape": "island",
+    "feature": "An abbey crowns a rocky island above a broad tidal bay",
+    "featureKo": "바닷물이 드나드는 만의 바위섬 위로 수도원이 솟아 있습니다",
+    "seed": 1,
+    "color": "#b69772"
+  },
+  {
+    "id": "versailles",
+    "name": "Palace of Versailles",
+    "nameKo": "베르사유 궁전",
+    "shape": "palace",
+    "feature": "Long palace wings face formal gardens laid out along straight avenues",
+    "featureKo": "긴 궁전 건물 앞에 곧은 길을 따라 정원이 펼쳐집니다",
+    "seed": 2,
+    "color": "#c4ac88"
+  },
+  {
+    "id": "chartres",
+    "name": "Chartres Cathedral",
+    "nameKo": "샤르트르 대성당",
+    "shape": "cathedral",
+    "feature": "Two contrasting spires rise above a Gothic cathedral known for stained glass",
+    "featureKo": "서로 다른 두 첨탑과 스테인드글라스가 고딕 성당을 장식합니다",
+    "seed": 3,
+    "color": "#aeb9a0"
+  },
+  {
+    "id": "amiens",
+    "name": "Amiens Cathedral",
+    "nameKo": "아미앵 대성당",
+    "shape": "cathedral",
+    "feature": "A broad Gothic facade frames deep portals and a tall central nave",
+    "featureKo": "깊은 출입구와 높은 신랑을 넓은 고딕 정면이 감싸고 있습니다",
+    "seed": 4,
+    "color": "#bc8b70"
+  },
+  {
+    "id": "pontdugard",
+    "name": "Pont du Gard",
+    "nameKo": "퐁뒤가르",
+    "shape": "aqueduct",
+    "feature": "Three tiers of Roman arches carry an aqueduct above the river",
+    "featureKo": "세 층의 로마식 아치가 강 위로 수로를 떠받칩니다",
+    "seed": 5,
+    "color": "#8baba4"
+  },
+  {
+    "id": "avignon",
+    "name": "Palace of the Popes",
+    "nameKo": "아비뇽 교황청",
+    "shape": "fortress",
+    "feature": "Massive stone walls and square towers give the papal palace a fortified outline",
+    "featureKo": "두꺼운 석벽과 사각 탑이 교황 궁전을 요새처럼 둘러쌉니다",
+    "seed": 6,
+    "color": "#d3b17c"
+  },
+  {
+    "id": "carcassonne",
+    "name": "Carcassonne",
+    "nameKo": "카르카손",
+    "shape": "castle",
+    "feature": "Conical tower roofs punctuate the double walls of a fortified medieval town",
+    "featureKo": "원뿔 지붕의 탑들이 중세 도시의 이중 성벽을 따라 늘어서 있습니다",
+    "seed": 7,
+    "color": "#b7a28c"
+  },
+  {
+    "id": "fontainebleau",
+    "name": "Fontainebleau Palace",
+    "nameKo": "퐁텐블로 궁전",
+    "shape": "palace",
+    "feature": "Courtyards and steep roofs link successive wings of a royal residence",
+    "featureKo": "안뜰과 가파른 지붕이 왕궁의 여러 건물을 이어 줍니다",
+    "seed": 8,
+    "color": "#829b8a"
+  },
+  {
+    "id": "albi",
+    "name": "Albi Cathedral",
+    "nameKo": "알비 대성당",
+    "shape": "cathedral",
+    "feature": "A monumental brick cathedral has a solid exterior and a tall bell tower",
+    "featureKo": "거대한 벽돌 성당의 단단한 외벽 위로 높은 종탑이 솟아 있습니다",
+    "seed": 9,
+    "color": "#bca6a0"
+  },
+  {
+    "id": "reims",
+    "name": "Reims Cathedral",
+    "nameKo": "랭스 대성당",
+    "shape": "cathedral",
+    "feature": "A richly sculpted Gothic facade rises above three deep entrance portals",
+    "featureKo": "세 개의 깊은 문 위로 조각이 풍부한 고딕 정면이 이어집니다",
+    "seed": 10,
+    "color": "#b69772"
+  },
+  {
+    "id": "arles",
+    "name": "Arles Amphitheatre",
+    "nameKo": "아를 원형경기장",
+    "shape": "arena",
+    "feature": "An oval Roman amphitheatre encloses an arena within repeated stone arches",
+    "featureKo": "타원형 로마 원형경기장의 석조 아치들이 경기장을 둘러쌉니다",
+    "seed": 11,
+    "color": "#c4ac88"
+  },
+  {
+    "id": "lehavre",
+    "name": "Le Havre",
+    "nameKo": "르아브르",
+    "shape": "modern",
+    "feature": "Concrete buildings and a high church tower define a rebuilt port city",
+    "featureKo": "콘크리트 건물과 높은 교회 탑이 재건된 항구 도시의 윤곽을 이룹니다",
+    "seed": 12,
+    "color": "#aeb9a0"
+  },
+  {
+    "id": "brugge",
+    "name": "Bruges",
+    "nameKo": "브뤼헤",
+    "shape": "canal",
+    "feature": "Stepped gables and a belfry overlook canals in a medieval trading town",
+    "featureKo": "계단식 박공과 종탑이 중세 무역 도시의 운하를 내려다봅니다",
+    "seed": 13,
+    "color": "#bc8b70"
+  },
+  {
+    "id": "brusselsplace",
+    "name": "Grand Place",
+    "nameKo": "브뤼셀 그랑플라스",
+    "shape": "square",
+    "feature": "Ornate guild houses surround a square watched over by a tall town-hall spire",
+    "featureKo": "장식적인 길드 건물과 높은 시청 첨탑이 광장을 둘러싸고 있습니다",
+    "seed": 14,
+    "color": "#8baba4"
+  },
+  {
+    "id": "tournai",
+    "name": "Tournai Cathedral",
+    "nameKo": "투르네 대성당",
+    "shape": "cathedral",
+    "feature": "Five towers form the distinctive skyline of a great stone cathedral",
+    "featureKo": "다섯 개의 탑이 석조 대성당의 독특한 윤곽을 만듭니다",
+    "seed": 15,
+    "color": "#d3b17c"
+  },
+  {
+    "id": "cologne",
+    "name": "Cologne Cathedral",
+    "nameKo": "쾰른 대성당",
+    "shape": "cathedral",
+    "feature": "Twin openwork spires rise above the long roof of a Gothic cathedral",
+    "featureKo": "고딕 대성당의 긴 지붕 위로 섬세한 쌍둥이 첨탑이 솟아 있습니다",
+    "seed": 16,
+    "color": "#b7a28c"
+  },
+  {
+    "id": "aachen",
+    "name": "Aachen Cathedral",
+    "nameKo": "아헨 대성당",
+    "shape": "dome",
+    "feature": "An octagonal central chapel anchors a cathedral enlarged across many periods",
+    "featureKo": "팔각형 중앙 예배당을 중심으로 여러 시대의 건축물이 이어집니다",
+    "seed": 17,
+    "color": "#829b8a"
+  },
+  {
+    "id": "speyer",
+    "name": "Speyer Cathedral",
+    "nameKo": "슈파이어 대성당",
+    "shape": "cathedral",
+    "feature": "Romanesque towers and a long nave give this cathedral a strong geometric rhythm",
+    "featureKo": "로마네스크 탑과 긴 신랑이 규칙적인 석조 윤곽을 이루고 있습니다",
+    "seed": 18,
+    "color": "#bca6a0"
+  },
+  {
+    "id": "wartburg",
+    "name": "Wartburg Castle",
+    "nameKo": "바르트부르크 성",
+    "shape": "castle",
+    "feature": "A hilltop castle combines stone halls with timber-framed buildings",
+    "featureKo": "언덕 위 성에 석조 홀과 목조 골조 건물이 어우러져 있습니다",
+    "seed": 19,
+    "color": "#b69772"
+  },
+  {
+    "id": "bamberg",
+    "name": "Bamberg",
+    "nameKo": "밤베르크",
+    "shape": "town",
+    "feature": "Historic roofs and church towers rise across a town built on several hills",
+    "featureKo": "여러 언덕에 걸친 도시 위로 오래된 지붕과 교회 탑이 이어집니다",
+    "seed": 20,
+    "color": "#c4ac88"
+  },
+  {
+    "id": "quedlinburg",
+    "name": "Quedlinburg",
+    "nameKo": "크베들린부르크",
+    "shape": "town",
+    "feature": "Timber-framed houses cluster below a castle hill and collegiate church",
+    "featureKo": "목조 골조 주택들이 성과 교회가 자리한 언덕 아래 모여 있습니다",
+    "seed": 21,
+    "color": "#aeb9a0"
+  },
+  {
+    "id": "maulbronn",
+    "name": "Maulbronn Monastery",
+    "nameKo": "마울브론 수도원",
+    "shape": "cloister",
+    "feature": "Stone arcades surround quiet courtyards within a medieval monastery complex",
+    "featureKo": "중세 수도원 안의 조용한 안뜰을 석조 회랑이 둘러싸고 있습니다",
+    "seed": 22,
+    "color": "#bc8b70"
+  },
+  {
+    "id": "volklingen",
+    "name": "Völklingen Ironworks",
+    "nameKo": "푈클링겐 제철소",
+    "shape": "industrial",
+    "feature": "Blast furnaces and elevated metal walkways preserve the outline of an ironworks",
+    "featureKo": "용광로와 높은 금속 통로가 제철소의 구조를 보여 줍니다",
+    "seed": 23,
+    "color": "#8baba4"
+  },
+  {
+    "id": "zollverein",
+    "name": "Zollverein",
+    "nameKo": "촐페라인 탄광",
+    "shape": "industrial",
+    "feature": "A geometric winding tower stands above the brick buildings of a coal mine",
+    "featureKo": "기하학적인 권양탑이 탄광의 벽돌 건물 위에 서 있습니다",
+    "seed": 24,
+    "color": "#d3b17c"
+  },
+  {
+    "id": "bauhaus",
+    "name": "Bauhaus Dessau",
+    "nameKo": "바우하우스 데사우",
+    "shape": "modern",
+    "feature": "Glass curtain walls meet clean cubic volumes in a pioneering design school",
+    "featureKo": "유리 커튼월과 간결한 직육면체가 디자인 학교의 외형을 만듭니다",
+    "seed": 25,
+    "color": "#b7a28c"
+  },
+  {
+    "id": "lubeck",
+    "name": "Lübeck",
+    "nameKo": "뤼베크",
+    "shape": "town",
+    "feature": "Brick Gothic church spires rise above the roofs of a Hanseatic port",
+    "featureKo": "한자 동맹 항구의 지붕 위로 벽돌 고딕 교회의 첨탑들이 솟아 있습니다",
+    "seed": 26,
+    "color": "#829b8a"
+  },
+  {
+    "id": "neuschwanstein",
+    "name": "Neuschwanstein Castle",
+    "nameKo": "노이슈반슈타인 성",
+    "shape": "castle",
+    "feature": "Pale walls and slender turrets create a dramatic castle silhouette above forested slopes",
+    "featureKo": "옅은 성벽과 가느다란 탑들이 숲이 우거진 비탈 위에 솟아 있습니다",
+    "seed": 27,
+    "color": "#bca6a0"
+  },
+  {
+    "id": "pisa",
+    "name": "Leaning Tower of Pisa",
+    "nameKo": "피사의 사탑",
+    "shape": "leaning",
+    "feature": "A leaning cylindrical bell tower is wrapped in successive rings of open arcades",
+    "featureKo": "기울어진 원통형 종탑을 여러 층의 열린 회랑이 감싸고 있습니다",
+    "seed": 28,
+    "color": "#b69772"
+  },
+  {
+    "id": "florence",
+    "name": "Florence Cathedral",
+    "nameKo": "피렌체 대성당",
+    "shape": "dome",
+    "feature": "A great terracotta dome rises beside a slender marble-clad bell tower",
+    "featureKo": "거대한 붉은 돔 옆에 대리석으로 장식한 가느다란 종탑이 서 있습니다",
+    "seed": 29,
+    "color": "#c4ac88"
+  },
+  {
+    "id": "venice",
+    "name": "Venice",
+    "nameKo": "베네치아",
+    "shape": "canal",
+    "feature": "Palace facades and church domes face waterways within a lagoon city",
+    "featureKo": "석호 도시의 물길을 따라 궁전 정면과 교회 돔이 이어집니다",
+    "seed": 30,
+    "color": "#aeb9a0"
+  },
+  {
+    "id": "ravenna",
+    "name": "Ravenna Mosaics",
+    "nameKo": "라벤나 모자이크 유적",
+    "shape": "basilica",
+    "feature": "Brick churches shelter richly coloured mosaics beneath simple exterior forms",
+    "featureKo": "단정한 벽돌 교회 안에 다채로운 모자이크가 보존되어 있습니다",
+    "seed": 31,
+    "color": "#bc8b70"
+  },
+  {
+    "id": "assisi",
+    "name": "Basilica of Saint Francis",
+    "nameKo": "아시시 성 프란체스코 대성당",
+    "shape": "basilica",
+    "feature": "A hillside basilica joins stacked church spaces with a long arcaded convent",
+    "featureKo": "언덕 위 대성당이 겹쳐진 예배 공간과 긴 아치형 수도원을 연결합니다",
+    "seed": 32,
+    "color": "#8baba4"
+  },
+  {
+    "id": "casteldelmonte",
+    "name": "Castel del Monte",
+    "nameKo": "카스텔 델 몬테",
+    "shape": "octagon",
+    "feature": "An octagonal castle repeats its eight-sided geometry in towers at every corner",
+    "featureKo": "팔각형 성의 모서리마다 팔각 탑이 같은 기하학을 반복합니다",
+    "seed": 33,
+    "color": "#d3b17c"
+  },
+  {
+    "id": "alberobello",
+    "name": "Alberobello Trulli",
+    "nameKo": "알베로벨로 트룰리",
+    "shape": "trulli",
+    "feature": "Whitewashed stone houses carry clusters of conical dry-stone roofs",
+    "featureKo": "흰 회칠을 한 석조 주택 위로 원뿔형 돌 지붕이 모여 있습니다",
+    "seed": 34,
+    "color": "#b7a28c"
+  },
+  {
+    "id": "sangimignano",
+    "name": "San Gimignano",
+    "nameKo": "산지미냐노",
+    "shape": "towers",
+    "feature": "Medieval stone towers rise at different heights above a compact Tuscan town",
+    "featureKo": "높이가 제각각인 중세 석탑들이 토스카나 소도시의 지붕 위에 서 있습니다",
+    "seed": 35,
+    "color": "#829b8a"
+  },
+  {
+    "id": "siena",
+    "name": "Siena",
+    "nameKo": "시에나",
+    "shape": "square",
+    "feature": "A tall civic tower overlooks the sloping shell-shaped Piazza del Campo",
+    "featureKo": "높은 시청 탑이 조개껍데기 모양으로 기울어진 캄포 광장을 내려다봅니다",
+    "seed": 36,
+    "color": "#bca6a0"
+  },
+  {
+    "id": "paestum",
+    "name": "Paestum Temples",
+    "nameKo": "파에스툼 신전",
+    "shape": "columns",
+    "feature": "Rows of heavy Doric columns preserve the outlines of ancient Greek temples",
+    "featureKo": "굵은 도리스식 기둥들이 고대 그리스 신전의 윤곽을 남기고 있습니다",
+    "seed": 37,
+    "color": "#b69772"
+  },
+  {
+    "id": "pompeii",
+    "name": "Pompeii",
+    "nameKo": "폼페이",
+    "shape": "ruins",
+    "feature": "Stone streets and roofless buildings reveal the plan of an ancient Roman town",
+    "featureKo": "돌길과 지붕이 사라진 건물들이 고대 로마 도시의 구조를 드러냅니다",
+    "seed": 38,
+    "color": "#c4ac88"
+  },
+  {
+    "id": "matera",
+    "name": "Sassi of Matera",
+    "nameKo": "마테라 동굴 주거지",
+    "shape": "cliff",
+    "feature": "Rock-cut dwellings and stone facades step down the sides of a ravine",
+    "featureKo": "바위를 파낸 집과 석조 정면이 계곡의 비탈을 따라 층층이 이어집니다",
+    "seed": 39,
+    "color": "#aeb9a0"
+  },
+  {
+    "id": "amalfi",
+    "name": "Amalfi Coast",
+    "nameKo": "아말피 해안",
+    "shape": "coast",
+    "feature": "Villages and cultivated terraces climb steep slopes above the Mediterranean",
+    "featureKo": "마을과 경작 테라스가 지중해를 마주한 가파른 비탈 위로 이어집니다",
+    "seed": 40,
+    "color": "#bc8b70"
+  },
+  {
+    "id": "caserta",
+    "name": "Royal Palace of Caserta",
+    "nameKo": "카세르타 왕궁",
+    "shape": "palace",
+    "feature": "A vast rectangular palace faces a long garden axis with water features",
+    "featureKo": "거대한 직사각형 왕궁 앞에 물길을 갖춘 긴 정원 축이 이어집니다",
+    "seed": 41,
+    "color": "#8baba4"
+  },
+  {
+    "id": "palermo",
+    "name": "Arab-Norman Palermo",
+    "nameKo": "팔레르모 아랍 노르만 유적",
+    "shape": "dome",
+    "feature": "Domes and arcades combine architectural traditions across a Sicilian royal landscape",
+    "featureKo": "돔과 회랑에 여러 건축 전통이 어우러진 시칠리아 왕실 유적입니다",
+    "seed": 42,
+    "color": "#d3b17c"
+  },
+  {
+    "id": "etna",
+    "name": "Mount Etna",
+    "nameKo": "에트나산",
+    "shape": "volcano",
+    "feature": "A broad volcanic cone rises above the surrounding Sicilian landscape",
+    "featureKo": "넓은 화산체가 시칠리아의 주변 풍경 위로 솟아 있습니다",
+    "seed": 43,
+    "color": "#b7a28c"
+  },
+  {
+    "id": "dolomites",
+    "name": "Dolomites",
+    "nameKo": "돌로미티",
+    "shape": "peaks",
+    "feature": "Pale rock walls and sharply cut peaks form a distinctive mountain skyline",
+    "featureKo": "옅은 암벽과 날카롭게 갈라진 봉우리들이 산악 풍경을 이룹니다",
+    "seed": 44,
+    "color": "#829b8a"
+  },
+  {
+    "id": "alhambra",
+    "name": "Alhambra",
+    "nameKo": "알람브라 궁전",
+    "shape": "palace",
+    "feature": "Fortified walls enclose palace courtyards and gardens on a hill above Granada",
+    "featureKo": "그라나다의 언덕 위 성벽 안에 궁전의 안뜰과 정원이 자리합니다",
+    "seed": 45,
+    "color": "#bca6a0"
+  },
+  {
+    "id": "segovia",
+    "name": "Aqueduct of Segovia",
+    "nameKo": "세고비아 수도교",
+    "shape": "aqueduct",
+    "feature": "Two levels of granite arches carry a Roman aqueduct into the historic city",
+    "featureKo": "두 층의 화강암 아치가 로마 수도교를 오래된 도심으로 이끕니다",
+    "seed": 46,
+    "color": "#b69772"
+  },
+  {
+    "id": "santiago",
+    "name": "Santiago Cathedral",
+    "nameKo": "산티아고 대성당",
+    "shape": "cathedral",
+    "feature": "A monumental cathedral facade marks the destination of a long pilgrimage tradition",
+    "featureKo": "거대한 대성당 정면이 오랜 순례 전통의 목적지를 표시합니다",
+    "seed": 47,
+    "color": "#c4ac88"
+  },
+  {
+    "id": "cordoba",
+    "name": "Mosque-Cathedral of Córdoba",
+    "nameKo": "코르도바 메스키타",
+    "shape": "arcades",
+    "feature": "Repeated columns and two-tiered arches create the mosque-cathedral's interior rhythm",
+    "featureKo": "반복되는 기둥과 이중 아치가 모스크 대성당의 내부 리듬을 만듭니다",
+    "seed": 48,
+    "color": "#aeb9a0"
+  },
+  {
+    "id": "toledo",
+    "name": "Toledo",
+    "nameKo": "톨레도",
+    "shape": "town",
+    "feature": "Stone walls and clustered roofs occupy a hill above a bend in the river",
+    "featureKo": "강이 굽이치는 언덕 위에 석벽과 빽빽한 지붕들이 자리합니다",
+    "seed": 49,
+    "color": "#bc8b70"
+  },
+  {
+    "id": "avila",
+    "name": "Walls of Ávila",
+    "nameKo": "아빌라 성벽",
+    "shape": "fortress",
+    "feature": "Round towers repeatedly interrupt a long circuit of medieval stone walls",
+    "featureKo": "중세 석조 성벽을 따라 둥근 탑들이 규칙적으로 이어집니다",
+    "seed": 50,
+    "color": "#8baba4"
+  },
+  {
+    "id": "cuenca",
+    "name": "Hanging Houses of Cuenca",
+    "nameKo": "쿠엥카 절벽 주택",
+    "shape": "cliff",
+    "feature": "Balconied houses stand along the edge of deep river gorges",
+    "featureKo": "발코니가 달린 집들이 깊은 강 계곡의 가장자리에 서 있습니다",
+    "seed": 51,
+    "color": "#d3b17c"
+  },
+  {
+    "id": "seville",
+    "name": "Seville Cathedral and Alcázar",
+    "nameKo": "세비야 대성당과 알카사르",
+    "shape": "palace",
+    "feature": "A great cathedral and royal palace bring towers and courtyards into one historic ensemble",
+    "featureKo": "거대한 대성당과 왕궁의 탑과 안뜰이 하나의 역사 경관을 이룹니다",
+    "seed": 52,
+    "color": "#b7a28c"
+  },
+  {
+    "id": "burgos",
+    "name": "Burgos Cathedral",
+    "nameKo": "부르고스 대성당",
+    "shape": "cathedral",
+    "feature": "Lace-like Gothic spires frame a facade filled with sculpted openings",
+    "featureKo": "레이스처럼 섬세한 고딕 첨탑이 조각으로 장식한 정면을 감싸고 있습니다",
+    "seed": 53,
+    "color": "#829b8a"
+  },
+  {
+    "id": "merida",
+    "name": "Roman Theatre of Mérida",
+    "nameKo": "메리다 로마 극장",
+    "shape": "theatre",
+    "feature": "A semicircular theatre faces a reconstructed stage front with tall columns",
+    "featureKo": "반원형 극장이 높은 기둥으로 이루어진 무대 정면을 마주하고 있습니다",
+    "seed": 54,
+    "color": "#bca6a0"
+  },
+  {
+    "id": "lasmedulas",
+    "name": "Las Médulas",
+    "nameKo": "라스 메둘라스",
+    "shape": "redrocks",
+    "feature": "Red earth pinnacles reveal a landscape reshaped by Roman gold mining",
+    "featureKo": "붉은 흙 봉우리들이 로마 시대 금 채굴로 바뀐 풍경을 보여 줍니다",
+    "seed": 55,
+    "color": "#b69772"
+  },
+  {
+    "id": "batalha",
+    "name": "Batalha Monastery",
+    "nameKo": "바탈랴 수도원",
+    "shape": "cloister",
+    "feature": "Carved Gothic stonework surrounds a monastery with quiet enclosed cloisters",
+    "featureKo": "정교한 고딕 석조 장식이 조용한 회랑을 갖춘 수도원을 감싸고 있습니다",
+    "seed": 56,
+    "color": "#c4ac88"
+  },
+  {
+    "id": "alcobaca",
+    "name": "Alcobaça Monastery",
+    "nameKo": "알코바사 수도원",
+    "shape": "cloister",
+    "feature": "A long church and restrained stone arcades form a Cistercian monastery",
+    "featureKo": "긴 교회와 절제된 석조 회랑이 시토회 수도원을 이룹니다",
+    "seed": 57,
+    "color": "#aeb9a0"
+  },
+  {
+    "id": "sintra",
+    "name": "Sintra",
+    "nameKo": "신트라",
+    "shape": "castle",
+    "feature": "Palaces and castles rise among wooded hills in a romantic cultural landscape",
+    "featureKo": "낭만적인 문화 경관 속 숲이 우거진 언덕에 궁전과 성이 솟아 있습니다",
+    "seed": 58,
+    "color": "#bc8b70"
+  },
+  {
+    "id": "evora",
+    "name": "Évora",
+    "nameKo": "에보라",
+    "shape": "columns",
+    "feature": "Roman columns and whitewashed buildings share the skyline of a historic town",
+    "featureKo": "로마 시대 기둥과 흰 회칠 건물들이 오래된 도시의 윤곽을 함께 만듭니다",
+    "seed": 59,
+    "color": "#8baba4"
+  },
+  {
+    "id": "douro",
+    "name": "Douro Valley",
+    "nameKo": "도루 계곡",
+    "shape": "terraces",
+    "feature": "Terraced vineyards follow steep hillsides beside a winding river",
+    "featureKo": "계단식 포도밭이 굽이치는 강 옆의 가파른 언덕을 따라 이어집니다",
+    "seed": 60,
+    "color": "#d3b17c"
+  },
+  {
+    "id": "forthbridge",
+    "name": "Forth Bridge",
+    "nameKo": "포스교",
+    "shape": "bridge",
+    "feature": "Three great red cantilever structures span a wide Scottish estuary",
+    "featureKo": "거대한 붉은 캔틸레버 구조 세 개가 스코틀랜드의 넓은 하구를 건넙니다",
+    "seed": 61,
+    "color": "#b7a28c"
+  },
+  {
+    "id": "towerlondon",
+    "name": "Tower of London",
+    "nameKo": "런던탑",
+    "shape": "fortress",
+    "feature": "A square central keep stands within successive rings of defensive walls",
+    "featureKo": "사각형 중앙 성채를 여러 겹의 방어 성벽이 둘러싸고 있습니다",
+    "seed": 62,
+    "color": "#829b8a"
+  },
+  {
+    "id": "westminster",
+    "name": "Palace of Westminster",
+    "nameKo": "웨스트민스터 궁전",
+    "shape": "palace",
+    "feature": "Gothic towers and long riverside facades line the edge of the Thames",
+    "featureKo": "고딕 탑과 긴 정면이 템스강 가장자리를 따라 이어집니다",
+    "seed": 63,
+    "color": "#bca6a0"
+  },
+  {
+    "id": "bath",
+    "name": "Roman Baths of Bath",
+    "nameKo": "바스 로마 목욕장",
+    "shape": "arcades",
+    "feature": "A columned bathing complex recalls the town's long use of thermal springs",
+    "featureKo": "기둥이 늘어선 목욕장이 온천을 이용해 온 도시의 역사를 보여 줍니다",
+    "seed": 64,
+    "color": "#b69772"
+  },
+  {
+    "id": "durham",
+    "name": "Durham Cathedral",
+    "nameKo": "더럼 대성당",
+    "shape": "cathedral",
+    "feature": "A Romanesque cathedral occupies a raised peninsula above the River Wear",
+    "featureKo": "로마네스크 대성당이 웨어강 위의 높은 반도 지형에 자리합니다",
+    "seed": 65,
+    "color": "#c4ac88"
+  },
+  {
+    "id": "canterbury",
+    "name": "Canterbury Cathedral",
+    "nameKo": "캔터베리 대성당",
+    "shape": "cathedral",
+    "feature": "A long cathedral with a high crossing tower anchors a historic pilgrimage city",
+    "featureKo": "높은 교차부 탑을 갖춘 긴 대성당이 오래된 순례 도시의 중심에 있습니다",
+    "seed": 66,
+    "color": "#aeb9a0"
+  },
+  {
+    "id": "blenheim",
+    "name": "Blenheim Palace",
+    "nameKo": "블레넘 궁전",
+    "shape": "palace",
+    "feature": "A monumental palace opens onto broad landscaped parkland",
+    "featureKo": "기념비적인 궁전 앞에 넓은 풍경식 공원이 펼쳐집니다",
+    "seed": 67,
+    "color": "#bc8b70"
+  },
+  {
+    "id": "ironbridge",
+    "name": "Iron Bridge",
+    "nameKo": "아이언브리지",
+    "shape": "bridge",
+    "feature": "A single cast-iron arch crosses a river in an early industrial landscape",
+    "featureKo": "초기 산업 경관 속 강 위로 하나의 주철 아치가 놓여 있습니다",
+    "seed": 68,
+    "color": "#8baba4"
+  },
+  {
+    "id": "giantscauseway",
+    "name": "Giant's Causeway",
+    "nameKo": "자이언츠 코즈웨이",
+    "shape": "basalt",
+    "feature": "Closely packed basalt columns step down toward the sea",
+    "featureKo": "촘촘하게 모인 현무암 기둥들이 바다를 향해 층층이 내려갑니다",
+    "seed": 69,
+    "color": "#d3b17c"
+  },
+  {
+    "id": "meteora",
+    "name": "Meteora",
+    "nameKo": "메테오라",
+    "shape": "clifftemple",
+    "feature": "Monasteries stand atop narrow rock pillars above a broad valley",
+    "featureKo": "좁고 높은 바위 기둥 위로 수도원들이 계곡을 내려다봅니다",
+    "seed": 70,
+    "color": "#b7a28c"
+  },
+  {
+    "id": "forbiddencity",
+    "name": "Forbidden City",
+    "nameKo": "자금성",
+    "shape": "pagoda",
+    "feature": "Successive courtyards and golden roofs extend along a monumental palace axis",
+    "featureKo": "잇따른 안뜰과 황금빛 지붕이 거대한 궁전의 중심축을 따라 이어집니다",
+    "seed": 71,
+    "color": "#829b8a"
+  },
+  {
+    "id": "templeheaven",
+    "name": "Temple of Heaven",
+    "nameKo": "천단",
+    "shape": "roundtemple",
+    "feature": "A circular triple-roofed hall stands on concentric white stone terraces",
+    "featureKo": "둥근 삼중 지붕의 전각이 동심원 모양의 흰 석조 단 위에 서 있습니다",
+    "seed": 72,
+    "color": "#bca6a0"
+  },
+  {
+    "id": "summerpalace",
+    "name": "Summer Palace",
+    "nameKo": "이화원",
+    "shape": "pagoda",
+    "feature": "Pavilions and temples connect a garden hill with the waters of Kunming Lake",
+    "featureKo": "누각과 사찰이 정원의 언덕을 쿤밍호의 물가와 이어 줍니다",
+    "seed": 73,
+    "color": "#b69772"
+  },
+  {
+    "id": "qufu",
+    "name": "Temple of Confucius at Qufu",
+    "nameKo": "취푸 공자묘",
+    "shape": "pagoda",
+    "feature": "Courtyards and tiled halls preserve a ceremonial complex dedicated to Confucius",
+    "featureKo": "안뜰과 기와 전각들이 공자를 기리는 의례 공간을 이루고 있습니다",
+    "seed": 74,
+    "color": "#c4ac88"
+  },
+  {
+    "id": "longmen",
+    "name": "Longmen Grottoes",
+    "nameKo": "룽먼 석굴",
+    "shape": "cliffbuddha",
+    "feature": "Buddhist figures and cave openings are carved into limestone cliffs beside a river",
+    "featureKo": "강 옆 석회암 절벽에 불상과 석굴 입구가 새겨져 있습니다",
+    "seed": 75,
+    "color": "#aeb9a0"
+  },
+  {
+    "id": "mogao",
+    "name": "Mogao Caves",
+    "nameKo": "막고굴",
+    "shape": "cliff",
+    "feature": "Cave openings preserve Buddhist sanctuaries along a desert cliff face",
+    "featureKo": "사막의 절벽을 따라 불교 성소를 품은 석굴 입구가 이어집니다",
+    "seed": 76,
+    "color": "#bc8b70"
+  },
+  {
+    "id": "potala",
+    "name": "Potala Palace",
+    "nameKo": "포탈라궁",
+    "shape": "clifftemple",
+    "feature": "White and red palace walls climb a steep hill above Lhasa",
+    "featureKo": "흰색과 붉은색 궁전 건물이 라싸 위의 가파른 언덕을 따라 솟아 있습니다",
+    "seed": 77,
+    "color": "#8baba4"
+  },
+  {
+    "id": "jiuzhaigou",
+    "name": "Jiuzhaigou Valley",
+    "nameKo": "주자이거우",
+    "shape": "lakes",
+    "feature": "Bright mountain lakes and waterfalls connect forested highland valleys",
+    "featureKo": "선명한 빛깔의 호수와 폭포가 숲이 우거진 고산 계곡을 이어 줍니다",
+    "seed": 78,
+    "color": "#d3b17c"
+  },
+  {
+    "id": "huanglong",
+    "name": "Huanglong",
+    "nameKo": "황룽",
+    "shape": "terraces",
+    "feature": "Mineral deposits form terraces of small pools beneath mountain slopes",
+    "featureKo": "광물 침전물이 산비탈 아래 작은 연못의 계단을 만듭니다",
+    "seed": 79,
+    "color": "#b7a28c"
+  },
+  {
+    "id": "huangshan",
+    "name": "Mount Huangshan",
+    "nameKo": "황산",
+    "shape": "peaks",
+    "feature": "Granite peaks and pines emerge above drifting mountain clouds",
+    "featureKo": "화강암 봉우리와 소나무가 흐르는 산구름 위로 모습을 드러냅니다",
+    "seed": 80,
+    "color": "#829b8a"
+  },
+  {
+    "id": "wulingyuan",
+    "name": "Wulingyuan",
+    "nameKo": "우링위안",
+    "shape": "pillars",
+    "feature": "Slender sandstone pillars rise in dense groups above wooded ravines",
+    "featureKo": "가느다란 사암 기둥들이 숲이 우거진 계곡 위로 빽빽하게 솟아 있습니다",
+    "seed": 81,
+    "color": "#bca6a0"
+  },
+  {
+    "id": "stoneforest",
+    "name": "South China Karst",
+    "nameKo": "중국 남방 카르스트",
+    "shape": "pillars",
+    "feature": "Eroded limestone creates stone forests and steep karst formations",
+    "featureKo": "침식된 석회암이 돌숲과 가파른 카르스트 지형을 만듭니다",
+    "seed": 82,
+    "color": "#b69772"
+  },
+  {
+    "id": "chengde",
+    "name": "Chengde Mountain Resort",
+    "nameKo": "청더 피서산장",
+    "shape": "pagoda",
+    "feature": "Lakeside pavilions and surrounding temples form a large imperial retreat",
+    "featureKo": "호숫가 누각과 주변 사찰이 넓은 황실 별궁 경관을 이룹니다",
+    "seed": 83,
+    "color": "#c4ac88"
+  },
+  {
+    "id": "leshan",
+    "name": "Leshan Giant Buddha",
+    "nameKo": "러산 대불",
+    "shape": "cliffbuddha",
+    "feature": "A seated Buddha is carved into a red sandstone cliff overlooking converging rivers",
+    "featureKo": "강들이 만나는 곳을 내려다보는 붉은 사암 절벽에 좌불이 새겨져 있습니다",
+    "seed": 84,
+    "color": "#aeb9a0"
+  },
+  {
+    "id": "fujian",
+    "name": "Fujian Tulou",
+    "nameKo": "푸젠 토루",
+    "shape": "roundhouse",
+    "feature": "Large circular earthen houses enclose communal courtyards behind thick outer walls",
+    "featureKo": "커다란 원형 흙집의 두꺼운 외벽 안에 공동 안뜰이 자리합니다",
+    "seed": 85,
+    "color": "#bc8b70"
+  },
+  {
+    "id": "kaiping",
+    "name": "Kaiping Diaolou",
+    "nameKo": "카이핑 댜오러우",
+    "shape": "towers",
+    "feature": "Tall fortified residences combine decorative facades with defensive upper floors",
+    "featureKo": "높고 견고한 주거 탑에 장식적인 정면과 방어용 상층부가 어우러져 있습니다",
+    "seed": 86,
+    "color": "#8baba4"
+  },
+  {
+    "id": "dujiangyan",
+    "name": "Dujiangyan Irrigation System",
+    "nameKo": "두장옌",
+    "shape": "waterworks",
+    "feature": "Channels and embankments divide river water in a long-lived irrigation system",
+    "featureKo": "수로와 제방이 강물을 나누어 오래된 관개 체계를 이룹니다",
+    "seed": 87,
+    "color": "#d3b17c"
+  },
+  {
+    "id": "grandcanal",
+    "name": "Grand Canal of China",
+    "nameKo": "중국 대운하",
+    "shape": "canal",
+    "feature": "A vast engineered waterway links canal towns through locks and river connections",
+    "featureKo": "갑문과 강을 잇는 거대한 인공 수로를 따라 운하 도시들이 이어집니다",
+    "seed": 88,
+    "color": "#b7a28c"
+  },
+  {
+    "id": "suzhou",
+    "name": "Suzhou Gardens",
+    "nameKo": "쑤저우 고전 정원",
+    "shape": "garden",
+    "feature": "Pavilions and shaped rocks frame small ponds within carefully arranged gardens",
+    "featureKo": "정교하게 꾸민 정원 안에서 누각과 바위가 작은 연못을 둘러쌉니다",
+    "seed": 89,
+    "color": "#829b8a"
+  },
+  {
+    "id": "lijiang",
+    "name": "Lijiang Old Town",
+    "nameKo": "리장 고성",
+    "shape": "canal",
+    "feature": "Tiled houses and small bridges follow waterways through a historic town",
+    "featureKo": "기와집과 작은 다리들이 오래된 도시의 물길을 따라 이어집니다",
+    "seed": 90,
+    "color": "#bca6a0"
+  },
+  {
+    "id": "shirakawa",
+    "name": "Shirakawa-go",
+    "nameKo": "시라카와고",
+    "shape": "thatched",
+    "feature": "Steep thatched roofs rise above timber houses in a mountain village",
+    "featureKo": "산촌의 목조 주택 위로 가파른 초가지붕이 높게 솟아 있습니다",
+    "seed": 91,
+    "color": "#b69772"
+  },
+  {
+    "id": "himeji",
+    "name": "Himeji Castle",
+    "nameKo": "히메지성",
+    "shape": "pagoda",
+    "feature": "Layered white keeps and curved tiled roofs dominate a fortified castle complex",
+    "featureKo": "흰색 천수각과 층층이 굽은 기와지붕이 성곽의 중심을 이룹니다",
+    "seed": 92,
+    "color": "#c4ac88"
+  },
+  {
+    "id": "horyuji",
+    "name": "Horyu-ji",
+    "nameKo": "호류지",
+    "shape": "pagoda",
+    "feature": "Timber halls and a five-storey pagoda preserve an early Buddhist temple layout",
+    "featureKo": "목조 전각과 오층탑이 초기 불교 사원의 배치를 보여 줍니다",
+    "seed": 93,
+    "color": "#aeb9a0"
+  },
+  {
+    "id": "nikko",
+    "name": "Nikko Shrines",
+    "nameKo": "닛코 사당과 사원",
+    "shape": "gate",
+    "feature": "Elaborately carved gates and sacred buildings stand among tall forest trees",
+    "featureKo": "정교하게 조각한 문과 신성한 건물들이 높은 숲의 나무 사이에 자리합니다",
+    "seed": 94,
+    "color": "#bc8b70"
+  },
+  {
+    "id": "itsukushima",
+    "name": "Itsukushima Shrine",
+    "nameKo": "이쓰쿠시마 신사",
+    "shape": "torii",
+    "feature": "A great vermilion gate stands in tidal water before the shrine complex",
+    "featureKo": "밀물이 드나드는 물 위에 커다란 주홍색 문이 신사 앞을 지킵니다",
+    "seed": 95,
+    "color": "#8baba4"
+  },
+  {
+    "id": "kyoto",
+    "name": "Historic Kyoto",
+    "nameKo": "교토 고도 유적",
+    "shape": "pagoda",
+    "feature": "Temple roofs and garden pavilions preserve the layered landscape of an old capital",
+    "featureKo": "사찰 지붕과 정원의 누각들이 옛 수도의 겹겹이 쌓인 경관을 보여 줍니다",
+    "seed": 96,
+    "color": "#d3b17c"
+  },
+  {
+    "id": "nara",
+    "name": "Historic Nara",
+    "nameKo": "나라 고도 유적",
+    "shape": "pagoda",
+    "feature": "Large timber temple halls and pagodas recall an early Japanese capital",
+    "featureKo": "큰 목조 사찰 전각과 탑들이 일본의 초기 수도를 떠올리게 합니다",
+    "seed": 97,
+    "color": "#b7a28c"
+  },
+  {
+    "id": "hiraizumi",
+    "name": "Hiraizumi",
+    "nameKo": "히라이즈미",
+    "shape": "garden",
+    "feature": "Temple gardens use ponds and carefully arranged landforms to evoke a sacred landscape",
+    "featureKo": "사찰 정원이 연못과 지형을 활용해 신성한 풍경을 나타냅니다",
+    "seed": 98,
+    "color": "#829b8a"
+  },
+  {
+    "id": "iwami",
+    "name": "Iwami Ginzan",
+    "nameKo": "이와미 은광",
+    "shape": "mine",
+    "feature": "Mine entrances and hillside settlements recall a mountain silver-mining landscape",
+    "featureKo": "갱도 입구와 산비탈의 마을이 은을 캐던 산악 경관을 보여 줍니다",
+    "seed": 99,
+    "color": "#bca6a0"
+  },
+  {
+    "id": "yakushima",
+    "name": "Yakushima",
+    "nameKo": "야쿠시마",
+    "shape": "forest",
+    "feature": "Ancient trees and dense evergreen forest cover a mountainous island",
+    "featureKo": "오래된 나무와 울창한 상록수림이 산이 많은 섬을 덮고 있습니다",
+    "seed": 100,
+    "color": "#b69772"
+  },
+  {
+    "id": "shiretoko",
+    "name": "Shiretoko",
+    "nameKo": "시레토코",
+    "shape": "coast",
+    "feature": "Forested mountains descend toward a cold sea shaped by seasonal ice",
+    "featureKo": "숲이 우거진 산이 계절 해빙의 영향을 받는 차가운 바다로 이어집니다",
+    "seed": 101,
+    "color": "#c4ac88"
+  },
+  {
+    "id": "bulguksa",
+    "name": "Bulguksa and Seokguram",
+    "nameKo": "불국사와 석굴암",
+    "shape": "pagoda",
+    "feature": "Stone stairways and pagodas complement a Buddhist temple and granite grotto",
+    "featureKo": "석조 계단과 석탑이 불교 사찰과 화강암 석굴을 함께 이루고 있습니다",
+    "seed": 102,
+    "color": "#aeb9a0"
+  },
+  {
+    "id": "hwaseong",
+    "name": "Hwaseong Fortress",
+    "nameKo": "수원 화성",
+    "shape": "fortress",
+    "feature": "Stone and brick walls link gates and watchtowers around a planned fortress",
+    "featureKo": "돌과 벽돌 성벽이 계획적으로 배치한 문과 감시탑을 연결합니다",
+    "seed": 103,
+    "color": "#bc8b70"
+  },
+  {
+    "id": "changdeokgung",
+    "name": "Changdeokgung Palace",
+    "nameKo": "창덕궁",
+    "shape": "pagoda",
+    "feature": "Palace halls and gardens follow the natural slopes of a wooded site",
+    "featureKo": "궁궐의 전각과 정원이 숲이 우거진 터의 자연스러운 경사를 따릅니다",
+    "seed": 104,
+    "color": "#8baba4"
+  },
+  {
+    "id": "haeinsa",
+    "name": "Haeinsa Janggyeong Panjeon",
+    "nameKo": "해인사 장경판전",
+    "shape": "hall",
+    "feature": "Long timber repositories shelter the carved printing blocks of the Tripitaka Koreana",
+    "featureKo": "긴 목조 보관 건물이 고려대장경의 목판을 품고 있습니다",
+    "seed": 105,
+    "color": "#d3b17c"
+  },
+  {
+    "id": "jongmyo",
+    "name": "Jongmyo Shrine",
+    "nameKo": "종묘",
+    "shape": "hall",
+    "feature": "An exceptionally long ceremonial hall faces a broad stone courtyard",
+    "featureKo": "유난히 긴 의례용 전각이 넓은 석조 마당을 마주하고 있습니다",
+    "seed": 106,
+    "color": "#b7a28c"
+  },
+  {
+    "id": "jeju",
+    "name": "Jeju Volcanic Island",
+    "nameKo": "제주 화산섬",
+    "shape": "volcano",
+    "feature": "A shield volcano and lava formations reveal the origins of a volcanic island",
+    "featureKo": "순상화산과 용암 지형이 화산섬이 만들어진 과정을 보여 줍니다",
+    "seed": 107,
+    "color": "#829b8a"
+  },
+  {
+    "id": "sansa",
+    "name": "Sansa Mountain Monasteries",
+    "nameKo": "산사 한국의 산지승원",
+    "shape": "pagoda",
+    "feature": "Temple halls are grouped around open courtyards within mountain landscapes",
+    "featureKo": "산악 경관 속 열린 마당 둘레로 사찰 전각들이 모여 있습니다",
+    "seed": 108,
+    "color": "#bca6a0"
+  },
+  {
+    "id": "baekje",
+    "name": "Baekje Historic Areas",
+    "nameKo": "백제역사유적지구",
+    "shape": "pagoda",
+    "feature": "Stone pagodas and archaeological remains trace the cities of an ancient kingdom",
+    "featureKo": "석탑과 고고학 유적이 고대 왕국 도시의 흔적을 전합니다",
+    "seed": 109,
+    "color": "#b69772"
+  },
+  {
+    "id": "agrafort",
+    "name": "Agra Fort",
+    "nameKo": "아그라 요새",
+    "shape": "fortress",
+    "feature": "Red sandstone walls enclose palaces and courts beside the Yamuna River",
+    "featureKo": "붉은 사암 성벽이 야무나강 옆의 궁전과 안뜰을 둘러쌉니다",
+    "seed": 110,
+    "color": "#c4ac88"
+  },
+  {
+    "id": "redfort",
+    "name": "Red Fort",
+    "nameKo": "델리 붉은 요새",
+    "shape": "fortress",
+    "feature": "A long red sandstone wall guards ceremonial gateways and palace pavilions",
+    "featureKo": "긴 붉은 사암 성벽이 의례용 문과 궁전의 누각을 지킵니다",
+    "seed": 111,
+    "color": "#aeb9a0"
+  },
+  {
+    "id": "qutb",
+    "name": "Qutb Minar",
+    "nameKo": "쿠트브 미나르",
+    "shape": "minaret",
+    "feature": "A tapering fluted minaret rises above the remains of early Delhi monuments",
+    "featureKo": "홈이 파인 가늘어지는 미나레트가 델리 초기 유적 위로 솟아 있습니다",
+    "seed": 112,
+    "color": "#bc8b70"
+  },
+  {
+    "id": "humayun",
+    "name": "Humayun's Tomb",
+    "nameKo": "후마윤 묘",
+    "shape": "dome",
+    "feature": "A large domed tomb stands within a formally divided garden",
+    "featureKo": "커다란 돔을 갖춘 묘당이 반듯하게 나눈 정원 안에 서 있습니다",
+    "seed": 113,
+    "color": "#8baba4"
+  },
+  {
+    "id": "fatehpur",
+    "name": "Fatehpur Sikri",
+    "nameKo": "파테푸르 시크리",
+    "shape": "palace",
+    "feature": "Red sandstone halls and large courtyards preserve a Mughal imperial city",
+    "featureKo": "붉은 사암 전각과 큰 안뜰들이 무굴 황실 도시의 모습을 전합니다",
+    "seed": 114,
+    "color": "#d3b17c"
+  },
+  {
+    "id": "sanchi",
+    "name": "Sanchi Stupa",
+    "nameKo": "산치 대탑",
+    "shape": "stupa",
+    "feature": "Carved stone gateways surround a rounded Buddhist stupa",
+    "featureKo": "조각을 새긴 석조 문들이 둥근 불교 탑을 둘러싸고 있습니다",
+    "seed": 115,
+    "color": "#b7a28c"
+  },
+  {
+    "id": "ajanta",
+    "name": "Ajanta Caves",
+    "nameKo": "아잔타 석굴",
+    "shape": "cliff",
+    "feature": "Buddhist caves open along a curving rock face above a river valley",
+    "featureKo": "강 계곡 위로 굽이진 암벽을 따라 불교 석굴들이 열려 있습니다",
+    "seed": 116,
+    "color": "#829b8a"
+  },
+  {
+    "id": "ellora",
+    "name": "Ellora Caves",
+    "nameKo": "엘로라 석굴",
+    "shape": "clifftemple",
+    "feature": "Rock-cut temples and monasteries are carved into a long basalt escarpment",
+    "featureKo": "긴 현무암 절벽을 파내 사원과 수도원들을 만들었습니다",
+    "seed": 117,
+    "color": "#bca6a0"
+  },
+  {
+    "id": "elephanta",
+    "name": "Elephanta Caves",
+    "nameKo": "엘레판타 석굴",
+    "shape": "cliff",
+    "feature": "Sculpted pillars and sacred figures occupy a rock-cut temple on an island",
+    "featureKo": "섬의 암굴 사원 안에 조각한 기둥과 신성한 형상들이 자리합니다",
+    "seed": 118,
+    "color": "#b69772"
+  },
+  {
+    "id": "hampi",
+    "name": "Hampi",
+    "nameKo": "함피",
+    "shape": "templetower",
+    "feature": "Temple towers and stone halls rise among great granite boulders",
+    "featureKo": "커다란 화강암 바위들 사이로 사원 탑과 석조 전각이 솟아 있습니다",
+    "seed": 119,
+    "color": "#c4ac88"
+  },
+  {
+    "id": "konark",
+    "name": "Konark Sun Temple",
+    "nameKo": "코나라크 태양신 사원",
+    "shape": "chariot",
+    "feature": "A carved stone temple takes the form of a monumental chariot with great wheels",
+    "featureKo": "조각한 석조 사원이 커다란 바퀴를 갖춘 거대한 전차의 모습을 이룹니다",
+    "seed": 120,
+    "color": "#aeb9a0"
+  },
+  {
+    "id": "mahabalipuram",
+    "name": "Mahabalipuram",
+    "nameKo": "마하발리푸람",
+    "shape": "templetower",
+    "feature": "Rock-cut shrines and sculpted temples face the coast of the Bay of Bengal",
+    "featureKo": "암굴 사당과 조각한 사원들이 벵골만의 해안을 마주하고 있습니다",
+    "seed": 121,
+    "color": "#bc8b70"
+  },
+  {
+    "id": "khajuraho",
+    "name": "Khajuraho Temples",
+    "nameKo": "카주라호 사원군",
+    "shape": "templetower",
+    "feature": "Clusters of rising stone spires crown richly carved temple walls",
+    "featureKo": "빽빽하게 솟은 석조 첨탑이 조각으로 가득한 사원 벽 위를 덮고 있습니다",
+    "seed": 122,
+    "color": "#8baba4"
+  },
+  {
+    "id": "chola",
+    "name": "Chola Temples",
+    "nameKo": "촐라 대사원",
+    "shape": "templetower",
+    "feature": "Tall pyramidal temple towers reflect the monumental architecture of the Chola rulers",
+    "featureKo": "높은 피라미드형 사원 탑이 촐라 왕조의 거대한 건축을 보여 줍니다",
+    "seed": 123,
+    "color": "#d3b17c"
+  },
+  {
+    "id": "jaipur",
+    "name": "Jaipur",
+    "nameKo": "자이푸르",
+    "shape": "town",
+    "feature": "Regular streets and palace facades form a carefully planned historic city",
+    "featureKo": "반듯한 거리와 궁전의 정면이 계획적으로 조성한 역사 도시를 이룹니다",
+    "seed": 124,
+    "color": "#b7a28c"
+  },
+  {
+    "id": "jantarmantar",
+    "name": "Jantar Mantar",
+    "nameKo": "잔타르 만타르",
+    "shape": "observatory",
+    "feature": "Large masonry instruments turn astronomical measurement into monumental geometry",
+    "featureKo": "거대한 석조 관측 기구들이 천문 측정을 기하학적인 건축으로 바꿉니다",
+    "seed": 125,
+    "color": "#829b8a"
+  },
+  {
+    "id": "ranikivav",
+    "name": "Rani ki Vav",
+    "nameKo": "라니 키 바브",
+    "shape": "stepwell",
+    "feature": "Sculpted terraces descend through multiple levels into a deep stepwell",
+    "featureKo": "조각한 테라스가 여러 층을 지나 깊은 계단식 우물로 내려갑니다",
+    "seed": 126,
+    "color": "#bca6a0"
+  },
+  {
+    "id": "dholavira",
+    "name": "Dholavira",
+    "nameKo": "돌라비라",
+    "shape": "ruins",
+    "feature": "Stone walls and reservoirs preserve the ordered plan of a Harappan city",
+    "featureKo": "석벽과 저수지가 하라파 문명의 규칙적인 도시 구조를 보여 줍니다",
+    "seed": 127,
+    "color": "#b69772"
+  },
+  {
+    "id": "mahabodhi",
+    "name": "Mahabodhi Temple",
+    "nameKo": "마하보디 사원",
+    "shape": "templetower",
+    "feature": "A tall pyramidal temple marks a central place in Buddhist tradition",
+    "featureKo": "높은 피라미드형 사원이 불교 전통의 중요한 장소를 표시합니다",
+    "seed": 128,
+    "color": "#c4ac88"
+  },
+  {
+    "id": "kaziranga",
+    "name": "Kaziranga",
+    "nameKo": "카지랑가",
+    "shape": "savanna",
+    "feature": "Wet grasslands and river habitats shelter a great population of one-horned rhinoceroses",
+    "featureKo": "습한 초원과 강 주변 서식지에 많은 외뿔코뿔소가 살고 있습니다",
+    "seed": 129,
+    "color": "#aeb9a0"
+  },
+  {
+    "id": "sundarbans",
+    "name": "Sundarbans",
+    "nameKo": "순다르반스",
+    "shape": "mangrove",
+    "feature": "Tidal creeks weave through an extensive mangrove forest in a great river delta",
+    "featureKo": "커다란 삼각주의 넓은 맹그로브 숲 사이로 조수로가 이어집니다",
+    "seed": 130,
+    "color": "#bc8b70"
+  },
+  {
+    "id": "bagan",
+    "name": "Bagan",
+    "nameKo": "바간",
+    "shape": "pagoda",
+    "feature": "Thousands of brick temples and stupas spread across a plain beside the Ayeyarwady",
+    "featureKo": "아예야와디강 옆 평원에 수많은 벽돌 사원과 탑이 펼쳐집니다",
+    "seed": 131,
+    "color": "#8baba4"
+  },
+  {
+    "id": "ayutthaya",
+    "name": "Ayutthaya",
+    "nameKo": "아유타야",
+    "shape": "stupa",
+    "feature": "Brick prangs and ruined temples mark the island of a former royal capital",
+    "featureKo": "벽돌 탑과 사원 유적이 옛 왕도였던 섬에 남아 있습니다",
+    "seed": 132,
+    "color": "#d3b17c"
+  },
+  {
+    "id": "sukhothai",
+    "name": "Sukhothai",
+    "nameKo": "수코타이",
+    "shape": "stupa",
+    "feature": "Temple ruins and lotus-shaped towers stand within a planned historic landscape",
+    "featureKo": "사원 유적과 연꽃 모양 탑이 계획적으로 조성한 역사 경관 안에 서 있습니다",
+    "seed": 133,
+    "color": "#b7a28c"
+  },
+  {
+    "id": "vatphou",
+    "name": "Vat Phou",
+    "nameKo": "왓푸",
+    "shape": "clifftemple",
+    "feature": "A temple axis climbs from water basins toward a sanctuary on the mountain slope",
+    "featureKo": "사원의 중심축이 연못에서 산비탈의 성소를 향해 올라갑니다",
+    "seed": 134,
+    "color": "#829b8a"
+  },
+  {
+    "id": "plainjars",
+    "name": "Plain of Jars",
+    "nameKo": "항아리 평원",
+    "shape": "jars",
+    "feature": "Large stone jars stand in groups across the upland landscape",
+    "featureKo": "커다란 돌 항아리들이 고원 풍경 곳곳에 무리를 지어 서 있습니다",
+    "seed": 135,
+    "color": "#bca6a0"
+  },
+  {
+    "id": "persepolis",
+    "name": "Persepolis",
+    "nameKo": "페르세폴리스",
+    "shape": "columns",
+    "feature": "Tall columns and carved gateways rise from the terrace of an ancient royal complex",
+    "featureKo": "고대 왕실 유적의 단 위로 높은 기둥과 조각한 문들이 솟아 있습니다",
+    "seed": 136,
+    "color": "#b69772"
+  },
+  {
+    "id": "grandcanyon",
+    "name": "Grand Canyon",
+    "nameKo": "그랜드 캐니언",
+    "shape": "canyon",
+    "feature": "Layered rock walls descend toward a winding river in a vast canyon",
+    "featureKo": "겹겹이 드러난 암벽이 거대한 협곡의 굽이치는 강을 향해 내려갑니다",
+    "seed": 137,
+    "color": "#c4ac88"
+  },
+  {
+    "id": "yellowstone",
+    "name": "Yellowstone",
+    "nameKo": "옐로스톤",
+    "shape": "geyser",
+    "feature": "Geysers and hot springs punctuate a broad volcanic landscape",
+    "featureKo": "간헐천과 온천이 넓은 화산 경관 곳곳에서 모습을 드러냅니다",
+    "seed": 138,
+    "color": "#aeb9a0"
+  },
+  {
+    "id": "yosemite",
+    "name": "Yosemite",
+    "nameKo": "요세미티",
+    "shape": "waterfall",
+    "feature": "Granite cliffs and waterfalls frame a deeply carved mountain valley",
+    "featureKo": "화강암 절벽과 폭포가 깊이 깎인 산악 계곡을 둘러쌉니다",
+    "seed": 139,
+    "color": "#bc8b70"
+  },
+  {
+    "id": "everglades",
+    "name": "Everglades",
+    "nameKo": "에버글레이즈",
+    "shape": "wetland",
+    "feature": "Broad shallow wetlands link sawgrass plains with coastal mangroves",
+    "featureKo": "넓고 얕은 습지가 톱풀 초원과 해안 맹그로브를 이어 줍니다",
+    "seed": 140,
+    "color": "#8baba4"
+  },
+  {
+    "id": "mammothcave",
+    "name": "Mammoth Cave",
+    "nameKo": "매머드 동굴",
+    "shape": "cave",
+    "feature": "An extensive limestone cave system unfolds in passages beneath wooded hills",
+    "featureKo": "숲이 우거진 언덕 아래로 거대한 석회암 동굴의 통로가 이어집니다",
+    "seed": 141,
+    "color": "#d3b17c"
+  },
+  {
+    "id": "carlsbad",
+    "name": "Carlsbad Caverns",
+    "nameKo": "칼즈배드 동굴",
+    "shape": "cave",
+    "feature": "Large underground chambers contain columns and hanging limestone formations",
+    "featureKo": "커다란 지하 공간에 석회암 기둥과 매달린 종유석이 자리합니다",
+    "seed": 142,
+    "color": "#b7a28c"
+  },
+  {
+    "id": "mesaverde",
+    "name": "Mesa Verde",
+    "nameKo": "메사 베르데",
+    "shape": "cliff",
+    "feature": "Ancestral Pueblo dwellings occupy sheltered alcoves within sandstone cliffs",
+    "featureKo": "사암 절벽의 움푹 들어간 공간에 푸에블로 선조들의 주거지가 자리합니다",
+    "seed": 143,
+    "color": "#829b8a"
+  },
+  {
+    "id": "taos",
+    "name": "Taos Pueblo",
+    "nameKo": "타오스 푸에블로",
+    "shape": "adobe",
+    "feature": "Multi-storey earthen buildings rise in stepped clusters in a living Pueblo settlement",
+    "featureKo": "지금도 이어지는 푸에블로 마을에 다층 흙 건물들이 계단처럼 모여 있습니다",
+    "seed": 144,
+    "color": "#bca6a0"
+  },
+  {
+    "id": "chaco",
+    "name": "Chaco Canyon",
+    "nameKo": "차코 캐니언",
+    "shape": "adobe",
+    "feature": "Great stone houses and circular ceremonial spaces preserve an ancestral settlement",
+    "featureKo": "커다란 석조 집과 둥근 의례 공간이 오래된 정착지의 모습을 전합니다",
+    "seed": 145,
+    "color": "#b69772"
+  },
+  {
+    "id": "sanantonio",
+    "name": "San Antonio Missions",
+    "nameKo": "샌안토니오 미션",
+    "shape": "basilica",
+    "feature": "Mission churches and walled compounds follow a river landscape",
+    "featureKo": "선교 교회와 성벽으로 둘러싼 건물들이 강 주변 경관에 자리합니다",
+    "seed": 146,
+    "color": "#c4ac88"
+  },
+  {
+    "id": "papahanaumokuakea",
+    "name": "Papahānaumokuākea",
+    "nameKo": "파파하나우모쿠아케아",
+    "shape": "reef",
+    "feature": "Low islands and coral reefs extend across a remote stretch of the Pacific",
+    "featureKo": "태평양의 외딴 해역을 따라 낮은 섬과 산호초가 이어집니다",
+    "seed": 147,
+    "color": "#aeb9a0"
+  },
+  {
+    "id": "canadianrockies",
+    "name": "Canadian Rockies",
+    "nameKo": "캐나다 로키산맥",
+    "shape": "peaks",
+    "feature": "Rugged mountain ranges enclose glaciers and brightly coloured alpine lakes",
+    "featureKo": "험준한 산맥이 빙하와 선명한 빛깔의 고산 호수를 감싸고 있습니다",
+    "seed": 148,
+    "color": "#bc8b70"
+  },
+  {
+    "id": "dinosaurpark",
+    "name": "Dinosaur Provincial Park",
+    "nameKo": "공룡 주립공원",
+    "shape": "badlands",
+    "feature": "Eroded badlands reveal layered rock and rich dinosaur fossil deposits",
+    "featureKo": "침식된 황무지에 지층과 풍부한 공룡 화석 산지가 드러나 있습니다",
+    "seed": 149,
+    "color": "#8baba4"
+  },
+  {
+    "id": "lunenburg",
+    "name": "Lunenburg",
+    "nameKo": "루넌버그",
+    "shape": "harbor",
+    "feature": "Colourful timber buildings line a historic North Atlantic fishing port",
+    "featureKo": "다채로운 목조 건물들이 북대서양의 오래된 어항을 따라 늘어서 있습니다",
+    "seed": 150,
+    "color": "#d3b17c"
+  },
+  {
+    "id": "grosmorne",
+    "name": "Gros Morne",
+    "nameKo": "그로스 몬",
+    "shape": "fjord",
+    "feature": "Steep fjord walls and exposed rock plateaus reveal a dramatic coastal landscape",
+    "featureKo": "가파른 피오르 암벽과 드러난 암석 고원이 극적인 해안 풍경을 이룹니다",
+    "seed": 151,
+    "color": "#b7a28c"
+  },
+  {
+    "id": "nahanni",
+    "name": "Nahanni",
+    "nameKo": "나하니",
+    "shape": "waterfall",
+    "feature": "A great waterfall and deep canyons interrupt a wild northern river",
+    "featureKo": "거대한 폭포와 깊은 협곡이 북방의 거친 강줄기를 따라 이어집니다",
+    "seed": 152,
+    "color": "#829b8a"
+  },
+  {
+    "id": "teotihuacan",
+    "name": "Teotihuacan",
+    "nameKo": "테오티우아칸",
+    "shape": "pyramid",
+    "feature": "Large stepped pyramids line a long ceremonial avenue in an ancient city",
+    "featureKo": "고대 도시의 긴 의례용 대로를 따라 커다란 계단식 피라미드가 서 있습니다",
+    "seed": 153,
+    "color": "#bca6a0"
+  },
+  {
+    "id": "palenque",
+    "name": "Palenque",
+    "nameKo": "팔렝케",
+    "shape": "pyramid",
+    "feature": "Stepped temple platforms and a palace tower emerge from tropical forest",
+    "featureKo": "열대 숲 사이로 계단식 사원 기단과 궁전의 탑이 모습을 드러냅니다",
+    "seed": 154,
+    "color": "#b69772"
+  },
+  {
+    "id": "uxmal",
+    "name": "Uxmal",
+    "nameKo": "우슈말",
+    "shape": "pyramid",
+    "feature": "A rounded pyramid and richly patterned stone facades mark a Maya ceremonial city",
+    "featureKo": "둥근 윤곽의 피라미드와 무늬가 풍부한 석조 정면이 마야 의례 도시를 이룹니다",
+    "seed": 155,
+    "color": "#c4ac88"
+  },
+  {
+    "id": "montealban",
+    "name": "Monte Albán",
+    "nameKo": "몬테알반",
+    "shape": "pyramid",
+    "feature": "Broad ceremonial terraces and stone platforms occupy a levelled hilltop",
+    "featureKo": "평평하게 다듬은 언덕 위에 넓은 의례용 단과 석조 기단들이 자리합니다",
+    "seed": 156,
+    "color": "#aeb9a0"
+  },
+  {
+    "id": "guanajuato",
+    "name": "Guanajuato",
+    "nameKo": "과나후아토",
+    "shape": "town",
+    "feature": "Colourful buildings and narrow lanes climb the slopes of a historic mining town",
+    "featureKo": "다채로운 건물과 좁은 골목들이 오래된 광산 도시의 비탈을 따라 올라갑니다",
+    "seed": 157,
+    "color": "#bc8b70"
+  },
+  {
+    "id": "morelia",
+    "name": "Morelia",
+    "nameKo": "모렐리아",
+    "shape": "cathedral",
+    "feature": "Pink stone buildings and cathedral towers form a carefully ordered historic centre",
+    "featureKo": "분홍빛 석조 건물과 대성당 탑들이 반듯한 구도심을 이룹니다",
+    "seed": 158,
+    "color": "#8baba4"
+  },
+  {
+    "id": "campeche",
+    "name": "Campeche",
+    "nameKo": "캄페체",
+    "shape": "harbor",
+    "feature": "Sea walls and bastions protect a port lined with low colourful houses",
+    "featureKo": "낮고 다채로운 집들이 늘어선 항구를 해안 성벽과 보루가 지킵니다",
+    "seed": 159,
+    "color": "#d3b17c"
+  },
+  {
+    "id": "calakmul",
+    "name": "Calakmul",
+    "nameKo": "칼라크물",
+    "shape": "pyramid",
+    "feature": "Tall Maya pyramids rise above an extensive canopy of tropical forest",
+    "featureKo": "높은 마야 피라미드들이 넓게 펼쳐진 열대 숲의 수관 위로 솟아 있습니다",
+    "seed": 160,
+    "color": "#b7a28c"
+  },
+  {
+    "id": "iguazu",
+    "name": "Iguazú Falls",
+    "nameKo": "이과수 폭포",
+    "shape": "waterfall",
+    "feature": "Many curtains of falling water span a broad forested river gorge",
+    "featureKo": "수많은 물줄기가 숲이 우거진 넓은 강 협곡을 따라 쏟아집니다",
+    "seed": 161,
+    "color": "#829b8a"
+  },
+  {
+    "id": "brasilia",
+    "name": "Brasília",
+    "nameKo": "브라질리아",
+    "shape": "modern",
+    "feature": "Sculptural civic buildings stand along the axes of a planned modern capital",
+    "featureKo": "계획적으로 세운 현대 수도의 중심축을 따라 조각 같은 공공건물들이 서 있습니다",
+    "seed": 162,
+    "color": "#bca6a0"
+  },
+  {
+    "id": "ouropreto",
+    "name": "Ouro Preto",
+    "nameKo": "오루프레투",
+    "shape": "town",
+    "feature": "Baroque churches and tiled houses climb the steep streets of a former gold town",
+    "featureKo": "바로크 교회와 기와집이 옛 금광 도시의 가파른 거리를 따라 늘어서 있습니다",
+    "seed": 163,
+    "color": "#b69772"
+  },
+  {
+    "id": "salvador",
+    "name": "Salvador da Bahia",
+    "nameKo": "사우바도르",
+    "shape": "town",
+    "feature": "Colourful facades and church towers overlook the bay from a historic upper town",
+    "featureKo": "오래된 언덕 도시의 다채로운 정면과 교회 탑들이 만을 내려다봅니다",
+    "seed": 164,
+    "color": "#c4ac88"
+  },
+  {
+    "id": "centralamazon",
+    "name": "Central Amazon",
+    "nameKo": "중앙 아마존",
+    "shape": "forest",
+    "feature": "Seasonally flooded forests and broad channels form a great tropical river landscape",
+    "featureKo": "계절에 따라 물에 잠기는 숲과 넓은 물길이 거대한 열대 강 경관을 이룹니다",
+    "seed": 165,
+    "color": "#aeb9a0"
+  },
+  {
+    "id": "losglaciares",
+    "name": "Los Glaciares",
+    "nameKo": "로스글라시아레스",
+    "shape": "glacier",
+    "feature": "Great ice tongues flow from mountain icefields toward glacial lakes",
+    "featureKo": "커다란 빙하가 산악 빙원에서 빙하호를 향해 흘러내립니다",
+    "seed": 166,
+    "color": "#bc8b70"
+  },
+  {
+    "id": "quebrada",
+    "name": "Quebrada de Humahuaca",
+    "nameKo": "우마우아카 협곡",
+    "shape": "redrocks",
+    "feature": "Banded rock slopes frame a long valley used as a cultural route",
+    "featureKo": "띠 모양 지층의 비탈이 오랜 교류 경로였던 긴 계곡을 둘러쌉니다",
+    "seed": 167,
+    "color": "#8baba4"
+  },
+  {
+    "id": "nazca",
+    "name": "Nazca Lines",
+    "nameKo": "나스카 지상화",
+    "shape": "geoglyph",
+    "feature": "Long lines and enormous animal figures are traced across an arid plateau",
+    "featureKo": "건조한 고원 위에 긴 선과 거대한 동물 형상이 그려져 있습니다",
+    "seed": 168,
+    "color": "#d3b17c"
+  },
+  {
+    "id": "chanchan",
+    "name": "Chan Chan",
+    "nameKo": "찬찬",
+    "shape": "adobe",
+    "feature": "High earthen walls enclose courtyards and geometric reliefs in a coastal city",
+    "featureKo": "해안 도시의 높은 흙벽 안에 안뜰과 기하학적 부조가 자리합니다",
+    "seed": 169,
+    "color": "#b7a28c"
+  },
+  {
+    "id": "valparaiso",
+    "name": "Valparaíso",
+    "nameKo": "발파라이소",
+    "shape": "harbor",
+    "feature": "Bright houses climb steep port hills served by historic hillside transport",
+    "featureKo": "오래된 언덕 교통수단이 이어 주는 항구의 비탈에 밝은 집들이 모여 있습니다",
+    "seed": 170,
+    "color": "#829b8a"
+  },
+  {
+    "id": "chiloe",
+    "name": "Chiloé Churches",
+    "nameKo": "칠로에 교회",
+    "shape": "woodchurch",
+    "feature": "Timber churches with slender towers reflect island building traditions",
+    "featureKo": "가느다란 탑을 갖춘 목조 교회들이 섬의 건축 전통을 보여 줍니다",
+    "seed": 171,
+    "color": "#bca6a0"
+  },
+  {
+    "id": "abusimbel",
+    "name": "Abu Simbel",
+    "nameKo": "아부심벨",
+    "shape": "rocktemple",
+    "feature": "Colossal seated figures guard a monumental temple carved into sandstone",
+    "featureKo": "거대한 좌상들이 사암을 깎아 만든 신전의 입구를 지킵니다",
+    "seed": 172,
+    "color": "#b69772"
+  },
+  {
+    "id": "thebes",
+    "name": "Ancient Thebes",
+    "nameKo": "고대 테베",
+    "shape": "columns",
+    "feature": "Pylons and great columned halls preserve a monumental Nile-side sacred landscape",
+    "featureKo": "거대한 탑문과 열주 홀이 나일강 주변의 신성한 경관을 전합니다",
+    "seed": 173,
+    "color": "#c4ac88"
+  },
+  {
+    "id": "historicairo",
+    "name": "Historic Cairo",
+    "nameKo": "카이로 구도심",
+    "shape": "mosque",
+    "feature": "Domes and minarets rise above the close streets of a historic Islamic city",
+    "featureKo": "이슬람 구도시의 빽빽한 거리 위로 돔과 미나레트가 솟아 있습니다",
+    "seed": 174,
+    "color": "#aeb9a0"
+  },
+  {
+    "id": "carthage",
+    "name": "Carthage",
+    "nameKo": "카르타고",
+    "shape": "ruins",
+    "feature": "Ancient walls and Roman remains overlook the Mediterranean coast",
+    "featureKo": "고대 성벽과 로마 유적이 지중해 해안을 내려다봅니다",
+    "seed": 175,
+    "color": "#bc8b70"
+  },
+  {
+    "id": "kairouan",
+    "name": "Great Mosque of Kairouan",
+    "nameKo": "카이르완 대모스크",
+    "shape": "mosque",
+    "feature": "A square minaret watches over the broad courtyard of a historic mosque",
+    "featureKo": "사각형 미나레트가 오래된 모스크의 넓은 안뜰을 내려다봅니다",
+    "seed": 176,
+    "color": "#8baba4"
+  },
+  {
+    "id": "dougga",
+    "name": "Dougga",
+    "nameKo": "두가",
+    "shape": "columns",
+    "feature": "A columned temple and theatre overlook the ruins of an ancient hill town",
+    "featureKo": "기둥을 갖춘 신전과 극장이 고대 언덕 도시의 유적을 내려다봅니다",
+    "seed": 177,
+    "color": "#d3b17c"
+  },
+  {
+    "id": "volubilis",
+    "name": "Volubilis",
+    "nameKo": "볼루빌리스",
+    "shape": "ruins",
+    "feature": "A monumental arch and standing columns mark an ancient town among open fields",
+    "featureKo": "탁 트인 들판 사이에서 거대한 아치와 기둥이 고대 도시의 흔적을 보여 줍니다",
+    "seed": 178,
+    "color": "#b7a28c"
+  },
+  {
+    "id": "fes",
+    "name": "Fes Medina",
+    "nameKo": "페스 메디나",
+    "shape": "town",
+    "feature": "Dense lanes and traditional buildings fill the walled heart of a historic city",
+    "featureKo": "촘촘한 골목과 전통 건물들이 성벽 안의 오래된 도심을 채웁니다",
+    "seed": 179,
+    "color": "#829b8a"
+  },
+  {
+    "id": "marrakesh",
+    "name": "Marrakesh Medina",
+    "nameKo": "마라케시 메디나",
+    "shape": "minaret",
+    "feature": "A square minaret rises above red walls and the dense roofs of a historic medina",
+    "featureKo": "붉은 성벽과 메디나의 빽빽한 지붕 위로 사각형 미나레트가 솟아 있습니다",
+    "seed": 180,
+    "color": "#bca6a0"
+  },
+  {
+    "id": "essaouira",
+    "name": "Essaouira",
+    "nameKo": "에사우이라",
+    "shape": "harbor",
+    "feature": "Sea-facing ramparts and pale houses form a fortified Atlantic port",
+    "featureKo": "바다를 마주한 성벽과 옅은 집들이 요새화한 대서양 항구를 이룹니다",
+    "seed": 181,
+    "color": "#b69772"
+  },
+  {
+    "id": "aksum",
+    "name": "Aksum Stelae",
+    "nameKo": "악숨 석비",
+    "shape": "stelae",
+    "feature": "Tall carved stone stelae preserve the monumental traces of an ancient kingdom",
+    "featureKo": "높이 새긴 석비들이 고대 왕국의 기념비적인 흔적을 전합니다",
+    "seed": 182,
+    "color": "#c4ac88"
+  },
+  {
+    "id": "simien",
+    "name": "Simien Mountains",
+    "nameKo": "시미엔산맥",
+    "shape": "peaks",
+    "feature": "High escarpments and jagged peaks rise above deeply cut Ethiopian valleys",
+    "featureKo": "깊이 패인 에티오피아 계곡 위로 높은 단애와 거친 봉우리들이 솟아 있습니다",
+    "seed": 183,
+    "color": "#aeb9a0"
+  },
+  {
+    "id": "konso",
+    "name": "Konso Terraces",
+    "nameKo": "콘소 문화 경관",
+    "shape": "terraces",
+    "feature": "Stone-walled terraces and fortified settlements shape a cultivated highland landscape",
+    "featureKo": "돌담을 쌓은 계단식 밭과 요새화한 마을이 고원 경작지를 이룹니다",
+    "seed": 184,
+    "color": "#bc8b70"
+  },
+  {
+    "id": "victoriafalls",
+    "name": "Victoria Falls",
+    "nameKo": "빅토리아 폭포",
+    "shape": "waterfall",
+    "feature": "A broad river plunges into a narrow gorge and sends mist above its edge",
+    "featureKo": "넓은 강이 좁은 협곡으로 떨어지며 가장자리 위로 물안개를 피웁니다",
+    "seed": 185,
+    "color": "#8baba4"
+  },
+  {
+    "id": "okavango",
+    "name": "Okavango Delta",
+    "nameKo": "오카방고 삼각주",
+    "shape": "wetland",
+    "feature": "Seasonal floodwaters spread into channels and islands within an inland delta",
+    "featureKo": "계절의 범람수가 내륙 삼각주의 물길과 섬들 사이로 퍼져 나갑니다",
+    "seed": 186,
+    "color": "#d3b17c"
+  },
+  {
+    "id": "serengeti",
+    "name": "Serengeti",
+    "nameKo": "세렝게티",
+    "shape": "savanna",
+    "feature": "Open grasslands support great moving herds across a vast savanna ecosystem",
+    "featureKo": "탁 트인 초원 위로 거대한 무리들이 이동하는 사바나 생태계입니다",
+    "seed": 187,
+    "color": "#b7a28c"
+  },
+  {
+    "id": "ngorongoro",
+    "name": "Ngorongoro",
+    "nameKo": "응고롱고로",
+    "shape": "crater",
+    "feature": "A great volcanic crater encloses grasslands and lakes within a high rim",
+    "featureKo": "거대한 화산 분화구의 높은 테두리 안에 초원과 호수가 자리합니다",
+    "seed": 188,
+    "color": "#829b8a"
+  },
+  {
+    "id": "zanzibar",
+    "name": "Stone Town of Zanzibar",
+    "nameKo": "잔지바르 스톤타운",
+    "shape": "harbor",
+    "feature": "Stone houses and carved doorways line the narrow streets of an Indian Ocean port",
+    "featureKo": "인도양 항구의 좁은 거리를 따라 석조 집과 조각한 문이 이어집니다",
+    "seed": 189,
+    "color": "#bca6a0"
+  },
+  {
+    "id": "robbeneiland",
+    "name": "Robben Island",
+    "nameKo": "로벤섬",
+    "shape": "island",
+    "feature": "Low institutional buildings occupy an island with a history of imprisonment and resistance",
+    "featureKo": "수감과 저항의 역사를 지닌 섬 위로 낮은 건물들이 자리합니다",
+    "seed": 190,
+    "color": "#b69772"
+  },
+  {
+    "id": "tsodilo",
+    "name": "Tsodilo Hills",
+    "nameKo": "초딜로",
+    "shape": "redrocks",
+    "feature": "Rocky hills preserve a rich concentration of rock paintings in the Kalahari landscape",
+    "featureKo": "칼라하리의 바위 언덕들에 수많은 암벽화가 남아 있습니다",
+    "seed": 191,
+    "color": "#c4ac88"
+  },
+  {
+    "id": "samarra",
+    "name": "Spiral Minaret of Samarra",
+    "nameKo": "사마라 나선 미나레트",
+    "shape": "spiral",
+    "feature": "A great spiral ramp winds around a monumental brick minaret",
+    "featureKo": "거대한 나선형 경사로가 벽돌 미나레트를 감싸며 올라갑니다",
+    "seed": 192,
+    "color": "#aeb9a0"
+  },
+  {
+    "id": "hatra",
+    "name": "Hatra",
+    "nameKo": "하트라",
+    "shape": "arcades",
+    "feature": "Great arched halls stand within the remains of a fortified ancient city",
+    "featureKo": "요새화한 고대 도시의 유적 안에 커다란 아치형 전각들이 서 있습니다",
+    "seed": 193,
+    "color": "#bc8b70"
+  },
+  {
+    "id": "babylon",
+    "name": "Babylon",
+    "nameKo": "바빌론",
+    "shape": "gate",
+    "feature": "Mud-brick walls and monumental gateways recall a great Mesopotamian capital",
+    "featureKo": "흙벽돌 성벽과 거대한 문들이 메소포타미아의 옛 수도를 떠올리게 합니다",
+    "seed": 194,
+    "color": "#8baba4"
+  },
+  {
+    "id": "choghazanbil",
+    "name": "Chogha Zanbil",
+    "nameKo": "초가 잔빌",
+    "shape": "ziggurat",
+    "feature": "A stepped brick ziggurat anchors the remains of an ancient sacred complex",
+    "featureKo": "계단식 벽돌 지구라트가 고대 성역 유적의 중심에 자리합니다",
+    "seed": 195,
+    "color": "#d3b17c"
+  },
+  {
+    "id": "isfahan",
+    "name": "Naqsh-e Jahan Square",
+    "nameKo": "나크셰 자한 광장",
+    "shape": "square",
+    "feature": "Domes and grand arcades surround a broad royal square",
+    "featureKo": "넓은 왕실 광장을 돔과 거대한 아케이드가 둘러싸고 있습니다",
+    "seed": 196,
+    "color": "#b7a28c"
+  },
+  {
+    "id": "pasargadae",
+    "name": "Pasargadae",
+    "nameKo": "파사르가다에",
+    "shape": "tomb",
+    "feature": "A compact stone tomb rises on stepped courses within an ancient royal landscape",
+    "featureKo": "고대 왕실 경관 안에서 단정한 석조 묘가 계단형 단 위에 서 있습니다",
+    "seed": 197,
+    "color": "#829b8a"
+  },
+  {
+    "id": "yazd",
+    "name": "Yazd",
+    "nameKo": "야즈드",
+    "shape": "adobe",
+    "feature": "Earthen buildings and wind-catching towers form a city adapted to a desert climate",
+    "featureKo": "흙 건물과 바람을 잡는 탑들이 사막 기후에 적응한 도시를 이룹니다",
+    "seed": 198,
+    "color": "#bca6a0"
+  },
+  {
+    "id": "ephesus",
+    "name": "Library of Celsus at Ephesus",
+    "nameKo": "에페소스 셀수스 도서관",
+    "shape": "columns",
+    "feature": "A two-storey columned library facade stands beside the streets of an ancient city",
+    "featureKo": "고대 도시의 거리 옆에 이층 열주로 이루어진 도서관 정면이 서 있습니다",
+    "seed": 199,
+    "color": "#b69772"
+  },
+  {
+    "id": "gobekli",
+    "name": "Göbekli Tepe",
+    "nameKo": "괴베클리 테페",
+    "shape": "stelae",
+    "feature": "T-shaped stone pillars stand in circular arrangements at a prehistoric site",
+    "featureKo": "선사 유적의 원형 구조 안에 T자형 석주들이 서 있습니다",
+    "seed": 200,
+    "color": "#c4ac88"
+  }
+]

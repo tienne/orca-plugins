@@ -1,0 +1,273 @@
+.scene-motion {
+  animation-duration: var(--scene-duration, 9s);
+  animation-delay: var(--scene-delay, 0s);
+  animation-iteration-count: infinite;
+  animation-timing-function: ease-in-out;
+}
+.scene-motion[data-motion='drift'] {
+  animation-name: scene-drift;
+  animation-direction: alternate;
+}
+.scene-motion[data-motion='travel'] {
+  animation-name: scene-travel;
+  animation-timing-function: linear;
+}
+.scene-motion[data-motion='stroll'] {
+  animation-name: scene-drift;
+  animation-direction: alternate;
+}
+.scene-motion[data-motion='sway'] {
+  animation-name: scene-sway;
+  transform-origin: 0 0;
+}
+.scene-motion[data-motion='spin'] {
+  animation-name: scene-spin;
+  animation-timing-function: linear;
+  transform-origin: 0 0;
+}
+.scene-motion[data-motion='pulse'] {
+  animation-name: scene-pulse;
+}
+.scene-motion[data-motion='dash'] {
+  animation-name: scene-flow;
+  animation-timing-function: linear;
+}
+.scene-motion[data-motion='work'] {
+  animation-name: scene-work;
+  transform-origin: 2px -8px;
+}
+.scene-motion[data-motion='nod'] {
+  animation-name: scene-sway;
+  transform-origin: 2px -8px;
+}
+.scene-motion[data-motion='rise'] {
+  animation-name: scene-rise;
+}
+.scene-motion[data-motion='lift'] {
+  animation-name: scene-drift;
+  animation-direction: alternate;
+}
+.scene-motion[data-motion='turn'] {
+  animation-name: scene-turn;
+  transform-origin: 0 0;
+}
+.scene-motion[data-motion='dive'] {
+  animation-name: scene-dive;
+}
+.scene-motion[data-motion='splash'] {
+  animation-name: scene-splash;
+}
+.scene-wings {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: bird-wing-flap 2s ease-in-out infinite alternate;
+}
+.scene-stride {
+  transform-box: fill-box;
+  transform-origin: top center;
+  animation: scene-stride 0.8s ease-in-out infinite alternate;
+}
+.scene-oar {
+  transform-origin: -1px -2px;
+  animation: scene-oar 2.5s ease-in-out infinite;
+}
+.scene-sprinkle {
+  animation: scene-flow 2s linear infinite;
+}
+@keyframes scene-drift {
+  from {
+    transform: translate(0, 0);
+  }
+  to {
+    transform: translate(var(--scene-dx), var(--scene-dy));
+  }
+}
+@keyframes scene-travel {
+  0% {
+    opacity: 0;
+    transform: translate(0, 0);
+  }
+  10%,
+  85% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(var(--scene-dx), var(--scene-dy));
+  }
+}
+@keyframes scene-sway {
+  0%,
+  100% {
+    transform: rotate(calc(-1 * var(--scene-angle)));
+  }
+  50% {
+    transform: rotate(var(--scene-angle));
+  }
+}
+@keyframes scene-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes scene-pulse {
+  0%,
+  100% {
+    opacity: 0.2;
+  }
+  50% {
+    opacity: 0.9;
+  }
+}
+@keyframes scene-flow {
+  to {
+    stroke-dashoffset: -36;
+  }
+}
+@keyframes scene-work {
+  0%,
+  100% {
+    transform: rotate(-25deg);
+  }
+  45%,
+  65% {
+    transform: rotate(25deg);
+  }
+}
+@keyframes scene-rise {
+  0%,
+  100% {
+    opacity: 0;
+    transform: translate(0, 0);
+  }
+  15%,
+  65% {
+    opacity: 0.8;
+  }
+  90% {
+    opacity: 0;
+    transform: translate(var(--scene-dx), var(--scene-dy));
+  }
+}
+@keyframes scene-turn {
+  0%,
+  100% {
+    transform: scaleX(0.5);
+  }
+  50% {
+    transform: scaleX(1);
+  }
+}
+@keyframes scene-stride {
+  from {
+    transform: skewX(-12deg);
+  }
+  to {
+    transform: skewX(12deg);
+  }
+}
+@keyframes scene-oar {
+  0%,
+  100% {
+    transform: rotate(-15deg);
+  }
+  50% {
+    transform: rotate(15deg);
+  }
+}
+@keyframes scene-dive {
+  0%,
+  18%,
+  100% {
+    opacity: 0;
+    transform: translate(0, 0);
+  }
+  20%,
+  30% {
+    opacity: 1;
+    transform: translate(0, 0);
+  }
+  40% {
+    opacity: 1;
+    transform: translate(4px, -5px) rotate(20deg);
+  }
+  58% {
+    opacity: 1;
+    transform: translate(var(--scene-dx), var(--scene-dy)) rotate(130deg);
+  }
+  62%,
+  95% {
+    opacity: 0;
+    transform: translate(var(--scene-dx), var(--scene-dy));
+  }
+}
+@keyframes scene-splash {
+  0%,
+  57%,
+  80%,
+  100% {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  63% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .landmark-life [class] {
+    animation: none;
+  }
+  .scene-motion[data-motion='travel'],
+  .scene-motion[data-motion='rise'] {
+    opacity: 0.8;
+  }
+  .scene-motion[data-motion='dive'] {
+    opacity: 1;
+    transform: translate(0, 0);
+  }
+  .scene-motion[data-motion='splash'] {
+    opacity: 0;
+  }
+}
+
+:is(
+    .card:not(.locked),
+    .landmark-detail[data-owned='true'],
+    .world-object.building,
+    .discovery-monument
+  )
+  .catalog-turbine-rotor {
+  transform-origin: 0 0;
+  animation: scene-spin 7s linear infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  :is(
+      .card:not(.locked),
+      .landmark-detail[data-owned='true'],
+      .world-object.building,
+      .discovery-monument
+    )
+    .catalog-turbine-rotor {
+    animation: none;
+  }
+}
+
+.scene-motion[data-motion='reel'] {
+  animation-name: scene-reel;
+  animation-direction: alternate;
+  transform-origin: 0 0;
+}
+@keyframes scene-reel {
+  from {
+    transform: scaleY(1);
+  }
+  to {
+    transform: scaleY(0.25);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .landmark-life [class] {
+    animation: none;
+  }
+}

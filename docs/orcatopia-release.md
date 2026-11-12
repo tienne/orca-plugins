@@ -1,6 +1,79 @@
-# Orcatopia 0.1.0 release preparation
+# Orcatopia release preparation
 
 English · [한국어](orcatopia-release.ko.md)
+
+## 0.2.0 candidate (2026-11-12)
+
+The existing custom catalog has published 0.1.0. The next release is 0.2.0,
+under the same `tienne.landmark-island` identity, `release` ref and
+`plugins/landmark-island` path, with source tag `landmark-island/v0.2.0`.
+Existing releases and the Git Logs subtree must remain intact.
+
+The candidate has 300 landmarks across 101 catalog country groupings,
+153 Discovery / 115 Treasure / 24 Marvel / 8 Wonder entries, 608 garden pieces
+and the existing maximum 1,044 land tiles. It adds individual landmark scenes,
+tier effects, residents and wildlife, and an agent expedition camp. Existing
+landmark IDs, original tier assignments and collection saves are preserved.
+Journal animations pause outside the visible scroll area.
+
+The trusted worker now requests `agent:read` in addition to `workspace:read`
+and `storage:own`, and subscribes to `agent.status.changed`. The local development
+identity was explicitly approved and reloaded. That approval does not grant
+execution to the catalog identity or to another user's installation. The catalog
+update must disclose the added access and follow the host's approval result.
+
+Local checks passed: full UI coverage of 125 tests before the journal optimization,
+six scoped tests after it, build, typecheck, game/worker tests, package validation
+and the installed host compatibility check. These do not establish final-identity
+clean installation, full Orca restart or update persistence. Those native release
+checks remain pending. The previous PR CI reached the shared job's 20-minute limit;
+the next run has a 45-minute budget and must pass for the final source commit.
+
+The sections below record the earlier 0.1.0 preparation and its historical checks.
+They are not verification evidence for 0.2.0.
+
+## Current distribution and native checkpoint (2026-11-12)
+
+The existing community installation resolves through Orca's community mirror to
+[`tienne/orcatopia`](https://github.com/tienne/orcatopia). Its root package and
+`vX.Y.Z` tags are the update path for that installation. Update this existing
+repository as well as the optional custom catalog; do not assume the monorepo
+catalog alone updates community installs. Generic tags in `tienne/orca-plugins`
+remain reserved for Git Logs.
+
+With explicit user approval, candidate `a3fcce5` was installed as
+`tienne.landmark-island` 0.2.0 after a private backup. Orca refused changing a
+community install directly to a Git source. Its supported removal step also
+removed the plugin storage directory, so the saved original bytes were restored
+before installing the candidate. The collection matched the backup immediately
+after installation. Later progress has been separately backed up and must not be
+replaced with the older pre-update backup. Restorable backup export was also
+validated through the worker against a read-only copy of the store.
+
+The real panel rendered the 300-entry catalog, existing island, residents and
+observed expedition records without capture errors. This is panel-render and
+storage evidence, not proof that every native interaction passed. The user
+explicitly deferred a full Orca application restart; do not quit the app for this
+release. Candidate-source installation is temporary: restore the community update
+route only when it offers 0.2.0 or newer, preserving the latest store during any
+required reinstall. Never downgrade a save containing new landmark IDs to 0.1.0.
+
+The first CI attempt passed 111 of 126 UI tests and timed out in 15. The next
+run passed 119 of 131 in 40.2 minutes: all exhaustive descriptions, artwork and
+scene checks passed, while 12 long gameplay scenarios exhausted their total
+30/60-second budgets. CI now distributes all 131 tests across three independent
+machines, retaining one browser worker each. CI gameplay budgets are 120 seconds,
+or 180 seconds for the multi-country flows; assertion waits remain unchanged.
+Every shard must pass before promotion. The new remote result is still required.
+
+Candidate `79d1ffe` updated the existing 0.2.0 installation without an application
+restart or new grants. The native panel captured without errors and earlier state
+was retained, with only newly issued tickets added at the comparison checkpoint.
+The user confirmed playing the 20 new acquisitions and three new placements.
+Latest raw and restorable backups are private and separate from the pre-update
+backup. This is user-tested native draw/placement evidence, not a full restart test.
+
+## Historical 0.1.0 preparation
 
 This is an unpublished local candidate. Preparing it does not approve execution,
 change a user's island, publish a tag or establish a directory listing.

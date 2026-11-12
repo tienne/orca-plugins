@@ -12,7 +12,8 @@ test('CI uses hosted runners for pull requests and runs all required Nx checks',
   assert.ok(!('pull_request_target' in ci.on));
   assert.equal(ci.permissions.contents, 'read');
   assert.equal(checks.jobs.check['runs-on'], 'ubuntu-latest');
-  const commands = checks.jobs.check.steps
+  const commands = Object.values(checks.jobs)
+    .flatMap((job) => job.steps)
     .map((step) => step.run || '')
     .join('\n');
   for (const target of [
@@ -24,6 +25,8 @@ test('CI uses hosted runners for pull requests and runs all required Nx checks',
   ])
     assert.ok(commands.includes(target));
   assert.ok(commands.includes('playwright install --with-deps chromium'));
+  assert.ok(commands.includes('nx run landmark-island:ui-test'));
+  assert.equal(checks.jobs['orcatopia-ui'].needs, 'check');
 });
 
 test('release defaults to read-only preview and gates hosted promotion on trusted manual main runs', async () => {

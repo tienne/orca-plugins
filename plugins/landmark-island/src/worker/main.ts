@@ -1,5 +1,6 @@
 import { randomInt } from 'node:crypto';
 import { WeatherService } from './weather';
+import { ExpeditionLog } from './expeditions';
 import { Game, type State } from '../game';
 // Narrow contracts from the installed Orca authoring reference; generated types
 // are unavailable in this host installation. No event path is ever accessed.
@@ -7,8 +8,12 @@ interface Worker {
   host: { call(name: string, input: unknown): Promise<any> };
   events: {
     on(
-      name: string,
+      name: 'workspace.created',
       fn: (event: { workspaceId: string; kind: string }) => Promise<void>,
+    ): unknown;
+    on(
+      name: 'agent.status.changed',
+      fn: (event: unknown) => Promise<void>,
     ): unknown;
   };
   panels: {
@@ -105,5 +110,28 @@ export default function activate(orca: Worker) {
     const state = await game.place(input);
     await notify();
     return state;
+  });
+  const expeditions = new ExpeditionLog({
+    read: async () =>
+      (await orca.host.call('storage.get', { key: 'expeditions-v1' })).value,
+    write: async (value) => {
+      await orca.host.call('storage.set', { key: 'expeditions-v1', value });
+    },
+  });
+  const notifyExpeditions = async () => {
+    try {
+      await orca.panels.post('island.expeditions.changed', {});
+    } catch {
+      orca.log('Expedition saved; panel notification unavailable.');
+    }
+  };
+  orca.events.on('agent.status.changed', async (event) => {
+    if (await expeditions.observe(event)) await notifyExpeditions();
+  });
+  orca.panels.handle('island.expeditions', () => expeditions.read());
+  orca.panels.handle('island.welcome', async (input) => {
+    const records = await expeditions.welcome(input);
+    await notifyExpeditions();
+    return records;
   });
 }

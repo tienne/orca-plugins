@@ -1,0 +1,303 @@
+.landmark-art[data-animation-tier='common'] {
+  --tier-character: 1.12;
+  --tier-vehicle: 1.08;
+  --tier-wildlife: 1.1;
+}
+.landmark-art[data-animation-tier='rare'] {
+  --tier-character: 1.22;
+  --tier-vehicle: 1.18;
+  --tier-wildlife: 1.16;
+}
+.landmark-art[data-animation-tier='epic'] {
+  --tier-character: 1.35;
+  --tier-vehicle: 1.26;
+  --tier-wildlife: 1.22;
+}
+.landmark-art[data-animation-tier='legendary'] {
+  --tier-character: 1.45;
+  --tier-vehicle: 1.3;
+  --tier-wildlife: 1.3;
+}
+.scene-figure,
+.site-worker {
+  transform: scale(var(--tier-character, 1));
+  transform-origin: 0 0;
+}
+.scene-vessel {
+  transform: scale(var(--tier-vehicle, 1));
+  transform-origin: 0 0;
+}
+.scene-wildlife {
+  transform: scale(var(--tier-wildlife, 1));
+  transform-origin: 0 0;
+}
+.gladiator-presence {
+  transform: scale(1.16);
+  transform-origin: 0 0;
+}
+.caravan-presence {
+  transform: scale(1.18);
+  transform-origin: 0 0;
+}
+.tier-presence {
+  display: none;
+  pointer-events: none;
+}
+:is(
+    .card:not(.locked),
+    .landmark-detail[data-owned='true'],
+    .world-object.building,
+    .discovery-monument
+  )
+  .tier-presence {
+  display: inline;
+  --tier-playing: running;
+}
+.tier-presence [class] {
+  animation-play-state: var(--tier-playing, paused);
+}
+.tier-ground {
+  opacity: 0.55;
+}
+[data-tier-presence='common'] .tier-ground {
+  opacity: 0.45;
+}
+[data-tier-presence='epic'] .tier-ground {
+  opacity: 0.8;
+}
+[data-tier-presence='legendary'] .tier-ground {
+  opacity: 1;
+}
+.tier-airflow {
+  opacity: 0.65;
+  animation: tier-airflow 9s linear infinite;
+}
+.tier-glint {
+  animation: tier-glint 6s ease-in-out infinite;
+  animation-delay: var(--tier-delay);
+}
+.tier-wave {
+  animation: tier-impact var(--tier-cycle) ease-out infinite;
+}
+.tier-wave-follow {
+  animation-delay: -0.3s;
+}
+.tier-rays {
+  opacity: 0.14;
+  animation: tier-rays var(--tier-cycle) ease-in-out infinite;
+}
+[data-tier-presence='legendary'] .tier-rays {
+  opacity: 0.24;
+}
+.tier-ember {
+  animation: tier-ember 5s ease-out infinite;
+  animation-delay: var(--tier-delay);
+}
+[data-tier-presence='legendary'] .tier-ember {
+  animation-name: tier-ember-wonder;
+  animation-duration: 6s;
+}
+.tier-corona {
+  transform-origin: 0 0;
+  animation: tier-corona 12s ease-in-out infinite;
+}
+[data-tier-event='duel'] .tier-wave {
+  animation-name: tier-impact-duel;
+}
+[data-tier-event='pyramid'] .tier-wave {
+  animation-name: tier-impact-pyramid;
+}
+[data-tier-event='wall'] .tier-wave {
+  animation-name: tier-impact-wall;
+}
+.world-object.building .building-select > .landmark-art {
+  transform-origin: 50% 100%;
+  pointer-events: none;
+}
+.world-object.building[data-tier='common'] .building-select > .landmark-art {
+  transform: scale(1.02);
+}
+.world-object.building[data-tier='rare'] .building-select > .landmark-art {
+  transform: scale(1.05);
+}
+.world-object.building[data-tier='epic'] .building-select > .landmark-art {
+  transform: scale(1.12);
+}
+.world-object.building[data-tier='legendary'] .building-select > .landmark-art {
+  transform: scale(1.2);
+}
+.world-object.building[data-tier='legendary'] {
+  filter: drop-shadow(0 0 12px #f6cc6c99);
+}
+@keyframes tier-airflow {
+  to {
+    stroke-dashoffset: -136;
+  }
+}
+@keyframes tier-glint {
+  0%,
+  100% {
+    opacity: 0.15;
+    transform: scale(0.65);
+  }
+  45% {
+    opacity: 0.9;
+    transform: scale(1.1);
+  }
+}
+@keyframes tier-impact {
+  0%,
+  30%,
+  100% {
+    opacity: 0;
+    transform: scale(0.55);
+  }
+  48% {
+    opacity: 0.85;
+    transform: scale(0.95);
+  }
+  70% {
+    opacity: 0;
+    transform: scale(1.08);
+  }
+}
+@keyframes tier-impact-duel {
+  0%,
+  18%,
+  40%,
+  58%,
+  80%,
+  100% {
+    opacity: 0;
+    transform: scale(0.55);
+  }
+  24%,
+  64% {
+    opacity: 0.9;
+    transform: scale(0.9);
+  }
+  34%,
+  74% {
+    opacity: 0;
+    transform: scale(1.08);
+  }
+}
+@keyframes tier-impact-pyramid {
+  0%,
+  70%,
+  100% {
+    opacity: 0;
+    transform: scale(0.55);
+  }
+  82% {
+    opacity: 0.85;
+    transform: scale(0.95);
+  }
+  96% {
+    opacity: 0;
+    transform: scale(1.08);
+  }
+}
+@keyframes tier-impact-wall {
+  0%,
+  40%,
+  100% {
+    opacity: 0;
+    transform: scale(0.55);
+  }
+  52% {
+    opacity: 0.85;
+    transform: scale(0.95);
+  }
+  72% {
+    opacity: 0;
+    transform: scale(1.08);
+  }
+}
+@keyframes tier-rays {
+  0%,
+  100% {
+    opacity: 0.08;
+  }
+  45%,
+  60% {
+    opacity: 0.3;
+  }
+}
+@keyframes tier-ember {
+  0% {
+    opacity: 0;
+    transform: translate(0, 4px) scale(0.6);
+  }
+  20%,
+  65% {
+    opacity: 0.8;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(4px, -38px) scale(1.1);
+  }
+}
+@keyframes tier-ember-wonder {
+  0% {
+    opacity: 0;
+    transform: translate(0, 6px) scale(0.6);
+  }
+  15%,
+  70% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-5px, -65px) scale(1.3);
+  }
+}
+@keyframes tier-corona {
+  0%,
+  100% {
+    transform: scale(0.94) rotate(-3deg);
+    opacity: 0.35;
+  }
+  50% {
+    transform: scale(1.04) rotate(3deg);
+    opacity: 0.9;
+  }
+}
+@keyframes wonder-levitate {
+  0%,
+  100% {
+    transform: translateY(-4px);
+  }
+  50% {
+    transform: translateY(-15px);
+  }
+}
+@keyframes wonder-shadow {
+  0%,
+  100% {
+    transform: scaleX(1);
+    opacity: 0.8;
+  }
+  50% {
+    transform: scaleX(0.6);
+    opacity: 0.35;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .tier-presence [class] {
+    animation: none !important;
+  }
+  .tier-wave,
+  .tier-ember {
+    opacity: 0;
+  }
+  .tier-rays {
+    opacity: 0.12;
+  }
+  .tier-glint {
+    opacity: 0.55;
+  }
+  .tier-corona {
+    opacity: 0.4;
+  }
+}

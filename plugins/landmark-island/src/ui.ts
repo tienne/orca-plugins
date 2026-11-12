@@ -1,4 +1,8 @@
 import { renderIsland } from './render-island';
+import { observeCatalogMotion } from './catalog-motion';
+import { ExpeditionCamp } from './expedition-camp';
+import { observeExpedition, type Expedition } from './expeditions';
+import './expedition-camp.css';
 import { startLocalization, translate } from './i18n';
 import {
   Game,
@@ -49,6 +53,11 @@ import './style.css';
 import './scene.css';
 import './world.css';
 import './storybook.css';
+import './landmark-life.css';
+import './scenes/actors.css';
+import './landmark-intensity.css';
+import './island-life.css';
+import { renderLandmarkLifePreview } from './landmark-life-preview';
 type Bridge = {
   request<T = State>(name: string, input: unknown): Promise<T>;
   on(name: string, fn: () => void): unknown;
@@ -80,6 +89,42 @@ const scene = new IslandScene(
     : undefined,
   frame ? (url) => frame.shell.openExternal(url) : undefined,
 );
+const expeditionPreview =
+  demo && new URLSearchParams(location.search).get('preview') === 'expedition';
+let previewCrew: Expedition[] = expeditionPreview
+  ? [
+      ...observeExpedition([], 'scout', 'working', 1000),
+      ...observeExpedition(
+        observeExpedition([], 'builder', 'working', 1001),
+        'builder',
+        'waiting',
+        1002,
+      ),
+      ...observeExpedition(
+        observeExpedition([], 'observer', 'working', 1003),
+        'observer',
+        'done',
+        1004,
+        'success',
+      ),
+    ]
+  : [];
+const camp = new ExpeditionCamp(async (run) => {
+  if (bridge) return bridge.request('island.welcome', { run });
+  const record = previewCrew.find((e) => e.run === run && e.pending);
+  if (!record)
+    throw new Error('This expedition is no longer waiting to be welcomed.');
+  previewCrew = previewCrew.map((e) =>
+    e === record ? { ...e, pending: false, welcomed: true } : e,
+  );
+  return previewCrew;
+}, expeditionPreview);
+const readCrew = () =>
+  camp.refresh(() =>
+    bridge
+      ? bridge.request('island.expeditions', {})
+      : Promise.resolve(previewCrew),
+  );
 const demoKey = 'landmark-island-demo-v1';
 const game = new Game({
   read: async () => JSON.parse(localStorage.getItem(demoKey) ?? 'null'),
@@ -722,7 +767,12 @@ function canvasEditor() {
     return `<aside class="canvas-editor moving-editor" aria-label="Island arrangement"><p class="placement-hint" aria-live="polite">${hint}</p><button id="cancel">Cancel move</button></aside>`;
   return `<aside class="canvas-editor" aria-label="Island arrangement">${scene.modeMarkup()}${scene.mode === 'build' ? `<p class="placement-hint" aria-live="polite">${hint}</p>` : ''}${editorTools()}${moving ? '<div class="tools"><button id="cancel">Cancel move</button></div>' : ''}</aside>`;
 }
+let disposeCatalogMotion: (() => void) | undefined;
+window.addEventListener('pagehide', (event) => {
+  if (!event.persisted) disposeCatalogMotion?.();
+});
 function render() {
+  disposeCatalogMotion?.();
   const previousScroll = root.querySelector<HTMLElement>('.inventory-scroll');
   if (previousScroll && inventoryTab && !previousScroll.closest('[hidden]'))
     inventoryScroll[
@@ -1145,6 +1195,9 @@ function render() {
     const scroll = root.querySelector<HTMLElement>('.inventory-scroll')!;
     scroll.scrollTop = inventoryScroll[inventoryTab];
   }
+  disposeCatalogMotion = observeCatalogMotion(
+    root.querySelector<HTMLElement>('.inventory-scroll')!,
+  );
   const ocean = root.querySelector<HTMLElement>('.ocean');
   if (ocean)
     ocean.dataset.inventoryOpen = String(treasureOpen || Boolean(inventoryTab));
@@ -1189,6 +1242,7 @@ function render() {
       : undefined,
     positionPieceMenu,
   );
+  camp.bind(root, state, busy);
   requestAnimationFrame(positionPieceMenu);
   root.querySelector<HTMLElement>('.piece-menu')?.addEventListener(
     'wheel',
@@ -1230,7 +1284,7 @@ function render() {
   root.querySelector<HTMLButtonElement>('#backups')!.onclick = () =>
     void openBackups();
   root.querySelector<HTMLButtonElement>('#refresh')!.onclick = () =>
-    void run(() => request('island.read'));
+    void run(() => request('island.read')).then(() => readCrew());
   root.querySelector<HTMLButtonElement>('#open-treasure')!.onclick = () =>
     setTreasure(!treasureOpen);
   root.querySelector<HTMLButtonElement>('#close-treasure')!.onclick = () =>
@@ -1493,7 +1547,15 @@ function renderRevealPreview() {
 // Plugin frames always take the worker-backed application path.
 if (demo && new URLSearchParams(location.search).get('preview') === 'reveal') {
   renderRevealPreview();
+} else if (
+  demo &&
+  new URLSearchParams(location.search).get('preview') === 'landmark-life'
+) {
+  renderLandmarkLifePreview(root);
 } else {
+  bridge?.on('island.expeditions.changed', () => {
+    void readCrew();
+  });
   bridge?.on('island.changed', () => {
     void reload();
   });
@@ -1507,4 +1569,5 @@ async function reload() {
   while (busy || root.querySelector('.discovery-theatre[open]'))
     await new Promise((r) => setTimeout(r, 50));
   await run(() => request('island.read'));
+  await readCrew();
 }
