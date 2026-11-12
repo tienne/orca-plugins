@@ -129,7 +129,20 @@ test('failed fusion save retains a stable retry and commits once', async ({
   await page.locator('[data-inventory="landmarks"]').click();
   await page.locator('[data-info="eiffel"]').click();
   await page.locator('[data-fusion]').click();
-  await page.evaluate(() => document.documentElement.classList.add('dark'));
+  await page.evaluate(() => {
+    document.documentElement.classList.add('dark');
+    const style = document.documentElement.style;
+    style.setProperty('--orca-popover', '#102030');
+    style.setProperty('--orca-popover-foreground', '#eef2f6');
+    style.setProperty('--orca-border', '#618fab');
+    style.setProperty('--orca-radius', '7px');
+    style.setProperty('--orca-destructive', '#ffb09f');
+  });
+  const confirm = page.locator('.fusion-confirm');
+  await expect(confirm).toHaveCSS('background-color', 'rgb(16, 32, 48)');
+  await expect(confirm).toHaveCSS('color', 'rgb(238, 242, 246)');
+  await expect(confirm).toHaveCSS('border-top-color', 'rgb(97, 143, 171)');
+  await expect(confirm).toHaveCSS('border-top-left-radius', '7px');
   await page.locator('[data-confirm-fusion]').click();
   await expect(page.locator('.fusion-error')).toContainText(
     'Simulated disk full',
@@ -159,6 +172,26 @@ test('failed fusion save retains a stable retry and commits once', async ({
     return (Math.max(a, b) + 0.05) / (Math.min(a, b) + 0.05);
   });
   expect(contrast).toBeGreaterThanOrEqual(4.5);
+  await expect(page.locator('.fusion-error')).toHaveCSS(
+    'color',
+    'rgb(255, 176, 159)',
+  );
+  await page.evaluate(() => {
+    const style = document.documentElement.style;
+    style.setProperty('--orca-popover', '#fffafe');
+    style.setProperty('--orca-popover-foreground', '#1f2937');
+    style.setProperty('--orca-border', '#475569');
+    style.setProperty('--orca-radius', '13px');
+    style.setProperty('--orca-destructive', '#9f1239');
+  });
+  await expect(confirm).toBeVisible();
+  await expect(confirm).toHaveCSS('background-color', 'rgb(255, 250, 254)');
+  await expect(confirm).toHaveCSS('color', 'rgb(31, 41, 55)');
+  await expect(confirm).toHaveCSS('border-top-left-radius', '13px');
+  await expect(page.locator('.fusion-error')).toHaveCSS(
+    'color',
+    'rgb(159, 18, 57)',
+  );
   await page.locator('[data-cancel-fusion]').click();
   await page.locator('[data-info="petra"]').click();
   await page.locator('[data-fusion="petra"]').click();
