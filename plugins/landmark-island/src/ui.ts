@@ -184,7 +184,7 @@ function showDetails(id: string) {
   detailOpener = document.activeElement as HTMLElement | null;
   const rarity = rarities.find((r) => r.id === landmark.tier)!;
   detail.dataset.tier = rarity.id;
-  detail.dataset.owned = String(quantity(state, id) > 0);
+  detail.dataset.owned = String(discovered(state, id));
   detail.innerHTML = `<button class="detail-close" aria-label="Close landmark details" autofocus>×</button><div class="detail-art">${art(id)}</div><p class="detail-country">${escape(landmark.country)} · ${escape(landmark.region)}</p><h2 id="detail-title">${escape(landmark.name)}</h2><div class="detail-rarity">${rarityBadge(landmark.tier, isEnhanced(id))}<p>${isEnhanced(id) ? 'Fusion only · Half a rarity step above the normal version' : `${weights[rarity.id]}% tier chance per draw · ${landmarks.filter((l) => l.tier === rarity.id).length} landmarks in this tier`}</p></div><p id="detail-description">${escape(landmark.description)}</p><p class="detail-source">Read more: <a href="${escape(landmark.descriptionSource)}" target="_blank" rel="noopener noreferrer">${escape(landmark.descriptionSourceName)} ↗</a></p>`;
   const stock = document.createElement('section');
   stock.className = 'variant-details';
@@ -294,7 +294,7 @@ async function run(
     }
     const last = next.receipts.at(-1);
     if (loaded && last && next.receipts.length > state.receipts.length)
-      message = `${quantity(next, last.landmark) > 1 ? 'Duplicate discovered' : 'New discovery'}: ${landmarks.find((l) => l.id === last.landmark)!.name} · owned ×${quantity(next, last.landmark)}`;
+      message = `${next.receipts.filter((r) => r.landmark === last.landmark).length > 1 ? 'Duplicate discovered' : 'New discovery'}: ${landmarks.find((l) => l.id === last.landmark)!.name} · owned ×${quantity(next, last.landmark)}`;
     if (loaded && next.tickets.length > state.tickets.length)
       message = 'Exploration ticket received. A new destination awaits.';
     state = next;

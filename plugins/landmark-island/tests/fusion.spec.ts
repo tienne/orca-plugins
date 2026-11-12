@@ -220,3 +220,40 @@ test('drawing after fusion reports current ownership and retains duplicate rewar
   await expect(page.locator('.reveal-quantity')).toContainText('Owned ×1');
   await expect(page.locator('.reveal-bonus')).toContainText('+3 materials');
 });
+
+test('fusion keeps detail scenes unlocked and refresh recognizes a historic duplicate', async ({
+  page,
+}) => {
+  const save = empty();
+  for (let i = 0; i < 3; i++)
+    save.tickets.push({ workspaceId: `sync-${i}`, at: '2026-11-13' });
+  save.receipts = save.tickets
+    .slice(0, 2)
+    .map((t) => ({ ...t, landmark: 'petra' }));
+  save.fusions = [{ id: 'fused-petra', landmark: 'petra', at: '2026-11-13' }];
+  await page.addInitScript(
+    (state) =>
+      localStorage.setItem('landmark-island-demo-v1', JSON.stringify(state)),
+    save,
+  );
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await page.goto('/?lang=en');
+  await page.locator('[data-inventory="landmarks"]').click();
+  await expect(page.locator('[data-catalog-id="petra"]')).toContainText(
+    'Owned ×0',
+  );
+  await page.locator('[data-info="petra"]').click();
+  await expect(page.locator('.landmark-detail .landmark-life')).toBeVisible();
+  await expect(page.locator('.variant-details')).toContainText('Owned ×0');
+  await page.locator('.detail-close').click();
+  await page.evaluate(() => {
+    const state = JSON.parse(localStorage.getItem('landmark-island-demo-v1')!);
+    state.receipts.push({ ...state.tickets[2], landmark: 'petra' });
+    localStorage.setItem('landmark-island-demo-v1', JSON.stringify(state));
+  });
+  await page.locator('#refresh').click();
+  await expect(page.locator('.notice')).toContainText(
+    'Duplicate discovered: Petra',
+  );
+  await expect(page.locator('.notice')).toContainText('owned ×1');
+});
