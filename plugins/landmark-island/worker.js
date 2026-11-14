@@ -855,6 +855,252 @@ var ExpeditionLog = class {
   }
 };
 
+// plugins/landmark-island/src/water-catalog.json
+var water_catalog_default = [
+  {
+    record: {
+      id: "greatbarrierreef",
+      name: "Great Barrier Reef",
+      country: "Australia",
+      code: "AUS",
+      tier: "epic",
+      lat: -18.2871,
+      lon: 147.6992,
+      source: "https://whc.unesco.org/en/list/154/",
+      region: "Queensland",
+      description: "Coral gardens and shallow lagoons spread along northeastern Australia, providing habitats for marine turtles, dugongs and many kinds of reef fish. The miniature represents part of this extensive marine landscape.",
+      descriptionSourceName: "UNESCO World Heritage Centre",
+      descriptionSource: "https://whc.unesco.org/en/list/154/"
+    },
+    korean: {
+      name: "\uADF8\uB808\uC774\uD2B8\uBC30\uB9AC\uC5B4\uB9AC\uD504",
+      country: "\uD638\uC8FC",
+      region: "\uD038\uC990\uB79C\uB4DC",
+      description: "\uD638\uC8FC \uBD81\uB3D9\uBD80 \uBC14\uB2E4\uC5D0 \uC0B0\uD638\uCD08\uC640 \uC595\uC740 \uC11D\uD638\uAC00 \uD3BC\uCCD0\uC9D1\uB2C8\uB2E4. \uBC14\uB2E4\uAC70\uBD81\uACFC \uB4C0\uACF5, \uB2E4\uC591\uD55C \uC0B0\uD638\uCD08 \uBB3C\uACE0\uAE30\uAC00 \uC0B4\uC544\uAC00\uB294 \uB113\uC740 \uD574\uC591 \uACBD\uAD00\uC758 \uC77C\uBD80\uB97C \uC791\uC740 \uBAA8\uD615\uC73C\uB85C \uD45C\uD604\uD588\uC2B5\uB2C8\uB2E4.",
+      descriptionSourceName: "\uC720\uB124\uC2A4\uCF54 \uC138\uACC4\uC720\uC0B0\uC13C\uD130"
+    },
+    visual: {
+      id: "greatbarrierreef",
+      name: "Great Barrier Reef",
+      nameKo: "\uADF8\uB808\uC774\uD2B8\uBC30\uB9AC\uC5B4\uB9AC\uD504",
+      shape: "reef",
+      feature: "Coral gardens and shallow lagoons spread along northeastern Australia, providing habitats for marine turtles, dugongs and many kinds of reef fish. The miniature represents part of this extensive marine landscape.",
+      featureKo: "\uD638\uC8FC \uBD81\uB3D9\uBD80 \uBC14\uB2E4\uC5D0 \uC0B0\uD638\uCD08\uC640 \uC595\uC740 \uC11D\uD638\uAC00 \uD3BC\uCCD0\uC9D1\uB2C8\uB2E4. \uBC14\uB2E4\uAC70\uBD81\uACFC \uB4C0\uACF5, \uB2E4\uC591\uD55C \uC0B0\uD638\uCD08 \uBB3C\uACE0\uAE30\uAC00 \uC0B4\uC544\uAC00\uB294 \uB113\uC740 \uD574\uC591 \uACBD\uAD00\uC758 \uC77C\uBD80\uB97C \uC791\uC740 \uBAA8\uD615\uC73C\uB85C \uD45C\uD604\uD588\uC2B5\uB2C8\uB2E4.",
+      seed: 201,
+      color: "#5ab7ad"
+    },
+    surface: "sea"
+  },
+  {
+    record: {
+      id: "bluehole",
+      name: "Great Blue Hole",
+      country: "Belize",
+      code: "BLZ",
+      tier: "rare",
+      lat: 17.316,
+      lon: -87.534,
+      source: "https://whc.unesco.org/en/list/764/",
+      region: "Lighthouse Reef",
+      description: "A deep circular marine sinkhole opens within Lighthouse Reef in Belize. Blue Hole Natural Monument is one of the protected areas of the Belize Barrier Reef Reserve System; its dark water contrasts with the surrounding shallows.",
+      descriptionSourceName: "UNESCO World Heritage Centre",
+      descriptionSource: "https://whc.unesco.org/en/list/764/"
+    },
+    korean: {
+      name: "\uADF8\uB808\uC774\uD2B8\uBE14\uB8E8\uD640",
+      country: "\uBCA8\uB9AC\uC988",
+      region: "\uB77C\uC774\uD2B8\uD558\uC6B0\uC2A4\uB9AC\uD504",
+      description: "\uBCA8\uB9AC\uC988 \uB77C\uC774\uD2B8\uD558\uC6B0\uC2A4\uB9AC\uD504 \uC548\uCABD\uC5D0 \uB465\uADFC \uD574\uC591 \uC2F1\uD06C\uD640\uC774 \uC790\uB9AC\uD569\uB2C8\uB2E4. \uBCA8\uB9AC\uC988 \uC0B0\uD638\uCD08 \uBCF4\uD638\uAD6C\uC5ED\uC744 \uC774\uB8E8\uB294 \uBE14\uB8E8\uD640 \uC790\uC5F0\uAE30\uB150\uBB3C\uB85C, \uC9D9\uC740 \uBB3C\uBE5B\uACFC \uC8FC\uBCC0\uC758 \uC595\uC740 \uBC14\uB2E4\uAC00 \uB69C\uB837\uD558\uAC8C \uB300\uBE44\uB429\uB2C8\uB2E4.",
+      descriptionSourceName: "\uC720\uB124\uC2A4\uCF54 \uC138\uACC4\uC720\uC0B0\uC13C\uD130"
+    },
+    visual: {
+      id: "bluehole",
+      name: "Great Blue Hole",
+      nameKo: "\uADF8\uB808\uC774\uD2B8\uBE14\uB8E8\uD640",
+      shape: "reef",
+      feature: "A deep circular marine sinkhole opens within Lighthouse Reef in Belize. Blue Hole Natural Monument is one of the protected areas of the Belize Barrier Reef Reserve System; its dark water contrasts with the surrounding shallows.",
+      featureKo: "\uBCA8\uB9AC\uC988 \uB77C\uC774\uD2B8\uD558\uC6B0\uC2A4\uB9AC\uD504 \uC548\uCABD\uC5D0 \uB465\uADFC \uD574\uC591 \uC2F1\uD06C\uD640\uC774 \uC790\uB9AC\uD569\uB2C8\uB2E4. \uBCA8\uB9AC\uC988 \uC0B0\uD638\uCD08 \uBCF4\uD638\uAD6C\uC5ED\uC744 \uC774\uB8E8\uB294 \uBE14\uB8E8\uD640 \uC790\uC5F0\uAE30\uB150\uBB3C\uB85C, \uC9D9\uC740 \uBB3C\uBE5B\uACFC \uC8FC\uBCC0\uC758 \uC595\uC740 \uBC14\uB2E4\uAC00 \uB69C\uB837\uD558\uAC8C \uB300\uBE44\uB429\uB2C8\uB2E4.",
+      seed: 202,
+      color: "#4f9fac"
+    },
+    surface: "sea"
+  },
+  {
+    record: {
+      id: "geirangerfjord",
+      name: "Geirangerfjord",
+      country: "Norway",
+      code: "NOR",
+      tier: "rare",
+      lat: 62.105,
+      lon: 7.01,
+      source: "https://whc.unesco.org/en/list/1195/",
+      region: "Western Norway",
+      description: "Steep rock walls enclose a narrow arm of the sea in western Norway. Waterfalls descend from the mountain sides into the fjord, one of the two fjord areas recognized in the West Norwegian Fjords World Heritage property.",
+      descriptionSourceName: "UNESCO World Heritage Centre",
+      descriptionSource: "https://whc.unesco.org/en/list/1195/"
+    },
+    korean: {
+      name: "\uAC8C\uC774\uB791\uC5D0\uB974\uD53C\uC624\uB974",
+      country: "\uB178\uB974\uC6E8\uC774",
+      region: "\uB178\uB974\uC6E8\uC774 \uC11C\uBD80",
+      description: "\uB178\uB974\uC6E8\uC774 \uC11C\uBD80\uC758 \uAC00\uD30C\uB978 \uC554\uBCBD \uC0AC\uC774\uB85C \uC881\uACE0 \uAE34 \uBC14\uB2F7\uAE38\uC774 \uB4E4\uC5B4\uC635\uB2C8\uB2E4. \uC0B0\uBE44\uD0C8\uC758 \uD3ED\uD3EC\uAC00 \uD53C\uC624\uB974\uB85C \uD758\uB7EC\uB4E4\uBA70, \uB178\uB974\uC6E8\uC774 \uC11C\uBD80 \uD53C\uC624\uB974 \uC138\uACC4\uC720\uC0B0\uC744 \uC774\uB8E8\uB294 \uB450 \uC9C0\uC5ED \uC911 \uD558\uB098\uC785\uB2C8\uB2E4.",
+      descriptionSourceName: "\uC720\uB124\uC2A4\uCF54 \uC138\uACC4\uC720\uC0B0\uC13C\uD130"
+    },
+    visual: {
+      id: "geirangerfjord",
+      name: "Geirangerfjord",
+      nameKo: "\uAC8C\uC774\uB791\uC5D0\uB974\uD53C\uC624\uB974",
+      shape: "fjord",
+      feature: "Steep rock walls enclose a narrow arm of the sea in western Norway. Waterfalls descend from the mountain sides into the fjord, one of the two fjord areas recognized in the West Norwegian Fjords World Heritage property.",
+      featureKo: "\uB178\uB974\uC6E8\uC774 \uC11C\uBD80\uC758 \uAC00\uD30C\uB978 \uC554\uBCBD \uC0AC\uC774\uB85C \uC881\uACE0 \uAE34 \uBC14\uB2F7\uAE38\uC774 \uB4E4\uC5B4\uC635\uB2C8\uB2E4. \uC0B0\uBE44\uD0C8\uC758 \uD3ED\uD3EC\uAC00 \uD53C\uC624\uB974\uB85C \uD758\uB7EC\uB4E4\uBA70, \uB178\uB974\uC6E8\uC774 \uC11C\uBD80 \uD53C\uC624\uB974 \uC138\uACC4\uC720\uC0B0\uC744 \uC774\uB8E8\uB294 \uB450 \uC9C0\uC5ED \uC911 \uD558\uB098\uC785\uB2C8\uB2E4.",
+      seed: 203,
+      color: "#759eaf"
+    },
+    surface: "sea"
+  },
+  {
+    record: {
+      id: "rockislands",
+      name: "Rock Islands Southern Lagoon",
+      country: "Palau",
+      code: "PLW",
+      tier: "rare",
+      lat: 7.2,
+      lon: 134.35,
+      source: "https://whc.unesco.org/en/list/1386/",
+      region: "Southern Lagoon",
+      description: "Green limestone islets rise from turquoise lagoons in Palau. Their undercut, mushroom-like profiles sit among coral reefs, while the wider Rock Islands landscape includes marine lakes and traces of former island settlements.",
+      descriptionSourceName: "UNESCO World Heritage Centre",
+      descriptionSource: "https://whc.unesco.org/en/list/1386/"
+    },
+    korean: {
+      name: "\uD314\uB77C\uC6B0 \uB85D\uC544\uC77C\uB79C\uB4DC",
+      country: "\uD314\uB77C\uC6B0",
+      region: "\uB0A8\uBD80 \uC11D\uD638",
+      description: "\uD314\uB77C\uC6B0\uC758 \uCCAD\uB85D\uBE5B \uC11D\uD638 \uC704\uB85C \uCD08\uB85D\uBE5B \uC11D\uD68C\uC554 \uC12C\uB4E4\uC774 \uC19F\uC544 \uC788\uC2B5\uB2C8\uB2E4. \uC544\uB7AB\uBD80\uBD84\uC774 \uAE4E\uC778 \uBC84\uC12F \uBAA8\uC591 \uC12C\uACFC \uC0B0\uD638\uCD08\uAC00 \uC5B4\uC6B0\uB7EC\uC9C0\uBA70, \uC8FC\uBCC0\uC5D0\uB294 \uD574\uC591 \uD638\uC218\uC640 \uC61B \uC12C \uACF5\uB3D9\uCCB4\uC758 \uD754\uC801\uB3C4 \uB0A8\uC544 \uC788\uC2B5\uB2C8\uB2E4.",
+      descriptionSourceName: "\uC720\uB124\uC2A4\uCF54 \uC138\uACC4\uC720\uC0B0\uC13C\uD130"
+    },
+    visual: {
+      id: "rockislands",
+      name: "Rock Islands Southern Lagoon",
+      nameKo: "\uD314\uB77C\uC6B0 \uB85D\uC544\uC77C\uB79C\uB4DC",
+      shape: "island",
+      feature: "Green limestone islets rise from turquoise lagoons in Palau. Their undercut, mushroom-like profiles sit among coral reefs, while the wider Rock Islands landscape includes marine lakes and traces of former island settlements.",
+      featureKo: "\uD314\uB77C\uC6B0\uC758 \uCCAD\uB85D\uBE5B \uC11D\uD638 \uC704\uB85C \uCD08\uB85D\uBE5B \uC11D\uD68C\uC554 \uC12C\uB4E4\uC774 \uC19F\uC544 \uC788\uC2B5\uB2C8\uB2E4. \uC544\uB7AB\uBD80\uBD84\uC774 \uAE4E\uC778 \uBC84\uC12F \uBAA8\uC591 \uC12C\uACFC \uC0B0\uD638\uCD08\uAC00 \uC5B4\uC6B0\uB7EC\uC9C0\uBA70, \uC8FC\uBCC0\uC5D0\uB294 \uD574\uC591 \uD638\uC218\uC640 \uC61B \uC12C \uACF5\uB3D9\uCCB4\uC758 \uD754\uC801\uB3C4 \uB0A8\uC544 \uC788\uC2B5\uB2C8\uB2E4.",
+      seed: 204,
+      color: "#68b6a2"
+    },
+    surface: "sea"
+  },
+  {
+    record: {
+      id: "liriver",
+      name: "Li River Karst",
+      country: "China",
+      code: "CHN",
+      tier: "rare",
+      lat: 25.0022,
+      lon: 110.425,
+      source: "https://whc.unesco.org/en/list/1248/",
+      region: "Guilin",
+      description: "Towering limestone peaks line the Li River around Guilin. The Lijiang karst component of South China Karst preserves a landscape of steep green hills and river corridors, represented here by a small riverside scene.",
+      descriptionSourceName: "UNESCO World Heritage Centre",
+      descriptionSource: "https://whc.unesco.org/en/list/1248/"
+    },
+    korean: {
+      name: "\uB9AC\uAC15 \uCE74\uB974\uC2A4\uD2B8",
+      country: "\uC911\uAD6D",
+      region: "\uAD6C\uC774\uB9B0",
+      description: "\uAD6C\uC774\uB9B0\uC758 \uB9AC\uAC15\uC744 \uB530\uB77C \uAC00\uD30C\uB978 \uC11D\uD68C\uC554 \uBD09\uC6B0\uB9AC\uAC00 \uC774\uC5B4\uC9D1\uB2C8\uB2E4. \uC911\uAD6D \uB0A8\uBD80 \uCE74\uB974\uC2A4\uD2B8 \uC720\uC0B0\uC758 \uB9AC\uC7A5 \uAD6C\uC5ED\uC5D0 \uC18D\uD55C \uC0B0\uBD09\uC6B0\uB9AC\uC640 \uAC15\uBCC0 \uD48D\uACBD\uC744 \uC791\uC740 \uBAA8\uD615\uC73C\uB85C \uD45C\uD604\uD588\uC2B5\uB2C8\uB2E4.",
+      descriptionSourceName: "\uC720\uB124\uC2A4\uCF54 \uC138\uACC4\uC720\uC0B0\uC13C\uD130"
+    },
+    visual: {
+      id: "liriver",
+      name: "Li River Karst",
+      nameKo: "\uB9AC\uAC15 \uCE74\uB974\uC2A4\uD2B8",
+      shape: "coast",
+      feature: "Towering limestone peaks line the Li River around Guilin. The Lijiang karst component of South China Karst preserves a landscape of steep green hills and river corridors, represented here by a small riverside scene.",
+      featureKo: "\uAD6C\uC774\uB9B0\uC758 \uB9AC\uAC15\uC744 \uB530\uB77C \uAC00\uD30C\uB978 \uC11D\uD68C\uC554 \uBD09\uC6B0\uB9AC\uAC00 \uC774\uC5B4\uC9D1\uB2C8\uB2E4. \uC911\uAD6D \uB0A8\uBD80 \uCE74\uB974\uC2A4\uD2B8 \uC720\uC0B0\uC758 \uB9AC\uC7A5 \uAD6C\uC5ED\uC5D0 \uC18D\uD55C \uC0B0\uBD09\uC6B0\uB9AC\uC640 \uAC15\uBCC0 \uD48D\uACBD\uC744 \uC791\uC740 \uBAA8\uD615\uC73C\uB85C \uD45C\uD604\uD588\uC2B5\uB2C8\uB2E4.",
+      seed: 205,
+      color: "#77aaa0"
+    },
+    surface: "river"
+  },
+  {
+    record: {
+      id: "middlerhine",
+      name: "Upper Middle Rhine Valley",
+      country: "Germany",
+      code: "DEU",
+      tier: "common",
+      lat: 50.173,
+      lon: 7.694,
+      source: "https://whc.unesco.org/en/list/1066/",
+      region: "Middle Rhine",
+      description: "Castles, vineyard slopes and historic towns follow the Middle Rhine in Germany. The World Heritage cultural landscape records centuries of settlement and travel along the river; the miniature combines a river bend and a hillside castle.",
+      descriptionSourceName: "UNESCO World Heritage Centre",
+      descriptionSource: "https://whc.unesco.org/en/list/1066/"
+    },
+    korean: {
+      name: "\uB77C\uC778\uAC15 \uC911\uC0C1\uB958 \uACC4\uACE1",
+      country: "\uB3C5\uC77C",
+      region: "\uB77C\uC778\uAC15 \uC911\uB958",
+      description: "\uB3C5\uC77C \uB77C\uC778\uAC15\uC744 \uB530\uB77C \uACE0\uC131\uACFC \uD3EC\uB3C4\uBC2D, \uC624\uB798\uB41C \uB9C8\uC744\uC774 \uC774\uC5B4\uC9D1\uB2C8\uB2E4. \uC218\uBC31 \uB144 \uB3D9\uC548 \uAC15\uACFC \uD568\uAED8 \uC0B4\uC544\uC628 \uBB38\uD654\uACBD\uAD00\uC744 \uAD7D\uC774\uCE58\uB294 \uBB3C\uAE38\uACFC \uC5B8\uB355 \uC704 \uC131\uC73C\uB85C \uD45C\uD604\uD588\uC2B5\uB2C8\uB2E4.",
+      descriptionSourceName: "\uC720\uB124\uC2A4\uCF54 \uC138\uACC4\uC720\uC0B0\uC13C\uD130"
+    },
+    visual: {
+      id: "middlerhine",
+      name: "Upper Middle Rhine Valley",
+      nameKo: "\uB77C\uC778\uAC15 \uC911\uC0C1\uB958 \uACC4\uACE1",
+      shape: "castle",
+      feature: "Castles, vineyard slopes and historic towns follow the Middle Rhine in Germany. The World Heritage cultural landscape records centuries of settlement and travel along the river; the miniature combines a river bend and a hillside castle.",
+      featureKo: "\uB3C5\uC77C \uB77C\uC778\uAC15\uC744 \uB530\uB77C \uACE0\uC131\uACFC \uD3EC\uB3C4\uBC2D, \uC624\uB798\uB41C \uB9C8\uC744\uC774 \uC774\uC5B4\uC9D1\uB2C8\uB2E4. \uC218\uBC31 \uB144 \uB3D9\uC548 \uAC15\uACFC \uD568\uAED8 \uC0B4\uC544\uC628 \uBB38\uD654\uACBD\uAD00\uC744 \uAD7D\uC774\uCE58\uB294 \uBB3C\uAE38\uACFC \uC5B8\uB355 \uC704 \uC131\uC73C\uB85C \uD45C\uD604\uD588\uC2B5\uB2C8\uB2E4.",
+      seed: 206,
+      color: "#9baf86"
+    },
+    surface: "river"
+  }
+];
+
+// plugins/landmark-island/src/water-themes.ts
+var waterThemes = [
+  { id: "halong", placement: "sea", gift: "buoy", special: "sailboat" },
+  { id: "papahanaumokuakea", placement: "sea", gift: "coral", special: "buoy" },
+  ...["montsaintmichel", "venice", "nanmadol", "liberty", "opera", "belem"].map(
+    (id) => ({
+      id,
+      placement: "coastal",
+      gift: "buoy",
+      special: "sailboat"
+    })
+  ),
+  ...["mostar", "pontdugard", "kinderdijk", "grandcanal", "dujiangyan"].map(
+    (id) => ({
+      id,
+      placement: "river",
+      gift: "lotus",
+      special: ["kinderdijk", "dujiangyan"].includes(id) ? "waterwheel" : "raft"
+    })
+  ),
+  ...water_catalog_default.map((entry) => ({
+    id: entry.record.id,
+    placement: entry.surface,
+    gift: entry.surface === "river" ? "lotus" : entry.record.id === "bluehole" || entry.record.id === "geirangerfjord" ? "buoy" : "coral",
+    special: entry.surface === "river" ? entry.record.id === "middlerhine" ? "waterwheel" : "raft" : entry.record.id === "greatbarrierreef" ? "buoy" : "sailboat"
+  }))
+];
+var byId = new Map(waterThemes.map((t) => [t.id, t]));
+var waterTheme = (id) => byId.get(id.endsWith("+") ? id.slice(0, -1) : id);
+var waterShapeNames = {
+  coral: ["coral garden", "\uC0B0\uD638 \uC815\uC6D0"],
+  buoy: ["navigation buoy", "\uD56D\uB85C \uBD80\uD45C"],
+  sailboat: ["sailboat", "\uBC94\uC120"],
+  lotus: ["floating lotus bed", "\uC218\uC0C1 \uC5F0\uAF43\uBC2D"],
+  raft: ["river raft", "\uAC15 \uB5CF\uBAA9"],
+  waterwheel: ["waterwheel", "\uBB3C\uB808\uBC29\uC544"]
+};
+
 // plugins/landmark-island/src/landmarks.json
 var landmarks_default = [
   {
@@ -5056,6 +5302,90 @@ var landmarks_default = [
     description: "T-shaped stone pillars stand in circular arrangements at a prehistoric site. Its distinctive forms are shown here as a small illustrated landmark; the map uses a representative point for the UNESCO property or one of its components.",
     descriptionSourceName: "UNESCO World Heritage Centre",
     descriptionSource: "https://whc.unesco.org/en/list/1572/"
+  },
+  {
+    id: "greatbarrierreef",
+    name: "Great Barrier Reef",
+    country: "Australia",
+    code: "AUS",
+    tier: "epic",
+    lat: -18.2871,
+    lon: 147.6992,
+    source: "https://whc.unesco.org/en/list/154/",
+    region: "Queensland",
+    description: "Coral gardens and shallow lagoons spread along northeastern Australia, providing habitats for marine turtles, dugongs and many kinds of reef fish. The miniature represents part of this extensive marine landscape.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/154/"
+  },
+  {
+    id: "bluehole",
+    name: "Great Blue Hole",
+    country: "Belize",
+    code: "BLZ",
+    tier: "rare",
+    lat: 17.316,
+    lon: -87.534,
+    source: "https://whc.unesco.org/en/list/764/",
+    region: "Lighthouse Reef",
+    description: "A deep circular marine sinkhole opens within Lighthouse Reef in Belize. Blue Hole Natural Monument is one of the protected areas of the Belize Barrier Reef Reserve System; its dark water contrasts with the surrounding shallows.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/764/"
+  },
+  {
+    id: "geirangerfjord",
+    name: "Geirangerfjord",
+    country: "Norway",
+    code: "NOR",
+    tier: "rare",
+    lat: 62.105,
+    lon: 7.01,
+    source: "https://whc.unesco.org/en/list/1195/",
+    region: "Western Norway",
+    description: "Steep rock walls enclose a narrow arm of the sea in western Norway. Waterfalls descend from the mountain sides into the fjord, one of the two fjord areas recognized in the West Norwegian Fjords World Heritage property.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/1195/"
+  },
+  {
+    id: "rockislands",
+    name: "Rock Islands Southern Lagoon",
+    country: "Palau",
+    code: "PLW",
+    tier: "rare",
+    lat: 7.2,
+    lon: 134.35,
+    source: "https://whc.unesco.org/en/list/1386/",
+    region: "Southern Lagoon",
+    description: "Green limestone islets rise from turquoise lagoons in Palau. Their undercut, mushroom-like profiles sit among coral reefs, while the wider Rock Islands landscape includes marine lakes and traces of former island settlements.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/1386/"
+  },
+  {
+    id: "liriver",
+    name: "Li River Karst",
+    country: "China",
+    code: "CHN",
+    tier: "rare",
+    lat: 25.0022,
+    lon: 110.425,
+    source: "https://whc.unesco.org/en/list/1248/",
+    region: "Guilin",
+    description: "Towering limestone peaks line the Li River around Guilin. The Lijiang karst component of South China Karst preserves a landscape of steep green hills and river corridors, represented here by a small riverside scene.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/1248/"
+  },
+  {
+    id: "middlerhine",
+    name: "Upper Middle Rhine Valley",
+    country: "Germany",
+    code: "DEU",
+    tier: "common",
+    lat: 50.173,
+    lon: 7.694,
+    source: "https://whc.unesco.org/en/list/1066/",
+    region: "Middle Rhine",
+    description: "Castles, vineyard slopes and historic towns follow the Middle Rhine in Germany. The World Heritage cultural landscape records centuries of settlement and travel along the river; the miniature combines a river bend and a hillside castle.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/1066/"
   }
 ];
 
@@ -5067,10 +5397,10 @@ var collectibleLandmarks = landmarks_default.flatMap((landmark) => [
   landmark,
   { ...landmark, id: enhancedId(landmark.id), name: `${landmark.name} +` }
 ]);
-var byId = new Map(
+var byId2 = new Map(
   collectibleLandmarks.map((landmark) => [landmark.id, landmark])
 );
-var landmarkById = (id) => byId.get(id);
+var landmarkById = (id) => byId2.get(id);
 
 // plugins/landmark-island/src/world.ts
 var SIZE = 40;
@@ -5192,6 +5522,31 @@ function landAtLevel(level) {
     (t) => (expansionLevel.get(t.id) ?? Infinity) <= level
   );
 }
+
+// plugins/landmark-island/src/placement.ts
+function placementType(id) {
+  return waterTheme(baseId(id))?.placement ?? "land";
+}
+var isWorldCell = (cell) => Number.isInteger(cell) && Boolean(tiles[cell]);
+var allowsSea = (id) => ["sea", "coastal"].includes(placementType(id));
+var allowsRiver = (id) => placementType(id) === "river";
+
+// plugins/landmark-island/src/water-decorations.ts
+var newIds = new Set(water_catalog_default.map((entry) => entry.record.id));
+var waterDecorations = waterThemes.flatMap((theme) => {
+  const landmark = landmarks_default.find((l) => l.id === theme.id);
+  return [theme.gift, theme.special].map((shape, index) => ({
+    id: `${theme.id}-${newIds.has(theme.id) ? "" : "water-"}${index === 0 ? "gift" : "special"}`,
+    name: `${landmark.name} ${waterShapeNames[shape][0]}`,
+    landmark: theme.id,
+    cost: index === 0 ? 3 : 6,
+    gift: index === 0,
+    shape,
+    surface: theme.placement === "river" ? "river" : "sea",
+    color: theme.placement === "river" ? "#85b995" : "#68b8c4",
+    walkable: false
+  }));
+});
 
 // plugins/landmark-island/src/landmark-expansion.json
 var landmark_expansion_default = [
@@ -7194,11 +7549,72 @@ var landmark_expansion_default = [
     featureKo: "\uC120\uC0AC \uC720\uC801\uC758 \uC6D0\uD615 \uAD6C\uC870 \uC548\uC5D0 T\uC790\uD615 \uC11D\uC8FC\uB4E4\uC774 \uC11C \uC788\uC2B5\uB2C8\uB2E4",
     seed: 200,
     color: "#c4ac88"
+  },
+  {
+    id: "greatbarrierreef",
+    name: "Great Barrier Reef",
+    nameKo: "\uADF8\uB808\uC774\uD2B8\uBC30\uB9AC\uC5B4\uB9AC\uD504",
+    shape: "reef",
+    feature: "Coral gardens and shallow lagoons spread along northeastern Australia, providing habitats for marine turtles, dugongs and many kinds of reef fish. The miniature represents part of this extensive marine landscape.",
+    featureKo: "\uD638\uC8FC \uBD81\uB3D9\uBD80 \uBC14\uB2E4\uC5D0 \uC0B0\uD638\uCD08\uC640 \uC595\uC740 \uC11D\uD638\uAC00 \uD3BC\uCCD0\uC9D1\uB2C8\uB2E4. \uBC14\uB2E4\uAC70\uBD81\uACFC \uB4C0\uACF5, \uB2E4\uC591\uD55C \uC0B0\uD638\uCD08 \uBB3C\uACE0\uAE30\uAC00 \uC0B4\uC544\uAC00\uB294 \uB113\uC740 \uD574\uC591 \uACBD\uAD00\uC758 \uC77C\uBD80\uB97C \uC791\uC740 \uBAA8\uD615\uC73C\uB85C \uD45C\uD604\uD588\uC2B5\uB2C8\uB2E4.",
+    seed: 201,
+    color: "#5ab7ad"
+  },
+  {
+    id: "bluehole",
+    name: "Great Blue Hole",
+    nameKo: "\uADF8\uB808\uC774\uD2B8\uBE14\uB8E8\uD640",
+    shape: "reef",
+    feature: "A deep circular marine sinkhole opens within Lighthouse Reef in Belize. Blue Hole Natural Monument is one of the protected areas of the Belize Barrier Reef Reserve System; its dark water contrasts with the surrounding shallows.",
+    featureKo: "\uBCA8\uB9AC\uC988 \uB77C\uC774\uD2B8\uD558\uC6B0\uC2A4\uB9AC\uD504 \uC548\uCABD\uC5D0 \uB465\uADFC \uD574\uC591 \uC2F1\uD06C\uD640\uC774 \uC790\uB9AC\uD569\uB2C8\uB2E4. \uBCA8\uB9AC\uC988 \uC0B0\uD638\uCD08 \uBCF4\uD638\uAD6C\uC5ED\uC744 \uC774\uB8E8\uB294 \uBE14\uB8E8\uD640 \uC790\uC5F0\uAE30\uB150\uBB3C\uB85C, \uC9D9\uC740 \uBB3C\uBE5B\uACFC \uC8FC\uBCC0\uC758 \uC595\uC740 \uBC14\uB2E4\uAC00 \uB69C\uB837\uD558\uAC8C \uB300\uBE44\uB429\uB2C8\uB2E4.",
+    seed: 202,
+    color: "#4f9fac"
+  },
+  {
+    id: "geirangerfjord",
+    name: "Geirangerfjord",
+    nameKo: "\uAC8C\uC774\uB791\uC5D0\uB974\uD53C\uC624\uB974",
+    shape: "fjord",
+    feature: "Steep rock walls enclose a narrow arm of the sea in western Norway. Waterfalls descend from the mountain sides into the fjord, one of the two fjord areas recognized in the West Norwegian Fjords World Heritage property.",
+    featureKo: "\uB178\uB974\uC6E8\uC774 \uC11C\uBD80\uC758 \uAC00\uD30C\uB978 \uC554\uBCBD \uC0AC\uC774\uB85C \uC881\uACE0 \uAE34 \uBC14\uB2F7\uAE38\uC774 \uB4E4\uC5B4\uC635\uB2C8\uB2E4. \uC0B0\uBE44\uD0C8\uC758 \uD3ED\uD3EC\uAC00 \uD53C\uC624\uB974\uB85C \uD758\uB7EC\uB4E4\uBA70, \uB178\uB974\uC6E8\uC774 \uC11C\uBD80 \uD53C\uC624\uB974 \uC138\uACC4\uC720\uC0B0\uC744 \uC774\uB8E8\uB294 \uB450 \uC9C0\uC5ED \uC911 \uD558\uB098\uC785\uB2C8\uB2E4.",
+    seed: 203,
+    color: "#759eaf"
+  },
+  {
+    id: "rockislands",
+    name: "Rock Islands Southern Lagoon",
+    nameKo: "\uD314\uB77C\uC6B0 \uB85D\uC544\uC77C\uB79C\uB4DC",
+    shape: "island",
+    feature: "Green limestone islets rise from turquoise lagoons in Palau. Their undercut, mushroom-like profiles sit among coral reefs, while the wider Rock Islands landscape includes marine lakes and traces of former island settlements.",
+    featureKo: "\uD314\uB77C\uC6B0\uC758 \uCCAD\uB85D\uBE5B \uC11D\uD638 \uC704\uB85C \uCD08\uB85D\uBE5B \uC11D\uD68C\uC554 \uC12C\uB4E4\uC774 \uC19F\uC544 \uC788\uC2B5\uB2C8\uB2E4. \uC544\uB7AB\uBD80\uBD84\uC774 \uAE4E\uC778 \uBC84\uC12F \uBAA8\uC591 \uC12C\uACFC \uC0B0\uD638\uCD08\uAC00 \uC5B4\uC6B0\uB7EC\uC9C0\uBA70, \uC8FC\uBCC0\uC5D0\uB294 \uD574\uC591 \uD638\uC218\uC640 \uC61B \uC12C \uACF5\uB3D9\uCCB4\uC758 \uD754\uC801\uB3C4 \uB0A8\uC544 \uC788\uC2B5\uB2C8\uB2E4.",
+    seed: 204,
+    color: "#68b6a2"
+  },
+  {
+    id: "liriver",
+    name: "Li River Karst",
+    nameKo: "\uB9AC\uAC15 \uCE74\uB974\uC2A4\uD2B8",
+    shape: "coast",
+    feature: "Towering limestone peaks line the Li River around Guilin. The Lijiang karst component of South China Karst preserves a landscape of steep green hills and river corridors, represented here by a small riverside scene.",
+    featureKo: "\uAD6C\uC774\uB9B0\uC758 \uB9AC\uAC15\uC744 \uB530\uB77C \uAC00\uD30C\uB978 \uC11D\uD68C\uC554 \uBD09\uC6B0\uB9AC\uAC00 \uC774\uC5B4\uC9D1\uB2C8\uB2E4. \uC911\uAD6D \uB0A8\uBD80 \uCE74\uB974\uC2A4\uD2B8 \uC720\uC0B0\uC758 \uB9AC\uC7A5 \uAD6C\uC5ED\uC5D0 \uC18D\uD55C \uC0B0\uBD09\uC6B0\uB9AC\uC640 \uAC15\uBCC0 \uD48D\uACBD\uC744 \uC791\uC740 \uBAA8\uD615\uC73C\uB85C \uD45C\uD604\uD588\uC2B5\uB2C8\uB2E4.",
+    seed: 205,
+    color: "#77aaa0"
+  },
+  {
+    id: "middlerhine",
+    name: "Upper Middle Rhine Valley",
+    nameKo: "\uB77C\uC778\uAC15 \uC911\uC0C1\uB958 \uACC4\uACE1",
+    shape: "castle",
+    feature: "Castles, vineyard slopes and historic towns follow the Middle Rhine in Germany. The World Heritage cultural landscape records centuries of settlement and travel along the river; the miniature combines a river bend and a hillside castle.",
+    featureKo: "\uB3C5\uC77C \uB77C\uC778\uAC15\uC744 \uB530\uB77C \uACE0\uC131\uACFC \uD3EC\uB3C4\uBC2D, \uC624\uB798\uB41C \uB9C8\uC744\uC774 \uC774\uC5B4\uC9D1\uB2C8\uB2E4. \uC218\uBC31 \uB144 \uB3D9\uC548 \uAC15\uACFC \uD568\uAED8 \uC0B4\uC544\uC628 \uBB38\uD654\uACBD\uAD00\uC744 \uAD7D\uC774\uCE58\uB294 \uBB3C\uAE38\uACFC \uC5B8\uB355 \uC704 \uC131\uC73C\uB85C \uD45C\uD604\uD588\uC2B5\uB2C8\uB2E4.",
+    seed: 206,
+    color: "#9baf86"
   }
 ];
 
 // plugins/landmark-island/src/expanded-decorations.ts
-var expandedDecorations = landmark_expansion_default.flatMap((entry) => {
+var waterIds = new Set(water_catalog_default.map((entry) => entry.record.id));
+var expandedDecorations = landmark_expansion_default.filter((entry) => !waterIds.has(entry.id)).flatMap((entry) => {
   const nature = [
     "peaks",
     "forest",
@@ -7920,6 +8336,15 @@ var themes = [
 ];
 var decorations = [
   {
+    id: "river",
+    name: "River water",
+    cost: 0,
+    gift: false,
+    shape: "path",
+    color: "#65b6bd",
+    walkable: false
+  },
+  {
     id: "grass",
     name: "Soft grass",
     cost: 0,
@@ -8018,6 +8443,7 @@ var decorations = [
     walkable: false
   },
   ...expandedDecorations,
+  ...waterDecorations,
   ...landmarks_default.map((l, index) => ({
     id: `${l.id}-plus-star`,
     name: `${l.name} star monument`,
@@ -8031,7 +8457,7 @@ var decorations = [
 ];
 var decorationById = (id) => decorations.find((d) => d.id === id);
 var DUPLICATE_MATERIALS = 3;
-var isFloor = (id) => ["grass", "path", "stonepath"].includes(id);
+var isFloor = (id) => ["grass", "path", "stonepath", "river"].includes(id);
 var canRotate = (id) => ["bench", "gate"].includes(decorationById(id)?.shape ?? "");
 
 // plugins/landmark-island/src/game.ts
@@ -8058,10 +8484,37 @@ function islandLevel(s) {
   return Math.max(s.landFloor, new Set(s.receipts.map((r) => r.landmark)).size);
 }
 function islandLand(s) {
-  return landAtLevel(islandLevel(s));
+  const reserved = new Set(
+    s.decorations.filter((p) => decorationById(p.decoration)?.surface === "sea").map((p) => p.cell)
+  );
+  return landAtLevel(islandLevel(s)).filter((t) => !reserved.has(t.id));
 }
 function unlockedCell(s, cell) {
-  return isLand(cell) && (expansionLevel.get(cell) ?? Infinity) <= islandLevel(s);
+  return isLand(cell) && (expansionLevel.get(cell) ?? Infinity) <= islandLevel(s) && !s.decorations.some(
+    (p) => p.cell === cell && decorationById(p.decoration)?.surface === "sea"
+  );
+}
+function surfaceAt(s, cell) {
+  if (!isWorldCell(cell)) return void 0;
+  return !unlockedCell(s, cell) ? "sea" : s.floors.some((p) => p.cell === cell && p.decoration === "river") ? "river" : "land";
+}
+function canPlaceLandmark(s, id, cell) {
+  const surface = surfaceAt(s, cell);
+  return surface === "land" || surface === "sea" && allowsSea(id) || surface === "river" && allowsRiver(id);
+}
+function canPlaceDecoration(s, id, cell) {
+  const decoration = decorationById(id);
+  const surface = surfaceAt(s, cell);
+  return Boolean(
+    decoration && surface && (decoration.surface ? surface === decoration.surface : surface !== "sea")
+  );
+}
+function placedFusionLandmark(s, from, cell) {
+  if (!isWorldCell(from) || !isWorldCell(cell) || from === cell)
+    return void 0;
+  const source = s.placements.find((p) => p.cell === from);
+  const target = s.placements.find((p) => p.cell === cell);
+  return source && target && source.landmark === target.landmark && !isEnhanced(source.landmark) ? source.landmark : void 0;
 }
 function materials(s) {
   return (s.receipts.length - new Set(s.receipts.map((r) => r.landmark)).size) * DUPLICATE_MATERIALS - s.crafts.reduce((sum, c) => sum + decorationById(c.decoration).cost, 0);
@@ -8094,7 +8547,7 @@ function validate(value) {
   const fusionIds = /* @__PURE__ */ new Set();
   const fusedCounts = /* @__PURE__ */ new Map();
   for (const f of fusions) {
-    if (!f || typeof f.id !== "string" || !f.id || f.id.length > 128 || fusionIds.has(f.id) || !landmarks_default.some((l) => l.id === f.landmark) || typeof f.at !== "string" || !Number.isFinite(Date.parse(f.at)))
+    if (!f || typeof f.id !== "string" || !f.id || f.id.length > 128 || fusionIds.has(f.id) || !landmarks_default.some((l) => l.id === f.landmark) || typeof f.at !== "string" || !Number.isFinite(Date.parse(f.at)) || (f.from !== void 0 || f.cell !== void 0) && (!isWorldCell(f.from) || !isWorldCell(f.cell) || f.from === f.cell))
       throw Error("Invalid fusion ledger");
     fusionIds.add(f.id);
     fusedCounts.set(f.landmark, (fusedCounts.get(f.landmark) ?? 0) + 1);
@@ -8103,7 +8556,7 @@ function validate(value) {
   }
   const inventory = { ...s, fusions };
   for (const p of s.placements) {
-    if (!p || !isLand(p.cell) || cells.has(p.cell) || !landmarkById(p.landmark) || p.rotation !== void 0 && p.rotation !== 0 && p.rotation !== 1)
+    if (!p || !isLand(p.cell) && !(isWorldCell(p.cell) && allowsSea(p.landmark)) || cells.has(p.cell) || !landmarkById(p.landmark) || p.rotation !== void 0 && p.rotation !== 0 && p.rotation !== 1)
       throw Error("Invalid placement");
     cells.add(p.cell);
     placed.set(p.landmark, (placed.get(p.landmark) ?? 0) + 1);
@@ -8148,10 +8601,11 @@ function validate(value) {
   };
   if (materials(next) < 0) throw Error("Not enough materials");
   for (const p of s.placements)
-    if (!unlockedCell(next, p.cell)) throw Error("Land is not unlocked");
+    if (!unlockedCell(next, p.cell) && !(isWorldCell(p.cell) && allowsSea(p.landmark)))
+      throw Error("Land is not unlocked");
   const usedDecor = /* @__PURE__ */ new Map();
   for (const p of decor) {
-    if (!p || !decorationById(p.decoration) || isFloor(p.decoration) || p.rotation !== void 0 && (!canRotate(p.decoration) || !Number.isInteger(p.rotation) || p.rotation < 0 || p.rotation > 3) || !unlockedCell(next, p.cell) || cells.has(p.cell))
+    if (!p || !decorationById(p.decoration) || isFloor(p.decoration) || p.rotation !== void 0 && (!canRotate(p.decoration) || !Number.isInteger(p.rotation) || p.rotation < 0 || p.rotation > 3) || !canPlaceDecoration(next, p.decoration, p.cell) || cells.has(p.cell))
       throw Error("Invalid decoration placement");
     cells.add(p.cell);
     usedDecor.set(p.decoration, (usedDecor.get(p.decoration) ?? 0) + 1);
@@ -8166,7 +8620,12 @@ function validate(value) {
   }
   return structuredClone({
     version: 6,
-    fusions: fusions.map(({ id, landmark, at: at2 }) => ({ id, landmark, at: at2 })),
+    fusions: fusions.map(({ id, landmark, at: at2, from, cell }) => ({
+      id,
+      landmark,
+      at: at2,
+      ...from !== void 0 ? { from, cell } : {}
+    })),
     floors: floors.map(({ decoration, cell }) => ({ decoration, cell })),
     landFloor,
     crafts: crafts.map(({ id, decoration }) => ({ id, decoration })),
@@ -8341,23 +8800,39 @@ var Game = class {
       const p = input;
       if (typeof p?.id !== "string" || !p.id || p.id.length > 128 || typeof p.landmark !== "string" || isEnhanced(p.landmark) || !landmarkById(p.landmark))
         throw Error("Choose a normal landmark and a valid fusion request.");
+      const onIsland = p.from !== void 0 || p.cell !== void 0;
+      if (onIsland && (!isWorldCell(p.from) || !isWorldCell(p.cell) || p.from === p.cell))
+        throw Error("Choose two different placed normal copies.");
       const prior = s.fusions.find((f) => f.id === p.id);
       if (prior) {
-        if (prior.landmark !== p.landmark)
+        if (prior.landmark !== p.landmark || prior.from !== p.from || prior.cell !== p.cell)
           throw Error("Fusion request was already used.");
         return s;
       }
-      const placed = s.placements.filter(
-        (item) => item.landmark === p.landmark
-      ).length;
-      if (quantity(s, p.landmark) - placed < 2)
-        throw Error(
-          "Fusion needs two unplaced normal copies. Return placed copies first."
+      if (onIsland) {
+        if (!p.expected || !sameLayout(layout(s), p.expected))
+          throw Error("Island layout changed. Refresh before editing again.");
+        if (placedFusionLandmark(s, p.from, p.cell) !== p.landmark)
+          throw Error("Choose two placed copies of the same normal landmark.");
+        const target = s.placements.find((item) => item.cell === p.cell);
+        s.placements = s.placements.filter(
+          (item) => item.cell !== p.from && item.cell !== p.cell
         );
+        s.placements.push({ ...target, landmark: enhancedId(p.landmark) });
+      } else {
+        const placed = s.placements.filter(
+          (item) => item.landmark === p.landmark
+        ).length;
+        if (quantity(s, p.landmark) - placed < 2)
+          throw Error(
+            "Fusion needs two unplaced normal copies. Return placed copies first."
+          );
+      }
       s.fusions.push({
         id: p.id,
         landmark: p.landmark,
-        at: (/* @__PURE__ */ new Date()).toISOString()
+        at: (/* @__PURE__ */ new Date()).toISOString(),
+        ...onIsland ? { from: p.from, cell: p.cell } : {}
       });
       const next = validate(s);
       await this.store.write(next);
@@ -8440,11 +8915,12 @@ var Game = class {
     return this.queue(async (s) => {
       checkLayout(s, input);
       const p = input;
-      if (!p || !unlockedCell(s, p.cell)) throw Error("Land is not unlocked");
+      if (!p || !isWorldCell(p.cell)) throw Error("Land is not unlocked");
       if (p.layer !== void 0 && p.layer !== "floor" && p.layer !== "objects")
         throw Error("Invalid editing layer");
       const floor = p.layer === "floor" || p.decoration !== void 0 && isFloor(p.decoration);
       if (floor) {
+        if (!unlockedCell(s, p.cell)) throw Error("Land is not unlocked");
         if (p.decoration !== void 0 && !isFloor(p.decoration))
           throw Error("Choose a floor");
         if (p.from !== void 0) {
@@ -8458,6 +8934,9 @@ var Game = class {
             s.floors.push({ cell: p.cell, decoration: p.decoration });
         }
       } else {
+        const decoration = p.from !== void 0 ? s.decorations.find((x) => x.cell === p.from)?.decoration : p.decoration ?? s.decorations.find((x) => x.cell === p.cell)?.decoration;
+        if (decoration ? !canPlaceDecoration(s, decoration, p.cell) : !unlockedCell(s, p.cell))
+          throw Error("Choose the matching land, sea or river surface");
         if (s.placements.some((x) => x.cell === p.cell))
           throw Error("Cell is occupied by a landmark");
         if (p.from !== void 0) {
@@ -8488,7 +8967,9 @@ var Game = class {
     return this.queue(async (s) => {
       checkLayout(s, input);
       const p = input;
-      if (!p || !unlockedCell(s, p.cell)) throw Error("Land is not unlocked");
+      const landmark = p?.from !== void 0 ? s.placements.find((x) => x.cell === p.from)?.landmark : p?.landmark ?? s.placements.find((x) => x.cell === p?.cell)?.landmark;
+      if (!p || (p.landmark === void 0 && p.from === void 0 ? !unlockedCell(s, p.cell) && !s.placements.some((x) => x.cell === p.cell) : !landmark || !canPlaceLandmark(s, landmark, p.cell)))
+        throw Error("Land is not unlocked");
       if (s.decorations.some((d) => d.cell === p.cell))
         throw Error("Cell is occupied by a decoration");
       if (p.from !== void 0) {
