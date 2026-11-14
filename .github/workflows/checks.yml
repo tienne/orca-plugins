@@ -55,6 +55,14 @@ jobs:
           if-no-files-found: error
           include-hidden-files: true
           retention-days: 14
+      - name: Save Jira Tasks plugin
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: jira-tasks-${{ github.sha }}
+          path: dist/plugins/jira-tasks/
+          if-no-files-found: error
+          include-hidden-files: true
+          retention-days: 14
       - name: Save browser test results
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4

@@ -37,12 +37,12 @@
   },
   "capabilities": [],
   "license": "MIT",
-  "repository": "https://github.com/tienne/orca-plugins",
+  "repository": "https://github.com/tienne/orca-plugins/tree/main/plugins/jira-tasks",
   "author": {
     "name": "Tienne",
     "url": "https://github.com/tienne"
   },
-  "homepage": "https://github.com/tienne/orca-plugins/tree/main/plugins/jira-tasks",
+  "homepage": "https://github.com/tienne/jira-tasks",
   "icon": "assets/jira-tasks-icon.png",
   "cover": {
     "path": "assets/jira-tasks-introduction.png",

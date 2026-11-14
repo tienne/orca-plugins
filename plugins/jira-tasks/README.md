@@ -15,12 +15,22 @@ Browse Jira issues in Orca's right sidebar using the Jira accounts already conne
 | Field                | Value                                                         |
 | -------------------- | ------------------------------------------------------------- |
 | Author               | [Tienne](https://github.com/tienne)                           |
-| Version              | 0.1.0 (local prototype; not published)                        |
+| Version              | 0.1.0                                                         |
 | License              | MIT                                                           |
 | Minimum Orca version | 1.4.256                                                       |
 | Default shortcut     | ⌘J on macOS; Ctrl+J elsewhere                                 |
 | Source               | [tienne/orca-plugins](https://github.com/tienne/orca-plugins) |
 | Connection           | Uses Jira accounts connected in Orca Tasks                    |
+
+## Install
+
+In Orca **Settings → Plugins**, search for **Jira Tasks** in the community catalog. The public directory is [orca.dev/plugins/tienne/jira-tasks](https://orca.dev/plugins/tienne/jira-tasks); a newly published version may take time to appear there. You can also install the tagged package directly:
+
+```sh
+orca plugin install tienne/jira-tasks@v0.1.0 --json
+```
+
+Review the publisher `tienne`, trusted-worker execution and the `Mod+J` shortcut when Orca asks for approval, then approve the exact fingerprint it returns. Configure your Jira account in Orca Tasks before opening the panel.
 
 ## Preview
 
@@ -52,7 +62,7 @@ English is the default. When the panel opens, it reads Orca's UI language: `ko` 
 
 ## Keyboard shortcut
 
-The local prototype contributes **Open Jira Tasks** to Orca's command palette and **Settings → Keyboard shortcuts → Plugins**. The default shortcut is **⌘J on macOS** and **Ctrl+J elsewhere**. Search for `Jira Tasks` to customize it. The command selects the Jira Tasks sidebar panel and opens the sidebar if needed. A workspace must be open. It uses the local development identity `local.jira-tasks` and does not change issues.
+The plugin contributes **Open Jira Tasks** to Orca's command palette and **Settings → Keyboard shortcuts → Plugins**. The default shortcut is **⌘J on macOS** and **Ctrl+J elsewhere**. Search for `Jira Tasks` to customize it. The command selects the Jira Tasks sidebar panel and opens the sidebar if needed. A workspace must be open. It opens the published identity `tienne.jira-tasks`. When that identity is not found, it falls back to `local.jira-tasks` for development; permission or runtime failures never trigger this fallback. It does not change issues.
 
 Profile photos load on demand from public Atlassian avatar hosts through the worker without Jira credentials. Requests time out after five seconds, reject redirects and files over 64 KiB, and accept PNG, JPEG or WebP only. Photos are cached in worker memory for five minutes.
 
@@ -78,7 +88,7 @@ pnpm nx run jira-tasks:validate-plugin
 
 The build is self-contained in `dist/plugins/jira-tasks`. Source manifests name packaged entries; validate the build. Typecheck regenerates the version-matched `.orca/types` locally. Unit tests use fake CLI results; browser tests use public DEMO fixtures, not your Jira account.
 
-For local loading, inspect the artifact with `orca plugin inspect dist/plugins/jira-tasks --json`, then use `orca plugin dev load dist/plugins/jira-tasks --json`. Review any execution approval Orca requests before approving its exact fingerprint. Open `local.jira-tasks` with `orca plugin open local.jira-tasks --panel jira-tasks --json`. This plugin is a local prototype and has not been published to a catalog.
+For local loading, inspect the artifact with `orca plugin inspect dist/plugins/jira-tasks --json`, then use `orca plugin dev load dist/plugins/jira-tasks --json`. Review any execution approval Orca requests before approving its exact fingerprint. Open `local.jira-tasks` with `orca plugin open local.jira-tasks --panel jira-tasks --json`. Keep only one copy enabled when switching between development and the published plugin so the shortcut stays unambiguous. Development source and Nx tasks live in [tienne/orca-plugins](https://github.com/tienne/orca-plugins/tree/main/plugins/jira-tasks); the standalone distribution repository contains the built package.
 
 ### CI without Orca
 

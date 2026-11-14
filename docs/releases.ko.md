@@ -123,7 +123,7 @@ ORCA_RELEASE_INTEGRATION=1 ORCA_CLI_COMMAND=orca pnpm nx run git-logs:release-te
 
 ## 설치와 공개 디렉터리
 
-사용자는 Orca의 **Settings → Plugins → ⋯ → Catalog sources…**에서 `tienne/orca-plugins`의 Git URL과 `release` ref를 추가합니다. 카탈로그는 `plugins/git-logs`만 설치하며 ID는 `tienne.git-logs`입니다. 사용자가 소스를 빌드하거나 pnpm을 설치할 필요는 없지만 설치 시 실행 권한 승인은 필요합니다.
+사용자는 Orca의 **Settings → Plugins → ⋯ → Catalog sources…**에서 `tienne/orca-plugins`의 Git URL과 `release` ref를 추가합니다. 카탈로그는 공개된 플러그인을 각 `plugins/<id>` 경로에서 설치합니다. Git Logs의 경로 `plugins/git-logs`와 ID `tienne.git-logs`는 유지합니다. 사용자가 소스를 빌드하거나 pnpm을 설치할 필요는 없지만 설치 시 실행 권한 승인은 필요합니다.
 
 자동 릴리스 워크플로는 사용자 지정 카탈로그를 배포합니다. 공개 디렉터리는 `directory/git-logs` 브랜치의 루트 배치 번들과 `vX.Y.Z` 태그로 등록합니다. `git-logs/vX.Y.Z`는 계속 소스 커밋을 가리키며 옮기지 않습니다. 저장소의 `orca-plugin` 토픽으로 탐색을 활성화합니다. 인덱싱 결과는 [디렉터리 상태 페이지](https://www.onorca.dev/plugins/tienne/orca-plugins)에서 확인하십시오. 태그를 공개했다고 검색 노출까지 완료된 것은 아닙니다.
 
@@ -140,7 +140,7 @@ ORCA_RELEASE_INTEGRATION=1 ORCA_CLI_COMMAND=orca pnpm nx run git-logs:release-te
 
 ## Orcatopia 배포 후보
 
-**Release Orca Plugin**에 `plugin` 선택 항목을 추가했습니다. 기본값은 기존 `git-logs`이며 Orcatopia는 `landmark-island`를 선택합니다. CI는 두 플러그인을 각각 검사하고 업로드합니다. 배포 작업은 허용된 플러그인인지 확인하고 같은 소스 SHA의 산출물을 사용하며 실제 Orca CLI 통합 테스트를 실행합니다. 두 플러그인은 같은 릴리스 동시 실행 그룹과 브랜치를 공유합니다. 기본 동작은 미리보기이며 워크플로가 호스팅 러너와 고정 버전 CLI를 준비하며 환경 보호·저장소 권한은 자동 설정하지 않습니다.
+**Release Orca Plugin**에 `plugin` 선택 항목을 추가했습니다. 기본값은 기존 `git-logs`이며 Orcatopia는 `landmark-island`를 선택합니다. CI는 Git Logs, Orcatopia, Jira Tasks를 각각 검사하고 업로드합니다. 배포 작업은 허용된 플러그인인지 확인하고 같은 소스 SHA의 산출물을 사용하며 실제 Orca CLI 통합 테스트를 실행합니다. 세 플러그인은 같은 릴리스 동시 실행 그룹과 브랜치를 공유합니다. 기본 동작은 미리보기이며 워크플로가 호스팅 러너와 고정 버전 CLI를 준비하며 환경 보호·저장소 권한은 자동 설정하지 않습니다.
 
 Orcatopia의 내부 ID는 `landmark-island`, 최초 버전은 `0.1.0`입니다. 카탈로그 정체성은 `tienne.landmark-island`, 소스 태그는 `landmark-island/v0.1.0`, 패키지 경로는 `plugins/landmark-island`입니다. 후보 준비는 Git Logs 파일·카탈로그 이력·출처 정보를 보존합니다. Git Logs 공개 디렉터리에 예약된 일반 `vX.Y.Z` 태그를 사용하지 마세요. 첫 출시는 이 사용자 카탈로그 기준으로 준비합니다. 별도 공개 디렉터리 등록에는 패키지가 루트에 있는 별도 저장소를 사용해야 하며, 저장소는 생성하지 않았습니다. [Orcatopia 출시 점검표](orcatopia-release.ko.md)를 참고하세요.
 
@@ -168,3 +168,25 @@ pnpm nx run landmark-island:release-prepare
 - 릴리스·워크플로 테스트는 모의 검증기로 22개, 실제 Orca 1.4.250 CLI로 22개 통과했습니다. 모든 게시 테스트는 임시 로컬 bare 저장소만 사용합니다.
 - `pnpm validate`로 두 패키지가 통과했고 고정 버전 actionlint 1.7.11로 워크플로 문법을 확인했습니다. 배포 대상 선택 변경의 독립 정적 검토에서 문제를 찾지 못했습니다. 원격 CI나 운영 승인에 해당하지 않습니다.
 - 개발 호스트에서 Orcatopia 이름, 실행 중 상태와 추가 승인 불필요 상태를 확인했습니다. 실제 클릭은 보류 중입니다. 원격 CI 실행·공개 설치·앱 재시작·푸시·게시를 했다고 주장하지 않습니다.
+
+## Jira Tasks 배포 후보
+
+**Release Orca Plugin**에서 `jira-tasks`를 선택합니다. 카탈로그 ID는 `tienne.jira-tasks`, 패키지 경로는 `plugins/jira-tasks`, 소스 태그는 `jira-tasks/vX.Y.Z`입니다. 후보 준비는 기존 Git Logs와 Orcatopia의 패키지, 카탈로그 이력, 소스 태그와 출처 기록을 보존합니다. 기본 선택은 기존 `git-logs`를 유지합니다. Jira Tasks 전용 Nx 대상은 `release-test`, `release-prepare`, `release-publish`, `release-preflight`이며 준비와 게시 명령은 플러그인 선택값을 명시합니다.
+
+검토한 소스를 커밋하고 빌드한 뒤 `git fetch --no-tags origin refs/heads/release:refs/remotes/origin/release`로 릴리스 기준을 갱신합니다. 매번 새 보고서 경로로 후보를 만듭니다.
+
+```sh
+pnpm nx run jira-tasks:build
+pnpm nx run jira-tasks:release-test
+RELEASE_REPOSITORY=https://github.com/tienne/orca-plugins.git \
+RELEASE_VERSION=0.1.0 \
+RELEASE_SOURCE_SHA="$(git rev-parse HEAD)" \
+RELEASE_REPORT=/tmp/jira-tasks-release-plan.json \
+pnpm nx run jira-tasks:release-prepare
+```
+
+게시 전에 소스, 산출물, 카탈로그 커밋과 콘텐츠 해시를 검토합니다. 게시 사전 검사에서 같은 소스가 원격 `main`의 현재 커밋이어야 하며 검토한 콘텐츠 해시가 필요합니다. 수동 워크플로는 기존 main 전용 환경 규칙과 production 승인자를 유지합니다. CI는 `jira-tasks-<소스 SHA>` 산출물을 별도로 저장하고 배포 단계는 같은 소스 SHA의 산출물만 내려받습니다.
+
+릴리스 검증기는 플러그인 코드를 실행하거나 승인하지 않고 manifest, 패키지 파일과 해시를 검사합니다. Jira Tasks 실행에는 Orca 1.4.256 이상이 필요합니다. 릴리스 검증 통과가 실행 호환 검증이나 `local.jira-tasks`에서 `tienne.jira-tasks`로의 실행 승인 이전을 뜻하지는 않습니다.
+
+공개 디렉터리는 [tienne/jira-tasks](https://github.com/tienne/jira-tasks)의 루트 패키지로 별도 등록합니다. 패키지 커밋에 변경 불가능한 `vX.Y.Z` 태그를 만들고 저장소에 `orca-plugin` topic을 지정합니다. 이 소스 저장소에 있는 Git Logs의 루트 배포 태그를 재사용하거나 옮기지 않습니다. 카탈로그가 가리키는 Jira Tasks 파일을 그대로 내보내고 루트 패키지의 콘텐츠 해시와 모든 커밋 파일을 원본 패키지와 대조합니다. 사용자 카탈로그 워크플로는 이 내보내기나 디렉터리 제출을 수행하지 않습니다. 검색 가능 여부는 공개 디렉터리 상태를 확인한 뒤 알립니다.

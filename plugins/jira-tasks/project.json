@@ -58,6 +58,34 @@
         "command": "node scripts/jira-tasks.mjs browser-test"
       },
       "cache": false
+    },
+    "release-test": {
+      "executor": "nx:run-commands",
+      "cache": false,
+      "options": {
+        "command": "node --test scripts/release/*.test.mjs"
+      }
+    },
+    "release-prepare": {
+      "executor": "nx:run-commands",
+      "cache": false,
+      "options": {
+        "command": "node scripts/release-plugin.mjs --plugin jira-tasks"
+      }
+    },
+    "release-publish": {
+      "executor": "nx:run-commands",
+      "cache": false,
+      "options": {
+        "command": "node scripts/release-plugin.mjs --plugin jira-tasks --publish"
+      }
+    },
+    "release-preflight": {
+      "executor": "nx:run-commands",
+      "cache": false,
+      "options": {
+        "command": "node scripts/release-preflight.mjs --plugin jira-tasks"
+      }
     }
   }
 }

@@ -10,7 +10,7 @@ pnpm, Nx, TypeScript, React, Vite, esbuild를 사용하는 Orca 플러그인 저
 | ------------------------------------------------- | ----------------------------------------------------- | ----------------- |
 | [Git Logs](plugins/git-logs/README.ko.md)         | 커밋 그래프, 브랜치와 커밋 검색, 좌우 Diff, 커밋 작업 | 0.2.3             |
 | [Orcatopia](plugins/orcatopia/README.ko.md) | 워크트리 탐험, 랜드마크 수집, 섬 배치와 세계지도      | 커뮤니티 카탈로그 |
-| [Jira Tasks](plugins/jira-tasks/README.ko.md) | 기존 Orca 연결로 사이드바에서 Jira 티켓 조회 | 로컬 시제품 |
+| [Jira Tasks](plugins/jira-tasks/README.ko.md) | 기존 Orca 연결로 사이드바에서 Jira 티켓 조회 | 0.1.0 |
 
 소스 브랜치의 카탈로그는 빈 템플릿입니다. 설치용 카탈로그와 빌드 파일은 `release` 브랜치에서 관리합니다. Orca의 **설정 → 플러그인 → ⋯ → Catalog sources…**에 `https://github.com/tienne/orca-plugins.git`과 ref `release`를 추가한 뒤 Git Logs를 설치하십시오. [설치·사용 안내](plugins/git-logs/README.ko.md#설치)에 권한과 사용 방법을 설명합니다.
 

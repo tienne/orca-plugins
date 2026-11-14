@@ -15,12 +15,22 @@ Orca 작업 화면에 연결해 둔 Jira 계정으로 오른쪽 사이드바에�
 | 항목           | 정보                                                          |
 | -------------- | ------------------------------------------------------------- |
 | 제작자         | [Tienne](https://github.com/tienne)                           |
-| 버전           | 0.1.0 (로컬 시제품·미배포)                                    |
+| 버전           | 0.1.0                                                         |
 | 라이선스       | MIT                                                           |
 | 최소 Orca 버전 | 1.4.256                                                       |
 | 기본 단축키    | macOS ⌘J · 그 외 Ctrl+J                                       |
 | 소스 코드      | [tienne/orca-plugins](https://github.com/tienne/orca-plugins) |
 | 계정 연결      | Orca 작업에 연결된 Jira 계정 사용                             |
+
+## 설치
+
+Orca **설정 → 플러그인**의 커뮤니티 카탈로그에서 **Jira Tasks**를 검색합니다. 공개 디렉터리는 [orca.dev/plugins/tienne/jira-tasks](https://orca.dev/plugins/tienne/jira-tasks)이며 새 버전은 검색에 반영되기까지 시간이 걸릴 수 있습니다. 버전 태그로 직접 설치할 수도 있습니다.
+
+```sh
+orca plugin install tienne/jira-tasks@v0.1.0 --json
+```
+
+Orca가 승인을 요청하면 제작자 `tienne`, trusted-worker 실행, `Mod+J` 단축키를 확인한 뒤 반환된 정확한 fingerprint로 승인하십시오. 패널을 열기 전에 Orca 작업에서 Jira 계정을 연결해야 합니다.
 
 ## 화면 미리보기
 
@@ -56,7 +66,7 @@ Orca 작업 화면을 그대로 넣은 것이 아니라 Jira를 별도로 보여
 
 ## 단축키
 
-로컬 시제품은 명령 팔레트와 **설정 → 단축키 → 플러그인**에 **Open Jira Tasks** 명령을 추가합니다. 기본 단축키는 **macOS에서 ⌘J**, **그 외 환경에서 Ctrl+J**입니다. `Jira Tasks`로 검색해 원하는 키로 변경할 수 있습니다. 명령은 Jira Tasks 사이드바 탭을 선택하고 닫힌 사이드바를 엽니다. 작업 공간이 열려 있어야 하며 로컬 개발 식별자 `local.jira-tasks`를 사용합니다. 티켓은 변경하지 않습니다.
+플러그인은 명령 팔레트와 **설정 → 단축키 → 플러그인**에 **Open Jira Tasks** 명령을 추가합니다. 기본 단축키는 **macOS에서 ⌘J**, **그 외 환경에서 Ctrl+J**입니다. `Jira Tasks`로 검색해 원하는 키로 변경할 수 있습니다. 명령은 Jira Tasks 사이드바 탭을 선택하고 닫힌 사이드바를 엽니다. 작업 공간이 열려 있어야 합니다. 정식 설치 식별자 `tienne.jira-tasks`를 열고, 해당 설치가 없을 때만 개발용 `local.jira-tasks`를 사용합니다. 권한이나 실행 오류가 발생하면 다른 설치로 우회하지 않습니다. 티켓은 변경하지 않습니다.
 
 ## 요구 사항과 권한
 
@@ -80,7 +90,7 @@ pnpm nx run jira-tasks:validate-plugin
 
 빌드 결과는 `dist/plugins/jira-tasks`에 생성합니다. 소스 manifest는 패키징된 경로를 가리키므로 빌드 결과를 검증하십시오. 타입 검사는 설치 버전과 일치하는 `.orca/types`를 로컬에 생성합니다. 단위 테스트에는 가짜 CLI 응답을, 브라우저 테스트에는 공개 가능한 DEMO 데이터만 사용합니다.
 
-로컬에서 사용하려면 `orca plugin inspect dist/plugins/jira-tasks --json`으로 권한을 확인한 뒤 `orca plugin dev load dist/plugins/jira-tasks --json`으로 로드합니다. Orca가 실행 승인을 요구하면 권한을 확인한 뒤 해당 fingerprint를 승인하십시오. `orca plugin open local.jira-tasks --panel jira-tasks --json`으로 패널을 엽니다. 이 플러그인은 로컬 시제품이며 카탈로그에 배포하지 않았습니다.
+로컬에서 사용하려면 `orca plugin inspect dist/plugins/jira-tasks --json`으로 권한을 확인한 뒤 `orca plugin dev load dist/plugins/jira-tasks --json`으로 로드합니다. Orca가 실행 승인을 요구하면 권한을 확인한 뒤 해당 fingerprint를 승인하십시오. `orca plugin open local.jira-tasks --panel jira-tasks --json`으로 패널을 엽니다. 정식 설치와 개발 설치를 전환할 때는 한 복사본만 활성화해 단축키가 겹치지 않게 하십시오. 개발 소스와 Nx 명령은 [tienne/orca-plugins](https://github.com/tienne/orca-plugins/tree/main/plugins/jira-tasks)에 있고 독립 배포 저장소에는 빌드 패키지가 들어 있습니다.
 
 ### Orca가 없는 CI 환경
 

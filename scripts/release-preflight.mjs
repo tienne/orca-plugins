@@ -15,7 +15,7 @@ try {
       report: { type: 'string' },
     },
   });
-  if (!['git-logs', 'landmark-island'].includes(values.plugin))
+  if (!['git-logs', 'landmark-island', 'jira-tasks'].includes(values.plugin))
     throw new Error('Unsupported release plugin.');
   const manifest = JSON.parse(
     await readFile(

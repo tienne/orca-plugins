@@ -8,7 +8,7 @@ on:
         required: true
         type: choice
         default: git-logs
-        options: [git-logs, landmark-island]
+        options: [git-logs, landmark-island, jira-tasks]
       version:
         description: 'Stable version already committed to main (for example 0.1.0)'
         required: true
@@ -54,7 +54,7 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          case "$RELEASE_PLUGIN" in git-logs|landmark-island) ;; *) exit 1 ;; esac
+          case "$RELEASE_PLUGIN" in git-logs|landmark-island|jira-tasks) ;; *) exit 1 ;; esac
           pnpm nx run "$RELEASE_PLUGIN:release-preflight" --mode="$RELEASE_MODE" --workflow
   checks:
     needs: preflight
