@@ -612,6 +612,14 @@ test('Orcatopia candidates preserve Git Logs, separate identity and reject a mis
       'tienne.git-logs',
       'tienne.landmark-island',
     ]);
+    assert.deepEqual(
+      catalog.plugins.find((p) => p.id === 'tienne.landmark-island').categories,
+      ['games'],
+    );
+    assert.deepEqual(
+      catalog.plugins.find((p) => p.id === 'tienne.git-logs').categories,
+      ['developer-tools'],
+    );
     assert.equal(
       catalog.plugins.find((p) => p.id === 'tienne.landmark-island').releases[0]
         .name,

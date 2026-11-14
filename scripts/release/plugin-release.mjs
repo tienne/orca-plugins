@@ -302,7 +302,7 @@ export async function prepareRelease({
       id: pluginKey,
       source: { kind: 'git', url: repository, ref: branch, path: pluginPath },
       description: built.description,
-      categories: ['developer-tools'],
+      categories: [plugin === 'landmark-island' ? 'games' : 'developer-tools'],
       releases: [entry, ...(previous?.releases ?? [])],
     };
     catalog.plugins = [
