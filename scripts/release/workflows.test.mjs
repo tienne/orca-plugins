@@ -106,12 +106,12 @@ test('configuration preflight precedes builds and protected promotion, with hash
     assert.ok(!step.run?.includes('${{ inputs.'));
 });
 
-test('both plugins are checked and selectable, with Git Logs still the release default', async () => {
+test('all three plugins are checked and selectable, with Git Logs still the release default', async () => {
   const checks = await load('checks');
   const commands = checks.jobs.check.steps
     .map((step) => step.run || '')
     .join('\n');
-  for (const plugin of ['git-logs', 'landmark-island']) {
+  for (const plugin of ['git-logs', 'landmark-island', 'jira-tasks']) {
     assert.ok(commands.includes(`-p ${plugin} --output-style=static`));
     const upload = checks.jobs.check.steps.find(
       (step) => step.with?.name === `${plugin}-\${{ github.sha }}`,
@@ -121,7 +121,11 @@ test('both plugins are checked and selectable, with Git Logs still the release d
   const release = await load('release');
   const selector = release.on.workflow_dispatch.inputs.plugin;
   assert.equal(selector.default, 'git-logs');
-  assert.deepEqual(selector.options, ['git-logs', 'landmark-island']);
+  assert.deepEqual(selector.options, [
+    'git-logs',
+    'landmark-island',
+    'jira-tasks',
+  ]);
   for (const name of ['preview', 'publish'])
     assert.equal(release.jobs[name].with.plugin, '${{ inputs.plugin }}');
   const promote = await load('promote');
@@ -129,7 +133,9 @@ test('both plugins are checked and selectable, with Git Logs still the release d
   assert.equal(promote.jobs.promote.env.RELEASE_PLUGIN, '${{ inputs.plugin }}');
   assert.ok(
     promote.jobs.promote.steps.some((step) =>
-      step.run?.includes("['git-logs', 'landmark-island'].includes(plugin)"),
+      step.run?.includes(
+        "['git-logs', 'landmark-island', 'jira-tasks'].includes(plugin)",
+      ),
     ),
   );
 });
@@ -157,4 +163,26 @@ test('promotion installs the pinned CLI before validation without launching the 
   assert.ok(script.includes('>> "$GITHUB_ENV"'));
   assert.ok(!script.includes('open -a'));
   assert.ok(!script.includes('plugin enable'));
+});
+
+test('Jira release targets select Jira explicitly instead of the Git Logs default', async () => {
+  const project = JSON.parse(
+    await readFile('plugins/jira-tasks/project.json', 'utf8'),
+  );
+  for (const target of [
+    'release-prepare',
+    'release-publish',
+    'release-preflight',
+  ]) {
+    assert.equal(project.targets[target].cache, false);
+    assert.match(
+      project.targets[target].options.command,
+      /--plugin jira-tasks(?: |$)/,
+    );
+  }
+  assert.match(project.targets['release-publish'].options.command, /--publish/);
+  assert.equal(
+    project.targets['release-test'].options.command,
+    'node --test scripts/release/*.test.mjs',
+  );
 });

@@ -10,6 +10,7 @@ Orca plugins built with pnpm, Nx, TypeScript, React, Vite, and esbuild. Each dir
 | ---------------------------------------------- | --------------------------------------------------------------------------- | ----------------- |
 | [Git Logs](plugins/git-logs/README.md)         | Commit graph, branch and commit search, side-by-side diffs, commit actions  | 0.2.3             |
 | [Orcatopia](plugins/orcatopia/README.md) | Worktree expeditions, collectible landmarks, island placement and world map | Community catalog |
+| [Jira Tasks](plugins/jira-tasks/README.md) | Jira issues in the sidebar using an existing Orca connection | 0.1.0 |
 
 The source-branch catalog is an empty template. The installable catalog and built plugins live on `release`. In Orca **Settings → Plugins → ⋯ → Catalog sources…**, add `https://github.com/tienne/orca-plugins.git` with ref `release`, then install Git Logs. See the [installation and usage guide](plugins/git-logs/README.md#install) for access and usage details.
 

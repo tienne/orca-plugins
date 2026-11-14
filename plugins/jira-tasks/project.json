@@ -1,0 +1,91 @@
+{
+  "name": "jira-tasks",
+  "projectType": "application",
+  "sourceRoot": "plugins/jira-tasks/src",
+  "targets": {
+    "build": {
+      "executor": "nx:run-commands",
+      "outputs": ["{workspaceRoot}/dist/plugins/jira-tasks"],
+      "options": {
+        "command": "node scripts/jira-tasks.mjs build"
+      }
+    },
+    "typecheck": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "node scripts/jira-tasks.mjs typecheck"
+      }
+    },
+    "test": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "node scripts/jira-tasks.mjs test"
+      },
+      "cache": false
+    },
+    "ui-test": {
+      "executor": "nx:run-commands",
+      "dependsOn": ["build"],
+      "options": {
+        "command": "node scripts/jira-tasks.mjs ui-test"
+      },
+      "cache": false
+    },
+    "validate-plugin": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "node scripts/jira-tasks.mjs validate"
+      }
+    },
+    "screenshots": {
+      "executor": "nx:run-commands",
+      "dependsOn": ["build"],
+      "options": {
+        "command": "node scripts/jira-tasks.mjs screenshots"
+      },
+      "cache": false
+    },
+    "unit-test": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "node scripts/jira-tasks.mjs unit-test"
+      }
+    },
+    "browser-test": {
+      "executor": "nx:run-commands",
+      "dependsOn": ["build"],
+      "options": {
+        "command": "node scripts/jira-tasks.mjs browser-test"
+      },
+      "cache": false
+    },
+    "release-test": {
+      "executor": "nx:run-commands",
+      "cache": false,
+      "options": {
+        "command": "node --test scripts/release/*.test.mjs"
+      }
+    },
+    "release-prepare": {
+      "executor": "nx:run-commands",
+      "cache": false,
+      "options": {
+        "command": "node scripts/release-plugin.mjs --plugin jira-tasks"
+      }
+    },
+    "release-publish": {
+      "executor": "nx:run-commands",
+      "cache": false,
+      "options": {
+        "command": "node scripts/release-plugin.mjs --plugin jira-tasks --publish"
+      }
+    },
+    "release-preflight": {
+      "executor": "nx:run-commands",
+      "cache": false,
+      "options": {
+        "command": "node scripts/release-preflight.mjs --plugin jira-tasks"
+      }
+    }
+  }
+}

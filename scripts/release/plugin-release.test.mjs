@@ -660,3 +660,117 @@ test('legacy Git Logs plans without a plugin selector still validate', () =>
     delete plan.plugin;
     await verifyCandidate(plan, { source, orca });
   }));
+
+test('Jira Tasks worker candidates preserve both existing plugins and immutable source tags', () =>
+  fixture(async ({ source, remote, prepare, save }) => {
+    const logs = await prepare();
+    await publishRelease(logs, { source, orca });
+    git(source, ['fetch', 'origin', 'release:refs/remotes/origin/release']);
+    for (const [id, directory, name] of [
+      ['landmark-island', 'orcatopia', 'Orcatopia'],
+      ['jira-tasks', 'jira-tasks', 'Jira Tasks'],
+    ]) {
+      const path = join(source, 'plugins', directory);
+      await cp(join(source, 'plugins/git-logs'), path, { recursive: true });
+      const manifest = JSON.parse(
+        await readFile(join(path, 'orca-plugin.json'), 'utf8'),
+      );
+      manifest.id = id;
+      manifest.name = name;
+      manifest.contributes.panels[0].id = id;
+      manifest.contributes.panels[0].title = name;
+      if (id === 'jira-tasks') {
+        manifest.engines.orca = '>=1.4.256';
+        manifest.execution = 'trusted-worker';
+        manifest.main = 'worker.js';
+        manifest.capabilities = [];
+        await writeFile(
+          join(path, 'worker.js'),
+          'export default function activate() {}\n',
+        );
+      }
+      await writeFile(join(path, 'orca-plugin.json'), JSON.stringify(manifest));
+      await cp(path, join(source, 'dist/plugins', id), { recursive: true });
+    }
+    await save('Add two independent fixture plugins');
+    const island = await prepare({ plugin: 'landmark-island' });
+    await publishRelease(island, { source, orca });
+    git(source, ['fetch', 'origin', 'release:refs/remotes/origin/release']);
+    const priorRefs = git(remote, ['show-ref']);
+    const previousCatalog = JSON.parse(
+      await readFile(join(island.directory, 'orca-catalog.json'), 'utf8'),
+    );
+    const plan = await prepare({ plugin: 'jira-tasks' });
+    assert.equal(plan.pluginKey, 'tienne.jira-tasks');
+    assert.equal(plan.tag, 'jira-tasks/v0.1.0');
+    assert.equal(plan.baseCommit, island.catalogCommit);
+    assert.equal(
+      git(remote, ['show-ref']),
+      priorRefs,
+      'Jira preparation remains read-only',
+    );
+    const catalog = JSON.parse(
+      await readFile(join(plan.directory, 'orca-catalog.json'), 'utf8'),
+    );
+    assert.deepEqual(catalog.plugins.map((item) => item.id).sort(), [
+      'tienne.git-logs',
+      'tienne.jira-tasks',
+      'tienne.landmark-island',
+    ]);
+    for (const id of ['git-logs', 'landmark-island']) {
+      assert.equal(
+        git(plan.directory, [
+          'rev-parse',
+          `${plan.catalogCommit}:plugins/${id}`,
+        ]),
+        git(island.directory, [
+          'rev-parse',
+          `${island.catalogCommit}:plugins/${id}`,
+        ]),
+        `${id} bundle must remain byte-identical`,
+      );
+      assert.deepEqual(
+        catalog.plugins.find((item) => item.id === `tienne.${id}`),
+        previousCatalog.plugins.find((item) => item.id === `tienne.${id}`),
+      );
+    }
+    const entry = catalog.plugins.find(
+      (item) => item.id === 'tienne.jira-tasks',
+    );
+    assert.equal(entry.source.path, 'plugins/jira-tasks');
+    assert.deepEqual(entry.categories, ['developer-tools']);
+    assert.equal(entry.releases[0].execution, 'trusted-worker');
+    assert.match(
+      await readFile(
+        join(plan.directory, 'plugins/jira-tasks/worker.js'),
+        'utf8',
+      ),
+      /export default function activate/,
+    );
+    const provenance = JSON.parse(
+      await readFile(join(plan.directory, 'release-provenance.json'), 'utf8'),
+    );
+    assert.equal(
+      provenance.plugins['tienne.jira-tasks'].sourceCommit,
+      plan.sourceCommit,
+    );
+    await assert.rejects(
+      verifyCandidate({ ...plan, plugin: 'landmark-island' }, { source, orca }),
+      /identity/,
+    );
+    await publishRelease(plan, { source, orca });
+    for (const [id, candidate] of [
+      ['git-logs', logs],
+      ['landmark-island', island],
+      ['jira-tasks', plan],
+    ])
+      assert.equal(
+        git(remote, ['rev-parse', `refs/tags/${id}/v0.1.0`]),
+        candidate.sourceCommit,
+      );
+    git(source, ['fetch', 'origin', 'release:refs/remotes/origin/release']);
+    await assert.rejects(
+      prepare({ plugin: 'jira-tasks' }),
+      /tag already exists|immutable/,
+    );
+  }));

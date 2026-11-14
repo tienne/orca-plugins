@@ -17,7 +17,7 @@ import { validateArtifact } from '../validate-plugin-artifact.mjs';
 
 function pluginPathFor(plugin) {
   invariant(
-    ['git-logs', 'landmark-island'].includes(plugin),
+    ['git-logs', 'landmark-island', 'jira-tasks'].includes(plugin),
     'Unsupported release plugin.',
   );
   return `plugins/${plugin}`;

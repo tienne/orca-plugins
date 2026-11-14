@@ -38,6 +38,7 @@ jobs:
       - run: pnpm exec playwright install --with-deps chromium
       - run: pnpm nx run-many -t build typecheck test release-test ui-test -p git-logs --output-style=static
       - run: pnpm nx run-many -t build typecheck test -p landmark-island --output-style=static
+      - run: pnpm nx run-many -t build unit-test browser-test -p jira-tasks --output-style=static
       - name: Save installable plugin
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
@@ -51,6 +52,14 @@ jobs:
         with:
           name: landmark-island-${{ github.sha }}
           path: dist/plugins/landmark-island/
+          if-no-files-found: error
+          include-hidden-files: true
+          retention-days: 14
+      - name: Save Jira Tasks plugin
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: jira-tasks-${{ github.sha }}
+          path: dist/plugins/jira-tasks/
           if-no-files-found: error
           include-hidden-files: true
           retention-days: 14

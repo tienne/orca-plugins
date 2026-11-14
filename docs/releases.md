@@ -123,7 +123,7 @@ Tests push only to temporary local bare repositories. The second command uses th
 
 ## Installation and directory listing
 
-Users add the Git URL of `tienne/orca-plugins` and ref `release` under Orca **Settings → Plugins → ⋯ → Catalog sources…**. The catalog installs only `plugins/git-logs` as `tienne.git-logs`. Users do not build the source or need pnpm. Git Logs still requires execution approval on installation.
+Users add the Git URL of `tienne/orca-plugins` and ref `release` under Orca **Settings → Plugins → ⋯ → Catalog sources…**. The catalog installs each published plugin from its own `plugins/<id>` directory; Git Logs keeps `plugins/git-logs` and `tienne.git-logs`. Users do not build the source or need pnpm. Git Logs still requires execution approval on installation.
 
 The automated release workflow publishes the custom catalog. Public-directory discovery uses a separate root export on `directory/git-logs`, tagged `vX.Y.Z`. The `git-logs/vX.Y.Z` tag continues to identify the source commit; do not move it. The repository's `orca-plugin` topic enables discovery. See the [directory status page](https://www.onorca.dev/plugins/tienne/orca-plugins) for indexing results; publishing the tag does not prove it is searchable yet.
 
@@ -140,7 +140,7 @@ References: [Orca authoring](https://github.com/stablyai/orca/blob/main/docs/ref
 
 ## Orcatopia candidates
 
-**Release Orca Plugin** now has a `plugin` selector. Its default remains `git-logs`; select `landmark-island` for Orcatopia. CI checks and uploads both plugins separately. Promotion validates the selected plugin against an allowlist, uses the artifact from the same source SHA and runs release integration tests. Both plugins share the release concurrency group and branch. Preview remains the default; the workflow supplies the hosted runner and pinned CLI, but does not configure environments or repository permissions.
+**Release Orca Plugin** now has a `plugin` selector. Its default remains `git-logs`; select `landmark-island` for Orcatopia. CI checks and uploads Git Logs, Orcatopia and Jira Tasks separately. Promotion validates the selected plugin against an allowlist, uses the artifact from the same source SHA and runs release integration tests. All three plugins share the release concurrency group and branch. Preview remains the default; the workflow supplies the hosted runner and pinned CLI, but does not configure environments or repository permissions.
 
 Orcatopia keeps internal ID `landmark-island`, initially at `0.1.0`. Its catalog identity is `tienne.landmark-island`, source tag is `landmark-island/v0.1.0`, and package path is `plugins/landmark-island`. Candidate preparation preserves Git Logs files, catalog history and provenance. Do not use the generic `vX.Y.Z` public-directory tags reserved for Git Logs. The first release is prepared for this custom catalog. A separate public-directory listing must use a separate repository with the package at its root; no repository has been created. See the [Orcatopia release checklist](orcatopia-release.md).
 
@@ -168,3 +168,25 @@ The [English plugin guide](../plugins/orcatopia/README.md) records gameplay and 
 - Release orchestration/workflow tests passed 22 tests with the mock validator and another 22 with the actual Orca 1.4.250 CLI. All publication tests use disposable local bare repositories.
 - `pnpm validate` passed both artifacts. Pinned actionlint 1.7.11 accepted the workflows. Independent static review of the release selector change found no issues; this is not hosted CI or production approval.
 - The development host reports the Orcatopia name, running status and no reconsent requirement. Native clicks remain deferred. No remote CI run, public installation, app restart, push or publication is claimed.
+
+## Jira Tasks candidates
+
+Select `jira-tasks` in **Release Orca Plugin**. Its catalog identity is `tienne.jira-tasks`, its package directory is `plugins/jira-tasks`, and its source tag is `jira-tasks/vX.Y.Z`. Candidate preparation preserves existing Git Logs and Orcatopia bundles, catalog history, source tags and provenance. Git Logs remains the default selector. Jira Tasks has dedicated `release-test`, `release-prepare`, `release-publish` and `release-preflight` Nx targets; preparation and publication always pass an explicit plugin selector.
+
+After committing and building the reviewed source, update the release base with `git fetch --no-tags origin refs/heads/release:refs/remotes/origin/release`. Prepare a candidate with a new report path:
+
+```sh
+pnpm nx run jira-tasks:build
+pnpm nx run jira-tasks:release-test
+RELEASE_REPOSITORY=https://github.com/tienne/orca-plugins.git \
+RELEASE_VERSION=0.1.0 \
+RELEASE_SOURCE_SHA="$(git rev-parse HEAD)" \
+RELEASE_REPORT=/tmp/jira-tasks-release-plan.json \
+pnpm nx run jira-tasks:release-prepare
+```
+
+Review the source commit, artifact commit, catalog commit and content hash before publishing. The same reviewed source must be the current remote `main` at the publication precheck, and publication requires the reviewed content hash. The manual workflow retains the main-only environment rules and production reviewers. CI uploads `jira-tasks-<source SHA>` separately, and promotion downloads the artifact from that same source SHA.
+
+The release validator checks manifests, packaged files and hashes without loading or approving plugin code. Jira Tasks requires Orca 1.4.256 or later when it runs; release validation alone does not establish runtime compatibility or transfer execution approval from `local.jira-tasks` to `tienne.jira-tasks`.
+
+Public-directory discovery is a separate root-package export in [tienne/jira-tasks](https://github.com/tienne/jira-tasks), with an immutable `vX.Y.Z` tag on its package commit and the `orca-plugin` repository topic. Do not reuse or move Git Logs' root-export tags in this source repository. Export the catalog-pinned Jira Tasks files unchanged and compare the root content hash and every committed file with that package. The custom-catalog workflow does not create this export or submit a directory listing. Check the directory's own status before reporting that the plugin is searchable.
