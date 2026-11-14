@@ -287,11 +287,98 @@
         "ref": "release",
         "path": "plugins/landmark-island"
       },
-      "description": "Turn waiting time into a little island getaway. Earn tickets from new worktrees, discover world landmarks, and make the island your own.",
+      "description": "A relaxing island-building game between tasks. Earn tickets from new worktrees, collect world landmarks, and decorate the land, rivers and sea.",
       "categories": [
-        "developer-tools"
+        "games"
       ],
       "releases": [
+        {
+          "version": "0.4.0",
+          "commit": "055614a26a603cc075701821679f204630acc5e5",
+          "contentHash": "5a38ecdffa822d2c0c0065a3bfcfe9404af596f126855f61bc22c1e252b26d19",
+          "execution": "trusted-worker",
+          "minimumOrca": "1.4.248",
+          "name": "Orcatopia",
+          "contributes": [
+            {
+              "kind": "panels",
+              "name": "Orcatopia"
+            },
+            {
+              "kind": "events",
+              "name": "workspace.created"
+            },
+            {
+              "kind": "events",
+              "name": "agent.status.changed"
+            }
+          ],
+          "capabilities": [
+            "workspace:read",
+            "storage:own",
+            "agent:read"
+          ],
+          "images": {
+            "icon": {
+              "path": "plugins/landmark-island/assets/orcatopia-icon.png",
+              "alt": "Orcatopia",
+              "sha256": "e659ad5f625e5f3a4890d57758f468e44eed1ec689ab8810c0544e6d52ee1714",
+              "width": 256,
+              "height": 256
+            },
+            "cover": {
+              "path": "plugins/landmark-island/assets/orcatopia-introduction-v0.4.0.png",
+              "alt": "Orcatopia: a DEMO sea-and-river island with enlarged Wonder-tier landmark scenes",
+              "sha256": "5dbba492ef061bb0ad02338a99536cb598ccb48904d2023ff5355d9a541e3283",
+              "width": 1600,
+              "height": 1000
+            },
+            "screenshots": [
+              {
+                "path": "plugins/landmark-island/assets/orcatopia-island-v0.4.0.png",
+                "alt": "English DEMO island with Ha Long Bay, Great Barrier Reef, a river to the sea, Li River and Middle Rhine landmarks",
+                "sha256": "214f90fb58a9ce7383fabb4efd338e7e999ce2ae05c1a7e03256ecd0e34b766d",
+                "width": 1600,
+                "height": 1000
+              },
+              {
+                "path": "plugins/landmark-island/assets/orcatopia-wonders-v0.4.0.png",
+                "alt": "Enlarged Wonder-tier scenes of Mont-Saint-Michel, Machu Picchu and Petra",
+                "sha256": "099ccdd7e15b0cad324e541689aac14aba5f3fa0fa69dd2504b7907b12251115",
+                "width": 1600,
+                "height": 1000
+              },
+              {
+                "path": "plugins/landmark-island/assets/orcatopia-fusion-v0.4.0.png",
+                "alt": "Great Wall plus fusion result with its original workers and equipment",
+                "sha256": "56c813e66653eac4882b9abd1be14686d36e19ebe9c54ad039f074f3fbef0ce7",
+                "width": 1600,
+                "height": 1000
+              },
+              {
+                "path": "plugins/landmark-island/assets/orcatopia-island-v0.4.0.ko.png",
+                "alt": "\ud558\ub871\ubca0\uc774\uc640 \uc0b0\ud638\ucd08, \ub113\uc740 \uac15\uacfc \uac15 \uc804\uc6a9 \ub79c\ub4dc\ub9c8\ud06c\ub85c \uafb8\ubbfc \ud55c\uad6d\uc5b4 DEMO \ud734\uc591\uc9c0",
+                "sha256": "9cece36e98c55e6bc49d11d232692ba09c26cc4429fd3babeed956f0d4eb7f9d",
+                "width": 1600,
+                "height": 1000
+              },
+              {
+                "path": "plugins/landmark-island/assets/orcatopia-wonders-v0.4.0.ko.png",
+                "alt": "\ubabd\uc0dd\ubbf8\uc178\u00b7\ub9c8\ucd94\ud53d\ucd94\u00b7\ud398\ud2b8\ub77c\ub97c \ud06c\uac8c \ubcf4\uc5ec\uc8fc\ub294 \ud55c\uad6d\uc5b4 DEMO \ubd88\uac00\uc0ac\uc758 \uc7a5\uba74",
+                "sha256": "4858c80dba0bb3ec5eee0e40e1b637670b221f7c50dcf4ebbdaa5d423c1e2fb7",
+                "width": 1600,
+                "height": 1000
+              },
+              {
+                "path": "plugins/landmark-island/assets/orcatopia-fusion-v0.4.0.ko.png",
+                "alt": "\uc778\ubd80\uc640 \uc791\uc5c5 \uc7a5\ube44\ub97c \uc720\uc9c0\ud55c \ub9cc\ub9ac\uc7a5\uc131 \ud50c\ub7ec\uc2a4 \ud569\uc131 \uacb0\uacfc\uc758 \ud55c\uad6d\uc5b4 DEMO",
+                "sha256": "5d902776a471fccd6a4a08c3e753335feefb255f557ae1eb21228f566a8bb2e0",
+                "width": 1600,
+                "height": 1000
+              }
+            ]
+          }
+        },
         {
           "version": "0.3.0",
           "commit": "1d3f5ec0a09634a7c0a6a248fdeacd505f6a668e",
@@ -328,7 +415,7 @@
             },
             "cover": {
               "path": "plugins/landmark-island/assets/orcatopia-introduction.png",
-              "alt": "Orcatopia — A little escape between tasks, with a DEMO garden screen",
+              "alt": "Orcatopia \u2014 A little escape between tasks, with a DEMO garden screen",
               "sha256": "feb99cba9d3291f7b59b36e63ad88ed7ba5c596cc3e37a301bba3a876f2438bf",
               "width": 1600,
               "height": 1000
@@ -380,7 +467,7 @@
             },
             "cover": {
               "path": "plugins/landmark-island/assets/orcatopia-introduction.png",
-              "alt": "Orcatopia — A little escape between tasks, with a DEMO garden screen",
+              "alt": "Orcatopia \u2014 A little escape between tasks, with a DEMO garden screen",
               "sha256": "feb99cba9d3291f7b59b36e63ad88ed7ba5c596cc3e37a301bba3a876f2438bf",
               "width": 1600,
               "height": 1000
@@ -427,7 +514,7 @@
             },
             "cover": {
               "path": "plugins/landmark-island/assets/orcatopia-introduction.png",
-              "alt": "Orcatopia — A little escape between tasks, with a DEMO garden screen",
+              "alt": "Orcatopia \u2014 A little escape between tasks, with a DEMO garden screen",
               "sha256": "feb99cba9d3291f7b59b36e63ad88ed7ba5c596cc3e37a301bba3a876f2438bf",
               "width": 1600,
               "height": 1000
