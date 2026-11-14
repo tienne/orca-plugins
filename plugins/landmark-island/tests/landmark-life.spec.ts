@@ -254,9 +254,9 @@ test('rarity stages grow from ambient moments to grounded Wonder spectacles whil
 }) => {
   await page.goto('/?preview=landmark-life&lang=ko');
   for (const [tier, count] of [
-    ['common', 153],
-    ['rare', 115],
-    ['epic', 24],
+    ['common', 154],
+    ['rare', 119],
+    ['epic', 25],
     ['legendary', 8],
   ] as const) {
     const section = page.locator(

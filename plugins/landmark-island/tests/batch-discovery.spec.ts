@@ -81,9 +81,9 @@ test('ten treasures require ten tickets, save once, classify batch duplicates an
   await page
     .getByRole('button', { name: 'Cell 1: empty', exact: true })
     .click();
-  expect((await saved(page)).placements).toEqual([
-    { cell: 0, landmark: 'liberty' },
-  ]);
+  await expect
+    .poll(async () => (await saved(page)).placements)
+    .toEqual([{ cell: 0, landmark: 'liberty' }]);
   await page.reload();
   await expect(page.locator('#ticket-count')).toHaveText('0');
   expect((await saved(page)).receipts).toHaveLength(10);
