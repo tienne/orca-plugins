@@ -20,7 +20,7 @@ test('the scene preview pauses offscreen and filtered landmarks while retaining 
             .getAnimations({ subtree: true })
             .filter((animation) => animation.playState === 'running').length,
       );
-  await expect(cards).toHaveCount(300);
+  await expect(cards).toHaveCount(306);
   await first.scrollIntoViewIfNeeded();
   await expect(first).toHaveAttribute('data-motion-visible', 'true');
   await expect.poll(() => running(first)).toBeGreaterThan(0);
@@ -83,7 +83,7 @@ test('the 300-landmark journal only animates visible cards across scrolling, fil
             .getAnimations({ subtree: true })
             .filter((animation) => animation.playState === 'running').length,
       );
-  await expect(cards).toHaveCount(300);
+  await expect(cards).toHaveCount(306);
   await expect.poll(() => running(first)).toBe(0);
   await page.locator('[data-inventory="landmarks"]').click();
   await expect(first).toHaveAttribute('data-motion-visible', 'true');

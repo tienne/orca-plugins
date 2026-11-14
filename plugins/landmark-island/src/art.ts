@@ -1,3 +1,4 @@
+import { enhancedLandmarkEffects } from './enhanced-effects';
 import landmarks from './landmarks.json';
 import { baseId, isEnhanced } from './landmark-variants';
 import { expandedLandmarkArt } from './expanded-art';
@@ -8,16 +9,8 @@ import { landmarkIntensity } from './landmark-intensity';
 // Every instance owns its paint IDs so cards, dialogs and island copies never collide.
 let instance = 0;
 export function art(id: string): string {
-  if (isEnhanced(id))
-    return art(baseId(id))
-      .replace(
-        'class="landmark-art',
-        'data-enhanced="true" class="landmark-art enhanced-art',
-      )
-      .replace(
-        '</svg>',
-        '<g class="enhanced-aura" fill="none" stroke="#f4cd70" stroke-width="1.6"><ellipse cx="64" cy="111" rx="55" ry="11"/><ellipse cx="64" cy="111" rx="49" ry="7"/><path d="M13 39l3 7 7 3-7 3-3 7-3-7-7-3 7-3zM108 11l3 7 7 3-7 3-3 7-3-7-7-3 7-3zM103 78l2 5 5 2-5 2-2 5-2-5-5-2 5-2z" fill="#fff0bd"/></g></svg>',
-      );
+  const enhanced = isEnhanced(id);
+  id = baseId(id);
   const prefix = `landmark-art-${++instance}`;
   const url = (name: string) => `url(#${prefix}-${name})`;
   const gradient = (name: string, light: string, mid: string, dark: string) =>
@@ -934,6 +927,9 @@ export function art(id: string): string {
     landmarks.find((landmark) => landmark.id === id)?.tier ?? 'common';
   const wonder = tier === 'legendary';
   const intensity = landmarkIntensity(tier, id, prefix);
+  const enhancement = enhanced
+    ? enhancedLandmarkEffects(prefix)
+    : { back: '', edges: '' };
   if (wonder) {
     body = `<g class="wonder-body">${body}</g>${life}<g class="wonder-effects"><ellipse cx="64" cy="118" rx="61" ry="15" fill="none" stroke="#d7b46a" stroke-width=".7" opacity=".6"/><g transform="translate(64 72) scale(1 .55)"><g class="wonder-orbit"><path d="M58-8l10 6-2 12-12-4z" fill="${url('stone')}" stroke="#8c7450" stroke-width=".7"/><path d="M-60-10l10 4-2 12-12-6z" fill="${url('stone')}" stroke="#e1c895" stroke-width=".7"/><path d="M39-40l7 3-1 8-8-3zM-46 32l8 3-2 7-7-3zM-40-35l5-3 4 6-5 3zM39 34l6-2 3 6-6 2z" fill="${url('stone')}" stroke="#d4be86" stroke-width=".6"/><circle cx="0" cy="-64" r="2" fill="#f9e8ba"/><circle cx="0" cy="64" r="1.6" fill="#f9e8ba"/></g></g><path class="wonder-spark spark-one" d="M12 40v10m-5-5h10" stroke="#eee2bc" stroke-width="1"/><path class="wonder-spark spark-two" d="M114 28v8m-4-4h8" stroke="#edddb2" stroke-width="1"/></g>`;
   }
@@ -952,5 +948,5 @@ export function art(id: string): string {
             : id === 'liberty'
               ? '-4 -6 136 136'
               : '0 0 128 128';
-  return `<svg class="landmark-art${wonder ? ' wonder-art' : ''}" data-material-art="${id}" data-animation-tier="${tier}" viewBox="${viewBox}" aria-hidden="true">${defs}${intensity.back}<ellipse ${wonder ? 'class="wonder-shadow"' : ''} cx="64" cy="118" rx="53" ry="7" fill="#34372b" opacity=".17"/>${body}${intensity.front}</svg>`;
+  return `<svg class="landmark-art${enhanced ? ' enhanced-art' : ''}${wonder ? ' wonder-art' : ''}" ${enhanced ? 'data-enhanced="true" ' : ''}data-material-art="${id}" data-animation-tier="${tier}" viewBox="${viewBox}" aria-hidden="true">${defs}${enhancement.back}${intensity.back}${enhancement.edges}<ellipse ${wonder ? 'class="wonder-shadow"' : ''} cx="64" cy="118" rx="53" ry="7" fill="#34372b" opacity=".17"/>${body}${intensity.front}</svg>`;
 }

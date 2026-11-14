@@ -1998,5 +1998,65 @@
     "featureKo": "선사 유적의 원형 구조 안에 T자형 석주들이 서 있습니다",
     "seed": 200,
     "color": "#c4ac88"
+  },
+  {
+    "id": "greatbarrierreef",
+    "name": "Great Barrier Reef",
+    "nameKo": "그레이트배리어리프",
+    "shape": "reef",
+    "feature": "Coral gardens and shallow lagoons spread along northeastern Australia, providing habitats for marine turtles, dugongs and many kinds of reef fish. The miniature represents part of this extensive marine landscape.",
+    "featureKo": "호주 북동부 바다에 산호초와 얕은 석호가 펼쳐집니다. 바다거북과 듀공, 다양한 산호초 물고기가 살아가는 넓은 해양 경관의 일부를 작은 모형으로 표현했습니다.",
+    "seed": 201,
+    "color": "#5ab7ad"
+  },
+  {
+    "id": "bluehole",
+    "name": "Great Blue Hole",
+    "nameKo": "그레이트블루홀",
+    "shape": "reef",
+    "feature": "A deep circular marine sinkhole opens within Lighthouse Reef in Belize. Blue Hole Natural Monument is one of the protected areas of the Belize Barrier Reef Reserve System; its dark water contrasts with the surrounding shallows.",
+    "featureKo": "벨리즈 라이트하우스리프 안쪽에 둥근 해양 싱크홀이 자리합니다. 벨리즈 산호초 보호구역을 이루는 블루홀 자연기념물로, 짙은 물빛과 주변의 얕은 바다가 뚜렷하게 대비됩니다.",
+    "seed": 202,
+    "color": "#4f9fac"
+  },
+  {
+    "id": "geirangerfjord",
+    "name": "Geirangerfjord",
+    "nameKo": "게이랑에르피오르",
+    "shape": "fjord",
+    "feature": "Steep rock walls enclose a narrow arm of the sea in western Norway. Waterfalls descend from the mountain sides into the fjord, one of the two fjord areas recognized in the West Norwegian Fjords World Heritage property.",
+    "featureKo": "노르웨이 서부의 가파른 암벽 사이로 좁고 긴 바닷길이 들어옵니다. 산비탈의 폭포가 피오르로 흘러들며, 노르웨이 서부 피오르 세계유산을 이루는 두 지역 중 하나입니다.",
+    "seed": 203,
+    "color": "#759eaf"
+  },
+  {
+    "id": "rockislands",
+    "name": "Rock Islands Southern Lagoon",
+    "nameKo": "팔라우 록아일랜드",
+    "shape": "island",
+    "feature": "Green limestone islets rise from turquoise lagoons in Palau. Their undercut, mushroom-like profiles sit among coral reefs, while the wider Rock Islands landscape includes marine lakes and traces of former island settlements.",
+    "featureKo": "팔라우의 청록빛 석호 위로 초록빛 석회암 섬들이 솟아 있습니다. 아랫부분이 깎인 버섯 모양 섬과 산호초가 어우러지며, 주변에는 해양 호수와 옛 섬 공동체의 흔적도 남아 있습니다.",
+    "seed": 204,
+    "color": "#68b6a2"
+  },
+  {
+    "id": "liriver",
+    "name": "Li River Karst",
+    "nameKo": "리강 카르스트",
+    "shape": "coast",
+    "feature": "Towering limestone peaks line the Li River around Guilin. The Lijiang karst component of South China Karst preserves a landscape of steep green hills and river corridors, represented here by a small riverside scene.",
+    "featureKo": "구이린의 리강을 따라 가파른 석회암 봉우리가 이어집니다. 중국 남부 카르스트 유산의 리장 구역에 속한 산봉우리와 강변 풍경을 작은 모형으로 표현했습니다.",
+    "seed": 205,
+    "color": "#77aaa0"
+  },
+  {
+    "id": "middlerhine",
+    "name": "Upper Middle Rhine Valley",
+    "nameKo": "라인강 중상류 계곡",
+    "shape": "castle",
+    "feature": "Castles, vineyard slopes and historic towns follow the Middle Rhine in Germany. The World Heritage cultural landscape records centuries of settlement and travel along the river; the miniature combines a river bend and a hillside castle.",
+    "featureKo": "독일 라인강을 따라 고성과 포도밭, 오래된 마을이 이어집니다. 수백 년 동안 강과 함께 살아온 문화경관을 굽이치는 물길과 언덕 위 성으로 표현했습니다.",
+    "seed": 206,
+    "color": "#9baf86"
   }
 ]

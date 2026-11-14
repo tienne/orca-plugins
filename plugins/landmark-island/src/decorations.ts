@@ -1,3 +1,5 @@
+import { waterDecorations, waterDecorationArt } from './water-decorations';
+import type { WaterShape, WaterSurface } from './water-themes';
 import landmarks from './landmarks.json';
 import { enhancedId } from './landmark-variants';
 import { expandedDecorations } from './expanded-decorations';
@@ -8,7 +10,9 @@ export type Decoration = {
   landmark?: string;
   cost: number;
   gift: boolean;
+  surface?: WaterSurface;
   shape:
+    | WaterShape
     | 'grass'
     | 'path'
     | 'tree'
@@ -705,6 +709,15 @@ const themes: [
 ];
 export const decorations: Decoration[] = [
   {
+    id: 'river',
+    name: 'River water',
+    cost: 0,
+    gift: false,
+    shape: 'path',
+    color: '#65b6bd',
+    walkable: false,
+  },
+  {
     id: 'grass',
     name: 'Soft grass',
     cost: 0,
@@ -803,6 +816,7 @@ export const decorations: Decoration[] = [
     walkable: false,
   },
   ...expandedDecorations,
+  ...waterDecorations,
   ...landmarks.map((l, index): Decoration => ({
     id: `${l.id}-plus-star`,
     name: `${l.name} star monument`,
@@ -819,7 +833,7 @@ export const decorationById = (id: string) =>
 export const DUPLICATE_MATERIALS = 3;
 
 export const isFloor = (id: string) =>
-  ['grass', 'path', 'stonepath'].includes(id);
+  ['grass', 'path', 'stonepath', 'river'].includes(id);
 export const canRotate = (id: string) =>
   ['bench', 'gate'].includes(decorationById(id)?.shape ?? '');
 
@@ -937,8 +951,11 @@ function gardenTreeArt(d: Decoration) {
 }
 export function decorationArt(id: string, rotation = 0) {
   const d = decorationById(id)!;
+  if (d.surface) return waterDecorationArt(d.shape as WaterShape, d.color);
+  if (id === 'river')
+    return `<svg viewBox="0 0 80 110"><path d="M5 78L40 58 75 78 40 98Z" fill="${d.color}"/><path d="M20 78l15-7m8 14 17-9" stroke="#c2eeea" fill="none"/></svg>`;
   if (canRotate(id)) return furnitureArt(d, rotation);
-  const shapes: Record<Decoration['shape'], string> = {
+  const shapes: Record<Exclude<Decoration['shape'], WaterShape>, string> = {
     starMonument: `<path d="M8 87L40 68 72 87 40 103Z" fill="#9e8050"/><path d="M19 80L40 68 61 80 40 93Z" fill="#f0d796"/><path d="M32 78V55h16v23l-8 5z"/><path d="M40 8l9 20 22 3-16 16 4 23-19-11-20 11 4-23L8 31l23-3z"/><path d="M40 17v34L17 35l18-3z" fill="#fff0bd"/><path d="M40 59l9-31 22 3-16 16 4 23z" fill="#b38c51"/><circle cx="40" cy="38" r="5" fill="#fff9df"/>`,
     grass:
       '<path d="M5 78L40 58 75 78 40 98Z"/><path d="M20 78l3-8 3 8m17 6 4-10 3 9m8-8 3-7 2 8" fill="none" stroke="#547644"/>',
@@ -989,5 +1006,5 @@ export function decorationArt(id: string, rotation = 0) {
       <path d="M38 79V66m-1 7-5-4m8 3 6-6" stroke="#5b8158" fill="none"/><g fill="#d7b5cf" stroke="#a28da4" stroke-width=".5"><circle cx="38" cy="65" r="4"/><circle cx="31" cy="68" r="3"/><circle cx="47" cy="65" r="3"/></g>`,
     gate: '<path d="M16 90V31h8v59m32 0V31h8v59M10 29h60v9H10Zm-5-14q35 10 70 0v10q-35 9-70 0Z"/><path d="M24 47h32v6H24Z"/><path d="M13 22q27 6 54 0" stroke="#ead8ae" fill="none"/>',
   };
-  return `<svg class="decoration-art" viewBox="0 0 80 104" aria-hidden="true"><ellipse cx="40" cy="92" rx="31" ry="7" fill="#244e3825"/><g fill="${d.color}" stroke="#53624d" stroke-width="1.3" stroke-linejoin="round">${shapes[d.shape]}</g></svg>`;
+  return `<svg class="decoration-art" viewBox="0 0 80 104" aria-hidden="true"><ellipse cx="40" cy="92" rx="31" ry="7" fill="#244e3825"/><g fill="${d.color}" stroke="#53624d" stroke-width="1.3" stroke-linejoin="round">${shapes[d.shape as Exclude<Decoration['shape'], WaterShape>]}</g></svg>`;
 }

@@ -2,6 +2,7 @@ import { landmarkById } from './landmark-variants';
 import { art } from './art';
 import {
   project,
+  tiles,
   at,
   SIZE,
   WORLD_OFFSET,
@@ -26,9 +27,54 @@ const colors: Record<Tile['kind'], string[]> = {
   path: ['#b8bba0', '#bdc1a5', '#b4b99d'],
   rock: ['#b1baa1', '#adb79d', '#b6bfa6'],
 };
-export function terrain(state: State, selectedCell?: number) {
+function riverArt(
+  cell: number,
+  rivers: Set<number>,
+  heights: Map<number, number>,
+) {
+  if (!rivers.has(cell)) return '';
+  const tile = tiles[cell];
+  const edges = [
+    [0, -1, 60, 10],
+    [1, 0, 60, 30],
+    [0, 1, 20, 30],
+    [-1, 0, 20, 10],
+  ];
+  const connected = edges.map(([dx, dy]) => {
+    const next = at(tile.col + dx, tile.row + dy);
+    return next !== undefined && rivers.has(next);
+  });
+  const wide = (connected[0] || connected[2]) && (connected[1] || connected[3]);
+  return (
+    `<path data-river-wide="${wide}" d="${wide ? 'M0 20L40 0 80 20 40 40Z' : 'M24 20L40 12 56 20 40 28Z'}" fill="#65b6bd"/>${wide && cell % 4 === 0 ? '<path d="M25 18q8-3 16 0m4 6 9-1" fill="none" stroke="#d1eece" stroke-width="1" opacity=".45"/>' : ''}` +
+    edges
+      .map(([dx, dy, x, y]) => {
+        const next = at(tile.col + dx, tile.row + dy);
+        if (next === undefined || (!rivers.has(next) && heights.has(next)))
+          return '';
+        const fall = Math.max(0, tile.height - (heights.get(next) ?? -14));
+        return `<path data-river-to="${next}" data-river-mouth="${!heights.has(next)}" d="M40 20L${x} ${y}" stroke="#65b6bd" stroke-width="18" fill="none"/>${fall > 0 && (dy === 1 || dx === 1) ? `<path d="M${x - 8} ${y}v${fall}h16V${y}" fill="#65b6bd" opacity=".9"/><path d="M${x - 3} ${y + 3}v${Math.max(0, fall - 3)}" stroke="#c2eeea" fill="none"/>` : ''}`;
+      })
+      .join('')
+  );
+}
+export function terrain(state: State, selectedCell?: number, showSea = false) {
   const land = islandLand(state);
+  const landIds = new Set(land.map((tile) => tile.id));
+  const water = tiles.filter(
+    (tile) =>
+      !landIds.has(tile.id) &&
+      (state.placements.some((p) => p.cell === tile.id) ||
+        state.decorations.some((p) => p.cell === tile.id) ||
+        (showSea &&
+          land.some(
+            (t) => Math.abs(t.col - tile.col) + Math.abs(t.row - tile.row) <= 3,
+          ))),
+  );
   const heights = new Map(land.map((tile) => [tile.id, tile.height]));
+  const rivers = new Set(
+    state.floors.filter((p) => p.decoration === 'river').map((p) => p.cell),
+  );
   const floors = new Map(state.floors.map((p) => [p.cell, p.decoration]));
   const landmarkRotations = new Map(
     state.placements.map((p) => [p.cell, p.rotation ?? 0]),
@@ -40,15 +86,16 @@ export function terrain(state: State, selectedCell?: number) {
     state.decorations.map((p) => [p.cell, decorationById(p.decoration)!]),
   );
   const placements = new Map(state.placements.map((p) => [p.cell, p.landmark]));
-  return `<div class="world-ground" style="width:${WORLD_W}px;height:${WORLD_H}px">${islandLand(
-    state,
-  )
+  return `<div class="world-ground" style="width:${WORLD_W}px;height:${WORLD_H}px">${[
+    ...land,
+    ...water.map((t) => ({ ...t, land: false, prop: null })),
+  ]
     .map((tile) => {
       const floor = floors.get(tile.id);
       const t = {
         ...tile,
         kind: (floor
-          ? floor === 'grass'
+          ? floor === 'grass' || floor === 'river'
             ? 'grass'
             : 'path'
           : tile.kind) as Tile['kind'],
@@ -58,13 +105,15 @@ export function terrain(state: State, selectedCell?: number) {
         ornament = decor.get(t.id),
         landmark = id ? landmarkById(id) : undefined,
         fill = floor
-          ? decorationById(floor)!.color
+          ? floor === 'river'
+            ? '#8cb866'
+            : decorationById(floor)!.color
           : colors[t.kind][
               (((t.col * 7 + t.row * 3) % colors[t.kind].length) +
                 colors[t.kind].length) %
                 colors[t.kind].length
             ],
-        h = t.height + 14;
+        h = t.land ? t.height + 14 : 0;
       // Internal faces are hidden by adjacent land. Draw only exposed cliffs,
       // including the shorter drops between terraces, so lawns stay continuous.
       const drop = (col: number, row: number) => {
@@ -73,29 +122,35 @@ export function terrain(state: State, selectedCell?: number) {
           neighbour === undefined ? undefined : heights.get(neighbour);
         return height === undefined ? h : Math.max(0, t.height - height);
       };
-      const leftDrop = drop(t.col, t.row + 1);
-      const rightDrop = drop(t.col + 1, t.row);
+      const leftDrop = t.land ? drop(t.col, t.row + 1) : 0;
+      const rightDrop = t.land ? drop(t.col + 1, t.row) : 0;
       const label = `Cell ${t.id + 1}: ${landmark ? landmark.name : ornament ? ornament.name : floor ? decorationById(floor)!.name : 'empty'}`;
       const decoration = id
         ? `<div class="world-object building" data-rotation="${landmarkRotations.get(t.id) ?? 0}" data-tier="${landmark!.tier}" data-depth="${p.depth}"><button class="building-select" data-site="${t.id}" aria-label="Landmark: ${landmark!.name}" title="${landmark!.name} · ${landmark!.country}">${art(id)}</button></div><span class="building-label" data-tier="${landmark!.tier}"><strong>${landmark!.name}</strong><span>${landmark!.country}</span></span>`
         : ornament
-          ? `<div class="world-object garden-object ${ornament.walkable ? 'low-object' : ''}" data-decoration="${ornament.id}" data-wind="${['tree', 'palm', 'flowers'].includes(ornament.shape) ? 'plant' : 'still'}" data-rotation="${rotations.get(t.id) ?? 0}"><button class="building-select" data-site="${t.id}" aria-label="Decoration: ${ornament.name}">${decorationArt(ornament.id, rotations.get(t.id))}</button></div>`
+          ? `<div class="world-object garden-object ${ornament.walkable ? 'low-object' : ''} ${ornament.surface ? 'water-object' : ''}" data-decoration="${ornament.id}" data-wind="${['tree', 'palm', 'flowers'].includes(ornament.shape) ? 'plant' : 'still'}" data-rotation="${rotations.get(t.id) ?? 0}"><button class="building-select" data-site="${t.id}" aria-label="Decoration: ${ornament.name}">${decorationArt(ornament.id, rotations.get(t.id))}</button></div>`
           : t.prop && !floor
             ? `<div class="world-object ${t.prop}${t.prop === 'rock' && t.kind === 'rock' ? ' ruin' : ''}" aria-hidden="true">${t.prop === 'pine' ? tree(true) : t.prop === 'oak' ? tree(false) : t.prop === 'rock' ? (t.kind === 'rock' ? ruin : rock) : flowers}</div>`
             : '';
-      return `<div class="world-tile" style="left:${p.x - 40}px;top:${p.y - 20}px;--tile-depth:${p.depth};--wind-delay:${(p.x / WORLD_W) * 8}s" data-world-cell="${t.id}" data-object-key="${id ? `landmark:${id}:${landmarkRotations.get(t.id) ?? 0}` : ornament ? `decor:${ornament.id}:${rotations.get(t.id) ?? 0}` : !floor ? `prop:${t.prop ?? ''}:${t.kind}` : 'none'}"><svg class="tile-base" ${floor ? `data-decoration="${floor}" data-floor="${floor}"` : ''} width="80" height="${40 + h}" viewBox="0 0 80 ${40 + h}" aria-hidden="true">${leftDrop ? `<path d="M0 20L40 40V${40 + leftDrop}L0 ${20 + leftDrop}Z" fill="${t.kind === 'sand' ? '#cdb68a' : '#7f8d5b'}"/>` : ''}${rightDrop ? `<path d="M40 40L80 20V${20 + rightDrop}L40 ${40 + rightDrop}Z" fill="${t.kind === 'sand' ? '#bda880' : '#5e754e'}"/>` : ''}<path d="M0 20L40 0 80 20 40 40Z" fill="${fill}"/>${t.kind === 'grass' && t.id % 3 === 0 ? '<g class="wind-grass"><path d="M18 21l2-4 1 4m38 1 3-4" stroke="#809d64" stroke-width="1" fill="none"/></g>' : ''}${t.kind === 'path' && floor !== 'path' ? '<path d="M8 20l16-8 14 7-16 8zm32 2 17-8 15 7-17 9z" fill="#d5d3b2" stroke="#8b9c7b" stroke-width=".8" opacity=".7"/><path d="M22 16l4 2-3 3m34 1 5-2" fill="none" stroke="#8b9c7b" stroke-width=".8"/>' : ''}</svg><button class="cell ${id || ornament ? 'occupied' : ''} ${selectedCell === t.id ? 'selected' : ''}" data-cell="${t.id}" aria-label="${label}" title="${landmark?.name ?? ornament?.name ?? t.region}" tabindex="-1"></button>${decoration}</div>`;
+      return `<div class="world-tile${t.land ? '' : ' sea-tile'}" style="left:${p.x - 40}px;top:${p.y - 20 + (t.land ? 0 : t.height + 14)}px;--tile-depth:${p.depth};--wind-delay:${(p.x / WORLD_W) * 8}s" data-world-cell="${t.id}" data-object-key="${id ? `landmark:${id}:${landmarkRotations.get(t.id) ?? 0}` : ornament ? `decor:${ornament.id}:${rotations.get(t.id) ?? 0}` : !floor ? `prop:${t.prop ?? ''}:${t.kind}` : 'none'}"><svg class="tile-base" ${floor ? `data-decoration="${floor}" data-floor="${floor}"` : ''} width="80" height="${40 + h}" viewBox="0 0 80 ${40 + h}" aria-hidden="true">${leftDrop ? `<path d="M0 20L40 40V${40 + leftDrop}L0 ${20 + leftDrop}Z" fill="${t.kind === 'sand' ? '#cdb68a' : '#7f8d5b'}"/>` : ''}${rightDrop ? `<path d="M40 40L80 20V${20 + rightDrop}L40 ${40 + rightDrop}Z" fill="${t.kind === 'sand' ? '#bda880' : '#5e754e'}"/>` : ''}<path d="M0 20L40 0 80 20 40 40Z" fill="${t.land ? fill : showSea ? '#d8f3ff24' : 'transparent'}" stroke="${!t.land && showSea ? '#b8e6f070' : 'none'}"/>${riverArt(t.id, rivers, heights)}${t.land && floor !== 'river' && t.kind === 'grass' && t.id % 3 === 0 ? '<g class="wind-grass"><path d="M18 21l2-4 1 4m38 1 3-4" stroke="#809d64" stroke-width="1" fill="none"/></g>' : ''}${t.kind === 'path' && floor !== 'path' && floor !== 'river' && t.land ? '<path d="M8 20l16-8 14 7-16 8zm32 2 17-8 15 7-17 9z" fill="#d5d3b2" stroke="#8b9c7b" stroke-width=".8" opacity=".7"/><path d="M22 16l4 2-3 3m34 1 5-2" fill="none" stroke="#8b9c7b" stroke-width=".8"/>' : ''}</svg><button class="cell ${id || ornament ? 'occupied' : ''} ${selectedCell === t.id ? 'selected' : ''}" data-cell="${t.id}" aria-label="${label}" title="${landmark?.name ?? ornament?.name ?? t.region}" tabindex="-1"></button>${decoration}</div>`;
     })
     .join(
       '',
     )}<div class="world-sign" style="left:${project(14).x - 20}px;top:${project(14).y - 65}px;z-index:${project(14).depth + 1}" aria-hidden="true"><span>The<br>Commons</span><i class="trail-lantern"></i></div></div>`;
 }
 export function minimap(state: State) {
-  return `<button id="overview" class="minimap" aria-label="Show whole island"><svg viewBox="0 0 ${SIZE * 4} ${SIZE * 4}" aria-hidden="true">${islandLand(
-    state,
-  )
+  const land = islandLand(state);
+  const landIds = new Set(land.map((t) => t.id));
+  const placed = new Set(
+    [...state.placements, ...state.decorations].map((p) => p.cell),
+  );
+  return `<button id="overview" class="minimap" aria-label="Show whole island"><svg viewBox="0 0 ${SIZE * 4} ${SIZE * 4}" aria-hidden="true">${[
+    ...land,
+    ...tiles.filter((t) => placed.has(t.id) && !landIds.has(t.id)),
+  ]
     .map(
       (t) =>
-        `<rect x="${(t.col + WORLD_OFFSET) * 4}" y="${(t.row + WORLD_OFFSET) * 4}" width="4.1" height="4.1" fill="${t.kind === 'sand' ? '#dcc494' : t.kind === 'path' ? '#ded1ac' : t.height > 16 ? '#4f7859' : '#8fab6c'}"/>`,
+        `<rect x="${(t.col + WORLD_OFFSET) * 4}" y="${(t.row + WORLD_OFFSET) * 4}" width="4.1" height="4.1" fill="${!landIds.has(t.id) ? '#80d3e0' : state.floors.some((p) => p.cell === t.id && p.decoration === 'river') ? '#65b6bd' : t.kind === 'sand' ? '#dcc494' : t.kind === 'path' ? '#ded1ac' : t.height > 16 ? '#4f7859' : '#8fab6c'}"/>`,
     )
     .join(
       '',

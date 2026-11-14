@@ -71,7 +71,54 @@ export function expandedLandmarkArt(
     line(`M${x} ${y}v-${h * 0.6}`, '#826f4b', 2) +
     `<path d="M${x - h * 0.28} ${y - 7}l${h * 0.28}-${h} ${h * 0.28} ${h}z" fill="#61815b"/>`;
   let body = '';
-  if (['cathedral', 'basilica', 'woodchurch'].includes(shape)) {
+  if (id === 'greatbarrierreef') {
+    body =
+      `<ellipse cx="64" cy="106" rx="59" ry="17" fill="#76bdc5"/><path d="M12 103q13-20 29-6t31-3 43 12l-13 9-80 2z" fill="#75a491"/>` +
+      repeat(8, (i) =>
+        line(
+          `M${18 + i * 13} ${112 - (i % 2) * 7}v-${13 + (i % 3) * 6}m0 8-6-7m6 4 6-9`,
+          ['#dfae98', '#c795a5', '#f2cf96'][i % 3],
+          3,
+        ),
+      ) +
+      `<path d="M45 98l8-5 8 5-8 4zM83 110l7-4 7 4-7 4z" fill="#f1d586"/>`;
+  } else if (id === 'bluehole') {
+    body = `<ellipse cx="64" cy="99" rx="59" ry="23" fill="#7ebfb7"/><ellipse cx="64" cy="98" rx="48" ry="18" fill="#baD4b7"/><ellipse cx="64" cy="97" rx="34" ry="15" fill="#367784"/><ellipse cx="64" cy="97" rx="24" ry="10" fill="#284e68"/><path d="M19 91q-5 9 8 14m74-14q8 8-1 12" stroke="#e7ead1" stroke-width="3" fill="none"/><path d="M92 83l12-2-4 6z" fill="#eee3bd"/>`;
+  } else if (id === 'rockislands') {
+    body =
+      `<ellipse cx="64" cy="106" rx="59" ry="16" fill="#76c2b5"/>` +
+      repeat(4, (i) => {
+        const x = 9 + i * 29,
+          y = 83 + (i % 2) * 15;
+        return (
+          path(`M${x + 4} ${y}l3-18 13-6 9 14-5 15z`, 'mountain') +
+          `<ellipse cx="${x + 15}" cy="${y - 13}" rx="17" ry="13" fill="${i % 2 ? '#639961' : '#7ca468'}"/><path d="M${x + 1} ${y + 8}h25" stroke="#d4eee0" fill="none"/>`
+        );
+      });
+  } else if (id === 'geirangerfjord') {
+    body =
+      `<path d="M3 111l41-29 31 2 50 29-59 11z" fill="#80b7c0"/>` +
+      rock(3, 20, 44, 93) +
+      rock(84, 9, 40, 105) +
+      line('M28 35l4 27-4 21 8 25M105 24l-6 33 6 22-11 26', '#d5e9dc', 3) +
+      `<path d="M46 111l24-3-5 8H52z" fill="#e7d7b5"/>`;
+  } else if (id === 'liriver') {
+    body =
+      `<path d="M5 108Q36 88 62 102t61 4v16H5z" fill="#79b5ad"/>` +
+      rock(9, 34, 30, 74, 'grass') +
+      rock(41, 13, 35, 94, 'grass') +
+      rock(83, 43, 33, 63, 'grass') +
+      line('M12 115l37-5m22 6 34-4', '#d2e8cf', 1.4) +
+      `<path d="M40 117l17-5 16 4-18 5z" fill="#c8b48a"/>`;
+  } else if (id === 'middlerhine') {
+    body =
+      path('M5 106l32-48 56 10 30 40-57 14z', 'grass') +
+      `<path d="M5 109q29-18 52-8t66 8v13H5z" fill="#7baeb3"/>` +
+      hall(42, 58, 38, 38) +
+      tower(32, 33, 17, 61) +
+      tower(77, 39, 16, 58) +
+      line('M10 93l23-15m-18 25 22-16m57-5 16 13', '#b8bf86', 2);
+  } else if (['cathedral', 'basilica', 'woodchurch'].includes(shape)) {
     const material =
       shape === 'woodchurch' ? 'iron' : id === 'albi' ? 'sandstone' : 'stone';
     const count =

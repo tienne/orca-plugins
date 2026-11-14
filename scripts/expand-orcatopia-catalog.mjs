@@ -101,8 +101,14 @@ const expansion = rows.map(
     };
   },
 );
-const catalog = [...existing, ...expansion.map((e) => e.record)];
-if (new Set(catalog.map((e) => e.id)).size !== 300)
+const water = JSON.parse(await readFile(root + 'water-catalog.json', 'utf8'));
+for (const entry of water) korean[entry.record.id] = entry.korean;
+const catalog = [
+  ...existing,
+  ...expansion.map((e) => e.record),
+  ...water.map((e) => e.record),
+];
+if (new Set(catalog.map((e) => e.id)).size !== 300 + water.length)
   throw new Error('Duplicate catalog ID');
 await writeFile(
   root + 'landmarks.json',
@@ -115,7 +121,7 @@ await writeFile(
 await writeFile(
   root + 'landmark-expansion.json',
   JSON.stringify(
-    expansion.map((e) => e.visual),
+    [...expansion.map((e) => e.visual), ...water.map((e) => e.visual)],
     null,
     2,
   ) + '\n',

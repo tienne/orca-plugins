@@ -1,3 +1,4 @@
+import { waterThemes, waterShapeNames } from './water-themes';
 import { additionalScenes } from './scenes';
 import korean from './messages.ko.json';
 import expansion from './landmark-expansion.json';
@@ -29,6 +30,14 @@ const messages: Record<string, string> = { ...korean };
 for (const entry of expansion) {
   messages[`${entry.name} garden planting`] = `${entry.nameKo} 정원 식물`;
   messages[`${entry.name} garden retreat`] = `${entry.nameKo} 정원 쉼터`;
+}
+for (const theme of waterThemes) {
+  const landmark = catalog.find((l) => l.id === theme.id)!;
+  const koreanName =
+    landmarkKorean[theme.id as keyof typeof landmarkKorean].name;
+  for (const shape of [theme.gift, theme.special])
+    messages[`${landmark.name} ${waterShapeNames[shape][0]}`] =
+      `${koreanName} ${waterShapeNames[shape][1]}`;
 }
 for (const scene of additionalScenes)
   messages[scene.description] = scene.descriptionKo;

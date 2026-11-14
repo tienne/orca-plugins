@@ -149,7 +149,7 @@ test('new landmark contact sheets expose varied silhouettes and bilingual search
   const errors: string[] = [];
   page.on('pageerror', (e) => errors.push(e.message));
   await page.goto('/?preview=landmark-life&lang=ko');
-  await expect(page.locator('.life-preview-card')).toHaveCount(300);
+  await expect(page.locator('.life-preview-card')).toHaveCount(306);
   const search = page.locator('#life-preview-search');
   await search.fill('사마라');
   await expect(page.locator('.life-preview-card:visible')).toHaveCount(1);
@@ -184,7 +184,7 @@ test('new landmark contact sheets expose varied silhouettes and bilingual search
     const pictures = ids
       .map((id) => document.querySelector(`#scene-${id}`)!.outerHTML)
       .join('');
-    document.body.innerHTML = `<main class="catalog-review"><h1>DEMO · 200 new destinations · 300 landmarks total</h1><div>${pictures}</div></main>`;
+    document.body.innerHTML = `<main class="catalog-review"><h1>DEMO · 206 new destinations · 306 landmarks total</h1><div>${pictures}</div></main>`;
   }, selected);
   await page.addStyleTag({
     content:

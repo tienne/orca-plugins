@@ -1,3 +1,4 @@
+import { testWaterPlacement } from './test-water-placement.mjs';
 import { testFusion } from './test-landmark-fusion.mjs';
 import { build } from 'esbuild';
 import { mkdtemp, readFile, rm } from 'node:fs/promises';
@@ -13,7 +14,10 @@ try {
   await build({
     entryPoints: [
       'plugins/landmark-island/src/game.ts',
+      'plugins/landmark-island/src/placement.ts',
+      'plugins/landmark-island/src/terrain-art.ts',
       'plugins/landmark-island/src/art.ts',
+      'plugins/landmark-island/src/enhanced-effects.ts',
       'plugins/landmark-island/src/i18n.ts',
       'plugins/landmark-island/src/decorations.ts',
       'plugins/landmark-island/src/walk.ts',
@@ -29,6 +33,7 @@ try {
     format: 'esm',
     outExtension: { '.js': '.mjs' },
   });
+  await testWaterPlacement(dir);
   await testWeather(dir);
   await testExpeditions(dir);
   const {
@@ -87,16 +92,16 @@ try {
     decodeBackup,
     landmarks,
   });
-  assert.equal(landmarks.length, 300);
+  assert.equal(landmarks.length, 306);
   assert.equal(
     createHash('sha256')
       .update(JSON.stringify(landmarks.slice(0, 100)))
       .digest('hex'),
     (await readFile('scripts/data/orcatopia-legacy100.sha256', 'utf8')).trim(),
   );
-  assert.equal(new Set(landmarks.map((l) => l.id)).size, 300);
-  assert.equal(new Set(landmarks.map((l) => l.code)).size, 101);
-  assert.equal(decorations.length, 908);
+  assert.equal(new Set(landmarks.map((l) => l.id)).size, 306);
+  assert.equal(new Set(landmarks.map((l) => l.code)).size, 103);
+  assert.equal(decorations.length, 953);
   for (const code of ['KOR', 'SGP', 'ESP']) {
     const entries = landmarks.filter((l) => l.code === code);
     assert.ok(entries.length >= 2);
@@ -107,9 +112,9 @@ try {
     );
   }
   for (const [tier, count, roll] of [
-    ['common', 153, 0.35],
-    ['rare', 115, 0.8],
-    ['epic', 24, 0.95],
+    ['common', 154, 0.35],
+    ['rare', 119, 0.8],
+    ['epic', 25, 0.95],
     ['legendary', 8, 0.995],
   ]) {
     const pool = landmarks.filter((l) => l.tier === tier);
@@ -123,6 +128,30 @@ try {
     }
   }
   const { art } = await import(pathToFileURL(join(dir, 'art.mjs')));
+  const { enhancedLandmarkEffects } = await import(
+    pathToFileURL(join(dir, 'enhanced-effects.mjs'))
+  );
+  for (const entry of landmarks) {
+    const normal = art(entry.id);
+    const plus = art(`${entry.id}+`);
+    const prefix = plus.match(/id="(landmark-art-\d+)-glass"/)[1];
+    const added = enhancedLandmarkEffects(prefix);
+    const restored = plus
+      .replace(added.back, '')
+      .replace(added.edges, '')
+      .replace(' enhanced-art', '')
+      .replace('data-enhanced="true" ', '');
+    const normalize = (value) =>
+      value.replace(/landmark-art-\d+/g, 'landmark-art-instance');
+    assert.equal(
+      normalize(restored),
+      normalize(normal),
+      `${entry.id}: + must retain the entire original illustration and scene`,
+    );
+  }
+  console.log(
+    'PASS: every + illustration retains all 306 original buildings, actors, props and tier scenes; effects are additive layers',
+  );
   const illustrations = new Map();
   const repeatedGeometry = [];
   for (const entry of landmarks.slice(100)) {
@@ -155,9 +184,15 @@ try {
     const set = decorations.filter((d) => d.landmark === landmark.id);
     assert.equal(
       set.length,
-      ['fuji', 'taj', 'eiffel', 'angkor'].includes(landmark.id) ? 3 : 2,
+      (['fuji', 'taj', 'eiffel', 'angkor'].includes(landmark.id) ? 3 : 2) +
+        (landmarks.indexOf(landmark) < 300 && set.some((d) => d.surface)
+          ? 2
+          : 0),
     );
-    assert.equal(set.filter((d) => d.gift).length, 1);
+    assert.equal(
+      set.filter((d) => d.gift).length,
+      landmarks.indexOf(landmark) < 300 && set.some((d) => d.surface) ? 2 : 1,
+    );
     for (const d of set) assert.notEqual(translate(d.name, 'ko-KR'), d.name);
   }
   assert.equal(translate('/ 51 discovered', 'ko-KR'), '/ 51종 발견');
@@ -771,7 +806,7 @@ try {
     landmark: l.id,
     cell: landTiles[i].id,
   }));
-  fullCatalog.decorations = landmarks.map((l, i) => ({
+  fullCatalog.decorations = landmarks.slice(0, 300).map((l, i) => ({
     decoration: `${l.id}-gift`,
     cell: 36 + i,
   }));
@@ -823,7 +858,7 @@ try {
   for (const landmark of landmarks)
     assert.equal(decorationQuantity(fullCatalog, `${landmark.id}-gift`), 1);
   console.log(
-    'PASS: all 300 catalog draws across 101 countries, 908 decorations, localized descriptions, full-catalog backup and preserved legacy land',
+    'PASS: all 306 catalog draws across 103 countries, 953 decorations, localized descriptions, full-catalog backup and preserved legacy land',
   );
 
   // The four focal pieces use the same ownership and durable craft ledger.

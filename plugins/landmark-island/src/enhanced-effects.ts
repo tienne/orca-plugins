@@ -1,0 +1,6 @@
+/** 기존 건물·인물 레이어를 건드리지 않고 뒤쪽 빛과 가장자리 입자만 추가한다. */
+export function enhancedLandmarkEffects(prefix: string) {
+  const back = `<g class="enhanced-aura" data-enhanced-layer="back" aria-hidden="true"><defs><radialGradient id="${prefix}-enhanced-glow"><stop stop-color="#f4cd70" stop-opacity=".45"/><stop offset="1" stop-color="#f4cd70" stop-opacity="0"/></radialGradient><linearGradient id="${prefix}-enhanced-light" x2="0" y2="1"><stop stop-color="#fff0bd" stop-opacity="0"/><stop offset="1" stop-color="#f4cd70" stop-opacity=".35"/></linearGradient></defs><ellipse cx="64" cy="116" rx="62" ry="13" fill="url(#${prefix}-enhanced-glow)"/><path d="M2 115L9 24l14 91zM105 115l14-96 7 96z" fill="url(#${prefix}-enhanced-light)"/><g fill="none" stroke="#e8c36e"><ellipse cx="64" cy="116" rx="58" ry="10" stroke-width="1.5" opacity=".7"/><ellipse cx="64" cy="116" rx="50" ry="6" stroke-width=".8" stroke-dasharray="4 8" opacity=".6"/></g></g>`;
+  const edges = `<g class="enhanced-edges" data-enhanced-layer="edges" aria-hidden="true" fill="#fff0bd" stroke="#dfb75e" stroke-width=".5"><path class="enhanced-edge-glint" d="M6 33l2 5 5 2-5 2-2 5-2-5-4-2 4-2zM120 17l2 5 5 2-5 2-2 5-2-5-4-2 4-2z"/><g transform="translate(64 65)"><g class="enhanced-orbit"><path d="M58-3l5-3 4 4-2 5-5-1zM-64-1l4-4 5 2-1 5-5 1z"/></g></g></g>`;
+  return { back, edges };
+}

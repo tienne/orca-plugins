@@ -1,3 +1,4 @@
+import { allowsSea, allowsRiver, isWorldCell } from './placement';
 import landmarks from './landmarks.json';
 import {
   landmarkById,
@@ -19,7 +20,13 @@ export type Receipt = { workspaceId: string; landmark: string; at: string };
 export type Ticket = { workspaceId: string; at: string };
 export type State = {
   version: 6;
-  fusions: { id: string; landmark: string; at: string }[];
+  fusions: {
+    id: string;
+    landmark: string;
+    at: string;
+    from?: number;
+    cell?: number;
+  }[];
   floors: { decoration: string; cell: number }[];
   landFloor: number;
   crafts: { id: string; decoration: string }[];
@@ -54,12 +61,65 @@ export function islandLevel(s: State) {
   return Math.max(s.landFloor, new Set(s.receipts.map((r) => r.landmark)).size);
 }
 export function islandLand(s: State) {
-  return landAtLevel(islandLevel(s));
+  const reserved = new Set(
+    s.decorations
+      .filter((p) => decorationById(p.decoration)?.surface === 'sea')
+      .map((p) => p.cell),
+  );
+  return landAtLevel(islandLevel(s)).filter((t) => !reserved.has(t.id));
 }
 export function unlockedCell(s: State, cell: number) {
   return (
-    isLand(cell) && (expansionLevel.get(cell) ?? Infinity) <= islandLevel(s)
+    isLand(cell) &&
+    (expansionLevel.get(cell) ?? Infinity) <= islandLevel(s) &&
+    !s.decorations.some(
+      (p) => p.cell === cell && decorationById(p.decoration)?.surface === 'sea',
+    )
   );
+}
+/** 현재 배치 가능한 표면. 섬 확장 후에도 해상 장식 아래의 물은 유지한다. */
+export function surfaceAt(
+  s: State,
+  cell: number,
+): 'land' | 'sea' | 'river' | undefined {
+  if (!isWorldCell(cell)) return undefined;
+  return !unlockedCell(s, cell)
+    ? 'sea'
+    : s.floors.some((p) => p.cell === cell && p.decoration === 'river')
+      ? 'river'
+      : 'land';
+}
+/** 새 랜드마크 배치 시 바다와 강을 혼용하지 않는다. */
+export function canPlaceLandmark(s: State, id: string, cell: number) {
+  const surface = surfaceAt(s, cell);
+  return (
+    surface === 'land' ||
+    (surface === 'sea' && allowsSea(id)) ||
+    (surface === 'river' && allowsRiver(id))
+  );
+}
+/** 물 전용 장식은 해당 물 영역에서만 배치하고 보관한다. */
+export function canPlaceDecoration(s: State, id: string, cell: number) {
+  const decoration = decorationById(id);
+  const surface = surfaceAt(s, cell);
+  return Boolean(
+    decoration &&
+    surface &&
+    (decoration.surface ? surface === decoration.surface : surface !== 'sea'),
+  );
+}
+/** 같은 일반판의 배치 쌍만 후보로 삼고, 확정 시 워커에서 다시 검증한다. */
+export function placedFusionLandmark(s: State, from: number, cell: number) {
+  if (!isWorldCell(from) || !isWorldCell(cell) || from === cell)
+    return undefined;
+  const source = s.placements.find((p) => p.cell === from);
+  const target = s.placements.find((p) => p.cell === cell);
+  return source &&
+    target &&
+    source.landmark === target.landmark &&
+    !isEnhanced(source.landmark)
+    ? source.landmark
+    : undefined;
 }
 export function materials(s: State) {
   return (
@@ -127,7 +187,9 @@ export function validate(value: unknown): State {
       fusionIds.has(f.id) ||
       !landmarks.some((l) => l.id === f.landmark) ||
       typeof f.at !== 'string' ||
-      !Number.isFinite(Date.parse(f.at))
+      !Number.isFinite(Date.parse(f.at)) ||
+      ((f.from !== undefined || f.cell !== undefined) &&
+        (!isWorldCell(f.from!) || !isWorldCell(f.cell!) || f.from === f.cell))
     )
       throw Error('Invalid fusion ledger');
     fusionIds.add(f.id);
@@ -139,7 +201,7 @@ export function validate(value: unknown): State {
   for (const p of s.placements) {
     if (
       !p ||
-      !isLand(p.cell) ||
+      (!isLand(p.cell) && !(isWorldCell(p.cell) && allowsSea(p.landmark))) ||
       cells.has(p.cell) ||
       !landmarkById(p.landmark) ||
       (p.rotation !== undefined && p.rotation !== 0 && p.rotation !== 1)
@@ -228,7 +290,11 @@ export function validate(value: unknown): State {
   };
   if (materials(next) < 0) throw Error('Not enough materials');
   for (const p of s.placements)
-    if (!unlockedCell(next, p.cell)) throw Error('Land is not unlocked');
+    if (
+      !unlockedCell(next, p.cell) &&
+      !(isWorldCell(p.cell) && allowsSea(p.landmark))
+    )
+      throw Error('Land is not unlocked');
   const usedDecor = new Map<string, number>();
   for (const p of decor) {
     if (
@@ -240,7 +306,7 @@ export function validate(value: unknown): State {
           !Number.isInteger(p.rotation) ||
           p.rotation < 0 ||
           p.rotation > 3)) ||
-      !unlockedCell(next, p.cell) ||
+      !canPlaceDecoration(next, p.decoration, p.cell) ||
       cells.has(p.cell)
     )
       throw Error('Invalid decoration placement');
@@ -262,7 +328,12 @@ export function validate(value: unknown): State {
   }
   return structuredClone({
     version: 6,
-    fusions: fusions.map(({ id, landmark, at }) => ({ id, landmark, at })),
+    fusions: fusions.map(({ id, landmark, at, from, cell }) => ({
+      id,
+      landmark,
+      at,
+      ...(from !== undefined ? { from, cell } : {}),
+    })),
     floors: floors.map(({ decoration, cell }) => ({ decoration, cell })),
     landFloor,
     crafts: crafts.map(({ id, decoration }) => ({ id, decoration })),
@@ -469,7 +540,13 @@ export class Game {
   }
   fuse(input: unknown) {
     return this.queue(async (s) => {
-      const p = input as { id?: unknown; landmark?: unknown } | null;
+      const p = input as {
+        id?: unknown;
+        landmark?: unknown;
+        from?: number;
+        cell?: number;
+        expected?: Layout;
+      } | null;
       if (
         typeof p?.id !== 'string' ||
         !p.id ||
@@ -479,23 +556,46 @@ export class Game {
         !landmarkById(p.landmark)
       )
         throw Error('Choose a normal landmark and a valid fusion request.');
+      const onIsland = p.from !== undefined || p.cell !== undefined;
+      if (
+        onIsland &&
+        (!isWorldCell(p.from!) || !isWorldCell(p.cell!) || p.from === p.cell)
+      )
+        throw Error('Choose two different placed normal copies.');
       const prior = s.fusions.find((f) => f.id === p.id);
       if (prior) {
-        if (prior.landmark !== p.landmark)
+        if (
+          prior.landmark !== p.landmark ||
+          prior.from !== p.from ||
+          prior.cell !== p.cell
+        )
           throw Error('Fusion request was already used.');
         return s;
       }
-      const placed = s.placements.filter(
-        (item) => item.landmark === p.landmark,
-      ).length;
-      if (quantity(s, p.landmark) - placed < 2)
-        throw Error(
-          'Fusion needs two unplaced normal copies. Return placed copies first.',
+      if (onIsland) {
+        if (!p.expected || !sameLayout(layout(s), p.expected))
+          throw Error('Island layout changed. Refresh before editing again.');
+        if (placedFusionLandmark(s, p.from!, p.cell!) !== p.landmark)
+          throw Error('Choose two placed copies of the same normal landmark.');
+        const target = s.placements.find((item) => item.cell === p.cell)!;
+        s.placements = s.placements.filter(
+          (item) => item.cell !== p.from && item.cell !== p.cell,
         );
+        s.placements.push({ ...target, landmark: enhancedId(p.landmark) });
+      } else {
+        const placed = s.placements.filter(
+          (item) => item.landmark === p.landmark,
+        ).length;
+        if (quantity(s, p.landmark) - placed < 2)
+          throw Error(
+            'Fusion needs two unplaced normal copies. Return placed copies first.',
+          );
+      }
       s.fusions.push({
         id: p.id,
         landmark: p.landmark,
         at: new Date().toISOString(),
+        ...(onIsland ? { from: p.from, cell: p.cell } : {}),
       });
       const next = validate(s);
       await this.store.write(next);
@@ -613,13 +713,14 @@ export class Game {
         layer?: string;
         rotation?: number;
       } | null;
-      if (!p || !unlockedCell(s, p.cell)) throw Error('Land is not unlocked');
+      if (!p || !isWorldCell(p.cell)) throw Error('Land is not unlocked');
       if (p.layer !== undefined && p.layer !== 'floor' && p.layer !== 'objects')
         throw Error('Invalid editing layer');
       const floor =
         p.layer === 'floor' ||
         (p.decoration !== undefined && isFloor(p.decoration));
       if (floor) {
+        if (!unlockedCell(s, p.cell)) throw Error('Land is not unlocked');
         if (p.decoration !== undefined && !isFloor(p.decoration))
           throw Error('Choose a floor');
         if (p.from !== undefined) {
@@ -637,6 +738,17 @@ export class Game {
             s.floors.push({ cell: p.cell, decoration: p.decoration });
         }
       } else {
+        const decoration =
+          p.from !== undefined
+            ? s.decorations.find((x) => x.cell === p.from)?.decoration
+            : (p.decoration ??
+              s.decorations.find((x) => x.cell === p.cell)?.decoration);
+        if (
+          decoration
+            ? !canPlaceDecoration(s, decoration, p.cell)
+            : !unlockedCell(s, p.cell)
+        )
+          throw Error('Choose the matching land, sea or river surface');
         if (s.placements.some((x) => x.cell === p.cell))
           throw Error('Cell is occupied by a landmark');
         if (p.from !== undefined) {
@@ -670,7 +782,19 @@ export class Game {
     return this.queue(async (s) => {
       checkLayout(s, input);
       const p = input as { cell: number; landmark?: string; from?: number };
-      if (!p || !unlockedCell(s, p.cell)) throw Error('Land is not unlocked');
+      const landmark =
+        p?.from !== undefined
+          ? s.placements.find((x) => x.cell === p.from)?.landmark
+          : (p?.landmark ??
+            s.placements.find((x) => x.cell === p?.cell)?.landmark);
+      if (
+        !p ||
+        (p.landmark === undefined && p.from === undefined
+          ? !unlockedCell(s, p.cell) &&
+            !s.placements.some((x) => x.cell === p.cell)
+          : !landmark || !canPlaceLandmark(s, landmark, p.cell))
+      )
+        throw Error('Land is not unlocked');
       if (s.decorations.some((d) => d.cell === p.cell))
         throw Error('Cell is occupied by a decoration');
       if (p.from !== undefined) {

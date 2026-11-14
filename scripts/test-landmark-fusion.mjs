@@ -1,3 +1,4 @@
+import { testPlacedFusion } from './test-placed-fusion.mjs';
 import assert from 'node:assert/strict';
 
 export async function testFusion({
@@ -110,7 +111,17 @@ export async function testFusion({
     assert.equal(quantity(state, `${l.id}+`), 1);
     assert.equal(decorationQuantity(state, `${l.id}-plus-star`), 1);
   }
+  await testPlacedFusion({
+    Game,
+    empty,
+    validate,
+    quantity,
+    materials,
+    decorationQuantity,
+    encodeBackup,
+    decodeBackup,
+  });
   console.log(
-    'PASS: fusion atomicity, response loss, restart, concurrency, ownership, migration, backup and all 300 exclusive gifts',
+    'PASS: fusion atomicity, response loss, restart, concurrency, ownership, migration, backup and all 306 exclusive gifts',
   );
 }
