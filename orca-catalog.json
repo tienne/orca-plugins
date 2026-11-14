@@ -357,21 +357,21 @@
               },
               {
                 "path": "plugins/landmark-island/assets/orcatopia-island-v0.4.0.ko.png",
-                "alt": "\ud558\ub871\ubca0\uc774\uc640 \uc0b0\ud638\ucd08, \ub113\uc740 \uac15\uacfc \uac15 \uc804\uc6a9 \ub79c\ub4dc\ub9c8\ud06c\ub85c \uafb8\ubbfc \ud55c\uad6d\uc5b4 DEMO \ud734\uc591\uc9c0",
+                "alt": "하롱베이와 산호초, 넓은 강과 강 전용 랜드마크로 꾸민 한국어 DEMO 휴양지",
                 "sha256": "9cece36e98c55e6bc49d11d232692ba09c26cc4429fd3babeed956f0d4eb7f9d",
                 "width": 1600,
                 "height": 1000
               },
               {
                 "path": "plugins/landmark-island/assets/orcatopia-wonders-v0.4.0.ko.png",
-                "alt": "\ubabd\uc0dd\ubbf8\uc178\u00b7\ub9c8\ucd94\ud53d\ucd94\u00b7\ud398\ud2b8\ub77c\ub97c \ud06c\uac8c \ubcf4\uc5ec\uc8fc\ub294 \ud55c\uad6d\uc5b4 DEMO \ubd88\uac00\uc0ac\uc758 \uc7a5\uba74",
+                "alt": "몽생미셸·마추픽추·페트라를 크게 보여주는 한국어 DEMO 불가사의 장면",
                 "sha256": "4858c80dba0bb3ec5eee0e40e1b637670b221f7c50dcf4ebbdaa5d423c1e2fb7",
                 "width": 1600,
                 "height": 1000
               },
               {
                 "path": "plugins/landmark-island/assets/orcatopia-fusion-v0.4.0.ko.png",
-                "alt": "\uc778\ubd80\uc640 \uc791\uc5c5 \uc7a5\ube44\ub97c \uc720\uc9c0\ud55c \ub9cc\ub9ac\uc7a5\uc131 \ud50c\ub7ec\uc2a4 \ud569\uc131 \uacb0\uacfc\uc758 \ud55c\uad6d\uc5b4 DEMO",
+                "alt": "인부와 작업 장비를 유지한 만리장성 플러스 합성 결과의 한국어 DEMO",
                 "sha256": "5d902776a471fccd6a4a08c3e753335feefb255f557ae1eb21228f566a8bb2e0",
                 "width": 1600,
                 "height": 1000
@@ -444,21 +444,21 @@
               },
               {
                 "path": "plugins/landmark-island/assets/orcatopia-island-v0.4.0.ko.png",
-                "alt": "\ud558\ub871\ubca0\uc774\uc640 \uc0b0\ud638\ucd08, \ub113\uc740 \uac15\uacfc \uac15 \uc804\uc6a9 \ub79c\ub4dc\ub9c8\ud06c\ub85c \uafb8\ubbfc \ud55c\uad6d\uc5b4 DEMO \ud734\uc591\uc9c0",
+                "alt": "하롱베이와 산호초, 넓은 강과 강 전용 랜드마크로 꾸민 한국어 DEMO 휴양지",
                 "sha256": "9cece36e98c55e6bc49d11d232692ba09c26cc4429fd3babeed956f0d4eb7f9d",
                 "width": 1600,
                 "height": 1000
               },
               {
                 "path": "plugins/landmark-island/assets/orcatopia-wonders-v0.4.0.ko.png",
-                "alt": "\ubabd\uc0dd\ubbf8\uc178\u00b7\ub9c8\ucd94\ud53d\ucd94\u00b7\ud398\ud2b8\ub77c\ub97c \ud06c\uac8c \ubcf4\uc5ec\uc8fc\ub294 \ud55c\uad6d\uc5b4 DEMO \ubd88\uac00\uc0ac\uc758 \uc7a5\uba74",
+                "alt": "몽생미셸·마추픽추·페트라를 크게 보여주는 한국어 DEMO 불가사의 장면",
                 "sha256": "4858c80dba0bb3ec5eee0e40e1b637670b221f7c50dcf4ebbdaa5d423c1e2fb7",
                 "width": 1600,
                 "height": 1000
               },
               {
                 "path": "plugins/landmark-island/assets/orcatopia-fusion-v0.4.0.ko.png",
-                "alt": "\uc778\ubd80\uc640 \uc791\uc5c5 \uc7a5\ube44\ub97c \uc720\uc9c0\ud55c \ub9cc\ub9ac\uc7a5\uc131 \ud50c\ub7ec\uc2a4 \ud569\uc131 \uacb0\uacfc\uc758 \ud55c\uad6d\uc5b4 DEMO",
+                "alt": "인부와 작업 장비를 유지한 만리장성 플러스 합성 결과의 한국어 DEMO",
                 "sha256": "5d902776a471fccd6a4a08c3e753335feefb255f557ae1eb21228f566a8bb2e0",
                 "width": 1600,
                 "height": 1000
@@ -502,7 +502,7 @@
             },
             "cover": {
               "path": "plugins/landmark-island/assets/orcatopia-introduction.png",
-              "alt": "Orcatopia \u2014 A little escape between tasks, with a DEMO garden screen",
+              "alt": "Orcatopia — A little escape between tasks, with a DEMO garden screen",
               "sha256": "feb99cba9d3291f7b59b36e63ad88ed7ba5c596cc3e37a301bba3a876f2438bf",
               "width": 1600,
               "height": 1000
@@ -554,7 +554,7 @@
             },
             "cover": {
               "path": "plugins/landmark-island/assets/orcatopia-introduction.png",
-              "alt": "Orcatopia \u2014 A little escape between tasks, with a DEMO garden screen",
+              "alt": "Orcatopia — A little escape between tasks, with a DEMO garden screen",
               "sha256": "feb99cba9d3291f7b59b36e63ad88ed7ba5c596cc3e37a301bba3a876f2438bf",
               "width": 1600,
               "height": 1000
@@ -601,7 +601,7 @@
             },
             "cover": {
               "path": "plugins/landmark-island/assets/orcatopia-introduction.png",
-              "alt": "Orcatopia \u2014 A little escape between tasks, with a DEMO garden screen",
+              "alt": "Orcatopia — A little escape between tasks, with a DEMO garden screen",
               "sha256": "feb99cba9d3291f7b59b36e63ad88ed7ba5c596cc3e37a301bba3a876f2438bf",
               "width": 1600,
               "height": 1000
@@ -613,6 +613,76 @@
                 "sha256": "13ddbeb02536865cdd11015ba2e95de1adf8f42de807d742b137d068b0888915",
                 "width": 1280,
                 "height": 1423
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "tienne.jira-tasks",
+      "source": {
+        "kind": "git",
+        "url": "https://github.com/tienne/orca-plugins.git",
+        "ref": "release",
+        "path": "plugins/jira-tasks"
+      },
+      "description": "Keep Jira within reach in the Orca sidebar. Browse issues, follow parent and child tickets, and query children by status or assignee using your existing Jira connection.",
+      "categories": [
+        "developer-tools"
+      ],
+      "releases": [
+        {
+          "version": "0.1.0",
+          "commit": "b302a9339f400ce174f3290614b86db98975fde3",
+          "contentHash": "8757f04579f4e231509439fd2fc8ee7a058b5bc15f68bf4d80f1028288f5a204",
+          "execution": "trusted-worker",
+          "minimumOrca": "1.4.256",
+          "name": "Jira Tasks",
+          "contributes": [
+            {
+              "kind": "panels",
+              "name": "Jira Tasks"
+            },
+            {
+              "kind": "commands",
+              "name": "Open Jira Tasks"
+            },
+            {
+              "kind": "keybindings",
+              "name": "Mod+J",
+              "detail": "jira-tasks.open"
+            }
+          ],
+          "images": {
+            "icon": {
+              "path": "plugins/jira-tasks/assets/jira-tasks-icon.png",
+              "alt": "Jira Tasks",
+              "sha256": "1e1773e75dc9d78c33dca1f1d441214469414bb5165678a4eefc916fbeb8f2ea",
+              "width": 256,
+              "height": 256
+            },
+            "cover": {
+              "path": "plugins/jira-tasks/assets/jira-tasks-introduction.png",
+              "alt": "Jira Tasks — Keep Jira within reach, beside an English DEMO ticket detail view.",
+              "sha256": "20d3e2b6c2a0f7d684cee77ad76bff81203c6968c55ad6bb30a7ae55f4ed3d29",
+              "width": 1600,
+              "height": 1000
+            },
+            "screenshots": [
+              {
+                "path": "plugins/jira-tasks/assets/jira-tasks-dark.png",
+                "alt": "English DEMO issue list and ticket details in dark mode, with parent, assignee, reporter and child query controls.",
+                "sha256": "3304e7fee2f9886a622d91f6055ba1c65c0275ede8174142d3a7358c3d3f0376",
+                "width": 1600,
+                "height": 1000
+              },
+              {
+                "path": "plugins/jira-tasks/assets/jira-tasks-light.png",
+                "alt": "English DEMO issue list and ticket details in light mode, with parent, assignee, reporter and child query controls.",
+                "sha256": "c94b6151641cf2c36cbbc6d005f4a043be4eda14a4f0e9c7cdbc1bd057d573fc",
+                "width": 1600,
+                "height": 1000
               }
             ]
           }
