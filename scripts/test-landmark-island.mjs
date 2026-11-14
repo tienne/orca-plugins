@@ -13,21 +13,21 @@ const dir = await mkdtemp(join(tmpdir(), 'landmark-test-'));
 try {
   await build({
     entryPoints: [
-      'plugins/landmark-island/src/game.ts',
-      'plugins/landmark-island/src/placement.ts',
-      'plugins/landmark-island/src/terrain-art.ts',
-      'plugins/landmark-island/src/art.ts',
-      'plugins/landmark-island/src/enhanced-effects.ts',
-      'plugins/landmark-island/src/i18n.ts',
-      'plugins/landmark-island/src/decorations.ts',
-      'plugins/landmark-island/src/walk.ts',
-      'plugins/landmark-island/src/world.ts',
-      'plugins/landmark-island/src/worker/main.ts',
-      'plugins/landmark-island/src/worker/weather.ts',
-      'plugins/landmark-island/src/weather.ts',
+      'plugins/orcatopia/src/game.ts',
+      'plugins/orcatopia/src/placement.ts',
+      'plugins/orcatopia/src/terrain-art.ts',
+      'plugins/orcatopia/src/art.ts',
+      'plugins/orcatopia/src/enhanced-effects.ts',
+      'plugins/orcatopia/src/i18n.ts',
+      'plugins/orcatopia/src/decorations.ts',
+      'plugins/orcatopia/src/walk.ts',
+      'plugins/orcatopia/src/world.ts',
+      'plugins/orcatopia/src/worker/main.ts',
+      'plugins/orcatopia/src/worker/weather.ts',
+      'plugins/orcatopia/src/weather.ts',
     ],
     outdir: dir,
-    outbase: 'plugins/landmark-island/src',
+    outbase: 'plugins/orcatopia/src',
     bundle: true,
     platform: 'node',
     format: 'esm',
@@ -214,7 +214,7 @@ try {
     'https://example.com/World%20Map',
   );
   const koreanCatalog = JSON.parse(
-    await readFile('plugins/landmark-island/src/landmarks.ko.json', 'utf8'),
+    await readFile('plugins/orcatopia/src/landmarks.ko.json', 'utf8'),
   );
   for (const landmark of landmarks) {
     for (const field of [

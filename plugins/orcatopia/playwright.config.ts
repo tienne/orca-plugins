@@ -13,7 +13,7 @@ export default defineConfig({
   },
   webServer: {
     command:
-      'pnpm exec vite preview --config plugins/landmark-island/vite.config.ts --host 127.0.0.1 --port 43189 --strictPort',
+      'pnpm exec vite preview --config plugins/orcatopia/vite.config.ts --host 127.0.0.1 --port 43189 --strictPort',
     cwd: '../..',
     url: 'http://127.0.0.1:43189',
     reuseExistingServer: false,

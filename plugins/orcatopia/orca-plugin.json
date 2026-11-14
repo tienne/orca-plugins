@@ -15,7 +15,7 @@
     "name": "tienne",
     "url": "https://github.com/tienne"
   },
-  "repository": "https://github.com/tienne/orca-plugins",
+  "repository": "https://github.com/tienne/orca-plugins/tree/main/plugins/orcatopia",
   "icon": "assets/orcatopia-icon.png",
   "cover": {
     "path": "assets/orcatopia-introduction-v0.4.0.png",

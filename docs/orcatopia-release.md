@@ -2,6 +2,10 @@
 
 English · [한국어](orcatopia-release.ko.md)
 
+## Development directory
+
+Development source lives in `plugins/orcatopia`. Keep Nx project/plugin ID `landmark-island`, built output `dist/plugins/landmark-island` and published catalog path `plugins/landmark-island` unchanged. Source and package paths are intentionally different; previous release records below retain their historical paths. The public directory currently requires a root manifest, so `tienne/orcatopia` remains the distribution repository. Do not replace immutable published versions or tags when updating the source link.
+
 
 ## 0.4.0 release scope (2026-11-14)
 
@@ -125,7 +129,7 @@ across users or shared IPs; the client cache is not a global quota system.
 Manual and simulated weather remain usable without a weather response.
 
 References: [provider terms and privacy](https://open-meteo.com/en/terms),
-[bundled notice](../plugins/landmark-island/licenses/weather.txt).
+[bundled notice](../plugins/orcatopia/licenses/weather.txt).
 
 ## Distribution route
 

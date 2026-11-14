@@ -571,7 +571,7 @@ test('Orcatopia candidates preserve Git Logs, separate identity and reject a mis
     const logs = await prepare();
     await publishRelease(logs, { source, orca });
     git(source, ['fetch', 'origin', 'release:refs/remotes/origin/release']);
-    const path = join(source, 'plugins/landmark-island');
+    const path = join(source, 'plugins/orcatopia');
     await cp(join(source, 'plugins/git-logs'), path, { recursive: true });
     const manifest = JSON.parse(
       await readFile(join(path, 'orca-plugin.json'), 'utf8'),
@@ -612,6 +612,11 @@ test('Orcatopia candidates preserve Git Logs, separate identity and reject a mis
       'tienne.git-logs',
       'tienne.landmark-island',
     ]);
+    assert.equal(
+      catalog.plugins.find((p) => p.id === 'tienne.landmark-island').source
+        .path,
+      'plugins/landmark-island',
+    );
     assert.deepEqual(
       catalog.plugins.find((p) => p.id === 'tienne.landmark-island').categories,
       ['games'],

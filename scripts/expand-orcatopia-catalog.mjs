@@ -1,6 +1,6 @@
 import { readFile, writeFile } from 'node:fs/promises';
 import { createHash } from 'node:crypto';
-const root = 'plugins/landmark-island/src/';
+const root = 'plugins/orcatopia/src/';
 const rows = (await readFile('scripts/data/orcatopia-expansion.tsv', 'utf8'))
   .trim()
   .split('\n')

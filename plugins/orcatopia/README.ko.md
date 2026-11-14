@@ -2,6 +2,8 @@
 
 [English](README.md) · 한국어
 
+개발 소스는 [tienne/orca-plugins의 plugins/orcatopia](https://github.com/tienne/orca-plugins/tree/main/plugins/orcatopia)에 있습니다. 호환성을 위해 Nx 프로젝트명과 플러그인 ID는 `landmark-island`를 유지합니다. 별도 [공개 패키지 저장소](https://github.com/tienne/orcatopia)는 Orca 공개 디렉터리가 요구하는 루트 매니페스트를 제공하며, 개발은 이 저장소에서 진행합니다.
+
 ![Orcatopia — 기다리는 시간을, 나만의 섬으로. 한국어 데모 정원 화면](assets/orcatopia-introduction-v0.4.0.ko.png)
 
 Orcatopia는 Orca에서 작업을 기다리는 동안 잠시 머무는 나만의 섬입니다. 워크트리를 만들면 탐험권을 받고, 세계의 랜드마크를 발견해 섬을 꾸밀 수 있습니다. Orca 1.4.248 이상이 필요합니다.

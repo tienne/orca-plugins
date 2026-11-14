@@ -51,16 +51,16 @@ cp test-results/landmark-island/orcatopia-island-demo.png docs/screenshots/orcat
 
 ### 제품 소개 이미지
 
-[영어 소개](../../plugins/landmark-island/assets/orcatopia-introduction.png)와 [한국어 소개](../../plugins/landmark-island/assets/orcatopia-introduction.ko.png)는 1600 × 1000 홍보 이미지입니다. 직접 그린 섬 아이콘, Orcatopia 제품명, 짧은 소개 문구와 실제 브라우저에서 촬영한 fixture 정원을 함께 보여 줍니다. 화면에는 DEMO 표시를 명시합니다. 시스템 글꼴과 로컬 SVG/CSS로 구성하며 다운로드한 폰트나 생성형 게임 화면은 포함하지 않습니다. 영어·한국어 플러그인 README의 첫 이미지로 각각 사용합니다. 설치 후에도 같은 상대 경로가 작동하도록 두 이미지를 패키지의 `assets/`에 포함합니다.
+[영어 소개](../../plugins/orcatopia/assets/orcatopia-introduction.png)와 [한국어 소개](../../plugins/orcatopia/assets/orcatopia-introduction.ko.png)는 1600 × 1000 홍보 이미지입니다. 직접 그린 섬 아이콘, Orcatopia 제품명, 짧은 소개 문구와 실제 브라우저에서 촬영한 fixture 정원을 함께 보여 줍니다. 화면에는 DEMO 표시를 명시합니다. 시스템 글꼴과 로컬 SVG/CSS로 구성하며 다운로드한 폰트나 생성형 게임 화면은 포함하지 않습니다. 영어·한국어 플러그인 README의 첫 이미지로 각각 사용합니다. 설치 후에도 같은 상대 경로가 작동하도록 두 이미지를 패키지의 `assets/`에 포함합니다.
 
-재생성 가능한 레이아웃은 `plugins/landmark-island/tests/introduction.ts`에 있습니다. showcase 테스트에서 언어별 실제 게임 화면을 촬영한 뒤 소개 이미지를 구성합니다. 전체 페이지 스크린샷은 섬 전체 보기를 사용하고, 소개 이미지는 그 상태에서 확대 버튼을 세 번 눌러 중앙 정원을 크게 촬영한 뒤 기울이지 않은 프레임에 담습니다. 두 화면 모두 동일한 최대 확장 fixture입니다. 정원은 fixture의 15종 수집 기록으로 최대 318칸을 해금합니다(면적 상한은 12종에서 도달). 랜드마크 5종 사이로 중앙 화단, 벚꽃 숲, 연못 쉼터, 풍차 초원과 해안 산책길을 조성합니다. 벚꽃 연못, 돌을 깐 분수 광장, 양치식물과 바위가 있는 숲, 따뜻한 흙빛 오아시스, 튤립 초원에 서로 다른 색을 사용합니다. 사이프러스·소나무·단풍나무·야자수의 실루엣을 섞고 흙길과 석재 산책로를 연결합니다. 낮은 화단과 잔디 여백으로 시야를 확보합니다. 유료 제작 장식은 정상 보유·제작 기록을 사용합니다. showcase 테스트에서 최대 확장과 보행 연결성을 검증하며 실제 섬 저장 데이터는 변경하지 않습니다.
+재생성 가능한 레이아웃은 `plugins/orcatopia/tests/introduction.ts`에 있습니다. showcase 테스트에서 언어별 실제 게임 화면을 촬영한 뒤 소개 이미지를 구성합니다. 전체 페이지 스크린샷은 섬 전체 보기를 사용하고, 소개 이미지는 그 상태에서 확대 버튼을 세 번 눌러 중앙 정원을 크게 촬영한 뒤 기울이지 않은 프레임에 담습니다. 두 화면 모두 동일한 최대 확장 fixture입니다. 정원은 fixture의 15종 수집 기록으로 최대 318칸을 해금합니다(면적 상한은 12종에서 도달). 랜드마크 5종 사이로 중앙 화단, 벚꽃 숲, 연못 쉼터, 풍차 초원과 해안 산책길을 조성합니다. 벚꽃 연못, 돌을 깐 분수 광장, 양치식물과 바위가 있는 숲, 따뜻한 흙빛 오아시스, 튤립 초원에 서로 다른 색을 사용합니다. 사이프러스·소나무·단풍나무·야자수의 실루엣을 섞고 흙길과 석재 산책로를 연결합니다. 낮은 화단과 잔디 여백으로 시야를 확보합니다. 유료 제작 장식은 정상 보유·제작 기록을 사용합니다. showcase 테스트에서 최대 확장과 보행 연결성을 검증하며 실제 섬 저장 데이터는 변경하지 않습니다.
 
 ```sh
 pnpm nx run landmark-island:ui-test --grep='Orcatopia showcase'
-cp test-results/landmark-island/orcatopia-introduction.png plugins/landmark-island/assets/orcatopia-introduction.png
-cp test-results/landmark-island/orcatopia-introduction.ko.png plugins/landmark-island/assets/orcatopia-introduction.ko.png
-cp test-results/landmark-island/orcatopia-icon.png plugins/landmark-island/assets/orcatopia-icon.png
-cp test-results/landmark-island/orcatopia-island-demo.png plugins/landmark-island/assets/orcatopia-island.png
+cp test-results/landmark-island/orcatopia-introduction.png plugins/orcatopia/assets/orcatopia-introduction.png
+cp test-results/landmark-island/orcatopia-introduction.ko.png plugins/orcatopia/assets/orcatopia-introduction.ko.png
+cp test-results/landmark-island/orcatopia-icon.png plugins/orcatopia/assets/orcatopia-icon.png
+cp test-results/landmark-island/orcatopia-island-demo.png plugins/orcatopia/assets/orcatopia-island.png
 cp test-results/landmark-island/orcatopia-island-demo.png docs/screenshots/orcatopia-island.png
 pnpm nx run landmark-island:build
 pnpm validate
@@ -82,7 +82,7 @@ manifest는 영문 소개를 커버, 같은 벡터 문양에서 렌더링한 256
 
 ## 현재 오르카토피아 등록 이미지
 
-현재 소개 이미지는 바다·강이 만나는 섬과 불가사의 등급 확대 장면을 함께 담습니다. `?preview=showcase`에서 바다와 강, 불가사의 확대, SVG 합성을 전환하며 기존 저장 데이터와 독립적으로 동작합니다. 현재 이미지 세트는 `pnpm nx run landmark-island:screenshots`로 생성합니다. 위의 이전 정원 showcase는 별도 fixture로 남습니다. `test-results/landmark-island/`의 `orcatopia-introduction.png`, `orcatopia-introduction.ko.png`, `orcatopia-wonders.png`, `orcatopia-fusion.png`를 `plugins/landmark-island/assets/`에 복사하고, `orcatopia-island-demo.png`는 `orcatopia-island.png`로 복사합니다. 모두 1600 × 1000이며 DEMO 표시를 유지합니다. manifest에는 수상 섬·불가사의 확대·합성 결과를 영문·한국어로 총 6장 등록하고 한국어 소개 이미지도 README에 제공합니다. 외부 이미지 없이 기존 SVG/CSS만 사용하며, 지형별 배치·제작 수량·기존 브라우저 저장 보존을 검사합니다.
+현재 소개 이미지는 바다·강이 만나는 섬과 불가사의 등급 확대 장면을 함께 담습니다. `?preview=showcase`에서 바다와 강, 불가사의 확대, SVG 합성을 전환하며 기존 저장 데이터와 독립적으로 동작합니다. 현재 이미지 세트는 `pnpm nx run landmark-island:screenshots`로 생성합니다. 위의 이전 정원 showcase는 별도 fixture로 남습니다. `test-results/landmark-island/`의 `orcatopia-introduction.png`, `orcatopia-introduction.ko.png`, `orcatopia-wonders.png`, `orcatopia-fusion.png`를 `plugins/orcatopia/assets/`에 복사하고, `orcatopia-island-demo.png`는 `orcatopia-island.png`로 복사합니다. 모두 1600 × 1000이며 DEMO 표시를 유지합니다. manifest에는 수상 섬·불가사의 확대·합성 결과를 영문·한국어로 총 6장 등록하고 한국어 소개 이미지도 README에 제공합니다. 외부 이미지 없이 기존 SVG/CSS만 사용하며, 지형별 배치·제작 수량·기존 브라우저 저장 보존을 검사합니다.
 
 현재 휴양지 fixture는 랜드마크 26개(해상 10개), 장식 310개, 강 타일 80개로 구성합니다. 여러 줄로 붙인 강 타일은 넓고 연속된 수면을 표시합니다. 야자수 해안·수목 정원·꽃길·쉼터와 바다의 범선·산호 장식은 정상 보유 수량과 재료로 충당한 제작 기록을 사용합니다.
 

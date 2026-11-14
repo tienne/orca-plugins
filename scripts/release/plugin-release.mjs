@@ -178,7 +178,13 @@ export async function prepareRelease({
     'Source commit must be the full SHA of the checked-out HEAD.',
   );
   clean(source);
-  const manifest = await json(join(source, pluginPath, 'orca-plugin.json'));
+  const manifest = await json(
+    join(
+      source,
+      plugin === 'landmark-island' ? 'plugins/orcatopia' : pluginPath,
+      'orca-plugin.json',
+    ),
+  );
   const artifact = join(source, 'dist', pluginPath);
   invariant(
     (await realpath(artifact)) === artifact &&

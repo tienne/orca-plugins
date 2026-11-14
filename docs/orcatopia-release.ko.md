@@ -2,6 +2,10 @@
 
 한국어 · [English](orcatopia-release.md)
 
+## 개발 디렉터리
+
+개발 소스는 `plugins/orcatopia`에 있습니다. Nx 프로젝트·플러그인 ID `landmark-island`, 빌드 결과 `dist/plugins/landmark-island`, 공개 카탈로그 경로 `plugins/landmark-island`는 유지합니다. 소스와 배포 경로는 서로 다르며 아래 과거 릴리스 기록의 경로도 당시 기준으로 남깁니다. 공개 디렉터리는 현재 루트 매니페스트를 요구하므로 `tienne/orcatopia`는 배포 전용 저장소로 유지합니다. 소스 링크 변경을 반영할 때도 이미 공개한 버전과 태그를 덮어쓰지 않습니다.
+
 
 ## 0.4.0 배포 범위 (2026-11-14)
 
@@ -114,7 +118,7 @@ UI와 동봉 고지에 출처 및 네 가지 게임 날씨로 변환했다는 �
 있으며 기기 캐시는 전역 사용량 관리 시스템이 아닙니다. 응답이 없어도 수동·가상 날씨를 쓸 수 있습니다.
 
 근거: [제공사 약관·개인정보 안내](https://open-meteo.com/en/terms),
-[동봉 고지](../plugins/landmark-island/licenses/weather.txt).
+[동봉 고지](../plugins/orcatopia/licenses/weather.txt).
 
 ## 배포 경로
 

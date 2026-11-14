@@ -1,14 +1,14 @@
 {
   "name": "landmark-island",
   "projectType": "application",
-  "sourceRoot": "plugins/landmark-island/src",
+  "sourceRoot": "plugins/orcatopia/src",
   "targets": {
     "screenshots": {
       "executor": "nx:run-commands",
       "dependsOn": ["build"],
       "cache": false,
       "options": {
-        "command": "playwright test --config plugins/landmark-island/playwright.config.ts registration.spec.ts"
+        "command": "playwright test --config plugins/orcatopia/playwright.config.ts registration.spec.ts"
       }
     },
     "build": {
@@ -21,7 +21,7 @@
     "typecheck": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "tsc -p plugins/landmark-island/tsconfig.json"
+        "command": "tsc -p plugins/orcatopia/tsconfig.json"
       }
     },
     "test": {
@@ -39,7 +39,7 @@
     "dev": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "vite --config plugins/landmark-island/vite.config.ts"
+        "command": "vite --config plugins/orcatopia/vite.config.ts"
       },
       "cache": false,
       "continuous": true
@@ -47,7 +47,7 @@
     "preview": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "vite preview --config plugins/landmark-island/vite.config.ts --host 127.0.0.1 --port 43187"
+        "command": "vite preview --config plugins/orcatopia/vite.config.ts --host 127.0.0.1 --port 43187"
       },
       "dependsOn": ["build"],
       "cache": false,
@@ -56,7 +56,7 @@
     "ui-test": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "playwright test --config plugins/landmark-island/playwright.config.ts"
+        "command": "playwright test --config plugins/orcatopia/playwright.config.ts"
       },
       "dependsOn": ["build"],
       "cache": false

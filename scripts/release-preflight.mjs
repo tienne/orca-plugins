@@ -18,7 +18,10 @@ try {
   if (!['git-logs', 'landmark-island'].includes(values.plugin))
     throw new Error('Unsupported release plugin.');
   const manifest = JSON.parse(
-    await readFile(`plugins/${values.plugin}/orca-plugin.json`, 'utf8'),
+    await readFile(
+      `plugins/${values.plugin === 'landmark-island' ? 'orcatopia' : values.plugin}/orca-plugin.json`,
+      'utf8',
+    ),
   );
   const version = process.env.RELEASE_VERSION || manifest.version;
   if (

@@ -7,7 +7,10 @@ import { validateArtifact } from './validate-plugin-artifact.mjs';
 const plugin = process.argv[2];
 if (!['git-logs', 'landmark-island'].includes(plugin))
   throw new Error(`Unknown plugin: ${plugin}`);
-const source = resolve('plugins', plugin);
+const source = resolve(
+  'plugins',
+  plugin === 'landmark-island' ? 'orcatopia' : plugin,
+);
 const output = resolve('dist/plugins', plugin);
 await rm(output, { recursive: true, force: true });
 await mkdir(output, { recursive: true });
