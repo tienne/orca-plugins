@@ -87,3 +87,5 @@ The current cover combines a validated water-island scene and enlarged Wonder-ti
 The current resort fixture places 26 landmarks (10 at sea), 310 decorations and 80 river tiles. Multi-row river tiles form a continuous broad water surface. Repeated coastal palms, distinct woodland gardens, flower borders, resting places and offshore boats/corals use the normal ownership and funded crafting records.
 
 The registration gallery now contains six images: the three English scenes followed by the three Korean scenes. The cover remains English. Regeneration also produces `orcatopia-island-demo.ko.png`, `orcatopia-wonders.ko.png` and `orcatopia-fusion.ko.png`; copy them to plugin assets, renaming the island image to `orcatopia-island.ko.png`. Images share a gallery and do not switch automatically by UI language.
+
+For 0.4.0, copy regeneration outputs to `orcatopia-<scene>-v0.4.0[.ko].png` in plugin assets. The original unversioned introduction/island files remain unchanged for historical catalog image hashes. `docs/screenshots/orcatopia-island.png` is the current documentation copy.

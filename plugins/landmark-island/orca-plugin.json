@@ -18,37 +18,37 @@
   "repository": "https://github.com/tienne/orca-plugins",
   "icon": "assets/orcatopia-icon.png",
   "cover": {
-    "path": "assets/orcatopia-introduction.png",
+    "path": "assets/orcatopia-introduction-v0.4.0.png",
     "alt": "Orcatopia: a DEMO sea-and-river island with enlarged Wonder-tier landmark scenes"
   },
   "screenshots": [
     {
-      "path": "assets/orcatopia-island.png",
+      "path": "assets/orcatopia-island-v0.4.0.png",
       "alt": "English DEMO island with Ha Long Bay, Great Barrier Reef, a river to the sea, Li River and Middle Rhine landmarks",
       "caption": "EN · Sea and river landmarks with water-only decorations and validated sample progress. Browser DEMO."
     },
     {
-      "path": "assets/orcatopia-wonders.png",
+      "path": "assets/orcatopia-wonders-v0.4.0.png",
       "alt": "Enlarged Wonder-tier scenes of Mont-Saint-Michel, Machu Picchu and Petra",
       "caption": "EN · Mont-Saint-Michel, Machu Picchu and Petra shown up close in original vector art. DEMO preview."
     },
     {
-      "path": "assets/orcatopia-fusion.png",
+      "path": "assets/orcatopia-fusion-v0.4.0.png",
       "alt": "Great Wall plus fusion result with its original workers and equipment",
       "caption": "EN · Two normal copies become one plus landmark, preserving workers and equipment with golden effects. DEMO."
     },
     {
-      "path": "assets/orcatopia-island.ko.png",
+      "path": "assets/orcatopia-island-v0.4.0.ko.png",
       "alt": "하롱베이와 산호초, 넓은 강과 강 전용 랜드마크로 꾸민 한국어 DEMO 휴양지",
       "caption": "한국어 · 해상 랜드마크 10곳과 넓은 강, 전용 장식으로 꾸민 휴양지. 검증한 샘플 진행 상태를 사용하는 브라우저 DEMO입니다."
     },
     {
-      "path": "assets/orcatopia-wonders.ko.png",
+      "path": "assets/orcatopia-wonders-v0.4.0.ko.png",
       "alt": "몽생미셸·마추픽추·페트라를 크게 보여주는 한국어 DEMO 불가사의 장면",
       "caption": "한국어 · 최상위 등급 랜드마크 세 곳을 기존 벡터 그림으로 크게 감상합니다. DEMO 미리보기입니다."
     },
     {
-      "path": "assets/orcatopia-fusion.ko.png",
+      "path": "assets/orcatopia-fusion-v0.4.0.ko.png",
       "alt": "인부와 작업 장비를 유지한 만리장성 플러스 합성 결과의 한국어 DEMO",
       "caption": "한국어 · 일반 랜드마크 두 개를 플러스 하나로 합성합니다. 기존 장면에 금빛 효과를 더한 DEMO 미리보기입니다."
     }

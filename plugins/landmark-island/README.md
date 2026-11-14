@@ -2,7 +2,7 @@
 
 English · [한국어](README.ko.md)
 
-![Orcatopia — A little escape between tasks, with DEMO sea, river and enlarged Wonder scenes](assets/orcatopia-introduction.png)
+![Orcatopia — A little escape between tasks, with DEMO sea, river and enlarged Wonder scenes](assets/orcatopia-introduction-v0.4.0.png)
 
 Orcatopia is a little island getaway between tasks in Orca. Earn exploration tickets when you create worktrees, discover world landmarks, and arrange a place of your own while you wait. This version requires Orca 1.4.248+.
 
@@ -446,3 +446,5 @@ Build, typecheck and state/worker checks passed, including durable hourly cache 
 ## Registration gallery
 
 Open `?preview=showcase&lang=en` for a browser-only gallery with three scenes: a sea-and-river island, enlarged Wonder-tier landmarks, and Great Wall SVG fusion. The river reaches the sea past Li River, Mostar and Middle Rhine; Ha Long Bay, Great Barrier Reef and Blue Hole sit offshore with water-only decorations. Mont-Saint-Michel, Machu Picchu and Petra are shown at a larger scale in the Wonder view. The resort fixture includes 26 placed landmarks (10 offshore), 310 decorations and 80 river tiles, with a three-tile-wide river, a wider estuary, branching waterways, palm-lined shores, flower paths and garden rest areas. The gallery uses validated fixture progress and never loads or replaces the browser island save. The introduction combines the water scene with the Wonder close-ups. The cover remains English; the screenshot gallery contains the same three scenes in English, then Korean (six images total), all retaining DEMO labels. Run `pnpm nx run landmark-island:screenshots` to regenerate them, then copy the generated PNG files from `test-results/landmark-island/` to `assets/` (`orcatopia-island-demo.png` becomes `orcatopia-island.png`). Release catalog preparation assigns Orcatopia to `games`; Git Logs remains in `developer-tools`. These are local assets and release configuration, not a new published release.
+
+Registration image paths include `-v0.4.0` so past catalog releases keep their original image bytes. Retain the three legacy cover/island files when packaging; regeneration outputs are copied to the versioned asset names.
