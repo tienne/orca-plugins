@@ -42,5 +42,24 @@
     "name": "Tienne",
     "url": "https://github.com/tienne"
   },
-  "homepage": "https://github.com/tienne/orca-plugins/tree/main/plugins/jira-tasks"
+  "homepage": "https://github.com/tienne/orca-plugins/tree/main/plugins/jira-tasks",
+  "icon": "assets/jira-tasks-icon.png",
+  "cover": {
+    "path": "assets/jira-tasks-introduction.png",
+    "alt": "Jira Tasks \u2014 Keep Jira within reach, beside an English DEMO ticket detail view."
+  },
+  "screenshots": [
+    {
+      "path": "assets/jira-tasks-dark.png",
+      "alt": "English DEMO issue list and ticket details in dark mode, with parent, assignee, reporter and child query controls.",
+      "caption": "Browser demo with sample issues and people. Uses Orca theme variables; no private Jira data.",
+      "theme": "dark"
+    },
+    {
+      "path": "assets/jira-tasks-light.png",
+      "alt": "English DEMO issue list and ticket details in light mode, with parent, assignee, reporter and child query controls.",
+      "caption": "Browser demo with sample issues and people. Uses Orca theme variables; no private Jira data.",
+      "theme": "light"
+    }
+  ]
 }

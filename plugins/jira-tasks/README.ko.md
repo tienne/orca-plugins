@@ -2,6 +2,7 @@
 
 [English](README.md) · 한국어
 
+![Jira Tasks — Jira 티켓도, 작업 흐름 곁에. 가상 티켓을 사용한 브라우저 데모](assets/jira-tasks-introduction.ko.png)
 
 ## Jira 티켓도, 작업 흐름 곁에.
 
@@ -20,6 +21,14 @@ Orca 작업 화면에 연결해 둔 Jira 계정으로 오른쪽 사이드바에�
 | 기본 단축키    | macOS ⌘J · 그 외 Ctrl+J                                       |
 | 소스 코드      | [tienne/orca-plugins](https://github.com/tienne/orca-plugins) |
 | 계정 연결      | Orca 작업에 연결된 Jira 계정 사용                             |
+
+## 화면 미리보기
+
+공개 데모 티켓과 가상 인물로 캡처한 브라우저 화면입니다. 실제 Jira 데이터나 Orca 호스트 캡처가 아닙니다. DEMO 표시를 유지하세요.
+
+![Dark DEMO](assets/jira-tasks-dark.png)
+
+![Light DEMO](assets/jira-tasks-light.png)
 
 ## 사용
 
@@ -73,3 +82,6 @@ pnpm nx run jira-tasks:validate-plugin
 
 로컬에서 사용하려면 `orca plugin inspect dist/plugins/jira-tasks --json`으로 권한을 확인한 뒤 `orca plugin dev load dist/plugins/jira-tasks --json`으로 로드합니다. Orca가 실행 승인을 요구하면 권한을 확인한 뒤 해당 fingerprint를 승인하십시오. `orca plugin open local.jira-tasks --panel jira-tasks --json`으로 패널을 엽니다. 이 플러그인은 로컬 시제품이며 카탈로그에 배포하지 않았습니다.
 
+## 프리뷰 이미지 다시 만들기
+
+`pnpm nx run jira-tasks:screenshots`로 `assets/`의 1600 × 1000 영어·한국어 소개 커버(내부 UI는 모두 영어), 다크·라이트 프리뷰, 256 × 256 아이콘을 다시 만듭니다. 실제 번들 패널을 Chrome에서 열고 공개 fixture와 가짜 Orca/Jira API로 캡처합니다. 소개 이미지는 로컬 HTML/CSS와 직접 그린 layers 심볼로 구성하며 외부 글꼴이나 생성형 UI를 쓰지 않습니다. 이후 `pnpm nx run jira-tasks:build`로 다시 빌드하고 `pnpm nx run jira-tasks:validate-plugin`으로 검증합니다. 설치 후에도 README 이미지가 표시되도록 패키지에 포함합니다. 이미지를 생성해도 플러그인이 공개 배포되지는 않습니다.

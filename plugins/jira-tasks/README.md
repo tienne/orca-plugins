@@ -2,6 +2,7 @@
 
 English · [한국어](README.ko.md)
 
+![Jira Tasks — Keep Jira within reach, with an English browser DEMO ticket](assets/jira-tasks-introduction.png)
 
 ## Keep Jira within reach.
 
@@ -20,6 +21,14 @@ Browse Jira issues in Orca's right sidebar using the Jira accounts already conne
 | Default shortcut     | ⌘J on macOS; Ctrl+J elsewhere                                 |
 | Source               | [tienne/orca-plugins](https://github.com/tienne/orca-plugins) |
 | Connection           | Uses Jira accounts connected in Orca Tasks                    |
+
+## Preview
+
+Browser captures use sample issues and people. They contain no private Jira data and are not captures of the Orca host. Keep the DEMO labels.
+
+![Dark DEMO](assets/jira-tasks-dark.png)
+
+![Light DEMO](assets/jira-tasks-light.png)
 
 ## Use
 
@@ -71,3 +80,6 @@ The build is self-contained in `dist/plugins/jira-tasks`. Source manifests name 
 
 For local loading, inspect the artifact with `orca plugin inspect dist/plugins/jira-tasks --json`, then use `orca plugin dev load dist/plugins/jira-tasks --json`. Review any execution approval Orca requests before approving its exact fingerprint. Open `local.jira-tasks` with `orca plugin open local.jira-tasks --panel jira-tasks --json`. This plugin is a local prototype and has not been published to a catalog.
 
+## Rebuild preview assets
+
+Run `pnpm nx run jira-tasks:screenshots` to regenerate the 1600 × 1000 English/Korean introduction covers (both with English UI), dark/light preview compositions and 256 × 256 icon in `assets/`. The previews capture the real bundled panel in Chrome with fixed public fixtures and mocked Orca/Jira APIs. Introduction artwork uses local HTML/CSS and a hand-drawn layers emblem; it uses no external fonts or generated UI. Rebuild afterward with `pnpm nx run jira-tasks:build` and validate with `pnpm nx run jira-tasks:validate-plugin`. Assets are bundled so README links work after installation. This does not publish the plugin.

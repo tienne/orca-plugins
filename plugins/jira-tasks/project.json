@@ -5,9 +5,7 @@
   "targets": {
     "build": {
       "executor": "nx:run-commands",
-      "outputs": [
-        "{workspaceRoot}/dist/plugins/jira-tasks"
-      ],
+      "outputs": ["{workspaceRoot}/dist/plugins/jira-tasks"],
       "options": {
         "command": "node scripts/jira-tasks.mjs build"
       }
@@ -26,9 +24,7 @@
     },
     "ui-test": {
       "executor": "nx:run-commands",
-      "dependsOn": [
-        "build"
-      ],
+      "dependsOn": ["build"],
       "options": {
         "command": "node scripts/jira-tasks.mjs ui-test"
       }
@@ -37,6 +33,13 @@
       "executor": "nx:run-commands",
       "options": {
         "command": "node scripts/jira-tasks.mjs validate"
+      }
+    },
+    "screenshots": {
+      "executor": "nx:run-commands",
+      "dependsOn": ["build"],
+      "options": {
+        "command": "node scripts/jira-tasks.mjs screenshots"
       }
     }
   }

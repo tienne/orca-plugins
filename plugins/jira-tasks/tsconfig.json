@@ -3,7 +3,9 @@
   "include": [
     "src",
     "tests",
-    "playwright.config.ts"
+    "playwright.config.ts",
+    "showcase",
+    "showcase.config.ts"
   ],
   "compilerOptions": {
     "types": [
@@ -15,10 +17,7 @@
       "orca-services",
       "orca-testing"
     ],
-    "typeRoots": [
-      "./.orca/types",
-      "../../node_modules/@types"
-    ],
+    "typeRoots": ["./.orca/types", "../../node_modules/@types"],
     "preserveSymlinks": false
   }
 }
