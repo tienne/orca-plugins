@@ -926,6 +926,30 @@ test('keeps query input focus and selection through loading, then keeps the appl
   await expect(apply).toBeFocused();
 });
 
+for (const filter of ['하위 티켓 상태', '하위 티켓 담당자'])
+  test(`keeps an open ${filter} picker and checkbox focus when a query finishes`, async ({
+    page,
+  }) => {
+    await start(page, { children: 'filterable' });
+    await page.getByRole('button', { name: task.title, exact: true }).click();
+    const children = page.locator('#child-issues');
+    await expect(children.locator('.child-row')).toHaveCount(3);
+    await gateChildRequests(page, task.key, 1);
+    await children.getByRole('button', { name: '조회', exact: true }).click();
+    await expect(children.getByRole('status')).toContainText('불러오는 중');
+    const summary = children.getByLabel(filter, { exact: true });
+    await summary.click();
+    const picker = summary.locator('..');
+    const checkbox = picker.getByRole('checkbox').first();
+    await checkbox.check();
+    await expect(checkbox).toBeFocused();
+    await releaseChildRequest(page, 0);
+    await expect(children.locator('.child-row')).toHaveCount(3);
+    await expect(picker).toHaveAttribute('open', '');
+    await expect(checkbox).toBeChecked();
+    await expect(checkbox).toBeFocused();
+  });
+
 test('ignores queued and late back-navigation scroll restoration after opening another detail', async ({
   page,
 }) => {

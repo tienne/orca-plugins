@@ -616,6 +616,15 @@ function renderChildren(container: HTMLElement): void {
     childAssignees,
     updateDraft,
   );
+  for (const [id, field] of [
+    ['child-status', statusPicker.field],
+    ['child-assignee', assigneePicker.field],
+  ] as const) {
+    field.querySelector('details')!.id = `${id}-picker`;
+    field.querySelector('summary')!.id = `${id}-summary`;
+    for (const checkbox of field.querySelectorAll<HTMLInputElement>('input'))
+      checkbox.id = `${id}-${encodeURIComponent(checkbox.value)}`;
+  }
   input.addEventListener('input', () => {
     childQuery = input.value;
     updateDraft();
@@ -686,14 +695,29 @@ async function loadChildren(
           ? focused.id
           : '';
       const selection =
-        focused instanceof HTMLInputElement
+        focused instanceof HTMLInputElement && focused.selectionStart !== null
           ? ([
               focused.selectionStart,
               focused.selectionEnd,
               focused.selectionDirection ?? undefined,
             ] as const)
           : undefined;
+      const pickers = [
+        ...container.querySelectorAll<HTMLDetailsElement>('details[id]'),
+      ].map((picker) => ({
+        id: picker.id,
+        open: picker.open,
+        scrollTop: picker.querySelector('.status-options')?.scrollTop ?? 0,
+      }));
       renderChildren(container);
+      for (const picker of pickers) {
+        const restored = document.getElementById(picker.id);
+        if (restored instanceof HTMLDetailsElement) {
+          restored.open = picker.open;
+          const options = restored.querySelector('.status-options');
+          if (options) options.scrollTop = picker.scrollTop;
+        }
+      }
       const control = focusId ? document.getElementById(focusId) : null;
       control?.focus({ preventScroll: true });
       if (control instanceof HTMLInputElement && selection)
