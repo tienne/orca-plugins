@@ -4,9 +4,15 @@
 }
 :is(
     .card:not(.locked),
-    .landmark-detail[data-owned='true'],
+    :is(
+      .landmark-detail[data-owned='true'],
+      .landmark-detail[data-scene-owned='true']
+    ),
     .world-object.building,
-    .discovery-monument
+    .discovery-monument,
+    .fusion-preview,
+    .ready-landmark-art,
+    .placement-preview
   )
   .landmark-life {
   display: inline;
@@ -282,9 +288,15 @@
 }
 :is(
     .card:not(.locked),
-    .landmark-detail[data-owned='true'],
+    :is(
+      .landmark-detail[data-owned='true'],
+      .landmark-detail[data-scene-owned='true']
+    ),
     .world-object.building,
-    .discovery-monument
+    .discovery-monument,
+    .fusion-preview,
+    .ready-landmark-art,
+    .placement-preview
   )
   .mill-sails {
   transform-origin: 0px 18px;
@@ -486,9 +498,15 @@
 @media (prefers-reduced-motion: reduce) {
   :is(
       .card:not(.locked),
-      .landmark-detail[data-owned='true'],
+      :is(
+        .landmark-detail[data-owned='true'],
+        .landmark-detail[data-scene-owned='true']
+      ),
       .world-object.building,
-      .discovery-monument
+      .discovery-monument,
+      .fusion-preview,
+      .ready-landmark-art,
+      .placement-preview
     )
     .mill-sails {
     animation: none;

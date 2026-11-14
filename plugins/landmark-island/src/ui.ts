@@ -1,3 +1,5 @@
+import { mountPlacementPreview } from './placement-preview';
+import { allowsSea, placementLabel, placementType } from './placement';
 import {
   collectibleLandmarks,
   landmarkById,
@@ -13,6 +15,9 @@ import './expedition-camp.css';
 import { startLocalization, translate } from './i18n';
 import {
   Game,
+  canPlaceLandmark,
+  placedFusionLandmark,
+  canPlaceDecoration,
   layout,
   sameLayout,
   type Layout,
@@ -67,6 +72,7 @@ import './scenes/actors.css';
 import './landmark-intensity.css';
 import './island-life.css';
 import { renderLandmarkLifePreview } from './landmark-life-preview';
+import { renderShowcasePreview } from './showcase-preview';
 type Bridge = {
   request<T = State>(name: string, input: unknown): Promise<T>;
   on(name: string, fn: () => void): unknown;
@@ -185,7 +191,8 @@ function showDetails(id: string) {
   const rarity = rarities.find((r) => r.id === landmark.tier)!;
   detail.dataset.tier = rarity.id;
   detail.dataset.owned = String(discovered(state, id));
-  detail.innerHTML = `<button class="detail-close" aria-label="Close landmark details" autofocus>×</button><div class="detail-art">${art(id)}</div><p class="detail-country">${escape(landmark.country)} · ${escape(landmark.region)}</p><h2 id="detail-title">${escape(landmark.name)}</h2><div class="detail-rarity">${rarityBadge(landmark.tier, isEnhanced(id))}<p>${isEnhanced(id) ? 'Fusion only · Half a rarity step above the normal version' : `${weights[rarity.id]}% tier chance per draw · ${landmarks.filter((l) => l.tier === rarity.id).length} landmarks in this tier`}</p></div><p id="detail-description">${escape(landmark.description)}</p><p class="detail-source">Read more: <a href="${escape(landmark.descriptionSource)}" target="_blank" rel="noopener noreferrer">${escape(landmark.descriptionSourceName)} ↗</a></p>`;
+  detail.dataset.sceneOwned = String(discovered(state, baseId(id)));
+  detail.innerHTML = `<button class="detail-close" aria-label="Close landmark details" autofocus>×</button><div class="detail-art">${art(id)}</div><p class="detail-country">${escape(landmark.country)} · ${escape(landmark.region)}</p><h2 id="detail-title">${escape(landmark.name)}</h2><div class="detail-rarity">${rarityBadge(landmark.tier, isEnhanced(id))}<p>${isEnhanced(id) ? 'Fusion only · Half a rarity step above the normal version' : `${weights[rarity.id]}% tier chance per draw · ${landmarks.filter((l) => l.tier === rarity.id).length} landmarks in this tier`}</p></div><p class="placement-type">${placementLabel(id)}</p><p id="detail-description">${escape(landmark.description)}</p><p class="detail-source">Read more: <a href="${escape(landmark.descriptionSource)}" target="_blank" rel="noopener noreferrer">${escape(landmark.descriptionSourceName)} ↗</a></p>`;
   const stock = document.createElement('section');
   stock.className = 'variant-details';
   const count = quantity(state, id);
@@ -456,7 +463,14 @@ async function useTicket(amount: 1 | 10 = 1) {
   };
   nextHighlight(0);
 }
-const pendingFusions = new Map<string, { id: string; landmark: string }>();
+type FusionRequest = {
+  id: string;
+  landmark: string;
+  from?: number;
+  cell?: number;
+  expected?: Layout;
+};
+const pendingFusions = new Map<string, FusionRequest>();
 function showPlusDecoration(id: string) {
   view = 'island';
   decorTheme = enhancedId(id);
@@ -464,38 +478,70 @@ function showPlusDecoration(id: string) {
   setInventory('decorations', false);
   render();
 }
-function prepareFusion(id: string) {
+function prepareFusion(
+  id: string,
+  placedPair?: { from: number; cell: number; expected: Layout },
+) {
   if (busy) return;
   const landmark = landmarkById(id)!;
   const first = !discovered(state, enhancedId(id));
+  const key = placedPair ? `${id}@${placedPair.from}:${placedPair.cell}` : id;
   const placed = state.placements.filter((p) => p.landmark === id).length;
   const available = quantity(state, id) - placed;
   const dialog = document.createElement('dialog');
   dialog.className = 'fusion-confirm';
   dialog.setAttribute('aria-labelledby', 'fusion-title');
-  dialog.innerHTML = `<h2 id="fusion-title">Fuse ${escape(landmark.name)} +</h2><div class="fusion-preview">${art(id)}<b>2 → 1</b>${art(enhancedId(id))}</div><p>Consume 2 unplaced normal copies → receive 1 + copy.</p><p>${available} available · ${placed} placed</p><p>Placed copies stay on the island. Materials and discovery rewards stay yours.</p><p>${rarities.find((r) => r.id === landmark.tier)!.numeral}+ · Half a rarity step higher · No ++ fusion</p><p>First fusion unlocks an exclusive star monument and gifts one copy.</p><p role="alert" class="fusion-error"></p><button data-confirm-fusion ${available < 2 && !pendingFusions.has(id) ? 'disabled' : ''}>${pendingFusions.has(id) ? 'Retry fusion' : 'Confirm fusion'}</button><button data-cancel-fusion>Cancel</button>`;
+  dialog.innerHTML = `<h2 id="fusion-title">Fuse ${escape(landmark.name)} +</h2><div class="fusion-preview">${art(id)}<b>2 → 1</b>${art(enhancedId(id))}</div><p>${placedPair ? 'Combine these 2 placed copies → keep 1 + at the destination.' : 'Consume 2 unplaced normal copies → receive 1 + copy.'}</p><p>${placedPair ? `Source cell ${placedPair.from + 1} → Destination cell ${placedPair.cell + 1}` : `${available} available · ${placed} placed`}</p><p>${placedPair ? 'The destination keeps its facing and floor. Other placed copies stay unchanged.' : 'Placed copies stay on the island. Materials and discovery rewards stay yours.'}</p><p>${rarities.find((r) => r.id === landmark.tier)!.numeral}+ · Half a rarity step higher · No ++ fusion</p><p>First fusion unlocks an exclusive star monument and gifts one copy.</p><p role="alert" class="fusion-error"></p><button data-confirm-fusion ${!placedPair && available < 2 && !pendingFusions.has(key) ? 'disabled' : ''}>${pendingFusions.has(key) ? 'Retry fusion' : 'Confirm fusion'}</button><button data-cancel-fusion>Cancel</button>`;
+  let submitting = false;
   document.body.append(dialog);
+  dialog.addEventListener('cancel', (event) => {
+    if (submitting) event.preventDefault();
+  });
   dialog.addEventListener('close', () => dialog.remove(), { once: true });
   dialog.querySelector<HTMLButtonElement>('[data-cancel-fusion]')!.onclick =
-    () => dialog.close();
+    () => {
+      if (!submitting) dialog.close();
+    };
   dialog.querySelector<HTMLButtonElement>('[data-confirm-fusion]')!.onclick =
     async () => {
-      if (busy) return;
-      const fusionRequest = pendingFusions.get(id) ?? {
+      if (busy || submitting) return;
+      submitting = true;
+      dialog.querySelectorAll<HTMLButtonElement>('button').forEach((button) => {
+        button.disabled = true;
+      });
+      const fusionRequest = pendingFusions.get(key) ?? {
         id: crypto.randomUUID(),
         landmark: id,
+        ...placedPair,
       };
-      pendingFusions.set(id, fusionRequest);
+      pendingFusions.set(key, fusionRequest);
       let committed: State | undefined;
       await run(async () => {
         committed = await request('island.fuse', fusionRequest);
-        pendingFusions.delete(id);
+        pendingFusions.delete(key);
+        if (placedPair) {
+          from = undefined;
+          moving = false;
+          moveBlocked = false;
+          selected = '';
+          scene.mode = selectionMode;
+        }
         return committed;
+      });
+      submitting = false;
+      dialog.querySelectorAll<HTMLButtonElement>('button').forEach((button) => {
+        button.disabled = false;
       });
       if (!committed) {
         dialog.querySelector('[role="alert"]')!.textContent = error;
-        dialog.querySelector('[data-confirm-fusion]')!.textContent =
-          'Retry fusion';
+        const retry = dialog.querySelector<HTMLButtonElement>(
+          '[data-confirm-fusion]',
+        )!;
+        if (error.includes('Island layout changed')) {
+          pendingFusions.delete(key);
+          retry.disabled = true;
+          retry.textContent = 'Layout changed. Close and try again.';
+        } else retry.textContent = 'Retry fusion';
         return;
       }
       dialog.close();
@@ -504,12 +550,16 @@ function prepareFusion(id: string) {
         plus,
         quantity(state, plus.id),
         rarityBadge(plus.tier, true),
-        () => placeDiscovery(plus.id),
+        () =>
+          placedPair ? selectPiece(placedPair.cell) : placeDiscovery(plus.id),
         {
           fusion: true,
-          rewardNote: first
-            ? 'Fusion complete · Exclusive star monument unlocked'
-            : 'Fusion complete · + copy saved · No additional gift',
+          placed: Boolean(placedPair),
+          rewardNote: placedPair
+            ? 'Fusion complete · + is placed at the destination'
+            : first
+              ? 'Fusion complete · Exclusive star monument unlocked'
+              : 'Fusion complete · + copy saved · No additional gift',
           onDetails: () => showDetails(plus.id),
           onDecoration: () => showPlusDecoration(id),
         },
@@ -520,13 +570,13 @@ function prepareFusion(id: string) {
 let decorTheme = 'unlocked';
 let pendingCraft: { id: string; decoration: string } | undefined;
 function workshop() {
-  return `<section class="workshop" aria-label="Decoration workshop"><div class="section-title"><h2><small>The garden workshop</small>Make this place yours</h2><strong class="material-balance">${materials(state)} materials</strong></div><details class="workshop-help"><summary>About gifts &amp; materials</summary><p>Basics are free. Every first discovery gifts one decoration and opens its set. Each duplicate brings ${DUPLICATE_MATERIALS} materials; your landmark stays yours.</p></details><label for="decor-theme">Garden set</label> <select id="decor-theme"><option value="unlocked">All unlocked sets</option><option value="all">All garden sets</option><option value="basics">Free essentials</option>${collectibleLandmarks.map((l) => `<option value="${l.id}">${l.country} · ${l.name}${discovered(state, l.id) ? '' : ' · Locked'}</option>`).join('')}</select><div class="decoration-shelf">${decorations
+  return `<section class="workshop" aria-label="Decoration workshop"><div class="section-title"><h2><small>The garden workshop</small>Make this place yours</h2><strong class="material-balance">${materials(state)} materials</strong></div><details class="workshop-help"><summary>About gifts &amp; materials</summary><p>Basics are free. First discoveries gift the starter pieces in their set. Each duplicate brings ${DUPLICATE_MATERIALS} materials; your landmark stays yours.</p></details><label for="decor-theme">Garden set</label> <select id="decor-theme"><option value="unlocked">All unlocked sets</option><option value="all">All garden sets</option><option value="basics">Free essentials</option>${collectibleLandmarks.map((l) => `<option value="${l.id}">${l.country} · ${l.name}${discovered(state, l.id) ? '' : ' · Locked'}</option>`).join('')}</select><div class="decoration-shelf">${decorations
     .map((d) => {
       const unlocked = !d.landmark || discovered(state, d.landmark);
       const count = decorationQuantity(state, d.id);
       const available =
         count - state.decorations.filter((p) => p.decoration === d.id).length;
-      return `<article class="decoration-card" data-decor-card="${d.id}" ${!unlocked ? 'data-locked="true"' : ''}>${decorationArt(d.id)}<h3>${d.name}</h3><p>${d.landmark ? landmarkById(d.landmark)!.name : 'Free essentials'}</p><small>${!unlocked ? `Discover its landmark to unlock${d.gift ? ' · First copy is a gift' : ''}` : !d.landmark ? 'Unlimited · Free to place' : `Owned ×${count} · ${available} available`}</small><div><button data-decor-place="${d.id}" aria-pressed="${selectedDecor === d.id}" ${!unlocked || available < 1 ? 'disabled' : ''}>Place</button>${d.landmark ? `<button data-craft="${d.id}" ${!unlocked || (pendingCraft ? pendingCraft.decoration !== d.id : materials(state) < d.cost) ? 'disabled' : ''}>${pendingCraft?.decoration === d.id ? 'Retry craft' : `Craft · ${d.cost} materials`}</button>` : ''}</div></article>`;
+      return `<article class="decoration-card" data-decor-card="${d.id}" ${!unlocked ? 'data-locked="true"' : ''}>${decorationArt(d.id)}<h3>${d.name}</h3><small class="placement-type" data-surface="${d.surface ?? 'land'}">${d.surface === 'sea' ? 'Sea only' : d.surface === 'river' ? 'River only' : 'Land'}</small><p>${d.landmark ? landmarkById(d.landmark)!.name : 'Free essentials'}</p><small>${!unlocked ? `Discover its landmark to unlock${d.gift ? ' · First copy is a gift' : ''}` : !d.landmark ? 'Unlimited · Free to place' : `Owned ×${count} · ${available} available`}</small><div><button data-decor-place="${d.id}" aria-pressed="${selectedDecor === d.id}" ${!unlocked || available < 1 ? 'disabled' : ''}>Place</button>${d.landmark ? `<button data-craft="${d.id}" ${!unlocked || (pendingCraft ? pendingCraft.decoration !== d.id : materials(state) < d.cost) ? 'disabled' : ''}>${pendingCraft?.decoration === d.id ? 'Retry craft' : `Craft · ${d.cost} materials`}</button>` : ''}</div></article>`;
     })
     .join(
       '',
@@ -540,7 +590,7 @@ function collection() {
       const count = quantity(state, l.id),
         available =
           count - state.placements.filter((p) => p.landmark === l.id).length;
-      return `<article class="card ${!discovered(state, l.id) ? 'locked' : ''}" data-catalog-id="${l.id}" data-tier="${l.tier}">${rarityBadge(l.tier, isEnhanced(l.id))}<button class="collect-action" data-landmark="${l.id}" aria-pressed="${selected === l.id}" ${available < 1 ? 'disabled' : ''}>${art(l.id)}<strong>${escape(l.name)}</strong><span class="card-country">${escape(l.country)}</span><span>${escape(l.region)}</span><small>${discovered(state, l.id) ? `Owned ×${count} · ${available} available` : 'Not discovered yet'}</small></button><button class="about-landmark" data-info="${l.id}" aria-label="About ${escape(l.name)}" aria-haspopup="dialog">About this landmark ↗</button></article>`;
+      return `<article class="card ${!discovered(state, l.id) ? 'locked' : ''}" data-catalog-id="${l.id}" data-tier="${l.tier}">${rarityBadge(l.tier, isEnhanced(l.id))}<button class="collect-action" data-landmark="${l.id}" aria-pressed="${selected === l.id}" ${available < 1 ? 'disabled' : ''}>${art(l.id)}<strong>${escape(l.name)}</strong><span class="card-country">${escape(l.country)}</span><small class="placement-type" data-placement-type="${placementType(l.id)}">${placementLabel(l.id)}</small><span>${escape(l.region)}</span><small>${discovered(state, l.id) ? `Owned ×${count} · ${available} available` : 'Not discovered yet'}</small></button><button class="about-landmark" data-info="${l.id}" aria-label="About ${escape(l.name)}" aria-haspopup="dialog">About this landmark ↗</button></article>`;
     })
     .join('')}</div></section>`;
 }
@@ -582,7 +632,7 @@ const decorSearch = new Map(
   ]),
 );
 function inventoryFinder() {
-  return `<div class="inventory-finder"><label class="visually-hidden" for="inventory-search">Search inventory</label><div class="inventory-search-row"><input id="inventory-search" type="search" placeholder="Search name or country" autocomplete="off" spellcheck="false"/><button id="clear-inventory-search" aria-label="Clear search">×</button></div><div class="inventory-filter-row"><label class="visually-hidden" for="inventory-stock">Inventory availability</label><select id="inventory-stock"><option value="all">All items</option><option value="owned">Owned items</option><option value="available">Ready to place</option></select><label class="visually-hidden" for="inventory-category">Decoration category</label><select id="inventory-category"><option value="all">All categories</option><option value="tiles">Tiles</option><option value="plants">Plants</option><option value="furniture">Furniture &amp; structures</option><option value="water">Water features</option></select><button id="reset-inventory-filters">Reset filters</button></div><small id="inventory-results" aria-live="polite"></small></div>`;
+  return `<div class="inventory-finder"><label class="visually-hidden" for="inventory-search">Search inventory</label><div class="inventory-search-row"><input id="inventory-search" type="search" placeholder="Search name or country" autocomplete="off" spellcheck="false"/><button id="clear-inventory-search" aria-label="Clear search">×</button></div><div class="inventory-filter-row"><label class="visually-hidden" for="inventory-stock">Inventory availability</label><select id="inventory-stock"><option value="all">All items</option><option value="owned">Owned items</option><option value="available">Ready to place</option></select><label class="visually-hidden" for="inventory-category">${inventoryTab === 'landmarks' ? 'Placement type' : 'Decoration category'}</label><select id="inventory-category"><option value="all">All categories</option>${inventoryTab === 'landmarks' ? '<option value="land">Land</option><option value="sea">Sea landmarks</option><option value="river">River landmarks</option><option value="coastal">Land &amp; sea</option>' : '<option value="tiles">Tiles</option><option value="plants">Plants</option><option value="furniture">Furniture &amp; structures</option><option value="water">Water features</option><option value="sea">Sea decorations</option><option value="river">River decorations</option>'}</select><button id="reset-inventory-filters">Reset filters</button></div><small id="inventory-results" aria-live="polite"></small></div>`;
 }
 function applyInventoryFilters() {
   const matches = (index: string, query: string) =>
@@ -604,7 +654,8 @@ function applyInventoryFilters() {
     card.hidden = !(
       matches(landmarkSearch.get(id)!, lf.query) &&
       stockMatches(lf.stock, count, available) &&
-      (rarityFilter === 'all' || card.dataset.tier === rarityFilter)
+      (rarityFilter === 'all' || card.dataset.tier === rarityFilter) &&
+      (lf.category === 'all' || placementType(id) === lf.category)
     );
     if (!card.hidden) landmarkCount++;
   });
@@ -620,7 +671,7 @@ function applyInventoryFilters() {
       ? 'tiles'
       : ['tree', 'palm', 'flowers', 'fernBed'].includes(d.shape)
         ? 'plants'
-        : ['pond', 'fountain'].includes(d.shape)
+        : d.surface || ['pond', 'fountain'].includes(d.shape)
           ? 'water'
           : 'furniture';
     const inTheme =
@@ -634,7 +685,9 @@ function applyInventoryFilters() {
       inTheme &&
       matches(decorSearch.get(d.id)!, df.query) &&
       stockMatches(df.stock, count, available) &&
-      (df.category === 'all' || df.category === category)
+      (df.category === 'all' ||
+        df.category === category ||
+        df.category === d.surface)
     );
     if (!card.hidden) decorCount++;
   });
@@ -647,7 +700,7 @@ function applyInventoryFilters() {
   const category = root.querySelector<HTMLSelectElement>(
     '#inventory-category',
   )!;
-  category.hidden = kind !== 'decorations';
+  category.hidden = false;
   category.value = filters.category;
   const count = kind === 'landmarks' ? landmarkCount : decorCount;
   root.querySelector('#inventory-results')!.textContent =
@@ -826,14 +879,18 @@ function cancelPiece() {
 document.addEventListener('keydown', (event) => {
   if (
     event.key !== 'Escape' ||
-    from === undefined ||
+    (from === undefined && !selected) ||
     treasureOpen ||
     inventoryTab ||
     document.querySelector('dialog[open]')
   )
     return;
   event.preventDefault();
-  cancelPiece();
+  if (selected) {
+    selected = '';
+    render();
+    root.querySelector<HTMLElement>('.ocean')?.focus({ preventScroll: true });
+  } else cancelPiece();
 });
 function editorTools() {
   const current =
@@ -849,6 +906,28 @@ function editorTools() {
       decorationById(selectedDecor)?.shape === 'flowers');
   return `<div class="editor-tools" aria-label="Island editing tools"><button id="undo-layout" ${!undoStack.length ? 'disabled' : ''}>Undo layout${undoStack.length ? ` · ${undoStack.length}` : ''}</button>${scene.mode === 'build' ? `<div role="group" aria-label="Edit layer"><button data-edit-layer="objects" aria-pressed="${editLayer === 'objects'}">Objects</button><button data-edit-layer="floor" aria-pressed="${editLayer === 'floor'}">Floor</button></div>${paintable ? `<button id="brush-toggle" aria-pressed="${brushEnabled}">Brush · ${brushEnabled ? 'On' : 'Off'}</button>` : ''}${from === undefined && rotatable ? `<div class="rotation-controls" role="group" aria-label="Piece rotation"><button id="rotate-left" data-rotate="-1" ${!rotatable || moving ? 'disabled' : ''}>Rotate left</button><button id="rotate-piece" data-rotate="1" ${!rotatable || moving ? 'disabled' : ''}>Rotate right</button>${rotatable ? `<span class="piece-direction">${(current ? (current.rotation ?? 0) : placementRotation) * 90}°</span>` : '<small>This piece has a fixed orientation.</small>'}</div>` : ''}${selectedDecor || selected ? '<button id="stop-placing">Cancel selection</button>' : ''}<small>${editLayer === 'floor' ? 'Floor layer · Paint beneath objects' : 'Object layer · Floors stay in place'}${selectedDecor && canRotate(selectedDecor) ? ` · Facing ${placementRotation * 90}°` : ''}</small>` : ''}</div>`;
 }
+let readyScrollLeft = 0;
+function readyLandmarks() {
+  if (
+    scene.mode !== 'build' ||
+    Boolean(selected) ||
+    from !== undefined ||
+    inventoryTab ||
+    treasureOpen
+  )
+    return '';
+  const placed = new Map<string, number>();
+  for (const p of state.placements)
+    placed.set(p.landmark, (placed.get(p.landmark) ?? 0) + 1);
+  const ready = collectibleLandmarks
+    .map((landmark) => ({
+      landmark,
+      available: quantity(state, landmark.id) - (placed.get(landmark.id) ?? 0),
+    }))
+    .filter((entry) => entry.available > 0);
+  const count = ready.reduce((total, entry) => total + entry.available, 0);
+  return `<section class="ready-landmarks" aria-label="Unplaced landmarks"><div class="ready-landmark-heading"><strong>Unplaced landmarks</strong><small>${count} available</small></div>${ready.length ? `<div class="ready-landmark-list" role="group" aria-label="Choose a landmark to place">${ready.map(({ landmark, available }) => `<button class="ready-landmark" data-place-ready="${landmark.id}" data-ready-count="${available}" aria-pressed="${selected === landmark.id}" title="${escape(landmark.name)} · ${placementLabel(landmark.id)}" ${busy ? 'disabled' : ''}><span class="ready-landmark-art" aria-hidden="true">${art(landmark.id)}</span><strong>${escape(landmark.name)}</strong><small>${placementLabel(landmark.id)}</small><span class="ready-landmark-count">×${available}</span></button>`).join('')}</div>` : `<p class="ready-landmark-empty">${collectibleLandmarks.some((l) => quantity(state, l.id) > 0) ? 'All owned landmarks are placed.' : 'Discover a landmark to place it here.'}</p>`}</section>`;
+}
 function canvasEditor() {
   const hint =
     from !== undefined
@@ -857,7 +936,11 @@ function canvasEditor() {
           ? 'That tile is occupied. Choose another destination.'
           : editLayer === 'floor'
             ? 'Choose a tile without flooring to move the selected piece.'
-            : 'Choose an empty cell to move the selected piece.'
+            : state.placements.some(
+                  (p) => p.cell === from && !isEnhanced(p.landmark),
+                )
+              ? 'Choose an empty cell to move, or the same normal landmark to fuse.'
+              : 'Choose an empty cell to move the selected piece.'
         : editLayer === 'floor'
           ? 'Floor selected. Choose Move, then click a destination without flooring.'
           : 'Piece selected. Choose Move or a rotation direction from the menu.'
@@ -870,13 +953,21 @@ function canvasEditor() {
           : 'Open the satchel or journal on the island to choose a piece.';
   if (moving)
     return `<aside class="canvas-editor moving-editor" aria-label="Island arrangement"><p class="placement-hint" aria-live="polite">${hint}</p><button id="cancel">Cancel move</button></aside>`;
-  return `<aside class="canvas-editor" aria-label="Island arrangement">${scene.modeMarkup()}${scene.mode === 'build' ? `<p class="placement-hint" aria-live="polite">${hint}</p>` : ''}${editorTools()}${moving ? '<div class="tools"><button id="cancel">Cancel move</button></div>' : ''}</aside>`;
+  return `<aside class="canvas-editor" aria-label="Island arrangement">${scene.modeMarkup()}${readyLandmarks()}${scene.mode === 'build' ? `<p class="placement-hint" aria-live="polite">${hint}</p>` : ''}${editorTools()}${moving ? '<div class="tools"><button id="cancel">Cancel move</button></div>' : ''}</aside>`;
 }
 let disposeCatalogMotion: (() => void) | undefined;
+let disposePlacementPreview: (() => void) | undefined;
 window.addEventListener('pagehide', (event) => {
-  if (!event.persisted) disposeCatalogMotion?.();
+  if (!event.persisted) {
+    disposeCatalogMotion?.();
+    disposePlacementPreview?.();
+  }
 });
 function render() {
+  disposePlacementPreview?.();
+  disposePlacementPreview = undefined;
+  const readyList = root.querySelector<HTMLElement>('.ready-landmark-list');
+  if (readyList) readyScrollLeft = readyList.scrollLeft;
   disposeCatalogMotion?.();
   const previousScroll = root.querySelector<HTMLElement>('.inventory-scroll');
   if (previousScroll && inventoryTab && !previousScroll.closest('[hidden]'))
@@ -908,11 +999,13 @@ function render() {
   const markup = `<header><div class="book-title"><div class="eyebrow">A little island between tasks ${demo ? '<b>DEMO · LOCAL FIXTURES</b>' : ''}</div><h1>Orcatopia</h1></div><div class="stats"><strong>${owned.length}<small> / ${landmarks.length} discovered</small></strong><strong>${state.receipts.length}<small> discoveries</small></strong><strong>${new Set(owned.map((l) => l.code)).size}<small> countries</small></strong></div></header><nav><button data-view="island" aria-pressed="${view === 'island'}">My Island</button><button data-view="map" aria-pressed="${view === 'map'}">World Map</button>${demo ? '<button id="expedition">＋ Demo worktree</button>' : ''}<button id="refresh">Refresh</button><button id="backups" aria-haspopup="dialog">Backups</button></nav><p class="notice ${latest ? 'discovery-notice' : ''}" ${latest ? `data-tier="${latest.tier}"` : ''} role="status">${latest ? rarityBadge(latest.tier) : ''}<span>${escape(message)}</span></p>${error ? `<p role="alert">${escape(error)}</p>` : ''}
  ${
    view === 'island'
-     ? `<section class="island-section"><div class="section-title"><h2><small>Chapter I</small> A place to wander</h2><span>${islandLand(state).length} / ${landTiles.length} land tiles</span></div><p class="land-progress">${islandLevel(state) >= MAX_LAND_LEVEL ? 'Your whole island is open.' : `At ${islandLevel(state) + 1} unique landmarks: +${landAtLevel(islandLevel(state) + 1).length - islandLand(state).length} land tiles · ${owned.length} unique discoveries`}${state.landFloor > owned.length ? ' · Existing settlement preserved; collection will catch up before further growth.' : ''}</p>${scene.markup()}<div class="ocean" tabindex="0" role="region" aria-label="Interactive island"><div class="camera"><div class="island">${terrain(state, from)}${scene.avatar()}</div><div class="sailboat" aria-hidden="true"><svg viewBox="0 0 90 90"><path d="M5 73q15-4 29 0m10 7q18-4 35 0" fill="none" stroke="#e7eedb" stroke-width="2"/><path d="M13 60q32 7 65-1L65 73H26z" fill="#ad7355" stroke="#655542" stroke-width="2"/><path d="M46 60V7" stroke="#655542" stroke-width="2"/><path d="M42 13Q26 29 20 50l22-3z" fill="#fcf3d8" stroke="#8c8268"/><path d="M50 21l20 29-20 2z" fill="#d9b07d" stroke="#8c8268"/><path d="M47 8l14 3-14 6" fill="#b76550"/></svg></div></div>${scene.layers(state)}${canvasInventory()}${canvasEditor()}${pieceMenu()}</div></section>`
+     ? `<section class="island-section"><div class="section-title"><h2><small>Chapter I</small> A place to wander</h2><span>${islandLand(state).length} / ${landTiles.length} land tiles</span></div><p class="land-progress">${islandLevel(state) >= MAX_LAND_LEVEL ? 'Your whole island is open.' : `At ${islandLevel(state) + 1} unique landmarks: +${landAtLevel(islandLevel(state) + 1).length - islandLand(state).length} land tiles · ${owned.length} unique discoveries`}${state.landFloor > owned.length ? ' · Existing settlement preserved; collection will catch up before further growth.' : ''}</p>${scene.markup()}<div class="ocean" tabindex="0" role="region" aria-label="Interactive island"><div class="camera"><div class="island">${terrain(state, from, editLayer === 'objects' && (allowsSea(selected || state.placements.find((p) => p.cell === from)?.landmark || '') || decorationById(selectedDecor || state.decorations.find((p) => p.cell === from)?.decoration || '')?.surface === 'sea'))}${scene.avatar()}</div><div class="sailboat" aria-hidden="true"><svg viewBox="0 0 90 90"><path d="M5 73q15-4 29 0m10 7q18-4 35 0" fill="none" stroke="#e7eedb" stroke-width="2"/><path d="M13 60q32 7 65-1L65 73H26z" fill="#ad7355" stroke="#655542" stroke-width="2"/><path d="M46 60V7" stroke="#655542" stroke-width="2"/><path d="M42 13Q26 29 20 50l22-3z" fill="#fcf3d8" stroke="#8c8268"/><path d="M50 21l20 29-20 2z" fill="#d9b07d" stroke="#8c8268"/><path d="M47 8l14 3-14 6" fill="#b76550"/></svg></div></div>${scene.layers(state)}${canvasInventory()}${canvasEditor()}${pieceMenu()}</div></section>`
      : `<section><div class="section-title"><h2><small>Chapter II</small> A world of discoveries</h2><span>${owned.length} real locations</span></div><svg class="world" viewBox="0 0 720 360" role="img" aria-label="World map of collected landmarks">${world.map((c) => `<path d="${c.path}" class="${owned.some((l) => l.code === c.code) ? 'acquired' : ''}"><title>${escape(c.name)}</title></path>`).join('')}${owned.map((l) => `<circle cx="${(l.lon + 180) * 2}" cy="${(90 - l.lat) * 2}" r="4"><title>${escape(l.name)} · ${escape(l.country)}</title></circle>`).join('')}</svg><p class="muted">Made with Natural Earth · approximate locations · equirectangular projection</p><div class="countries">${[...new Set(landmarks.map((l) => l.country))].map((c) => `<span>${escape(c)} <strong>${owned.filter((l) => l.country === c).length}/${landmarks.filter((l) => l.country === c).length}</strong></span>`).join('')}</div><p><button id="map-journal">Open landmark journal on island</button></p></section><div hidden>${canvasInventory()}</div>`
  }
 <footer>${landmarks.length}-landmark prototype · Tier chances: ${rarities.map((r) => `${r.numeral} ${r.name} ${weights[r.id]}%`).join(' / ')}. Each item within a tier is equally likely. No guarantees.<br>${demo ? 'Demo saves only in this browser.' : 'Saved locally on this Orca host. Events missed while disabled are not backfilled.'}</footer>`;
   renderIsland(root, markup);
+  const nextReadyList = root.querySelector<HTMLElement>('.ready-landmark-list');
+  if (nextReadyList) nextReadyList.scrollLeft = readyScrollLeft;
   // Retained world buttons must become available again after a pending save.
   root
     .querySelectorAll<HTMLButtonElement>('.camera button')
@@ -980,7 +1073,7 @@ function render() {
   root.querySelector<HTMLSelectElement>('#inventory-category')!.onchange = (
     event,
   ) => {
-    inventoryFilters.decorations.category = (
+    inventoryFilters[inventoryTab ?? 'decorations'].category = (
       event.target as HTMLSelectElement
     ).value;
     updateFinder();
@@ -1014,25 +1107,27 @@ function render() {
         render();
       }),
   );
-  root.querySelectorAll<HTMLButtonElement>('[data-landmark]').forEach(
-    (b) =>
-      (b.onclick = () => {
-        setInventory(undefined, false);
-        selected = b.dataset.landmark!;
-        editLayer = 'objects';
-        brushEnabled = false;
-        selectedDecor = '';
-        scene.mode = 'build';
-        from = undefined;
-        moving = false;
-        moveBlocked = false;
-        view = 'island';
-        render();
-        root
-          .querySelector<HTMLElement>('.ocean')
-          ?.focus({ preventScroll: true });
-      }),
-  );
+  root
+    .querySelectorAll<HTMLButtonElement>('[data-landmark], [data-place-ready]')
+    .forEach(
+      (b) =>
+        (b.onclick = () => {
+          setInventory(undefined, false);
+          selected = (b.dataset.landmark ?? b.dataset.placeReady)!;
+          editLayer = 'objects';
+          brushEnabled = false;
+          selectedDecor = '';
+          scene.mode = 'build';
+          from = undefined;
+          moving = false;
+          moveBlocked = false;
+          view = 'island';
+          render();
+          root
+            .querySelector<HTMLElement>('.ocean')
+            ?.focus({ preventScroll: true });
+        }),
+    );
   root.querySelectorAll<HTMLButtonElement>('[data-cell], [data-site]').forEach(
     (b) =>
       (b.onclick = () => {
@@ -1050,6 +1145,14 @@ function render() {
         }
         if (from !== undefined && moving) {
           if (p) {
+            const fusion =
+              editLayer === 'objects'
+                ? placedFusionLandmark(state, from, cell)
+                : undefined;
+            if (fusion) {
+              prepareFusion(fusion, { from, cell, expected: layout(state) });
+              return;
+            }
             moveBlocked = true;
             render();
             return;
@@ -1085,12 +1188,22 @@ function render() {
           }
         }
         if (p) {
+          if (selected) {
+            message = 'That tile is occupied. Choose another destination.';
+            render();
+            return;
+          }
           selectPiece(cell, editLayer);
           return;
         }
         // Selecting a piece is not permission to move it. Empty clicks leave it in place.
         if (from !== undefined) return;
         if (selectedDecor) {
+          if (!canPlaceDecoration(state, selectedDecor, cell)) {
+            message = 'Choose the matching land, sea or river surface';
+            render();
+            return;
+          }
           const decoration = selectedDecor;
           if (!brushEnabled) selectedDecor = '';
           edit('island.decorate', {
@@ -1099,6 +1212,11 @@ function render() {
             rotation: canRotate(decoration) ? placementRotation : undefined,
           });
         } else if (selected) {
+          if (!canPlaceLandmark(state, selected, cell)) {
+            message = 'Choose the matching land, sea or river surface';
+            render();
+            return;
+          }
           const landmark = selected;
           selected = '';
           edit('island.place', { cell, landmark });
@@ -1357,6 +1475,39 @@ function render() {
       : undefined,
     positionPieceMenu,
   );
+  const previewLandmark =
+    selected ||
+    (moving && from !== undefined
+      ? state.placements.find((p) => p.cell === from)?.landmark
+      : '');
+  if (
+    view === 'island' &&
+    previewLandmark &&
+    !busy &&
+    scene.mode === 'build' &&
+    editLayer === 'objects'
+  ) {
+    const occupied = new Set(
+      [...state.placements, ...state.decorations].map((p) => p.cell),
+    );
+    disposePlacementPreview = mountPlacementPreview(
+      root.querySelector<HTMLElement>('.ocean')!,
+      previewLandmark,
+      (cell) => {
+        if (
+          moving &&
+          from !== undefined &&
+          placedFusionLandmark(state, from, cell)
+        )
+          return 'merge';
+        return (
+          cell !== from &&
+          !occupied.has(cell) &&
+          canPlaceLandmark(state, previewLandmark, cell)
+        );
+      },
+    );
+  }
   camp.bind(root, state, busy);
   requestAnimationFrame(positionPieceMenu);
   root.querySelector<HTMLElement>('.piece-menu')?.addEventListener(
@@ -1637,10 +1788,16 @@ function renderRevealPreview() {
   const params = new URLSearchParams(location.search);
   let tier =
     rarities.find((r) => r.id === params.get('tier'))?.id ?? 'legendary';
+  const fusion = params.get('fusion') === 'greatwall';
   root.innerHTML = `<main class="reveal-preview"><p class="preview-eyebrow">LANDMARK ISLAND · DEMO</p><h1>The discovery theatre</h1><p class="preview-intro">A little light. A distant place. A new story.</p><div class="preview-compass" aria-hidden="true">✦</div><div class="preview-tiers" role="group" aria-label="Preview rarity">${rarities.map((r) => `<button data-preview-tier="${r.id}" aria-pressed="${r.id === tier}">${rarityBadge(r.id)}</button>`).join('')}</div><button id="preview-play">Play animation</button><p class="preview-note">Animation preview only. No tickets used. Your collection stays as it is.</p><a href="./">Return to island</a></main>`;
   const play = () => {
-    const landmark = landmarks.find((l) => l.tier === tier)!;
-    revealDiscovery(landmark, 1, rarityBadge(tier), play, { preview: true });
+    const landmark = fusion
+      ? { ...landmarks.find((l) => l.id === 'greatwall')!, id: 'greatwall+' }
+      : landmarks.find((l) => l.tier === tier)!;
+    revealDiscovery(landmark, 1, rarityBadge(landmark.tier), play, {
+      preview: true,
+      fusion,
+    });
   };
   root
     .querySelectorAll<HTMLButtonElement>('[data-preview-tier]')
@@ -1657,11 +1814,25 @@ function renderRevealPreview() {
       };
     });
   root.querySelector<HTMLButtonElement>('#preview-play')!.onclick = play;
+  if (fusion) {
+    root.querySelector('h1')!.textContent = 'Great Wall · Fusion';
+    root.querySelector('.preview-intro')!.textContent =
+      'Two stories, one new light.';
+    root.querySelector('.preview-tiers')!.remove();
+  }
   if (params.get('autoplay') === '1') play();
 }
 // A browser-only theatre reuses the real reveal without reading or writing a save.
 // Plugin frames always take the worker-backed application path.
-if (demo && new URLSearchParams(location.search).get('preview') === 'reveal') {
+if (
+  demo &&
+  new URLSearchParams(location.search).get('preview') === 'showcase'
+) {
+  renderShowcasePreview(root);
+} else if (
+  demo &&
+  new URLSearchParams(location.search).get('preview') === 'reveal'
+) {
   renderRevealPreview();
 } else if (
   demo &&

@@ -325,11 +325,12 @@ footer {
   height: 150px;
 }
 .enhanced-art {
-  filter: drop-shadow(0 0 5px #f4cd7080);
+  filter: drop-shadow(0 0 2px #f4cd7040);
 }
 .enhanced-aura {
   transform-origin: 64px 111px;
-  animation: enhanced-shimmer 3s ease-in-out infinite;
+  animation: enhanced-shimmer 5s ease-in-out infinite;
+  animation-play-state: var(--enhanced-motion, paused);
 }
 @keyframes enhanced-shimmer {
   50% {
@@ -345,7 +346,7 @@ footer {
   filter: saturate(1.5);
 }
 .fusion-reveal .enhanced-art {
-  filter: drop-shadow(0 0 14px #f4cd70);
+  filter: drop-shadow(0 0 8px #f4cd70);
 }
 @media (prefers-reduced-motion: reduce) {
   .enhanced-aura {
@@ -359,4 +360,42 @@ footer {
 
 html.dark .fusion-confirm .fusion-error[role='alert'] {
   color: var(--orca-destructive, #ffc1a3);
+}
+
+:is(
+    .card:not(.locked),
+    :is(
+      .landmark-detail[data-owned='true'],
+      .landmark-detail[data-scene-owned='true']
+    ),
+    .world-object.building,
+    .discovery-monument,
+    .fusion-preview
+  )
+  .enhanced-art {
+  --enhanced-motion: running;
+}
+.enhanced-edge-glint {
+  animation: enhanced-edge-glint 4s ease-in-out infinite;
+  animation-play-state: var(--enhanced-motion, paused);
+}
+.enhanced-orbit {
+  animation: enhanced-orbit 16s linear infinite;
+  animation-play-state: var(--enhanced-motion, paused);
+}
+@keyframes enhanced-edge-glint {
+  50% {
+    opacity: 0.35;
+  }
+}
+@keyframes enhanced-orbit {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .enhanced-edge-glint,
+  .enhanced-orbit {
+    animation: none;
+  }
 }

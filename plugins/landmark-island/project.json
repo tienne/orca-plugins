@@ -3,6 +3,14 @@
   "projectType": "application",
   "sourceRoot": "plugins/landmark-island/src",
   "targets": {
+    "screenshots": {
+      "executor": "nx:run-commands",
+      "dependsOn": ["build"],
+      "cache": false,
+      "options": {
+        "command": "playwright test --config plugins/landmark-island/playwright.config.ts registration.spec.ts"
+      }
+    },
     "build": {
       "executor": "nx:run-commands",
       "options": {

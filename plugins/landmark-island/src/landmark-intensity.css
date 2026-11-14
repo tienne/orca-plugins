@@ -45,9 +45,15 @@
 }
 :is(
     .card:not(.locked),
-    .landmark-detail[data-owned='true'],
+    :is(
+      .landmark-detail[data-owned='true'],
+      .landmark-detail[data-scene-owned='true']
+    ),
     .world-object.building,
-    .discovery-monument
+    .discovery-monument,
+    .fusion-preview,
+    .ready-landmark-art,
+    .placement-preview
   )
   .tier-presence {
   display: inline;

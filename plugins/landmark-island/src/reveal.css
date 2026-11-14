@@ -1088,3 +1088,159 @@
     font-size: 12px;
   }
 }
+
+.fusion-vector .discovery-stage {
+  transform: none;
+}
+.fusion-reveal.revealed .discovery-stage {
+  transform: none;
+}
+.fusion-reveal.revealed .discovery-stage > :not(.discovery-monument) {
+  visibility: hidden;
+}
+.fusion-vector .discovery-stage > :not(.discovery-monument, .fusion-merge) {
+  visibility: hidden;
+}
+.fusion-merge {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.fusion-vector .discovery-stage > .discovery-monument {
+  animation: fusion-result 3s ease-out both;
+}
+.fusion-vector .fusion-source {
+  width: 220px;
+  height: 240px;
+  left: calc(50% - 110px);
+  bottom: 18px;
+  animation: fusion-source-left 3s ease-in-out both;
+}
+.fusion-vector .fusion-source-right {
+  animation-name: fusion-source-right;
+}
+.fusion-wave {
+  position: absolute;
+  z-index: 2;
+  left: calc(50% - 140px);
+  bottom: 24px;
+  width: 280px;
+  height: 48px;
+  border: 2px solid #f4cd70;
+  border-radius: 50%;
+  box-shadow:
+    0 0 18px #f4cd7060,
+    inset 0 0 12px #f4cd7030;
+  animation: fusion-wave 3s ease-out both;
+}
+.fusion-wave-second {
+  animation-delay: 0.15s;
+}
+.fusion-spark {
+  position: absolute;
+  z-index: 2;
+  left: calc(50% - 3px);
+  top: 50%;
+  width: 6px;
+  height: 6px;
+  background: #ffe9a6;
+  clip-path: polygon(
+    50% 0,
+    64% 36%,
+    100% 50%,
+    64% 64%,
+    50% 100%,
+    36% 64%,
+    0 50%,
+    36% 36%
+  );
+  animation: fusion-spark 3s ease-out both;
+}
+@keyframes fusion-source-left {
+  0%,
+  8% {
+    opacity: 1;
+    transform: translateX(-85px) scale(0.7);
+  }
+  34% {
+    opacity: 1;
+    transform: translateX(-12px) scale(0.85);
+  }
+  46%,
+  100% {
+    opacity: 0;
+    transform: translateX(0) scale(0.95);
+  }
+}
+@keyframes fusion-source-right {
+  0%,
+  8% {
+    opacity: 1;
+    transform: translateX(85px) scale(0.7);
+  }
+  34% {
+    opacity: 1;
+    transform: translateX(12px) scale(0.85);
+  }
+  46%,
+  100% {
+    opacity: 0;
+    transform: translateX(0) scale(0.95);
+  }
+}
+@keyframes fusion-result {
+  0%,
+  34% {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  52% {
+    opacity: 1;
+    transform: scale(1.06);
+  }
+  70%,
+  100% {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes fusion-wave {
+  0%,
+  32% {
+    opacity: 0;
+    transform: scale(0.35);
+  }
+  44% {
+    opacity: 0.9;
+  }
+  90%,
+  100% {
+    opacity: 0;
+    transform: scale(1.45);
+  }
+}
+@keyframes fusion-spark {
+  0%,
+  35% {
+    opacity: 0;
+    transform: rotate(var(--angle)) translateX(20px) scale(0.4);
+  }
+  46% {
+    opacity: 1;
+  }
+  90%,
+  100% {
+    opacity: 0;
+    transform: rotate(var(--angle)) translateX(145px) scale(0.6);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .fusion-merge {
+    display: none;
+  }
+  .fusion-vector .discovery-stage > .discovery-monument {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+}

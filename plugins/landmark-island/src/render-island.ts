@@ -75,6 +75,7 @@ export function renderIsland(root: HTMLElement, markup: string) {
       if (label) current.append(label);
       current.dataset.objectKey = next.dataset.objectKey;
     }
+    syncAttributes(current, next);
   }
   for (const cell of cells.values()) cell.remove();
 

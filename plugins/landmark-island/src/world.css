@@ -375,3 +375,17 @@ h1 {
     transition: none !important;
   }
 }
+
+.ocean:not([data-mode='build']) .sea-tile .cell:not(.occupied) {
+  pointer-events: none;
+}
+.placement-type {
+  color: #397d88;
+}
+
+.world-object.garden-object.water-object {
+  top: 37px;
+}
+.water-object .building-select {
+  inset: 0;
+}

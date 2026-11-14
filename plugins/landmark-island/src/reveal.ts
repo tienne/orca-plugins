@@ -45,6 +45,7 @@ export function revealDiscovery(
   options: {
     isNew?: boolean;
     fusion?: boolean;
+    placed?: boolean;
     onDetails?: () => void;
     onDecoration?: () => void;
     preview?: boolean;
@@ -108,6 +109,8 @@ export function revealDiscovery(
       ? 'Place on island'
       : 'Place another copy';
   }
+  if (options.placed)
+    dialog.querySelector('.reveal-place')!.textContent = 'View on island';
   dialog.querySelector('.reveal-quantity')!.textContent = !isNew
     ? `Another piece of the world · Owned ×${count}`
     : 'A new page in your collection';
@@ -118,7 +121,9 @@ export function revealDiscovery(
     dialog.querySelector('.reveal-quantity')!.textContent =
       'Preview only · No ticket used';
     dialog.querySelector('.reveal-place')!.textContent = 'Replay animation';
-    dialog.querySelector('.reveal-keep')!.textContent = 'Choose rarity';
+    dialog.querySelector('.reveal-keep')!.textContent = options.fusion
+      ? 'Return to preview'
+      : 'Choose rarity';
     dialog.querySelector('.discovery-result > small')!.textContent =
       'Your collection is unchanged';
   }
@@ -165,6 +170,10 @@ export function revealDiscovery(
   let placing = false;
   let nextDraw: 1 | 10 | undefined;
   const timers: ReturnType<typeof setTimeout>[] = [];
+  const stopFusion = () => {
+    dialog.classList.remove('fusion-vector');
+    dialog.querySelector('.fusion-merge')?.remove();
+  };
   const result = dialog.querySelector<HTMLElement>('.discovery-result')!;
   const actions = dialog.querySelector<HTMLElement>('.reveal-actions')!;
   for (const [label, callback] of [
@@ -182,7 +191,7 @@ export function revealDiscovery(
   }
   if (options.fusion) {
     dialog.querySelector('.discovery-heading > span')!.textContent =
-      'LANDMARK FUSION';
+      options.preview ? 'DEMO · LANDMARK FUSION' : 'LANDMARK FUSION';
     dialog.querySelector('.invitation > span')!.textContent =
       'TWO STORIES, ONE NEW LIGHT';
   }
@@ -206,6 +215,7 @@ export function revealDiscovery(
     if (revealed) return;
     revealed = true;
     timers.forEach(clearTimeout);
+    stopFusion();
     dialog.dataset.phase = 'complete';
     dialog.classList.add('revealed');
     if (skip) dialog.classList.add('skipped');
@@ -246,6 +256,7 @@ export function revealDiscovery(
     'close',
     () => {
       timers.forEach(clearTimeout);
+      stopFusion();
       observer?.disconnect();
       window.removeEventListener('resize', fitCanvas);
       window.removeEventListener('scroll', fitCanvas, true);
@@ -301,6 +312,21 @@ export function revealDiscovery(
   };
   if (options.animate === false) {
     finish(true);
+    return;
+  }
+  if (options.fusion && !preference.matches) {
+    const merge = document.createElement('div');
+    merge.className = 'fusion-merge';
+    merge.setAttribute('aria-hidden', 'true');
+    const normal = landmark.id.replace(/\+$/, '');
+    merge.innerHTML = `<div class="discovery-monument fusion-source fusion-source-left">${art(normal)}</div><div class="discovery-monument fusion-source fusion-source-right">${art(normal)}</div><div class="fusion-wave"></div><div class="fusion-wave fusion-wave-second"></div>${Array.from({ length: 12 }, (_, i) => `<i class="fusion-spark" style="--angle:${i * 30}deg"></i>`).join('')}`;
+    dialog.querySelector('.discovery-stage')!.append(merge);
+    dialog.classList.add('fusion-vector');
+    dialog.dataset.phase = 'monument';
+    caption.textContent = 'Two stories, one new light.';
+    phase(2450, 'details');
+    timers.push(setTimeout(() => finish(), 3000));
+    reduce();
     return;
   }
   phase(800, 'journey', 'Following a path beyond the horizon…');

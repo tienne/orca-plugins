@@ -102,6 +102,9 @@ export class IslandScene {
         .filter((p) => !decorationById(p.decoration)!.walkable)
         .map((p) => p.cell),
       ...state.placements.map((p) => p.cell),
+      ...state.floors
+        .filter((p) => p.decoration === 'river')
+        .map((p) => p.cell),
     ]);
     let stepTimer: ReturnType<typeof setTimeout> | undefined;
     let walking = false;
@@ -320,7 +323,13 @@ export class IslandScene {
     };
     root.querySelector<HTMLButtonElement>('#overview')!.onclick = () => {
       this.follow = false;
-      const points = islandLand(state).map((t) => project(t.id));
+      const points = [
+        ...new Set([
+          ...islandLand(state).map((t) => t.id),
+          ...state.placements.map((p) => p.cell),
+          ...state.decorations.map((p) => p.cell),
+        ]),
+      ].map((id) => project(id));
       const left = Math.min(...points.map((p) => p.x)) - 60;
       const right = Math.max(...points.map((p) => p.x)) + 60;
       const top = Math.min(...points.map((p) => p.y)) - 120;
