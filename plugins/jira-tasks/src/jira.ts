@@ -133,7 +133,13 @@ export const runCli: Run = (args, signal) =>
       },
     );
   });
-export function createJiraClient(run: Run = runCli) {
+export function createJiraClient(run: Run = runCli, optionsBudgetMs = 15000) {
+  if (
+    !Number.isInteger(optionsBudgetMs) ||
+    optionsBudgetMs < 1 ||
+    optionsBudgetMs > 15000
+  )
+    throw new Error('Invalid Jira options timeout.');
   return {
     async connection(signal?: AbortSignal): Promise<Connection> {
       const result = record(await run(['connection'], signal));
@@ -217,32 +223,47 @@ export function createJiraClient(run: Run = runCli) {
         const options = optionAccumulator();
         options.add(result.tasks);
         let limited = true;
-        for (let attempt = 0; attempt < 8; attempt++) {
-          let found: unknown;
-          try {
-            found = await run(
-              [
-                'search',
-                options.unseenJql(input.key),
-                '--site',
-                input.siteId,
-                '--limit',
-                String(LIMIT),
-              ],
-              signal,
-            );
-          } catch (error) {
-            if (signal?.aborted) throw error;
-            break;
+        const discovery = new AbortController();
+        const discoverySignal = AbortSignal.any([
+          discovery.signal,
+          ...(signal ? [signal] : []),
+        ]);
+        // 부가 선택지 탐색 때문에 이미 확보한 조회 결과까지 시간 초과되지 않게 한다.
+        const timer = setTimeout(() => discovery.abort(), optionsBudgetMs);
+        try {
+          for (
+            let attempt = 0;
+            attempt < 8 && !discoverySignal.aborted;
+            attempt++
+          ) {
+            let found: unknown;
+            try {
+              found = await run(
+                [
+                  'search',
+                  options.unseenJql(input.key),
+                  '--site',
+                  input.siteId,
+                  '--limit',
+                  String(LIMIT),
+                ],
+                discoverySignal,
+              );
+            } catch (error) {
+              if (signal?.aborted) throw error;
+              break;
+            }
+            if (!Array.isArray(found)) break;
+            if (!found.length) {
+              limited = false;
+              break;
+            }
+            const before = JSON.stringify(options.result(false));
+            options.add(found.map((row) => normalizeTask(row)));
+            if (before === JSON.stringify(options.result(false))) break;
           }
-          if (!Array.isArray(found)) break;
-          if (!found.length) {
-            limited = false;
-            break;
-          }
-          const before = JSON.stringify(options.result(false));
-          options.add(found.map((row) => normalizeTask(row)));
-          if (before === JSON.stringify(options.result(false))) break;
+        } finally {
+          clearTimeout(timer);
         }
         result.options = options.result(limited);
       }

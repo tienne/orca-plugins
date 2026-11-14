@@ -74,3 +74,49 @@ test('discovers query choices beyond the first result page without truncating th
   assert.equal(page.options?.limited, false);
   assert.ok(calls[1][1].includes('assignee NOT IN ("first")'));
 });
+
+test('returns matching children with partial choices when the discovery budget expires', async () => {
+  let calls = 0;
+  const client = createJiraClient(async (_args, signal) => {
+    calls++;
+    if (calls === 1) return [{ key: 'DEMO-1', status: { name: 'Done' } }];
+    return new Promise((_resolve, reject) => {
+      signal!.addEventListener(
+        'abort',
+        () => reject(new Error('Discovery aborted')),
+        { once: true },
+      );
+    });
+  }, 5);
+  const result = await client.children({
+    siteId: 'site',
+    key: 'DEMO-10',
+    includeOptions: true,
+  });
+  assert.equal(result.tasks[0].key, 'DEMO-1');
+  assert.equal(result.options?.limited, true);
+  assert.deepEqual(result.options?.statuses, ['Done']);
+  assert.equal(calls, 2);
+});
+
+test('propagates parent cancellation during discovery and initial search failures', async () => {
+  const controller = new AbortController();
+  let calls = 0;
+  const client = createJiraClient(async () => {
+    if (++calls === 1) return [{ key: 'DEMO-1' }];
+    controller.abort();
+    throw new Error('Cancelled');
+  });
+  await assert.rejects(() =>
+    client.children(
+      { siteId: 'site', key: 'DEMO-10', includeOptions: true },
+      controller.signal,
+    ),
+  );
+  const failure = createJiraClient(async () => {
+    throw new Error('Search failed');
+  });
+  await assert.rejects(() =>
+    failure.children({ siteId: 'site', key: 'DEMO-10', includeOptions: true }),
+  );
+});

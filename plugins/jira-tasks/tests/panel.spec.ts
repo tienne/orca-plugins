@@ -23,6 +23,8 @@ async function start(
     scopedLists?: boolean;
     multipleSites?: boolean;
     beyondLimit?: boolean;
+    childrenFailureOnce?: boolean;
+    childOptionsLimited?: boolean;
     avatarUnavailable?: boolean;
     refresh?: boolean;
     refreshFailure?: boolean;
@@ -166,6 +168,11 @@ async function start(
                   }
                 : taskPage;
             if (name === 'jira.children') {
+              if (
+                options.childrenFailureOnce &&
+                calls.filter((call) => call === name).length === 1
+              )
+                throw new Error('Initial children unavailable');
               if (options.children === 'error')
                 throw new Error('Children unavailable');
               let tasks =
@@ -260,7 +267,7 @@ async function start(
                           value,
                           label,
                         })),
-                        limited: false,
+                        limited: options.childOptionsLimited ?? false,
                       },
                     }
                   : {}),
@@ -421,7 +428,7 @@ test('shows lookup errors without rendering issue markup as HTML', async ({
 }) => {
   await start(page, { error: true });
   await expect(
-    page.getByText('Connection failed', { exact: true }),
+    page.getByText('Jira 작업을 불러오지 못했습니다', { exact: true }),
   ).toBeVisible();
 });
 
@@ -501,7 +508,7 @@ test('keeps the description readable if child lookup fails', async ({
   await start(page, { children: 'error' });
   await page.getByRole('button', { name: task.title, exact: true }).click();
   await expect(page.locator('#child-issues')).toContainText(
-    'Children unavailable',
+    '하위 항목을 불러오지 못했습니다',
   );
   await expect(
     page.getByRole('heading', { name: '요약', exact: true }),
@@ -712,7 +719,9 @@ test('can retry a failed detail refresh without leaving the issue or losing sear
   await page.getByRole('button', { name: task.title, exact: true }).click();
   await page.getByLabel('하위 티켓 검색').fill('DEMO-202');
   await page.getByRole('button', { name: '새로고침', exact: true }).click();
-  await expect(page.getByText('Refresh failed', { exact: true })).toBeVisible();
+  await expect(
+    page.getByText('티켓 상세를 불러오지 못했습니다', { exact: true }),
+  ).toBeVisible();
   await page.getByRole('button', { name: '다시 시도', exact: true }).click();
   await expect(page.getByLabel('하위 티켓 검색')).toHaveValue('DEMO-202');
   await expect(page.locator('.child-row')).toHaveCount(1);
@@ -783,6 +792,196 @@ test('shows site choice for multiple connections and switches the lookup site', 
     () => (window as unknown as { jiraListSites: string[] }).jiraListSites,
   );
   expect(sites.at(-1)).toBe('second-site');
+});
+
+async function gateChildRequests(page: Page, key: string, count: number) {
+  await page.evaluate(
+    ({ key, count }) => {
+      const state = window as unknown as {
+        orca: {
+          plugin: {
+            request: (
+              name: string,
+              input?: { key?: string },
+              options?: unknown,
+            ) => Promise<unknown>;
+          };
+        };
+        jiraChildReleases: (() => void)[];
+      };
+      const original = state.orca.plugin.request;
+      state.jiraChildReleases = [];
+      let remaining = count;
+      state.orca.plugin.request = async (name, input, options) => {
+        const result = await original(name, input, options);
+        if (name === 'jira.children' && input?.key === key && remaining-- > 0)
+          await new Promise<void>((resolve) =>
+            state.jiraChildReleases.push(resolve),
+          );
+        return result;
+      };
+    },
+    { key, count },
+  );
+}
+async function releaseChildRequest(page: Page, index: number) {
+  await page.evaluate((index) => {
+    (
+      window as unknown as { jiraChildReleases: (() => void)[] }
+    ).jiraChildReleases[index]();
+  }, index);
+}
+
+test('retries initial option discovery and retains limited choices after another query', async ({
+  page,
+}) => {
+  await start(page, {
+    beyondLimit: true,
+    childrenFailureOnce: true,
+    childOptionsLimited: true,
+  });
+  await page.getByRole('button', { name: task.title, exact: true }).click();
+  const children = page.locator('#child-issues');
+  await expect(children.getByRole('status')).toContainText(
+    '하위 항목을 불러오지 못했습니다',
+  );
+  await children
+    .getByRole('button', { name: '다시 시도', exact: true })
+    .click();
+  await expect(children.locator('.child-row')).toHaveCount(100);
+  await children.getByLabel('하위 티켓 담당자').click();
+  await children.getByRole('checkbox', { name: 'Taylor', exact: true }).check();
+  await children.getByRole('button', { name: '조회', exact: true }).click();
+  await expect(children.locator('.child-row')).toHaveCount(1);
+  await expect(children).toContainText('선택 항목을 일부만 불러왔습니다.');
+  await expect(children.getByRole('status')).toContainText('1');
+});
+
+test('restarts unfinished option discovery when returning to a detail', async ({
+  page,
+}) => {
+  await start(page, { beyondLimit: true, parent: true });
+  await gateChildRequests(page, task.key, 1);
+  await page.getByRole('button', { name: task.title, exact: true }).click();
+  await expect(page.locator('#child-issues').getByRole('status')).toContainText(
+    '불러오는 중',
+  );
+  await page.locator('.parent-link').click();
+  await expect(
+    page.getByRole('heading', { name: 'Checkout improvements', exact: true }),
+  ).toBeVisible();
+  await page.getByRole('button', { name: '‹ 뒤로가기', exact: true }).click();
+  const children = page.locator('#child-issues');
+  await expect(children.locator('.child-row')).toHaveCount(100);
+  await children.getByLabel('하위 티켓 담당자').click();
+  await expect(
+    children.getByRole('checkbox', { name: 'Taylor', exact: true }),
+  ).toBeVisible();
+  await children.getByLabel('하위 티켓 상태').click();
+  await expect(
+    children.getByRole('checkbox', { name: 'Blocked', exact: true }),
+  ).toBeVisible();
+  await releaseChildRequest(page, 0);
+  await expect(children.locator('.child-row')).toHaveCount(100);
+});
+
+test('keeps query input focus and selection through loading, then keeps the apply button focused', async ({
+  page,
+}) => {
+  await start(page, { children: 'filterable' });
+  await page.getByRole('button', { name: task.title, exact: true }).click();
+  const children = page.locator('#child-issues');
+  await expect(children.locator('.child-row')).toHaveCount(3);
+  await gateChildRequests(page, task.key, 1);
+  const input = children.getByLabel('하위 티켓 검색');
+  await input.fill('DEMO-201');
+  await input.evaluate((node: HTMLInputElement) =>
+    node.setSelectionRange(2, 6, 'backward'),
+  );
+  await input.press('Enter');
+  await expect(children.getByRole('status')).toContainText('불러오는 중');
+  await expect(input).toBeFocused();
+  await expect
+    .poll(() =>
+      input.evaluate((node: HTMLInputElement) => [
+        node.selectionStart,
+        node.selectionEnd,
+        node.selectionDirection,
+      ]),
+    )
+    .toEqual([2, 6, 'backward']);
+  await releaseChildRequest(page, 0);
+  await expect(children.locator('.child-row')).toHaveCount(1);
+  await expect(input).toBeFocused();
+  expect(
+    await input.evaluate((node: HTMLInputElement) => [
+      node.selectionStart,
+      node.selectionEnd,
+      node.selectionDirection,
+    ]),
+  ).toEqual([2, 6, 'backward']);
+  const apply = children.getByRole('button', { name: '조회', exact: true });
+  await apply.click();
+  await expect(children.getByRole('status')).toContainText('1');
+  await expect(apply).toBeFocused();
+});
+
+test('ignores queued and late back-navigation scroll restoration after opening another detail', async ({
+  page,
+}) => {
+  await start(page, { beyondLimit: true, parent: true });
+  await gateChildRequests(page, task.key, 2);
+  await page.getByRole('button', { name: task.title, exact: true }).click();
+  await expect(page.locator('#child-issues').getByRole('status')).toContainText(
+    '불러오는 중',
+  );
+  await page.locator('.parent-link').click();
+  await expect(
+    page.getByRole('heading', { name: 'Checkout improvements', exact: true }),
+  ).toBeVisible();
+  await page.evaluate(() => {
+    const state = window as unknown as {
+      jiraFrames: FrameRequestCallback[];
+      jiraScrolls: number[];
+    };
+    state.jiraFrames = [];
+    state.jiraScrolls = [];
+    window.requestAnimationFrame = (callback) =>
+      state.jiraFrames.push(callback);
+    window.scrollTo = (x?: number | ScrollToOptions, y?: number): void => {
+      state.jiraScrolls.push(typeof x === 'number' ? (y ?? 0) : (x?.top ?? 0));
+    };
+  });
+  await page.getByRole('button', { name: '‹ 뒤로가기', exact: true }).click();
+  await expect
+    .poll(() =>
+      page.evaluate(
+        () =>
+          (window as unknown as { jiraChildReleases: unknown[] })
+            .jiraChildReleases.length,
+      ),
+    )
+    .toBe(2);
+  await page.getByRole('button', { name: '목록으로', exact: true }).click();
+  await page.getByRole('button', { name: task.title, exact: true }).click();
+  await expect(page.locator('.child-row')).toHaveCount(100);
+  await page.evaluate(() => {
+    (window as unknown as { jiraScrolls: number[] }).jiraScrolls.length = 0;
+  });
+  await releaseChildRequest(page, 1);
+  await releaseChildRequest(page, 0);
+  // 취소된 요청의 후속 microtask까지 비운 뒤 예약된 화면 복원을 실행한다.
+  await page.evaluate(async () => {
+    await new Promise((resolve) => setTimeout(resolve, 0));
+    const state = window as unknown as { jiraFrames: FrameRequestCallback[] };
+    for (const callback of state.jiraFrames.splice(0))
+      callback(performance.now());
+  });
+  expect(
+    await page.evaluate(
+      () => (window as unknown as { jiraScrolls: number[] }).jiraScrolls,
+    ),
+  ).toEqual([]);
 });
 
 test('goes back from a child to the previous detail with filters and scroll restored, then back to list', async ({
@@ -949,4 +1148,58 @@ for (const locale of ['ko', 'ko-KR', 'en-US', 'ja-JP', 'de-DE']) {
         '11/14/2026',
       );
   });
+}
+
+for (const locale of ['ko-KR', 'ja-JP']) {
+  for (const failure of ['list', 'detail', 'children'] as const) {
+    test(`localizes ${failure} failures without raw worker diagnostics for ${locale}`, async ({
+      page,
+    }) => {
+      const korean = locale === 'ko-KR';
+      await start(page, {
+        locale,
+        error: failure === 'list',
+        refreshFailure: failure === 'detail',
+        children: failure === 'children' ? 'error' : undefined,
+      });
+      if (failure !== 'list') {
+        await page
+          .getByRole('button', { name: task.title, exact: true })
+          .click();
+        if (failure === 'detail') {
+          await expect(page.locator('.issue-title')).toBeVisible();
+          await page
+            .getByRole('button', {
+              name: korean ? '새로고침' : 'Refresh',
+              exact: true,
+            })
+            .click();
+        }
+      }
+      const messages = korean
+        ? {
+            list: 'Jira 작업을 불러오지 못했습니다',
+            detail: '티켓 상세를 불러오지 못했습니다',
+            children: '하위 항목을 불러오지 못했습니다',
+          }
+        : {
+            list: 'Could not load Jira',
+            detail: 'Could not load issue details',
+            children: 'Could not load child issues',
+          };
+      await expect(page.locator('.error')).toHaveText(messages[failure]);
+      await expect(page.locator('body')).not.toContainText(
+        /Connection failed|Refresh failed|Children unavailable/,
+      );
+      if (failure !== 'list')
+        await expect(
+          page.getByRole('button', {
+            name: korean ? '다시 시도' : 'Retry',
+            exact: true,
+          }),
+        ).toBeVisible();
+      if (failure === 'children')
+        await expect(page.getByRole('status')).toHaveText(messages.children);
+    });
+  }
 }

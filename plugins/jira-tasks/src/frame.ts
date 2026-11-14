@@ -39,6 +39,8 @@ let childOptions: ChildOptions = {
 };
 let appliedChildCriteria = '';
 let childPending: AbortController | undefined;
+let childOptionsLoaded = false;
+let navigationVersion = 0;
 
 interface DetailSnapshot {
   task: JiraTask;
@@ -53,18 +55,23 @@ interface DetailSnapshot {
   scrollY: number;
   childScrollY: number;
   options: ChildOptions;
+  optionsLoaded: boolean;
   appliedCriteria: string;
 }
 const navigationHistory: DetailSnapshot[] = [];
 let listScrollY = 0;
 function goToList(): void {
+  const version = ++navigationVersion;
   pending?.abort();
   navigationHistory.length = 0;
   selected = null;
   busy = false;
   error = '';
   render();
-  requestAnimationFrame(() => window.scrollTo(0, listScrollY));
+  requestAnimationFrame(() => {
+    if (version === navigationVersion && !selected)
+      window.scrollTo(0, listScrollY);
+  });
 }
 function goBack(): void {
   const previous = navigationHistory.pop();
@@ -72,6 +79,7 @@ function goBack(): void {
     goToList();
     return;
   }
+  ++navigationVersion;
   pending?.abort();
   pending = new AbortController();
   selected = previous.task;
@@ -84,18 +92,31 @@ function goBack(): void {
   childStatuses = new Set(previous.statuses);
   childAssignees = new Set(previous.assignees);
   childOptions = previous.options;
+  childOptionsLoaded = previous.optionsLoaded;
   appliedChildCriteria = previous.appliedCriteria;
+  render();
+  const reload = previous.busy
+    ? loadIssue(previous.task, true)
+    : previous.childrenBusy
+      ? loadChildren(previous.task.key, pending.signal)
+      : undefined;
+  const request = pending;
+  const version = navigationVersion;
   const restoreScroll = () =>
     requestAnimationFrame(() => {
+      if (
+        request.signal.aborted ||
+        version !== navigationVersion ||
+        pending !== request ||
+        selected?.key !== previous.task.key
+      )
+        return;
       window.scrollTo(0, previous.scrollY);
       const list = document.querySelector<HTMLElement>('.children-list');
       if (list) list.scrollTop = previous.childScrollY;
     });
-  render();
   restoreScroll();
-  if (previous.busy) void loadIssue(previous.task, true).then(restoreScroll);
-  else if (previous.childrenBusy)
-    void loadChildren(previous.task.key, pending.signal).then(restoreScroll);
+  if (reload) void reload.then(restoreScroll);
 }
 
 function el<K extends keyof HTMLElementTagNameMap>(
@@ -498,7 +519,20 @@ function childCriteria() {
   };
 }
 function renderChildren(container: HTMLElement): void {
-  container.replaceChildren();
+  const announcement =
+    container.querySelector<HTMLElement>('.children-announcement') ??
+    el('p', '', 'muted children-announcement');
+  announcement.setAttribute('role', 'status');
+  announcement.setAttribute('aria-live', 'polite');
+  announcement.setAttribute('aria-atomic', 'true');
+  for (const child of [...container.children])
+    if (child !== announcement) child.remove();
+  if (!announcement.isConnected) container.append(announcement);
+  announcement.textContent = childrenBusy
+    ? t.loadingChildren
+    : childrenError
+      ? t.childrenError
+      : `${children.tasks.length}${children.limitReached ? '+' : ''} ${t.issues}`;
   clearDetachedAvatars();
   const heading = el('div', '', 'children-heading');
   heading.append(el('h2', t.children));
@@ -511,10 +545,6 @@ function renderChildren(container: HTMLElement): void {
       ),
     );
   container.append(heading);
-  if (childrenBusy) {
-    container.append(el('p', t.loadingChildren, 'muted'));
-    return;
-  }
   const submit = () => {
     if (selected && pending) return loadChildren(selected.key, pending.signal);
   };
@@ -523,6 +553,7 @@ function renderChildren(container: HTMLElement): void {
   searchField.append(el('span', t.childSearch));
   const input = el('input');
   input.type = 'search';
+  input.id = 'child-search';
   input.maxLength = 200;
   input.value = childQuery;
   input.placeholder = t.childSearchHint;
@@ -530,6 +561,7 @@ function renderChildren(container: HTMLElement): void {
   searchField.append(input);
   const hint = el('p', '', 'muted child-query-hint');
   const apply = button(t.runQuery, submit, 'child-query-button');
+  apply.id = 'child-apply';
   const reset = button(
     t.clearFilters,
     () => {
@@ -540,6 +572,7 @@ function renderChildren(container: HTMLElement): void {
     },
     'ghost child-filter-reset',
   );
+  reset.id = 'child-reset';
   const updateDraft = () => {
     const dirty = JSON.stringify(childCriteria()) !== appliedChildCriteria;
     hint.textContent = dirty ? t.queryChanged : t.queryApplied;
@@ -597,9 +630,12 @@ function renderChildren(container: HTMLElement): void {
   heading.append(reset, apply);
   container.append(controls, hint);
   updateDraft();
+  if (childOptions.limited)
+    container.append(el('p', t.childOptionsLimited, 'muted'));
+  if (childrenBusy) return;
   if (childrenError) {
     container.append(
-      el('p', `${t.childrenError}: ${childrenError}`, 'error'),
+      el('p', t.childrenError, 'error'),
       button(t.retry, submit),
     );
     return;
@@ -627,13 +663,11 @@ function renderChildren(container: HTMLElement): void {
   }
   if (children.limitReached)
     container.append(el('p', t.childrenLimit, 'muted'));
-  if (childOptions.limited)
-    container.append(el('p', t.childOptionsLimited, 'muted'));
 }
 async function loadChildren(
   key: string,
   signal: AbortSignal,
-  includeOptions = false,
+  includeOptions = !childOptionsLoaded,
 ): Promise<void> {
   childPending?.abort();
   const request = new AbortController();
@@ -645,7 +679,26 @@ async function loadChildren(
   const update = () => {
     if (requestSignal.aborted || selected?.key !== key) return;
     const container = document.querySelector<HTMLElement>('#child-issues');
-    if (container) renderChildren(container);
+    if (container) {
+      const focused = document.activeElement;
+      const focusId =
+        focused instanceof HTMLElement && container.contains(focused)
+          ? focused.id
+          : '';
+      const selection =
+        focused instanceof HTMLInputElement
+          ? ([
+              focused.selectionStart,
+              focused.selectionEnd,
+              focused.selectionDirection ?? undefined,
+            ] as const)
+          : undefined;
+      renderChildren(container);
+      const control = focusId ? document.getElementById(focusId) : null;
+      control?.focus({ preventScroll: true });
+      if (control instanceof HTMLInputElement && selection)
+        control.setSelectionRange(...selection);
+    }
   };
   update();
   try {
@@ -658,6 +711,7 @@ async function loadChildren(
     children = result;
     appliedChildCriteria = JSON.stringify(criteria);
     if (result.options) {
+      childOptionsLoaded = true;
       const people = new Map(
         [...childOptions.assignees, ...result.options.assignees].map(
           (option) => [option.value, option.label],
@@ -673,10 +727,10 @@ async function loadChildren(
     }
     childrenBusy = false;
     update();
-  } catch (e) {
+  } catch {
     if (requestSignal.aborted || selected?.key !== key) return;
     childrenBusy = false;
-    childrenError = e instanceof Error ? e.message : String(e);
+    childrenError = t.childrenError;
     update();
   }
 }
@@ -916,6 +970,7 @@ function render(): void {
   }
 }
 async function load(connect = false): Promise<void> {
+  ++navigationVersion;
   navigationHistory.length = 0;
   listScrollY = 0;
   pending?.abort();
@@ -950,10 +1005,10 @@ async function load(connect = false): Promise<void> {
       busy = false;
       render();
     }
-  } catch (e) {
+  } catch {
     if (!request.signal.aborted) {
       busy = false;
-      error = e instanceof Error ? e.message : String(e);
+      error = t.error;
       render();
     }
   }
@@ -962,6 +1017,7 @@ async function loadIssue(
   task: JiraTask,
   preserveFilters = false,
 ): Promise<void> {
+  ++navigationVersion;
   pending?.abort();
   const request = new AbortController();
   pending = request;
@@ -981,6 +1037,7 @@ async function loadIssue(
         childScrollY:
           document.querySelector<HTMLElement>('.children-list')?.scrollTop ?? 0,
         options: childOptions,
+        optionsLoaded: childOptionsLoaded,
         appliedCriteria: appliedChildCriteria,
       });
       if (navigationHistory.length > 30) navigationHistory.shift();
@@ -992,6 +1049,7 @@ async function loadIssue(
     childStatuses.clear();
     childAssignees.clear();
     childOptions = { statuses: [], assignees: [], limited: false };
+    childOptionsLoaded = false;
     appliedChildCriteria = '';
   }
   children = { tasks: [], limitReached: false };
@@ -1013,10 +1071,10 @@ async function loadIssue(
       busy = false;
       render();
     }
-  } catch (e) {
+  } catch {
     if (!request.signal.aborted) {
       busy = false;
-      error = e instanceof Error ? e.message : String(e);
+      error = t.detailError;
       render();
     }
   }
