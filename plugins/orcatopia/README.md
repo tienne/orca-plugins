@@ -8,6 +8,10 @@ Development source: [tienne/orca-plugins · plugins/orcatopia](https://github.co
 
 Orcatopia is a little island getaway between tasks in Orca. Earn exploration tickets when you create worktrees, discover world landmarks, and arrange a place of your own while you wait. This version requires Orca 1.4.248+.
 
+## 0.4.1
+
+Development source moved to `plugins/orcatopia`, and the manifest source link points directly to that directory. Build, test and release preparation read the new source path. Plugin identity, installable catalog path, permissions and saved island format remain unchanged.
+
 ## Landmark fusion
 
 Fusion uses the existing SVG artwork directly: two normal landmarks converge, golden rings and sparks spread, and the + version appears over three seconds. Buildings, workers, tools and their animations stay in the vector scene. The effect is shared across landmarks, needs no video files and stays sharp when scaled. Skipping, closing or enabling reduced motion removes the transient copies; reduced motion displays the result immediately. Browser preview: `/?lang=ko&preview=reveal&fusion=greatwall`, without changing tickets or collection data. A future 1,000-landmark catalog can reuse this effect; its artwork and data must still fit the existing package limits.

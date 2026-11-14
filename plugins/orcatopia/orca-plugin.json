@@ -2,7 +2,7 @@
   "manifestVersion": 2,
   "id": "landmark-island",
   "name": "Orcatopia",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "description": "A relaxing island-building game between tasks. Earn tickets from new worktrees, collect world landmarks, and decorate the land, rivers and sea.",
   "engines": {
     "orca": ">=1.4.248"
