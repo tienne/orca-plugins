@@ -78,3 +78,12 @@ cp test-results/landmark-island/modern-landmarks-59-demo.png docs/screenshots/or
 ```
 
 The manifest now uses the English introduction as its cover, the 256 × 256 PNG rendered from the same vector emblem as its icon, and the full English DEMO garden as its screenshot. Captures explicitly select sunny daytime, so device time does not change release artwork. Both introduction languages remain bundled. All image dimensions and file sizes are checked by the installed Orca validator.
+
+
+## Current Orcatopia registration images
+
+The current cover combines a validated water-island scene and enlarged Wonder-tier artwork. `?preview=showcase` switches between Sea & river, Wonders up close and SVG fusion, independently of saved browser progress. Use `pnpm nx run landmark-island:screenshots` for the current set; the older garden showcase above remains a separate fixture. Copy `orcatopia-introduction.png`, `orcatopia-introduction.ko.png`, `orcatopia-wonders.png` and `orcatopia-fusion.png` from `test-results/landmark-island/` into `plugins/landmark-island/assets/`; copy `orcatopia-island-demo.png` as `orcatopia-island.png`. Covers and screenshots are 1600 × 1000 and retain DEMO labels. The manifest includes English and Korean versions of the water scene, Wonder close-ups and fusion result (six images); the cover also has a Korean README variant. All imagery comes from local game SVG/CSS, with no external image assets. The fixture validates placement surfaces and craft quantities and tests unchanged browser saves.
+
+The current resort fixture places 26 landmarks (10 at sea), 310 decorations and 80 river tiles. Multi-row river tiles form a continuous broad water surface. Repeated coastal palms, distinct woodland gardens, flower borders, resting places and offshore boats/corals use the normal ownership and funded crafting records.
+
+The registration gallery now contains six images: the three English scenes followed by the three Korean scenes. The cover remains English. Regeneration also produces `orcatopia-island-demo.ko.png`, `orcatopia-wonders.ko.png` and `orcatopia-fusion.ko.png`; copy them to plugin assets, renaming the island image to `orcatopia-island.ko.png`. Images share a gallery and do not switch automatically by UI language.

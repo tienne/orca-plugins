@@ -2,6 +2,13 @@
 
 English · [한국어](orcatopia-release.ko.md)
 
+
+## 0.4.0 release scope (2026-11-14)
+
+This release expands the catalog to 306 landmarks across 103 countries and 953 decorations, including six new water destinations and 38 water-only decorations. Land, sea and river placement, connected broad rivers, the ready-to-place strip and cursor validity preview are included. Matching placed normal landmarks can fuse atomically into a plus version at the destination, retaining its facing and floors. Plus artwork preserves existing workers and equipment; fusion uses shared vector effects rather than video assets.
+
+The registration gallery uses an English cover and six DEMO screenshots, three English followed by three Korean. The resort fixture contains 26 landmarks, 310 decorations and 80 river tiles. Catalog preparation categorizes Orcatopia as `games` and preserves Git Logs. Existing v6 saves and requested capabilities remain supported. Publish the custom catalog and the existing `tienne/orcatopia` root-package update route; do not change the publisher or plugin ID. The user authorized release and public listing in this session. The earlier application-restart deferral remains in effect; do not quit Orca or replace a live save for release verification. Record final CI, immutable source/artifact refs and public indexing results separately.
+
 ## 0.3.0 fusion candidate (2026-11-13)
 
 This candidate adds 300 fusion-only + variants and 300 exclusive star monuments, taking the decoration catalog to 908. Normal draw weights and tier assignments are unchanged. Schema v6 preserves historical discovery rewards and records idempotent fusion operations; v1–v5 migrate when read. The minimum host and requested capabilities remain unchanged from 0.2.0. Game/worker tests cover save failure, response loss, concurrent requests, restart replay, placement protection, migration and backup conservation. Fusion browser tests cover English/Korean, narrow screens, reduced motion and placement. Full UI, ship review and publication evidence must be recorded for the final source commit before release. A full Orca application restart remains deferred by the user's earlier instruction; do not quit their app to test this release.

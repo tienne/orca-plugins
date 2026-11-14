@@ -78,3 +78,12 @@ cp test-results/landmark-island/modern-landmarks-59-demo.png docs/screenshots/or
 ```
 
 manifest는 영문 소개를 커버, 같은 벡터 문양에서 렌더링한 256 × 256 PNG를 아이콘, 전체 영문 DEMO 정원을 스크린샷으로 사용합니다. 촬영 시 맑은 낮을 명시적으로 선택해 기기 시각에 따라 출시 이미지가 바뀌지 않습니다. 한국어·영어 소개를 모두 동봉하며 이미지 크기와 파일 용량은 설치된 Orca 검증기로 확인합니다.
+
+
+## 현재 오르카토피아 등록 이미지
+
+현재 소개 이미지는 바다·강이 만나는 섬과 불가사의 등급 확대 장면을 함께 담습니다. `?preview=showcase`에서 바다와 강, 불가사의 확대, SVG 합성을 전환하며 기존 저장 데이터와 독립적으로 동작합니다. 현재 이미지 세트는 `pnpm nx run landmark-island:screenshots`로 생성합니다. 위의 이전 정원 showcase는 별도 fixture로 남습니다. `test-results/landmark-island/`의 `orcatopia-introduction.png`, `orcatopia-introduction.ko.png`, `orcatopia-wonders.png`, `orcatopia-fusion.png`를 `plugins/landmark-island/assets/`에 복사하고, `orcatopia-island-demo.png`는 `orcatopia-island.png`로 복사합니다. 모두 1600 × 1000이며 DEMO 표시를 유지합니다. manifest에는 수상 섬·불가사의 확대·합성 결과를 영문·한국어로 총 6장 등록하고 한국어 소개 이미지도 README에 제공합니다. 외부 이미지 없이 기존 SVG/CSS만 사용하며, 지형별 배치·제작 수량·기존 브라우저 저장 보존을 검사합니다.
+
+현재 휴양지 fixture는 랜드마크 26개(해상 10개), 장식 310개, 강 타일 80개로 구성합니다. 여러 줄로 붙인 강 타일은 넓고 연속된 수면을 표시합니다. 야자수 해안·수목 정원·꽃길·쉼터와 바다의 범선·산호 장식은 정상 보유 수량과 재료로 충당한 제작 기록을 사용합니다.
+
+등록 갤러리는 영문 세 장 다음에 한국어 세 장을 배치한 총 6장입니다. 대표 이미지는 영문을 유지합니다. 재생성 시 `orcatopia-island-demo.ko.png`, `orcatopia-wonders.ko.png`, `orcatopia-fusion.ko.png`도 생성하며 플러그인 assets로 복사합니다. 섬 이미지는 `orcatopia-island.ko.png`로 이름을 바꿉니다. 언어별 자동 전환 없이 같은 갤러리에 함께 노출합니다.

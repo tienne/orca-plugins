@@ -93,6 +93,11 @@ if (plugin === 'landmark-island') {
     'orcatopia-introduction.ko.png',
     'orcatopia-icon.png',
     'orcatopia-island.png',
+    'orcatopia-island.ko.png',
+    'orcatopia-wonders.png',
+    'orcatopia-wonders.ko.png',
+    'orcatopia-fusion.png',
+    'orcatopia-fusion.ko.png',
   ])
     await copyFile(
       resolve(source, 'assets', name),
