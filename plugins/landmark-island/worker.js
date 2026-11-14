@@ -1,7 +1,7 @@
-// plugins/landmark-island/src/worker/main.ts
+// plugins/orcatopia/src/worker/main.ts
 import { randomInt } from "node:crypto";
 
-// plugins/landmark-island/src/timezone-cities.json
+// plugins/orcatopia/src/timezone-cities.json
 var timezone_cities_default = {
   version: "2026f",
   locations: {
@@ -559,7 +559,7 @@ var timezone_cities_default = {
   }
 };
 
-// plugins/landmark-island/src/weather.ts
+// plugins/orcatopia/src/weather.ts
 var WEATHER_HOUR = 60 * 60 * 1e3;
 function timezoneLocation(timezone) {
   if (typeof timezone !== "string" || timezone.length > 100) return null;
@@ -602,7 +602,7 @@ function validWeather(value) {
   return Number.isInteger(value) && Number(value) >= 0 && Number(value) <= 3;
 }
 
-// plugins/landmark-island/src/worker/weather.ts
+// plugins/orcatopia/src/worker/weather.ts
 async function fetchWeather(location) {
   const url = new URL("https://api.open-meteo.com/v1/forecast");
   url.search = new URLSearchParams({
@@ -732,10 +732,10 @@ var WeatherService = class {
   }
 };
 
-// plugins/landmark-island/src/worker/expeditions.ts
+// plugins/orcatopia/src/worker/expeditions.ts
 import { createHash } from "node:crypto";
 
-// plugins/landmark-island/src/expeditions.ts
+// plugins/orcatopia/src/expeditions.ts
 var EXPEDITION_LIMIT = 24;
 var states = /* @__PURE__ */ new Set(["working", "waiting", "blocked", "done"]);
 var outcomes = /* @__PURE__ */ new Set([
@@ -792,7 +792,7 @@ function observeExpedition(records, id, state, at2, outcome = "unconfirmed", nam
   );
 }
 
-// plugins/landmark-island/src/worker/expeditions.ts
+// plugins/orcatopia/src/worker/expeditions.ts
 var ExpeditionLog = class {
   constructor(storage) {
     this.storage = storage;
@@ -855,7 +855,7 @@ var ExpeditionLog = class {
   }
 };
 
-// plugins/landmark-island/src/water-catalog.json
+// plugins/orcatopia/src/water-catalog.json
 var water_catalog_default = [
   {
     record: {
@@ -1063,7 +1063,7 @@ var water_catalog_default = [
   }
 ];
 
-// plugins/landmark-island/src/water-themes.ts
+// plugins/orcatopia/src/water-themes.ts
 var waterThemes = [
   { id: "halong", placement: "sea", gift: "buoy", special: "sailboat" },
   { id: "papahanaumokuakea", placement: "sea", gift: "coral", special: "buoy" },
@@ -1101,7 +1101,7 @@ var waterShapeNames = {
   waterwheel: ["waterwheel", "\uBB3C\uB808\uBC29\uC544"]
 };
 
-// plugins/landmark-island/src/landmarks.json
+// plugins/orcatopia/src/landmarks.json
 var landmarks_default = [
   {
     id: "eiffel",
@@ -5389,7 +5389,7 @@ var landmarks_default = [
   }
 ];
 
-// plugins/landmark-island/src/landmark-variants.ts
+// plugins/orcatopia/src/landmark-variants.ts
 var enhancedId = (id) => `${id}+`;
 var isEnhanced = (id) => id.endsWith("+");
 var baseId = (id) => isEnhanced(id) ? id.slice(0, -1) : id;
@@ -5402,7 +5402,7 @@ var byId2 = new Map(
 );
 var landmarkById = (id) => byId2.get(id);
 
-// plugins/landmark-island/src/world.ts
+// plugins/orcatopia/src/world.ts
 var SIZE = 40;
 var WORLD_OFFSET = 8;
 var MAX_LAND_LEVEL = 100;
@@ -5523,7 +5523,7 @@ function landAtLevel(level) {
   );
 }
 
-// plugins/landmark-island/src/placement.ts
+// plugins/orcatopia/src/placement.ts
 function placementType(id) {
   return waterTheme(baseId(id))?.placement ?? "land";
 }
@@ -5531,7 +5531,7 @@ var isWorldCell = (cell) => Number.isInteger(cell) && Boolean(tiles[cell]);
 var allowsSea = (id) => ["sea", "coastal"].includes(placementType(id));
 var allowsRiver = (id) => placementType(id) === "river";
 
-// plugins/landmark-island/src/water-decorations.ts
+// plugins/orcatopia/src/water-decorations.ts
 var newIds = new Set(water_catalog_default.map((entry) => entry.record.id));
 var waterDecorations = waterThemes.flatMap((theme) => {
   const landmark = landmarks_default.find((l) => l.id === theme.id);
@@ -5548,7 +5548,7 @@ var waterDecorations = waterThemes.flatMap((theme) => {
   }));
 });
 
-// plugins/landmark-island/src/landmark-expansion.json
+// plugins/orcatopia/src/landmark-expansion.json
 var landmark_expansion_default = [
   {
     id: "montsaintmichel",
@@ -7612,7 +7612,7 @@ var landmark_expansion_default = [
   }
 ];
 
-// plugins/landmark-island/src/expanded-decorations.ts
+// plugins/orcatopia/src/expanded-decorations.ts
 var waterIds = new Set(water_catalog_default.map((entry) => entry.record.id));
 var expandedDecorations = landmark_expansion_default.filter((entry) => !waterIds.has(entry.id)).flatMap((entry) => {
   const nature = [
@@ -7664,7 +7664,7 @@ var expandedDecorations = landmark_expansion_default.filter((entry) => !waterIds
   ];
 });
 
-// plugins/landmark-island/src/decorations.ts
+// plugins/orcatopia/src/decorations.ts
 var themes = [
   ["eiffel", "Paris lantern", "lamp", "Caf\xE9 bench", "bench", "#426b65"],
   [
@@ -8460,7 +8460,7 @@ var DUPLICATE_MATERIALS = 3;
 var isFloor = (id) => ["grass", "path", "stonepath", "river"].includes(id);
 var canRotate = (id) => ["bench", "gate"].includes(decorationById(id)?.shape ?? "");
 
-// plugins/landmark-island/src/game.ts
+// plugins/orcatopia/src/game.ts
 var weights = { common: 70, rare: 23, epic: 6, legendary: 1 };
 var empty = () => ({
   version: 6,
@@ -8993,7 +8993,7 @@ var Game = class {
   }
 };
 
-// plugins/landmark-island/src/worker/main.ts
+// plugins/orcatopia/src/worker/main.ts
 function activate(orca) {
   const game = new Game(
     {

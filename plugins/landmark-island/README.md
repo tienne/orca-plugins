@@ -2,9 +2,15 @@
 
 English · [한국어](README.ko.md)
 
+Development source: [tienne/orca-plugins · plugins/orcatopia](https://github.com/tienne/orca-plugins/tree/main/plugins/orcatopia). The Nx project and plugin ID remain `landmark-island` for compatibility. The separate [public package repository](https://github.com/tienne/orcatopia) provides the root manifest required by the Orca directory; development happens here.
+
 ![Orcatopia — A little escape between tasks, with DEMO sea, river and enlarged Wonder scenes](assets/orcatopia-introduction-v0.4.0.png)
 
 Orcatopia is a little island getaway between tasks in Orca. Earn exploration tickets when you create worktrees, discover world landmarks, and arrange a place of your own while you wait. This version requires Orca 1.4.248+.
+
+## 0.4.1
+
+Development source moved to `plugins/orcatopia`, and the manifest source link points directly to that directory. Build, test and release preparation read the new source path. Plugin identity, installable catalog path, permissions and saved island format remain unchanged.
 
 ## Landmark fusion
 
