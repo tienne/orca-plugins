@@ -1,0 +1,46 @@
+{
+  "manifestVersion": 2,
+  "id": "jira-tasks",
+  "name": "Jira Tasks",
+  "version": "0.1.0",
+  "description": "Keep Jira within reach in the Orca sidebar. Browse issues, follow parent and child tickets, and query children by status or assignee using your existing Jira connection.",
+  "engines": {
+    "orca": ">=1.4.256"
+  },
+  "execution": "trusted-worker",
+  "pluginApi": 1,
+  "main": "worker.js",
+  "contributes": {
+    "panels": [
+      {
+        "id": "jira-tasks",
+        "title": "Jira Tasks",
+        "icon": "layers",
+        "entry": "index.html",
+        "ui": "html"
+      }
+    ],
+    "commands": [
+      {
+        "id": "jira-tasks.open",
+        "title": "Open Jira Tasks",
+        "when": "workspace"
+      }
+    ],
+    "keybindings": [
+      {
+        "command": "jira-tasks.open",
+        "key": "Mod+J",
+        "when": "workspace"
+      }
+    ]
+  },
+  "capabilities": [],
+  "license": "MIT",
+  "repository": "https://github.com/tienne/orca-plugins",
+  "author": {
+    "name": "Tienne",
+    "url": "https://github.com/tienne"
+  },
+  "homepage": "https://github.com/tienne/orca-plugins/tree/main/plugins/jira-tasks"
+}

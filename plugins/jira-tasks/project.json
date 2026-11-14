@@ -1,0 +1,43 @@
+{
+  "name": "jira-tasks",
+  "projectType": "application",
+  "sourceRoot": "plugins/jira-tasks/src",
+  "targets": {
+    "build": {
+      "executor": "nx:run-commands",
+      "outputs": [
+        "{workspaceRoot}/dist/plugins/jira-tasks"
+      ],
+      "options": {
+        "command": "node scripts/jira-tasks.mjs build"
+      }
+    },
+    "typecheck": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "node scripts/jira-tasks.mjs typecheck"
+      }
+    },
+    "test": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "node scripts/jira-tasks.mjs test"
+      }
+    },
+    "ui-test": {
+      "executor": "nx:run-commands",
+      "dependsOn": [
+        "build"
+      ],
+      "options": {
+        "command": "node scripts/jira-tasks.mjs ui-test"
+      }
+    },
+    "validate-plugin": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "node scripts/jira-tasks.mjs validate"
+      }
+    }
+  }
+}
