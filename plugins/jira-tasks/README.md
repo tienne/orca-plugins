@@ -38,7 +38,7 @@ Open **Jira Tasks** from the right activity bar. A single connected Jira site is
 
 The child section searches **Jira's full set of direct children**, rather than filtering a previously loaded page. Enter a full issue key or title words, select one or more statuses and assignees (including Unassigned), then press **Search** or Enter. Status and assignee selections stay selected while editing other conditions. Multiple choices within one field use OR; search, status and assignee fields combine with AND. Jira's title search uses indexed words and a final-word prefix, not arbitrary substring matching.
 
-The result limit of 100 applies **after** Jira applies the query conditions. A matching child outside the original first 100 can therefore appear. The section shows the returned count; at the limit it asks you to narrow the query. Reset query clears conditions and queries again. Empty results leave the controls available. Status/assignee choices are discovered across children through additional bounded Jira queries, not just the initial result page; if discovery is incomplete, the UI labels it and key/title search remains usable.
+The result limit of 100 applies **after** Jira applies the query conditions. A matching child outside the original first 100 can therefore appear. The section shows the returned count; at the limit it asks you to narrow the query. Reset query clears conditions and queries again. Empty results leave the controls available. Status/assignee choices are discovered across children through additional bounded Jira queries, not just the initial result page; discovery has a shared 15-second budget and returns partial choices when that budget expires; if discovery is incomplete, the UI labels it and key/title search remains usable.
 
 Select a child to open its detail. Back retraces visited details and restores each view's query conditions, results and scroll position; from the first detail it returns to the list. Issue list returns directly to the list and clears history. Up to 30 snapshots are held in memory. Refresh reloads the current issue and its children using the current conditions without adding a history entry. The list's Refresh reloads connections and the main issue list.
 
@@ -79,6 +79,10 @@ pnpm nx run jira-tasks:validate-plugin
 The build is self-contained in `dist/plugins/jira-tasks`. Source manifests name packaged entries; validate the build. Typecheck regenerates the version-matched `.orca/types` locally. Unit tests use fake CLI results; browser tests use public DEMO fixtures, not your Jira account.
 
 For local loading, inspect the artifact with `orca plugin inspect dist/plugins/jira-tasks --json`, then use `orca plugin dev load dist/plugins/jira-tasks --json`. Review any execution approval Orca requests before approving its exact fingerprint. Open `local.jira-tasks` with `orca plugin open local.jira-tasks --panel jira-tasks --json`. This plugin is a local prototype and has not been published to a catalog.
+
+### CI without Orca
+
+GitHub CI runs `build`, `unit-test` and `browser-test` through Nx. `unit-test` runs the same pure CLI-client, query and avatar tests using Node's test runner and strict assertions; it does not emulate the Orca host. `browser-test` uses mocked Orca/Jira responses without calling `orca plugin check`. Set `PW_CHANNEL=chromium` after installing Playwright Chromium, or leave it unset to use installed Chrome. The same browser setting applies to screenshot generation. Type generation, `typecheck`, `test`, the host check in `ui-test` and `validate-plugin` still require the installed version-matched Orca CLI and remain local host integration checks.
 
 ## Rebuild preview assets
 

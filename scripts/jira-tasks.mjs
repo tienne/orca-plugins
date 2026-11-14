@@ -1,6 +1,6 @@
 import { execFileSync } from 'node:child_process';
 import { existsSync } from 'node:fs';
-import { copyFile, cp, mkdir, rm, writeFile } from 'node:fs/promises';
+import { copyFile, cp, mkdir, readdir, rm, writeFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import { build } from 'esbuild';
 import { validateArtifact } from './validate-plugin-artifact.mjs';
@@ -61,6 +61,48 @@ switch (process.argv[2]) {
   case 'test':
     run(cli, ['plugin', 'test', source, '--json']);
     break;
+  case 'unit-test': {
+    const testOutput = resolve(source, '.orca/node-tests');
+    await rm(testOutput, { recursive: true, force: true });
+    await mkdir(testOutput, { recursive: true });
+    const tests = (await readdir(resolve(source, 'src')))
+      .filter((file) => file.endsWith('.test.ts'))
+      .sort();
+    if (!tests.length) throw new Error('No Jira Tasks unit tests found');
+    const entries = [];
+    for (const file of tests) {
+      const entry = resolve(testOutput, file.replace(/\.ts$/, '.mjs'));
+      await build({
+        entryPoints: [resolve(source, 'src', file)],
+        outfile: entry,
+        bundle: true,
+        format: 'esm',
+        platform: 'node',
+        target: 'es2022',
+        tsconfigRaw: { compilerOptions: { target: 'ES2022' } },
+        plugins: [
+          {
+            name: 'node-test-assertions',
+            setup(builder) {
+              builder.onResolve({ filter: /^orca\/testing$/ }, () => ({
+                path: 'assertions',
+                namespace: 'node-test',
+              }));
+              builder.onLoad({ filter: /.*/, namespace: 'node-test' }, () => ({
+                contents:
+                  "export { test } from 'node:test'; export { default as assert } from 'node:assert/strict';",
+                loader: 'js',
+              }));
+            },
+          },
+        ],
+      });
+      entries.push(entry);
+    }
+    run(process.execPath, ['--test', ...entries]);
+    break;
+  }
+  case 'browser-test':
   case 'ui-test':
     run(process.execPath, [
       resolve('node_modules/@playwright/test/cli.js'),
@@ -68,7 +110,8 @@ switch (process.argv[2]) {
       '--config',
       resolve(source, 'playwright.config.ts'),
     ]);
-    run(cli, ['plugin', 'check', output, '--json']);
+    if (process.argv[2] === 'ui-test')
+      run(cli, ['plugin', 'check', output, '--json']);
     break;
   case 'validate':
     run(cli, ['plugin', 'validate', output, '--json']);
@@ -104,6 +147,6 @@ switch (process.argv[2]) {
   }
   default:
     throw new Error(
-      'Expected build, typecheck, test, ui-test, screenshots or validate.',
+      'Expected build, typecheck, test, unit-test, browser-test, ui-test, screenshots or validate.',
     );
 }

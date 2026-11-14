@@ -5,7 +5,7 @@ export default defineConfig({
   workers: 1,
   use: {
     browserName: 'chromium',
-    channel: 'chrome',
+    channel: process.env.PW_CHANNEL ?? 'chrome',
     baseURL: 'http://127.0.0.1:43281',
   },
   webServer: {
