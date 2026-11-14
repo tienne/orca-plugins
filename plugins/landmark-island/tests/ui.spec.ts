@@ -576,9 +576,9 @@ test('rarity filters, discoveries and progress distinguish unique landmarks from
   );
   const camera = await page.locator('.camera').getAttribute('style');
   for (const [tier, visible, collected, chance, rank, name] of [
-    ['common', 153, 0, 70, 1, 'Discovery'],
-    ['rare', 115, 0, 23, 2, 'Treasure'],
-    ['epic', 24, 0, 6, 3, 'Marvel'],
+    ['common', 154, 0, 70, 1, 'Discovery'],
+    ['rare', 119, 0, 23, 2, 'Treasure'],
+    ['epic', 25, 0, 6, 3, 'Marvel'],
     ['legendary', 8, 1, 1, 4, 'Wonder'],
   ] as const) {
     const filter = page.locator(`[data-tier-filter="${tier}"]`);
