@@ -100,8 +100,10 @@ h1 {
   z-index: var(--tile-depth);
   cursor: crosshair;
 }
-.world-tile .cell:hover {
+/* 호버가 타일 깊이를 바꾸면 겹친 칸 사이에서 클릭 대상이 달라진다. */
+.world-tile .cell:hover:not(:disabled) {
   background: #fff4c44d !important;
+  z-index: var(--tile-depth);
 }
 .world-tile .cell.selected {
   background: #fff1ad88 !important;
