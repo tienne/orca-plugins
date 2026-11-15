@@ -15,7 +15,7 @@ Browse Jira issues in Orca's right sidebar using the Jira accounts already conne
 | Field                | Value                                                         |
 | -------------------- | ------------------------------------------------------------- |
 | Author               | [Tienne](https://github.com/tienne)                           |
-| Version              | 0.1.0                                                         |
+| Version              | 0.1.1                                                         |
 | License              | MIT                                                           |
 | Minimum Orca version | 1.4.256                                                       |
 | Default shortcut     | ⌘J on macOS; Ctrl+J elsewhere                                 |
