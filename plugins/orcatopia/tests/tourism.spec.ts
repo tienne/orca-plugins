@@ -43,6 +43,7 @@ test('tourism pays away time and builds a permanent reward with free undo and re
   await expect(page.locator('.tourism-away')).toContainText(
     '10 visitors · 10 tourism coins · 10 minutes',
   );
+  await page.locator('[data-view=map]').click();
   await page.locator('#open-tourism').click();
   await expect(page.locator('#open-tourism')).toHaveAccessibleName(
     '10 tourism coins',
@@ -51,6 +52,10 @@ test('tourism pays away time and builds a permanent reward with free undo and re
   await information
     .getByRole('button', { name: 'Choose construction site' })
     .click();
+  await expect(page.locator('[data-view=island]')).toHaveAttribute(
+    'aria-pressed',
+    'true',
+  );
   await page
     .getByRole('button', { name: 'Cell 2: empty', exact: true })
     .click();

@@ -14,6 +14,7 @@ export async function testTourism({
   let saved = empty();
   let failed = false;
   let loseReply = false;
+  let recovery = null;
   const store = {
     read: async () => structuredClone(saved),
     write: async (s) => {
@@ -24,7 +25,10 @@ export async function testTourism({
         throw Error('reply lost');
       }
     },
-    writeBackup: async () => {},
+    readBackup: async () => structuredClone(recovery),
+    writeBackup: async (state) => {
+      recovery = structuredClone(state);
+    },
   };
   const makeGame = () =>
     new Game(
@@ -217,6 +221,15 @@ export async function testTourism({
     (await makeGame().restore({ text: backup, expected })).tourism.coins,
     state.tourism.coins,
   );
+  const reviewedCurrent = await game.snapshot();
+  now++;
+  const retainedBackup = await game.exportBackup(true);
+  assert.deepEqual(
+    saved,
+    reviewedCurrent,
+    'reading recovery does not stale the reviewed current snapshot',
+  );
+  await game.restore({ text: retainedBackup, expected: reviewedCurrent });
   now += minute;
   assert.equal((await game.snapshot()).tourism.coins, state.tourism.coins + 2);
   const legacy = { ...saved, version: 6, decorations: [] };

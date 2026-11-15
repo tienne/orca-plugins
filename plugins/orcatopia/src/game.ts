@@ -492,7 +492,7 @@ export class Game {
       const old = await this.store.readBackup?.();
       if (old == null) throw Error('No pre-restore backup is available yet.');
       return encodeBackup(validate(old));
-    });
+    }, !previous);
   }
   restore(input: unknown) {
     return this.queue(async (s) => {

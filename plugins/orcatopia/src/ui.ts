@@ -582,6 +582,7 @@ function prepareFusion(
 let decorTheme = 'unlocked';
 let pendingCraft: { id: string; decoration: string } | undefined;
 function chooseDecoration(id: string) {
+  view = 'island';
   setInventory(undefined, false);
   selectedDecor = id;
   editLayer = isFloor(selectedDecor) ? 'floor' : 'objects';
