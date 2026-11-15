@@ -8,8 +8,8 @@
       "path": "plugins/git-logs"
     },
     "tienne.landmark-island": {
-      "version": "0.4.1",
-      "sourceCommit": "148905e9d62205554cfa09a8dfab92f7b9ddad1a",
+      "version": "0.4.2",
+      "sourceCommit": "27e4643d512ed1bcd56398e301bccc226f274836",
       "repository": "https://github.com/tienne/orca-plugins.git",
       "path": "plugins/landmark-island"
     },

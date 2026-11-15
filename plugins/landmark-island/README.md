@@ -8,6 +8,10 @@ Development source: [tienne/orca-plugins · plugins/orcatopia](https://github.co
 
 Orcatopia is a little island getaway between tasks in Orca. Earn exploration tickets when you create worktrees, discover world landmarks, and arrange a place of your own while you wait. This version requires Orca 1.4.248+.
 
+## 0.4.2
+
+Language selection now follows the shared locale rules: valid Korean and English host tags keep their region, and missing, malformed or unsupported values use `en-US` even when the browser uses Korean. Quantities and statistics are formatted with the selected locale. Saved data, plugin identity and permissions remain unchanged.
+
 ## 0.4.1
 
 Development source moved to `plugins/orcatopia`, and the manifest source link points directly to that directory. Build, test and release preparation read the new source path. Plugin identity, installable catalog path, permissions and saved island format remain unchanged.
@@ -98,11 +102,15 @@ Placement edits preserve the live island, camera and ambient animation elements.
 
 ## Language
 
+Supported Korean and English locale tags are canonicalized and retain their region (`ko` stays `ko`, `KO-kr` becomes `ko-KR`, and `en-GB` stays `en-GB`). Missing, malformed or unsupported host values use `en-US`, even if the browser uses Korean. Dates and UI counts use the selected locale for display; stored dates, quantities and identifiers are unchanged. Preview language overrides never replace a real host's locale.
+
 The plugin follows Orca's public `orca.locale` setting. Korean and English are supported; missing, malformed or other languages fall back to English. The plugin checks for changes every 500 ms and when the frame regains focus or visibility because the installed host API documents no locale-change event.
 
 Language changes update text in place, preserving camera position, selection, open dialogs, backup confirmation and running reveal timers. Orca may independently reload a frame. Menus, accessible labels, weather, rarity, quantities, decoration names, landmark descriptions and sources, map country names, known errors and backup dates are localized. Brand names, URLs, filenames and unknown host error details remain unchanged. The operating system controls the language of native file dialogs.
 
 Translations live in `src/messages.ko.json` and `src/landmarks.ko.json`. Save identifiers, receipts, draw probabilities and the save format are unchanged. Standalone browser previews use the browser language; `?lang=ko` or `?lang=en` overrides it, including `?preview=reveal&lang=ko`. A hosted frame always follows Orca, ignoring this preview override.
+
+Translation coverage runs in `pnpm nx run landmark-island:test`. It scans source TypeScript and the entry HTML for UI text, template fragments, errors and accessible labels, checks Korean catalog placeholders by name and occurrence count, and fails on unclassified additions. Tests deliberately remove translations and corrupt placeholders to verify that the check fails. Compound or generated fragments use reviewed rendered examples in `scripts/i18n/orcatopia-policy.json`; changing their wording requires updating the translation or those examples. Structural attributes, IDs, URLs and SVG/CSS data are excluded by source context; remaining technical tokens, internal weather diagnostics, worker logs and brand names have explicit reasons in that policy. Runtime user text and saved data are not translation requirements. The existing full-catalog and live-language browser checks still apply. This is a source and fixture check, not a proof that every possible runtime string has been exercised.
 
 ## Rarity and collection progress
 
