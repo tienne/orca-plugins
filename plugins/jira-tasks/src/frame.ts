@@ -32,7 +32,7 @@ let status = '';
 let pending: AbortController | undefined;
 let children: TaskPage = { tasks: [], limitReached: false };
 let childrenBusy = false;
-let childrenError = false;
+let childrenError = '';
 let childQuery = '';
 let childStatuses = new Set<string>();
 let childAssignees = new Set<string>();
@@ -52,7 +52,7 @@ interface DetailSnapshot {
   busy: boolean;
   error: PanelError;
   childrenBusy: boolean;
-  childrenError: boolean;
+  childrenError: string;
   query: string;
   statuses: string[];
   assignees: string[];
@@ -345,9 +345,10 @@ function imageFigure(image: { alt: string; src: string }): HTMLElement {
     () => {
       const dialog = el('dialog');
       const bar = el('div', '', 'topbar');
-      const close = button(t.close, () => dialog.close());
-      close.id = 'image-dialog-close';
-      bar.append(el('span', image.alt, 'muted'), close);
+      bar.append(
+        el('span', image.alt, 'muted'),
+        button(t.close, () => dialog.close()),
+      );
       const full = el('img');
       full.src = image.src;
       full.alt = image.alt;
@@ -687,7 +688,7 @@ async function loadChildren(
   const requestSignal = AbortSignal.any([signal, request.signal]);
   const criteria = childCriteria();
   childrenBusy = true;
-  childrenError = false;
+  childrenError = '';
   const update = () => {
     if (requestSignal.aborted || selected?.key !== key) return;
     const container = document.querySelector<HTMLElement>('#child-issues');
@@ -757,7 +758,7 @@ async function loadChildren(
   } catch {
     if (requestSignal.aborted || selected?.key !== key) return;
     childrenBusy = false;
-    childrenError = true;
+    childrenError = t.childrenError;
     update();
   }
 }
@@ -1081,7 +1082,7 @@ async function loadIssue(
   }
   children = { tasks: [], limitReached: false };
   childrenBusy = true;
-  childrenError = false;
+  childrenError = '';
   busy = true;
   error = '';
   render();
@@ -1112,68 +1113,13 @@ function reconcileInitialLocale(): void {
   uiLocale = locale;
   t = uiLocale === 'ko-KR' ? ko : en;
   document.documentElement.lang = uiLocale;
-  // 언어별 DOM 구조가 같다는 전제로 자식 순번 경로를 써서 번역된 라벨에 의존하지 않는다.
-  const pathOf = (element: Element): number[] => {
-    const path: number[] = [];
-    while (element !== app && element.parentElement) {
-      path.unshift([...element.parentElement.children].indexOf(element));
-      element = element.parentElement;
-    }
-    return path;
-  };
-  const atPath = (path: number[]): HTMLElement | undefined =>
-    path.reduce<HTMLElement | undefined>(
-      (node, index) => node?.children[index] as HTMLElement | undefined,
-      app,
-    );
-  const elements = [app, ...app.querySelectorAll<HTMLElement>('*')];
-  const focusPath = app.contains(document.activeElement)
-    ? pathOf(document.activeElement!)
-    : undefined;
-  const focused = document.activeElement;
-  const selection =
-    focused instanceof HTMLInputElement && focused.selectionStart !== null
-      ? ([
-          focused.selectionStart,
-          focused.selectionEnd,
-          focused.selectionDirection ?? undefined,
-        ] as const)
-      : undefined;
-  const positions = elements
-    .map((element) => ({
-      path: pathOf(element),
-      top: element.scrollTop,
-      left: element.scrollLeft,
-      open: element instanceof HTMLDetailsElement ? element.open : undefined,
-    }))
-    .filter(({ top, left, open }) => top || left || open !== undefined);
-  const { scrollX, scrollY } = window;
   render();
-  // 닫힌 details 안의 체크박스는 포커스를 받을 수 없다.
-  for (const position of positions) {
-    const element = atPath(position.path);
-    if (element instanceof HTMLDetailsElement && position.open !== undefined)
-      element.open = position.open;
-  }
-  const control = focusPath ? atPath(focusPath) : undefined;
-  control?.focus({ preventScroll: true });
-  if (control instanceof HTMLInputElement && selection)
-    control.setSelectionRange(...selection);
-  for (const position of positions) {
-    const element = atPath(position.path);
-    if (!element) continue;
-    element.scrollTop = position.top;
-    element.scrollLeft = position.left;
-  }
-  window.scrollTo(scrollX, scrollY);
-  const close = document.getElementById('image-dialog-close');
-  if (close) close.textContent = t.close;
 }
 // 프레임 준비 전 브라우저 언어를 읽을 수 있어 최초 조회가 끝날 때까지만 초기 값을 보정한다.
 const initialLocaleTimer = window.setInterval(reconcileInitialLocale, 500);
-window.addEventListener('pagehide', (event) => {
-  if (!event.persisted) window.clearInterval(initialLocaleTimer);
-});
+window.addEventListener('pagehide', () =>
+  window.clearInterval(initialLocaleTimer),
+);
 for (const eventName of ['pointerdown', 'focusin'])
   document.addEventListener(eventName, (event) => {
     if (!(event.target instanceof Node)) return;
