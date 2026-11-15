@@ -16,6 +16,7 @@ test('modern discoveries share countries while keeping individual gifts, placeme
     Math.random = () => fixture.modernRolls[fixture.modernRollIndex++ % 2];
   });
   const save = empty();
+  save.discoveredPlaces = landmarks.slice(0, 25).map((l) => l.id);
   for (const landmark of ['gyeongbokgung', 'merlion', 'sagrada']) {
     const workspaceId = `existing-${landmark}`;
     save.tickets.push({ workspaceId, at: '2026-11-08' });
@@ -150,6 +151,7 @@ for (const [start, end, theme] of [
       Math.random = () => fixture.modernRolls[fixture.modernRollIndex++ % 2];
     });
     const save = empty();
+    save.discoveredPlaces = landmarks.slice(0, 25).map((l) => l.id);
     for (const landmark of ['eiffel']) {
       const workspaceId = `existing-${landmark}`;
       save.tickets.push({ workspaceId, at: '2026-11-08' });

@@ -399,3 +399,20 @@ html.dark .fusion-confirm .fusion-error[role='alert'] {
     animation: none;
   }
 }
+
+.collection-explorations {
+  border-top: 1px solid var(--orca-border, #bbc4c8);
+  margin-top: 12px;
+  padding-top: 10px;
+}
+.first-exploration {
+  display: grid;
+  gap: 6px;
+  margin: 12px 0;
+}
+.first-exploration small {
+  display: block;
+}
+.collection-explorations p {
+  margin: 6px 0;
+}
