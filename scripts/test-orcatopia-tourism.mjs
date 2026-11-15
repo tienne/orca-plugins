@@ -210,7 +210,12 @@ export async function testTourism({
   assert.equal(saved.tourism.coins, beforeCafe - 60);
   await makeGame().construct(cafe);
   assert.equal(saved.tourism.coins, beforeCafe - 60);
-  const backup = encodeBackup(saved);
+  const beforeExport = saved.tourism.coins;
+  now += minute;
+  const backup = await game.exportBackup();
+  assert.equal(saved.tourism.settledAt, now);
+  assert.equal(saved.tourism.coins, beforeExport + 2);
+  assert.deepEqual(JSON.parse(backup).state.tourism, saved.tourism);
   await game.decorate({ cell });
   const expected = await game.snapshot();
   now += minute * 60;

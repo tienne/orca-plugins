@@ -34,7 +34,7 @@ The first fusion of each landmark unlocks its named, colored **star monument**, 
 
 ## Tourism and special buildings
 
-**Upgrade note:** opening this version initializes and writes schema v7, even without an edit. Older builds cannot read it; export a backup before upgrading.
+**Upgrade note:** opening this version initializes and writes schema v7, even without an edit. Older builds cannot read it; export a backup before upgrading. Local balances can be edited through backups or increased with repeated clock changes; this version does not prevent that.
 
 Different real places **placed on the island** attract visitors: duplicates and normal/+ copies of the same place count once. One unique place brings one visitor and one tourism coin per minute; no placed landmarks means no new income. Coins are automatic and separate from duplicate crafting materials. Open **Special buildings** beneath the island, choose a construction site, then click an empty land cell. Canceling before choosing the cell costs nothing.
 
