@@ -14,6 +14,7 @@ async function start(
   page: Page,
   options: {
     locale?: string;
+    localePending?: boolean;
     disconnected?: boolean;
     error?: boolean;
     theme?: 'light' | 'dark';
@@ -320,6 +321,19 @@ async function start(
           },
         },
       };
+      if (options.localePending) {
+        let resolvedLocale: string | undefined;
+        const frame = window as unknown as {
+          orca: { locale: string };
+          resolveJiraLocale: (locale: string) => void;
+        };
+        Object.defineProperty(frame.orca, 'locale', {
+          get: () => resolvedLocale ?? navigator.language,
+        });
+        frame.resolveJiraLocale = (locale) => {
+          resolvedLocale = locale;
+        };
+      }
       document.addEventListener('DOMContentLoaded', () => {
         const colors =
           options.theme === 'light'
@@ -1420,6 +1434,33 @@ test('keeps the in-flight detail request across a language change', async ({
   await expect(page.locator('.description')).toContainText('Checkout summary.');
   await expect(page.getByText('Loading issue…', { exact: true })).toHaveCount(
     0,
+  );
+  expect(await dataCalls(page)).toEqual(calls);
+});
+
+test('reconciles the host initial locale when it arrives after the frame renders', async ({
+  page,
+}) => {
+  await start(page, { localePending: true });
+  const browserIsKorean = await page.evaluate(() =>
+    /^ko(?:-|$)/i.test(navigator.language),
+  );
+  const initialLocale = browserIsKorean ? 'ko-KR' : 'en-US';
+  const hostLocale = browserIsKorean ? 'en-US' : 'ko-KR';
+  await expect(page.locator('html')).toHaveAttribute('lang', initialLocale);
+  const search = page.locator('input[type=search]');
+  await search.fill('checkout');
+  const calls = await dataCalls(page);
+  await page.evaluate((locale) => {
+    (
+      window as unknown as { resolveJiraLocale: (locale: string) => void }
+    ).resolveJiraLocale(locale);
+  }, hostLocale);
+  await expect(page.locator('html')).toHaveAttribute('lang', hostLocale);
+  await expect(search).toHaveValue('checkout');
+  await expect(search).toBeFocused();
+  await expect(search).toHaveAccessibleName(
+    browserIsKorean ? 'Search loaded issues' : '불러온 티켓 검색',
   );
   expect(await dataCalls(page)).toEqual(calls);
 });

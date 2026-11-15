@@ -32,7 +32,7 @@ let status = '';
 let pending: AbortController | undefined;
 let children: TaskPage = { tasks: [], limitReached: false };
 let childrenBusy = false;
-let childrenError = '';
+let childrenError = false;
 let childQuery = '';
 let childStatuses = new Set<string>();
 let childAssignees = new Set<string>();
@@ -52,7 +52,7 @@ interface DetailSnapshot {
   busy: boolean;
   error: PanelError;
   childrenBusy: boolean;
-  childrenError: string;
+  childrenError: boolean;
   query: string;
   statuses: string[];
   assignees: string[];
@@ -687,7 +687,7 @@ async function loadChildren(
   const requestSignal = AbortSignal.any([signal, request.signal]);
   const criteria = childCriteria();
   childrenBusy = true;
-  childrenError = '';
+  childrenError = false;
   const update = () => {
     if (requestSignal.aborted || selected?.key !== key) return;
     const container = document.querySelector<HTMLElement>('#child-issues');
@@ -757,7 +757,7 @@ async function loadChildren(
   } catch {
     if (requestSignal.aborted || selected?.key !== key) return;
     childrenBusy = false;
-    childrenError = t.childrenError;
+    childrenError = true;
     update();
   }
 }
@@ -1081,7 +1081,7 @@ async function loadIssue(
   }
   children = { tasks: [], limitReached: false };
   childrenBusy = true;
-  childrenError = '';
+  childrenError = false;
   busy = true;
   error = '';
   render();
@@ -1112,7 +1112,7 @@ function updateLocale(): void {
   uiLocale = locale;
   t = uiLocale === 'ko-KR' ? ko : en;
   document.documentElement.lang = uiLocale;
-  // 같은 상태로 그린 화면끼리의 DOM 경로를 사용해 번역된 라벨에 의존하지 않는다.
+  // 언어별 DOM 구조가 같다는 전제로 자식 순번 경로를 써서 번역된 라벨에 의존하지 않는다.
   const pathOf = (element: Element): number[] => {
     const path: number[] = [];
     while (element !== app && element.parentElement) {
@@ -1169,7 +1169,8 @@ function updateLocale(): void {
   const close = document.getElementById('image-dialog-close');
   if (close) close.textContent = t.close;
 }
-// Orca는 locale 변경 이벤트를 문서화하지 않아 공개 값만 확인한다.
+// 프레임 준비 전 locale은 브라우저 언어일 수 있어 호스트의 초기 언어가 도착한 뒤에도 확인한다.
+// 문서화된 locale 변경 이벤트가 없어 공개 값만 읽는다.
 const localeTimer = window.setInterval(updateLocale, 500);
 window.addEventListener('focus', updateLocale);
 document.addEventListener('visibilitychange', updateLocale);
