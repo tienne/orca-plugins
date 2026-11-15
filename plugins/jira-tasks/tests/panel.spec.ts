@@ -330,14 +330,14 @@ async function start(
         let resolvedLocale: string | undefined;
         const frame = window as unknown as {
           orca: { locale: string };
-          resolveJiraLocale: (locale: string) => void;
+          resolveJiraLocale: (locale: string, complete?: boolean) => void;
         };
         Object.defineProperty(frame.orca, 'locale', {
           get: () => resolvedLocale ?? navigator.language,
         });
-        frame.resolveJiraLocale = (locale) => {
+        frame.resolveJiraLocale = (locale, complete = true) => {
           resolvedLocale = locale;
-          resolveInitialConnection?.();
+          if (complete) resolveInitialConnection?.();
         };
       }
       document.addEventListener('DOMContentLoaded', () => {
@@ -1261,6 +1261,13 @@ for (const hostLocale of ['ko-KR', 'en-US', 'ja-JP']) {
     test(`corrects the initial host locale after delayed readiness: ${hostLocale}, error=${error}`, async ({
       page,
     }) => {
+      await page.clock.install();
+      await page.addInitScript(
+        (locale) => {
+          Object.defineProperty(navigator, 'language', { value: locale });
+        },
+        hostLocale === 'ko-KR' ? 'en-US' : 'ko-KR',
+      );
       await start(page, { localePending: true, error });
       const initialLocale = await page.evaluate(() =>
         /^ko(?:-|$)/i.test(navigator.language) ? 'ko-KR' : 'en-US',
@@ -1289,7 +1296,6 @@ for (const hostLocale of ['ko-KR', 'en-US', 'ja-JP']) {
         error ? ['jira.connection'] : ['jira.connection', 'jira.list'],
       );
       // 시작 보정이 끝난 뒤에는 공개 값이 바뀌어도 실행 중 전환 기능으로 동작하지 않는다.
-      await page.clock.install();
       await page.evaluate(
         (locale) => {
           (
@@ -1307,4 +1313,49 @@ for (const hostLocale of ['ko-KR', 'en-US', 'ja-JP']) {
       );
     });
   }
+}
+
+for (const hostLocale of ['ko-KR', 'en-US', 'ja-JP']) {
+  test(`corrects locale while the initial request is pending: ${hostLocale}`, async ({
+    page,
+  }) => {
+    await page.clock.install();
+    await page.addInitScript(
+      (locale) => {
+        Object.defineProperty(navigator, 'language', { value: locale });
+      },
+      hostLocale === 'ko-KR' ? 'en-US' : 'ko-KR',
+    );
+    await start(page, { localePending: true });
+    await expect.poll(() => dataCalls(page)).toEqual(['jira.connection']);
+    await page.evaluate((locale) => {
+      (
+        window as unknown as {
+          resolveJiraLocale: (locale: string, complete?: boolean) => void;
+        }
+      ).resolveJiraLocale(locale, false);
+    }, hostLocale);
+    await page.clock.runFor(500);
+    await expect(page.locator('html')).toHaveAttribute(
+      'lang',
+      hostLocale === 'ko-KR' ? 'ko-KR' : 'en-US',
+    );
+    await expect(
+      page
+        .locator('.muted')
+        .filter({ hasText: hostLocale === 'ko-KR' ? '불러오는 중' : 'Loading' })
+        .first(),
+    ).toBeVisible();
+    expect(await dataCalls(page)).toEqual(['jira.connection']);
+    await page.evaluate((locale) => {
+      (
+        window as unknown as { resolveJiraLocale: (locale: string) => void }
+      ).resolveJiraLocale(locale);
+    }, hostLocale);
+    await expect(
+      page.getByLabel(
+        hostLocale === 'ko-KR' ? '불러온 티켓 검색' : 'Search loaded issues',
+      ),
+    ).toBeVisible();
+  });
 }
