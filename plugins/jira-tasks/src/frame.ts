@@ -11,8 +11,11 @@ import { statusTone } from './status-tone';
 import { issueTypeTone } from './issue-type';
 
 const bridge = (window as unknown as { orca: OrcaFrameApi }).orca;
-const uiLocale = /^ko(?:-|$)/i.test(bridge.locale) ? 'ko-KR' : 'en-US';
-const t = uiLocale === 'ko-KR' ? ko : en;
+function currentLocale(): string {
+  return /^ko(?:-|$)/i.test(bridge.locale) ? 'ko-KR' : 'en-US';
+}
+let uiLocale = currentLocale();
+let t = uiLocale === 'ko-KR' ? ko : en;
 document.documentElement.lang = uiLocale;
 const app = document.querySelector<HTMLElement>('#app')!;
 let connection: Connection = { sites: [], selectedSiteId: null };
@@ -21,7 +24,8 @@ let filter: TaskFilter = 'assigned';
 let page: TaskPage = { tasks: [], limitReached: false };
 let selected: JiraTask | null = null;
 let busy = true;
-let error = '';
+type PanelError = '' | 'error' | 'detailError';
+let error: PanelError = '';
 let query = '';
 let project = '';
 let status = '';
@@ -46,7 +50,7 @@ interface DetailSnapshot {
   task: JiraTask;
   children: TaskPage;
   busy: boolean;
-  error: string;
+  error: PanelError;
   childrenBusy: boolean;
   childrenError: string;
   query: string;
@@ -910,7 +914,7 @@ function render(): void {
     if (busy) app.append(el('p', t.loadingDetail, 'muted'));
     else if (error) {
       app.append(
-        el('p', error, 'error'),
+        el('p', t[error], 'error'),
         button(t.retry, () => loadIssue(selected!, true)),
       );
     } else {
@@ -929,7 +933,7 @@ function render(): void {
       app.append(footer);
     }
   } else if (busy) app.append(el('p', t.loading, 'muted'));
-  else if (error) app.append(el('p', error, 'error'));
+  else if (error) app.append(el('p', t[error], 'error'));
   else if (!siteId)
     app.append(
       el('p', t.noConnection, 'empty'),
@@ -1032,7 +1036,7 @@ async function load(connect = false): Promise<void> {
   } catch {
     if (!request.signal.aborted) {
       busy = false;
-      error = t.error;
+      error = 'error';
       render();
     }
   }
@@ -1098,11 +1102,24 @@ async function loadIssue(
   } catch {
     if (!request.signal.aborted) {
       busy = false;
-      error = t.detailError;
+      error = 'detailError';
       render();
     }
   }
 }
+function reconcileInitialLocale(): void {
+  const locale = currentLocale();
+  if (locale === uiLocale) return;
+  uiLocale = locale;
+  t = uiLocale === 'ko-KR' ? ko : en;
+  document.documentElement.lang = uiLocale;
+  render();
+}
+// 프레임 준비 전 브라우저 언어를 읽을 수 있어 최초 조회가 끝날 때까지만 초기 값을 보정한다.
+const initialLocaleTimer = window.setInterval(reconcileInitialLocale, 500);
+window.addEventListener('pagehide', () =>
+  window.clearInterval(initialLocaleTimer),
+);
 for (const eventName of ['pointerdown', 'focusin'])
   document.addEventListener(eventName, (event) => {
     if (!(event.target instanceof Node)) return;
@@ -1113,4 +1130,7 @@ for (const eventName of ['pointerdown', 'focusin'])
     }
   });
 window.addEventListener('pagehide', () => pending?.abort());
-void load(true);
+void load(true).finally(() => {
+  reconcileInitialLocale();
+  window.clearInterval(initialLocaleTimer);
+});
