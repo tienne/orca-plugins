@@ -1426,6 +1426,12 @@ test('backup download, confirmed replacement, restart and pre-restore recovery',
       { landmark: 'giza', cell: landTiles.find((t) => t.id > 36)!.id },
     ],
   };
+  const restoredPlaces = [
+    ...new Set([
+      ...validate(backupFixture).discoveredPlaces,
+      ...validate(incoming).discoveredPlaces,
+    ]),
+  ].sort();
   await uploadBackup(page, backupFile(incoming));
   await expect(page.locator('.backup-incoming')).toContainText(
     '1 unused tickets · 1 landmarks (1 unique) · 1 placed',
@@ -1459,7 +1465,7 @@ test('backup download, confirmed replacement, restart and pre-restore recovery',
     await page.evaluate(() =>
       JSON.parse(localStorage.getItem('landmark-island-demo-v1')!),
     ),
-  ).toEqual(validate(incoming));
+  ).toEqual({ ...validate(incoming), discoveredPlaces: restoredPlaces });
   await expect(page.locator('[data-landmark=giza]')).toContainText('Owned ×1');
   await page.getByRole('button', { name: 'Backups', exact: true }).click();
   await page.locator('#backup-previous').click();
@@ -1484,7 +1490,7 @@ test('backup download, confirmed replacement, restart and pre-restore recovery',
     await page.evaluate(() =>
       JSON.parse(localStorage.getItem('landmark-island-demo-v1')!),
     ),
-  ).toEqual(validate(backupFixture));
+  ).toEqual({ ...validate(backupFixture), discoveredPlaces: restoredPlaces });
 });
 
 test('backup rejects damaged, future, oversized files and stale restore previews', async ({
