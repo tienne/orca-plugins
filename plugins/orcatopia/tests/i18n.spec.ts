@@ -31,6 +31,8 @@ test('formats owned counts from their raw source across live locale changes', as
   await expect(page.locator('[data-i18n-number="1234"]')).toHaveText('1,234');
   await setHostLocale(page, 'ko-KR');
   await expect(page.locator('[data-i18n-number="1234"]')).toHaveText('1,234');
+  await setHostLocale(page, 'en-US-u-nu-arab');
+  await expect(page.locator('[data-i18n-number="1234"]')).toHaveText('١٬٢٣٤');
   await setHostLocale(page, 'en-US');
   await expect(page.locator('[data-i18n-number="1234"]')).toHaveText('1,234');
   await expect(

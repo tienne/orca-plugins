@@ -70,9 +70,8 @@ try {
     decodeBackup,
     MAX_BACKUP_BYTES,
   } = await import(pathToFileURL(join(dir, 'game.mjs')));
-  const { translate, resolveLocale, currentLocale, messages, templates } = await import(
-    pathToFileURL(join(dir, 'i18n.mjs'))
-  );
+  const { translate, resolveLocale, currentLocale, messages, templates } =
+    await import(pathToFileURL(join(dir, 'i18n.mjs')));
   await testI18nCoverage({ translate, messages, templates });
   testOrcatopiaLocale({ translate, resolveLocale, currentLocale });
   for (const value of ['fr-FR', 'ja', 'bad_locale', '', undefined, null])

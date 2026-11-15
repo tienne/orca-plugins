@@ -76,6 +76,7 @@ const templates = Object.entries(messages)
     return { regex: new RegExp(`^${pattern}$`, 'u'), names, source, target };
   });
 export function translate(source: string, locale = currentLocale()): string {
+  locale = resolveLocale(locale);
   const text = source.trim();
   if (!text) return source;
   let result = text;

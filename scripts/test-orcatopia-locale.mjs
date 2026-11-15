@@ -51,6 +51,9 @@ export function testOrcatopiaLocale({
     );
   }
 
+  assert.equal(translate('World Map', 'KO-kr'), '세계 지도');
+  assert.equal(translate('12345 materials', 'bad_locale'), '12,345 materials');
+
   const originals = new Map(
     ['window', 'navigator', 'location'].map((key) => [
       key,
