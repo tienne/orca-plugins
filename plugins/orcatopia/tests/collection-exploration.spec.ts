@@ -70,6 +70,7 @@ for (const lang of ['en', 'ko']) {
   test(`legacy first river opportunity costs one ticket once, with persisted ${lang} labels`, async ({
     page,
   }) => {
+    await page.setViewportSize({ width: 360, height: 800 });
     await seed(page, 12, 2, true);
     await page.emulateMedia({ reducedMotion: 'reduce' });
     await page.goto(`/?lang=${lang}`);
@@ -87,6 +88,17 @@ for (const lang of ['en', 'ko']) {
       ),
     ).toBeVisible();
     await expect(river).toBeEnabled();
+    await river.scrollIntoViewIfNeeded();
+    expect(
+      await page
+        .locator('#treasure-menu')
+        .evaluate((menu) => menu.scrollWidth <= menu.clientWidth),
+    ).toBe(true);
+    await page.screenshot({
+      path: `test-results/landmark-island/collection-exploration-${lang}.jpg`,
+      type: 'jpeg',
+      quality: 80,
+    });
     await page.locator('#skip-discovery').check();
     await river.click();
     await expect
