@@ -1,6 +1,6 @@
 import { openTreasure } from './treasure-menu';
 import { test, expect } from '@playwright/test';
-import { empty, landmarks, validate } from '../src/game';
+import { empty, landmarks, validate, collectionTheme } from '../src/game';
 import korean from '../src/landmarks.ko.json';
 
 test('modern discoveries share countries while keeping individual gifts, placements and saves', async ({
@@ -16,7 +16,6 @@ test('modern discoveries share countries while keeping individual gifts, placeme
     Math.random = () => fixture.modernRolls[fixture.modernRollIndex++ % 2];
   });
   const save = empty();
-  save.discoveredPlaces = landmarks.slice(0, 25).map((l) => l.id);
   for (const landmark of ['gyeongbokgung', 'merlion', 'sagrada']) {
     const workspaceId = `existing-${landmark}`;
     save.tickets.push({ workspaceId, at: '2026-11-08' });
@@ -33,7 +32,9 @@ test('modern discoveries share countries while keeping individual gifts, placeme
   await page.reload();
   const modern = landmarks.slice(48, 51);
   const draw = async (entry: (typeof modern)[number]) => {
-    const pool = landmarks.filter((l) => l.tier === entry.tier);
+    const pool = landmarks.filter(
+      (l) => l.tier === entry.tier && collectionTheme(l.id) === 'land',
+    );
     const tierRoll = entry.tier === 'common' ? 0.35 : 0.8;
     await page.evaluate(
       ([tier, item]) => {
@@ -151,7 +152,6 @@ for (const [start, end, theme] of [
       Math.random = () => fixture.modernRolls[fixture.modernRollIndex++ % 2];
     });
     const save = empty();
-    save.discoveredPlaces = landmarks.slice(0, 25).map((l) => l.id);
     for (const landmark of ['eiffel']) {
       const workspaceId = `existing-${landmark}`;
       save.tickets.push({ workspaceId, at: '2026-11-08' });
@@ -168,7 +168,9 @@ for (const [start, end, theme] of [
     await page.reload();
     const modern = landmarks.slice(start, end);
     const draw = async (entry: (typeof modern)[number]) => {
-      const pool = landmarks.filter((l) => l.tier === entry.tier);
+      const pool = landmarks.filter(
+        (l) => l.tier === entry.tier && collectionTheme(l.id) === 'land',
+      );
       const tierRoll =
         entry.tier === 'common' ? 0.35 : entry.tier === 'rare' ? 0.8 : 0.96;
       await page.evaluate(
