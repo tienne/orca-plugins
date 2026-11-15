@@ -1106,7 +1106,7 @@ async function loadIssue(
     }
   }
 }
-function updateLocale(): void {
+function reconcileInitialLocale(): void {
   const locale = currentLocale();
   if (locale === uiLocale) return;
   uiLocale = locale;
@@ -1169,13 +1169,10 @@ function updateLocale(): void {
   const close = document.getElementById('image-dialog-close');
   if (close) close.textContent = t.close;
 }
-// 프레임 준비 전 locale은 브라우저 언어일 수 있어 호스트의 초기 언어가 도착한 뒤에도 확인한다.
-// 문서화된 locale 변경 이벤트가 없어 공개 값만 읽는다.
-const localeTimer = window.setInterval(updateLocale, 500);
-window.addEventListener('focus', updateLocale);
-document.addEventListener('visibilitychange', updateLocale);
+// 프레임 준비 전 브라우저 언어를 읽을 수 있어 최초 조회가 끝날 때까지만 초기 값을 보정한다.
+const initialLocaleTimer = window.setInterval(reconcileInitialLocale, 500);
 window.addEventListener('pagehide', (event) => {
-  if (!event.persisted) window.clearInterval(localeTimer);
+  if (!event.persisted) window.clearInterval(initialLocaleTimer);
 });
 for (const eventName of ['pointerdown', 'focusin'])
   document.addEventListener(eventName, (event) => {
@@ -1187,4 +1184,7 @@ for (const eventName of ['pointerdown', 'focusin'])
     }
   });
 window.addEventListener('pagehide', () => pending?.abort());
-void load(true);
+void load(true).finally(() => {
+  reconcileInitialLocale();
+  window.clearInterval(initialLocaleTimer);
+});
