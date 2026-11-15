@@ -10,6 +10,7 @@ import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
 import { testWeather } from './test-landmark-weather.mjs';
 import { testExpeditions } from './test-landmark-expeditions.mjs';
+import { testOrcatopiaLocale } from './test-orcatopia-locale.mjs';
 const dir = await mkdtemp(join(tmpdir(), 'landmark-test-'));
 try {
   await build({
@@ -69,10 +70,10 @@ try {
     decodeBackup,
     MAX_BACKUP_BYTES,
   } = await import(pathToFileURL(join(dir, 'game.mjs')));
-  const { translate, resolveLocale, messages, templates } = await import(
-    pathToFileURL(join(dir, 'i18n.mjs'))
-  );
+  const { translate, resolveLocale, currentLocale, messages, templates } =
+    await import(pathToFileURL(join(dir, 'i18n.mjs')));
   await testI18nCoverage({ translate, messages, templates });
+  testOrcatopiaLocale({ translate, resolveLocale, currentLocale });
   for (const value of ['fr-FR', 'ja', 'bad_locale', '', undefined, null])
     assert.equal(resolveLocale(value), 'en-US');
   assert.equal(resolveLocale('ko-kr'), 'ko-KR');

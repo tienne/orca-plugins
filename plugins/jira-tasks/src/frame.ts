@@ -7,15 +7,16 @@ import type {
   ChildOptions,
 } from './protocol';
 import { en, ko } from './strings';
+import { resolveLocale, formatNumber } from './locale';
 import { statusTone } from './status-tone';
 import { issueTypeTone } from './issue-type';
 
 const bridge = (window as unknown as { orca: OrcaFrameApi }).orca;
 function currentLocale(): string {
-  return /^ko(?:-|$)/i.test(bridge.locale) ? 'ko-KR' : 'en-US';
+  return resolveLocale(bridge.locale);
 }
 let uiLocale = currentLocale();
-let t = uiLocale === 'ko-KR' ? ko : en;
+let t = uiLocale.startsWith('ko') ? ko : en;
 document.documentElement.lang = uiLocale;
 const app = document.querySelector<HTMLElement>('#app')!;
 let connection: Connection = { sites: [], selectedSiteId: null };
@@ -489,9 +490,16 @@ function renderList(container: HTMLElement): void {
         .includes(query.trim().toLocaleLowerCase()),
   );
   container.append(
-    el('div', `${tasks.length} / ${page.tasks.length} ${t.issues}`, 'muted'),
+    el(
+      'div',
+      `${formatNumber(tasks.length, uiLocale)} / ${formatNumber(page.tasks.length, uiLocale)} ${t.issues}`,
+      'muted',
+    ),
   );
-  if (page.limitReached) container.append(el('p', t.limit, 'muted'));
+  if (page.limitReached)
+    container.append(
+      el('p', t.limit.replace('{count}', formatNumber(100, uiLocale)), 'muted'),
+    );
   if (!tasks.length) {
     container.append(el('p', t.empty, 'empty'));
     return;
@@ -536,7 +544,7 @@ function renderChildren(container: HTMLElement): void {
     ? t.loadingChildren
     : childrenError
       ? t.childrenError
-      : `${children.tasks.length}${children.limitReached ? '+' : ''} ${t.issues}`;
+      : `${formatNumber(children.tasks.length, uiLocale)}${children.limitReached ? '+' : ''} ${t.issues}`;
   clearDetachedAvatars();
   const heading = el('div', '', 'children-heading');
   heading.append(el('h2', t.children));
@@ -544,7 +552,7 @@ function renderChildren(container: HTMLElement): void {
     heading.append(
       el(
         'span',
-        `${children.tasks.length}${children.limitReached ? '+' : ''}`,
+        `${formatNumber(children.tasks.length, uiLocale)}${children.limitReached ? '+' : ''}`,
         'badge',
       ),
     );
@@ -675,7 +683,13 @@ function renderChildren(container: HTMLElement): void {
     container.append(list);
   }
   if (children.limitReached)
-    container.append(el('p', t.childrenLimit, 'muted'));
+    container.append(
+      el(
+        'p',
+        t.childrenLimit.replace('{count}', formatNumber(100, uiLocale)),
+        'muted',
+      ),
+    );
 }
 async function loadChildren(
   key: string,
@@ -1111,7 +1125,7 @@ function reconcileInitialLocale(): void {
   const locale = currentLocale();
   if (locale === uiLocale) return;
   uiLocale = locale;
-  t = uiLocale === 'ko-KR' ? ko : en;
+  t = uiLocale.startsWith('ko') ? ko : en;
   document.documentElement.lang = uiLocale;
   render();
 }

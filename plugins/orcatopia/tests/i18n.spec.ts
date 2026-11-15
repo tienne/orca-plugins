@@ -2,6 +2,44 @@ import { openTreasure } from './treasure-menu';
 import { test, expect, type Page } from '@playwright/test';
 import { empty } from '../src/game';
 
+test('formats owned counts from their raw source across live locale changes', async ({
+  page,
+}) => {
+  const save = empty();
+  save.receipts = Array.from({ length: 1234 }, (_, index) => ({
+    workspaceId: `number-fixture-${index}`,
+    landmark: 'eiffel',
+    at: '2026-11-06',
+  }));
+  save.tickets = save.receipts.map(({ workspaceId, at }) => ({
+    workspaceId,
+    at,
+  }));
+  await page.addInitScript((save) => {
+    (window as unknown as { orca: unknown }).orca = {
+      locale: 'en-GB',
+      plugin: {
+        on() {},
+        async request(name: string) {
+          return name === 'island.expeditions' ? [] : save;
+        },
+      },
+    };
+  }, save);
+  await page.goto('/?lang=ko');
+  await expect(page.locator('html')).toHaveAttribute('lang', 'en-GB');
+  await expect(page.locator('[data-i18n-number="1234"]')).toHaveText('1,234');
+  await setHostLocale(page, 'ko-KR');
+  await expect(page.locator('[data-i18n-number="1234"]')).toHaveText('1,234');
+  await setHostLocale(page, 'en-US-u-nu-arab');
+  await expect(page.locator('[data-i18n-number="1234"]')).toHaveText('١٬٢٣٤');
+  await setHostLocale(page, 'en-US');
+  await expect(page.locator('[data-i18n-number="1234"]')).toHaveText('1,234');
+  await expect(
+    page.getByRole('button', { name: 'My Island', exact: true }),
+  ).toBeVisible();
+});
+
 async function setHostLocale(page: Page, locale: string) {
   await page.evaluate((locale) => {
     (window as unknown as { orca: { locale: string } }).orca.locale = locale;

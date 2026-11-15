@@ -1,12 +1,13 @@
 import { useSyncExternalStore } from 'react';
 import { formatDate as date, resolveLocale, translate } from '../i18n/messages';
 function currentLocale() {
-  // Query overrides exist only in the browser fixture, never in real Orca frames.
-  const preview = !window.orca
-    ? new URLSearchParams(location.search).get('lang')
-    : null;
-  return resolveLocale(preview ?? window.orca?.locale ?? navigator.language)
-    .locale;
+  const host = window.orca;
+  return resolveLocale(
+    host
+      ? host.locale
+      : (new URLSearchParams(location.search).get('lang') ??
+          navigator.language),
+  ).locale;
 }
 const listeners = new Set<() => void>();
 let cleanup: (() => void) | undefined;

@@ -123,6 +123,8 @@ There is no staging, ordinary commit composer, fetch, push, force push, or autom
 
 ## Themes and language
 
+Real Orca frames use `orca.locale` exclusively. Valid Korean and English tags are canonicalized without dropping regional information (`KO-kr` → `ko-KR`, `en-GB` → `en-GB`); missing, malformed or unsupported values use `en-US`. Dates and numbers use that selected locale for display only. Standalone browser fixtures use `?lang=` when present, otherwise the browser language; fixture overrides never replace the host locale.
+
 The plugin uses Orca's public theme colors for panels, menus, dialogs, and the diff. English and Korean follow Orca's language setting; other languages fall back to English. Commit messages, authors, branch names, paths, and raw Git output are not translated. Some built-in Monaco text remains in English. Reopen the panel or tab if an Orca language change has not reached it.
 
 Drag the short handle to resize the commit details and file list. Arrow keys adjust the height, Shift changes it in larger steps, and Home/End move to the limits. Double-click a handle to restore the default heights. The panes scroll internally. Heights are saved in frame-local storage when available; otherwise they last only within the current frame.

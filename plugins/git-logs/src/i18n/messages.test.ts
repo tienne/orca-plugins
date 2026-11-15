@@ -7,9 +7,24 @@ import { resolveLocale, translate, formatDate } from './messages';
 import english from './en.json';
 import korean from './ko.json';
 test('localization resolves regional Orca locales and falls back to English for unsupported/malformed tags', () => {
-  assert.deepEqual(resolveLocale('KO-kr'), { language: 'ko', locale: 'ko-KR' });
-  assert.deepEqual(resolveLocale('en-GB'), { language: 'en', locale: 'en-GB' });
-  for (const locale of ['fr-FR', 'not_a_locale', '', null, undefined])
+  for (const [input, locale, language] of [
+    ['ko', 'ko', 'ko'],
+    ['KO-kr', 'ko-KR', 'ko'],
+    ['en', 'en', 'en'],
+    ['en-US', 'en-US', 'en'],
+    ['en-GB', 'en-GB', 'en'],
+  ])
+    assert.deepEqual(resolveLocale(input), { locale, language });
+  for (const locale of [
+    'ja-JP',
+    'fr-FR',
+    'not_a_locale',
+    'ko-',
+    '',
+    null,
+    undefined,
+    42,
+  ])
     assert.deepEqual(resolveLocale(locale), {
       language: 'en',
       locale: 'en-US',
