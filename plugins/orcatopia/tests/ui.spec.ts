@@ -1,7 +1,7 @@
 import { openTreasure } from './treasure-menu';
 import { test, expect, type Page } from '@playwright/test';
 import { landTiles, landAtLevel } from '../src/world';
-import { validate, landmarks } from '../src/game';
+import { validate, landmarks, empty } from '../src/game';
 const catalogBatches = Array.from(
   { length: Math.ceil(landmarks.length / 100) },
   (_, index) => landmarks.slice(index * 100, (index + 1) * 100),
@@ -684,6 +684,12 @@ for (const wonder of landmarks.filter((l) => l.tier === 'legendary'))
   test(`owned Wonder ${wonder.id} moves in the guide and on the island, with a static reduced-motion alternative`, async ({
     page,
   }) => {
+    await page.addInitScript(
+      (save) => {
+        localStorage.setItem('landmark-island-demo-v1', JSON.stringify(save));
+      },
+      { ...empty(), discoveredPlaces: landmarks.slice(0, 25).map((l) => l.id) },
+    );
     await page.addInitScript(
       (itemRoll) => {
         let roll = 0;
@@ -2637,7 +2643,15 @@ for (const wave of [
     page,
   }) => {
     await page.emulateMedia({ reducedMotion: 'reduce' });
-    await page.addInitScript(() => {
+    const priorCollection = validate({
+      version: 1,
+      receipts: [
+        { workspaceId: 'legacy-owner', landmark: 'eiffel', at: '2026-11-05' },
+      ],
+      placements: [{ landmark: 'eiffel', cell: 0 }],
+    });
+    priorCollection.discoveredPlaces = landmarks.slice(0, 25).map((l) => l.id);
+    await page.addInitScript((save) => {
       const fixture = window as unknown as {
         catalogRolls: number[];
         catalogRollIndex: number;
@@ -2645,21 +2659,8 @@ for (const wave of [
       fixture.catalogRolls = [0, 0];
       fixture.catalogRollIndex = 0;
       Math.random = () => fixture.catalogRolls[fixture.catalogRollIndex++ % 2];
-      localStorage.setItem(
-        'landmark-island-demo-v1',
-        JSON.stringify({
-          version: 1,
-          receipts: [
-            {
-              workspaceId: 'legacy-owner',
-              landmark: 'eiffel',
-              at: '2026-11-05',
-            },
-          ],
-          placements: [{ landmark: 'eiffel', cell: 0 }],
-        }),
-      );
-    });
+      localStorage.setItem('landmark-island-demo-v1', JSON.stringify(save));
+    }, priorCollection);
     await page.goto('/');
     const entries = landmarks.slice(wave.start, wave.start + 12);
     await expect(page.locator('#discovery-progress')).toHaveAttribute(
@@ -2701,7 +2702,7 @@ for (const wave of [
         page.locator(`[data-decor-card="${entry.id}-gift"]`),
       ).toContainText('Owned ×1');
     }
-    await expect(page.locator('.cell')).toHaveCount(landAtLevel(13).length);
+    await expect(page.locator('.cell')).toHaveCount(landAtLevel(25).length);
     await expect(page.locator('.land-progress')).not.toContainText(
       'Your whole island is open.',
     );
