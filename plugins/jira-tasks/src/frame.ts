@@ -11,8 +11,11 @@ import { statusTone } from './status-tone';
 import { issueTypeTone } from './issue-type';
 
 const bridge = (window as unknown as { orca: OrcaFrameApi }).orca;
-const uiLocale = /^ko(?:-|$)/i.test(bridge.locale) ? 'ko-KR' : 'en-US';
-const t = uiLocale === 'ko-KR' ? ko : en;
+function currentLocale(): string {
+  return /^ko(?:-|$)/i.test(bridge.locale) ? 'ko-KR' : 'en-US';
+}
+let uiLocale = currentLocale();
+let t = uiLocale === 'ko-KR' ? ko : en;
 document.documentElement.lang = uiLocale;
 const app = document.querySelector<HTMLElement>('#app')!;
 let connection: Connection = { sites: [], selectedSiteId: null };
@@ -21,7 +24,8 @@ let filter: TaskFilter = 'assigned';
 let page: TaskPage = { tasks: [], limitReached: false };
 let selected: JiraTask | null = null;
 let busy = true;
-let error = '';
+type PanelError = '' | 'error' | 'detailError';
+let error: PanelError = '';
 let query = '';
 let project = '';
 let status = '';
@@ -46,7 +50,7 @@ interface DetailSnapshot {
   task: JiraTask;
   children: TaskPage;
   busy: boolean;
-  error: string;
+  error: PanelError;
   childrenBusy: boolean;
   childrenError: string;
   query: string;
@@ -341,10 +345,9 @@ function imageFigure(image: { alt: string; src: string }): HTMLElement {
     () => {
       const dialog = el('dialog');
       const bar = el('div', '', 'topbar');
-      bar.append(
-        el('span', image.alt, 'muted'),
-        button(t.close, () => dialog.close()),
-      );
+      const close = button(t.close, () => dialog.close());
+      close.id = 'image-dialog-close';
+      bar.append(el('span', image.alt, 'muted'), close);
       const full = el('img');
       full.src = image.src;
       full.alt = image.alt;
@@ -910,7 +913,7 @@ function render(): void {
     if (busy) app.append(el('p', t.loadingDetail, 'muted'));
     else if (error) {
       app.append(
-        el('p', error, 'error'),
+        el('p', t[error], 'error'),
         button(t.retry, () => loadIssue(selected!, true)),
       );
     } else {
@@ -929,7 +932,7 @@ function render(): void {
       app.append(footer);
     }
   } else if (busy) app.append(el('p', t.loading, 'muted'));
-  else if (error) app.append(el('p', error, 'error'));
+  else if (error) app.append(el('p', t[error], 'error'));
   else if (!siteId)
     app.append(
       el('p', t.noConnection, 'empty'),
@@ -1032,7 +1035,7 @@ async function load(connect = false): Promise<void> {
   } catch {
     if (!request.signal.aborted) {
       busy = false;
-      error = t.error;
+      error = 'error';
       render();
     }
   }
@@ -1098,11 +1101,81 @@ async function loadIssue(
   } catch {
     if (!request.signal.aborted) {
       busy = false;
-      error = t.detailError;
+      error = 'detailError';
       render();
     }
   }
 }
+function updateLocale(): void {
+  const locale = currentLocale();
+  if (locale === uiLocale) return;
+  uiLocale = locale;
+  t = uiLocale === 'ko-KR' ? ko : en;
+  document.documentElement.lang = uiLocale;
+  // 같은 상태로 그린 화면끼리의 DOM 경로를 사용해 번역된 라벨에 의존하지 않는다.
+  const pathOf = (element: Element): number[] => {
+    const path: number[] = [];
+    while (element !== app && element.parentElement) {
+      path.unshift([...element.parentElement.children].indexOf(element));
+      element = element.parentElement;
+    }
+    return path;
+  };
+  const atPath = (path: number[]): HTMLElement | undefined =>
+    path.reduce<HTMLElement | undefined>(
+      (node, index) => node?.children[index] as HTMLElement | undefined,
+      app,
+    );
+  const elements = [app, ...app.querySelectorAll<HTMLElement>('*')];
+  const focusPath = app.contains(document.activeElement)
+    ? pathOf(document.activeElement!)
+    : undefined;
+  const focused = document.activeElement;
+  const selection =
+    focused instanceof HTMLInputElement && focused.selectionStart !== null
+      ? ([
+          focused.selectionStart,
+          focused.selectionEnd,
+          focused.selectionDirection ?? undefined,
+        ] as const)
+      : undefined;
+  const positions = elements
+    .map((element) => ({
+      path: pathOf(element),
+      top: element.scrollTop,
+      left: element.scrollLeft,
+      open: element instanceof HTMLDetailsElement ? element.open : undefined,
+    }))
+    .filter(({ top, left, open }) => top || left || open !== undefined);
+  const { scrollX, scrollY } = window;
+  render();
+  // 닫힌 details 안의 체크박스는 포커스를 받을 수 없다.
+  for (const position of positions) {
+    const element = atPath(position.path);
+    if (element instanceof HTMLDetailsElement && position.open !== undefined)
+      element.open = position.open;
+  }
+  const control = focusPath ? atPath(focusPath) : undefined;
+  control?.focus({ preventScroll: true });
+  if (control instanceof HTMLInputElement && selection)
+    control.setSelectionRange(...selection);
+  for (const position of positions) {
+    const element = atPath(position.path);
+    if (!element) continue;
+    element.scrollTop = position.top;
+    element.scrollLeft = position.left;
+  }
+  window.scrollTo(scrollX, scrollY);
+  const close = document.getElementById('image-dialog-close');
+  if (close) close.textContent = t.close;
+}
+// Orca는 locale 변경 이벤트를 문서화하지 않아 공개 값만 확인한다.
+const localeTimer = window.setInterval(updateLocale, 500);
+window.addEventListener('focus', updateLocale);
+document.addEventListener('visibilitychange', updateLocale);
+window.addEventListener('pagehide', (event) => {
+  if (!event.persisted) window.clearInterval(localeTimer);
+});
 for (const eventName of ['pointerdown', 'focusin'])
   document.addEventListener(eventName, (event) => {
     if (!(event.target instanceof Node)) return;
