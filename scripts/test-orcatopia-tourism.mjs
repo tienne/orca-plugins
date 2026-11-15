@@ -242,7 +242,7 @@ export async function testTourism({
   saved = legacy;
   now += minute * 1000;
   state = await makeGame().snapshot();
-  assert.equal(state.version, 7);
+  assert.equal(state.version, 8);
   assert.equal(
     state.tourism.coins,
     0,
@@ -310,6 +310,61 @@ export async function testTourism({
   now += minute * 3;
   assert.equal((await largeGame.snapshot()).tourism.coins, 1_000_000_000);
   assert.equal(large.tourism.away.coins, 1);
+  saved = empty();
+  for (const landmark of landmarks.slice(0, 12)) add(landmark.id);
+  saved.discoveredPlaces = saved.receipts.map((r) => r.landmark).sort();
+  saved.placements = [{ landmark: saved.receipts[0].landmark, cell: 0 }];
+  saved.version = 7;
+  delete saved.tourism;
+  const discoveryHistory = structuredClone(saved.discoveredPlaces);
+  now += minute * 100;
+  game = makeGame();
+  state = await game.snapshot();
+  assert.equal(state.version, 8);
+  assert.equal(
+    state.tourism.coins,
+    0,
+    'v7 collection saves start without backpay',
+  );
+  assert.deepEqual(state.discoveredPlaces, discoveryHistory);
+  const beforeFirst = await game.exportBackup();
+  const ticketId = 'tourism-first-river';
+  saved.tickets.push({ workspaceId: ticketId, at: '2026-11-15' });
+  const beforeTheme = structuredClone(saved);
+  now += minute * 11;
+  failed = true;
+  await assert.rejects(game.exploreTheme({ theme: 'river', ticketId }), /disk/);
+  assert.deepEqual(
+    saved,
+    beforeTheme,
+    'failed theme save rolls back tourism too',
+  );
+  failed = false;
+  loseReply = true;
+  await assert.rejects(
+    game.exploreTheme({ theme: 'river', ticketId }),
+    /reply/,
+  );
+  assert.equal(saved.tourism.coins, 11);
+  assert.deepEqual(saved.firstExplorations, [{ theme: 'river', ticketId }]);
+  await makeGame().exploreTheme({ theme: 'river', ticketId });
+  assert.equal(saved.tourism.coins, 11, 'theme retry never settles twice');
+  const discoveryAfterTheme = structuredClone(saved.discoveredPlaces);
+  await game.construct({
+    building: 'tourism-info',
+    cell: 1,
+    expected: layout(saved),
+  });
+  assert.equal(saved.tourism.coins, 1);
+  const beforeRestore = await game.snapshot();
+  await game.restore({ text: beforeFirst, expected: beforeRestore });
+  assert.equal(saved.tourism.coins, 0);
+  assert.deepEqual(saved.tourism.buildings, []);
+  assert.deepEqual(saved.firstExplorations, [{ theme: 'river' }]);
+  assert.deepEqual(saved.discoveredPlaces, discoveryAfterTheme);
+  await makeGame().restore({ text: beforeFirst, expected: beforeRestore });
+  assert.equal(saved.tourism.coins, 0);
+  assert.deepEqual(saved.firstExplorations, [{ theme: 'river' }]);
   console.log(
     'Tourism: settlement, clocks, migration, restore, concurrency and construction passed',
   );

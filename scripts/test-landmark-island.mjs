@@ -1,4 +1,5 @@
 import { testTourism } from './test-orcatopia-tourism.mjs';
+import { testCollectionExploration } from './test-collection-exploration.mjs';
 import { testI18nCoverage } from './test-orcatopia-i18n.mjs';
 import { testWaterPlacement } from './test-water-placement.mjs';
 import { testFusion } from './test-landmark-fusion.mjs';
@@ -55,6 +56,7 @@ try {
     format: 'esm',
     outExtension: { '.js': '.mjs' },
   });
+  await testCollectionExploration(dir);
   await testWaterPlacement(dir);
   await testWeather(dir);
   await testExpeditions(dir);
@@ -470,7 +472,7 @@ try {
       landmark: 'eiffel',
     })),
   });
-  assert.equal(oldSave.version, 7);
+  assert.equal(oldSave.version, 8);
   assert.equal(availableTickets(oldSave).length, 0);
   assert.equal(oldSave.placements.length, 36);
   let legacy = {
@@ -485,9 +487,9 @@ try {
     },
   });
   await legacyGame.acquire({ workspaceId: 'w0', kind: 'worktree' });
-  assert.equal(legacy.version, 7); // Tourism initializes its durable baseline without backpay.
+  assert.equal(legacy.version, 8); // Tourism initializes its durable baseline without backpay.
   await legacyGame.acquire({ workspaceId: 'new-worktree', kind: 'worktree' });
-  assert.equal(legacy.version, 7);
+  assert.equal(legacy.version, 8);
   assert.equal(availableTickets(legacy).length, 1);
   assert.deepEqual(legacy.receipts, value.receipts);
   assert.deepEqual(legacy.placements, value.placements);
@@ -619,6 +621,9 @@ try {
   incoming.tourism = structuredClone(baseline.tourism);
   const text = encodeBackup(incoming);
   const envelope = JSON.parse(text);
+  incoming.discoveredPlaces = [
+    ...new Set([...incoming.discoveredPlaces, ...baseline.discoveredPlaces]),
+  ].sort();
   for (const bad of [
     '{',
     'null',
@@ -683,6 +688,9 @@ try {
   // Repeat import cannot add copies or tickets; the retained copy can be restored.
   await backups.restore({ text, expected: incoming });
   assert.equal(availableTickets(backupState).length, 1);
+  withEvent.discoveredPlaces = [
+    ...new Set([...withEvent.discoveredPlaces, ...incoming.discoveredPlaces]),
+  ].sort();
   const undoText = await backups.exportBackup(true);
   await backups.restore({ text: undoText, expected: incoming });
   assert.deepEqual(backupState, withEvent);
@@ -747,6 +755,7 @@ try {
     'island.backup',
     'island.restore',
     'island.draw',
+    'island.exploreTheme',
     'island.drawMany',
     'island.fuse',
     'island.craft',
@@ -789,7 +798,15 @@ try {
     hostBefore,
   );
   await handlers['island.restore']({ text, expected: hostBefore });
-  assert.deepEqual(await handlers['island.read'](), incoming);
+  assert.deepEqual(await handlers['island.read'](), {
+    ...incoming,
+    discoveredPlaces: [
+      ...new Set([
+        ...incoming.discoveredPlaces,
+        ...hostBefore.discoveredPlaces,
+      ]),
+    ].sort(),
+  });
   assert.deepEqual(
     decodeBackup(await handlers['island.backup']({ previous: true })).state,
     hostBefore,
@@ -1167,7 +1184,7 @@ try {
   const migratedV3 = validate(oldV3);
   assert.deepEqual(migratedV3.floors, [{ cell: 0, decoration: 'path' }]);
   assert.deepEqual(migratedV3.decorations, []);
-  assert.equal(migratedV3.version, 7);
+  assert.equal(migratedV3.version, 8);
   assert.throws(() =>
     validate({ ...garden, floors: [{ cell: 0, decoration: 'oak' }] }),
   );

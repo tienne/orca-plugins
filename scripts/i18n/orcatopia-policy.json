@@ -612,6 +612,7 @@
         "island.drawMany",
         "island.expeditions",
         "island.expeditions.changed",
+        "island.exploreTheme",
         "island.fuse",
         "island.layout",
         "island.paint",
@@ -639,8 +640,10 @@
         "pond",
         "preview",
         "read",
+        "river",
         "rotation",
         "scout",
+        "sea",
         "skip-discovery",
         "status",
         "success",
@@ -652,9 +655,9 @@
         "waiting",
         "water",
         "working",
+        "worktree",
         "{0}-before-restore",
-        "{0}px",
-        "worktree"
+        "{0}px"
       ]
     },
     {
@@ -717,6 +720,7 @@
         "island.drawMany",
         "island.expeditions",
         "island.expeditions.changed",
+        "island.exploreTheme",
         "island.fuse",
         "island.layout",
         "island.paint",
@@ -1355,9 +1359,9 @@
     },
     {
       "file": "plugins/orcatopia/src/ui.ts",
-      "text": "{17}-landmark prototype · Tier chances: {18}. Each item within a tier is equally likely. No guarantees.",
+      "text": "{17}-landmark prototype · Tier chances: {18}. Unlocked items within a tier are equally likely. First theme explorations are separate.",
       "samples": [
-        "306-landmark prototype · Tier chances: I Discovery 70% / II Treasure 23% / III Marvel 6% / IV Wonder 1%. Each item within a tier is equally likely. No guarantees."
+        "306-landmark prototype · Tier chances: I Discovery 70% / II Treasure 23% / III Marvel 6% / IV Wonder 1%. Unlocked items within a tier are equally likely. First theme explorations are separate."
       ],
       "reason": "Rendered example for optional/compound source fragments; nested source literals are scanned separately.",
       "prefix": ""

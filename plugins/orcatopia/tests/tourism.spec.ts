@@ -1,5 +1,6 @@
 import { test, expect, type Page } from '@playwright/test';
-import { empty, validate, landmarks } from '../src/game';
+import { empty, validate, landmarks, collectionTheme } from '../src/game';
+import { openTreasure } from './treasure-menu';
 
 const now = Date.parse('2026-11-15T12:00:00Z');
 async function start(page: Page, minutes = 10, places = 1) {
@@ -219,4 +220,71 @@ test('all four permanent buildings add visitor activities without changing the i
   await expect(page.locator('.tourism-panel')).toContainText(
     '6 visitors / min · 6 coins / min',
   );
+});
+
+test('v7 collection migration keeps first exploration and earns tourism for construction', async ({
+  page,
+}) => {
+  await page.clock.install({ time: now });
+  await page.clock.pauseAt(now + 1000);
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  const state = empty();
+  const land = landmarks.filter((l) => collectionTheme(l.id) === 'land');
+  for (let i = 0; i < 13; i++) {
+    const workspaceId = `tourism-collection-${i}`;
+    state.tickets.push({ workspaceId, at: '2026-11-15' });
+    if (i < 12)
+      state.receipts.push({
+        workspaceId,
+        landmark: land[i].id,
+        at: '2026-11-15',
+      });
+  }
+  state.discoveredPlaces = state.receipts.map((r) => r.landmark).sort();
+  state.placements = [{ landmark: land[0].id, cell: 0 }];
+  const legacy: any = state;
+  legacy.version = 7;
+  delete legacy.tourism;
+  await page.addInitScript((value) => {
+    if (!localStorage.getItem('landmark-island-demo-v1'))
+      localStorage.setItem('landmark-island-demo-v1', JSON.stringify(value));
+  }, legacy);
+  await page.goto('/?lang=en');
+  await expect(page.locator('.tourism-balance')).toHaveText('0 tourism coins');
+  await page.clock.runFor(600_000);
+  await expect(page.locator('.tourism-balance')).toHaveText('10 tourism coins');
+  await openTreasure(page);
+  await page.locator('#skip-discovery').check();
+  await page
+    .getByRole('button', { name: 'First river exploration', exact: true })
+    .click();
+  await expect(
+    page.getByRole('button', { name: 'First river exploration', exact: true }),
+  ).toBeDisabled();
+  await page.locator('#close-treasure').click();
+  await page.locator('#open-tourism').click();
+  await page
+    .locator('[data-special-building="tourism-info"]')
+    .getByRole('button', { name: 'Choose construction site' })
+    .click();
+  await page
+    .getByRole('button', { name: 'Cell 2: empty', exact: true })
+    .click();
+  await expect(page.locator('.tourism-balance')).toHaveText('0 tourism coins');
+  await page.reload();
+  await expect(
+    page.locator('.garden-object[data-decoration="tourism-info"]'),
+  ).toHaveCount(1);
+  await openTreasure(page);
+  await expect(
+    page.getByRole('button', { name: 'First river exploration', exact: true }),
+  ).toBeDisabled();
+  const persisted = await page.evaluate(() =>
+    JSON.parse(localStorage.getItem('landmark-island-demo-v1')!),
+  );
+  expect(persisted.version).toBe(8);
+  expect(persisted.firstExplorations).toEqual([
+    { theme: 'river', ticketId: 'tourism-collection-12' },
+  ]);
+  expect(persisted.tourism.buildings).toEqual(['tourism-info']);
 });

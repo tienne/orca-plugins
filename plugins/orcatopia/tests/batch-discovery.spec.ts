@@ -83,7 +83,7 @@ test('ten treasures require ten tickets, save once, classify batch duplicates an
     .click();
   await expect
     .poll(async () => (await saved(page)).placements)
-    .toEqual([{ cell: 0, landmark: 'liberty' }]);
+    .toEqual([{ cell: 0, landmark: 'fuji' }]);
   await page.reload();
   await expect(page.locator('#ticket-count')).toHaveText('0');
   expect((await saved(page)).receipts).toHaveLength(10);
@@ -389,7 +389,7 @@ for (const language of ['en', 'ko'])
     await page.locator('.reveal-keep').click();
     expect(
       (await saved(page)).receipts.map((r: { landmark: string }) => r.landmark),
-    ).toEqual([...Array(10).fill('liberty'), 'eiffel', 'petra']);
+    ).toEqual([...Array(10).fill('fuji'), 'eiffel', 'petra']);
     await openTreasure(page);
     await expect(skip).toBeChecked();
   });

@@ -21,6 +21,7 @@ test('new landmarks draw across all tiers, grant their gardens and preserve an e
 }) => {
   test.setTimeout(90_000);
   const save = empty();
+  save.discoveredPlaces = landmarks.slice(0, 25).map((l) => l.id);
   save.tickets.push({ workspaceId: 'legacy', at: '2026-11-12' });
   save.receipts.push({
     workspaceId: 'legacy',
@@ -99,6 +100,7 @@ test('a new garden set crafts, rotates and survives reload without changing old 
   page,
 }) => {
   const save = empty();
+  save.discoveredPlaces = landmarks.slice(0, 25).map((l) => l.id);
   for (let i = 0; i < 3; i++) {
     save.tickets.push({ workspaceId: `garden-${i}`, at: '2026-11-12' });
     save.receipts.push({
