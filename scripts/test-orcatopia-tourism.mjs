@@ -98,6 +98,33 @@ export async function testTourism({
     7,
     'backward time cannot replay income',
   );
+  let boundaryState = structuredClone(saved);
+  const boundaryCoins = boundaryState.tourism.coins;
+  boundaryState.tourism.settledAt = now + minute * 60 * 12;
+  const boundaryGame = new Game(
+    {
+      read: async () => structuredClone(boundaryState),
+      write: async (next) => {
+        boundaryState = structuredClone(next);
+      },
+    },
+    () => 0,
+    () => now,
+  );
+  await boundaryGame.snapshot();
+  assert.equal(
+    boundaryState.tourism.settledAt,
+    now + minute * 60 * 12,
+    'exactly 12 hours keeps the timestamp',
+  );
+  boundaryState.tourism.settledAt++;
+  await boundaryGame.snapshot();
+  assert.equal(
+    boundaryState.tourism.settledAt,
+    now,
+    'more than 12 hours rebases without income',
+  );
+  assert.equal(boundaryState.tourism.coins, boundaryCoins);
   now += minute * 60 * 12;
   let state = await game.snapshot();
   assert.equal(state.tourism.away.visitors, 1440);
