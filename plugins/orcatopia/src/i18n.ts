@@ -179,6 +179,14 @@ export function startLocalization() {
       });
     } else if (node instanceof Element) {
       if (node.matches('script,style,code,pre,[translate="no"]')) return;
+      // 도감이 커져도 문구가 없는 장식 SVG의 도형마다 번역 기록을 만들 필요는 없다.
+      if (
+        node instanceof SVGElement &&
+        node.matches('svg[aria-hidden="true"]') &&
+        !node.matches('[aria-label],[title]') &&
+        !node.querySelector('text,title,desc,[aria-label],[title]')
+      )
+        return;
       for (const key of attrs) {
         const value = node.getAttribute(key);
         if (value !== null)

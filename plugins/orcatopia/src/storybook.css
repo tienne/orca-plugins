@@ -1483,6 +1483,12 @@ dialog:modal {
   width: 86px;
   height: 86px;
 }
+.canvas-inventory .catalog-art-slot {
+  display: block;
+  width: 86px;
+  height: 92px;
+  align-self: center;
+}
 .canvas-inventory .decoration-card > svg {
   height: 82px;
   width: 64px;
