@@ -2712,7 +2712,13 @@ for (const wave of [
         page.locator(`[data-decor-card="${entry.id}-gift"]`),
       ).toContainText('Owned ×1');
     }
-    await expect(page.locator('.cell')).toHaveCount(landAtLevel(25).length);
+    const expectedDiscoveries = new Set([
+      ...priorCollection.discoveredPlaces,
+      ...entries.map((entry) => entry.id),
+    ]);
+    await expect(page.locator('.cell')).toHaveCount(
+      landAtLevel(expectedDiscoveries.size).length,
+    );
     await expect(page.locator('.land-progress')).not.toContainText(
       'Your whole island is open.',
     );
