@@ -8,7 +8,7 @@ Development source: [tienne/orca-plugins · plugins/orcatopia](https://github.co
 
 Orcatopia is a little island getaway between tasks in Orca. Earn exploration tickets when you create worktrees, discover world landmarks, and arrange a place of your own while you wait. This version requires Orca 1.4.248+.
 
-## Collection exploration
+## 0.5.0 — Collection exploration
 
 Start with land landmarks. Discover 12 different places to unlock river landmarks, then 25 to unlock sea and coastal landmarks. These initial thresholds match island growth. Normal draws keep the 70/23/6/1% tier chances and choose uniformly among unlocked entries in each tier. Ten-ticket draws evaluate progress after each result, so a newly unlocked theme enters the following draw in that batch. Duplicates and + fusion do not add places; fusion, placement and returning pieces cannot reduce progress. Terrain editing and existing placements stay available.
 
