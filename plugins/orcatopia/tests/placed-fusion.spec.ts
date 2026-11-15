@@ -1,6 +1,6 @@
 import { collectionSnapshot } from './tourism-state';
 import { test, expect, type Page } from '@playwright/test';
-import { empty } from '../src/game';
+import { empty, validate } from '../src/game';
 
 async function seed(page: Page, withPlus = false) {
   const state = empty();
@@ -33,14 +33,15 @@ async function seed(page: Page, withPlus = false) {
     { decoration: 'path', cell: 31 },
     { decoration: 'stonepath', cell: 33 },
   ];
+  const fixture = validate(state);
   await page.addInitScript((save) => {
     if (!localStorage.getItem('landmark-island-demo-v1'))
       localStorage.setItem('landmark-island-demo-v1', JSON.stringify(save));
-  }, state);
+  }, fixture);
   await page.emulateMedia({ reducedMotion: 'reduce' });
   await page.goto('/?lang=ko');
   await page.locator('#daylight').selectOption('0');
-  return state;
+  return fixture;
 }
 const saved = (page: Page) =>
   page.evaluate(() =>
