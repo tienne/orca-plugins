@@ -268,6 +268,14 @@ export async function testCollectionExploration(dir) {
   for (const bad of [
     { ...migrated, firstExplorations: null },
     { ...migrated, discoveredPlaces: ['unknown'] },
+    { ...migrated, firstExplorations: [{ theme: 'river', ticketId: '' }] },
+    {
+      ...migrated,
+      firstExplorations: [
+        { theme: 'river', ticketId: 'new-0' },
+        { theme: 'sea', ticketId: 'new-0' },
+      ],
+    },
     {
       ...migrated,
       firstExplorations: [
@@ -306,6 +314,16 @@ export async function testCollectionExploration(dir) {
     expected: back,
   });
   assert.deepEqual(again.receipts, guaranteed.receipts);
+  assert.deepEqual(again.firstExplorations, guaranteed.firstExplorations);
+  const writesBeforeReplay = fork.writes;
+  assert.deepEqual(
+    await new Game(fork.store).exploreTheme({
+      theme: 'river',
+      ticketId: 'new-0',
+    }),
+    again,
+  );
+  assert.equal(fork.writes, writesBeforeReplay);
   assert.equal(firstExplorationAvailable(again, 'river'), false);
   assert.deepEqual(decodeBackup(encodeBackup(back)).state, back);
   for (const value of [0.99, 0.995, 0.999999]) {
