@@ -1,3 +1,4 @@
+import { specialBuildings, specialBuilding } from './tourism';
 import { waterDecorations, waterDecorationArt } from './water-decorations';
 import type { WaterShape, WaterSurface } from './water-themes';
 import landmarks from './landmarks.json';
@@ -815,6 +816,15 @@ export const decorations: Decoration[] = [
     color: '#719c72',
     walkable: false,
   },
+  ...specialBuildings.map((b): Decoration => ({
+    id: b.id,
+    name: b.name,
+    cost: 0,
+    gift: false,
+    shape: 'pavilion',
+    color: b.color,
+    walkable: false,
+  })),
   ...expandedDecorations,
   ...waterDecorations,
   ...landmarks.map((l, index): Decoration => ({
@@ -951,6 +961,8 @@ function gardenTreeArt(d: Decoration) {
 }
 export function decorationArt(id: string, rotation = 0) {
   const d = decorationById(id)!;
+  const building = specialBuilding(id);
+  if (building) return specialBuildingArt(building.id, building.color);
   if (d.surface) return waterDecorationArt(d.shape as WaterShape, d.color);
   if (id === 'river')
     return `<svg viewBox="0 0 80 110"><path d="M5 78L40 58 75 78 40 98Z" fill="${d.color}"/><path d="M20 78l15-7m8 14 17-9" stroke="#c2eeea" fill="none"/></svg>`;
@@ -1007,4 +1019,16 @@ export function decorationArt(id: string, rotation = 0) {
     gate: '<path d="M16 90V31h8v59m32 0V31h8v59M10 29h60v9H10Zm-5-14q35 10 70 0v10q-35 9-70 0Z"/><path d="M24 47h32v6H24Z"/><path d="M13 22q27 6 54 0" stroke="#ead8ae" fill="none"/>',
   };
   return `<svg class="decoration-art" viewBox="0 0 80 104" aria-hidden="true"><ellipse cx="40" cy="92" rx="31" ry="7" fill="#244e3825"/><g fill="${d.color}" stroke="#53624d" stroke-width="1.3" stroke-linejoin="round">${shapes[d.shape as Exclude<Decoration['shape'], WaterShape>]}</g></svg>`;
+}
+
+function specialBuildingArt(id: string, color: string) {
+  const feature =
+    id === 'tourism-info'
+      ? '<circle cx="40" cy="46" r="9" fill="#fff4cd"/><path d="M40 42v10m0-16v2" stroke="#4c786f" stroke-width="3"/><path d="M57 81V62h14v9H57" fill="#f1d89d"/>'
+      : id === 'tourism-cafe'
+        ? '<path d="M10 55h60l-7 12H17Z" fill="#f1d9bb"/><path d="M32 36h13v12H32Zm13 2h5v7h-5" fill="#fff4df"/><path d="M29 82h23v4H29m12 0v9" fill="#866d59"/>'
+        : id === 'tourism-shop'
+          ? '<path d="M10 55h60l-5 12H15Z" fill="#f1d9bb"/><path d="M32 37h16v15H32Zm3 0v-5h10v5" fill="#f5d18c"/><path d="M13 76h12v17H13m3-17v-4h6v4" fill="#d5b98b"/>'
+          : '<path d="M20 88V36m40 52V36M15 41h50M17 62h46M19 82h42" stroke="#d6c49f" stroke-width="5"/><path d="M24 28h32v12H24Z" fill="#9cb9c5"/><path d="M36 34V22h8v12m-8-12h15v6H36" fill="#f4dfb2"/>';
+  return `<svg class="decoration-art tourism-building-art" viewBox="0 0 80 104" aria-hidden="true"><ellipse cx="40" cy="94" rx="32" ry="7" fill="#244e3825"/><path d="M16 54 40 40 64 54v35L40 101 16 88Z" fill="${color}" stroke="#53624d"/><path d="M9 52 40 20 71 52 40 69Z" fill="${color}" stroke="#53624d"/><path d="M35 76h12v21H35Z" fill="#655f55"/>${feature}</svg>`;
 }

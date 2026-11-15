@@ -1,3 +1,4 @@
+import { testTourism } from './test-orcatopia-tourism.mjs';
 import { testI18nCoverage } from './test-orcatopia-i18n.mjs';
 import { testWaterPlacement } from './test-water-placement.mjs';
 import { testFusion } from './test-landmark-fusion.mjs';
@@ -11,6 +12,9 @@ import { createHash } from 'node:crypto';
 import { testWeather } from './test-landmark-weather.mjs';
 import { testExpeditions } from './test-landmark-expeditions.mjs';
 import { testOrcatopiaLocale } from './test-orcatopia-locale.mjs';
+const realNow = Date.now;
+const fixedTestNow = realNow();
+Date.now = () => fixedTestNow;
 const dir = await mkdtemp(join(tmpdir(), 'landmark-test-'));
 try {
   await build({
@@ -70,6 +74,15 @@ try {
     decodeBackup,
     MAX_BACKUP_BYTES,
   } = await import(pathToFileURL(join(dir, 'game.mjs')));
+  await testTourism({
+    Game,
+    empty,
+    validate,
+    layout,
+    encodeBackup,
+    landmarks,
+    islandLand,
+  });
   const { translate, resolveLocale, currentLocale, messages, templates } =
     await import(pathToFileURL(join(dir, 'i18n.mjs')));
   await testI18nCoverage({ translate, messages, templates });
@@ -120,7 +133,7 @@ try {
   );
   assert.equal(new Set(landmarks.map((l) => l.id)).size, 306);
   assert.equal(new Set(landmarks.map((l) => l.code)).size, 103);
-  assert.equal(decorations.length, 953);
+  assert.equal(decorations.length, 957);
   for (const code of ['KOR', 'SGP', 'ESP']) {
     const entries = landmarks.filter((l) => l.code === code);
     assert.ok(entries.length >= 2);
@@ -457,7 +470,7 @@ try {
       landmark: 'eiffel',
     })),
   });
-  assert.equal(oldSave.version, 6);
+  assert.equal(oldSave.version, 7);
   assert.equal(availableTickets(oldSave).length, 0);
   assert.equal(oldSave.placements.length, 36);
   let legacy = {
@@ -472,9 +485,9 @@ try {
     },
   });
   await legacyGame.acquire({ workspaceId: 'w0', kind: 'worktree' });
-  assert.equal(legacy.version, 1); // reads / duplicate delivery do not rewrite saves
+  assert.equal(legacy.version, 7); // Tourism initializes its durable baseline without backpay.
   await legacyGame.acquire({ workspaceId: 'new-worktree', kind: 'worktree' });
-  assert.equal(legacy.version, 6);
+  assert.equal(legacy.version, 7);
   assert.equal(availableTickets(legacy).length, 1);
   assert.deepEqual(legacy.receipts, value.receipts);
   assert.deepEqual(legacy.placements, value.placements);
@@ -603,6 +616,7 @@ try {
     ],
     placements: [{ landmark: 'giza', cell: expanded }],
   });
+  incoming.tourism = structuredClone(baseline.tourism);
   const text = encodeBackup(incoming);
   const envelope = JSON.parse(text);
   for (const bad of [
@@ -728,6 +742,7 @@ try {
   ]);
   assert.deepEqual(Object.keys(handlers), [
     'island.weather',
+    'island.construct',
     'island.read',
     'island.backup',
     'island.restore',
@@ -877,7 +892,7 @@ try {
   for (const landmark of landmarks)
     assert.equal(decorationQuantity(fullCatalog, `${landmark.id}-gift`), 1);
   console.log(
-    'PASS: all 306 catalog draws across 103 countries, 953 decorations, localized descriptions, full-catalog backup and preserved legacy land',
+    'PASS: all 306 catalog draws across 103 countries, 957 decorations, localized descriptions, full-catalog backup and preserved legacy land',
   );
 
   // The four focal pieces use the same ownership and durable craft ledger.
@@ -1065,7 +1080,7 @@ try {
   await assert.rejects(gardener.rotate({ cell: 5, rotation: 4 }));
   await assert.rejects(gardener.rotate({ cell: 4, rotation: 2 }));
   const oldV4 = { ...structuredClone(garden), version: 4 };
-  assert.deepEqual(validate(oldV4), garden);
+  assert.deepEqual(validate(oldV4), { ...garden, tourism: null });
   const beforeFacing = layout(garden);
   const facingReceipts = structuredClone(garden.receipts);
   await gardener.rotate({ cell: 4, rotation: 1, expected: beforeFacing });
@@ -1152,7 +1167,7 @@ try {
   const migratedV3 = validate(oldV3);
   assert.deepEqual(migratedV3.floors, [{ cell: 0, decoration: 'path' }]);
   assert.deepEqual(migratedV3.decorations, []);
-  assert.equal(migratedV3.version, 6);
+  assert.equal(migratedV3.version, 7);
   assert.throws(() =>
     validate({ ...garden, floors: [{ cell: 0, decoration: 'oak' }] }),
   );
@@ -1218,5 +1233,6 @@ try {
     'PASS: concurrent events, duplicates, restart deduplication, placement/movement/removal, validation, failed-save recovery, tier boundaries, worker wiring without panels, backup validation, restore conflicts/recovery/retry',
   );
 } finally {
+  Date.now = realNow;
   await rm(dir, { recursive: true, force: true });
 }

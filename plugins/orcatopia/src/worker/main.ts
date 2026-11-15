@@ -64,6 +64,11 @@ export default function activate(orca: Worker) {
     await game.acquire(event);
     await notify();
   });
+  orca.panels.handle('island.construct', async (input) => {
+    const state = await game.construct(input);
+    await notify();
+    return state;
+  });
   orca.panels.handle('island.read', () => game.snapshot());
   orca.panels.handle('island.backup', (input) =>
     game.exportBackup(

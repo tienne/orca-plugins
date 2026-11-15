@@ -1,3 +1,12 @@
+import {
+  TOURISM,
+  specialBuilding,
+  startTourism,
+  settleTourism,
+  tourismRate,
+  validateTourism,
+  type Tourism,
+} from './tourism';
 import { allowsSea, allowsRiver, isWorldCell } from './placement';
 import landmarks from './landmarks.json';
 import {
@@ -19,7 +28,8 @@ export type Placement = { landmark: string; cell: number; rotation?: number };
 export type Receipt = { workspaceId: string; landmark: string; at: string };
 export type Ticket = { workspaceId: string; at: string };
 export type State = {
-  version: 6;
+  version: 7;
+  tourism: Tourism | null;
   fusions: {
     id: string;
     landmark: string;
@@ -36,7 +46,8 @@ export type State = {
   placements: Placement[];
 };
 export const empty = (): State => ({
-  version: 6,
+  version: 7,
+  tourism: null,
   fusions: [],
   floors: [],
   landFloor: 0,
@@ -105,7 +116,11 @@ export function canPlaceDecoration(s: State, id: string, cell: number) {
   return Boolean(
     decoration &&
     surface &&
-    (decoration.surface ? surface === decoration.surface : surface !== 'sea'),
+    (specialBuilding(id)
+      ? surface === 'land'
+      : decoration.surface
+        ? surface === decoration.surface
+        : surface !== 'sea'),
   );
 }
 /** 같은 일반판의 배치 쌍만 후보로 삼고, 확정 시 워커에서 다시 검증한다. */
@@ -131,6 +146,7 @@ export function materials(s: State) {
 export function decorationQuantity(s: State, id: string) {
   const d = decorationById(id);
   if (!d) return 0;
+  if (specialBuilding(id)) return s.tourism?.buildings.includes(id) ? 1 : 0;
   if (!d.landmark) return Infinity;
   return (
     (d.gift && discovered(s, d.landmark) ? 1 : 0) +
@@ -152,7 +168,8 @@ export function validate(value: unknown): State {
       version !== 3 &&
       version !== 4 &&
       version !== 5 &&
-      version !== 6) ||
+      version !== 6 &&
+      version !== 7) ||
     !Array.isArray(s.receipts) ||
     !Array.isArray(s.placements)
   )
@@ -174,7 +191,7 @@ export function validate(value: unknown): State {
     ids.add(r.workspaceId);
     owned.set(r.landmark, (owned.get(r.landmark) ?? 0) + 1);
   }
-  const fusions = version === 6 ? s.fusions : [];
+  const fusions = version === 6 || version === 7 ? s.fusions : [];
   if (!Array.isArray(fusions)) throw Error('Invalid fusion ledger');
   const fusionIds = new Set<string>();
   const fusedCounts = new Map<string, number>();
@@ -197,7 +214,8 @@ export function validate(value: unknown): State {
     if (fusedCounts.get(f.landmark)! * 2 > (owned.get(f.landmark) ?? 0))
       throw Error('Fusion exceeds ownership');
   }
-  const inventory: State = { ...s, fusions };
+  const tourism = version === 7 ? validateTourism(s.tourism) : null;
+  const inventory: State = { ...s, fusions, tourism };
   for (const p of s.placements) {
     if (
       !p ||
@@ -234,27 +252,39 @@ export function validate(value: unknown): State {
   if (s.receipts.some((r) => !earned.has(r.workspaceId)))
     throw Error('Reward has no matching ticket');
   const landFloor =
-    version === 3 || version === 4 || version === 5 || version === 6
+    version === 3 ||
+    version === 4 ||
+    version === 5 ||
+    version === 6 ||
+    version === 7
       ? s.landFloor
       : Math.max(
           0,
           ...s.placements.map((p) => expansionLevel.get(p.cell) ?? 0),
         );
   const crafts =
-    version === 3 || version === 4 || version === 5 || version === 6
+    version === 3 ||
+    version === 4 ||
+    version === 5 ||
+    version === 6 ||
+    version === 7
       ? s.crafts
       : [];
   const oldDecor =
-    version === 3 || version === 4 || version === 5 || version === 6
+    version === 3 ||
+    version === 4 ||
+    version === 5 ||
+    version === 6 ||
+    version === 7
       ? s.decorations
       : [];
   if (!Array.isArray(oldDecor)) throw Error('Invalid decoration placements');
   const floors =
-    version === 4 || version === 5 || version === 6
+    version === 4 || version === 5 || version === 6 || version === 7
       ? s.floors
       : oldDecor.filter((p) => p && isFloor(p.decoration));
   const decor =
-    version === 4 || version === 5 || version === 6
+    version === 4 || version === 5 || version === 6 || version === 7
       ? oldDecor
       : oldDecor.filter((p) => !p || !isFloor(p.decoration));
   if (
@@ -282,6 +312,7 @@ export function validate(value: unknown): State {
   }
   const next: State = {
     ...s,
+    tourism,
     fusions,
     landFloor,
     crafts,
@@ -327,7 +358,8 @@ export function validate(value: unknown): State {
     floorCells.add(p.cell);
   }
   return structuredClone({
-    version: 6,
+    version: 7,
+    tourism,
     fusions: fusions.map(({ id, landmark, at, from, cell }) => ({
       id,
       landmark,
@@ -433,15 +465,39 @@ export interface Store {
   writeBackup?(state: State): Promise<void>;
 }
 export class Game {
+  private pendingState?: State;
+  // 정산과 변경을 한 번에 저장하도록 커밋은 queue 끝에서만 한다.
+  private stage(state: State) {
+    this.pendingState = state;
+  }
   private tail: Promise<unknown> = Promise.resolve();
   constructor(
     private store: Store,
     private random = Math.random,
+    private now = Date.now,
   ) {}
-  private queue<T>(action: (s: State) => Promise<T>) {
-    const result = this.tail.then(async () =>
-      action(validate(await this.store.read())),
-    );
+  private queue<T>(action: (s: State) => Promise<T>, settle = true) {
+    const result = this.tail.then(async () => {
+      this.pendingState = undefined;
+      const state = validate(await this.store.read());
+      let tourismChanged = false;
+      if (settle) {
+        const now = this.now();
+        if (!Number.isSafeInteger(now) || now < 0)
+          throw Error('Invalid tourism clock');
+        const tourism = state.tourism
+          ? settleTourism(state.tourism, tourismRate(state), now)
+          : startTourism(now);
+        if (JSON.stringify(tourism) !== JSON.stringify(state.tourism)) {
+          state.tourism = tourism;
+          tourismChanged = true;
+        }
+      }
+      const output = await action(state);
+      if (this.pendingState || tourismChanged)
+        await this.store.write(this.pendingState ?? state);
+      return output;
+    });
     this.tail = result.catch(() => {});
     return result;
   }
@@ -460,8 +516,16 @@ export class Game {
     return this.queue(async (s) => {
       const data = input as { text?: unknown; expected?: unknown } | null;
       const next = decodeBackup(data?.text).state;
-      // Response-loss retries must not overwrite the pre-restore copy.
-      if (JSON.stringify(next) === JSON.stringify(s)) return s;
+      const content = (state: State) =>
+        JSON.stringify({
+          ...state,
+          tourism: {
+            coins: state.tourism?.coins ?? 0,
+            buildings: state.tourism?.buildings ?? [],
+          },
+        });
+      // 복원은 잔액을 교체하며 과거 기준시각을 가져오지 않는다. 응답 유실 재시도는 무변경이다.
+      if (content(next) === content(s)) return s;
       if (
         !data?.expected ||
         JSON.stringify(validate(data.expected)) !== JSON.stringify(s)
@@ -472,13 +536,48 @@ export class Game {
       if (!this.store.writeBackup)
         throw Error('Recovery storage is unavailable. Nothing was changed.');
       await this.store.writeBackup(s);
-      await this.store.write(next);
+      const now = this.now();
+      if (!Number.isSafeInteger(now) || now < 0)
+        throw Error('Invalid tourism clock');
+      next.tourism = next.tourism
+        ? { ...next.tourism, settledAt: now, remainder: 0, away: null }
+        : startTourism(now);
+      this.stage(next);
+      return next;
+    }, false);
+  }
+  construct(input: unknown) {
+    return this.queue(async (s) => {
+      const p = input as {
+        building?: string;
+        cell?: number;
+        expected?: Layout;
+      } | null;
+      const building = p && specialBuilding(p.building!);
+      if (!building || !Number.isInteger(p?.cell))
+        throw Error('Choose a special building and an empty land cell.');
+      // 영구 소유권으로 재시도를 식별해 회수 후에도 재과금·자동 재배치하지 않는다.
+      if (s.tourism!.buildings.includes(building.id)) return s;
+      checkLayout(s, input);
+      if (
+        !canPlaceDecoration(s, building.id, p!.cell!) ||
+        s.placements.some((x) => x.cell === p!.cell) ||
+        s.decorations.some((x) => x.cell === p!.cell)
+      )
+        throw Error('Choose an empty land cell for construction.');
+      if (s.tourism!.coins < building.cost)
+        throw Error('Not enough tourism coins.');
+      s.tourism!.coins -= building.cost;
+      s.tourism!.buildings.push(building.id);
+      s.decorations.push({ decoration: building.id, cell: p!.cell! });
+      const next = validate(s);
+      this.stage(next);
       return next;
     });
   }
   acquire(event: { workspaceId: string; kind: string }) {
+    if (event.kind !== 'worktree') return this.queue(async (s) => s, false);
     return this.queue(async (s) => {
-      if (event.kind !== 'worktree') return s;
       if (
         typeof event.workspaceId !== 'string' ||
         !event.workspaceId ||
@@ -490,7 +589,7 @@ export class Game {
         workspaceId: event.workspaceId,
         at: new Date().toISOString(),
       });
-      await this.store.write(s);
+      this.stage(s);
       return s;
     });
   }
@@ -508,7 +607,7 @@ export class Game {
         landmark: draw(this.random),
         at: new Date().toISOString(),
       });
-      await this.store.write(s);
+      this.stage(s);
       return s;
     });
   }
@@ -534,7 +633,7 @@ export class Game {
       for (const workspaceId of unused)
         s.receipts.push({ workspaceId, landmark: draw(this.random), at });
       // One durable write: a failed save cannot consume only part of the batch.
-      await this.store.write(s);
+      this.stage(s);
       return s;
     });
   }
@@ -598,7 +697,7 @@ export class Game {
         ...(onIsland ? { from: p.from, cell: p.cell } : {}),
       });
       const next = validate(s);
-      await this.store.write(next);
+      this.stage(next);
       return next;
     });
   }
@@ -620,7 +719,7 @@ export class Game {
       }
       s.crafts.push({ id: p.id, decoration: p.decoration });
       const next = validate(s);
-      await this.store.write(next);
+      this.stage(next);
       return next;
     });
   }
@@ -638,7 +737,7 @@ export class Game {
       if (sameLayout(layout(s), layout(next))) return s;
       if (!sameLayout(layout(s), p.expected))
         throw Error('Island layout changed. Refresh before editing again.');
-      await this.store.write(next);
+      this.stage(next);
       return next;
     });
   }
@@ -661,7 +760,7 @@ export class Game {
         );
       item.rotation = p!.rotation;
       const next = validate(s);
-      await this.store.write(next);
+      this.stage(next);
       return next;
     });
   }
@@ -699,7 +798,7 @@ export class Game {
         }
       }
       const next = validate(s); // entire stroke succeeds or no cells change
-      await this.store.write(next);
+      this.stage(next);
       return next;
     });
   }
@@ -774,7 +873,7 @@ export class Game {
         }
       }
       const next = validate(s);
-      await this.store.write(next);
+      this.stage(next);
       return next;
     });
   }
@@ -815,7 +914,7 @@ export class Game {
           s.placements.push({ cell: p.cell, landmark: p.landmark });
       }
       validate(s);
-      await this.store.write(s);
+      this.stage(s);
       return s;
     });
   }
