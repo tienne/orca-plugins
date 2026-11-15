@@ -58,7 +58,7 @@ This is an independent view of Jira, not an embedded copy of Orca's Tasks screen
 
 ## Language
 
-English is the default. When the panel opens, it reads Orca's UI language: `ko` and `ko-*` use Korean labels and date formatting; all other languages use English. Jira titles, descriptions and workflow names remain as written in Jira. After changing Orca's language, reopen the panel to apply it. The panel corrects a browser-language fallback if the initial host language arrives late during startup. The plugin listing description, manifest cover and all screen previews are English. A [Korean guide](README.ko.md) and Korean introduction artwork are also bundled; Orca's current manifest does not support selecting listing metadata or cover images by locale.
+English is the default. When the panel opens, it reads Orca's UI language: `ko` and `ko-*` use Korean labels and date formatting; all other languages use English. Jira titles, descriptions and workflow names remain as written in Jira. After changing Orca's language, reopen the panel to apply it. The panel corrects a browser-language fallback if the host language arrives before the initial Jira lookup finishes. The plugin listing description, manifest cover and all screen previews are English. A [Korean guide](README.ko.md) and Korean introduction artwork are also bundled; Orca's current manifest does not support selecting listing metadata or cover images by locale.
 
 ## Keyboard shortcut
 
