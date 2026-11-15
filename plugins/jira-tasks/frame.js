@@ -26,7 +26,7 @@ var en = {
   noChildren: "No child issues",
   loadingChildren: "Loading child issues\u2026",
   childrenError: "Could not load child issues",
-  childrenLimit: "Showing up to 100 matching issues. Narrow the conditions to see other matches.",
+  childrenLimit: "Showing up to {count} matching issues. Narrow the conditions to see other matches.",
   noParent: "No parent issue",
   status: "Status",
   any: "All",
@@ -48,7 +48,7 @@ var en = {
   open: "Open in Jira",
   noDescription: "No description.",
   truncated: "The description is shortened. Open Jira for the full issue.",
-  limit: "Up to 100 issues \xB7 Search and filters apply to this list.",
+  limit: "Up to {count} issues \xB7 Search and filters apply to this list.",
   issues: "issues",
   retry: "Retry",
   loadingDetail: "Loading issue\u2026",
@@ -86,7 +86,7 @@ var ko = {
   noChildren: "\uD558\uC704 \uD56D\uBAA9\uC774 \uC5C6\uC2B5\uB2C8\uB2E4",
   loadingChildren: "\uD558\uC704 \uD56D\uBAA9\uC744 \uBD88\uB7EC\uC624\uB294 \uC911\u2026",
   childrenError: "\uD558\uC704 \uD56D\uBAA9\uC744 \uBD88\uB7EC\uC624\uC9C0 \uBABB\uD588\uC2B5\uB2C8\uB2E4",
-  childrenLimit: "\uC870\uAC74\uC5D0 \uB9DE\uB294 \uACB0\uACFC\uB97C \uCD5C\uB300 100\uAC1C \uD45C\uC2DC\uD569\uB2C8\uB2E4. \uC870\uAC74\uC744 \uB354 \uC881\uD788\uBA74 \uB2E4\uB978 \uACB0\uACFC\uB3C4 \uC870\uD68C\uD560 \uC218 \uC788\uC2B5\uB2C8\uB2E4.",
+  childrenLimit: "\uC870\uAC74\uC5D0 \uB9DE\uB294 \uACB0\uACFC\uB97C \uCD5C\uB300 {count}\uAC1C \uD45C\uC2DC\uD569\uB2C8\uB2E4. \uC870\uAC74\uC744 \uB354 \uC881\uD788\uBA74 \uB2E4\uB978 \uACB0\uACFC\uB3C4 \uC870\uD68C\uD560 \uC218 \uC788\uC2B5\uB2C8\uB2E4.",
   noParent: "\uC0C1\uC704 \uD56D\uBAA9 \uC5C6\uC74C",
   status: "\uC0C1\uD0DC",
   any: "\uC804\uCCB4",
@@ -108,7 +108,7 @@ var ko = {
   open: "Jira\uC5D0\uC11C \uC5F4\uAE30",
   noDescription: "\uC124\uBA85\uC774 \uC5C6\uC2B5\uB2C8\uB2E4.",
   truncated: "\uC124\uBA85\uC744 \uC77C\uBD80\uB9CC \uD45C\uC2DC\uD588\uC2B5\uB2C8\uB2E4. \uC804\uCCB4 \uB0B4\uC6A9\uC740 Jira\uC5D0\uC11C \uD655\uC778\uD574 \uC8FC\uC138\uC694.",
-  limit: "\uCD5C\uB300 100\uAC1C \xB7 \uAC80\uC0C9\xB7\uD544\uD130\uB294 \uBD88\uB7EC\uC628 \uBAA9\uB85D\uC5D0 \uC801\uC6A9",
+  limit: "\uCD5C\uB300 {count}\uAC1C \xB7 \uAC80\uC0C9\xB7\uD544\uD130\uB294 \uBD88\uB7EC\uC628 \uBAA9\uB85D\uC5D0 \uC801\uC6A9",
   issues: "\uAC1C",
   retry: "\uB2E4\uC2DC \uC2DC\uB3C4",
   loadingDetail: "\uD2F0\uCF13\uC744 \uBD88\uB7EC\uC624\uB294 \uC911\u2026",
@@ -119,6 +119,21 @@ var ko = {
   attachmentHint: "\uC774\uBBF8\uC9C0\uC640 \uCCA8\uBD80 \uD30C\uC77C\uC740 Jira\uC5D0\uC11C \uD655\uC778\uD560 \uC218 \uC788\uC2B5\uB2C8\uB2E4.",
   fullIssue: "\uC804\uCCB4 \uB0B4\uC6A9\uACFC \uCCA8\uBD80 \uD30C\uC77C \uBCF4\uAE30"
 };
+
+// plugins/jira-tasks/src/locale.ts
+function resolveLocale(value) {
+  try {
+    if (typeof value === "string") {
+      const locale = Intl.getCanonicalLocales(value)[0];
+      if (/^(ko|en)(-|$)/.test(locale)) return locale;
+    }
+  } catch {
+  }
+  return "en-US";
+}
+function formatNumber(value, locale) {
+  return new Intl.NumberFormat(resolveLocale(locale)).format(value);
+}
 
 // plugins/jira-tasks/src/status-tone.ts
 function statusTone(status2) {
@@ -172,8 +187,11 @@ function issueTypeTone(type) {
 
 // plugins/jira-tasks/src/frame.ts
 var bridge = window.orca;
-var uiLocale = /^ko(?:-|$)/i.test(bridge.locale) ? "ko-KR" : "en-US";
-var t = uiLocale === "ko-KR" ? ko : en;
+function currentLocale() {
+  return resolveLocale(bridge.locale);
+}
+var uiLocale = currentLocale();
+var t = uiLocale.startsWith("ko") ? ko : en;
 document.documentElement.lang = uiLocale;
 var app = document.querySelector("#app");
 var connection = { sites: [], selectedSiteId: null };
@@ -549,9 +567,16 @@ function renderList(container) {
     (task) => (!project || task.project === project) && (!status || task.status === status) && `${task.key} ${task.title}`.toLocaleLowerCase().includes(query.trim().toLocaleLowerCase())
   );
   container.append(
-    el("div", `${tasks.length} / ${page.tasks.length} ${t.issues}`, "muted")
+    el(
+      "div",
+      `${formatNumber(tasks.length, uiLocale)} / ${formatNumber(page.tasks.length, uiLocale)} ${t.issues}`,
+      "muted"
+    )
   );
-  if (page.limitReached) container.append(el("p", t.limit, "muted"));
+  if (page.limitReached)
+    container.append(
+      el("p", t.limit.replace("{count}", formatNumber(100, uiLocale)), "muted")
+    );
   if (!tasks.length) {
     container.append(el("p", t.empty, "empty"));
     return;
@@ -590,7 +615,7 @@ function renderChildren(container) {
   for (const child of [...container.children])
     if (child !== announcement) child.remove();
   if (!announcement.isConnected) container.append(announcement);
-  announcement.textContent = childrenBusy ? t.loadingChildren : childrenError ? t.childrenError : `${children.tasks.length}${children.limitReached ? "+" : ""} ${t.issues}`;
+  announcement.textContent = childrenBusy ? t.loadingChildren : childrenError ? t.childrenError : `${formatNumber(children.tasks.length, uiLocale)}${children.limitReached ? "+" : ""} ${t.issues}`;
   clearDetachedAvatars();
   const heading = el("div", "", "children-heading");
   heading.append(el("h2", t.children));
@@ -598,7 +623,7 @@ function renderChildren(container) {
     heading.append(
       el(
         "span",
-        `${children.tasks.length}${children.limitReached ? "+" : ""}`,
+        `${formatNumber(children.tasks.length, uiLocale)}${children.limitReached ? "+" : ""}`,
         "badge"
       )
     );
@@ -719,7 +744,13 @@ function renderChildren(container) {
     container.append(list);
   }
   if (children.limitReached)
-    container.append(el("p", t.childrenLimit, "muted"));
+    container.append(
+      el(
+        "p",
+        t.childrenLimit.replace("{count}", formatNumber(100, uiLocale)),
+        "muted"
+      )
+    );
 }
 async function loadChildren(key, signal, includeOptions = !childOptionsLoaded) {
   childPending?.abort();
@@ -947,7 +978,7 @@ function render() {
     if (busy) app.append(el("p", t.loadingDetail, "muted"));
     else if (error) {
       app.append(
-        el("p", error, "error"),
+        el("p", t[error], "error"),
         button(t.retry, () => loadIssue(selected, true))
       );
     } else {
@@ -966,7 +997,7 @@ function render() {
       app.append(footer);
     }
   } else if (busy) app.append(el("p", t.loading, "muted"));
-  else if (error) app.append(el("p", error, "error"));
+  else if (error) app.append(el("p", t[error], "error"));
   else if (!siteId)
     app.append(
       el("p", t.noConnection, "empty"),
@@ -1062,7 +1093,7 @@ async function load(connect = false) {
   } catch {
     if (!request.signal.aborted) {
       busy = false;
-      error = t.error;
+      error = "error";
       render();
     }
   }
@@ -1124,11 +1155,24 @@ async function loadIssue(task, preserveFilters = false) {
   } catch {
     if (!request.signal.aborted) {
       busy = false;
-      error = t.detailError;
+      error = "detailError";
       render();
     }
   }
 }
+function reconcileInitialLocale() {
+  const locale = currentLocale();
+  if (locale === uiLocale) return;
+  uiLocale = locale;
+  t = uiLocale.startsWith("ko") ? ko : en;
+  document.documentElement.lang = uiLocale;
+  render();
+}
+var initialLocaleTimer = window.setInterval(reconcileInitialLocale, 500);
+window.addEventListener(
+  "pagehide",
+  () => window.clearInterval(initialLocaleTimer)
+);
 for (const eventName of ["pointerdown", "focusin"])
   document.addEventListener(eventName, (event) => {
     if (!(event.target instanceof Node)) return;
@@ -1139,4 +1183,7 @@ for (const eventName of ["pointerdown", "focusin"])
     }
   });
 window.addEventListener("pagehide", () => pending?.abort());
-void load(true);
+void load(true).finally(() => {
+  reconcileInitialLocale();
+  window.clearInterval(initialLocaleTimer);
+});
