@@ -4,9 +4,9 @@ English · [한국어](README.ko.md)
 
 Explore Git logs with a Git tree visualization and commit graph, then compare files in a read-only side-by-side diff. Commit actions are available from the graph's context menu.
 
-Git Logs 0.2.3 requires Orca 1.4.248 or later and local Git.
+Git Logs 0.3.0 requires Orca 1.4.248 or later and local Git.
 
-Git Logs 0.2.0 added read-only features: tag badges, filters for message, author, date, and path, infinite scroll over paged history, comparison of any two commits, file history, and keyboard navigation. Version 0.2.1 only corrects documentation wording and changes no behavior. Version 0.2.2 ends graph lines at the commit dot when the list stops before a parent, and stops the diff pane scrollbars from appearing and disappearing repeatedly when the system always shows scrollbars. Version 0.2.3 adds an icon, a cover, and screenshots to the plugin page and changes no behavior. Versions up to 0.1.1 do not include these features. Sections marked **(since 0.2.0)** describe them. They do not change the existing commit actions, which still prepare, confirm, recheck, and back up as described below.
+Git Logs 0.2.0 added read-only features: tag badges, filters for message, author, date, and path, infinite scroll over paged history, comparison of any two commits, file history, and keyboard navigation. Version 0.2.1 only corrects documentation wording and changes no behavior. Version 0.2.2 ends graph lines at the commit dot when the list stops before a parent, and stops the diff pane scrollbars from appearing and disappearing repeatedly when the system always shows scrollbars. Version 0.2.3 adds an icon, a cover, and screenshots to the plugin page and changes no behavior. Version 0.3.0 uses `en-US` instead of the browser language when the Orca host provides no valid locale, and keeps the region of valid Korean and English tags for dates and numbers. Versions up to 0.1.1 do not include these features. Sections marked **(since 0.2.0)** describe them. They do not change the existing commit actions, which still prepare, confirm, recheck, and back up as described below.
 
 ## Install
 
@@ -122,6 +122,8 @@ Git hooks and commit signing are disabled for these UI actions. Automatic stash,
 There is no staging, ordinary commit composer, fetch, push, force push, or automatic stash UI.
 
 ## Themes and language
+
+Real Orca frames use `orca.locale` exclusively. Valid Korean and English tags are canonicalized without dropping regional information (`KO-kr` → `ko-KR`, `en-GB` → `en-GB`); missing, malformed or unsupported values use `en-US`. Dates and numbers use that selected locale for display only. Standalone browser fixtures use `?lang=` when present, otherwise the browser language; fixture overrides never replace the host locale.
 
 The plugin uses Orca's public theme colors for panels, menus, dialogs, and the diff. English and Korean follow Orca's language setting; other languages fall back to English. Commit messages, authors, branch names, paths, and raw Git output are not translated. Some built-in Monaco text remains in English. Reopen the panel or tab if an Orca language change has not reached it.
 
