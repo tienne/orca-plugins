@@ -346,6 +346,7 @@ test('dedicated editor entry subscribes to descriptor and renders a worker compa
   await page.addInitScript(
     ({ repo, set, diff }) => {
       window.orca = {
+        locale: 'ko-KR',
         api: { major: 1, minor: 3 },
         host: { has: () => true },
         plugin: {
@@ -455,6 +456,7 @@ test('ambiguous active workspace uses a workspace picker instead of guessing a r
   const { fixtureRepo } = await import('../src/ui/fixture');
   await page.addInitScript((repo) => {
     window.orca = {
+      locale: 'ko-KR',
       api: { major: 1, minor: 3 },
       host: { has: () => true },
       plugin: {
@@ -570,6 +572,7 @@ test('host action executes a prepared token once and displays conflicts after re
     let prepared = 0;
     let executed = 0;
     window.orca = {
+      locale: 'ko-KR',
       api: { major: 1, minor: 3 },
       host: { has: () => true },
       plugin: {
@@ -2252,6 +2255,7 @@ test('editor entry opens a version 2 range descriptor and rejects version 1 with
         const requests: Array<{ name: string; input: unknown }> = [];
         Object.defineProperty(window, 'testRequests', { get: () => requests });
         window.orca = {
+          locale: 'ko-KR',
           api: { major: 1, minor: 3 },
           host: { has: () => true },
           plugin: {
@@ -2311,6 +2315,7 @@ test('editor entry opens a version 2 range descriptor and rejects version 1 with
       const requests: unknown[] = [];
       Object.defineProperty(window, 'testRequests', { get: () => requests });
       window.orca = {
+        locale: 'ko-KR',
         api: { major: 1, minor: 3 },
         host: { has: () => true },
         plugin: {
