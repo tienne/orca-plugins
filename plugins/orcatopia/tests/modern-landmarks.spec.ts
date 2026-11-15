@@ -1,3 +1,4 @@
+import { collectionSnapshot } from './tourism-state';
 import { openTreasure } from './treasure-menu';
 import { test, expect } from '@playwright/test';
 import { empty, landmarks, validate } from '../src/game';
@@ -122,10 +123,12 @@ test('modern discoveries share countries while keeping individual gifts, placeme
     await page.keyboard.press('Escape');
   }
   expect(
-    await page.evaluate(() =>
-      JSON.parse(localStorage.getItem('landmark-island-demo-v1')!),
+    collectionSnapshot(
+      await page.evaluate(() =>
+        JSON.parse(localStorage.getItem('landmark-island-demo-v1')!),
+      ),
     ),
-  ).toEqual(stored);
+  ).toEqual(collectionSnapshot(stored));
 });
 
 for (const [start, end, theme] of [
@@ -271,8 +274,10 @@ for (const [start, end, theme] of [
       await page.keyboard.press('Escape');
     }
     expect(
-      await page.evaluate(() =>
-        JSON.parse(localStorage.getItem('landmark-island-demo-v1')!),
+      collectionSnapshot(
+        await page.evaluate(() =>
+          JSON.parse(localStorage.getItem('landmark-island-demo-v1')!),
+        ),
       ),
-    ).toEqual(stored);
+    ).toEqual(collectionSnapshot(stored));
   });

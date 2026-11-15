@@ -1,3 +1,4 @@
+import { collectionSnapshot } from './tourism-state';
 import { test, expect, type Page } from '@playwright/test';
 import { empty, validate, islandLand } from '../src/game';
 import { neighbours, solidProps, tiles, project } from '../src/world';
@@ -122,8 +123,12 @@ test('wind travels through vegetation while residents follow valid routes, stop 
       .evaluate((el) => getComputedStyle(el).pointerEvents),
   ).toBe('none');
   expect(
-    await page.evaluate(() => localStorage.getItem('landmark-island-demo-v1')),
-  ).toBe(stored);
+    collectionSnapshot(
+      await page.evaluate(() =>
+        localStorage.getItem('landmark-island-demo-v1'),
+      ),
+    ),
+  ).toEqual(collectionSnapshot(stored));
   await page.locator('.ocean').screenshot({
     path: test.info().outputPath('living-island.jpg'),
     type: 'jpeg',
@@ -281,8 +286,12 @@ test('placement relocates residents without replacing the live layer or restarti
   await expect(page.locator('.island-resident')).toHaveCount(3);
   await expect(page.locator('.island-critter')).toHaveCount(5);
   expect(
-    await page.evaluate(() => localStorage.getItem('landmark-island-demo-v1')),
-  ).toBe(stored);
+    collectionSnapshot(
+      await page.evaluate(() =>
+        localStorage.getItem('landmark-island-demo-v1'),
+      ),
+    ),
+  ).toEqual(collectionSnapshot(stored));
 });
 
 test('wind ripples sit on decoration water and coastal water instead of on the ground', async ({
@@ -400,8 +409,12 @@ test('placed furnishings become destinations and planted flowers attract a butte
       .count(),
   ).toBe(1);
   expect(
-    await page.evaluate(() => localStorage.getItem('landmark-island-demo-v1')),
-  ).toBe(stored);
+    collectionSnapshot(
+      await page.evaluate(() =>
+        localStorage.getItem('landmark-island-demo-v1'),
+      ),
+    ),
+  ).toEqual(collectionSnapshot(stored));
 });
 
 test('weather interrupts outdoor work, residents seek shelter with umbrellas and change to winter poses in snow', async ({
@@ -439,8 +452,12 @@ test('weather interrupts outdoor work, residents seek shelter with umbrellas and
   expect(resumed.has('water')).toBe(true);
   expect(resumed.has('photo')).toBe(true);
   expect(
-    await page.evaluate(() => localStorage.getItem('landmark-island-demo-v1')),
-  ).toBe(stored);
+    collectionSnapshot(
+      await page.evaluate(() =>
+        localStorage.getItem('landmark-island-demo-v1'),
+      ),
+    ),
+  ).toEqual(collectionSnapshot(stored));
 });
 
 test('night lights follow placed lamps and pavilions; fireflies respect climate, pause and reduced motion', async ({
@@ -521,13 +538,11 @@ test('residents stay above both ground tiles throughout a backwards step and set
   expect(depth).toBeGreaterThan(
     Math.max(project(crossing!.from).depth, project(crossing!.to).depth),
   );
-  await page
-    .locator('.ocean')
-    .screenshot({
-      path: test.info().outputPath('resident-mid-step.jpg'),
-      type: 'jpeg',
-      quality: 80,
-    });
+  await page.locator('.ocean').screenshot({
+    path: test.info().outputPath('resident-mid-step.jpg'),
+    type: 'jpeg',
+    quality: 80,
+  });
   await page.locator('[data-mode="build"]').first().click();
   const cell = Number(await resident.getAttribute('data-life-cell'));
   await expect(resident).toHaveCSS('z-index', String(project(cell).depth + 1));

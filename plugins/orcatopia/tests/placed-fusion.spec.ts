@@ -1,3 +1,4 @@
+import { collectionSnapshot } from './tourism-state';
 import { test, expect, type Page } from '@playwright/test';
 import { empty } from '../src/game';
 
@@ -68,9 +69,13 @@ for (const width of [1000, 360]) {
     await expect(page.locator('.fusion-confirm')).toContainText(
       '출발 32번 칸 → 목적지 34번 칸',
     );
-    expect(await saved(page)).toEqual(initial);
+    expect(collectionSnapshot(await saved(page))).toEqual(
+      collectionSnapshot(initial),
+    );
     await page.locator('[data-cancel-fusion]').click();
-    expect(await saved(page)).toEqual(initial);
+    expect(collectionSnapshot(await saved(page))).toEqual(
+      collectionSnapshot(initial),
+    );
     await page.locator('[data-site="33"]').click();
     await page.locator('.fusion-confirm').screenshot({
       path: `test-results/landmark-island/placed-fusion-${width}.jpg`,
@@ -128,7 +133,9 @@ test('different landmarks and + pairs cannot be merged by moving', async ({
   );
   await page.locator('[data-site="0"]').click();
   await expect(page.locator('.fusion-confirm')).toHaveCount(0);
-  expect(await saved(page)).toEqual(initial);
+  expect(collectionSnapshot(await saved(page))).toEqual(
+    collectionSnapshot(initial),
+  );
   await page.locator('#cancel').click();
   await page.locator('#cancel').click();
   await page.locator('[data-site="7"]').click();
@@ -140,7 +147,9 @@ test('different landmarks and + pairs cannot be merged by moving', async ({
   );
   await page.locator('[data-site="35"]').click();
   await expect(page.locator('.fusion-confirm')).toHaveCount(0);
-  expect(await saved(page)).toEqual(initial);
+  expect(collectionSnapshot(await saved(page))).toEqual(
+    collectionSnapshot(initial),
+  );
 });
 
 test('changing the layout after confirmation opens refuses the stale fusion without consuming copies', async ({

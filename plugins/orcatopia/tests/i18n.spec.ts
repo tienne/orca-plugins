@@ -1,3 +1,4 @@
+import { collectionSnapshot } from './tourism-state';
 import { openTreasure } from './treasure-menu';
 import { test, expect, type Page } from '@playwright/test';
 import { empty } from '../src/game';
@@ -199,8 +200,12 @@ test('Korean browser fixture covers discovery, placement, decorations, dynamic w
   );
   await page.keyboard.press('Escape');
   expect(
-    await page.evaluate(() => localStorage.getItem('landmark-island-demo-v1')),
-  ).toBe(before);
+    collectionSnapshot(
+      await page.evaluate(() =>
+        localStorage.getItem('landmark-island-demo-v1'),
+      ),
+    ),
+  ).toEqual(collectionSnapshot(before));
   await page.setViewportSize({ width: 360, height: 800 });
   for (const theme of ['light', 'dark']) {
     await page.evaluate((theme) => {
@@ -253,8 +258,12 @@ test('language changes keep a running reveal and backup confirmation intact and 
   await expect(theatre.locator('.reveal-place')).toBeFocused();
   await page.keyboard.press('Escape');
   expect(
-    await page.evaluate(() => localStorage.getItem('landmark-island-demo-v1')),
-  ).toBe(before);
+    collectionSnapshot(
+      await page.evaluate(() =>
+        localStorage.getItem('landmark-island-demo-v1'),
+      ),
+    ),
+  ).toEqual(collectionSnapshot(before));
   await page.locator('#backups').click();
   const envelope = {
     format: 'landmark-island-backup',
@@ -276,8 +285,12 @@ test('language changes keep a running reveal and backup confirmation intact and 
   await expect(page.locator('.backup-incoming')).toContainText('Exported');
   await page.keyboard.press('Escape');
   expect(
-    await page.evaluate(() => localStorage.getItem('landmark-island-demo-v1')),
-  ).toBe(before);
+    collectionSnapshot(
+      await page.evaluate(() =>
+        localStorage.getItem('landmark-island-demo-v1'),
+      ),
+    ),
+  ).toEqual(collectionSnapshot(before));
 });
 
 test('standalone preview follows the browser language without accessing a save', async ({

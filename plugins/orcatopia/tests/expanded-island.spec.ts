@@ -82,7 +82,7 @@ test('full collection fits the expanded island and outer placements survive movi
     .browser()!
     .newContext({ viewport: { width: 390, height: 844 } });
   const narrow = await fresh.newPage();
-  await narrow.goto('http://127.0.0.1:43189/?lang=ko');
+  await narrow.goto(new URL('/?lang=ko', page.url()).href);
   await narrow.evaluate(
     (save) =>
       localStorage.setItem('landmark-island-demo-v1', JSON.stringify(save)),

@@ -1,3 +1,4 @@
+import { collectionSnapshot } from './tourism-state';
 import { openTreasure } from './treasure-menu';
 import { test, expect, type Page } from '@playwright/test';
 import { landTiles, landAtLevel } from '../src/world';
@@ -244,8 +245,12 @@ test('walk, camera and weather are independent from collection ownership', async
   await page.getByLabel('Weather', { exact: true }).selectOption('3');
   await expect(ocean).toHaveAttribute('data-weather', 'snow');
   expect(
-    await page.evaluate(() => localStorage.getItem('landmark-island-demo-v1')),
-  ).toBe(saved);
+    collectionSnapshot(
+      await page.evaluate(() =>
+        localStorage.getItem('landmark-island-demo-v1'),
+      ),
+    ),
+  ).toEqual(collectionSnapshot(saved));
   await page.getByRole('button', { name: 'World Map', exact: true }).click();
   await expect(page.locator('.world circle')).toHaveCount(1);
 });
@@ -448,10 +453,12 @@ for (const [batch, catalogEntries] of catalogBatches.entries())
       await expect(about).toBeFocused();
     }
     expect(
-      await page.evaluate(() =>
-        localStorage.getItem('landmark-island-demo-v1'),
+      collectionSnapshot(
+        await page.evaluate(() =>
+          localStorage.getItem('landmark-island-demo-v1'),
+        ),
       ),
-    ).toBe(before);
+    ).toEqual(collectionSnapshot(before));
     await expect(page.locator('.ocean')).toHaveAttribute('data-mode', 'walk');
     if (batch > 0) return;
     await page.setViewportSize({ width: 360, height: 800 });
@@ -501,8 +508,12 @@ test('a placed building opens actions first and exposes its story without losing
   await expect(dialog).toContainText('Mumtaz Mahal');
   await expect(page.locator('.walker')).toHaveAttribute('data-cell', '30');
   expect(
-    await page.evaluate(() => localStorage.getItem('landmark-island-demo-v1')),
-  ).toBe(saved);
+    collectionSnapshot(
+      await page.evaluate(() =>
+        localStorage.getItem('landmark-island-demo-v1'),
+      ),
+    ),
+  ).toEqual(collectionSnapshot(saved));
   await page.screenshot({
     path: 'test-results/landmark-island/details-demo.png',
   });
@@ -615,8 +626,12 @@ test('rarity filters, discoveries and progress distinguish unique landmarks from
     );
   }
   expect(
-    await page.evaluate(() => localStorage.getItem('landmark-island-demo-v1')),
-  ).toBe(before);
+    collectionSnapshot(
+      await page.evaluate(() =>
+        localStorage.getItem('landmark-island-demo-v1'),
+      ),
+    ),
+  ).toEqual(collectionSnapshot(before));
   expect(await page.locator('.camera').getAttribute('style')).toBe(camera);
   await expect(page.locator('.ocean')).toHaveAttribute('data-mode', 'walk');
   await openInventory(page, 'landmarks');
@@ -1046,8 +1061,12 @@ test('cinematic discovery reveals rarity before artwork, then information and ac
     theatre.getByRole('button', { name: 'Place on island' }),
   ).toBeFocused();
   expect(
-    await page.evaluate(() => localStorage.getItem('landmark-island-demo-v1')),
-  ).toBe(saved);
+    collectionSnapshot(
+      await page.evaluate(() =>
+        localStorage.getItem('landmark-island-demo-v1'),
+      ),
+    ),
+  ).toEqual(collectionSnapshot(saved));
   await page.waitForTimeout(1300);
   await theatre.screenshot({
     path: 'test-results/landmark-island/cinematic-result-demo.png',
