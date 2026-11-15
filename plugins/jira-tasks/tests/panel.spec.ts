@@ -1401,3 +1401,24 @@ test('missing host locale uses en-US despite Korean browser and preview settings
     page.getByRole('button', { name: 'Assigned to me', exact: true }),
   ).toBeVisible();
 });
+
+test('formats child counts and limits without changing Jira issue data', async ({
+  page,
+}) => {
+  await start(page, { locale: 'en-US-u-nu-arab', beyondLimit: true });
+  await page.getByRole('button', { name: task.title, exact: true }).click();
+  await expect(page.locator('.children-heading .badge')).toHaveText('١٠٠+');
+  await expect(page.locator('.children-announcement')).toHaveText(
+    '١٠٠+ issues',
+  );
+  await expect(
+    page.getByText(
+      'Showing up to ١٠٠ matching issues. Narrow the conditions to see other matches.',
+      { exact: true },
+    ),
+  ).toBeVisible();
+  await expect(page.getByText('DEMO-300', { exact: true })).toBeVisible();
+  await expect(
+    page.getByText('Existing ticket 0', { exact: true }),
+  ).toBeVisible();
+});
