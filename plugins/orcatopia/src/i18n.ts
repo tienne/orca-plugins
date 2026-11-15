@@ -56,6 +56,8 @@ for (const landmark of catalog) {
   ] as const)
     messages[landmark[field]] = translated[field];
 }
+const numericSlot =
+  /^(count|owned|available|total|tiles|unique|angle|chance|cell|common|rare|epic|legendary)$/;
 const templates = Object.entries(messages)
   .filter(([key]) => key.includes('{'))
   .map(([source, target]) => {
@@ -66,16 +68,12 @@ const templates = Object.entries(messages)
         if (/^\{\w+\}$/.test(part)) {
           const name = part.slice(1, -1);
           names.push(name);
-          return /^(count|owned|available|total|tiles|unique|angle|chance|cell|common|rare|epic|legendary)$/.test(
-            name,
-          )
-            ? '(\\d+)'
-            : '(.+?)';
+          return numericSlot.test(name) ? '(\\d+)' : '(.+?)';
         }
         return part.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
       })
       .join('');
-    return { regex: new RegExp(`^${pattern}$`, 'u'), names, target };
+    return { regex: new RegExp(`^${pattern}$`, 'u'), names, source, target };
   });
 export function translate(source: string, locale = currentLocale()): string {
   const text = source.trim();
@@ -87,28 +85,27 @@ export function translate(source: string, locale = currentLocale()): string {
   );
   if (date && Number.isFinite(Date.parse(date[2]))) {
     result = `${locale.startsWith('ko') ? (date[1] === 'Exported' ? '내보낸 시각' : '마지막 날씨 갱신') : date[1]} ${new Intl.DateTimeFormat(locale, { dateStyle: 'medium', timeStyle: 'short' }).format(new Date(date[2]))}`;
-  } else if (!locale.startsWith('ko') && text.includes(' · ')) {
-    result = text
-      .split(' · ')
-      .map((part) => translate(part, locale))
-      .join(' · ');
-  } else if (locale.startsWith('ko')) {
-    if (messages[text]) result = messages[text];
-    else {
-      const template = templates.find((entry) => entry.regex.test(text));
-      if (template) {
-        const match = template.regex.exec(text)!;
-        result = template.target.replace(/\{(\w+)\}/g, (_, name: string) =>
-          translate(match[template.names.indexOf(name) + 1], locale),
-        );
-      } else if (text.includes(' · '))
-        result = text
-          .split(' · ')
-          .map((part) => translate(part, locale))
-          .join(' · ');
-      else if (/^[☀☁☂❄] /.test(text))
-        result = text.slice(0, 2) + translate(text.slice(2), locale);
-    }
+  } else {
+    const template = templates.find((entry) => entry.regex.test(text));
+    if (locale.startsWith('ko') && messages[text]) result = messages[text];
+    else if (template) {
+      const match = template.regex.exec(text)!;
+      const target = locale.startsWith('ko')
+        ? template.target
+        : template.source;
+      result = target.replace(/\{(\w+)\}/g, (_, name: string) => {
+        const value = match[template.names.indexOf(name) + 1];
+        return numericSlot.test(name)
+          ? new Intl.NumberFormat(locale).format(Number(value))
+          : translate(value, locale);
+      });
+    } else if (text.includes(' · '))
+      result = text
+        .split(' · ')
+        .map((part) => translate(part, locale))
+        .join(' · ');
+    else if (/^[☀☁☂❄] /.test(text))
+      result = text.slice(0, 2) + translate(text.slice(2), locale);
   }
   return (
     source.slice(0, source.indexOf(text)) +
@@ -141,7 +138,14 @@ export function startLocalization() {
     }
     const old = slots.get(key);
     const source = old && old.rendered === value ? old.source : value;
-    const rendered = translate(source, locale);
+    const number =
+      node instanceof Text
+        ? node.parentElement?.getAttribute('data-i18n-number')
+        : null;
+    const rendered =
+      number !== null && number !== undefined && /^\d+$/.test(number)
+        ? new Intl.NumberFormat(locale).format(Number(number))
+        : translate(source, locale);
     slots.set(key, { source, rendered });
     if (value !== rendered) write(rendered);
   };

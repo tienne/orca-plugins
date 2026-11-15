@@ -98,6 +98,8 @@ Placement edits preserve the live island, camera and ambient animation elements.
 
 ## Language
 
+Supported Korean and English locale tags are canonicalized and retain their region (`ko` stays `ko`, `KO-kr` becomes `ko-KR`, and `en-GB` stays `en-GB`). Missing, malformed or unsupported host values use `en-US`, even if the browser uses Korean. Dates and UI counts use the selected locale for display; stored dates, quantities and identifiers are unchanged. Preview language overrides never replace a real host's locale.
+
 The plugin follows Orca's public `orca.locale` setting. Korean and English are supported; missing, malformed or other languages fall back to English. The plugin checks for changes every 500 ms and when the frame regains focus or visibility because the installed host API documents no locale-change event.
 
 Language changes update text in place, preserving camera position, selection, open dialogs, backup confirmation and running reveal timers. Orca may independently reload a frame. Menus, accessible labels, weather, rarity, quantities, decoration names, landmark descriptions and sources, map country names, known errors and backup dates are localized. Brand names, URLs, filenames and unknown host error details remain unchanged. The operating system controls the language of native file dialogs.

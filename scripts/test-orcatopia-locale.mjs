@@ -25,6 +25,32 @@ export function testOrcatopiaLocale({
   ])
     assert.equal(resolveLocale(value), 'en-US');
 
+  for (const locale of ['ko', 'ko-KR', 'en-US', 'en-GB']) {
+    const number = new Intl.NumberFormat(locale).format(12345);
+    assert.equal(
+      translate('12345 materials', locale),
+      locale.startsWith('ko') ? `재료 ${number}개` : `${number} materials`,
+    );
+    assert.equal(
+      translate('owned ×12345', locale),
+      locale.startsWith('ko') ? `보유 ×${number}` : `owned ×${number}`,
+    );
+    assert.equal(
+      translate('https://example.com/12345', locale),
+      'https://example.com/12345',
+    );
+    assert.equal(
+      translate('/private/12345.json', locale),
+      '/private/12345.json',
+    );
+    assert.equal(
+      translate('Error: host returned 12345', locale),
+      locale.startsWith('ko')
+        ? '오류: host returned 12345'
+        : 'Error: host returned 12345',
+    );
+  }
+
   const originals = new Map(
     ['window', 'navigator', 'location'].map((key) => [
       key,
