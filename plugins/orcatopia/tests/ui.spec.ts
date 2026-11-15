@@ -3315,8 +3315,13 @@ for (const theme of ['light', 'dark'])
     );
     await openInventory(page, 'decorations');
     await page.locator('#inventory-search').fill('Qatar');
-    await expect(page.locator('.decoration-card:visible')).toHaveCount(3);
-    await expect(page.locator('#inventory-results')).toHaveText('3개 항목');
+    const qatarPlaces = landmarks.filter((entry) => entry.code === 'QAT');
+    await expect(page.locator('.decoration-card:visible')).toHaveCount(
+      qatarPlaces.length * 3,
+    );
+    await expect(page.locator('#inventory-results')).toHaveText(
+      `${qatarPlaces.length * 3}개 항목`,
+    );
     await expect(
       page.locator('.decoration-card:visible button[data-decor-place]').first(),
     ).toBeDisabled();
@@ -3336,11 +3341,16 @@ for (const theme of ['light', 'dark'])
     });
     await openInventory(page, 'landmarks');
     await page.locator('#inventory-search').fill('Qatar');
-    await expect(page.locator('.collection .card:visible')).toHaveCount(1);
+    await expect(page.locator('.collection .card:visible')).toHaveCount(
+      qatarPlaces.length,
+    );
     await expect(page.locator('[data-catalog-id=nmoq]')).toContainText(
       '카타르 국립박물관',
     );
     await page.locator('[data-tier-filter=common]').click();
+    await expect(page.locator('.collection .card:visible')).toHaveCount(1);
+    await expect(page.locator('[data-catalog-id=alzubarah]')).toBeVisible();
+    await page.locator('[data-tier-filter=legendary]').click();
     await expect(page.locator('.inventory-empty')).toBeVisible();
     await page.locator('#reset-inventory-filters').click();
     await expect(page.locator('[data-tier-filter=all]')).toHaveAttribute(
