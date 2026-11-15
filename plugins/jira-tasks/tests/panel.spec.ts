@@ -1,5 +1,6 @@
 import { test, expect, type Page } from '@playwright/test';
 import { connection, page as taskPage, task } from '../src/fixtures';
+import { resolveLocale } from '../src/locale';
 const image =
   'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+aemQAAAAASUVORK5CYII=';
 const detail = {
@@ -15,6 +16,8 @@ async function start(
   options: {
     locale?: string;
     localePending?: boolean;
+    missingLocale?: boolean;
+    previewLocale?: string;
     disconnected?: boolean;
     error?: boolean;
     theme?: 'light' | 'dark';
@@ -35,6 +38,8 @@ async function start(
 ) {
   await page.addInitScript(
     ({ connection, taskPage, detail, options, image }) => {
+      if (options.previewLocale)
+        history.replaceState(null, '', `/?lang=${options.previewLocale}`);
       const calls: string[] = [];
       let resolveInitialConnection: (() => void) | undefined;
       const listSites: string[] = [];
@@ -42,7 +47,7 @@ async function start(
         listSites;
       (window as unknown as { jiraCalls: string[] }).jiraCalls = calls;
       (window as unknown as { orca: unknown }).orca = {
-        locale: options.locale ?? 'ko-KR',
+        locale: options.missingLocale ? undefined : (options.locale ?? 'ko-KR'),
         shell: { openExternal: async () => ({ opened: true }) },
         plugin: {
           request: async (
@@ -1159,22 +1164,43 @@ test('keeps the reporter name and initials when its photo cannot load', async ({
   await expect(page.locator('.properties .reporter-avatar')).toHaveText('Ca');
 });
 
-for (const locale of ['ko', 'ko-KR', 'en-US', 'ja-JP', 'de-DE']) {
+for (const locale of [
+  'ko',
+  'KO-kr',
+  'ko-KR',
+  'en-US',
+  'en-GB',
+  'en-US-u-nu-arab',
+  'ja-JP',
+  'fr-FR',
+  '',
+  'ko-',
+  'bad_locale',
+]) {
   test(`uses Korean only for Korean Orca locale: ${locale}`, async ({
     page,
   }) => {
-    await start(page, { locale });
-    const korean = locale === 'ko' || locale === 'ko-KR';
-    await expect(page.locator('html')).toHaveAttribute(
-      'lang',
-      korean ? 'ko-KR' : 'en-US',
-    );
+    await page.addInitScript(() => {
+      Object.defineProperty(navigator, 'language', { value: 'ko-KR' });
+    });
+    await start(page, {
+      locale,
+      previewLocale: locale.startsWith('ko') ? 'en-US' : 'ko-KR',
+    });
+    const expectedLocale = resolveLocale(locale);
+    const korean = expectedLocale.startsWith('ko');
+    await expect(page.locator('html')).toHaveAttribute('lang', expectedLocale);
     await expect(
       page.getByRole('button', {
         name: korean ? '내 담당' : 'Assigned to me',
         exact: true,
       }),
     ).toBeVisible();
+    await expect(
+      page.locator('.muted').filter({ hasText: ` / ` }).first(),
+    ).toHaveText(
+      `${new Intl.NumberFormat(expectedLocale).format(2)} / ${new Intl.NumberFormat(expectedLocale).format(2)} ${korean ? '개' : 'issues'}`,
+    );
     await page.getByRole('button', { name: task.title, exact: true }).click();
     await expect(
       page
@@ -1187,10 +1213,13 @@ for (const locale of ['ko', 'ko-KR', 'en-US', 'ja-JP', 'de-DE']) {
         exact: true,
       }),
     ).toBeVisible();
-    if (!korean)
-      await expect(page.locator('.properties dd').last()).toContainText(
-        '11/14/2026',
-      );
+    const expectedDate = await page.evaluate(
+      ({ locale, timestamp }) => new Date(timestamp).toLocaleString(locale),
+      { locale: expectedLocale, timestamp: task.updatedAt },
+    );
+    await expect(page.locator('.properties dd').last()).toHaveText(
+      expectedDate,
+    );
   });
 }
 
@@ -1359,3 +1388,16 @@ for (const hostLocale of ['ko-KR', 'en-US', 'ja-JP']) {
     ).toBeVisible();
   });
 }
+
+test('missing host locale uses en-US despite Korean browser and preview settings', async ({
+  page,
+}) => {
+  await page.addInitScript(() => {
+    Object.defineProperty(navigator, 'language', { value: 'ko-KR' });
+  });
+  await start(page, { missingLocale: true, previewLocale: 'ko-KR' });
+  await expect(page.locator('html')).toHaveAttribute('lang', 'en-US');
+  await expect(
+    page.getByRole('button', { name: 'Assigned to me', exact: true }),
+  ).toBeVisible();
+});
