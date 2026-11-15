@@ -8,6 +8,10 @@ Development source: [tienne/orca-plugins · plugins/orcatopia](https://github.co
 
 Orcatopia is a little island getaway between tasks in Orca. Earn exploration tickets when you create worktrees, discover world landmarks, and arrange a place of your own while you wait. This version requires Orca 1.4.248+.
 
+## 0.4.2
+
+Language selection now follows the shared locale rules: valid Korean and English host tags keep their region, and missing, malformed or unsupported values use `en-US` even when the browser uses Korean. Quantities and statistics are formatted with the selected locale. Saved data, plugin identity and permissions remain unchanged.
+
 ## 0.4.1
 
 Development source moved to `plugins/orcatopia`, and the manifest source link points directly to that directory. Build, test and release preparation read the new source path. Plugin identity, installable catalog path, permissions and saved island format remain unchanged.
