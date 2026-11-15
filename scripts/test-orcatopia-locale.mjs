@@ -51,6 +51,29 @@ export function testOrcatopiaLocale({
     );
   }
 
+  for (const locale of ['en-US', 'ko-KR', 'en-US-u-nu-arab']) {
+    assert.equal(
+      translate('Error: 12345 materials', locale),
+      locale.startsWith('ko')
+        ? '오류: 12345 materials'
+        : 'Error: 12345 materials',
+    );
+    assert.equal(
+      translate('Source cell 1234 → Destination cell 1500', locale),
+      locale.startsWith('ko')
+        ? '출발 1234번 칸 → 목적지 1500번 칸'
+        : 'Source cell 1234 → Destination cell 1500',
+    );
+  }
+  assert.equal(
+    translate('I Discovery 60% · II Treasure 30%', 'en-US-u-nu-arab'),
+    'I Discovery ٦٠% · II Treasure ٣٠%',
+  );
+
+  assert.equal(
+    translate('Error: host returned · 12345 materials', 'en-US'),
+    'Error: host returned · 12345 materials',
+  );
   assert.equal(translate('World Map', 'KO-kr'), '세계 지도');
   assert.equal(translate('12345 materials', 'bad_locale'), '12,345 materials');
 
