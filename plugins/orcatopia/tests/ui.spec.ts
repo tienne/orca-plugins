@@ -53,11 +53,11 @@ test('demo acquisition, duplicate, placement, move, removal and persistent map',
   await page.goto('/');
   await expect(page.getByText('DEMO · LOCAL FIXTURES')).toBeVisible();
   await demoDiscovery(page);
-  await expect(page.getByRole('status')).toContainText(
+  await expect(page.locator('.notice[role="status"]')).toContainText(
     'New discovery: Eiffel Tower',
   );
   await demoDiscovery(page);
-  await expect(page.getByRole('status')).toContainText(
+  await expect(page.locator('.notice[role="status"]')).toContainText(
     'Duplicate discovered: Eiffel Tower',
   );
   await openInventory(page, 'landmarks');
@@ -553,13 +553,15 @@ test('rarity filters, discoveries and progress distinguish unique landmarks from
   });
   await page.goto('/');
   await demoDiscovery(page);
-  await expect(page.getByRole('status')).toContainText('New discovery: Petra');
-  await expect(page.getByRole('status').locator('.rarity-badge')).toHaveText(
-    'IVWonder',
+  await expect(page.locator('.notice[role="status"]')).toContainText(
+    'New discovery: Petra',
   );
   await expect(
+    page.locator('.notice[role="status"]').locator('.rarity-badge'),
+  ).toHaveText('IVWonder');
+  await expect(
     page
-      .getByRole('status')
+      .locator('.notice[role="status"]')
       .getByRole('img', { name: 'Wonder, rarity 4 of 4', exact: true }),
   ).toBeVisible();
   await expect(page.locator('#discovery-progress')).toHaveAttribute(
@@ -567,7 +569,7 @@ test('rarity filters, discoveries and progress distinguish unique landmarks from
     '1',
   );
   await demoDiscovery(page);
-  await expect(page.getByRole('status')).toContainText(
+  await expect(page.locator('.notice[role="status"]')).toContainText(
     'Duplicate discovered: Petra',
   );
   await expect(page.locator('[data-landmark="petra"]')).toContainText(
@@ -575,7 +577,7 @@ test('rarity filters, discoveries and progress distinguish unique landmarks from
   );
   await expect(
     page
-      .getByRole('status')
+      .locator('.notice[role="status"]')
       .getByRole('img', { name: 'Wonder, rarity 4 of 4', exact: true }),
   ).toBeVisible();
   await expect(page.locator('#discovery-progress')).toHaveAttribute(
@@ -652,9 +654,9 @@ test('rarity filters, discoveries and progress distinguish unique landmarks from
     (window as typeof window & { fixtureRoll: number }).fixtureRoll = 0;
   });
   await demoDiscovery(page);
-  await expect(page.getByRole('status').locator('.rarity-badge')).toContainText(
-    'Discovery',
-  );
+  await expect(
+    page.locator('.notice[role="status"]').locator('.rarity-badge'),
+  ).toContainText('Discovery');
   await expect(page.locator('#discovery-progress')).toHaveAttribute(
     'value',
     '2',

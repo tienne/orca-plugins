@@ -146,7 +146,9 @@ test('Korean browser fixture covers discovery, placement, decorations, dynamic w
     page.getByRole('button', { name: '보물상자 1개 열기' }),
   ).toBeDisabled();
   await page.getByRole('button', { name: '데모 워크트리' }).click();
-  await expect(page.getByRole('status')).toContainText('탐험권을 받았어요');
+  await expect(page.locator('.notice[role="status"]')).toContainText(
+    '탐험권을 받았어요',
+  );
   await openTreasure(page);
   await page.getByRole('button', { name: '보물상자 1개 열기' }).click();
   await page.getByRole('button', { name: '연출 건너뛰기' }).click();
