@@ -16,6 +16,7 @@ import { startLocalization, translate } from './i18n';
 import {
   Game,
   collectionDiscoveries,
+  collectionThresholds,
   collectionTheme,
   collectionUnlocked,
   firstExplorationAvailable,
@@ -203,11 +204,16 @@ function showDetails(id: string) {
   const theme = collectionTheme(id);
   const collectionLock =
     theme !== 'land' && !collectionUnlocked(state, theme)
-      ? theme === 'river'
-        ? 'River: unlock at 12 different places'
-        : 'Sea: unlock at 25 different places'
+      ? collectionCondition(theme)
       : '';
-  detail.innerHTML = `<button class="detail-close" aria-label="Close landmark details" autofocus>×</button><div class="detail-art">${art(id)}</div><p class="detail-country">${escape(landmark.country)} · ${escape(landmark.region)}</p><h2 id="detail-title">${escape(landmark.name)}</h2><div class="detail-rarity">${rarityBadge(landmark.tier, isEnhanced(id))}<p>${isEnhanced(id) ? 'Fusion only · Half a rarity step above the normal version' : `${weights[rarity.id]}% tier chance per draw · ${landmarks.filter((l) => l.tier === rarity.id).length} landmarks in this tier`}</p></div><p class="placement-type">${placementLabel(id)}</p>${collectionLock ? `<p class="collection-lock">${collectionLock}</p>` : ''}<p id="detail-description">${escape(landmark.description)}</p><p class="detail-source">Read more: <a href="${escape(landmark.descriptionSource)}" target="_blank" rel="noopener noreferrer">${escape(landmark.descriptionSourceName)} ↗</a></p>`;
+  const tierCandidates = landmarks.filter((candidate) => {
+    const theme = collectionTheme(candidate.id);
+    return (
+      candidate.tier === rarity.id &&
+      (theme === 'land' || collectionUnlocked(state, theme))
+    );
+  }).length;
+  detail.innerHTML = `<button class="detail-close" aria-label="Close landmark details" autofocus>×</button><div class="detail-art">${art(id)}</div><p class="detail-country">${escape(landmark.country)} · ${escape(landmark.region)}</p><h2 id="detail-title">${escape(landmark.name)}</h2><div class="detail-rarity">${rarityBadge(landmark.tier, isEnhanced(id))}<p>${isEnhanced(id) ? 'Fusion only · Half a rarity step above the normal version' : `${weights[rarity.id]}% tier chance per draw · ${tierCandidates} unlocked landmarks in this tier`}</p></div><p class="placement-type">${placementLabel(id)}</p>${collectionLock ? `<p class="collection-lock">${collectionLock}</p>` : ''}<p id="detail-description">${escape(landmark.description)}</p><p class="detail-source">Read more: <a href="${escape(landmark.descriptionSource)}" target="_blank" rel="noopener noreferrer">${escape(landmark.descriptionSourceName)} ↗</a></p>`;
   const stock = document.createElement('section');
   stock.className = 'variant-details';
   const count = quantity(state, id);
@@ -761,10 +767,15 @@ function collectionUnlockNotice(before: State, after: State) {
     )
     .join(' · ');
 }
+function collectionCondition(theme: CollectionTheme) {
+  return theme === 'river'
+    ? `River: unlock at ${collectionThresholds.river} different places`
+    : `Sea: unlock at ${collectionThresholds.sea} different places`;
+}
 function collectionExplorations() {
   const count = collectionDiscoveries(state).length;
   const tickets = availableTickets(state).length;
-  return `<section class="collection-explorations" aria-label="Collection exploration"><p role="status">${count < 12 ? `River exploration: ${count}/12 places` : count < 25 ? `Sea exploration: ${count}/25 places` : 'All exploration themes unlocked'}</p>${(
+  return `<section class="collection-explorations" aria-label="Collection exploration"><p>${count < collectionThresholds.river ? `River exploration: ${count}/${collectionThresholds.river} places` : count < collectionThresholds.sea ? `Sea exploration: ${count}/${collectionThresholds.sea} places` : 'All exploration themes unlocked'}</p>${(
     ['river', 'sea'] as const
   )
     .map((theme) => {
@@ -777,7 +788,7 @@ function collectionExplorations() {
         : available
           ? '1 first exploration remaining'
           : 'First exploration used';
-      return `<div class="first-exploration"><p>${theme === 'river' ? 'River: unlock at 12 different places' : 'Sea: unlock at 25 different places'}</p><button data-first-exploration="${theme}" aria-describedby="first-exploration-help" ${!loaded || busy || !available || !tickets || pendingTicket || pendingTickets ? 'disabled' : ''}>${name}</button><small>${status}</small>${available && !tickets ? '<small>Not enough exploration tickets. Your opportunity is saved.</small>' : ''}</div>`;
+      return `<div class="first-exploration"><p>${collectionCondition(theme)}</p><button data-first-exploration="${theme}" aria-describedby="first-exploration-help" ${!loaded || busy || !available || !tickets || pendingTicket || pendingTickets ? 'disabled' : ''}>${name}</button><small>${status}</small>${available && !tickets ? '<small>Not enough exploration tickets. Your opportunity is saved.</small>' : ''}</div>`;
     })
     .join(
       '',

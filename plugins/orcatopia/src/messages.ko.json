@@ -898,13 +898,9 @@
   "Landmark Preview": "랜드마크 미리보기",
   "Showcase": "쇼케이스",
   "Collection exploration": "수집 탐험",
-  "River exploration: {count}/12 places": "강 탐험까지 {count}/12종",
-  "Sea exploration: {count}/25 places": "바다 탐험까지 {count}/25종",
   "All exploration themes unlocked": "모든 탐험 테마를 해금했어요",
   "First river exploration": "강 첫 탐험",
   "First sea exploration": "바다 첫 탐험",
-  "River: unlock at 12 different places": "강: 서로 다른 장소 12종 발견 시 해금",
-  "Sea: unlock at 25 different places": "바다: 서로 다른 장소 25종 발견 시 해금",
   "Unlock to receive your first exploration.": "해금하면 첫 탐험 기회를 받아요.",
   "1 first exploration remaining": "첫 탐험 기회 1회 남음",
   "First exploration used": "첫 탐험 사용 완료",
@@ -922,5 +918,10 @@
   "Once per theme": "테마마다 1회",
   "This replaces current tickets, landmarks, decorations, materials and layout with the backup. Cumulative place discoveries and used first explorations are kept. A copy of your current save is kept before replacement.": "현재 탐험권·랜드마크·장식·재료·배치를 백업으로 교체합니다. 누적 발견 장소와 사용한 첫 탐험 기록은 유지합니다. 교체 전에 현재 저장의 사본을 남깁니다.",
   "Unlocked items within a tier are equally likely. First theme explorations are separate.": "같은 등급 안에서 해금된 랜드마크의 확률은 같아요. 첫 테마 탐험은 별도로 선택합니다.",
-  "I Discovery {common}% / II Treasure {rare}% / III Marvel {epic}% / IV Wonder {legendary}%. Unlocked items within a tier are equally likely. First theme explorations are separate.": "I 발견 {common}% / II 보물 {rare}% / III 경이 {epic}% / IV 불가사의 {legendary}%. 같은 등급 안에서 해금된 랜드마크의 확률은 같아요. 첫 테마 탐험은 별도로 선택합니다."
+  "I Discovery {common}% / II Treasure {rare}% / III Marvel {epic}% / IV Wonder {legendary}%. Unlocked items within a tier are equally likely. First theme explorations are separate.": "I 발견 {common}% / II 보물 {rare}% / III 경이 {epic}% / IV 불가사의 {legendary}%. 같은 등급 안에서 해금된 랜드마크의 확률은 같아요. 첫 테마 탐험은 별도로 선택합니다.",
+  "River exploration: {count}/{threshold} places": "강 탐험까지 {count}/{threshold}종",
+  "Sea exploration: {count}/{threshold} places": "바다 탐험까지 {count}/{threshold}종",
+  "River: unlock at {threshold} different places": "강: 서로 다른 장소 {threshold}종 발견 시 해금",
+  "Sea: unlock at {threshold} different places": "바다: 서로 다른 장소 {threshold}종 발견 시 해금",
+  "{count} unlocked landmarks in this tier": "해당 등급에서 해금된 랜드마크 {count}종"
 }

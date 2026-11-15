@@ -216,3 +216,73 @@ test('lost first-exploration response retries the same theme and ticket', async 
   await expect(page.locator('[data-first-exploration=river]')).toBeDisabled();
   await expect(page.locator('#ticket-count')).toHaveText('1');
 });
+
+test('pre-restore copy remains restorable after its ticket is reused for a first exploration', async ({
+  page,
+}) => {
+  await seed(page, 12, 1);
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await page.goto('/?lang=en');
+  const pending = await saved(page);
+  await openTreasure(page);
+  await page.locator('#skip-discovery').check();
+  await page.locator('#draw-ticket').click();
+  await page.locator('.reveal-keep').click();
+  const ordinary = await saved(page);
+  await page.locator('#backups').click();
+  await expect(page.locator('#backup-choose')).toBeEnabled();
+  await page.locator('#backup-file').setInputFiles({
+    name: 'pending-ticket.json',
+    mimeType: 'application/json',
+    buffer: Buffer.from(
+      JSON.stringify({
+        format: 'landmark-island-backup',
+        version: 1,
+        exportedAt: '2026-11-15T00:00:00.000Z',
+        state: pending,
+      }),
+    ),
+  });
+  await page.locator('#backup-confirm').check();
+  await page.locator('#backup-restore').click();
+  await expect(page.locator('.backup-status')).toContainText(
+    'Island restored.',
+  );
+  await page.locator('.backup-close').click();
+  await openTreasure(page);
+  await page.locator('[data-first-exploration=river]').click();
+  await page.locator('.reveal-keep').click();
+  await page.locator('#backups').click();
+  await expect(page.locator('#backup-previous')).toBeEnabled();
+  await page.locator('#backup-previous').click();
+  await page.locator('#backup-confirm').check();
+  await page.locator('#backup-restore').click();
+  await expect(page.locator('.backup-status')).toContainText(
+    'Island restored.',
+  );
+  const restored = await saved(page);
+  expect(restored.receipts).toEqual(ordinary.receipts);
+  expect(restored.firstExplorations).toEqual([{ theme: 'river' }]);
+  await page.locator('.backup-close').click();
+  await page.reload();
+  await openTreasure(page);
+  await expect(page.locator('[data-first-exploration=river]')).toBeDisabled();
+});
+
+test('locked landmark details show the unlocked tier pool and its theme condition', async ({
+  page,
+}) => {
+  await seed(page, 11, 0);
+  await page.goto('/?lang=en');
+  await page.locator('[data-inventory=landmarks]').click();
+  await page.locator('[data-info=liberty]').click();
+  const commonLand = landmarks.filter(
+    (l) => l.tier === 'common' && collectionTheme(l.id) === 'land',
+  ).length;
+  await expect(page.locator('.landmark-detail .detail-rarity')).toContainText(
+    `${commonLand} unlocked landmarks in this tier`,
+  );
+  await expect(page.locator('.collection-lock')).toHaveText(
+    'Sea: unlock at 25 different places',
+  );
+});
