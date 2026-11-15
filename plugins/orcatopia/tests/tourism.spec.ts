@@ -258,6 +258,9 @@ test('v7 collection migration keeps first exploration and earns tourism for cons
   await page
     .getByRole('button', { name: 'First river exploration', exact: true })
     .click();
+  await expect(page.locator('.reveal-keep')).toBeVisible();
+  await page.locator('.reveal-keep').click();
+  await openTreasure(page);
   await expect(
     page.getByRole('button', { name: 'First river exploration', exact: true }),
   ).toBeDisabled();
