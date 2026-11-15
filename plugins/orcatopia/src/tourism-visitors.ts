@@ -38,12 +38,18 @@ export class TourismVisitors {
     this.state = state;
     this.free = new Set(free);
     this.blocked = new Set(blocked);
-    this.entrance = [...free].sort((a, b) => {
-      const distance = (cell: number) =>
-        Math.abs(tiles[cell].col - tiles[14].col) +
-        Math.abs(tiles[cell].row - tiles[14].row);
-      return distance(a) - distance(b);
-    })[0];
+    this.entrance = undefined;
+    let nearest = Infinity;
+    const home = tiles[TOURISM.entranceCell];
+    for (const cell of free) {
+      const tile = tiles[cell];
+      const distance =
+        Math.abs(tile.col - home.col) + Math.abs(tile.row - home.row);
+      if (distance < nearest) {
+        nearest = distance;
+        this.entrance = cell;
+      }
+    }
     this.target = Math.min(
       TOURISM.maxVisitors,
       Math.ceil(tourismRate(state) / TOURISM.visualPlacesPerVisitor),
@@ -67,6 +73,10 @@ export class TourismVisitors {
     for (const visitor of this.visitors) visitor.element.remove();
     this.visitors = [];
     this.ground = undefined;
+    this.state = undefined;
+    this.free.clear();
+    this.blocked.clear();
+    this.entrance = undefined;
     this.cooldown = 0;
   }
 
@@ -155,7 +165,7 @@ export class TourismVisitors {
           : neighbours(selected.cell).filter((cell) => this.free.has(cell));
       const obstacles = new Set([...this.blocked, ...taken]);
       obstacles.delete(visitor.cell);
-      // 한 방문객당 최대 네 경로만 탐색한다. 막힌 장소는 다음 방문에서 다시 시도한다.
+      // 혼잡한 섬에서도 한 번의 계획에 최대 네 경로만 탐색한다.
       const destination = targets
         .slice(0, 4)
         .map((cell) => ({ cell, path: route(visitor.cell, cell, obstacles) }))

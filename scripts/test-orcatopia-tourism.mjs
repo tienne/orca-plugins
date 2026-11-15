@@ -110,6 +110,17 @@ export async function testTourism({
     (await makeGame().snapshot()).tourism.coins,
     state.tourism.coins,
   );
+  const futureCoins = saved.tourism.coins;
+  now -= minute * 60 * 24 * 100;
+  assert.equal((await game.snapshot()).tourism.coins, futureCoins);
+  assert.equal(
+    saved.tourism.settledAt,
+    now,
+    'large reverse clock recovers without payout',
+  );
+  assert.equal((await makeGame().snapshot()).tourism.coins, futureCoins);
+  now += minute;
+  assert.equal((await game.snapshot()).tourism.coins, futureCoins + 2);
   const cell = islandLand(saved).find(
     (t) => !saved.placements.some((p) => p.cell === t.id),
   ).id;

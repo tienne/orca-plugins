@@ -44,6 +44,9 @@ test('tourism pays away time and builds a permanent reward with free undo and re
     '10 visitors · 10 tourism coins · 10 minutes',
   );
   await page.locator('#open-tourism').click();
+  await expect(page.locator('#open-tourism')).toHaveAccessibleName(
+    '10 tourism coins',
+  );
   const information = page.locator('[data-special-building="tourism-info"]');
   await information
     .getByRole('button', { name: 'Choose construction site' })
@@ -78,6 +81,9 @@ test('tourism pays away time and builds a permanent reward with free undo and re
   await page.clock.runFor(60_000);
   expect(await retainedCard!.evaluate((card) => card.isConnected)).toBe(true);
   await expect(page.locator('.tourism-balance')).toHaveText('1 tourism coins');
+  await expect(page.locator('#open-tourism')).toHaveAccessibleName(
+    '1 tourism coins',
+  );
   await page.screenshot({
     path: 'test-results/landmark-island/tourism-buildings.jpeg',
     type: 'jpeg',
@@ -98,6 +104,9 @@ test('offline cap is an actual saved receipt and Korean text covers the construc
   );
   await page.goto('/?lang=ko');
   await expect(page.locator('.tourism-balance')).toHaveText('관광 코인 720개');
+  await expect(page.locator('#open-tourism')).toHaveAccessibleName(
+    '관광 코인 720개',
+  );
   await expect(page.locator('.tourism-away')).toContainText(
     '부재중 관광객 720명 · 관광 코인 720개 · 720분',
   );

@@ -191,7 +191,7 @@ export function validate(value: unknown): State {
     ids.add(r.workspaceId);
     owned.set(r.landmark, (owned.get(r.landmark) ?? 0) + 1);
   }
-  const fusions = version === 6 || version === 7 ? s.fusions : [];
+  const fusions = version >= 6 ? s.fusions : [];
   if (!Array.isArray(fusions)) throw Error('Invalid fusion ledger');
   const fusionIds = new Set<string>();
   const fusedCounts = new Map<string, number>();
@@ -252,39 +252,21 @@ export function validate(value: unknown): State {
   if (s.receipts.some((r) => !earned.has(r.workspaceId)))
     throw Error('Reward has no matching ticket');
   const landFloor =
-    version === 3 ||
-    version === 4 ||
-    version === 5 ||
-    version === 6 ||
-    version === 7
+    version >= 3
       ? s.landFloor
       : Math.max(
           0,
           ...s.placements.map((p) => expansionLevel.get(p.cell) ?? 0),
         );
-  const crafts =
-    version === 3 ||
-    version === 4 ||
-    version === 5 ||
-    version === 6 ||
-    version === 7
-      ? s.crafts
-      : [];
-  const oldDecor =
-    version === 3 ||
-    version === 4 ||
-    version === 5 ||
-    version === 6 ||
-    version === 7
-      ? s.decorations
-      : [];
+  const crafts = version >= 3 ? s.crafts : [];
+  const oldDecor = version >= 3 ? s.decorations : [];
   if (!Array.isArray(oldDecor)) throw Error('Invalid decoration placements');
   const floors =
-    version === 4 || version === 5 || version === 6 || version === 7
+    version >= 4
       ? s.floors
       : oldDecor.filter((p) => p && isFloor(p.decoration));
   const decor =
-    version === 4 || version === 5 || version === 6 || version === 7
+    version >= 4
       ? oldDecor
       : oldDecor.filter((p) => !p || !isFloor(p.decoration));
   if (

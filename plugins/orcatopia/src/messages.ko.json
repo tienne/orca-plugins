@@ -902,7 +902,6 @@
   "Tourism and special buildings": "관광과 특수 건물",
   "{count} tourism coins": "관광 코인 {count}개",
   "{count} visitors / min · {total} coins / min": "분당 관광객 {count}명 · 분당 코인 {total}개",
-  "Different places on your island attract visitors. Normal and + copies count together. Coins arrive automatically, including up to 12 hours away.": "섬에 서로 다른 장소를 배치하면 관광객이 늘어납니다. 일반판과 +판은 같은 장소로 셉니다. 코인은 자동으로 쌓이며, 섬을 닫아도 최대 12시간 동안 적립됩니다.",
   "While away: {count} visitors · {total} tourism coins · {tiles} minutes": "부재중 관광객 {count}명 · 관광 코인 {total}개 · {tiles}분",
   " · 12-hour limit applied": " · 12시간 상한 적용",
   "Special buildings": "특수 건물",
@@ -919,7 +918,7 @@
   "Choose a special building and an empty land cell.": "특수 건물과 빈 육지 칸을 선택해 주세요.",
   "Choose an empty land cell for construction.": "건설할 빈 육지 칸을 선택해 주세요.",
   "Not enough tourism coins.": "관광 코인이 부족합니다.",
-  "12-hour limit applied": "12시간 상한 적용",
-  "Tourism: {count} coins": "관광: 코인 {count}개",
-  "Tourism could not refresh. It will retry automatically.": "관광 정보를 갱신하지 못했습니다. 자동으로 다시 시도합니다."
+  "Tourism could not refresh. It will retry automatically.": "관광 정보를 갱신하지 못했습니다. 자동으로 다시 시도합니다.",
+  "Different places on your island attract visitors. Normal and + copies count together. Coins arrive automatically, including up to {count} hours away.": "섬에 서로 다른 장소를 배치하면 관광객이 늘어납니다. 일반판과 +판은 같은 장소로 셉니다. 코인은 자동으로 쌓이며, 자리를 비운 동안에도 최대 {count}시간 동안 적립됩니다.",
+  "{count}-hour limit applied": "{count}시간 상한 적용"
 }

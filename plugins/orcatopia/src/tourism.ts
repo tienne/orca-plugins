@@ -9,6 +9,7 @@ export const TOURISM = {
   pollMs: 30_000,
   maxCoins: 1_000_000_000,
   maxVisitors: 6,
+  entranceCell: 14,
   visualPlacesPerVisitor: 2,
 } as const;
 
@@ -75,12 +76,14 @@ export function startTourism(now: number): Tourism {
   return { coins: 0, settledAt: now, remainder: 0, buildings: [], away: null };
 }
 
-/** 저장된 시간 구간만 정산하며 역행 중에는 기존 기준시각을 유지한다. */
+/** 작은 시계 역행은 기준시각을 유지하고, 큰 역행은 지급 없이 복구한다. */
 export function settleTourism(
   tourism: Tourism,
   rate: number,
   now: number,
 ): Tourism {
+  if (tourism.settledAt - now > TOURISM.offlineCapMs)
+    return { ...tourism, settledAt: now };
   const elapsed = Math.max(0, now - tourism.settledAt);
   const creditedMs = Math.min(elapsed, TOURISM.offlineCapMs);
   const units = creditedMs * rate + tourism.remainder;
