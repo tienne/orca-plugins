@@ -1,0 +1,1393 @@
+{
+  "notes": [
+    "All src TypeScript files and index.html are scanned. New strings fail unless translated or explicitly classified here.",
+    "Structural syntax is excluded by AST context; markup keeps text and aria-label/title/placeholder/alt, never IDs, URLs, CSS or saved values.",
+    "Technical literal exclusions do not apply to markup text or accessibility attributes. User input has no source literal and is never synthesized for translation."
+  ],
+  "groups": [
+    {
+      "file": "plugins/orcatopia/src/art.ts",
+      "kind": "literal",
+      "category": "technical",
+      "reason": "Reviewed identifiers, enum values, selectors, CSS and serialized protocol tokens; these are not presentation copy.",
+      "values": [
+        "class=\"wonder-shadow\"",
+        "common",
+        "copper",
+        "data-enhanced=\"true\"",
+        "dune",
+        "enhanced-art",
+        "glass",
+        "gold",
+        "grain",
+        "grass",
+        "iron",
+        "landmark-art-{0}",
+        "marble",
+        "masonry",
+        "mbs-{0}",
+        "mountain",
+        "sandstone",
+        "slate",
+        "snow",
+        "stone",
+        "tiles",
+        "titanium",
+        "url(#{0}-{1})",
+        "wonder-art"
+      ]
+    },
+    {
+      "file": "plugins/orcatopia/src/catalog-motion.ts",
+      "kind": "literal",
+      "category": "technical",
+      "reason": "Reviewed identifiers, enum values, selectors, CSS and serialized protocol tokens; these are not presentation copy.",
+      "values": ["false"]
+    },
+    {
+      "file": "plugins/orcatopia/src/decorations.ts",
+      "kind": "literal",
+      "category": "technical",
+      "reason": "Reviewed identifiers, enum values, selectors, CSS and serialized protocol tokens; these are not presentation copy.",
+      "values": [
+        "bench",
+        "flowers",
+        "fountain",
+        "gate",
+        "grass",
+        "hsl({0} 45% 62%)",
+        "lamp",
+        "palm",
+        "path",
+        "river",
+        "stonepath",
+        "stones",
+        "tree",
+        "{0}-gift",
+        "{0}-plus-star",
+        "{0}-special"
+      ]
+    },
+    {
+      "file": "plugins/orcatopia/src/expanded-art.ts",
+      "kind": "literal",
+      "category": "technical",
+      "reason": "Reviewed identifiers, enum values, selectors, CSS and serialized protocol tokens; these are not presentation copy.",
+      "values": [
+        "adobe",
+        "aqueduct",
+        "arcades",
+        "arena",
+        "badlands",
+        "basalt",
+        "basilica",
+        "bridge",
+        "canal",
+        "canyon",
+        "castle",
+        "cathedral",
+        "cave",
+        "chariot",
+        "cliff",
+        "cliffbuddha",
+        "clifftemple",
+        "cloister",
+        "coast",
+        "columns",
+        "copper",
+        "crater",
+        "dome",
+        "dune",
+        "fjord",
+        "forest",
+        "fortress",
+        "garden",
+        "gate",
+        "geoglyph",
+        "geyser",
+        "glacier",
+        "glass",
+        "gold",
+        "grain",
+        "grass",
+        "hall",
+        "harbor",
+        "industrial",
+        "iron",
+        "island",
+        "jars",
+        "lakes",
+        "leaning",
+        "mangrove",
+        "marble",
+        "masonry",
+        "minaret",
+        "mine",
+        "modern",
+        "mosque",
+        "mountain",
+        "observatory",
+        "octagon",
+        "pagoda",
+        "palace",
+        "peaks",
+        "pillars",
+        "pyramid",
+        "redrocks",
+        "reef",
+        "rocktemple",
+        "roundhouse",
+        "roundtemple",
+        "ruins",
+        "sandstone",
+        "savanna",
+        "slate",
+        "snow",
+        "spiral",
+        "square",
+        "stelae",
+        "stepwell",
+        "stone",
+        "stupa",
+        "templetower",
+        "terraces",
+        "thatched",
+        "theatre",
+        "tomb",
+        "torii",
+        "towers",
+        "town",
+        "trulli",
+        "volcano",
+        "waterfall",
+        "waterworks",
+        "wetland",
+        "woodchurch",
+        "ziggurat"
+      ]
+    },
+    {
+      "file": "plugins/orcatopia/src/expanded-decorations.ts",
+      "kind": "literal",
+      "category": "technical",
+      "reason": "Reviewed identifiers, enum values, selectors, CSS and serialized protocol tokens; these are not presentation copy.",
+      "values": [
+        "adobe",
+        "badlands",
+        "basalt",
+        "bench",
+        "canyon",
+        "castle",
+        "cave",
+        "coast",
+        "crater",
+        "fjord",
+        "flowers",
+        "forest",
+        "fortress",
+        "fountain",
+        "gate",
+        "geyser",
+        "glacier",
+        "lakes",
+        "mangrove",
+        "minaret",
+        "palm",
+        "peaks",
+        "pond",
+        "redrocks",
+        "reef",
+        "rocktemple",
+        "savanna",
+        "torii",
+        "tree",
+        "volcano",
+        "waterfall",
+        "wetland",
+        "{0}-gift",
+        "{0}-special"
+      ]
+    },
+    {
+      "file": "plugins/orcatopia/src/expanded-scenes.ts",
+      "kind": "literal",
+      "category": "technical",
+      "reason": "Reviewed identifiers, enum values, selectors, CSS and serialized protocol tokens; these are not presentation copy.",
+      "values": [
+        "aqueduct",
+        "badlands",
+        "basalt",
+        "basilica",
+        "bridge",
+        "brush",
+        "canal",
+        "canoe",
+        "canyon",
+        "cathedral",
+        "cliff",
+        "cliffbuddha",
+        "clifftemple",
+        "climb",
+        "cloister",
+        "coast",
+        "crater",
+        "dome",
+        "fjord",
+        "forest",
+        "garden",
+        "glacier",
+        "harbor",
+        "island",
+        "lakes",
+        "lantern",
+        "mangrove",
+        "mason",
+        "pagoda",
+        "peaks",
+        "pillars",
+        "redrocks",
+        "reef",
+        "rocktemple",
+        "roundtemple",
+        "row",
+        "savanna",
+        "sketch",
+        "stroll",
+        "stupa",
+        "sway",
+        "templetower",
+        "terraces",
+        "torii",
+        "travel",
+        "walk",
+        "water",
+        "waterworks",
+        "wetland",
+        "woodchurch"
+      ]
+    },
+    {
+      "file": "plugins/orcatopia/src/expedition-camp.ts",
+      "kind": "literal",
+      "category": "technical",
+      "reason": "Reviewed identifiers, enum values, selectors, CSS and serialized protocol tokens; these are not presentation copy.",
+      "values": [
+        "button[data-welcome=\"{0}\"]",
+        "gardener",
+        "keydown",
+        "left:{0}px;top:{1}px;z-index:{2};--member-delay:-{3}s",
+        "photographer",
+        "pointerdown",
+        "returning",
+        "visitor",
+        "wheel"
+      ]
+    },
+    {
+      "file": "plugins/orcatopia/src/expeditions.ts",
+      "kind": "literal",
+      "category": "technical",
+      "reason": "Reviewed identifiers, enum values, selectors, CSS and serialized protocol tokens; these are not presentation copy.",
+      "values": [
+        "blocked",
+        "cancellation",
+        "done",
+        "failure",
+        "interruption",
+        "success",
+        "superseded",
+        "unconfirmed",
+        "waiting",
+        "working"
+      ]
+    },
+    {
+      "file": "plugins/orcatopia/src/game.ts",
+      "kind": "literal",
+      "category": "technical",
+      "reason": "Reviewed identifiers, enum values, selectors, CSS and serialized protocol tokens; these are not presentation copy.",
+      "values": [
+        "decoration",
+        "land",
+        "landmark",
+        "landmark-island-backup",
+        "river",
+        "sea"
+      ]
+    },
+    {
+      "file": "plugins/orcatopia/src/island-atmosphere.ts",
+      "kind": "literal",
+      "category": "technical",
+      "reason": "Reviewed identifiers, enum values, selectors, CSS and serialized protocol tokens; these are not presentation copy.",
+      "values": [
+        "[data-firefly-cell=\"{0}\"]",
+        "[data-world-cell=\"{0}\"] .garden-object .building-select > svg",
+        "left:{0}px;top:{1}px;z-index:{2};--firefly-delay:-{3}s;--firefly-drift:{4}"
+      ]
+    },
+    {
+      "file": "plugins/orcatopia/src/island-life.ts",
+      "kind": "literal",
+      "category": "technical",
+      "reason": "Reviewed identifiers, enum values, selectors, CSS and serialized protocol tokens; these are not presentation copy.",
+      "values": [
+        "(prefers-reduced-motion: reduce)",
+        "[data-ripple-cell=\"{0}\"]",
+        "[data-world-cell=\"{0}\"] .garden-object .building-select > svg",
+        "bench",
+        "bird",
+        "butterfly",
+        "fernBed",
+        "flee",
+        "flowers",
+        "follow",
+        "fountain",
+        "gardener",
+        "idle",
+        "island-wind",
+        "left",
+        "left:{0}px;top:{1}px;z-index:{2};--wind-delay:{3}s",
+        "look",
+        "oak",
+        "palm",
+        "perched",
+        "photo",
+        "photographer",
+        "pine",
+        "pond",
+        "rain",
+        "return",
+        "right",
+        "shelter",
+        "sit",
+        "snow",
+        "sunny",
+        "translate(40 {0})",
+        "translate3d({0}px, {1}px, 0) translate(-50%, -92%)",
+        "tree",
+        "visitor",
+        "walk",
+        "water",
+        "yield",
+        "{0}px"
+      ]
+    },
+    {
+      "file": "plugins/orcatopia/src/landmark-intensity.ts",
+      "kind": "literal",
+      "category": "technical",
+      "reason": "Reviewed identifiers, enum values, selectors, CSS and serialized protocol tokens; these are not presentation copy.",
+      "values": [
+        "class=\"tier-presence\" data-tier-presence=\"{0}\" data-tier-event=\"{1}\" style=\"--tier-cycle:{2}s\" aria-hidden=\"true\"",
+        "duel",
+        "pyramid",
+        "scene",
+        "tier-ember",
+        "tier-glint",
+        "wall"
+      ]
+    },
+    {
+      "file": "plugins/orcatopia/src/landmark-life-preview.ts",
+      "kind": "literal",
+      "category": "technical",
+      "reason": "Reviewed identifiers, enum values, selectors, CSS and serialized protocol tokens; these are not presentation copy.",
+      "values": ["#tier-{0}", "NFKC", "[data-preview-tier=\"{0}\"]", "ko-KR"]
+    },
+    {
+      "file": "plugins/orcatopia/src/landmark-life.ts",
+      "kind": "literal",
+      "category": "technical",
+      "reason": "Reviewed identifiers, enum values, selectors, CSS and serialized protocol tokens; these are not presentation copy.",
+      "values": ["carry", "hammer", "left", "pull", "right"]
+    },
+    {
+      "file": "plugins/orcatopia/src/placement-preview.ts",
+      "kind": "literal",
+      "category": "technical",
+      "reason": "Reviewed identifiers, enum values, selectors, CSS and serialized protocol tokens; these are not presentation copy.",
+      "values": ["merge", "place", "{0}px"]
+    },
+    {
+      "file": "plugins/orcatopia/src/placement.ts",
+      "kind": "literal",
+      "category": "technical",
+      "reason": "Reviewed identifiers, enum values, selectors, CSS and serialized protocol tokens; these are not presentation copy.",
+      "values": ["coastal", "land", "sea"]
+    },
+    {
+      "file": "plugins/orcatopia/src/render-island.ts",
+      "kind": "literal",
+      "category": "technical",
+      "reason": "Reviewed identifiers, enum values, selectors, CSS and serialized protocol tokens; these are not presentation copy.",
+      "values": [
+        ".camera-controls",
+        ".canvas-editor",
+        ".canvas-inventory",
+        ".island-satchel",
+        ".minimap",
+        ".piece-menu",
+        ".treasure-menu",
+        ".walk-controls"
+      ]
+    },
+    {
+      "file": "plugins/orcatopia/src/reveal.ts",
+      "kind": "literal",
+      "category": "technical",
+      "reason": "Reviewed identifiers, enum values, selectors, CSS and serialized protocol tokens; these are not presentation copy.",
+      "values": [
+        "(prefers-reduced-motion: reduce)",
+        "burst",
+        "complete",
+        "continue",
+        "details",
+        "invitation",
+        "journey",
+        "monument",
+        "omen",
+        "results",
+        "{0}px"
+      ]
+    },
+    {
+      "file": "plugins/orcatopia/src/scene.ts",
+      "kind": "literal",
+      "category": "technical",
+      "reason": "Reviewed identifiers, enum values, selectors, CSS and serialized protocol tokens; these are not presentation copy.",
+      "values": [
+        "[data-world-cell=\"{0}\"] .cell",
+        "device",
+        "east",
+        "hidden",
+        "manual",
+        "none",
+        "north",
+        "selected",
+        "south",
+        "translate({0}px,{1}px) scale({2})",
+        "walk",
+        "west",
+        "{0}px"
+      ]
+    },
+    {
+      "file": "plugins/orcatopia/src/showcase-fixture.ts",
+      "kind": "literal",
+      "category": "technical",
+      "reason": "Reviewed identifiers, enum values, selectors, CSS and serialized protocol tokens; these are not presentation copy.",
+      "values": [
+        "angkor-fern-bed",
+        "bluehole-gift",
+        "cn-gift",
+        "colosseum-special",
+        "eiffel-gift",
+        "eiffel-rose-arch",
+        "eiffel-special",
+        "fuji-gift",
+        "fuji-pond",
+        "fuji-special",
+        "grass",
+        "greatbarrierreef-gift",
+        "gyeongbokgung-gift",
+        "halong-water-special",
+        "kinderdijk-gift",
+        "kinderdijk-water-special",
+        "liriver-gift",
+        "middlerhine-gift",
+        "middlerhine-special",
+        "mostar-water-gift",
+        "opera-gift",
+        "path",
+        "petra-gift",
+        "pontdugard-water-special",
+        "river",
+        "sagrada-special",
+        "showcase-craft-{0}",
+        "showcase-water-{0}",
+        "stonepath",
+        "taj-gift",
+        "taj-pavilion",
+        "taj-special"
+      ]
+    },
+    {
+      "file": "plugins/orcatopia/src/showcase-preview.ts",
+      "kind": "literal",
+      "category": "technical",
+      "reason": "Reviewed identifiers, enum values, selectors, CSS and serialized protocol tokens; these are not presentation copy.",
+      "values": ["I+", "greatwall+", "translate({0}px, {1}px) scale({2})"]
+    },
+    {
+      "file": "plugins/orcatopia/src/terrain-art.ts",
+      "kind": "literal",
+      "category": "technical",
+      "reason": "Reviewed identifiers, enum values, selectors, CSS and serialized protocol tokens; these are not presentation copy.",
+      "values": [
+        "data-decoration=\"{0}\" data-floor=\"{1}\"",
+        "flowers",
+        "grass",
+        "low-object",
+        "none",
+        "occupied",
+        "palm",
+        "path",
+        "plant",
+        "ruin",
+        "sea-tile",
+        "selected",
+        "still",
+        "transparent",
+        "tree",
+        "water-object"
+      ]
+    },
+    {
+      "file": "plugins/orcatopia/src/ui.ts",
+      "kind": "literal",
+      "category": "technical",
+      "reason": "Reviewed identifiers, enum values, selectors, CSS and serialized protocol tokens; these are not presentation copy.",
+      "values": [
+        "#close-inventory",
+        "#close-treasure",
+        "#move-piece",
+        "#open-treasure",
+        "&amp;",
+        "&gt;",
+        "&lt;",
+        "&quot;",
+        ".building-select",
+        ".cell",
+        "I",
+        "II",
+        "III",
+        "IV",
+        "Island layout changed",
+        "NFC",
+        "NFKD",
+        "[data-craft=\"{0}\"]",
+        "[data-inventory=\"{0}\"]",
+        "[data-variant=\"{0}\"]",
+        "[data-world-cell=\"{0}\"]",
+        "[data-world-cell=\"{0}\"] .building-select",
+        "acquired",
+        "alert",
+        "all",
+        "application/json",
+        "autoplay",
+        "build",
+        "builder",
+        "button[data-mode=\"{0}\"]",
+        "checked",
+        "close-treasure",
+        "data-locked=\"true\"",
+        "data-tier=\"{0}\"",
+        "decor-theme",
+        "decoration",
+        "decorations",
+        "disabled",
+        "discovery-notice",
+        "done",
+        "draw-ten",
+        "draw-ticket",
+        "edit",
+        "fernBed",
+        "filled",
+        "floor",
+        "flowers",
+        "fountain",
+        "furniture",
+        "fusion",
+        "hidden",
+        "inventory-category",
+        "inventory-search",
+        "inventory-stock",
+        "island",
+        "island.backup",
+        "island.changed",
+        "island.craft",
+        "island.decorate",
+        "island.draw",
+        "island.drawMany",
+        "island.expeditions",
+        "island.expeditions.changed",
+        "island.fuse",
+        "island.layout",
+        "island.paint",
+        "island.place",
+        "island.read",
+        "island.restore",
+        "island.rotate",
+        "island.weather",
+        "island.welcome",
+        "ko-KR",
+        "land",
+        "landmark",
+        "landmark-island-demo-v1",
+        "landmark-island-{0}.json",
+        "landmarks",
+        "legendary",
+        "locked",
+        "merge",
+        "normal",
+        "null",
+        "objects",
+        "observer",
+        "palm",
+        "plants",
+        "pond",
+        "preview",
+        "read",
+        "rotation",
+        "scout",
+        "skip-discovery",
+        "status",
+        "success",
+        "tier",
+        "tiles",
+        "tree",
+        "undo",
+        "unlocked",
+        "waiting",
+        "water",
+        "working",
+        "{0}-before-restore",
+        "{0}px"
+      ]
+    },
+    {
+      "file": "plugins/orcatopia/src/water-decorations.ts",
+      "kind": "literal",
+      "category": "technical",
+      "reason": "Reviewed identifiers, enum values, selectors, CSS and serialized protocol tokens; these are not presentation copy.",
+      "values": ["gift", "river", "sea", "special", "water-"]
+    },
+    {
+      "file": "plugins/orcatopia/src/water-themes.ts",
+      "kind": "literal",
+      "category": "technical",
+      "reason": "Reviewed identifiers, enum values, selectors, CSS and serialized protocol tokens; these are not presentation copy.",
+      "values": ["buoy", "coral", "lotus", "raft", "sailboat", "waterwheel"]
+    },
+    {
+      "file": "plugins/orcatopia/src/weather-client.ts",
+      "kind": "literal",
+      "category": "technical",
+      "reason": "Reviewed identifiers, enum values, selectors, CSS and serialized protocol tokens; these are not presentation copy.",
+      "values": ["stale", "unavailable"]
+    },
+    {
+      "file": "plugins/orcatopia/src/weather.ts",
+      "kind": "literal",
+      "category": "technical",
+      "reason": "Reviewed identifiers, enum values, selectors, CSS and serialized protocol tokens; these are not presentation copy.",
+      "values": ["fresh", "stale", "unavailable", "unsupported"]
+    },
+    {
+      "file": "plugins/orcatopia/src/world.ts",
+      "kind": "literal",
+      "category": "technical",
+      "reason": "Reviewed identifiers, enum values, selectors, CSS and serialized protocol tokens; these are not presentation copy.",
+      "values": ["flowers", "grass", "oak", "path", "pine", "rock", "sand"]
+    },
+    {
+      "file": "plugins/orcatopia/src/worker/expeditions.ts",
+      "kind": "literal",
+      "category": "technical",
+      "reason": "Reviewed identifiers, enum values, selectors, CSS and serialized protocol tokens; these are not presentation copy.",
+      "values": ["blocked", "done", "hex", "sha256", "waiting", "working"]
+    },
+    {
+      "file": "plugins/orcatopia/src/worker/main.ts",
+      "kind": "literal",
+      "category": "technical",
+      "reason": "Reviewed identifiers, enum values, selectors, CSS and serialized protocol tokens; these are not presentation copy.",
+      "values": [
+        "agent.status.changed",
+        "expeditions-v1",
+        "island-before-restore-v1",
+        "island-v1",
+        "island.backup",
+        "island.changed",
+        "island.craft",
+        "island.decorate",
+        "island.draw",
+        "island.drawMany",
+        "island.expeditions",
+        "island.expeditions.changed",
+        "island.fuse",
+        "island.layout",
+        "island.paint",
+        "island.place",
+        "island.read",
+        "island.restore",
+        "island.rotate",
+        "island.weather",
+        "island.welcome",
+        "storage.get",
+        "storage.set",
+        "workspace.created"
+      ]
+    },
+    {
+      "file": "plugins/orcatopia/src/worker/weather.ts",
+      "kind": "literal",
+      "category": "technical",
+      "reason": "Reviewed identifiers, enum values, selectors, CSS and serialized protocol tokens; these are not presentation copy.",
+      "values": [
+        "application/json",
+        "error",
+        "fresh",
+        "stale",
+        "unavailable",
+        "unixtime",
+        "weather-v1:{0}",
+        "weather_code"
+      ]
+    },
+    {
+      "file": "plugins/orcatopia/src/scenes/actors.ts",
+      "kind": "literal",
+      "category": "technical",
+      "reason": "Reviewed identifiers, enum values, selectors, CSS and serialized protocol tokens; these are not presentation copy.",
+      "values": [
+        "brush",
+        "climb",
+        "dash",
+        "dive",
+        "drift",
+        "guard",
+        "lantern",
+        "lift",
+        "mason",
+        "nod",
+        "pulse",
+        "reel",
+        "rise",
+        "sail",
+        "scene-stride",
+        "sketch",
+        "spin",
+        "splash",
+        "stroll",
+        "sway",
+        "travel",
+        "turn",
+        "walk",
+        "work"
+      ]
+    },
+    {
+      "file": "plugins/orcatopia/src/scenes/classic.ts",
+      "kind": "literal",
+      "category": "technical",
+      "reason": "Reviewed identifiers, enum values, selectors, CSS and serialized protocol tokens; these are not presentation copy.",
+      "values": [
+        "brush",
+        "climb",
+        "donkey",
+        "guard",
+        "lantern",
+        "mason",
+        "nod",
+        "oryx",
+        "pulse",
+        "rise",
+        "sheep",
+        "ship",
+        "spin",
+        "travel",
+        "walk"
+      ]
+    },
+    {
+      "file": "plugins/orcatopia/src/scenes/frontiers.ts",
+      "kind": "literal",
+      "category": "technical",
+      "reason": "Reviewed identifiers, enum values, selectors, CSS and serialized protocol tokens; these are not presentation copy.",
+      "values": [
+        "brush",
+        "canoe",
+        "climb",
+        "drift",
+        "drum",
+        "horse",
+        "lantern",
+        "mason",
+        "row",
+        "sail",
+        "ship",
+        "stroll",
+        "turn",
+        "walk",
+        "water",
+        "weave"
+      ]
+    },
+    {
+      "file": "plugins/orcatopia/src/scenes/journeys.ts",
+      "kind": "literal",
+      "category": "technical",
+      "reason": "Reviewed identifiers, enum values, selectors, CSS and serialized protocol tokens; these are not presentation copy.",
+      "values": [
+        "brush",
+        "camel",
+        "climb",
+        "drift",
+        "ferry",
+        "guard",
+        "lantern",
+        "row",
+        "sail",
+        "ship",
+        "sketch",
+        "stroll",
+        "sway",
+        "travel",
+        "walk",
+        "water",
+        "weave"
+      ]
+    },
+    {
+      "file": "plugins/orcatopia/src/i18n.ts",
+      "kind": "literal",
+      "category": "technical",
+      "reason": "Locale IDs, catalog field names, matcher grammar and DOM attribute identifiers used to assemble and apply translations.",
+      "values": [
+        "en-US",
+        "lang",
+        "name",
+        "country",
+        "region",
+        "description",
+        "descriptionSourceName",
+        "(\\d+)",
+        "u",
+        "ko",
+        "medium",
+        "short",
+        "aria-label",
+        "title",
+        "placeholder",
+        "alt",
+        "text"
+      ]
+    }
+  ],
+  "exclusions": [
+    {
+      "text": "Orcatopia",
+      "category": "brand",
+      "reason": "Product name is identical in both languages."
+    },
+    {
+      "file": "plugins/orcatopia/src/terrain-art.ts",
+      "text": "landmark:{0}:{1}",
+      "kind": "literal",
+      "category": "technical",
+      "reason": "SVG and DOM identity keys; not visible text."
+    },
+    {
+      "file": "plugins/orcatopia/src/terrain-art.ts",
+      "text": "decor:{0}:{1}",
+      "kind": "literal",
+      "category": "technical",
+      "reason": "SVG and DOM identity keys; not visible text."
+    },
+    {
+      "file": "plugins/orcatopia/src/terrain-art.ts",
+      "text": "prop:{0}:{1}",
+      "kind": "literal",
+      "category": "technical",
+      "reason": "SVG and DOM identity keys; not visible text."
+    },
+    {
+      "file": "plugins/orcatopia/src/expanded-art.ts",
+      "text": "Missing landmark illustration: {0} ({1})",
+      "kind": "error",
+      "category": "diagnostic",
+      "reason": "Developer-only artwork/fixture assertion; not a user-facing game or backup error."
+    },
+    {
+      "file": "plugins/orcatopia/src/showcase-fixture.ts",
+      "text": "Invalid resort landmark: {0} at {1},{2}",
+      "kind": "error",
+      "category": "diagnostic",
+      "reason": "Developer-only artwork/fixture assertion; not a user-facing game or backup error."
+    },
+    {
+      "file": "plugins/orcatopia/src/showcase-fixture.ts",
+      "text": "No sea space for {0}",
+      "kind": "error",
+      "category": "diagnostic",
+      "reason": "Developer-only artwork/fixture assertion; not a user-facing game or backup error."
+    },
+    {
+      "file": "plugins/orcatopia/src/worker/main.ts",
+      "text": "Island saved; panel notification failed: {0}",
+      "kind": "literal",
+      "category": "log",
+      "reason": "Worker console warning; saved state and UI notification are handled separately."
+    },
+    {
+      "file": "plugins/orcatopia/src/worker/main.ts",
+      "text": "Expedition saved; panel notification unavailable.",
+      "kind": "literal",
+      "category": "log",
+      "reason": "Worker console warning; saved state and UI notification are handled separately."
+    },
+    {
+      "file": "plugins/orcatopia/src/weather-client.ts",
+      "text": "Invalid weather result",
+      "kind": "error",
+      "category": "diagnostic",
+      "reason": "Caught weather transport/validation error; UI renders translated weather status instead of this error text."
+    },
+    {
+      "file": "plugins/orcatopia/src/worker/weather.ts",
+      "text": "Weather unavailable",
+      "kind": "error",
+      "category": "diagnostic",
+      "reason": "Caught weather transport/validation error; UI renders translated weather status instead of this error text."
+    },
+    {
+      "file": "plugins/orcatopia/src/worker/weather.ts",
+      "text": "Weather response too large",
+      "kind": "error",
+      "category": "diagnostic",
+      "reason": "Caught weather transport/validation error; UI renders translated weather status instead of this error text."
+    },
+    {
+      "file": "plugins/orcatopia/src/worker/weather.ts",
+      "text": "Invalid weather response",
+      "kind": "error",
+      "category": "diagnostic",
+      "reason": "Caught weather transport/validation error; UI renders translated weather status instead of this error text."
+    },
+    {
+      "file": "plugins/orcatopia/src/worker/weather.ts",
+      "text": "Invalid timezone",
+      "kind": "error",
+      "category": "diagnostic",
+      "reason": "Caught weather transport/validation error; UI renders translated weather status instead of this error text."
+    },
+    {
+      "file": "plugins/orcatopia/src/worker/weather.ts",
+      "text": "Invalid weather",
+      "kind": "error",
+      "category": "diagnostic",
+      "reason": "Caught weather transport/validation error; UI renders translated weather status instead of this error text."
+    },
+    {
+      "text": "Orcatopia",
+      "category": "brand",
+      "reason": "Product/demo identity or rarity numeral; same spelling in both languages."
+    },
+    {
+      "text": "ORCATOPIA",
+      "category": "brand",
+      "reason": "Product/demo identity or rarity numeral; same spelling in both languages."
+    },
+    {
+      "text": "DEMO",
+      "category": "brand",
+      "reason": "Product/demo identity or rarity numeral; same spelling in both languages."
+    },
+    {
+      "text": "LANDMARK ISLAND",
+      "category": "brand",
+      "reason": "Product/demo identity or rarity numeral; same spelling in both languages."
+    },
+    {
+      "text": "I",
+      "category": "brand",
+      "reason": "Product/demo identity or rarity numeral; same spelling in both languages."
+    },
+    {
+      "text": "II",
+      "category": "brand",
+      "reason": "Product/demo identity or rarity numeral; same spelling in both languages."
+    },
+    {
+      "text": "III",
+      "category": "brand",
+      "reason": "Product/demo identity or rarity numeral; same spelling in both languages."
+    },
+    {
+      "text": "IV",
+      "category": "brand",
+      "reason": "Product/demo identity or rarity numeral; same spelling in both languages."
+    }
+  ],
+  "fragments": [
+    {
+      "file": "plugins/orcatopia/src/expanded-scenes.ts",
+      "text": "Quiet waves pass the island while a seabird crosses above the low roofs.",
+      "samples": [
+        "Robben Island: Quiet waves pass the island while a seabird crosses above the low roofs."
+      ],
+      "reason": "Scene description is assembled with its catalog landmark name; verify the complete generated message.",
+      "prefix": "Robben Island: "
+    },
+    {
+      "file": "plugins/orcatopia/src/expanded-scenes.ts",
+      "text": "A canoe follows the forest channel while a bright-beaked bird passes the broad canopy.",
+      "samples": [
+        "Central Amazon: A canoe follows the forest channel while a bright-beaked bird passes the broad canopy."
+      ],
+      "reason": "Scene description is assembled with its catalog landmark name; verify the complete generated message.",
+      "prefix": "Central Amazon: "
+    },
+    {
+      "file": "plugins/orcatopia/src/expanded-scenes.ts",
+      "text": "A small bell moves inside the timber tower as a visitor walks past the wooden church.",
+      "samples": [
+        "Chiloé Churches: A small bell moves inside the timber tower as a visitor walks past the wooden church."
+      ],
+      "reason": "Scene description is assembled with its catalog landmark name; verify the complete generated message.",
+      "prefix": "Chiloé Churches: "
+    },
+    {
+      "file": "plugins/orcatopia/src/expanded-scenes.ts",
+      "text": "A visitor sketches the leaning arcades as a bird passes the bell tower.",
+      "samples": [
+        "Leaning Tower of Pisa: A visitor sketches the leaning arcades as a bird passes the bell tower."
+      ],
+      "reason": "Scene description is assembled with its catalog landmark name; verify the complete generated message.",
+      "prefix": "Leaning Tower of Pisa: "
+    },
+    {
+      "file": "plugins/orcatopia/src/expanded-scenes.ts",
+      "text": "A tiny climber follows the rising spiral as warm light moves over the minaret.",
+      "samples": [
+        "Spiral Minaret of Samarra: A tiny climber follows the rising spiral as warm light moves over the minaret."
+      ],
+      "reason": "Scene description is assembled with its catalog landmark name; verify the complete generated message.",
+      "prefix": "Spiral Minaret of Samarra: "
+    },
+    {
+      "file": "plugins/orcatopia/src/expanded-scenes.ts",
+      "text": "Sunlight traces the great chariot wheels while a caretaker brushes the stone below.",
+      "samples": [
+        "Konark Sun Temple: Sunlight traces the great chariot wheels while a caretaker brushes the stone below."
+      ],
+      "reason": "Scene description is assembled with its catalog landmark name; verify the complete generated message.",
+      "prefix": "Konark Sun Temple: "
+    },
+    {
+      "file": "plugins/orcatopia/src/expanded-scenes.ts",
+      "text": "A bird crosses the desert as a narrow light reveals the lines drawn on the plateau.",
+      "samples": [
+        "Nazca Lines: A bird crosses the desert as a narrow light reveals the lines drawn on the plateau."
+      ],
+      "reason": "Scene description is assembled with its catalog landmark name; verify the complete generated message.",
+      "prefix": "Nazca Lines: "
+    },
+    {
+      "file": "plugins/orcatopia/src/expanded-scenes.ts",
+      "text": "A little plume rises above the volcanic landscape as an observer sketches from the edge.",
+      "samples": [
+        "Mount Etna: A little plume rises above the volcanic landscape as an observer sketches from the edge."
+      ],
+      "reason": "Scene description is assembled with its catalog landmark name; verify the complete generated message.",
+      "prefix": "Mount Etna: "
+    },
+    {
+      "file": "plugins/orcatopia/src/expanded-scenes.ts",
+      "text": "Bright streams pulse down the rock face and spread into ripples below the falls.",
+      "samples": [
+        "Yosemite: Bright streams pulse down the rock face and spread into ripples below the falls."
+      ],
+      "reason": "Scene description is assembled with its catalog landmark name; verify the complete generated message.",
+      "prefix": "Yosemite: "
+    },
+    {
+      "file": "plugins/orcatopia/src/expanded-scenes.ts",
+      "text": "A lantern-bearing explorer passes the entrance while light touches the rock formations.",
+      "samples": [
+        "Iwami Ginzan: A lantern-bearing explorer passes the entrance while light touches the rock formations."
+      ],
+      "reason": "Scene description is assembled with its catalog landmark name; verify the complete generated message.",
+      "prefix": "Iwami Ginzan: "
+    },
+    {
+      "file": "plugins/orcatopia/src/expanded-scenes.ts",
+      "text": "A small boat follows the water while a seabird glides past the shoreline silhouette.",
+      "samples": [
+        "Mont-Saint-Michel: A small boat follows the water while a seabird glides past the shoreline silhouette."
+      ],
+      "reason": "Scene description is assembled with its catalog landmark name; verify the complete generated message.",
+      "prefix": "Mont-Saint-Michel: "
+    },
+    {
+      "file": "plugins/orcatopia/src/expanded-scenes.ts",
+      "text": "A small hiker follows the foot of the rocks as clouds slide between the high silhouettes.",
+      "samples": [
+        "Sassi of Matera: A small hiker follows the foot of the rocks as clouds slide between the high silhouettes."
+      ],
+      "reason": "Scene description is assembled with its catalog landmark name; verify the complete generated message.",
+      "prefix": "Sassi of Matera: "
+    },
+    {
+      "file": "plugins/orcatopia/src/expanded-scenes.ts",
+      "text": "A visitor passes the temple steps while leaves drift beside the layered sacred silhouette.",
+      "samples": [
+        "Forbidden City: A visitor passes the temple steps while leaves drift beside the layered sacred silhouette."
+      ],
+      "reason": "Scene description is assembled with its catalog landmark name; verify the complete generated message.",
+      "prefix": "Forbidden City: "
+    },
+    {
+      "file": "plugins/orcatopia/src/expanded-scenes.ts",
+      "text": "A small bell swings while a visitor sketches and a band of light crosses the facade.",
+      "samples": [
+        "Chartres Cathedral: A small bell swings while a visitor sketches and a band of light crosses the facade."
+      ],
+      "reason": "Scene description is assembled with its catalog landmark name; verify the complete generated message.",
+      "prefix": "Chartres Cathedral: "
+    },
+    {
+      "file": "plugins/orcatopia/src/expanded-scenes.ts",
+      "text": "Small wings drift over the greenery while the landscape settles into a slow everyday rhythm.",
+      "samples": [
+        "Douro Valley: Small wings drift over the greenery while the landscape settles into a slow everyday rhythm."
+      ],
+      "reason": "Scene description is assembled with its catalog landmark name; verify the complete generated message.",
+      "prefix": "Douro Valley: "
+    },
+    {
+      "file": "plugins/orcatopia/src/expanded-scenes.ts",
+      "text": "A pulley turns above the industrial structure while a worker walks below a soft plume.",
+      "samples": [
+        "Völklingen Ironworks: A pulley turns above the industrial structure while a worker walks below a soft plume."
+      ],
+      "reason": "Scene description is assembled with its catalog landmark name; verify the complete generated message.",
+      "prefix": "Völklingen Ironworks: "
+    },
+    {
+      "file": "plugins/orcatopia/src/expanded-scenes.ts",
+      "text": "A moving band of sunlight crosses the measuring instruments as an observer takes notes.",
+      "samples": [
+        "Jantar Mantar: A moving band of sunlight crosses the measuring instruments as an observer takes notes."
+      ],
+      "reason": "Scene description is assembled with its catalog landmark name; verify the complete generated message.",
+      "prefix": "Jantar Mantar: "
+    },
+    {
+      "file": "plugins/orcatopia/src/expanded-scenes.ts",
+      "text": "A reflection moves across the geometric facade while a pedestrian crosses the plaza.",
+      "samples": [
+        "Le Havre: A reflection moves across the geometric facade while a pedestrian crosses the plaza."
+      ],
+      "reason": "Scene description is assembled with its catalog landmark name; verify the complete generated message.",
+      "prefix": "Le Havre: "
+    },
+    {
+      "file": "plugins/orcatopia/src/expanded-scenes.ts",
+      "text": "A caretaker gently brushes the stone while wind carries small leaves across the open site.",
+      "samples": [
+        "Plain of Jars: A caretaker gently brushes the stone while wind carries small leaves across the open site."
+      ],
+      "reason": "Scene description is assembled with its catalog landmark name; verify the complete generated message.",
+      "prefix": "Plain of Jars: "
+    },
+    {
+      "file": "plugins/orcatopia/src/expanded-scenes.ts",
+      "text": "A small figure moves beside the stonework while a banner catches the breeze above the site.",
+      "samples": [
+        "Palace of Versailles: A small figure moves beside the stonework while a banner catches the breeze above the site."
+      ],
+      "reason": "Scene description is assembled with its catalog landmark name; verify the complete generated message.",
+      "prefix": "Palace of Versailles: "
+    },
+    {
+      "file": "plugins/orcatopia/src/decorations.ts",
+      "text": "{0} star monument",
+      "samples": ["Eiffel Tower star monument"],
+      "reason": "Generated decoration name; all catalog decorations are also checked by the existing test.",
+      "prefix": ""
+    },
+    {
+      "file": "plugins/orcatopia/src/expanded-decorations.ts",
+      "text": "{0} garden planting",
+      "samples": ["Robben Island garden planting"],
+      "reason": "Generated expansion decoration name.",
+      "prefix": ""
+    },
+    {
+      "file": "plugins/orcatopia/src/expanded-decorations.ts",
+      "text": "{0} garden retreat",
+      "samples": ["Robben Island garden retreat"],
+      "reason": "Generated expansion decoration name.",
+      "prefix": ""
+    },
+    {
+      "file": "plugins/orcatopia/src/water-themes.ts",
+      "text": "coral garden",
+      "samples": ["Papahānaumokuākea coral garden"],
+      "reason": "Water shape suffix is translated as part of each generated landmark decoration name.",
+      "prefix": "Papahānaumokuākea "
+    },
+    {
+      "file": "plugins/orcatopia/src/water-themes.ts",
+      "text": "navigation buoy",
+      "samples": ["Ha Long Bay navigation buoy"],
+      "reason": "Water shape suffix is translated as part of each generated landmark decoration name.",
+      "prefix": "Ha Long Bay "
+    },
+    {
+      "file": "plugins/orcatopia/src/water-themes.ts",
+      "text": "floating lotus bed",
+      "samples": ["Old Bridge of Mostar floating lotus bed"],
+      "reason": "Water shape suffix is translated as part of each generated landmark decoration name.",
+      "prefix": "Old Bridge of Mostar "
+    },
+    {
+      "file": "plugins/orcatopia/src/water-themes.ts",
+      "text": "river raft",
+      "samples": ["Old Bridge of Mostar river raft"],
+      "reason": "Water shape suffix is translated as part of each generated landmark decoration name.",
+      "prefix": "Old Bridge of Mostar "
+    },
+    {
+      "file": "plugins/orcatopia/src/ui.ts",
+      "text": "Fuse {0} +",
+      "samples": ["Fuse Eiffel Tower +"],
+      "reason": "Generated fusion confirmation label.",
+      "prefix": ""
+    },
+    {
+      "file": "plugins/orcatopia/src/ui.ts",
+      "text": "{1}, rarity {2}{3} of 4{4}",
+      "samples": ["Discovery, rarity 1 of 4", "Discovery, rarity 1.5 of 4.5"],
+      "reason": "Normal and enhanced accessible rarity labels.",
+      "prefix": ""
+    },
+    {
+      "file": "plugins/orcatopia/src/ui.ts",
+      "text": "{5} · Rarity {6}{7}/4{8}",
+      "samples": ["Discovery · Rarity 1/4", "Discovery · Rarity 1.5/4.5"],
+      "reason": "Normal and enhanced rarity tooltips.",
+      "prefix": ""
+    },
+    {
+      "file": "plugins/orcatopia/src/ui.ts",
+      "text": "Discover its landmark to unlock{0}",
+      "samples": [
+        "Discover its landmark to unlock",
+        "Discover its landmark to unlock · First copy is a gift"
+      ],
+      "reason": "Rendered example for optional/compound source fragments; nested source literals are scanned separately.",
+      "prefix": ""
+    },
+    {
+      "file": "plugins/orcatopia/src/ui.ts",
+      "text": "landmarks discovered{2}",
+      "samples": [
+        "landmarks discovered",
+        "landmarks discovered · Collection complete"
+      ],
+      "reason": "Rendered example for optional/compound source fragments; nested source literals are scanned separately.",
+      "prefix": ""
+    },
+    {
+      "file": "plugins/orcatopia/src/ui.ts",
+      "text": "Undo layout{1}",
+      "samples": ["Undo layout"],
+      "reason": "Rendered example for optional/compound source fragments; nested source literals are scanned separately.",
+      "prefix": ""
+    },
+    {
+      "file": "plugins/orcatopia/src/ui.ts",
+      "text": "Brush · {1}",
+      "samples": ["Brush · On", "Brush · Off"],
+      "reason": "Rendered example for optional/compound source fragments; nested source literals are scanned separately.",
+      "prefix": ""
+    },
+    {
+      "file": "plugins/orcatopia/src/ui.ts",
+      "text": "A little island between tasks {0}",
+      "samples": ["A little island between tasks "],
+      "reason": "Rendered example for optional/compound source fragments; nested source literals are scanned separately.",
+      "prefix": ""
+    },
+    {
+      "file": "plugins/orcatopia/src/ui.ts",
+      "text": "{14}-landmark prototype · Tier chances: {15}. Each item within a tier is equally likely. No guarantees.",
+      "samples": [
+        "306-landmark prototype · Tier chances: I Discovery 70% / II Treasure 23% / III Marvel 6% / IV Wonder 1%. Each item within a tier is equally likely. No guarantees."
+      ],
+      "reason": "Rendered example for optional/compound source fragments; nested source literals are scanned separately.",
+      "prefix": ""
+    },
+    {
+      "file": "plugins/orcatopia/src/ui.ts",
+      "text": "{0} {1} · Rarity {2}/4 · {3}% tier chance per draw · {4} of {5} discovered",
+      "samples": [
+        "I Discovery · Rarity 1/4 · 70% tier chance per draw · 7 of 154 discovered"
+      ],
+      "reason": "Rendered example for optional/compound source fragments; nested source literals are scanned separately.",
+      "prefix": ""
+    },
+    {
+      "file": "plugins/orcatopia/src/ui.ts",
+      "text": "On",
+      "samples": ["Brush · On"],
+      "reason": "Branch fragment is translated with the complete Brush label.",
+      "prefix": "Brush · "
+    },
+    {
+      "file": "plugins/orcatopia/src/ui.ts",
+      "text": "Off",
+      "samples": ["Brush · Off"],
+      "reason": "Branch fragment is translated with the complete Brush label.",
+      "prefix": "Brush · "
+    },
+    {
+      "file": "plugins/orcatopia/src/scene.ts",
+      "text": "Weather updated {0}",
+      "samples": ["Weather updated 2026-11-06T00:00:00.000Z"],
+      "reason": "Special date formatter; exercised against the real translator.",
+      "prefix": ""
+    },
+    {
+      "file": "plugins/orcatopia/src/ui.ts",
+      "text": "{0} · Exported {1}",
+      "samples": [
+        "Current snapshot: 2 unused tickets · Exported 2026-11-06T00:00:00.000Z"
+      ],
+      "reason": "Compound snapshot with the special ISO date formatter.",
+      "prefix": ""
+    },
+    {
+      "file": "plugins/orcatopia/src/i18n.ts",
+      "text": "{0} garden planting",
+      "samples": ["Robben Island garden planting"],
+      "reason": "Generated expansion decoration name.",
+      "prefix": ""
+    },
+    {
+      "file": "plugins/orcatopia/src/i18n.ts",
+      "text": "{0} garden retreat",
+      "samples": ["Robben Island garden retreat"],
+      "reason": "Generated expansion decoration name.",
+      "prefix": ""
+    },
+    {
+      "file": "plugins/orcatopia/src/i18n.ts",
+      "text": "{0} star monument",
+      "samples": ["Eiffel Tower star monument"],
+      "reason": "Generated decoration name; all catalog decorations are also checked by the existing test.",
+      "prefix": ""
+    },
+    {
+      "file": "plugins/orcatopia/src/i18n.ts",
+      "text": "Fuse {0} +",
+      "samples": ["Fuse Eiffel Tower +"],
+      "reason": "Generated fusion confirmation label.",
+      "prefix": ""
+    }
+  ]
+}

@@ -1,3 +1,4 @@
+import { testI18nCoverage } from './test-orcatopia-i18n.mjs';
 import { testWaterPlacement } from './test-water-placement.mjs';
 import { testFusion } from './test-landmark-fusion.mjs';
 import { build } from 'esbuild';
@@ -26,6 +27,22 @@ try {
       'plugins/orcatopia/src/worker/weather.ts',
       'plugins/orcatopia/src/weather.ts',
     ],
+    plugins: [
+      {
+        name: 'translation-coverage-catalog',
+        setup(builder) {
+          builder.onLoad(
+            { filter: /[/\\]orcatopia[/\\]src[/\\]i18n\.ts$/ },
+            async (args) => ({
+              contents:
+                (await readFile(args.path, 'utf8')) +
+                '\nexport { messages, templates };',
+              loader: 'ts',
+            }),
+          );
+        },
+      },
+    ],
     outdir: dir,
     outbase: 'plugins/orcatopia/src',
     bundle: true,
@@ -52,9 +69,10 @@ try {
     decodeBackup,
     MAX_BACKUP_BYTES,
   } = await import(pathToFileURL(join(dir, 'game.mjs')));
-  const { translate, resolveLocale } = await import(
+  const { translate, resolveLocale, messages, templates } = await import(
     pathToFileURL(join(dir, 'i18n.mjs'))
   );
+  await testI18nCoverage({ translate, messages, templates });
   for (const value of ['fr-FR', 'ja', 'bad_locale', '', undefined, null])
     assert.equal(resolveLocale(value), 'en-US');
   assert.equal(resolveLocale('ko-kr'), 'ko-KR');
