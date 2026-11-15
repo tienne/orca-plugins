@@ -1,4 +1,5 @@
 import { testI18nCoverage } from './test-orcatopia-i18n.mjs';
+import { testCatalog600 } from './test-orcatopia-catalog-600.mjs';
 import { testWaterPlacement } from './test-water-placement.mjs';
 import { testFusion } from './test-landmark-fusion.mjs';
 import { build } from 'esbuild';
@@ -69,6 +70,7 @@ try {
     encodeBackup,
     decodeBackup,
     MAX_BACKUP_BYTES,
+    canPlaceLandmark,
   } = await import(pathToFileURL(join(dir, 'game.mjs')));
   const { translate, resolveLocale, currentLocale, messages, templates } =
     await import(pathToFileURL(join(dir, 'i18n.mjs')));
@@ -111,16 +113,22 @@ try {
     decodeBackup,
     landmarks,
   });
-  assert.equal(landmarks.length, 306);
+  assert.equal(landmarks.length, 600);
+  assert.equal(
+    createHash('sha256')
+      .update(JSON.stringify(landmarks.slice(0, 306)))
+      .digest('hex'),
+    (await readFile('scripts/data/orcatopia-legacy306.sha256', 'utf8')).trim(),
+  );
   assert.equal(
     createHash('sha256')
       .update(JSON.stringify(landmarks.slice(0, 100)))
       .digest('hex'),
     (await readFile('scripts/data/orcatopia-legacy100.sha256', 'utf8')).trim(),
   );
-  assert.equal(new Set(landmarks.map((l) => l.id)).size, 306);
-  assert.equal(new Set(landmarks.map((l) => l.code)).size, 103);
-  assert.equal(decorations.length, 953);
+  assert.equal(new Set(landmarks.map((l) => l.id)).size, 600);
+  assert.equal(new Set(landmarks.map((l) => l.code)).size, 146);
+  assert.equal(decorations.length, 1835);
   for (const code of ['KOR', 'SGP', 'ESP']) {
     const entries = landmarks.filter((l) => l.code === code);
     assert.ok(entries.length >= 2);
@@ -131,10 +139,10 @@ try {
     );
   }
   for (const [tier, count, roll] of [
-    ['common', 154, 0.35],
-    ['rare', 119, 0.8],
-    ['epic', 25, 0.95],
-    ['legendary', 8, 0.995],
+    ['common', 291, 0.35],
+    ['rare', 243, 0.8],
+    ['epic', 54, 0.95],
+    ['legendary', 12, 0.995],
   ]) {
     const pool = landmarks.filter((l) => l.tier === tier);
     assert.equal(pool.length, count);
@@ -147,6 +155,18 @@ try {
     }
   }
   const { art } = await import(pathToFileURL(join(dir, 'art.mjs')));
+  const { placementType } = await import(
+    pathToFileURL(join(dir, 'placement.mjs'))
+  );
+  await testCatalog600({
+    landmarks,
+    decorations,
+    art,
+    translate,
+    placementType,
+    canPlaceLandmark,
+    empty,
+  });
   const { enhancedLandmarkEffects } = await import(
     pathToFileURL(join(dir, 'enhanced-effects.mjs'))
   );
@@ -169,7 +189,7 @@ try {
     );
   }
   console.log(
-    'PASS: every + illustration retains all 306 original buildings, actors, props and tier scenes; effects are additive layers',
+    'PASS: every + illustration retains all 600 original buildings, actors, props and tier scenes; effects are additive layers',
   );
   const illustrations = new Map();
   const repeatedGeometry = [];
@@ -825,10 +845,13 @@ try {
     landmark: l.id,
     cell: landTiles[i].id,
   }));
-  fullCatalog.decorations = landmarks.slice(0, 300).map((l, i) => ({
-    decoration: `${l.id}-gift`,
-    cell: 36 + i,
-  }));
+  fullCatalog.decorations = landmarks
+    .filter((l) => !decorations.find((d) => d.id === `${l.id}-gift`).surface)
+    .slice(0, landTiles.length - landmarks.length)
+    .map((l, i) => ({
+      decoration: `${l.id}-gift`,
+      cell: 36 + i,
+    }));
   // Use unlocked land addresses rather than assuming every outer cell is land.
   fullCatalog.decorations.forEach(
     (d, i) => (d.cell = landTiles[landmarks.length + i].id),
@@ -877,7 +900,7 @@ try {
   for (const landmark of landmarks)
     assert.equal(decorationQuantity(fullCatalog, `${landmark.id}-gift`), 1);
   console.log(
-    'PASS: all 306 catalog draws across 103 countries, 953 decorations, localized descriptions, full-catalog backup and preserved legacy land',
+    'PASS: all 600 catalog draws across 146 countries, 1835 decorations, localized descriptions, full-catalog backup and preserved legacy land',
   );
 
   // The four focal pieces use the same ownership and durable craft ledger.
