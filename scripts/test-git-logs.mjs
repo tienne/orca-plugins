@@ -5,7 +5,12 @@ import { join } from 'node:path';
 import { spawnSync } from 'node:child_process';
 const dir = await mkdtemp(join(tmpdir(), 'git-logs-tests-'));
 try {
-  const suites = ['worker/git', 'worker/local-ignore', 'i18n/messages'];
+  const suites = [
+    'worker/git',
+    'worker/local-ignore',
+    'i18n/messages',
+    'ui/i18n',
+  ];
   const outfiles = suites.map((suite) =>
     join(dir, suite.replace('/', '-') + '.test.mjs'),
   );
