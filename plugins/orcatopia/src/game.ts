@@ -24,7 +24,7 @@ export const collectionThresholds = { river: 12, sea: 25 } as const;
 export type State = {
   version: 7;
   discoveredPlaces: string[];
-  firstExplorations: { theme: CollectionTheme; ticketId: string }[];
+  firstExplorations: { theme: CollectionTheme; ticketId?: string }[];
   fusions: {
     id: string;
     landmark: string;
@@ -243,15 +243,20 @@ export function validate(value: unknown): State {
     firstExplorations.length > 2 ||
     new Set(firstExplorations.map((e) => e?.theme)).size !==
       firstExplorations.length ||
-    new Set(firstExplorations.map((e) => e?.ticketId)).size !==
-      firstExplorations.length ||
+    new Set(
+      firstExplorations.flatMap((e) =>
+        e?.ticketId === undefined ? [] : [e.ticketId],
+      ),
+    ).size !==
+      firstExplorations.filter((e) => e?.ticketId !== undefined).length ||
     firstExplorations.some(
       (e) =>
         !e ||
         !['river', 'sea'].includes(e.theme) ||
-        typeof e.ticketId !== 'string' ||
-        !e.ticketId ||
-        e.ticketId.length > 256,
+        (e.ticketId !== undefined &&
+          (typeof e.ticketId !== 'string' ||
+            !e.ticketId ||
+            e.ticketId.length > 256)),
     )
   )
     throw Error('Invalid first exploration ledger');
@@ -416,7 +421,10 @@ export function validate(value: unknown): State {
     version: 7,
     discoveredPlaces: history,
     firstExplorations: firstExplorations
-      .map(({ theme, ticketId }) => ({ theme, ticketId }))
+      .map(({ theme, ticketId }) => ({
+        theme,
+        ...(ticketId !== undefined ? { ticketId } : {}),
+      }))
       .sort(
         (a, b) => collectionThresholds[a.theme] - collectionThresholds[b.theme],
       ),
@@ -577,9 +585,16 @@ export class Game {
       ].sort();
       next.firstExplorations = (['river', 'sea'] as const).flatMap((theme) => {
         const spent =
-          s.firstExplorations.find((e) => e.theme === theme) ??
-          next.firstExplorations.find((e) => e.theme === theme);
-        return spent ? [spent] : [];
+          next.firstExplorations.find((e) => e.theme === theme) ??
+          s.firstExplorations.find((e) => e.theme === theme);
+        if (!spent) return [];
+        // 분기 백업의 같은 탐험권이 다른 보상에 쓰였어도 소비 사실은 남긴다.
+        const reward = next.receipts.find(
+          (r) =>
+            r.workspaceId === spent.ticketId &&
+            collectionTheme(r.landmark) === theme,
+        );
+        return [{ theme, ...(reward ? { ticketId: spent.ticketId } : {}) }];
       });
       // Response-loss retries must not overwrite the pre-restore copy.
       if (JSON.stringify(next) === JSON.stringify(s)) return s;
@@ -650,7 +665,14 @@ export class Game {
       )
         throw Error('Choose a valid first exploration and ticket.');
       const prior = s.firstExplorations.find((e) => e.theme === theme);
-      if (prior?.ticketId === ticketId) return s;
+      if (
+        prior?.ticketId === ticketId &&
+        s.receipts.some(
+          (r) =>
+            r.workspaceId === ticketId && collectionTheme(r.landmark) === theme,
+        )
+      )
+        return s;
       if (!firstExplorationAvailable(s, theme))
         throw Error('This first exploration is not available.');
       if (!availableTickets(s).some((t) => t.workspaceId === ticketId))

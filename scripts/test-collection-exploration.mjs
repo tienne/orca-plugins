@@ -20,6 +20,15 @@ export async function testCollectionExploration(dir) {
     islandLevel,
     quantity,
   } = await import(pathToFileURL(join(dir, 'game.mjs')));
+  const { translate } = await import(pathToFileURL(join(dir, 'i18n.mjs')));
+  assert.equal(
+    translate('River: unlock at 31 different places', 'ko-KR'),
+    '강: 서로 다른 장소 31종 발견 시 해금',
+  );
+  assert.equal(
+    translate('Sea exploration: 17/39 places', 'ko-KR'),
+    '바다 탐험까지 17/39종',
+  );
   const at = '2026-11-15';
   const land = landmarks.filter((l) => collectionTheme(l.id) === 'land');
   const fixture = (count, tickets = 15) => {
@@ -272,18 +281,38 @@ export async function testCollectionExploration(dir) {
     },
   ])
     assert.throws(() => validate(bad));
-  // A legacy restore cannot launder a used opportunity; incompatible divergent rewards fail safely.
-  const conflict = fixture(25);
-  conflict.receipts.push({ workspaceId: 'new-0', landmark: land[0].id, at });
-  const current = make(beforeRestore);
+  // 분기 백업에서 탐험권을 재사용해도 복원 전 사본은 계속 복원할 수 있다.
+  const fork = make(fixture(12, 1));
+  const pending = encodeBackup(await fork.game.snapshot());
+  await fork.game.redeem({ ticketId: 'new-0' });
+  const ordinary = await fork.game.snapshot();
+  await fork.game.restore({ text: pending, expected: ordinary });
+  const preRestore = await fork.game.exportBackup(true);
+  await fork.game.exploreTheme({ theme: 'river', ticketId: 'new-0' });
+  const guaranteed = await fork.game.snapshot();
+  const back = await fork.game.restore({
+    text: preRestore,
+    expected: guaranteed,
+  });
+  assert.deepEqual(back.receipts, ordinary.receipts);
+  assert.deepEqual(back.firstExplorations, [{ theme: 'river' }]);
+  assert.equal(firstExplorationAvailable(back, 'river'), false);
   await assert.rejects(
-    current.game.restore({
-      text: encodeBackup(conflict),
-      expected: beforeRestore,
-    }),
-    /first exploration ledger/,
+    fork.game.exploreTheme({ theme: 'river', ticketId: 'new-0' }),
+    /not available/,
   );
-  assert.deepEqual(current.state, beforeRestore);
+  const again = await new Game(fork.store).restore({
+    text: encodeBackup(guaranteed),
+    expected: back,
+  });
+  assert.deepEqual(again.receipts, guaranteed.receipts);
+  assert.equal(firstExplorationAvailable(again, 'river'), false);
+  assert.deepEqual(decodeBackup(encodeBackup(back)).state, back);
+  for (const value of [0.99, 0.995, 0.999999]) {
+    let call = 0;
+    const id = draw(() => (call++ ? 0 : value), fixture(12), 'river');
+    assert.equal(landmarks.find((l) => l.id === id).tier, 'epic');
+  }
   console.log(
     'PASS: collection unlock boundaries, all gated tier pools, rescaled theme tiers, mid-batch unlock, fusion history, one-time theme requests, concurrency, restart/response loss, failure rollback and backup anti-reissue',
   );
