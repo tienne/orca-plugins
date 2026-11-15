@@ -1,7 +1,7 @@
 import { openTreasure } from './treasure-menu';
 import { test, expect, type Page } from '@playwright/test';
 import { landTiles, landAtLevel } from '../src/world';
-import { validate, landmarks, empty } from '../src/game';
+import { validate, landmarks, empty, collectionTheme } from '../src/game';
 const catalogBatches = Array.from(
   { length: Math.ceil(landmarks.length / 100) },
   (_, index) => landmarks.slice(index * 100, (index + 1) * 100),
@@ -1808,8 +1808,11 @@ for (const [batch, catalogEntries] of catalogBatches.entries())
 test('new discoveries grow land, gifts unlock sets, duplicates craft chosen decorations', async ({
   page,
 }) => {
+  const rareLand = landmarks.filter(
+    (entry) => entry.tier === 'rare' && collectionTheme(entry.id) === 'land',
+  );
   await page.addInitScript(
-    (rareCount) => {
+    (chichenRoll) => {
       let roll = 0;
       Math.random = () => {
         const tierRoll =
@@ -1817,11 +1820,12 @@ test('new discoveries grow land, gifts unlock sets, duplicates craft chosen deco
         return roll++ % 2 === 0
           ? tierRoll
           : tierRoll === 0.71
-            ? 3.5 / rareCount
+            ? chichenRoll
             : 0;
       };
     },
-    landmarks.filter((entry) => entry.tier === 'rare').length,
+    (rareLand.findIndex((entry) => entry.id === 'chichen') + 0.5) /
+      rareLand.length,
   );
   await page.goto('/');
   await expect(page.locator('.cell')).toHaveCount(36);
