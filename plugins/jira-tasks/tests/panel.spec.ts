@@ -1227,3 +1227,199 @@ for (const locale of ['ko-KR', 'ja-JP']) {
     });
   }
 }
+
+async function changeLocale(page: Page, locale: string, focus = false) {
+  await page.evaluate(
+    ({ locale, focus }) => {
+      (window as unknown as { orca: { locale: string } }).orca.locale = locale;
+      if (focus) window.dispatchEvent(new Event('focus'));
+    },
+    { locale, focus },
+  );
+  await expect(page.locator('html')).toHaveAttribute(
+    'lang',
+    /^ko(?:-|$)/i.test(locale) ? 'ko-KR' : 'en-US',
+  );
+}
+async function dataCalls(page: Page) {
+  return page.evaluate(() =>
+    (window as unknown as { jiraCalls: string[] }).jiraCalls.filter(
+      (name) => name !== 'jira.avatar',
+    ),
+  );
+}
+
+test('updates an open list ko → en → ko and falls back without losing search or filters', async ({
+  page,
+}) => {
+  await start(page);
+  const search = page.locator('input[type=search]');
+  await search.fill('checkout');
+  await page.getByLabel('프로젝트', { exact: true }).selectOption('DEMO');
+  await search.focus();
+  await search.evaluate((input: HTMLInputElement) =>
+    input.setSelectionRange(1, 4),
+  );
+  const calls = await dataCalls(page);
+  for (const locale of ['en-US', 'ko-KR', 'ja-JP', 'ko']) {
+    await changeLocale(page, locale);
+    const korean = locale.startsWith('ko');
+    await expect(search).toHaveAccessibleName(
+      korean ? '불러온 티켓 검색' : 'Search loaded issues',
+    );
+    await expect(search).toHaveValue('checkout');
+    await expect(search).toBeFocused();
+    expect(
+      await search.evaluate((input: HTMLInputElement) => [
+        input.selectionStart,
+        input.selectionEnd,
+      ]),
+    ).toEqual([1, 4]);
+    await expect(
+      page.getByLabel(korean ? '프로젝트' : 'Project', { exact: true }),
+    ).toHaveValue('DEMO');
+    await expect(
+      page.getByRole('button', { name: task.title, exact: true }),
+    ).toBeVisible();
+    await expect(
+      page.getByRole('button', { name: 'Fix reservation search', exact: true }),
+    ).toHaveCount(0);
+    expect(await dataCalls(page)).toEqual(calls);
+  }
+});
+
+test('updates open detail, dates and child filters while retaining scroll and focus', async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 368, height: 520 });
+  await start(page, { children: 'filterable' });
+  await page.getByRole('button', { name: task.title, exact: true }).click();
+  const children = page.locator('#child-issues');
+  await expect(children.locator('.child-row')).toHaveCount(3);
+  await children.getByLabel('하위 티켓 검색').fill('booking');
+  await children.getByLabel('하위 티켓 상태').click();
+  const checkbox = children.getByRole('checkbox', {
+    name: 'Done',
+    exact: true,
+  });
+  await checkbox.check();
+  await checkbox.focus();
+  await page.evaluate(() => {
+    const list = document.querySelector<HTMLElement>('.children-list')!;
+    list.style.maxHeight = '45px';
+    list.scrollTop = 20;
+  });
+  // 프레임 스타일을 고정해 언어별 줄바꿈과 무관하게 스크롤 복원을 검증한다.
+  await page.addStyleTag({
+    content: '.children-list { max-height:45px !important }',
+  });
+  const scroll = await page.evaluate(() => ({
+    window: window.scrollY,
+    children: document.querySelector('.children-list')!.scrollTop,
+  }));
+  const calls = await dataCalls(page);
+  for (const locale of ['en-US', 'ko-KR', 'fr-FR']) {
+    await changeLocale(page, locale, true);
+    const korean = locale.startsWith('ko');
+    await expect(page.locator('.issue-title')).toHaveText(task.title);
+    await expect(
+      page.getByRole('button', {
+        name: korean ? '새로고침' : 'Refresh',
+        exact: true,
+      }),
+    ).toBeVisible();
+    await expect(page.locator('.properties dd').last()).toHaveText(
+      await page.evaluate(
+        ({ date, locale }) => new Date(date).toLocaleString(locale),
+        { date: task.updatedAt!, locale: korean ? 'ko-KR' : 'en-US' },
+      ),
+    );
+    await expect(
+      children.getByLabel(korean ? '하위 티켓 검색' : 'Search child issues'),
+    ).toHaveValue('booking');
+    await expect(checkbox).toBeChecked();
+    await expect(checkbox).toBeFocused();
+    await expect(children.locator('details[open]')).toHaveCount(1);
+    expect(
+      await page.evaluate(() => ({
+        window: window.scrollY,
+        children: document.querySelector('.children-list')!.scrollTop,
+      })),
+    ).toEqual(scroll);
+    expect(await dataCalls(page)).toEqual(calls);
+  }
+});
+
+for (const failure of ['list', 'detail', 'children'] as const) {
+  test(`relocalizes an existing ${failure} error in both directions`, async ({
+    page,
+  }) => {
+    await start(page, {
+      error: failure === 'list',
+      refreshFailure: failure === 'detail',
+      children: failure === 'children' ? 'error' : undefined,
+    });
+    if (failure !== 'list') {
+      await page.getByRole('button', { name: task.title, exact: true }).click();
+      await expect(page.locator('.issue-title')).toBeVisible();
+      if (failure === 'detail')
+        await page
+          .getByRole('button', { name: '새로고침', exact: true })
+          .click();
+    }
+    const korean = {
+      list: 'Jira 작업을 불러오지 못했습니다',
+      detail: '티켓 상세를 불러오지 못했습니다',
+      children: '하위 항목을 불러오지 못했습니다',
+    }[failure];
+    const english = {
+      list: 'Could not load Jira',
+      detail: 'Could not load issue details',
+      children: 'Could not load child issues',
+    }[failure];
+    await expect(page.locator('.error')).toContainText(korean);
+    const calls = await dataCalls(page);
+    await changeLocale(page, 'en-US');
+    await expect(page.locator('.error')).toContainText(english);
+    await changeLocale(page, 'ko-KR');
+    await expect(page.locator('.error')).toContainText(korean);
+    expect(await dataCalls(page)).toEqual(calls);
+  });
+}
+
+test('keeps the in-flight detail request across a language change', async ({
+  page,
+}) => {
+  await start(page);
+  await page.evaluate(() => {
+    const host = window as unknown as {
+      orca: { plugin: { request: (...args: unknown[]) => Promise<unknown> } };
+      releaseDetail: () => void;
+    };
+    const original = host.orca.plugin.request;
+    host.orca.plugin.request = async (...args) => {
+      const result = original(...args);
+      if (args[0] === 'jira.issue')
+        await new Promise<void>((resolve) => {
+          host.releaseDetail = resolve;
+        });
+      return result;
+    };
+  });
+  await page.getByRole('button', { name: task.title, exact: true }).click();
+  await expect(
+    page.getByText('티켓을 불러오는 중…', { exact: true }),
+  ).toBeVisible();
+  const calls = await dataCalls(page);
+  await changeLocale(page, 'en-US');
+  await expect(page.getByText('Loading issue…', { exact: true })).toBeVisible();
+  expect(await dataCalls(page)).toEqual(calls);
+  await page.evaluate(() =>
+    (window as unknown as { releaseDetail: () => void }).releaseDetail(),
+  );
+  await expect(page.locator('.description')).toContainText('Checkout summary.');
+  await expect(page.getByText('Loading issue…', { exact: true })).toHaveCount(
+    0,
+  );
+  expect(await dataCalls(page)).toEqual(calls);
+});
