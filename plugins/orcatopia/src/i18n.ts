@@ -57,7 +57,7 @@ for (const landmark of catalog) {
     messages[landmark[field]] = translated[field];
 }
 const numericSlot =
-  /^(count|owned|available|total|tiles|unique|angle|chance|cell|common|rare|epic|legendary)$/;
+  /^(threshold|count|owned|available|total|tiles|unique|angle|chance|cell|common|rare|epic|legendary)$/;
 const templates = Object.entries(messages)
   .filter(([key]) => key.includes('{'))
   .map(([source, target]) => {

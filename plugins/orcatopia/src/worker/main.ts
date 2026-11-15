@@ -80,6 +80,11 @@ export default function activate(orca: Worker) {
     await notify();
     return state;
   });
+  orca.panels.handle('island.exploreTheme', async (input) => {
+    const state = await game.exploreTheme(input);
+    await notify();
+    return state;
+  });
   orca.panels.handle('island.drawMany', async (input) => {
     const state = await game.redeemMany(input);
     await notify();
