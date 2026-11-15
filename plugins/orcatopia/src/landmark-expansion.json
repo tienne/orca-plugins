@@ -2058,5 +2058,2945 @@
     "featureKo": "독일 라인강을 따라 고성과 포도밭, 오래된 마을이 이어집니다. 수백 년 동안 강과 함께 살아온 문화경관을 굽이치는 물길과 언덕 위 성으로 표현했습니다.",
     "seed": 206,
     "color": "#9baf86"
+  },
+  {
+    "id": "jam",
+    "name": "Minaret of Jam",
+    "nameKo": "잠의 미나레트",
+    "shape": "minaret",
+    "feature": "An intricately decorated brick minaret rises in a remote mountain valley",
+    "featureKo": "외딴 산골짜기에 정교한 벽돌 장식을 두른 미나레트가 솟아 있습니다",
+    "seed": 207,
+    "color": "#b69772"
+  },
+  {
+    "id": "bamiyan",
+    "name": "Bamiyan Valley",
+    "nameKo": "바미안 계곡",
+    "shape": "cliffbuddha",
+    "feature": "Tall niches and Buddhist cave sanctuaries survive along the valley's sandstone cliffs",
+    "featureKo": "계곡의 사암 절벽에 커다란 감실과 불교 석굴 사원이 남아 있습니다",
+    "seed": 208,
+    "color": "#c4ac88"
+  },
+  {
+    "id": "butrint",
+    "name": "Butrint",
+    "nameKo": "부트린트",
+    "shape": "theatre",
+    "feature": "A Greek and Roman archaeological city occupies a peninsula beside a lagoon",
+    "featureKo": "석호 옆 반도에 그리스와 로마 시대 도시 유적이 남아 있습니다",
+    "seed": 209,
+    "color": "#aeb9a0"
+  },
+  {
+    "id": "berat",
+    "name": "Berat and Gjirokastra",
+    "nameKo": "베라트와 지로카스트라",
+    "shape": "town",
+    "feature": "Ottoman-period houses climb the slopes of two historic Albanian towns",
+    "featureKo": "알바니아의 두 역사 도시에 오스만 시대 주택이 산비탈을 따라 들어서 있습니다",
+    "seed": 210,
+    "color": "#bc8b70"
+  },
+  {
+    "id": "haghpat",
+    "name": "Haghpat and Sanahin Monasteries",
+    "nameKo": "하그파트와 사나힌 수도원",
+    "shape": "cloister",
+    "feature": "Medieval Armenian monasteries combine domed churches with local vernacular building traditions",
+    "featureKo": "중세 아르메니아 수도원에서 돔 교회와 토착 건축 전통이 어우러집니다",
+    "seed": 211,
+    "color": "#8baba4"
+  },
+  {
+    "id": "geghard",
+    "name": "Geghard Monastery",
+    "nameKo": "게하르트 수도원",
+    "shape": "rocktemple",
+    "feature": "Churches and tombs are cut into rock within the steep Upper Azat Valley",
+    "featureKo": "가파른 아자트 계곡의 바위 속에 교회와 무덤이 새겨져 있습니다",
+    "seed": 212,
+    "color": "#d3b17c"
+  },
+  {
+    "id": "zvartnots",
+    "name": "Echmiatsin and Zvartnots",
+    "nameKo": "에치미아진과 즈바르트노츠",
+    "shape": "ruins",
+    "feature": "Early Armenian churches and the remains of Zvartnots illustrate the development of central-domed architecture",
+    "featureKo": "초기 아르메니아 교회와 즈바르트노츠 유적이 중앙 돔 건축의 발전을 보여 줍니다",
+    "seed": 213,
+    "color": "#b7a28c"
+  },
+  {
+    "id": "bakuwalled",
+    "name": "Walled City of Baku",
+    "nameKo": "바쿠 성곽도시",
+    "shape": "fortress",
+    "feature": "The Maiden Tower and Shirvanshah palace stand within Baku's surviving fortified city",
+    "featureKo": "바쿠의 성곽 안에 처녀의 탑과 시르반샤 궁전이 남아 있습니다",
+    "seed": 214,
+    "color": "#829b8a"
+  },
+  {
+    "id": "gobustan",
+    "name": "Gobustan Rock Art",
+    "nameKo": "고부스탄 암각화",
+    "shape": "redrocks",
+    "feature": "Thousands of rock engravings record long human occupation among a plateau of rocky boulders",
+    "featureKo": "바위가 널린 고원에 수많은 암각화가 오랜 인간의 흔적을 남겼습니다",
+    "seed": 215,
+    "color": "#bca6a0"
+  },
+  {
+    "id": "sheki",
+    "name": "Sheki Khan's Palace",
+    "nameKo": "셰키 칸 궁전",
+    "shape": "palace",
+    "feature": "The khan's palace anchors a trading town shaped by silk production and caravan routes",
+    "featureKo": "비단 생산과 대상 교역로로 성장한 도시의 중심에 칸의 궁전이 있습니다",
+    "seed": 216,
+    "color": "#b69772"
+  },
+  {
+    "id": "visegrad",
+    "name": "Višegrad Bridge",
+    "nameKo": "비셰그라드 다리",
+    "shape": "bridge",
+    "feature": "Eleven masonry arches carry an Ottoman bridge over the Drina River",
+    "featureKo": "열한 개의 석조 아치가 드리나강 위의 오스만 시대 다리를 떠받칩니다",
+    "seed": 217,
+    "color": "#c4ac88"
+  },
+  {
+    "id": "vjetrenica",
+    "name": "Vjetrenica Cave",
+    "nameKo": "비예트레니차 동굴",
+    "shape": "cave",
+    "feature": "A karst cave shelters an exceptionally diverse community of underground animals",
+    "featureKo": "카르스트 동굴 안에 다양한 지하 동물이 살아갑니다",
+    "seed": 218,
+    "color": "#aeb9a0"
+  },
+  {
+    "id": "boyana",
+    "name": "Boyana Church",
+    "nameKo": "보야나 교회",
+    "shape": "basilica",
+    "feature": "A small medieval church preserves vivid thirteenth-century wall paintings",
+    "featureKo": "작은 중세 교회에 생생한 13세기 벽화가 남아 있습니다",
+    "seed": 219,
+    "color": "#bc8b70"
+  },
+  {
+    "id": "madara",
+    "name": "Madara Rider",
+    "nameKo": "마다라 기마상",
+    "shape": "cliff",
+    "feature": "A carved horseman stands high on a near-vertical cliff above an early Bulgarian sacred site",
+    "featureKo": "초기 불가리아 성지 위의 가파른 절벽에 말을 탄 인물이 새겨져 있습니다",
+    "seed": 220,
+    "color": "#8baba4"
+  },
+  {
+    "id": "kazanlak",
+    "name": "Thracian Tomb of Kazanlak",
+    "nameKo": "카잔라크 트라키아 무덤",
+    "shape": "tomb",
+    "feature": "A vaulted Thracian tomb preserves painted scenes of a funerary banquet",
+    "featureKo": "둥근 천장의 트라키아 무덤에 장례 연회 장면을 그린 벽화가 남아 있습니다",
+    "seed": 221,
+    "color": "#d3b17c"
+  },
+  {
+    "id": "ivanovo",
+    "name": "Rock-Hewn Churches of Ivanovo",
+    "nameKo": "이바노보 암굴교회",
+    "shape": "clifftemple",
+    "feature": "Medieval churches and monastic cells are carved into the cliffs above a river valley",
+    "featureKo": "강 계곡 위의 절벽에 중세 교회와 수도실이 파여 있습니다",
+    "seed": 222,
+    "color": "#b7a28c"
+  },
+  {
+    "id": "nessebar",
+    "name": "Ancient Nessebar",
+    "nameKo": "고대 네세바르",
+    "shape": "coast",
+    "feature": "Churches and historic houses cluster on a rocky peninsula in the Black Sea",
+    "featureKo": "흑해의 바위 반도에 교회와 옛 주택이 모여 있습니다",
+    "seed": 223,
+    "color": "#829b8a"
+  },
+  {
+    "id": "srebarna",
+    "name": "Srebarna Nature Reserve",
+    "nameKo": "스레바르나 자연보호구역",
+    "shape": "wetland",
+    "feature": "A freshwater lake beside the Danube provides breeding grounds for waterbirds",
+    "featureKo": "다뉴브강 옆 담수호가 물새의 번식지가 됩니다",
+    "seed": 224,
+    "color": "#bca6a0"
+  },
+  {
+    "id": "pirin",
+    "name": "Pirin National Park",
+    "nameKo": "피린 국립공원",
+    "shape": "peaks",
+    "feature": "Alpine peaks, glacial lakes and forests cover the Pirin mountain landscape",
+    "featureKo": "피린산맥에 고산 봉우리와 빙하호, 숲이 펼쳐집니다",
+    "seed": 225,
+    "color": "#b69772"
+  },
+  {
+    "id": "qalabahrain",
+    "name": "Qal'at al-Bahrain",
+    "nameKo": "칼라트 알바레인",
+    "shape": "fortress",
+    "feature": "An archaeological mound and coastal fort preserve layers of the ancient Dilmun trading centre",
+    "featureKo": "해안 요새와 유적 언덕에 고대 딜문 교역 중심지의 흔적이 겹겹이 남아 있습니다",
+    "seed": 226,
+    "color": "#c4ac88"
+  },
+  {
+    "id": "dilmunmounds",
+    "name": "Dilmun Burial Mounds",
+    "nameKo": "딜문 고분군",
+    "shape": "tomb",
+    "feature": "Extensive fields of burial mounds reflect the funerary traditions of ancient Dilmun",
+    "featureKo": "넓게 펼쳐진 봉분 무덤들이 고대 딜문의 장례 전통을 보여 줍니다",
+    "seed": 227,
+    "color": "#aeb9a0"
+  },
+  {
+    "id": "mir",
+    "name": "Mir Castle",
+    "nameKo": "미르성",
+    "shape": "castle",
+    "feature": "A quadrangular castle combines Gothic, Renaissance and Baroque architectural elements",
+    "featureKo": "사각형 성에 고딕과 르네상스, 바로크 건축 요소가 어우러져 있습니다",
+    "seed": 228,
+    "color": "#bc8b70"
+  },
+  {
+    "id": "nesvizh",
+    "name": "Nesvizh Castle",
+    "nameKo": "네스비시성",
+    "shape": "palace",
+    "feature": "The Radziwill family's palace complex joins residential buildings with a landscaped setting",
+    "featureKo": "라지비우 가문의 궁전 단지에 주거 건물과 조경 공간이 어우러져 있습니다",
+    "seed": 229,
+    "color": "#8baba4"
+  },
+  {
+    "id": "paphos",
+    "name": "Paphos",
+    "nameKo": "파포스",
+    "shape": "ruins",
+    "feature": "Roman villas preserve richly decorated mosaic floors in an ancient coastal city",
+    "featureKo": "고대 해안 도시의 로마 시대 저택에 정교한 모자이크 바닥이 남아 있습니다",
+    "seed": 230,
+    "color": "#d3b17c"
+  },
+  {
+    "id": "troodos",
+    "name": "Painted Churches of Troodos",
+    "nameKo": "트로도스 벽화교회",
+    "shape": "woodchurch",
+    "feature": "Mountain churches with steep timber roofs preserve Byzantine wall paintings",
+    "featureKo": "가파른 목조 지붕을 얹은 산악 교회에 비잔틴 벽화가 남아 있습니다",
+    "seed": 231,
+    "color": "#b7a28c"
+  },
+  {
+    "id": "choirokoitia",
+    "name": "Choirokoitia",
+    "nameKo": "키로키티아",
+    "shape": "roundhouse",
+    "feature": "Remains of circular stone houses reveal a Neolithic settlement on Cyprus",
+    "featureKo": "둥근 석조 주택 유적이 키프로스의 신석기 정착지를 보여 줍니다",
+    "seed": 232,
+    "color": "#829b8a"
+  },
+  {
+    "id": "ceskykrumlov",
+    "name": "Český Krumlov",
+    "nameKo": "체스키크룸로프",
+    "shape": "castle",
+    "feature": "A large castle overlooks a medieval town wrapped in bends of the Vltava River",
+    "featureKo": "커다란 성 아래로 블타바강 굽이에 둘러싸인 중세 도시가 펼쳐집니다",
+    "seed": 233,
+    "color": "#bca6a0"
+  },
+  {
+    "id": "telc",
+    "name": "Telč",
+    "nameKo": "텔치",
+    "shape": "square",
+    "feature": "Renaissance and Baroque houses line a historic market square beneath a castle",
+    "featureKo": "성 아래의 옛 시장 광장을 르네상스와 바로크 주택이 둘러싸고 있습니다",
+    "seed": 234,
+    "color": "#b69772"
+  },
+  {
+    "id": "zelenahora",
+    "name": "Zelená Hora Pilgrimage Church",
+    "nameKo": "젤레나호라 순례교회",
+    "shape": "roundtemple",
+    "feature": "A star-shaped pilgrimage church brings together Gothic and Baroque design",
+    "featureKo": "별 모양의 순례교회에 고딕과 바로크 설계가 어우러져 있습니다",
+    "seed": 235,
+    "color": "#c4ac88"
+  },
+  {
+    "id": "kutnahora",
+    "name": "Kutná Hora",
+    "nameKo": "쿠트나호라",
+    "shape": "cathedral",
+    "feature": "St Barbara's church rises above a historic town made prosperous by silver mining",
+    "featureKo": "은광으로 번영한 역사 도시 위로 성 바르바라 교회가 솟아 있습니다",
+    "seed": 236,
+    "color": "#aeb9a0"
+  },
+  {
+    "id": "lednice",
+    "name": "Lednice-Valtice",
+    "nameKo": "레드니체발티체",
+    "shape": "palace",
+    "feature": "Castles, gardens and romantic buildings form an extensive designed landscape",
+    "featureKo": "성과 정원, 낭만적인 건물들이 넓은 조경 경관을 이룹니다",
+    "seed": 237,
+    "color": "#bc8b70"
+  },
+  {
+    "id": "olomouc",
+    "name": "Holy Trinity Column in Olomouc",
+    "nameKo": "올로모우츠 삼위일체 기념주",
+    "shape": "minaret",
+    "feature": "A tall Baroque column is covered in religious sculpture in the town square",
+    "featureKo": "도시 광장의 높은 바로크 기념주를 종교 조각이 둘러싸고 있습니다",
+    "seed": 238,
+    "color": "#8baba4"
+  },
+  {
+    "id": "kromeriz",
+    "name": "Kroměříž Gardens and Castle",
+    "nameKo": "크로메르지시 정원과 성",
+    "shape": "garden",
+    "feature": "An episcopal residence adjoins formal gardens and a landscaped pleasure garden",
+    "featureKo": "주교의 거처 옆에 정형식 정원과 조경 정원이 펼쳐집니다",
+    "seed": 239,
+    "color": "#d3b17c"
+  },
+  {
+    "id": "litomysl",
+    "name": "Litomyšl Castle",
+    "nameKo": "리토미슐성",
+    "shape": "palace",
+    "feature": "An arcaded Renaissance castle is decorated with elaborate sgraffito facades",
+    "featureKo": "아케이드가 있는 르네상스 성의 정면을 정교한 스그라피토 장식이 덮고 있습니다",
+    "seed": 240,
+    "color": "#b7a28c"
+  },
+  {
+    "id": "mtskheta",
+    "name": "Mtskheta Monuments",
+    "nameKo": "므츠헤타 유적",
+    "shape": "basilica",
+    "feature": "Historic churches in Georgia's former capital illustrate early Christian architecture",
+    "featureKo": "조지아의 옛 수도에 있는 교회들이 초기 기독교 건축을 보여 줍니다",
+    "seed": 241,
+    "color": "#829b8a"
+  },
+  {
+    "id": "svaneti",
+    "name": "Upper Svaneti",
+    "nameKo": "상스바네티",
+    "shape": "towers",
+    "feature": "Medieval defensive tower houses stand among mountain villages in the Caucasus",
+    "featureKo": "코카서스 산악 마을에 중세의 방어용 탑집이 솟아 있습니다",
+    "seed": 242,
+    "color": "#bca6a0"
+  },
+  {
+    "id": "gelati",
+    "name": "Gelati Monastery",
+    "nameKo": "겔라티 수도원",
+    "shape": "cloister",
+    "feature": "A medieval Georgian monastery preserves churches decorated with mosaics and paintings",
+    "featureKo": "중세 조지아 수도원에 모자이크와 벽화로 장식한 교회들이 남아 있습니다",
+    "seed": 243,
+    "color": "#b69772"
+  },
+  {
+    "id": "colchic",
+    "name": "Colchic Rainforests and Wetlands",
+    "nameKo": "콜키스 우림과 습지",
+    "shape": "wetland",
+    "feature": "Humid forests and wetlands survive along the warm, wet eastern Black Sea coast",
+    "featureKo": "따뜻하고 비가 많은 흑해 동부 해안에 습윤한 숲과 습지가 남아 있습니다",
+    "seed": 244,
+    "color": "#c4ac88"
+  },
+  {
+    "id": "split",
+    "name": "Diocletian's Palace at Split",
+    "nameKo": "스플리트 디오클레티아누스 궁전",
+    "shape": "palace",
+    "feature": "A living historic city grew within and around a Roman emperor's palace",
+    "featureKo": "로마 황제의 궁전 안팎으로 오늘날까지 사람이 사는 역사 도시가 자랐습니다",
+    "seed": 245,
+    "color": "#aeb9a0"
+  },
+  {
+    "id": "plitvice",
+    "name": "Plitvice Lakes",
+    "nameKo": "플리트비체 호수",
+    "shape": "lakes",
+    "feature": "Water cascades between terraced lakes divided by natural travertine barriers",
+    "featureKo": "자연적으로 자란 석회질 둑 사이로 계단식 호수의 물이 흘러내립니다",
+    "seed": 246,
+    "color": "#bc8b70"
+  },
+  {
+    "id": "porec",
+    "name": "Euphrasian Basilica at Poreč",
+    "nameKo": "포레치 에우프라시우스 대성당",
+    "shape": "basilica",
+    "feature": "An early Christian episcopal complex preserves outstanding Byzantine mosaics",
+    "featureKo": "초기 기독교 주교좌 단지에 뛰어난 비잔틴 모자이크가 남아 있습니다",
+    "seed": 247,
+    "color": "#8baba4"
+  },
+  {
+    "id": "trogir",
+    "name": "Historic Trogir",
+    "nameKo": "트로기르 역사도시",
+    "shape": "town",
+    "feature": "Romanesque churches and later palaces fill the compact historic island town",
+    "featureKo": "작은 섬의 역사 도시에 로마네스크 교회와 후대의 궁전들이 모여 있습니다",
+    "seed": 248,
+    "color": "#d3b17c"
+  },
+  {
+    "id": "sibenik",
+    "name": "Cathedral of St James in Šibenik",
+    "nameKo": "시베니크 성 야고보 대성당",
+    "shape": "dome",
+    "feature": "A stone cathedral combines Gothic and Renaissance forms beneath a distinctive dome",
+    "featureKo": "돌로 지은 성당에 고딕과 르네상스 형식이 어우러지고 독특한 돔이 얹혀 있습니다",
+    "seed": 249,
+    "color": "#b7a28c"
+  },
+  {
+    "id": "starigrad",
+    "name": "Stari Grad Plain",
+    "nameKo": "스타리그라드 평원",
+    "shape": "terraces",
+    "feature": "Ancient field divisions remain visible in an agricultural plain on Hvar Island",
+    "featureKo": "흐바르섬의 농경 평원에 고대의 경작지 구획이 남아 있습니다",
+    "seed": 250,
+    "color": "#829b8a"
+  },
+  {
+    "id": "holloko",
+    "name": "Hollókő",
+    "nameKo": "홀로쾨",
+    "shape": "thatched",
+    "feature": "A traditional village preserves houses and a rural layout developed before modern agricultural change",
+    "featureKo": "전통 마을에 근대 농업 변화 이전의 주택과 농촌 배치가 남아 있습니다",
+    "seed": 251,
+    "color": "#bca6a0"
+  },
+  {
+    "id": "hortobagy",
+    "name": "Hortobágy Puszta",
+    "nameKo": "호르토바지 푸스타",
+    "shape": "savanna",
+    "feature": "Open grasslands preserve a long tradition of pastoral life on the Hungarian plain",
+    "featureKo": "헝가리 평원의 드넓은 초지에 오랜 목축 생활의 전통이 이어집니다",
+    "seed": 252,
+    "color": "#b69772"
+  },
+  {
+    "id": "pannonhalma",
+    "name": "Pannonhalma Abbey",
+    "nameKo": "판논할머 수도원",
+    "shape": "cloister",
+    "feature": "A Benedictine abbey crowns a hill and records a long monastic history",
+    "featureKo": "언덕 위의 베네딕트회 수도원이 오랜 수도 생활의 역사를 간직하고 있습니다",
+    "seed": 253,
+    "color": "#c4ac88"
+  },
+  {
+    "id": "tokaj",
+    "name": "Tokaj Wine Landscape",
+    "nameKo": "토커이 와인 경관",
+    "shape": "terraces",
+    "feature": "Vineyards and historic wine cellars form a landscape shaped by Tokaj wine production",
+    "featureKo": "포도밭과 옛 와인 저장고가 토커이 와인 생산이 빚은 경관을 이룹니다",
+    "seed": 254,
+    "color": "#aeb9a0"
+  },
+  {
+    "id": "sulaimantoo",
+    "name": "Sulaiman-Too",
+    "nameKo": "술라이만투",
+    "shape": "peaks",
+    "feature": "A sacred mountain above Osh contains pilgrimage places, caves and rock carvings",
+    "featureKo": "오시 위의 성산에 순례 장소와 동굴, 암각화가 남아 있습니다",
+    "seed": 255,
+    "color": "#bc8b70"
+  },
+  {
+    "id": "yasawi",
+    "name": "Mausoleum of Khoja Ahmed Yasawi",
+    "nameKo": "호자 아흐메드 야사위 영묘",
+    "shape": "dome",
+    "feature": "A monumental Timurid mausoleum combines a vast portal with domed chambers",
+    "featureKo": "티무르 시대의 거대한 영묘에 높은 정문과 돔을 얹은 방들이 들어서 있습니다",
+    "seed": 256,
+    "color": "#8baba4"
+  },
+  {
+    "id": "tanbaly",
+    "name": "Tanbaly Petroglyphs",
+    "nameKo": "탄발리 암각화",
+    "shape": "redrocks",
+    "feature": "Rock engravings and archaeological remains mark a landscape used over many generations",
+    "featureKo": "여러 세대가 이용한 경관에 암각화와 고고 유적이 남아 있습니다",
+    "seed": 257,
+    "color": "#d3b17c"
+  },
+  {
+    "id": "saryarka",
+    "name": "Saryarka Steppe and Lakes",
+    "nameKo": "사랴르카 초원과 호수",
+    "shape": "wetland",
+    "feature": "Steppe grasslands and lakes provide important resting places for migratory waterbirds",
+    "featureKo": "초원과 호수가 철새 물새들의 중요한 쉼터가 됩니다",
+    "seed": 258,
+    "color": "#b7a28c"
+  },
+  {
+    "id": "vilnius",
+    "name": "Vilnius Historic Centre",
+    "nameKo": "빌뉴스 역사중심지",
+    "shape": "town",
+    "feature": "A historic city preserves a mixture of Gothic, Renaissance, Baroque and classical buildings",
+    "featureKo": "역사 도시에 고딕과 르네상스, 바로크, 고전주의 건물이 함께 남아 있습니다",
+    "seed": 259,
+    "color": "#829b8a"
+  },
+  {
+    "id": "kernave",
+    "name": "Kernavė",
+    "nameKo": "케르나베",
+    "shape": "terraces",
+    "feature": "Fortified hill mounds overlook archaeological traces of settlements in the Neris Valley",
+    "featureKo": "방어용 언덕들이 네리스 계곡의 정착지 흔적 위로 솟아 있습니다",
+    "seed": 260,
+    "color": "#bca6a0"
+  },
+  {
+    "id": "kuldiga",
+    "name": "Old Town of Kuldīga",
+    "nameKo": "쿨디가 구시가지",
+    "shape": "town",
+    "feature": "A historic town preserves streets and buildings associated with the Duchy of Courland",
+    "featureKo": "쿠를란트 공국과 관련된 거리와 건물들이 역사 도시에 남아 있습니다",
+    "seed": 261,
+    "color": "#b69772"
+  },
+  {
+    "id": "durmitor",
+    "name": "Durmitor National Park",
+    "nameKo": "두르미토르 국립공원",
+    "shape": "peaks",
+    "feature": "Glaciated mountains rise above deep canyons and clear mountain lakes",
+    "featureKo": "빙하가 깎은 산들이 깊은 협곡과 맑은 산악 호수 위로 솟아 있습니다",
+    "seed": 262,
+    "color": "#c4ac88"
+  },
+  {
+    "id": "kotor",
+    "name": "Kotor Region",
+    "nameKo": "코토르 지역",
+    "shape": "coast",
+    "feature": "Fortified towns and churches occupy a deeply indented Adriatic bay",
+    "featureKo": "깊숙이 들어온 아드리아해의 만을 따라 성곽도시와 교회가 자리합니다",
+    "seed": 263,
+    "color": "#aeb9a0"
+  },
+  {
+    "id": "orkhon",
+    "name": "Orkhon Valley",
+    "nameKo": "오르혼 계곡",
+    "shape": "terraces",
+    "feature": "Grassland, archaeological remains and monastic sites follow the Orkhon River valley",
+    "featureKo": "오르혼강 계곡을 따라 초원과 고고 유적, 수도원 터가 이어집니다",
+    "seed": 264,
+    "color": "#bc8b70"
+  },
+  {
+    "id": "burkhankhaldun",
+    "name": "Burkhan Khaldun Mountain",
+    "nameKo": "부르한 할둔산",
+    "shape": "peaks",
+    "feature": "A sacred mountain and its surrounding landscape are associated with Mongolian worship traditions",
+    "featureKo": "몽골의 신앙 전통과 관련된 성산과 주변 경관이 펼쳐집니다",
+    "seed": 265,
+    "color": "#8baba4"
+  },
+  {
+    "id": "deerstones",
+    "name": "Mongolian Deer Stones",
+    "nameKo": "몽골 사슴돌",
+    "shape": "stelae",
+    "feature": "Bronze Age standing stones bear stylized deer and other carved motifs",
+    "featureKo": "청동기 시대의 선돌에 양식화한 사슴과 여러 문양이 새겨져 있습니다",
+    "seed": 266,
+    "color": "#d3b17c"
+  },
+  {
+    "id": "sagarmatha",
+    "name": "Sagarmatha National Park",
+    "nameKo": "사가르마타 국립공원",
+    "shape": "peaks",
+    "feature": "Mount Everest rises above glaciers and deeply incised valleys in a Himalayan landscape",
+    "featureKo": "히말라야 경관의 빙하와 깊은 계곡 위로 에베레스트산이 솟아 있습니다",
+    "seed": 267,
+    "color": "#b7a28c"
+  },
+  {
+    "id": "chitwan",
+    "name": "Chitwan National Park",
+    "nameKo": "치트완 국립공원",
+    "shape": "forest",
+    "feature": "Subtropical lowland forests and grasslands shelter rhinoceroses and Bengal tigers",
+    "featureKo": "아열대 저지대의 숲과 초지에 코뿔소와 벵골호랑이가 살아갑니다",
+    "seed": 268,
+    "color": "#829b8a"
+  },
+  {
+    "id": "lumbini",
+    "name": "Lumbini",
+    "nameKo": "룸비니",
+    "shape": "stupa",
+    "feature": "The Buddha's birthplace preserves an Ashokan pillar and archaeological remains of early sanctuaries",
+    "featureKo": "부처의 탄생지에 아소카 석주와 초기 성소의 유적이 남아 있습니다",
+    "seed": 269,
+    "color": "#bca6a0"
+  },
+  {
+    "id": "bahla",
+    "name": "Bahla Fort",
+    "nameKo": "발라 요새",
+    "shape": "fortress",
+    "feature": "Mud-brick walls and towers protect an oasis settlement in the Omani interior",
+    "featureKo": "오만 내륙의 오아시스 정착지를 흙벽돌 성벽과 탑이 지키고 있습니다",
+    "seed": 270,
+    "color": "#b69772"
+  },
+  {
+    "id": "bat",
+    "name": "Bat, Al-Khutm and Al-Ayn",
+    "nameKo": "바트·알쿠틈·알아인",
+    "shape": "tomb",
+    "feature": "Stone towers and beehive tombs preserve a Bronze Age landscape in Oman",
+    "featureKo": "오만의 청동기 경관에 석탑과 벌집 모양 무덤들이 남아 있습니다",
+    "seed": 271,
+    "color": "#c4ac88"
+  },
+  {
+    "id": "frankincense",
+    "name": "Land of Frankincense",
+    "nameKo": "유향의 땅",
+    "shape": "ruins",
+    "feature": "Ancient ports and an inland oasis recall the trade in frankincense from Dhofar",
+    "featureKo": "옛 항구와 내륙 오아시스가 도파르 유향 교역의 역사를 전합니다",
+    "seed": 272,
+    "color": "#aeb9a0"
+  },
+  {
+    "id": "aflaj",
+    "name": "Aflaj Irrigation Systems",
+    "nameKo": "아플라지 관개시설",
+    "shape": "waterworks",
+    "feature": "Gravity-fed water channels distribute precious water through Omani communities and farms",
+    "featureKo": "중력으로 흐르는 수로가 오만의 마을과 농지에 귀한 물을 나누어 줍니다",
+    "seed": 273,
+    "color": "#bc8b70"
+  },
+  {
+    "id": "moenjodaro",
+    "name": "Moenjodaro",
+    "nameKo": "모헨조다로",
+    "shape": "ruins",
+    "feature": "Planned streets and brick buildings preserve a major city of the Indus civilization",
+    "featureKo": "계획적으로 낸 거리와 벽돌 건물들이 인더스 문명의 주요 도시를 보여 줍니다",
+    "seed": 274,
+    "color": "#8baba4"
+  },
+  {
+    "id": "taxila",
+    "name": "Taxila",
+    "nameKo": "탁실라",
+    "shape": "ruins",
+    "feature": "Successive ancient cities and Buddhist monuments reflect a crossroads of Asian cultures",
+    "featureKo": "여러 시대의 도시와 불교 유적이 아시아 문화가 만난 역사를 보여 줍니다",
+    "seed": 275,
+    "color": "#d3b17c"
+  },
+  {
+    "id": "takhtibahi",
+    "name": "Takht-i-Bahi",
+    "nameKo": "타크티바히",
+    "shape": "cloister",
+    "feature": "A Buddhist monastery occupies a hilltop above the remains of a neighbouring fortified city",
+    "featureKo": "불교 수도원이 인근 성곽도시 유적을 내려다보는 언덕 위에 자리합니다",
+    "seed": 276,
+    "color": "#b7a28c"
+  },
+  {
+    "id": "rohtas",
+    "name": "Rohtas Fort",
+    "nameKo": "로타스 요새",
+    "shape": "fortress",
+    "feature": "Massive walls, bastions and monumental gateways enclose a sixteenth-century fort",
+    "featureKo": "두꺼운 성벽과 보루, 거대한 성문이 16세기 요새를 둘러싸고 있습니다",
+    "seed": 277,
+    "color": "#829b8a"
+  },
+  {
+    "id": "krakow",
+    "name": "Kraków Historic Centre",
+    "nameKo": "크라쿠프 역사중심지",
+    "shape": "square",
+    "feature": "A medieval market square, royal castle and historic churches anchor the old city",
+    "featureKo": "중세 시장 광장과 왕성, 옛 교회들이 구시가지의 중심을 이룹니다",
+    "seed": 278,
+    "color": "#bca6a0"
+  },
+  {
+    "id": "warsaw",
+    "name": "Warsaw Historic Centre",
+    "nameKo": "바르샤바 역사중심지",
+    "shape": "town",
+    "feature": "The reconstructed old town restores streets and buildings destroyed during the Second World War",
+    "featureKo": "복원된 구시가지에 제2차 세계대전 때 파괴된 거리와 건물들이 되살아났습니다",
+    "seed": 279,
+    "color": "#b69772"
+  },
+  {
+    "id": "wieliczka",
+    "name": "Wieliczka and Bochnia Salt Mines",
+    "nameKo": "비엘리치카와 보흐니아 소금광산",
+    "shape": "mine",
+    "feature": "Underground galleries and chambers record centuries of rock-salt mining",
+    "featureKo": "지하 갱도와 방들이 수백 년에 걸친 암염 채굴의 역사를 보여 줍니다",
+    "seed": 280,
+    "color": "#c4ac88"
+  },
+  {
+    "id": "zamosc",
+    "name": "Zamość",
+    "nameKo": "자모시치",
+    "shape": "square",
+    "feature": "An arcaded market square sits within a planned Renaissance town",
+    "featureKo": "아케이드가 둘러선 시장 광장이 계획적으로 지은 르네상스 도시 안에 자리합니다",
+    "seed": 281,
+    "color": "#aeb9a0"
+  },
+  {
+    "id": "torun",
+    "name": "Medieval Toruń",
+    "nameKo": "중세 토룬",
+    "shape": "town",
+    "feature": "Brick churches, town houses and fortifications preserve a medieval trading town",
+    "featureKo": "벽돌 교회와 주택, 방어시설이 중세 교역도시의 모습을 간직하고 있습니다",
+    "seed": 282,
+    "color": "#bc8b70"
+  },
+  {
+    "id": "malbork",
+    "name": "Malbork Castle",
+    "nameKo": "말보르크성",
+    "shape": "castle",
+    "feature": "An immense brick castle complex was built by the Teutonic Order",
+    "featureKo": "튜턴 기사단이 지은 거대한 벽돌 성채 단지가 남아 있습니다",
+    "seed": 283,
+    "color": "#8baba4"
+  },
+  {
+    "id": "centennialhall",
+    "name": "Centennial Hall in Wrocław",
+    "nameKo": "브로츠와프 백주년기념관",
+    "shape": "dome",
+    "feature": "A pioneering reinforced-concrete hall spans a vast circular interior beneath a ribbed dome",
+    "featureKo": "철근콘크리트 건축의 초기 기념관에서 리브 돔이 넓은 원형 내부를 덮고 있습니다",
+    "seed": 284,
+    "color": "#d3b17c"
+  },
+  {
+    "id": "danubedelta",
+    "name": "Danube Delta",
+    "nameKo": "다뉴브 삼각주",
+    "shape": "wetland",
+    "feature": "Reed beds, lakes and branching waterways support abundant birds at the Danube's mouth",
+    "featureKo": "다뉴브강 하구의 갈대밭과 호수, 갈라지는 물길에 많은 새가 살아갑니다",
+    "seed": 285,
+    "color": "#b7a28c"
+  },
+  {
+    "id": "hurezi",
+    "name": "Hurezi Monastery",
+    "nameKo": "후레지 수도원",
+    "shape": "cloister",
+    "feature": "A richly decorated monastery illustrates the Brancovan style of Wallachian architecture",
+    "featureKo": "정교하게 장식한 수도원이 왈라키아 건축의 브란코베아누 양식을 보여 줍니다",
+    "seed": 286,
+    "color": "#829b8a"
+  },
+  {
+    "id": "moldavia",
+    "name": "Painted Churches of Moldavia",
+    "nameKo": "몰다비아 벽화교회",
+    "shape": "woodchurch",
+    "feature": "Monastic churches carry elaborate frescoes across their exterior walls",
+    "featureKo": "수도원 교회의 바깥벽을 정교한 프레스코화가 덮고 있습니다",
+    "seed": 287,
+    "color": "#bca6a0"
+  },
+  {
+    "id": "sighisoara",
+    "name": "Sighișoara",
+    "nameKo": "시기쇼아라",
+    "shape": "towers",
+    "feature": "A fortified hill town preserves medieval houses and towers linked to its craft guilds",
+    "featureKo": "성벽으로 둘러싼 언덕 도시에 중세 주택과 장인 길드의 탑들이 남아 있습니다",
+    "seed": 288,
+    "color": "#b69772"
+  },
+  {
+    "id": "maramures",
+    "name": "Wooden Churches of Maramureș",
+    "nameKo": "마라무레슈 목조교회",
+    "shape": "woodchurch",
+    "feature": "Tall, slender wooden towers rise above steep-roofed village churches",
+    "featureKo": "가파른 지붕을 얹은 마을 교회 위로 가늘고 높은 목조 탑이 솟아 있습니다",
+    "seed": 289,
+    "color": "#c4ac88"
+  },
+  {
+    "id": "studenica",
+    "name": "Studenica Monastery",
+    "nameKo": "스투데니차 수도원",
+    "shape": "cloister",
+    "feature": "A medieval Serbian monastery preserves marble churches and Byzantine-style frescoes",
+    "featureKo": "중세 세르비아 수도원에 대리석 교회와 비잔틴 양식의 프레스코화가 남아 있습니다",
+    "seed": 290,
+    "color": "#aeb9a0"
+  },
+  {
+    "id": "gamzigrad",
+    "name": "Gamzigrad-Romuliana",
+    "nameKo": "감지그라드 로물리아나",
+    "shape": "palace",
+    "feature": "Fortified walls surround the palace complex built for the Roman emperor Galerius",
+    "featureKo": "로마 황제 갈레리우스를 위해 지은 궁전 단지를 성벽이 둘러싸고 있습니다",
+    "seed": 291,
+    "color": "#bc8b70"
+  },
+  {
+    "id": "skocjan",
+    "name": "Škocjan Caves",
+    "nameKo": "슈코치안 동굴",
+    "shape": "cave",
+    "feature": "An underground river has carved an immense canyon through a limestone cave system",
+    "featureKo": "지하강이 석회암 동굴 안에 거대한 협곡을 깎아 놓았습니다",
+    "seed": 292,
+    "color": "#8baba4"
+  },
+  {
+    "id": "spis",
+    "name": "Spiš Castle and Levoča",
+    "nameKo": "스피슈성과 레보차",
+    "shape": "castle",
+    "feature": "A vast ruined castle overlooks a region of medieval towns and religious monuments",
+    "featureKo": "거대한 성터 아래로 중세 도시와 종교 유적이 자리한 지역이 펼쳐집니다",
+    "seed": 293,
+    "color": "#d3b17c"
+  },
+  {
+    "id": "vlkolinec",
+    "name": "Vlkolínec",
+    "nameKo": "블콜리네츠",
+    "shape": "thatched",
+    "feature": "Traditional log houses preserve a remarkably intact mountain village",
+    "featureKo": "전통 통나무집들이 산악 마을의 옛 모습을 잘 간직하고 있습니다",
+    "seed": 294,
+    "color": "#b7a28c"
+  },
+  {
+    "id": "bardejov",
+    "name": "Bardejov",
+    "nameKo": "바르데요우",
+    "shape": "square",
+    "feature": "A fortified medieval town preserves a central market square and historic burgher houses",
+    "featureKo": "성벽을 두른 중세 도시에 중앙 시장 광장과 옛 시민 주택이 남아 있습니다",
+    "seed": 295,
+    "color": "#829b8a"
+  },
+  {
+    "id": "sarazm",
+    "name": "Sarazm",
+    "nameKo": "사라즘",
+    "shape": "ruins",
+    "feature": "An early settlement records contacts between farming communities and wider Central Asian trade",
+    "featureKo": "초기 정착지의 흔적이 농경 공동체와 중앙아시아 교역의 연결을 보여 줍니다",
+    "seed": 296,
+    "color": "#bca6a0"
+  },
+  {
+    "id": "pamirs",
+    "name": "Tajik National Park",
+    "nameKo": "타지크 국립공원",
+    "shape": "glacier",
+    "feature": "High Pamir peaks, glaciers and mountain lakes form an immense remote wilderness",
+    "featureKo": "높은 파미르 봉우리와 빙하, 산악 호수가 광대한 오지 경관을 이룹니다",
+    "seed": 297,
+    "color": "#b69772"
+  },
+  {
+    "id": "merv",
+    "name": "Ancient Merv",
+    "nameKo": "고대 메르브",
+    "shape": "ruins",
+    "feature": "Successive walled cities preserve a major oasis centre on the Silk Roads",
+    "featureKo": "여러 시대의 성곽도시가 실크로드의 주요 오아시스 중심지에 남아 있습니다",
+    "seed": 298,
+    "color": "#c4ac88"
+  },
+  {
+    "id": "kunyaurgench",
+    "name": "Kunya-Urgench",
+    "nameKo": "쿠냐우르겐치",
+    "shape": "minaret",
+    "feature": "Minarets, mausoleums and other monuments remain from a historic city on the Amu Darya",
+    "featureKo": "아무다리야강의 역사 도시에 미나레트와 영묘 등 여러 유적이 남아 있습니다",
+    "seed": 299,
+    "color": "#aeb9a0"
+  },
+  {
+    "id": "nisa",
+    "name": "Parthian Fortresses of Nisa",
+    "nameKo": "니사의 파르티아 요새",
+    "shape": "fortress",
+    "feature": "Two archaeological tells preserve the fortresses and ceremonial buildings of Parthian Nisa",
+    "featureKo": "두 유적 언덕에 파르티아 시대 니사의 요새와 의례용 건물 흔적이 남아 있습니다",
+    "seed": 300,
+    "color": "#bc8b70"
+  },
+  {
+    "id": "kyivsophia",
+    "name": "Saint Sophia and Kyiv-Pechersk Lavra",
+    "nameKo": "키이우 성 소피아와 페체르스크 수도원",
+    "shape": "dome",
+    "feature": "A cathedral and monastic ensemble preserve outstanding medieval mosaics and frescoes",
+    "featureKo": "대성당과 수도원 단지에 뛰어난 중세 모자이크와 프레스코화가 남아 있습니다",
+    "seed": 301,
+    "color": "#8baba4"
+  },
+  {
+    "id": "lviv",
+    "name": "Lviv Historic Centre",
+    "nameKo": "르비우 역사중심지",
+    "shape": "town",
+    "feature": "A historic urban centre brings together architectural traditions from several Central European cultures",
+    "featureKo": "역사 도심에 중앙유럽 여러 문화의 건축 전통이 어우러져 있습니다",
+    "seed": 302,
+    "color": "#d3b17c"
+  },
+  {
+    "id": "itchankala",
+    "name": "Itchan Kala",
+    "nameKo": "이찬칼라",
+    "shape": "fortress",
+    "feature": "High mud walls enclose Khiva's inner town with mosques, minarets and palaces",
+    "featureKo": "높은 흙 성벽 안의 히바 내성에 모스크와 미나레트, 궁전들이 모여 있습니다",
+    "seed": 303,
+    "color": "#b7a28c"
+  },
+  {
+    "id": "bukhara",
+    "name": "Historic Bukhara",
+    "nameKo": "부하라 역사도시",
+    "shape": "mosque",
+    "feature": "A Central Asian trading city preserves mosques, madrasas and monumental minarets",
+    "featureKo": "중앙아시아의 교역도시에 모스크와 마드라사, 거대한 미나레트가 남아 있습니다",
+    "seed": 304,
+    "color": "#829b8a"
+  },
+  {
+    "id": "shakhrisyabz",
+    "name": "Shakhrisyabz",
+    "nameKo": "샤흐리사브즈",
+    "shape": "gate",
+    "feature": "Monumental palace remains and religious buildings recall the Timurid city's importance",
+    "featureKo": "거대한 궁전 유적과 종교 건물들이 티무르 시대 도시의 위상을 전합니다",
+    "seed": 305,
+    "color": "#bca6a0"
+  },
+  {
+    "id": "abomey",
+    "name": "Royal Palaces of Abomey",
+    "nameKo": "아보메 왕궁",
+    "shape": "adobe",
+    "feature": "Earthen royal palaces preserve the history and artistic traditions of the Kingdom of Dahomey",
+    "featureKo": "흙으로 지은 왕궁들이 다호메 왕국의 역사와 예술 전통을 간직하고 있습니다",
+    "seed": 306,
+    "color": "#b69772"
+  },
+  {
+    "id": "loropeni",
+    "name": "Ruins of Loropéni",
+    "nameKo": "로로페니 유적",
+    "shape": "fortress",
+    "feature": "Imposing stone walls survive from a fortified settlement linked to West African gold trading",
+    "featureKo": "서아프리카 금 교역과 연결된 성곽 정착지에 두꺼운 석벽이 남아 있습니다",
+    "seed": 307,
+    "color": "#c4ac88"
+  },
+  {
+    "id": "tiebele",
+    "name": "Royal Court of Tiébélé",
+    "nameKo": "티에벨레 왕궁",
+    "shape": "adobe",
+    "feature": "An earthen royal compound displays the decorated domestic architecture of the Kassena people",
+    "featureKo": "흙으로 지은 왕궁 단지에 카세나 사람들의 장식 주거 건축이 남아 있습니다",
+    "seed": 308,
+    "color": "#aeb9a0"
+  },
+  {
+    "id": "virunga",
+    "name": "Virunga National Park",
+    "nameKo": "비룽가 국립공원",
+    "shape": "volcano",
+    "feature": "Volcanoes, forests and savannas provide habitats for mountain gorillas and diverse wildlife",
+    "featureKo": "화산과 숲, 사바나에 마운틴고릴라를 비롯한 다양한 야생동물이 살아갑니다",
+    "seed": 309,
+    "color": "#bc8b70"
+  },
+  {
+    "id": "okapi",
+    "name": "Okapi Wildlife Reserve",
+    "nameKo": "오카피 야생동물보호구역",
+    "shape": "forest",
+    "feature": "The Ituri rainforest shelters okapis within a rich tropical forest ecosystem",
+    "featureKo": "이투리 열대우림의 풍부한 생태계 안에 오카피가 살아갑니다",
+    "seed": 310,
+    "color": "#8baba4"
+  },
+  {
+    "id": "odzala",
+    "name": "Odzala-Kokoua Forest",
+    "nameKo": "오잘라코쿠아 숲",
+    "shape": "forest",
+    "feature": "Congo Basin forest and clearings support forest elephants, gorillas and other wildlife",
+    "featureKo": "콩고 분지의 숲과 숲속 공터에 숲코끼리와 고릴라 등 야생동물이 살아갑니다",
+    "seed": 311,
+    "color": "#d3b17c"
+  },
+  {
+    "id": "taiforest",
+    "name": "Taï National Park",
+    "nameKo": "타이 국립공원",
+    "shape": "forest",
+    "feature": "One of West Africa's remaining primary tropical forests shelters a rich variety of mammals",
+    "featureKo": "서아프리카에 남은 원시 열대우림에 다양한 포유류가 살아갑니다",
+    "seed": 312,
+    "color": "#b7a28c"
+  },
+  {
+    "id": "grandbassam",
+    "name": "Grand-Bassam",
+    "nameKo": "그랑바삼",
+    "shape": "town",
+    "feature": "A coastal historic town preserves a planned colonial quarter beside a traditional fishing village",
+    "featureKo": "해안의 역사 도시에 계획된 식민지 구역과 전통 어촌이 함께 남아 있습니다",
+    "seed": 313,
+    "color": "#829b8a"
+  },
+  {
+    "id": "dja",
+    "name": "Dja Faunal Reserve",
+    "nameKo": "자 동물보호구역",
+    "shape": "forest",
+    "feature": "Dense equatorial rainforest is almost enclosed by the looping Dja River",
+    "featureKo": "울창한 적도 우림을 굽이치는 자강이 거의 둘러싸고 있습니다",
+    "seed": 314,
+    "color": "#bca6a0"
+  },
+  {
+    "id": "benihammad",
+    "name": "Al Qal'a of Beni Hammad",
+    "nameKo": "베니하마드 요새",
+    "shape": "fortress",
+    "feature": "The ruins of a fortified mountain capital preserve the remains of a monumental mosque",
+    "featureKo": "산악 성곽 수도의 유적에 거대한 모스크의 흔적이 남아 있습니다",
+    "seed": 315,
+    "color": "#b69772"
+  },
+  {
+    "id": "tassili",
+    "name": "Tassili n'Ajjer",
+    "nameKo": "타실리나제르",
+    "shape": "redrocks",
+    "feature": "Sandstone formations and rock art record environmental and human changes in the Sahara",
+    "featureKo": "사암 지형과 암각화가 사하라의 환경과 인간 생활 변화를 전합니다",
+    "seed": 316,
+    "color": "#c4ac88"
+  },
+  {
+    "id": "mzab",
+    "name": "M'Zab Valley",
+    "nameKo": "므자브 계곡",
+    "shape": "adobe",
+    "feature": "Compact fortified oasis towns are arranged around distinctive mosque minarets",
+    "featureKo": "작고 조밀한 오아시스 성곽도시들이 독특한 모스크 미나레트를 중심으로 모여 있습니다",
+    "seed": 317,
+    "color": "#aeb9a0"
+  },
+  {
+    "id": "djemila",
+    "name": "Djémila",
+    "nameKo": "제밀라",
+    "shape": "ruins",
+    "feature": "Roman forums, temples and houses adapt an ancient town to a mountain setting",
+    "featureKo": "로마 시대의 광장과 신전, 주택이 산악 지형에 맞추어 자리합니다",
+    "seed": 318,
+    "color": "#bc8b70"
+  },
+  {
+    "id": "tipasa",
+    "name": "Tipasa",
+    "nameKo": "티파사",
+    "shape": "ruins",
+    "feature": "Roman and early Christian ruins overlook the Mediterranean along an ancient trading shore",
+    "featureKo": "지중해의 옛 교역 해안에 로마와 초기 기독교 유적이 남아 있습니다",
+    "seed": 319,
+    "color": "#8baba4"
+  },
+  {
+    "id": "asmara",
+    "name": "Asmara",
+    "nameKo": "아스마라",
+    "shape": "modern",
+    "feature": "An African capital preserves an extensive ensemble of early modernist urban architecture",
+    "featureKo": "아프리카의 수도에 초기 모더니즘 도시 건축이 넓게 남아 있습니다",
+    "seed": 320,
+    "color": "#d3b17c"
+  },
+  {
+    "id": "fasilghebbi",
+    "name": "Fasil Ghebbi",
+    "nameKo": "파실게비",
+    "shape": "castle",
+    "feature": "Stone castles and palaces fill the royal enclosure of Ethiopia's former capital Gondar",
+    "featureKo": "에티오피아의 옛 수도 곤다르 왕실 구역에 석조 성과 궁전들이 들어서 있습니다",
+    "seed": 321,
+    "color": "#b7a28c"
+  },
+  {
+    "id": "harar",
+    "name": "Harar Jugol",
+    "nameKo": "하라르 주골",
+    "shape": "town",
+    "feature": "A walled Islamic city preserves numerous mosques, shrines and traditional town houses",
+    "featureKo": "성벽을 두른 이슬람 도시에 많은 모스크와 성소, 전통 주택이 남아 있습니다",
+    "seed": 322,
+    "color": "#829b8a"
+  },
+  {
+    "id": "balemountains",
+    "name": "Bale Mountains",
+    "nameKo": "발레산맥",
+    "shape": "peaks",
+    "feature": "High plateaux, peaks and forests shelter endemic wildlife in Ethiopia's mountain landscape",
+    "featureKo": "에티오피아 산악 경관의 고원과 봉우리, 숲에 고유 야생동물이 살아갑니다",
+    "seed": 323,
+    "color": "#bca6a0"
+  },
+  {
+    "id": "asante",
+    "name": "Asante Traditional Buildings",
+    "nameKo": "아샨티 전통건축",
+    "shape": "adobe",
+    "feature": "Earth, timber and thatch buildings preserve the architectural traditions of Asante culture",
+    "featureKo": "흙과 나무, 이엉으로 지은 건물들이 아샨티 문화의 건축 전통을 간직하고 있습니다",
+    "seed": 324,
+    "color": "#b69772"
+  },
+  {
+    "id": "mountkenya",
+    "name": "Mount Kenya",
+    "nameKo": "케냐산",
+    "shape": "peaks",
+    "feature": "A deeply eroded ancient volcano carries rugged peaks, glaciers and alpine vegetation",
+    "featureKo": "오래된 화산이 침식된 산 위에 험준한 봉우리와 빙하, 고산 식생이 남아 있습니다",
+    "seed": 325,
+    "color": "#c4ac88"
+  },
+  {
+    "id": "turkana",
+    "name": "Lake Turkana",
+    "nameKo": "투르카나호",
+    "shape": "lakes",
+    "feature": "Desert lake parks protect breeding grounds for crocodiles, hippos and migratory birds",
+    "featureKo": "사막 호수의 공원들이 악어와 하마, 철새의 번식지를 지킵니다",
+    "seed": 326,
+    "color": "#aeb9a0"
+  },
+  {
+    "id": "lamu",
+    "name": "Lamu Old Town",
+    "nameKo": "라무 구시가지",
+    "shape": "town",
+    "feature": "Coral-stone and mangrove-timber houses preserve a Swahili town on the East African coast",
+    "featureKo": "산호석과 맹그로브 목재로 지은 주택들이 동아프리카의 스와힐리 도시를 이루고 있습니다",
+    "seed": 327,
+    "color": "#bc8b70"
+  },
+  {
+    "id": "fortjesus",
+    "name": "Fort Jesus",
+    "nameKo": "포트지저스",
+    "shape": "fortress",
+    "feature": "A Portuguese-built fort guards the old harbour entrance at Mombasa",
+    "featureKo": "포르투갈인이 지은 요새가 몸바사의 옛 항구 입구를 지키고 있습니다",
+    "seed": 328,
+    "color": "#8baba4"
+  },
+  {
+    "id": "thimlich",
+    "name": "Thimlich Ohinga",
+    "nameKo": "팀리치 오힝가",
+    "shape": "fortress",
+    "feature": "Dry-stone enclosures preserve a fortified settlement near Lake Victoria",
+    "featureKo": "빅토리아호 근처에 돌을 쌓아 두른 성곽 정착지가 남아 있습니다",
+    "seed": 329,
+    "color": "#d3b17c"
+  },
+  {
+    "id": "ambohimanga",
+    "name": "Royal Hill of Ambohimanga",
+    "nameKo": "암보히망가 왕실언덕",
+    "shape": "palace",
+    "feature": "A fortified royal city and burial places occupy a sacred wooded hill",
+    "featureKo": "숲으로 덮인 성스러운 언덕에 왕실 성곽도시와 무덤들이 자리합니다",
+    "seed": 330,
+    "color": "#b7a28c"
+  },
+  {
+    "id": "atsinanana",
+    "name": "Atsinanana Rainforests",
+    "nameKo": "아치나나나 우림",
+    "shape": "forest",
+    "feature": "Eastern Madagascar's rainforests protect ancient lineages of plants and endemic animals",
+    "featureKo": "마다가스카르 동부 우림이 오랜 식물 계통과 고유 동물들을 지킵니다",
+    "seed": 331,
+    "color": "#829b8a"
+  },
+  {
+    "id": "timbuktu",
+    "name": "Timbuktu",
+    "nameKo": "팀북투",
+    "shape": "mosque",
+    "feature": "Earthen mosques recall the city's role as a centre of Islamic learning and trans-Saharan trade",
+    "featureKo": "흙으로 지은 모스크들이 이슬람 학문과 사하라 교역 중심지였던 도시의 역사를 전합니다",
+    "seed": 332,
+    "color": "#bca6a0"
+  },
+  {
+    "id": "bandiagara",
+    "name": "Cliff of Bandiagara",
+    "nameKo": "반디아가라 절벽",
+    "shape": "cliff",
+    "feature": "Dogon villages and granaries occupy a dramatic landscape of cliffs and sandy plateaux",
+    "featureKo": "절벽과 모래 고원이 어우러진 경관에 도곤족 마을과 곡물 창고가 자리합니다",
+    "seed": 333,
+    "color": "#b69772"
+  },
+  {
+    "id": "askia",
+    "name": "Tomb of Askia",
+    "nameKo": "아스키아 무덤",
+    "shape": "pyramid",
+    "feature": "A pyramidal earthen tomb and mosque complex stand in the historic city of Gao",
+    "featureKo": "가오의 역사 도시에 피라미드 모양 흙 무덤과 모스크 단지가 남아 있습니다",
+    "seed": 334,
+    "color": "#c4ac88"
+  },
+  {
+    "id": "bancarguin",
+    "name": "Banc d'Arguin",
+    "nameKo": "방다르갱",
+    "shape": "coast",
+    "feature": "Coastal dunes, islands and shallow waters shelter immense gatherings of migratory birds",
+    "featureKo": "해안 사구와 섬, 얕은 바다가 수많은 철새에게 쉼터를 제공합니다",
+    "seed": 335,
+    "color": "#aeb9a0"
+  },
+  {
+    "id": "lemorne",
+    "name": "Le Morne",
+    "nameKo": "르모른",
+    "shape": "cliff",
+    "feature": "A rugged mountain overlooking the ocean recalls the refuge sought by escaped enslaved people",
+    "featureKo": "바다를 내려다보는 험준한 산이 탈출한 노예들이 찾았던 피난처의 역사를 전합니다",
+    "seed": 336,
+    "color": "#bc8b70"
+  },
+  {
+    "id": "lakemalawi",
+    "name": "Lake Malawi National Park",
+    "nameKo": "말라위호 국립공원",
+    "shape": "lakes",
+    "feature": "Clear lake waters and rocky shores support an exceptional diversity of freshwater fish",
+    "featureKo": "맑은 호수와 바위 해안에 매우 다양한 담수어가 살아갑니다",
+    "seed": 337,
+    "color": "#8baba4"
+  },
+  {
+    "id": "mozambiqueisland",
+    "name": "Island of Mozambique",
+    "nameKo": "모잠비크섬",
+    "shape": "coast",
+    "feature": "Stone-built houses and fortifications recall a historic maritime trading centre",
+    "featureKo": "석조 주택과 방어시설이 옛 해상 교역 중심지의 역사를 전합니다",
+    "seed": 338,
+    "color": "#d3b17c"
+  },
+  {
+    "id": "twyfelfontein",
+    "name": "Twyfelfontein",
+    "nameKo": "트위펠폰테인",
+    "shape": "redrocks",
+    "feature": "Rock engravings depicting animals survive in a dry sandstone landscape",
+    "featureKo": "메마른 사암 경관에 동물을 새긴 암각화들이 남아 있습니다",
+    "seed": 339,
+    "color": "#b7a28c"
+  },
+  {
+    "id": "agadez",
+    "name": "Agadez",
+    "nameKo": "아가데즈",
+    "shape": "minaret",
+    "feature": "An earthen minaret rises above a Saharan trading town of traditional mud-brick houses",
+    "featureKo": "전통 흙벽돌 주택이 모인 사하라 교역도시 위로 흙 미나레트가 솟아 있습니다",
+    "seed": 340,
+    "color": "#829b8a"
+  },
+  {
+    "id": "osunosogbo",
+    "name": "Osun-Osogbo Sacred Grove",
+    "nameKo": "오순오쇼그보 성림",
+    "shape": "forest",
+    "feature": "Sacred forest, shrines and sculptures line the Osun River near Osogbo",
+    "featureKo": "오쇼그보 근처 오순강을 따라 성스러운 숲과 성소, 조각들이 자리합니다",
+    "seed": 341,
+    "color": "#bca6a0"
+  },
+  {
+    "id": "aldabra",
+    "name": "Aldabra Atoll",
+    "nameKo": "알다브라 환초",
+    "shape": "reef",
+    "feature": "Coral islands surround a shallow lagoon that supports a large giant-tortoise population",
+    "featureKo": "산호섬들이 많은 거북이 살아가는 얕은 석호를 둘러싸고 있습니다",
+    "seed": 342,
+    "color": "#b69772"
+  },
+  {
+    "id": "valleedemai",
+    "name": "Vallée de Mai",
+    "nameKo": "발레드메",
+    "shape": "forest",
+    "feature": "A remnant palm forest preserves the distinctive coco-de-mer palm",
+    "featureKo": "남아 있는 야자 숲에 독특한 코코드메르 야자가 자라고 있습니다",
+    "seed": 343,
+    "color": "#c4ac88"
+  },
+  {
+    "id": "sanganeb",
+    "name": "Sanganeb Marine Parks",
+    "nameKo": "산가네브 해양공원",
+    "shape": "reef",
+    "feature": "Red Sea coral reefs, islands and lagoons shelter diverse marine life",
+    "featureKo": "홍해의 산호초와 섬, 석호에 다양한 해양생물이 살아갑니다",
+    "seed": 344,
+    "color": "#aeb9a0"
+  },
+  {
+    "id": "djoudj",
+    "name": "Djoudj Bird Sanctuary",
+    "nameKo": "주지 조류보호구역",
+    "shape": "wetland",
+    "feature": "Wetlands at the Senegal River delta provide a refuge for migratory waterbirds",
+    "featureKo": "세네갈강 삼각주의 습지가 철새 물새들에게 쉼터가 됩니다",
+    "seed": 345,
+    "color": "#bc8b70"
+  },
+  {
+    "id": "saintlouis",
+    "name": "Island of Saint-Louis",
+    "nameKo": "생루이섬",
+    "shape": "town",
+    "feature": "A planned historic town occupies an island near the mouth of the Senegal River",
+    "featureKo": "세네갈강 하구 근처의 섬에 계획적으로 조성한 역사 도시가 남아 있습니다",
+    "seed": 346,
+    "color": "#8baba4"
+  },
+  {
+    "id": "saloum",
+    "name": "Saloum Delta",
+    "nameKo": "살룸 삼각주",
+    "shape": "mangrove",
+    "feature": "Brackish channels, mangrove islands and shell mounds form a coastal cultural landscape",
+    "featureKo": "기수 물길과 맹그로브섬, 조개무지가 해안의 문화 경관을 이룹니다",
+    "seed": 347,
+    "color": "#d3b17c"
+  },
+  {
+    "id": "ounianga",
+    "name": "Lakes of Ounianga",
+    "nameKo": "우니앙가 호수군",
+    "shape": "lakes",
+    "feature": "Permanent desert lakes lie between dunes and sandstone formations in the Sahara",
+    "featureKo": "사하라의 사구와 사암 지형 사이에 마르지 않는 사막 호수들이 자리합니다",
+    "seed": 348,
+    "color": "#b7a28c"
+  },
+  {
+    "id": "ennedi",
+    "name": "Ennedi Massif",
+    "nameKo": "엔네디 산괴",
+    "shape": "redrocks",
+    "feature": "Sandstone arches and pillars rise above desert valleys containing rock art",
+    "featureKo": "암각화가 남은 사막 계곡 위로 사암 아치와 기둥이 솟아 있습니다",
+    "seed": 349,
+    "color": "#829b8a"
+  },
+  {
+    "id": "ichkeul",
+    "name": "Ichkeul National Park",
+    "nameKo": "이슈켈 국립공원",
+    "shape": "wetland",
+    "feature": "A lake and marshes provide a seasonal stopping place for migrating waterbirds",
+    "featureKo": "호수와 습지가 이동하는 물새들의 계절 쉼터가 됩니다",
+    "seed": 350,
+    "color": "#bca6a0"
+  },
+  {
+    "id": "kilwa",
+    "name": "Kilwa Kisiwani and Songo Mnara",
+    "nameKo": "킬와키시와니와 송고므나라",
+    "shape": "ruins",
+    "feature": "Mosque and palace ruins recall prosperous Swahili trading towns on offshore islands",
+    "featureKo": "앞바다 섬의 모스크와 궁전 유적이 번영했던 스와힐리 교역도시를 보여 줍니다",
+    "seed": 351,
+    "color": "#b69772"
+  },
+  {
+    "id": "bwindi",
+    "name": "Bwindi Impenetrable Forest",
+    "nameKo": "브윈디 원시림",
+    "shape": "forest",
+    "feature": "Dense montane forest shelters mountain gorillas and exceptionally rich plant life",
+    "featureKo": "울창한 산지림에 마운틴고릴라와 다양한 식물이 살아갑니다",
+    "seed": 352,
+    "color": "#c4ac88"
+  },
+  {
+    "id": "rwenzori",
+    "name": "Rwenzori Mountains",
+    "nameKo": "르웬조리산맥",
+    "shape": "glacier",
+    "feature": "Equatorial mountains carry glaciers above moorlands and distinctive high-altitude vegetation",
+    "featureKo": "적도의 산 위에서 빙하가 황야와 독특한 고산 식생 위로 펼쳐집니다",
+    "seed": 353,
+    "color": "#aeb9a0"
+  },
+  {
+    "id": "capefloral",
+    "name": "Cape Floral Region",
+    "nameKo": "케이프 식물구",
+    "shape": "garden",
+    "feature": "Fynbos shrublands contain an extraordinary concentration of endemic plant species",
+    "featureKo": "핀보스 관목지대에 이 지역에서만 자라는 수많은 식물종이 모여 있습니다",
+    "seed": 354,
+    "color": "#bc8b70"
+  },
+  {
+    "id": "mapungubwe",
+    "name": "Mapungubwe",
+    "nameKo": "마풍구브웨",
+    "shape": "cliff",
+    "feature": "A sandstone hill and archaeological remains recall a southern African trading kingdom",
+    "featureKo": "사암 언덕과 고고 유적이 남부 아프리카 교역왕국의 역사를 전합니다",
+    "seed": 355,
+    "color": "#8baba4"
+  },
+  {
+    "id": "manapools",
+    "name": "Mana Pools",
+    "nameKo": "마나풀스",
+    "shape": "wetland",
+    "feature": "Floodplain pools beside the Zambezi support elephants and many other large animals",
+    "featureKo": "잠베지강 옆 범람원의 웅덩이에 코끼리 등 많은 대형 동물이 모여듭니다",
+    "seed": 356,
+    "color": "#d3b17c"
+  },
+  {
+    "id": "matobo",
+    "name": "Matobo Hills",
+    "nameKo": "마토보 언덕",
+    "shape": "redrocks",
+    "feature": "Granite formations and rock paintings mark a landscape with enduring spiritual significance",
+    "featureKo": "화강암 지형과 암벽화가 오랫동안 신앙의 의미를 지닌 경관에 남아 있습니다",
+    "seed": 357,
+    "color": "#b7a28c"
+  },
+  {
+    "id": "khami",
+    "name": "Khami Ruins",
+    "nameKo": "카미 유적",
+    "shape": "ruins",
+    "feature": "Terraced dry-stone walls preserve the remains of a former southern African capital",
+    "featureKo": "계단식으로 쌓은 석벽에 남부 아프리카 옛 수도의 흔적이 남아 있습니다",
+    "seed": 358,
+    "color": "#829b8a"
+  },
+  {
+    "id": "antiguadockyard",
+    "name": "Antigua Naval Dockyard",
+    "nameKo": "앤티가 해군조선소",
+    "shape": "harbor",
+    "feature": "Georgian naval buildings and dockyard structures stand within a sheltered Caribbean harbour",
+    "featureKo": "카리브해의 아늑한 항구에 조지 왕조 시대 해군 건물과 조선소 시설이 남아 있습니다",
+    "seed": 359,
+    "color": "#bca6a0"
+  },
+  {
+    "id": "bridgetown",
+    "name": "Historic Bridgetown",
+    "nameKo": "브리지타운 역사도시",
+    "shape": "town",
+    "feature": "A historic port and garrison preserve an early British colonial urban layout in the Caribbean",
+    "featureKo": "카리브해의 옛 항구와 주둔지에 초기 영국 식민도시의 배치가 남아 있습니다",
+    "seed": 360,
+    "color": "#b69772"
+  },
+  {
+    "id": "potosi",
+    "name": "Potosí",
+    "nameKo": "포토시",
+    "shape": "mine",
+    "feature": "A mining city below Cerro Rico preserves the legacy of large-scale silver extraction",
+    "featureKo": "세로리코 아래의 광산도시가 대규모 은 채굴의 흔적을 간직하고 있습니다",
+    "seed": 361,
+    "color": "#c4ac88"
+  },
+  {
+    "id": "sucre",
+    "name": "Historic Sucre",
+    "nameKo": "수크레 역사도시",
+    "shape": "town",
+    "feature": "Whitewashed churches and historic civic buildings preserve Bolivia's early capital",
+    "featureKo": "흰 회벽 교회와 옛 공공건물이 볼리비아 초기 수도의 모습을 간직하고 있습니다",
+    "seed": 362,
+    "color": "#aeb9a0"
+  },
+  {
+    "id": "samaipata",
+    "name": "Fuerte de Samaipata",
+    "nameKo": "사마이파타 요새",
+    "shape": "rocktemple",
+    "feature": "A great carved rock and surrounding remains record pre-Hispanic ceremonial traditions",
+    "featureKo": "거대한 조각 바위와 주변 유적이 에스파냐 진출 이전의 의례 전통을 전합니다",
+    "seed": 363,
+    "color": "#bc8b70"
+  },
+  {
+    "id": "noelkempff",
+    "name": "Noel Kempff Mercado",
+    "nameKo": "노엘켐프메르카도",
+    "shape": "forest",
+    "feature": "Forest, savanna and escarpments protect varied ecosystems at the edge of the Amazon basin",
+    "featureKo": "아마존 분지 가장자리의 숲과 사바나, 급경사 지형이 다양한 생태계를 지킵니다",
+    "seed": 364,
+    "color": "#8baba4"
+  },
+  {
+    "id": "olinda",
+    "name": "Historic Olinda",
+    "nameKo": "올린다 역사도시",
+    "shape": "town",
+    "feature": "Churches and colourful houses fill a hillside town shaped by the sugar economy",
+    "featureKo": "설탕 경제로 성장한 언덕 도시에 교회와 다채로운 주택이 모여 있습니다",
+    "seed": 365,
+    "color": "#d3b17c"
+  },
+  {
+    "id": "congonhas",
+    "name": "Bom Jesus do Congonhas",
+    "nameKo": "콩고냐스 봉제수스 성역",
+    "shape": "basilica",
+    "feature": "A pilgrimage sanctuary displays Baroque sculptures along its stairway and chapels",
+    "featureKo": "순례 성역의 계단과 예배당을 따라 바로크 조각들이 자리합니다",
+    "seed": 366,
+    "color": "#b7a28c"
+  },
+  {
+    "id": "pantanal",
+    "name": "Pantanal Conservation Area",
+    "nameKo": "판타나우 보호지역",
+    "shape": "wetland",
+    "feature": "Seasonal floodwaters create a mosaic of wetlands rich in aquatic and terrestrial wildlife",
+    "featureKo": "계절마다 넘치는 물이 수생·육상 동물이 풍부한 습지 경관을 만듭니다",
+    "seed": 367,
+    "color": "#829b8a"
+  },
+  {
+    "id": "fernandonoronha",
+    "name": "Fernando de Noronha and Atol das Rocas",
+    "nameKo": "페르난두지노로냐와 호카스환초",
+    "shape": "island",
+    "feature": "Atlantic volcanic islands and an atoll provide feeding and breeding grounds for marine wildlife",
+    "featureKo": "대서양의 화산섬과 환초가 해양동물의 먹이터와 번식지가 됩니다",
+    "seed": 368,
+    "color": "#bca6a0"
+  },
+  {
+    "id": "lencois",
+    "name": "Lençóis Maranhenses",
+    "nameKo": "렌소이스마라녠시스",
+    "shape": "lakes",
+    "feature": "White coastal dunes surround seasonal rain-fed lagoons",
+    "featureKo": "흰 해안 사구 사이에 빗물로 생기는 계절 석호가 자리합니다",
+    "seed": 369,
+    "color": "#b69772"
+  },
+  {
+    "id": "pampulha",
+    "name": "Pampulha Modern Ensemble",
+    "nameKo": "팜풀랴 근대건축단지",
+    "shape": "modern",
+    "feature": "Curving modern buildings and designed gardens surround an artificial lake",
+    "featureKo": "곡선의 근대 건물과 조경 정원이 인공호수를 둘러싸고 있습니다",
+    "seed": 370,
+    "color": "#c4ac88"
+  },
+  {
+    "id": "lanseauxmeadows",
+    "name": "L'Anse aux Meadows",
+    "nameKo": "란세오메도스",
+    "shape": "thatched",
+    "feature": "Remains of timber-framed turf buildings record a Norse settlement in Newfoundland",
+    "featureKo": "나무 골조에 잔디를 덮은 건물 유적이 뉴펀들랜드의 노르드 정착지를 보여 줍니다",
+    "seed": 371,
+    "color": "#aeb9a0"
+  },
+  {
+    "id": "sgang",
+    "name": "SGang Gwaay",
+    "nameKo": "스강과이",
+    "shape": "stelae",
+    "feature": "Carved mortuary and memorial poles survive in the remains of a Haida village",
+    "featureKo": "하이다 마을 유적에 조각한 장례 기둥과 기념 기둥들이 남아 있습니다",
+    "seed": 372,
+    "color": "#bc8b70"
+  },
+  {
+    "id": "woodbuffalo",
+    "name": "Wood Buffalo National Park",
+    "nameKo": "우드버펄로 국립공원",
+    "shape": "forest",
+    "feature": "Boreal forest and a vast inland delta support wood bison and other wildlife",
+    "featureKo": "북방림과 거대한 내륙 삼각주에 숲들소 등 야생동물이 살아갑니다",
+    "seed": 373,
+    "color": "#8baba4"
+  },
+  {
+    "id": "oldquebec",
+    "name": "Old Québec",
+    "nameKo": "퀘벡 구시가지",
+    "shape": "fortress",
+    "feature": "Fortified upper and lower towns preserve a historic French colonial city in North America",
+    "featureKo": "북아메리카의 옛 프랑스 식민도시에 성벽으로 둘러싼 위·아래 마을이 남아 있습니다",
+    "seed": 374,
+    "color": "#d3b17c"
+  },
+  {
+    "id": "rideau",
+    "name": "Rideau Canal",
+    "nameKo": "리도 운하",
+    "shape": "canal",
+    "feature": "Locks, dams and channels preserve an early nineteenth-century slackwater canal",
+    "featureKo": "수문과 댐, 물길이 19세기 초의 완류식 운하를 이루고 있습니다",
+    "seed": 375,
+    "color": "#b7a28c"
+  },
+  {
+    "id": "joggins",
+    "name": "Joggins Fossil Cliffs",
+    "nameKo": "조긴스 화석절벽",
+    "shape": "cliff",
+    "feature": "Coastal cliffs expose fossil-rich layers from ancient coal-age tropical forests",
+    "featureKo": "해안 절벽에 석탄기 열대림의 화석이 풍부한 지층이 드러나 있습니다",
+    "seed": 376,
+    "color": "#829b8a"
+  },
+  {
+    "id": "humberstone",
+    "name": "Humberstone and Santa Laura",
+    "nameKo": "움베르스톤과 산타라우라",
+    "shape": "industrial",
+    "feature": "Abandoned nitrate works preserve industrial structures in the Atacama Desert",
+    "featureKo": "아타카마사막의 폐초석공장에 산업 시설들이 남아 있습니다",
+    "seed": 377,
+    "color": "#bca6a0"
+  },
+  {
+    "id": "sewell",
+    "name": "Sewell Mining Town",
+    "nameKo": "세웰 광산도시",
+    "shape": "town",
+    "feature": "A mountain mining town uses stairways to connect buildings across steep Andean slopes",
+    "featureKo": "안데스의 가파른 산비탈에 지은 광산도시에서 계단이 건물들을 이어 줍니다",
+    "seed": 378,
+    "color": "#b69772"
+  },
+  {
+    "id": "mompox",
+    "name": "Santa Cruz de Mompox",
+    "nameKo": "산타크루스데몸포스",
+    "shape": "town",
+    "feature": "A historic river town preserves houses and churches along the Magdalena River",
+    "featureKo": "막달레나강을 따라 옛 강변 도시의 주택과 교회가 남아 있습니다",
+    "seed": 379,
+    "color": "#c4ac88"
+  },
+  {
+    "id": "sanagustin",
+    "name": "San Agustín Archaeological Park",
+    "nameKo": "산아구스틴 고고공원",
+    "shape": "stelae",
+    "feature": "Large stone sculptures and burial monuments preserve a distinctive Andean ceremonial landscape",
+    "featureKo": "커다란 석상과 장례 유적이 독특한 안데스 의례 경관을 이루고 있습니다",
+    "seed": 380,
+    "color": "#aeb9a0"
+  },
+  {
+    "id": "chiribiquete",
+    "name": "Chiribiquete National Park",
+    "nameKo": "치리비케테 국립공원",
+    "shape": "cliff",
+    "feature": "Table mountains rise over tropical forests containing extensive rock paintings",
+    "featureKo": "많은 암벽화가 남은 열대림 위로 탁상산들이 솟아 있습니다",
+    "seed": 381,
+    "color": "#bc8b70"
+  },
+  {
+    "id": "cocosisland",
+    "name": "Cocos Island",
+    "nameKo": "코코스섬",
+    "shape": "island",
+    "feature": "A remote oceanic island supports humid forest and exceptionally rich surrounding marine life",
+    "featureKo": "외딴 대양섬에 습윤한 숲이 자라고 주변 바다에 다양한 해양생물이 살아갑니다",
+    "seed": 382,
+    "color": "#8baba4"
+  },
+  {
+    "id": "diquis",
+    "name": "Diquís Stone Spheres",
+    "nameKo": "디키스 석구",
+    "shape": "jars",
+    "feature": "Large stone spheres survive at pre-Columbian settlements in the Diquís Delta",
+    "featureKo": "디키스 삼각주의 콜럼버스 이전 정착지에 커다란 돌구슬들이 남아 있습니다",
+    "seed": 383,
+    "color": "#d3b17c"
+  },
+  {
+    "id": "havana",
+    "name": "Old Havana",
+    "nameKo": "아바나 구시가지",
+    "shape": "town",
+    "feature": "Fortifications, plazas and arcaded buildings preserve a historic Caribbean port city",
+    "featureKo": "방어시설과 광장, 아케이드 건물들이 카리브해 항구도시의 역사를 보여 줍니다",
+    "seed": 384,
+    "color": "#b7a28c"
+  },
+  {
+    "id": "vinales",
+    "name": "Viñales Valley",
+    "nameKo": "비냘레스 계곡",
+    "shape": "pillars",
+    "feature": "Limestone hills rise above a valley of traditional farms and tobacco fields",
+    "featureKo": "전통 농가와 담배밭이 있는 계곡 위로 석회암 언덕들이 솟아 있습니다",
+    "seed": 385,
+    "color": "#829b8a"
+  },
+  {
+    "id": "sanpedroroca",
+    "name": "San Pedro de la Roca Castle",
+    "nameKo": "산페드로델라로카성",
+    "shape": "fortress",
+    "feature": "Terraced fortifications guard a Caribbean harbour entrance from a rocky promontory",
+    "featureKo": "바위 곶의 계단식 방어시설이 카리브해 항구의 입구를 지키고 있습니다",
+    "seed": 386,
+    "color": "#bca6a0"
+  },
+  {
+    "id": "mornetrois",
+    "name": "Morne Trois Pitons",
+    "nameKo": "모른트루아피통",
+    "shape": "volcano",
+    "feature": "A volcanic mountain landscape contains hot springs, fumaroles and tropical forest",
+    "featureKo": "화산 산악 경관에 온천과 분기공, 열대림이 자리합니다",
+    "seed": 387,
+    "color": "#b69772"
+  },
+  {
+    "id": "santodomingo",
+    "name": "Colonial Santo Domingo",
+    "nameKo": "산토도밍고 식민도시",
+    "shape": "town",
+    "feature": "An early European colonial city preserves a grid of historic streets and monuments",
+    "featureKo": "초기 유럽 식민도시에 격자형 옛 거리와 유적들이 남아 있습니다",
+    "seed": 388,
+    "color": "#c4ac88"
+  },
+  {
+    "id": "galapagos",
+    "name": "Galápagos Islands",
+    "nameKo": "갈라파고스제도",
+    "shape": "island",
+    "feature": "Remote volcanic islands harbour distinctive wildlife shaped by isolation and ocean conditions",
+    "featureKo": "외딴 화산섬들에 고립과 해양 환경이 빚은 독특한 야생동물이 살아갑니다",
+    "seed": 389,
+    "color": "#aeb9a0"
+  },
+  {
+    "id": "sangay",
+    "name": "Sangay National Park",
+    "nameKo": "상가이 국립공원",
+    "shape": "volcano",
+    "feature": "Active volcanoes rise above a range of ecosystems from tropical forest to mountain grassland",
+    "featureKo": "열대림에서 산악 초지로 이어지는 다양한 생태계 위로 활화산들이 솟아 있습니다",
+    "seed": 390,
+    "color": "#bc8b70"
+  },
+  {
+    "id": "antiguaguatemala",
+    "name": "Antigua Guatemala",
+    "nameKo": "안티과과테말라",
+    "shape": "town",
+    "feature": "Baroque churches and civic buildings preserve a former colonial capital beneath volcanoes",
+    "featureKo": "화산 아래의 옛 식민지 수도에 바로크 교회와 공공건물이 남아 있습니다",
+    "seed": 391,
+    "color": "#8baba4"
+  },
+  {
+    "id": "quirigua",
+    "name": "Quiriguá",
+    "nameKo": "키리과",
+    "shape": "stelae",
+    "feature": "Finely carved Maya stelae and sculpted monuments survive in a tropical archaeological park",
+    "featureKo": "열대의 고고공원에 정교하게 조각한 마야 석비와 기념물들이 남아 있습니다",
+    "seed": 392,
+    "color": "#d3b17c"
+  },
+  {
+    "id": "rioplatano",
+    "name": "Río Plátano Biosphere Reserve",
+    "nameKo": "리오플라타노 생물권보전지역",
+    "shape": "forest",
+    "feature": "Tropical rainforest and mountainous lowlands follow a river toward the Caribbean coast",
+    "featureKo": "열대우림과 산악 저지대가 강을 따라 카리브해 해안으로 이어집니다",
+    "seed": 393,
+    "color": "#b7a28c"
+  },
+  {
+    "id": "pitons",
+    "name": "Saint Lucia Pitons",
+    "nameKo": "세인트루시아 피통",
+    "shape": "peaks",
+    "feature": "Two steep volcanic spires rise above the Caribbean Sea beside a volcanic landscape",
+    "featureKo": "카리브해 위로 가파른 화산 봉우리 두 개가 솟고 주변에 화산 경관이 펼쳐집니다",
+    "seed": 394,
+    "color": "#829b8a"
+  },
+  {
+    "id": "eltajin",
+    "name": "El Tajín",
+    "nameKo": "엘타힌",
+    "shape": "pyramid",
+    "feature": "Pyramids with decorative niches preserve the ceremonial core of an ancient Gulf Coast city",
+    "featureKo": "장식 감실이 있는 피라미드들이 멕시코만 해안 고대 도시의 의례 중심지에 남아 있습니다",
+    "seed": 395,
+    "color": "#bca6a0"
+  },
+  {
+    "id": "paquime",
+    "name": "Paquimé",
+    "nameKo": "파키메",
+    "shape": "adobe",
+    "feature": "Multi-storeyed earthen ruins preserve a trading settlement in northern Mexico",
+    "featureKo": "멕시코 북부의 교역 정착지에 여러 층으로 지은 흙 건물 유적이 남아 있습니다",
+    "seed": 396,
+    "color": "#b69772"
+  },
+  {
+    "id": "vizcaino",
+    "name": "El Vizcaíno Whale Sanctuary",
+    "nameKo": "엘비스카이노 고래보호구역",
+    "shape": "coast",
+    "feature": "Coastal lagoons provide winter breeding grounds for grey whales",
+    "featureKo": "해안 석호가 귀신고래의 겨울 번식지가 됩니다",
+    "seed": 397,
+    "color": "#c4ac88"
+  },
+  {
+    "id": "xochicalco",
+    "name": "Xochicalco",
+    "nameKo": "소치칼코",
+    "shape": "pyramid",
+    "feature": "A fortified ceremonial city preserves pyramids and relief-carved monuments on a hilltop",
+    "featureKo": "언덕 위의 의례 성곽도시에 피라미드와 부조로 장식한 유적이 남아 있습니다",
+    "seed": 398,
+    "color": "#aeb9a0"
+  },
+  {
+    "id": "monarch",
+    "name": "Monarch Butterfly Reserve",
+    "nameKo": "모나크나비 보호구역",
+    "shape": "forest",
+    "feature": "High-elevation forests shelter vast numbers of overwintering monarch butterflies",
+    "featureKo": "고지대 숲에 겨울을 나는 수많은 모나크나비가 모여듭니다",
+    "seed": 399,
+    "color": "#bc8b70"
+  },
+  {
+    "id": "pinacate",
+    "name": "El Pinacate and Gran Desierto",
+    "nameKo": "엘피나카테와 그란데시에르토",
+    "shape": "crater",
+    "feature": "Volcanic craters and dark lava fields meet a vast sand-dune desert",
+    "featureKo": "화산 분화구와 검은 용암 지대가 광대한 모래사막과 만납니다",
+    "seed": 400,
+    "color": "#8baba4"
+  },
+  {
+    "id": "padretembleque",
+    "name": "Padre Tembleque Aqueduct",
+    "nameKo": "파드레템블레케 수로교",
+    "shape": "aqueduct",
+    "feature": "A colonial hydraulic system includes a remarkable high arcade carrying water across a valley",
+    "featureKo": "식민지 시대 수리시설에 계곡을 건너 물을 나르는 높은 아케이드가 남아 있습니다",
+    "seed": 401,
+    "color": "#d3b17c"
+  },
+  {
+    "id": "coiba",
+    "name": "Coiba National Park",
+    "nameKo": "코이바 국립공원",
+    "shape": "island",
+    "feature": "Forested Pacific islands and surrounding waters protect rich marine and terrestrial ecosystems",
+    "featureKo": "숲으로 덮인 태평양의 섬과 주변 바다가 풍부한 육상·해양 생태계를 지킵니다",
+    "seed": 402,
+    "color": "#b7a28c"
+  },
+  {
+    "id": "chavin",
+    "name": "Chavín",
+    "nameKo": "차빈",
+    "shape": "rocktemple",
+    "feature": "Ancient stone temples and carved monuments stand in a high Andean valley",
+    "featureKo": "높은 안데스 계곡에 고대 석조 신전과 조각 유적이 남아 있습니다",
+    "seed": 403,
+    "color": "#829b8a"
+  },
+  {
+    "id": "huascaran",
+    "name": "Huascarán National Park",
+    "nameKo": "우아스카란 국립공원",
+    "shape": "glacier",
+    "feature": "Glaciers and deep ravines shape the high peaks of the Cordillera Blanca",
+    "featureKo": "빙하와 깊은 골짜기가 코르디예라블랑카의 높은 봉우리들을 빚었습니다",
+    "seed": 404,
+    "color": "#bca6a0"
+  },
+  {
+    "id": "caral",
+    "name": "Sacred City of Caral-Supe",
+    "nameKo": "카랄수페 성시",
+    "shape": "pyramid",
+    "feature": "Ancient platform mounds and circular courts preserve an early urban centre in the Supe Valley",
+    "featureKo": "수페 계곡의 초기 도시 중심지에 단을 쌓은 언덕과 원형 광장이 남아 있습니다",
+    "seed": 405,
+    "color": "#b69772"
+  },
+  {
+    "id": "chankillo",
+    "name": "Chankillo",
+    "nameKo": "찬키요",
+    "shape": "observatory",
+    "feature": "Thirteen towers form the horizon markers of an ancient solar observatory",
+    "featureKo": "열세 개의 탑이 고대 태양 관측소의 지평선 표지를 이룹니다",
+    "seed": 406,
+    "color": "#c4ac88"
+  },
+  {
+    "id": "paramaribo",
+    "name": "Paramaribo Historic Centre",
+    "nameKo": "파라마리보 역사중심지",
+    "shape": "town",
+    "feature": "Timber buildings combine European urban planning with local building techniques",
+    "featureKo": "목조 건물들에 유럽식 도시계획과 현지 건축 기술이 어우러져 있습니다",
+    "seed": 407,
+    "color": "#aeb9a0"
+  },
+  {
+    "id": "redwood",
+    "name": "Redwood National and State Parks",
+    "nameKo": "레드우드 국립·주립공원",
+    "shape": "forest",
+    "feature": "Towering coast redwoods grow along a Pacific landscape of forests, rivers and coastline",
+    "featureKo": "숲과 강, 해안이 어우러진 태평양 경관에 거대한 해안삼나무들이 자랍니다",
+    "seed": 408,
+    "color": "#bc8b70"
+  },
+  {
+    "id": "olympic",
+    "name": "Olympic National Park",
+    "nameKo": "올림픽 국립공원",
+    "shape": "forest",
+    "feature": "Glaciated peaks and temperate rainforest meet a wild Pacific coastline",
+    "featureKo": "빙하가 깎은 봉우리와 온대우림이 태평양의 야생 해안과 만납니다",
+    "seed": 409,
+    "color": "#8baba4"
+  },
+  {
+    "id": "cahokia",
+    "name": "Cahokia Mounds",
+    "nameKo": "카호키아 마운드",
+    "shape": "pyramid",
+    "feature": "Large earthen mounds preserve the centre of a major pre-Columbian settlement",
+    "featureKo": "커다란 흙 언덕들이 콜럼버스 이전 주요 정착지의 중심을 보여 줍니다",
+    "seed": 410,
+    "color": "#d3b17c"
+  },
+  {
+    "id": "hawaiivolcanoes",
+    "name": "Hawaii Volcanoes",
+    "nameKo": "하와이 화산",
+    "shape": "volcano",
+    "feature": "Active shield volcanoes continually reshape a landscape of lava flows and craters",
+    "featureKo": "활동하는 순상화산이 용암류와 분화구의 경관을 계속 바꾸고 있습니다",
+    "seed": 411,
+    "color": "#b7a28c"
+  },
+  {
+    "id": "colonia",
+    "name": "Colonia del Sacramento",
+    "nameKo": "콜로니아델사크라멘토",
+    "shape": "town",
+    "feature": "A historic riverside settlement preserves a mixture of Portuguese and Spanish colonial traditions",
+    "featureKo": "강변의 역사 정착지에 포르투갈과 에스파냐의 식민 건축 전통이 섞여 있습니다",
+    "seed": 412,
+    "color": "#829b8a"
+  },
+  {
+    "id": "canaima",
+    "name": "Canaima National Park",
+    "nameKo": "카나이마 국립공원",
+    "shape": "waterfall",
+    "feature": "Table mountains and towering waterfalls dominate the Guiana Shield landscape",
+    "featureKo": "기아나 순상지의 경관 위로 탁상산과 높은 폭포들이 자리합니다",
+    "seed": 413,
+    "color": "#bca6a0"
+  },
+  {
+    "id": "kakadu",
+    "name": "Kakadu National Park",
+    "nameKo": "카카두 국립공원",
+    "shape": "wetland",
+    "feature": "Escarpments, wetlands and rock-art sites preserve a landscape with a long Aboriginal history",
+    "featureKo": "절벽과 습지, 암벽화 유적이 오랜 원주민 역사를 품은 경관에 남아 있습니다",
+    "seed": 414,
+    "color": "#b69772"
+  },
+  {
+    "id": "uluru",
+    "name": "Uluru-Kata Tjuta",
+    "nameKo": "울루루카타추타",
+    "shape": "redrocks",
+    "feature": "An immense sandstone monolith and rounded rock domes rise from the central Australian plain",
+    "featureKo": "호주 중부 평원 위로 거대한 사암 바위와 둥근 바위 봉우리들이 솟아 있습니다",
+    "seed": 415,
+    "color": "#c4ac88"
+  },
+  {
+    "id": "sharkbay",
+    "name": "Shark Bay",
+    "nameKo": "샤크만",
+    "shape": "coast",
+    "feature": "Seagrass beds and stromatolites occur in a broad bay on Australia's western coast",
+    "featureKo": "호주 서해안의 넓은 만에 해초 군락과 스트로마톨라이트가 자리합니다",
+    "seed": 416,
+    "color": "#aeb9a0"
+  },
+  {
+    "id": "bluemountains",
+    "name": "Greater Blue Mountains",
+    "nameKo": "그레이터블루마운틴스",
+    "shape": "cliff",
+    "feature": "Sandstone plateaux and deep gorges support a remarkable diversity of eucalypt vegetation",
+    "featureKo": "사암 고원과 깊은 협곡에 다양한 유칼립투스 식생이 자랍니다",
+    "seed": 417,
+    "color": "#bc8b70"
+  },
+  {
+    "id": "purnululu",
+    "name": "Purnululu",
+    "nameKo": "푸르눌룰루",
+    "shape": "pillars",
+    "feature": "Orange and dark-striped sandstone domes form the distinctive Bungle Bungle range",
+    "featureKo": "주황색과 짙은 띠를 두른 사암 돔들이 독특한 벙글벙글산맥을 이룹니다",
+    "seed": 418,
+    "color": "#8baba4"
+  },
+  {
+    "id": "ningaloo",
+    "name": "Ningaloo Coast",
+    "nameKo": "닝갈루 해안",
+    "shape": "reef",
+    "feature": "An extensive fringing reef lies beside an arid coast visited by whale sharks",
+    "featureKo": "고래상어가 찾아오는 건조한 해안 옆에 넓은 거초가 펼쳐집니다",
+    "seed": 419,
+    "color": "#d3b17c"
+  },
+  {
+    "id": "tongariro",
+    "name": "Tongariro National Park",
+    "nameKo": "통가리로 국립공원",
+    "shape": "volcano",
+    "feature": "Volcanoes and lakes form a mountain landscape of deep cultural significance to Māori people",
+    "featureKo": "화산과 호수가 마오리인에게 깊은 문화적 의미를 지닌 산악 경관을 이룹니다",
+    "seed": 420,
+    "color": "#b7a28c"
+  },
+  {
+    "id": "tewahipounamu",
+    "name": "Te Wahipounamu",
+    "nameKo": "테와히포우나무",
+    "shape": "fjord",
+    "feature": "Glaciers, fjords and ancient forests shape the southwest of New Zealand's South Island",
+    "featureKo": "빙하와 피오르, 오래된 숲이 뉴질랜드 남섬 남서부의 경관을 이룹니다",
+    "seed": 421,
+    "color": "#829b8a"
+  },
+  {
+    "id": "levuka",
+    "name": "Levuka Historical Port Town",
+    "nameKo": "레부카 역사항구도시",
+    "shape": "harbor",
+    "feature": "Low timber buildings preserve a Pacific port town beneath steep volcanic slopes",
+    "featureKo": "가파른 화산 비탈 아래 낮은 목조 건물들이 태평양 항구도시의 모습을 간직하고 있습니다",
+    "seed": 422,
+    "color": "#bca6a0"
+  },
+  {
+    "id": "roimata",
+    "name": "Chief Roi Mata's Domain",
+    "nameKo": "로이마타 추장 유적",
+    "shape": "island",
+    "feature": "Settlement, burial and cave sites recall a Pacific chief and the traditions surrounding his life",
+    "featureKo": "정착지와 무덤, 동굴 유적이 태평양 추장과 그의 삶에 얽힌 전통을 전합니다",
+    "seed": 423,
+    "color": "#b69772"
+  },
+  {
+    "id": "eastrennell",
+    "name": "East Rennell",
+    "nameKo": "동레넬",
+    "shape": "island",
+    "feature": "A raised coral atoll contains a large lake surrounded by dense tropical forest",
+    "featureKo": "융기한 산호 환초 안에 울창한 열대림으로 둘러싸인 큰 호수가 자리합니다",
+    "seed": 424,
+    "color": "#c4ac88"
+  },
+  {
+    "id": "kuk",
+    "name": "Kuk Early Agricultural Site",
+    "nameKo": "쿠크 초기농경유적",
+    "shape": "terraces",
+    "feature": "Ancient drainage systems record the development of agriculture in the New Guinea highlands",
+    "featureKo": "옛 배수시설이 뉴기니 고지대에서 농업이 발달한 역사를 보여 줍니다",
+    "seed": 425,
+    "color": "#aeb9a0"
+  },
+  {
+    "id": "bagerhat",
+    "name": "Mosque City of Bagerhat",
+    "nameKo": "바게르하트 모스크도시",
+    "shape": "mosque",
+    "feature": "Historic brick mosques and water infrastructure survive in a city founded near the Ganges delta",
+    "featureKo": "갠지스 삼각주 근처에 세운 도시에 옛 벽돌 모스크와 수리시설이 남아 있습니다",
+    "seed": 426,
+    "color": "#bc8b70"
+  },
+  {
+    "id": "paharpur",
+    "name": "Somapura Mahavihara at Paharpur",
+    "nameKo": "파하르푸르 소마푸라 승원",
+    "shape": "ziggurat",
+    "feature": "A great Buddhist monastery surrounds a monumental central shrine decorated with terracotta plaques",
+    "featureKo": "거대한 불교 승원이 테라코타 판으로 장식한 중앙 사원을 둘러싸고 있습니다",
+    "seed": 427,
+    "color": "#8baba4"
+  },
+  {
+    "id": "preahvihear",
+    "name": "Temple of Preah Vihear",
+    "nameKo": "프레아비헤아르 사원",
+    "shape": "clifftemple",
+    "feature": "A sequence of sanctuaries follows a long axis along a high plateau edge",
+    "featureKo": "긴 축을 따라 이어지는 성소들이 높은 고원 가장자리에 자리합니다",
+    "seed": 428,
+    "color": "#d3b17c"
+  },
+  {
+    "id": "kohker",
+    "name": "Koh Ker",
+    "nameKo": "코케르",
+    "shape": "pyramid",
+    "feature": "A stepped temple pyramid rises above the remains of a former Khmer capital",
+    "featureKo": "계단식 사원 피라미드가 크메르의 옛 수도 유적 위로 솟아 있습니다",
+    "seed": 429,
+    "color": "#b7a28c"
+  },
+  {
+    "id": "komodo",
+    "name": "Komodo National Park",
+    "nameKo": "코모도 국립공원",
+    "shape": "island",
+    "feature": "Rugged islands shelter Komodo dragons beside a rich marine environment",
+    "featureKo": "험준한 섬들에 코모도왕도마뱀이 살고 주변에는 풍부한 해양 생태계가 펼쳐집니다",
+    "seed": 430,
+    "color": "#829b8a"
+  },
+  {
+    "id": "prambanan",
+    "name": "Prambanan Temple Compounds",
+    "nameKo": "프람바난 사원군",
+    "shape": "templetower",
+    "feature": "Tall Hindu temple towers rise from a complex decorated with narrative reliefs",
+    "featureKo": "이야기를 담은 부조로 장식한 사원 단지 위로 높은 힌두교 사원탑들이 솟아 있습니다",
+    "seed": 431,
+    "color": "#bca6a0"
+  },
+  {
+    "id": "balisubak",
+    "name": "Bali Subak Landscape",
+    "nameKo": "발리 수바크 경관",
+    "shape": "terraces",
+    "feature": "Water temples and terraced rice fields form a landscape managed by the subak irrigation system",
+    "featureKo": "물의 사원과 계단식 논이 수바크 관개 체계로 관리하는 경관을 이룹니다",
+    "seed": 432,
+    "color": "#b69772"
+  },
+  {
+    "id": "kinabalu",
+    "name": "Kinabalu Park",
+    "nameKo": "키나발루 공원",
+    "shape": "peaks",
+    "feature": "A granite mountain supports vegetation ranging from tropical forest to alpine habitats",
+    "featureKo": "화강암 산에 열대림에서 고산 서식지까지 다양한 식생이 자랍니다",
+    "seed": 433,
+    "color": "#c4ac88"
+  },
+  {
+    "id": "gunungmulu",
+    "name": "Gunung Mulu",
+    "nameKo": "구눙물루",
+    "shape": "cave",
+    "feature": "Limestone pinnacles and immense caves form a spectacular tropical karst landscape",
+    "featureKo": "석회암 첨봉과 거대한 동굴들이 열대 카르스트 경관을 이룹니다",
+    "seed": 434,
+    "color": "#aeb9a0"
+  },
+  {
+    "id": "puertoprincesa",
+    "name": "Puerto-Princesa Subterranean River",
+    "nameKo": "푸에르토프린세사 지하강",
+    "shape": "cave",
+    "feature": "A subterranean river flows through limestone caves before reaching the sea",
+    "featureKo": "지하강이 석회암 동굴을 지나 바다로 흘러갑니다",
+    "seed": 435,
+    "color": "#bc8b70"
+  },
+  {
+    "id": "tubbataha",
+    "name": "Tubbataha Reefs",
+    "nameKo": "투바타하 산호초",
+    "shape": "reef",
+    "feature": "Remote coral atolls support rich reef communities and breeding seabirds",
+    "featureKo": "외딴 산호 환초에 풍부한 산호초 생태계와 번식하는 바닷새들이 자리합니다",
+    "seed": 436,
+    "color": "#8baba4"
+  },
+  {
+    "id": "cordilleraterraces",
+    "name": "Philippine Cordilleras Rice Terraces",
+    "nameKo": "필리핀 코르디예라 계단식 논",
+    "shape": "terraces",
+    "feature": "Steep mountain slopes are shaped into irrigated rice terraces maintained by local communities",
+    "featureKo": "지역 공동체가 가꾸는 관개 계단식 논이 가파른 산비탈을 따라 이어집니다",
+    "seed": 437,
+    "color": "#d3b17c"
+  },
+  {
+    "id": "hue",
+    "name": "Hué Monuments",
+    "nameKo": "후에 유적",
+    "shape": "palace",
+    "feature": "Palaces, temples and fortified enclosures preserve the ceremonial heart of Vietnam's former capital",
+    "featureKo": "궁전과 사원, 성곽 구역이 베트남 옛 수도의 의례 중심지를 이루고 있습니다",
+    "seed": 438,
+    "color": "#b7a28c"
+  },
+  {
+    "id": "hoian",
+    "name": "Hoi An",
+    "nameKo": "호이안",
+    "shape": "town",
+    "feature": "Timber buildings and narrow streets preserve a Southeast Asian trading port",
+    "featureKo": "목조 건물과 좁은 거리들이 동남아시아 교역항의 옛 모습을 간직하고 있습니다",
+    "seed": 439,
+    "color": "#829b8a"
+  },
+  {
+    "id": "trangan",
+    "name": "Trang An",
+    "nameKo": "짱안",
+    "shape": "pillars",
+    "feature": "Limestone towers rise above waterways, caves and archaeological sites",
+    "featureKo": "물길과 동굴, 고고 유적 위로 석회암 봉우리들이 솟아 있습니다",
+    "seed": 440,
+    "color": "#bca6a0"
+  },
+  {
+    "id": "anuradhapura",
+    "name": "Anuradhapura",
+    "nameKo": "아누라다푸라",
+    "shape": "stupa",
+    "feature": "Large stupas and monastic ruins preserve a sacred city centred on a revered Bodhi tree",
+    "featureKo": "존경받는 보리수를 중심으로 한 성스러운 도시에 큰 불탑과 수도원 유적이 남아 있습니다",
+    "seed": 441,
+    "color": "#b69772"
+  },
+  {
+    "id": "galle",
+    "name": "Galle Fort",
+    "nameKo": "갈레 요새",
+    "shape": "fortress",
+    "feature": "Fortified streets and buildings combine European planning with South Asian traditions",
+    "featureKo": "성벽 안의 거리와 건물에 유럽식 계획과 남아시아 전통이 어우러져 있습니다",
+    "seed": 442,
+    "color": "#c4ac88"
+  },
+  {
+    "id": "dambulla",
+    "name": "Dambulla Cave Temple",
+    "nameKo": "담불라 석굴사원",
+    "shape": "rocktemple",
+    "feature": "Cave sanctuaries preserve Buddhist statues and extensive painted surfaces",
+    "featureKo": "석굴 성소들에 불상과 넓은 면을 덮은 불교 그림이 남아 있습니다",
+    "seed": 443,
+    "color": "#aeb9a0"
+  },
+  {
+    "id": "gyeongju",
+    "name": "Gyeongju Historic Areas",
+    "nameKo": "경주 역사유적지구",
+    "shape": "tomb",
+    "feature": "Royal tombs, temple remains and palace sites preserve the former Silla capital",
+    "featureKo": "왕릉과 사찰 터, 궁궐 유적이 신라 옛 수도의 역사를 보여 줍니다",
+    "seed": 444,
+    "color": "#bc8b70"
+  },
+  {
+    "id": "hahoeyangdong",
+    "name": "Hahoe and Yangdong Villages",
+    "nameKo": "하회와 양동마을",
+    "shape": "thatched",
+    "feature": "Traditional clan villages preserve tiled and thatched houses within wooded river landscapes",
+    "featureKo": "숲과 강이 어우러진 동족마을에 기와집과 초가집이 남아 있습니다",
+    "seed": 445,
+    "color": "#8baba4"
+  },
+  {
+    "id": "namhansanseong",
+    "name": "Namhansanseong",
+    "nameKo": "남한산성",
+    "shape": "fortress",
+    "feature": "Mountain walls and gates surround a refuge capital developed for the Joseon dynasty",
+    "featureKo": "산을 따라 두른 성벽과 성문이 조선의 비상 수도를 감싸고 있습니다",
+    "seed": 446,
+    "color": "#d3b17c"
+  },
+  {
+    "id": "seowon",
+    "name": "Seowon Academies",
+    "nameKo": "한국의 서원",
+    "shape": "hall",
+    "feature": "Neo-Confucian academies place study halls and shrines within carefully chosen natural settings",
+    "featureKo": "자연 속에 자리 잡은 성리학 교육기관에 강학당과 사당이 배치되어 있습니다",
+    "seed": 447,
+    "color": "#b7a28c"
+  },
+  {
+    "id": "qinmausoleum",
+    "name": "First Qin Emperor's Mausoleum",
+    "nameKo": "진시황릉",
+    "shape": "stelae",
+    "feature": "An imperial burial complex includes a vast terracotta army arranged in underground pits",
+    "featureKo": "황제의 묘역 안 지하 갱에 거대한 병마용 군대가 줄지어 있습니다",
+    "seed": 448,
+    "color": "#829b8a"
+  },
+  {
+    "id": "pingyao",
+    "name": "Ancient Ping Yao",
+    "nameKo": "핑야오 고성",
+    "shape": "fortress",
+    "feature": "A walled Chinese city preserves traditional houses and historic commercial buildings",
+    "featureKo": "성벽으로 둘러싼 중국 도시에 전통 주택과 옛 상업 건물이 남아 있습니다",
+    "seed": 449,
+    "color": "#bca6a0"
+  },
+  {
+    "id": "yungang",
+    "name": "Yungang Grottoes",
+    "nameKo": "윈강 석굴",
+    "shape": "cliffbuddha",
+    "feature": "Buddhist cave temples contain monumental statues carved into sandstone cliffs",
+    "featureKo": "사암 절벽에 새긴 불교 석굴사원 안에 거대한 불상들이 자리합니다",
+    "seed": 450,
+    "color": "#b69772"
+  },
+  {
+    "id": "westlake",
+    "name": "West Lake of Hangzhou",
+    "nameKo": "항저우 서호",
+    "shape": "lakes",
+    "feature": "Causeways, gardens and temples shape a lake landscape celebrated in Chinese art",
+    "featureKo": "방죽과 정원, 사원들이 중국 예술에서 사랑받아 온 호수 경관을 이룹니다",
+    "seed": 451,
+    "color": "#c4ac88"
+  },
+  {
+    "id": "haniterraces",
+    "name": "Honghe Hani Rice Terraces",
+    "nameKo": "훙허 하니 계단식 논",
+    "shape": "terraces",
+    "feature": "Irrigated terraces descend from forested mountains past Hani villages",
+    "featureKo": "숲으로 덮인 산에서 하니족 마을을 지나 관개 계단식 논이 이어집니다",
+    "seed": 452,
+    "color": "#aeb9a0"
+  },
+  {
+    "id": "pattadakal",
+    "name": "Pattadakal",
+    "nameKo": "파타다칼",
+    "shape": "templetower",
+    "feature": "Chalukya-period temples bring together northern and southern Indian architectural forms",
+    "featureKo": "찰루키아 시대 사원들이 인도 북부와 남부의 건축 형식을 함께 보여 줍니다",
+    "seed": 453,
+    "color": "#bc8b70"
+  },
+  {
+    "id": "shivajiterminus",
+    "name": "Chhatrapati Shivaji Terminus",
+    "nameKo": "차트라파티 시바지 터미너스",
+    "shape": "hall",
+    "feature": "A monumental railway station combines Victorian Gothic Revival and Indian architectural traditions",
+    "featureKo": "거대한 철도역에 빅토리아 고딕 부흥 양식과 인도 건축 전통이 어우러져 있습니다",
+    "seed": 454,
+    "color": "#8baba4"
+  },
+  {
+    "id": "nalanda",
+    "name": "Nalanda Mahavihara",
+    "nameKo": "날란다 마하비하라",
+    "shape": "ruins",
+    "feature": "Monasteries, shrines and educational remains record a long-lived Buddhist learning centre",
+    "featureKo": "수도원과 성소, 교육시설 유적이 오래 이어진 불교 학문의 중심지를 보여 줍니다",
+    "seed": 455,
+    "color": "#d3b17c"
+  },
+  {
+    "id": "bam",
+    "name": "Bam and its Cultural Landscape",
+    "nameKo": "밤 문화경관",
+    "shape": "adobe",
+    "feature": "An earthen citadel and oasis landscape record the history of a desert trading city",
+    "featureKo": "흙으로 지은 성채와 오아시스 경관이 사막 교역도시의 역사를 전합니다",
+    "seed": 456,
+    "color": "#b7a28c"
+  },
+  {
+    "id": "shushtar",
+    "name": "Shushtar Hydraulic System",
+    "nameKo": "슈슈타르 수리시설",
+    "shape": "waterworks",
+    "feature": "Dams, tunnels and canals distribute water through a historic system of mills and irrigation",
+    "featureKo": "댐과 터널, 운하가 옛 물레방아와 관개시설에 물을 나누어 보냅니다",
+    "seed": 457,
+    "color": "#829b8a"
+  },
+  {
+    "id": "gonbadeqabus",
+    "name": "Gonbad-e Qābus",
+    "nameKo": "곤바데카부스",
+    "shape": "minaret",
+    "feature": "A tall brick funerary tower rises above a star-shaped plan beneath a conical roof",
+    "featureKo": "별 모양 평면 위로 높은 벽돌 장례탑이 솟고 원뿔 지붕이 얹혀 있습니다",
+    "seed": 458,
+    "color": "#bca6a0"
+  },
+  {
+    "id": "cappadocia",
+    "name": "Göreme and Cappadocia",
+    "nameKo": "괴레메와 카파도키아",
+    "shape": "pillars",
+    "feature": "Eroded volcanic rock formations contain rock-cut churches and dwellings",
+    "featureKo": "침식된 화산암 지형 안에 바위를 파 만든 교회와 주거지가 자리합니다",
+    "seed": 459,
+    "color": "#b69772"
+  },
+  {
+    "id": "nemrut",
+    "name": "Nemrut Dağ",
+    "nameKo": "넴루트산",
+    "shape": "stelae",
+    "feature": "Colossal stone statues flank a royal funerary mound high in the mountains",
+    "featureKo": "높은 산의 왕실 무덤 언덕 양옆에 거대한 석상들이 자리합니다",
+    "seed": 460,
+    "color": "#c4ac88"
+  },
+  {
+    "id": "pamukkale",
+    "name": "Hierapolis-Pamukkale",
+    "nameKo": "히에라폴리스파묵칼레",
+    "shape": "terraces",
+    "feature": "White travertine terraces formed by thermal waters lie below the remains of an ancient city",
+    "featureKo": "온천수가 빚은 흰 석회붕이 고대 도시 유적 아래로 펼쳐집니다",
+    "seed": 461,
+    "color": "#aeb9a0"
+  },
+  {
+    "id": "troy",
+    "name": "Troy",
+    "nameKo": "트로이",
+    "shape": "ruins",
+    "feature": "Successive settlement layers preserve a city associated with ancient Mediterranean history and epic poetry",
+    "featureKo": "여러 시대의 정착층이 고대 지중해 역사와 서사시로 알려진 도시를 보여 줍니다",
+    "seed": 462,
+    "color": "#bc8b70"
+  },
+  {
+    "id": "baalbek",
+    "name": "Baalbek",
+    "nameKo": "바알베크",
+    "shape": "columns",
+    "feature": "Monumental Roman temples preserve towering columns and richly carved stonework",
+    "featureKo": "거대한 로마 신전에 높은 기둥과 정교한 석조 장식이 남아 있습니다",
+    "seed": 463,
+    "color": "#8baba4"
+  },
+  {
+    "id": "byblos",
+    "name": "Byblos",
+    "nameKo": "비블로스",
+    "shape": "ruins",
+    "feature": "A long-inhabited coastal city preserves traces of successive Mediterranean civilizations",
+    "featureKo": "오랫동안 사람이 살아온 해안 도시에 여러 지중해 문명의 흔적이 남아 있습니다",
+    "seed": 464,
+    "color": "#d3b17c"
+  },
+  {
+    "id": "quseiramra",
+    "name": "Quseir Amra",
+    "nameKo": "쿠세이르암라",
+    "shape": "dome",
+    "feature": "An early Islamic desert residence preserves remarkable wall paintings inside its bath complex",
+    "featureKo": "초기 이슬람 사막 거처의 목욕시설 안에 뛰어난 벽화가 남아 있습니다",
+    "seed": 465,
+    "color": "#b7a28c"
+  },
+  {
+    "id": "wadirum",
+    "name": "Wadi Rum",
+    "nameKo": "와디럼",
+    "shape": "redrocks",
+    "feature": "Sandstone cliffs, narrow gorges and natural arches form a desert landscape rich in rock art",
+    "featureKo": "사암 절벽과 좁은 협곡, 자연 아치가 암각화가 풍부한 사막 경관을 이룹니다",
+    "seed": 466,
+    "color": "#829b8a"
+  },
+  {
+    "id": "atturaif",
+    "name": "At-Turaif",
+    "nameKo": "앗투라이프",
+    "shape": "adobe",
+    "feature": "Mud-brick palaces and urban remains preserve the early Saudi capital at ad-Dir'iyah",
+    "featureKo": "흙벽돌 궁전과 도시 유적이 디리야에 있던 초기 사우디 수도의 모습을 간직하고 있습니다",
+    "seed": 467,
+    "color": "#bca6a0"
+  },
+  {
+    "id": "alahsa",
+    "name": "Al-Ahsa Oasis",
+    "nameKo": "알아흐사 오아시스",
+    "shape": "garden",
+    "feature": "Palm groves, springs and canals form an extensive oasis shaped by long settlement",
+    "featureKo": "야자 숲과 샘, 수로가 오랜 정착으로 빚어진 넓은 오아시스를 이룹니다",
+    "seed": 468,
+    "color": "#b69772"
+  },
+  {
+    "id": "alzubarah",
+    "name": "Al Zubarah",
+    "nameKo": "알주바라",
+    "shape": "fortress",
+    "feature": "The remains of a walled Gulf town record pearling and maritime trade",
+    "featureKo": "걸프 지역 성곽도시의 유적이 진주 채취와 해상 교역의 역사를 보여 줍니다",
+    "seed": 469,
+    "color": "#c4ac88"
+  },
+  {
+    "id": "alain",
+    "name": "Al Ain Cultural Sites",
+    "nameKo": "알아인 문화유적",
+    "shape": "garden",
+    "feature": "Oases, tombs and ancient settlements record life in the Arabian desert over millennia",
+    "featureKo": "오아시스와 무덤, 옛 정착지가 수천 년간 이어진 아라비아 사막의 삶을 보여 줍니다",
+    "seed": 470,
+    "color": "#aeb9a0"
+  },
+  {
+    "id": "shirakami",
+    "name": "Shirakami-Sanchi",
+    "nameKo": "시라카미산지",
+    "shape": "forest",
+    "feature": "An extensive cool-temperate beech forest survives across a rugged mountain landscape",
+    "featureKo": "험준한 산악 경관에 넓은 냉온대 너도밤나무 숲이 남아 있습니다",
+    "seed": 471,
+    "color": "#bc8b70"
+  },
+  {
+    "id": "ogasawara",
+    "name": "Ogasawara Islands",
+    "nameKo": "오가사와라제도",
+    "shape": "island",
+    "feature": "Oceanic islands harbour many endemic species shaped by isolated evolution",
+    "featureKo": "대양섬들에 고립된 진화가 빚은 많은 고유종이 살아갑니다",
+    "seed": 472,
+    "color": "#8baba4"
+  },
+  {
+    "id": "tomioka",
+    "name": "Tomioka Silk Mill",
+    "nameKo": "도미오카 제사장",
+    "shape": "industrial",
+    "feature": "A historic silk mill and related sites record Japan's transition to industrial silk production",
+    "featureKo": "옛 제사장과 관련 유적이 일본의 산업적 비단 생산 전환을 보여 줍니다",
+    "seed": 473,
+    "color": "#d3b17c"
+  },
+  {
+    "id": "salzburg",
+    "name": "Historic Salzburg",
+    "nameKo": "잘츠부르크 역사도시",
+    "shape": "town",
+    "feature": "Ecclesiastical and civic buildings preserve a Baroque city between the river and surrounding hills",
+    "featureKo": "강과 주변 언덕 사이에 종교·공공건물이 어우러진 바로크 도시가 남아 있습니다",
+    "seed": 474,
+    "color": "#b7a28c"
+  },
+  {
+    "id": "hallstatt",
+    "name": "Hallstatt-Dachstein",
+    "nameKo": "할슈타트다흐슈타인",
+    "shape": "coast",
+    "feature": "Alpine settlement and mountain scenery reflect a long history of salt mining",
+    "featureKo": "알프스의 정착지와 산악 경관이 오랜 소금 채굴의 역사를 보여 줍니다",
+    "seed": 475,
+    "color": "#829b8a"
+  },
+  {
+    "id": "berne",
+    "name": "Old City of Berne",
+    "nameKo": "베른 구시가지",
+    "shape": "town",
+    "feature": "Arcaded streets and historic fountains preserve a planned medieval city beside the Aare River",
+    "featureKo": "아레강 옆에 아케이드 거리와 옛 분수들이 중세 계획도시의 모습을 간직하고 있습니다",
+    "seed": 476,
+    "color": "#bca6a0"
+  },
+  {
+    "id": "stgall",
+    "name": "Abbey of St Gall",
+    "nameKo": "장크트갈렌 수도원",
+    "shape": "cloister",
+    "feature": "A monastic complex and its library preserve an important centre of European learning",
+    "featureKo": "수도원 단지와 도서관이 유럽 학문의 중요한 중심지를 보여 줍니다",
+    "seed": 477,
+    "color": "#b69772"
+  },
+  {
+    "id": "wurzburg",
+    "name": "Würzburg Residence",
+    "nameKo": "뷔르츠부르크 주교궁",
+    "shape": "palace",
+    "feature": "A richly decorated Baroque residence combines a grand staircase with formal court gardens",
+    "featureKo": "정교하게 장식한 바로크 궁전에 웅장한 계단과 정형식 궁정 정원이 어우러져 있습니다",
+    "seed": 478,
+    "color": "#c4ac88"
+  },
+  {
+    "id": "trier",
+    "name": "Roman Monuments of Trier",
+    "nameKo": "트리어 로마유적",
+    "shape": "gate",
+    "feature": "Roman gates, baths and later churches preserve layers of a city on the Moselle",
+    "featureKo": "로마 시대 성문과 목욕장, 후대 교회들이 모젤강 도시의 역사를 층층이 보여 줍니다",
+    "seed": 479,
+    "color": "#aeb9a0"
+  },
+  {
+    "id": "speicherstadt",
+    "name": "Speicherstadt and Kontorhaus",
+    "nameKo": "슈파이허슈타트와 콘토어하우스",
+    "shape": "canal",
+    "feature": "Brick warehouses line canals beside a district of early modern office buildings",
+    "featureKo": "운하를 따라 벽돌 창고들이 늘어서고 근대 초기 사무건물 구역이 이웃해 있습니다",
+    "seed": 480,
+    "color": "#bc8b70"
+  },
+  {
+    "id": "kronborg",
+    "name": "Kronborg Castle",
+    "nameKo": "크론보르성",
+    "shape": "castle",
+    "feature": "A Renaissance castle guards the narrow sound between Denmark and Sweden",
+    "featureKo": "르네상스 성이 덴마크와 스웨덴 사이의 좁은 해협을 지키고 있습니다",
+    "seed": 481,
+    "color": "#8baba4"
+  },
+  {
+    "id": "ilulissat",
+    "name": "Ilulissat Icefjord",
+    "nameKo": "일루리사트 아이스피오르",
+    "shape": "glacier",
+    "feature": "A fast-moving glacier releases immense icebergs into a Greenland fjord",
+    "featureKo": "빠르게 움직이는 빙하가 그린란드의 피오르로 거대한 빙산을 내보냅니다",
+    "seed": 482,
+    "color": "#d3b17c"
+  },
+  {
+    "id": "suomenlinna",
+    "name": "Suomenlinna Fortress",
+    "nameKo": "수오멘린나 요새",
+    "shape": "fortress",
+    "feature": "Bastions and military buildings spread across islands at the entrance to Helsinki's harbour",
+    "featureKo": "헬싱키 항구 입구의 섬들을 따라 보루와 군사 건물들이 펼쳐집니다",
+    "seed": 483,
+    "color": "#b7a28c"
+  },
+  {
+    "id": "rauma",
+    "name": "Old Rauma",
+    "nameKo": "라우마 구시가지",
+    "shape": "town",
+    "feature": "Colourful timber houses preserve a traditional Nordic town around its medieval core",
+    "featureKo": "다채로운 목조 주택들이 중세 중심부 주변에 북유럽 전통도시의 모습을 남기고 있습니다",
+    "seed": 484,
+    "color": "#829b8a"
+  },
+  {
+    "id": "orangetheatre",
+    "name": "Roman Theatre of Orange",
+    "nameKo": "오랑주 로마극장",
+    "shape": "theatre",
+    "feature": "A Roman theatre retains its monumental stage wall beside other ancient urban remains",
+    "featureKo": "로마극장에 거대한 무대벽이 남아 있고 주변에 고대 도시 유적이 자리합니다",
+    "seed": 485,
+    "color": "#bca6a0"
+  },
+  {
+    "id": "cordouan",
+    "name": "Cordouan Lighthouse",
+    "nameKo": "코르두앙 등대",
+    "shape": "towers",
+    "feature": "A monumental stone lighthouse stands on a rocky platform at the Gironde estuary",
+    "featureKo": "지롱드강 하구의 바위 지반 위에 거대한 석조 등대가 서 있습니다",
+    "seed": 486,
+    "color": "#b69772"
+  },
+  {
+    "id": "maisoncarree",
+    "name": "Maison Carrée of Nîmes",
+    "nameKo": "님 메종카레",
+    "shape": "columns",
+    "feature": "A well-preserved Roman temple stands on a high podium behind a columned portico",
+    "featureKo": "잘 보존된 로마 신전이 기둥 현관 뒤의 높은 기단 위에 서 있습니다",
+    "seed": 487,
+    "color": "#c4ac88"
+  },
+  {
+    "id": "edinburgh",
+    "name": "Old and New Edinburgh",
+    "nameKo": "에든버러 구·신시가지",
+    "shape": "town",
+    "feature": "A medieval old town contrasts with a carefully planned neoclassical new town",
+    "featureKo": "중세 구시가지와 계획적으로 조성한 신고전주의 신시가지가 나란히 자리합니다",
+    "seed": 488,
+    "color": "#aeb9a0"
+  },
+  {
+    "id": "pontcysyllte",
+    "name": "Pontcysyllte Aqueduct",
+    "nameKo": "폰트치실테 수로교",
+    "shape": "aqueduct",
+    "feature": "A cast-iron water trough carries a navigable canal high above the River Dee",
+    "featureKo": "주철 수로가 디강 높은 곳에서 배가 다니는 운하를 떠받칩니다",
+    "seed": 489,
+    "color": "#bc8b70"
+  },
+  {
+    "id": "kew",
+    "name": "Royal Botanic Gardens Kew",
+    "nameKo": "큐 왕립식물원",
+    "shape": "garden",
+    "feature": "Historic glasshouses and designed landscapes preserve a major centre of botanical study",
+    "featureKo": "옛 유리온실과 조경 경관이 식물 연구의 주요 중심지를 이루고 있습니다",
+    "seed": 490,
+    "color": "#8baba4"
+  },
+  {
+    "id": "delphi",
+    "name": "Delphi",
+    "nameKo": "델포이",
+    "shape": "columns",
+    "feature": "The sanctuary of Apollo occupies terraces on the slopes of Mount Parnassus",
+    "featureKo": "아폴론 성역이 파르나소스산 비탈의 계단식 터에 자리합니다",
+    "seed": 491,
+    "color": "#d3b17c"
+  },
+  {
+    "id": "epidaurus",
+    "name": "Sanctuary of Asklepios at Epidaurus",
+    "nameKo": "에피다우로스 아스클레피오스 성역",
+    "shape": "theatre",
+    "feature": "A theatre and religious buildings preserve an ancient sanctuary associated with healing",
+    "featureKo": "극장과 종교 건물들이 치유와 관련된 고대 성역에 남아 있습니다",
+    "seed": 492,
+    "color": "#b7a28c"
+  },
+  {
+    "id": "mycenae",
+    "name": "Mycenae and Tiryns",
+    "nameKo": "미케네와 티린스",
+    "shape": "gate",
+    "feature": "Massive stone fortifications preserve centres of the Mycenaean civilization",
+    "featureKo": "거대한 석조 방어시설이 미케네 문명의 중심지에 남아 있습니다",
+    "seed": 493,
+    "color": "#829b8a"
+  },
+  {
+    "id": "brunaboinne",
+    "name": "Brú na Bóinne",
+    "nameKo": "브루나보너",
+    "shape": "tomb",
+    "feature": "Large prehistoric passage tombs occupy a river landscape decorated with megalithic art",
+    "featureKo": "거석 예술로 장식한 커다란 선사 통로무덤들이 강변 경관에 자리합니다",
+    "seed": 494,
+    "color": "#bca6a0"
+  },
+  {
+    "id": "thingvellir",
+    "name": "Þingvellir",
+    "nameKo": "싱벨리르",
+    "shape": "cliff",
+    "feature": "A rift-valley landscape preserves the site of Iceland's historic open-air assembly",
+    "featureKo": "열곡 경관에 아이슬란드의 옛 야외 의회 터가 남아 있습니다",
+    "seed": 495,
+    "color": "#b69772"
+  },
+  {
+    "id": "agrigento",
+    "name": "Valley of the Temples at Agrigento",
+    "nameKo": "아그리젠토 신전계곡",
+    "shape": "columns",
+    "feature": "Doric temples preserve the monumental remains of a major ancient Greek city in Sicily",
+    "featureKo": "도리스식 신전들이 시칠리아의 주요 고대 그리스 도시 유적에 남아 있습니다",
+    "seed": 496,
+    "color": "#c4ac88"
+  },
+  {
+    "id": "cinqueterre",
+    "name": "Portovenere and Cinque Terre",
+    "nameKo": "포르토베네레와 친퀘테레",
+    "shape": "coast",
+    "feature": "Coastal villages and cultivated terraces cling to steep slopes above the Ligurian Sea",
+    "featureKo": "리구리아해 위의 가파른 비탈에 해안마을과 경작 테라스가 이어집니다",
+    "seed": 497,
+    "color": "#aeb9a0"
+  },
+  {
+    "id": "bryggen",
+    "name": "Bryggen",
+    "nameKo": "브뤼겐",
+    "shape": "harbor",
+    "feature": "Rows of timber merchants' buildings preserve Bergen's historic Hanseatic waterfront",
+    "featureKo": "목조 상인 건물들이 줄지어 베르겐의 옛 한자동맹 항구를 보여 줍니다",
+    "seed": 498,
+    "color": "#bc8b70"
+  },
+  {
+    "id": "tomar",
+    "name": "Convent of Christ in Tomar",
+    "nameKo": "토마르 그리스도 수도원",
+    "shape": "cloister",
+    "feature": "A fortified religious complex combines a round Templar church with later monastic buildings",
+    "featureKo": "방어시설을 갖춘 종교 단지에 둥근 기사단 교회와 후대의 수도원 건물들이 어우러져 있습니다",
+    "seed": 499,
+    "color": "#8baba4"
+  },
+  {
+    "id": "teide",
+    "name": "Teide National Park",
+    "nameKo": "테이데 국립공원",
+    "shape": "volcano",
+    "feature": "A high volcanic cone rises above lava fields and a vast caldera on Tenerife",
+    "featureKo": "테네리페섬의 용암 지대와 거대한 칼데라 위로 높은 화산체가 솟아 있습니다",
+    "seed": 500,
+    "color": "#d3b17c"
   }
 ]

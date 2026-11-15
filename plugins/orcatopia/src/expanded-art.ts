@@ -1,4 +1,5 @@
 import expansion from './landmark-expansion.json';
+import { catalog600Art } from './catalog-600-art';
 const entries = new Map(expansion.map((entry) => [entry.id, entry]));
 
 /** 새 도감의 장소별 윤곽을 기존 그림의 재질과 독립된 SVG 도형으로 그린다. */
@@ -8,6 +9,8 @@ export function expandedLandmarkArt(
 ) {
   const entry = entries.get(id);
   if (!entry) return '';
+  const authored = catalog600Art(entry, paint);
+  if (authored) return authored;
   const { shape, seed, color } = entry;
   const n = seed % 7,
     width = 76 + (seed % 13),

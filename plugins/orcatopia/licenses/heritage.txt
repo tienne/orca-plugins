@@ -14,3 +14,13 @@ the exact facade illustrated. Each entry links to its UNESCO property page.
 No source photographs, maps, illustrations, videos or logos are bundled.
 Original miniature vector artwork, animation code and fictional garden designs
 are separately covered by the repository MIT license.
+
+2026-11-15 catalog extension: selected 294 further distinct properties from the
+official UNESCO DataHub whc001 records API. The additional metadata in
+scripts/data/orcatopia-heritage-294.json and factual labels/descriptions and
+translations for catalog entries 307-600 are also provided under CC BY-SA 4.0.
+Changes: shortened property names, mapped ISO country codes, selected the first
+listed component coordinate, wrote concise factual summaries and Korean labels.
+Record API URLs, official names, retrieval dates and original-description SHA-256
+checksums are retained for provenance. Artwork profiles and fictional scenes
+are original interpretations, not surveyed models or historical reenactments.
