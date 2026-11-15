@@ -272,3 +272,52 @@ for (const language of ['ja-JP', 'bad_locale'])
       page.getByRole('button', { name: 'My Island', exact: true }),
     ).toBeVisible();
   });
+
+for (const [message, korean] of [
+  [
+    'Choose a normal landmark and a valid fusion request.',
+    '일반 랜드마크와 올바른 합성 요청을 선택해 주세요.',
+  ],
+  ['Fusion request was already used.', '이미 사용한 합성 요청이에요.'],
+  [
+    'Fusion needs two unplaced normal copies. Return placed copies first.',
+    '합성하려면 배치하지 않은 일반 랜드마크 2개가 필요해요. 배치한 랜드마크를 먼저 회수해 주세요.',
+  ],
+]) {
+  test(`dynamic worker error translates and switches back in place: ${message}`, async ({
+    page,
+  }) => {
+    await page.addInitScript((message) => {
+      (window as unknown as { orca: unknown }).orca = {
+        locale: 'ko-KR',
+        plugin: {
+          on() {},
+          async request(name: string) {
+            if (name === 'island.read') throw new Error(message);
+            return [];
+          },
+        },
+      };
+    }, message);
+    await page.goto('/');
+    const alert = page.getByRole('alert');
+    await expect(alert).toHaveText(`오류: ${korean}`);
+    const original = await alert.elementHandle();
+    await page.getByRole('button', { name: '새로고침', exact: true }).focus();
+    await setHostLocale(page, 'en-US');
+    await expect(alert).toHaveText(`Error: ${message}`);
+    await expect(
+      page.getByRole('button', { name: 'Refresh', exact: true }),
+    ).toBeFocused();
+    expect(
+      await original!.evaluate(
+        (node) => node === document.querySelector('[role=alert]'),
+      ),
+    ).toBe(true);
+    expect(
+      await page.evaluate(() =>
+        localStorage.getItem('landmark-island-demo-v1'),
+      ),
+    ).toBeNull();
+  });
+}

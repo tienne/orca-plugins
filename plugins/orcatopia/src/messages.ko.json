@@ -55,6 +55,7 @@
   "About {name}": "{name} 소개",
   "{name}, rarity {rank} of 4": "{name}, 희귀도 4단계 중 {rank}단계",
   "Rarity {rank}/4": "희귀도 {rank}/4",
+  "{rank} {name} · Rarity {rarity}/4 · {chance}% tier chance per draw · {count} of {total} discovered": "{rank} {name} · 희귀도 {rarity}/4 · 뽑기마다 해당 등급 확률 {chance}% · {total}종 중 {count}종 발견",
   "Island collections": "섬 수집 메뉴",
   "Open decorations": "장식 열기",
   "Open landmarks": "랜드마크 열기",
@@ -866,7 +867,7 @@
   "Choose the matching land, sea or river surface": "이 항목에 맞는 육지·바다·강을 선택하세요",
   "Error: Choose the matching land, sea or river surface": "오류: 이 항목에 맞는 육지·바다·강을 선택하세요",
   "Error: Invalid decoration placement": "오류: 장식을 배치할 수 없는 위치입니다. 물 전용 장식의 바다·강 구분을 확인하세요.",
-  "Basics are free. First discoveries gift the starter pieces in their set. Each duplicate brings 3 materials; your landmark stays yours.": "기본 장식은 무료예요. 새 랜드마크를 발견하면 세트의 기본 장식을 선물로 받고 테마가 열립니다. 중복 획득 시 랜드마크와 함께 재료 3개를 받아요.",
+  "Basics are free. First discoveries gift the starter pieces in their set. Each duplicate brings {count} materials; your landmark stays yours.": "기본 장식은 무료예요. 새 랜드마크를 발견하면 세트의 기본 장식을 선물로 받고 테마가 열립니다. 중복 획득 시 랜드마크와 함께 재료 {count}개를 받아요.",
   "Unplaced landmarks": "미배치 랜드마크",
   "Choose a landmark to place": "배치할 랜드마크 선택",
   "All owned landmarks are placed.": "보유한 랜드마크를 모두 배치했어요.",
@@ -894,5 +895,10 @@
   "Wonders up close": "크게 보는 불가사의",
   "Follow the river to the sea": "강이 바다와 만나는 나만의 섬",
   "Ha Long Bay · Great Barrier Reef · Li River · Middle Rhine": "하롱베이 · 그레이트배리어리프 · 리강 · 라인강",
-  "Living vector scenes, enlarged without losing detail.": "확대해도 선명한 벡터로 만나는 살아 있는 풍경."
+  "Living vector scenes, enlarged without losing detail.": "확대해도 선명한 벡터로 만나는 살아 있는 풍경.",
+  "Choose a normal landmark and a valid fusion request.": "일반 랜드마크와 올바른 합성 요청을 선택해 주세요.",
+  "Fusion request was already used.": "이미 사용한 합성 요청이에요.",
+  "Fusion needs two unplaced normal copies. Return placed copies first.": "합성하려면 배치하지 않은 일반 랜드마크 2개가 필요해요. 배치한 랜드마크를 먼저 회수해 주세요.",
+  "Landmark Preview": "랜드마크 미리보기",
+  "Showcase": "쇼케이스"
 }
