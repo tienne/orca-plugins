@@ -100,6 +100,8 @@ export async function testI18nCoverage(runtime) {
     'throw Error(`New backup failure ${filename}`);',
     'panel.innerHTML = `<button>${ready ? "Place" : "new branch label"}</button>`;',
     'panel.textContent = "land";',
+    'const summary = { status: "new visible status" };',
+    'const label = "Me";',
     'panel.innerHTML = `<input aria-label=Untranslated>`;',
     'panel.innerHTML = `<button>land</button>`;',
     'panel.innerHTML = `<button aria-label="land"></button>`;',
@@ -135,6 +137,14 @@ export async function testI18nCoverage(runtime) {
     checkSource('panel.textContent = "World Map";', { messages: missing })
       .length,
     'Deleting a real translation must fail',
+  );
+  const missingError = { ...runtime.messages };
+  delete missingError['Error: Fusion request was already used.'];
+  assert.ok(
+    checkSource('throw new Error("Fusion request was already used.");', {
+      messages: missingError,
+    }).length,
+    'Deleting a contextual worker-error translation must fail',
   );
   const missingTemplate = { ...runtime.messages };
   delete missingTemplate['Cell {cell}: {name}'];
@@ -189,13 +199,16 @@ export async function testI18nCoverage(runtime) {
 
   for (const [source, expected] of [
     [
-      'Choose a normal landmark and a valid fusion request.',
-      '일반 랜드마크와 올바른 합성 요청을 선택해 주세요.',
+      'Error: Choose a normal landmark and a valid fusion request.',
+      '오류: 일반 랜드마크와 올바른 합성 요청을 선택하세요.',
     ],
-    ['Fusion request was already used.', '이미 사용한 합성 요청이에요.'],
     [
-      'Fusion needs two unplaced normal copies. Return placed copies first.',
-      '합성하려면 배치하지 않은 일반 랜드마크 2개가 필요해요. 배치한 랜드마크를 먼저 회수해 주세요.',
+      'Error: Fusion request was already used.',
+      '오류: 이미 사용한 합성 요청입니다.',
+    ],
+    [
+      'Error: Fusion needs two unplaced normal copies. Return placed copies first.',
+      '오류: 미배치 일반 랜드마크 2개가 필요합니다. 배치한 랜드마크를 먼저 회수하세요.',
     ],
     ['Discovery, rarity 1.5 of 4.5', '발견, 희귀도 1.5 / 4.5'],
     ['Discovery · Rarity 1.5/4.5', '발견 · 희귀도 1.5/4.5'],

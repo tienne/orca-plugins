@@ -151,7 +151,7 @@ export function extractMessages(file, source) {
       return true;
     if (
       ts.isPropertyAssignment(p) &&
-      /^(?:id|code|shape|landmark|decoration|tier|surface|placement|status|kind|type|color|fill|stroke|fontFamily|fontSize|fontWeight|textAnchor|pointerEvents|cursor|overflow|position|background|border|boxShadow|transform|display|alignItems|justifyContent|behavior|block|inline)$/.test(
+      /^(?:id|code|shape|landmark|decoration|tier|surface|placement|color|fill|stroke|fontFamily|fontSize|fontWeight|textAnchor|pointerEvents|cursor|overflow|position|background|border|boxShadow|transform|display|alignItems|justifyContent|behavior|block|inline)$/.test(
         p.name.getText(tree),
       )
     )
@@ -291,7 +291,7 @@ export function coverageIssues(
     if (
       candidate.kind === 'literal' &&
       (identifiers.includes(candidate.text) ||
-        /^(?:#[\da-f]{3,8}|https?:\/\/\S+|[Mm][\d\s.,+{}eEMmLlHhVvCcSsQqTtAaZz-]+)$/.test(
+        /^(?:#[\da-f]{3,8}|https?:\/\/\S+|(?=[\s\S]*[\d{])[Mm][\d\s.,+{}eEMmLlHhVvCcSsQqTtAaZz-]+)$/.test(
           candidate.text,
         ))
     )
@@ -331,6 +331,8 @@ export function coverageIssues(
           ),
       )
     )
+      continue;
+    if (candidate.kind === 'error' && covered(`Error: ${candidate.text}`))
       continue;
     if (!covered(candidate.text))
       errors.push(

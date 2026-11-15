@@ -896,9 +896,6 @@
   "Follow the river to the sea": "강이 바다와 만나는 나만의 섬",
   "Ha Long Bay · Great Barrier Reef · Li River · Middle Rhine": "하롱베이 · 그레이트배리어리프 · 리강 · 라인강",
   "Living vector scenes, enlarged without losing detail.": "확대해도 선명한 벡터로 만나는 살아 있는 풍경.",
-  "Choose a normal landmark and a valid fusion request.": "일반 랜드마크와 올바른 합성 요청을 선택해 주세요.",
-  "Fusion request was already used.": "이미 사용한 합성 요청이에요.",
-  "Fusion needs two unplaced normal copies. Return placed copies first.": "합성하려면 배치하지 않은 일반 랜드마크 2개가 필요해요. 배치한 랜드마크를 먼저 회수해 주세요.",
   "Landmark Preview": "랜드마크 미리보기",
   "Showcase": "쇼케이스"
 }

@@ -653,7 +653,8 @@
         "water",
         "working",
         "{0}-before-restore",
-        "{0}px"
+        "{0}px",
+        "worktree"
       ]
     },
     {
@@ -675,7 +676,7 @@
       "kind": "literal",
       "category": "technical",
       "reason": "Reviewed identifiers, enum values, selectors, CSS and serialized protocol tokens; these are not presentation copy.",
-      "values": ["stale", "unavailable"]
+      "values": ["stale", "unavailable", "unsupported"]
     },
     {
       "file": "plugins/orcatopia/src/weather.ts",
@@ -743,7 +744,8 @@
         "unavailable",
         "unixtime",
         "weather-v1:{0}",
-        "weather_code"
+        "weather_code",
+        "unsupported"
       ]
     },
     {
@@ -979,11 +981,6 @@
       "kind": "error",
       "category": "diagnostic",
       "reason": "Caught weather transport/validation error; UI renders translated weather status instead of this error text."
-    },
-    {
-      "text": "Orcatopia",
-      "category": "brand",
-      "reason": "Product/demo identity or rarity numeral; same spelling in both languages."
     },
     {
       "text": "ORCATOPIA",

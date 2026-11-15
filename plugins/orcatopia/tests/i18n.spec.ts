@@ -276,12 +276,12 @@ for (const language of ['ja-JP', 'bad_locale'])
 for (const [message, korean] of [
   [
     'Choose a normal landmark and a valid fusion request.',
-    '일반 랜드마크와 올바른 합성 요청을 선택해 주세요.',
+    '일반 랜드마크와 올바른 합성 요청을 선택하세요.',
   ],
-  ['Fusion request was already used.', '이미 사용한 합성 요청이에요.'],
+  ['Fusion request was already used.', '이미 사용한 합성 요청입니다.'],
   [
     'Fusion needs two unplaced normal copies. Return placed copies first.',
-    '합성하려면 배치하지 않은 일반 랜드마크 2개가 필요해요. 배치한 랜드마크를 먼저 회수해 주세요.',
+    '미배치 일반 랜드마크 2개가 필요합니다. 배치한 랜드마크를 먼저 회수하세요.',
   ],
 ]) {
   test(`dynamic worker error translates and switches back in place: ${message}`, async ({
