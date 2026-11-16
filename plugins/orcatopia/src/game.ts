@@ -1,3 +1,13 @@
+import {
+  TOURISM,
+  specialBuilding,
+  startTourism,
+  settleTourism,
+  tourismRate,
+  validateTourism,
+  type Tourism,
+} from './tourism';
+import { waterTheme } from './water-themes';
 import { allowsSea, allowsRiver, isWorldCell } from './placement';
 import landmarks from './landmarks.json';
 import {
@@ -18,8 +28,13 @@ export const weights = { common: 70, rare: 23, epic: 6, legendary: 1 };
 export type Placement = { landmark: string; cell: number; rotation?: number };
 export type Receipt = { workspaceId: string; landmark: string; at: string };
 export type Ticket = { workspaceId: string; at: string };
+export type CollectionTheme = 'river' | 'sea';
+export const collectionThresholds = { river: 12, sea: 25 } as const;
 export type State = {
-  version: 6;
+  version: 8;
+  tourism: Tourism | null;
+  discoveredPlaces: string[];
+  firstExplorations: { theme: CollectionTheme; ticketId?: string }[];
   fusions: {
     id: string;
     landmark: string;
@@ -36,7 +51,10 @@ export type State = {
   placements: Placement[];
 };
 export const empty = (): State => ({
-  version: 6,
+  version: 8,
+  tourism: null,
+  discoveredPlaces: [],
+  firstExplorations: [],
   fusions: [],
   floors: [],
   landFloor: 0,
@@ -57,8 +75,33 @@ export function discovered(s: State, id: string) {
     ? s.fusions.some((f) => enhancedId(f.landmark) === id)
     : s.receipts.some((r) => r.landmark === id);
 }
+/** 중복과 + 합성은 원래 장소 하나로 세며 복원 전 발견도 유지한다. */
+export function collectionDiscoveries(s: State) {
+  return [
+    ...new Set([
+      ...s.discoveredPlaces,
+      ...s.receipts.map((r) => baseId(r.landmark)),
+    ]),
+  ];
+}
+/** 해안형은 배치 호환성과 별개로 바다 수집에 묶는다. */
+export function collectionTheme(id: string): CollectionTheme | 'land' {
+  const placement = waterTheme(id)?.placement;
+  return placement === 'coastal' ? 'sea' : (placement ?? 'land');
+}
+/** 해금은 보유 수량 대신 누적 발견 이력에서 계산한다. */
+export function collectionUnlocked(s: State, theme: CollectionTheme) {
+  return collectionDiscoveries(s).length >= collectionThresholds[theme];
+}
+/** 일반 추첨과 독립적으로 테마별 소비 기록을 확인한다. */
+export function firstExplorationAvailable(s: State, theme: CollectionTheme) {
+  return (
+    collectionUnlocked(s, theme) &&
+    !s.firstExplorations.some((e) => e.theme === theme)
+  );
+}
 export function islandLevel(s: State) {
-  return Math.max(s.landFloor, new Set(s.receipts.map((r) => r.landmark)).size);
+  return Math.max(s.landFloor, collectionDiscoveries(s).length);
 }
 export function islandLand(s: State) {
   const reserved = new Set(
@@ -105,7 +148,11 @@ export function canPlaceDecoration(s: State, id: string, cell: number) {
   return Boolean(
     decoration &&
     surface &&
-    (decoration.surface ? surface === decoration.surface : surface !== 'sea'),
+    (specialBuilding(id)
+      ? surface === 'land'
+      : decoration.surface
+        ? surface === decoration.surface
+        : surface !== 'sea'),
   );
 }
 /** 같은 일반판의 배치 쌍만 후보로 삼고, 확정 시 워커에서 다시 검증한다. */
@@ -131,6 +178,7 @@ export function materials(s: State) {
 export function decorationQuantity(s: State, id: string) {
   const d = decorationById(id);
   if (!d) return 0;
+  if (specialBuilding(id)) return s.tourism?.buildings.includes(id) ? 1 : 0;
   if (!d.landmark) return Infinity;
   return (
     (d.gift && discovered(s, d.landmark) ? 1 : 0) +
@@ -152,7 +200,9 @@ export function validate(value: unknown): State {
       version !== 3 &&
       version !== 4 &&
       version !== 5 &&
-      version !== 6) ||
+      version !== 6 &&
+      version !== 7 &&
+      version !== 8) ||
     !Array.isArray(s.receipts) ||
     !Array.isArray(s.placements)
   )
@@ -174,7 +224,7 @@ export function validate(value: unknown): State {
     ids.add(r.workspaceId);
     owned.set(r.landmark, (owned.get(r.landmark) ?? 0) + 1);
   }
-  const fusions = version === 6 ? s.fusions : [];
+  const fusions = version >= 6 ? s.fusions : [];
   if (!Array.isArray(fusions)) throw Error('Invalid fusion ledger');
   const fusionIds = new Set<string>();
   const fusedCounts = new Map<string, number>();
@@ -197,7 +247,55 @@ export function validate(value: unknown): State {
     if (fusedCounts.get(f.landmark)! * 2 > (owned.get(f.landmark) ?? 0))
       throw Error('Fusion exceeds ownership');
   }
-  const inventory: State = { ...s, fusions };
+  const tourism = version >= 8 ? validateTourism(s.tourism) : null;
+  const discoveredPlaces = version >= 7 ? s.discoveredPlaces : [];
+  const firstExplorations = version >= 7 ? s.firstExplorations : [];
+  if (
+    !Array.isArray(discoveredPlaces) ||
+    discoveredPlaces.some((id) => !landmarks.some((l) => l.id === id)) ||
+    new Set(discoveredPlaces).size !== discoveredPlaces.length
+  )
+    throw Error('Invalid collection discovery ledger');
+  if (
+    !Array.isArray(firstExplorations) ||
+    firstExplorations.length > 2 ||
+    new Set(firstExplorations.map((e) => e?.theme)).size !==
+      firstExplorations.length ||
+    new Set(
+      firstExplorations.flatMap((e) =>
+        e?.ticketId === undefined ? [] : [e.ticketId],
+      ),
+    ).size !==
+      firstExplorations.filter((e) => e?.ticketId !== undefined).length ||
+    firstExplorations.some(
+      (e) =>
+        !e ||
+        !['river', 'sea'].includes(e.theme) ||
+        (e.ticketId !== undefined &&
+          (typeof e.ticketId !== 'string' ||
+            !e.ticketId ||
+            e.ticketId.length > 256)),
+    )
+  )
+    throw Error('Invalid first exploration ledger');
+  const history = [
+    ...new Set([...discoveredPlaces, ...s.receipts.map((r) => r.landmark)]),
+  ].sort();
+  for (const e of firstExplorations) {
+    const reward = s.receipts.find((r) => r.workspaceId === e.ticketId);
+    if (
+      history.length < collectionThresholds[e.theme] ||
+      (reward && collectionTheme(reward.landmark) !== e.theme)
+    )
+      throw Error('Invalid first exploration ledger');
+  }
+  const inventory: State = {
+    ...s,
+    fusions,
+    tourism,
+    discoveredPlaces: history,
+    firstExplorations,
+  };
   for (const p of s.placements) {
     if (
       !p ||
@@ -234,27 +332,21 @@ export function validate(value: unknown): State {
   if (s.receipts.some((r) => !earned.has(r.workspaceId)))
     throw Error('Reward has no matching ticket');
   const landFloor =
-    version === 3 || version === 4 || version === 5 || version === 6
+    version >= 3
       ? s.landFloor
       : Math.max(
           0,
           ...s.placements.map((p) => expansionLevel.get(p.cell) ?? 0),
         );
-  const crafts =
-    version === 3 || version === 4 || version === 5 || version === 6
-      ? s.crafts
-      : [];
-  const oldDecor =
-    version === 3 || version === 4 || version === 5 || version === 6
-      ? s.decorations
-      : [];
+  const crafts = version >= 3 ? s.crafts : [];
+  const oldDecor = version >= 3 ? s.decorations : [];
   if (!Array.isArray(oldDecor)) throw Error('Invalid decoration placements');
   const floors =
-    version === 4 || version === 5 || version === 6
+    version >= 4
       ? s.floors
       : oldDecor.filter((p) => p && isFloor(p.decoration));
   const decor =
-    version === 4 || version === 5 || version === 6
+    version >= 4
       ? oldDecor
       : oldDecor.filter((p) => !p || !isFloor(p.decoration));
   if (
@@ -281,7 +373,7 @@ export function validate(value: unknown): State {
     craftIds.add(c.id);
   }
   const next: State = {
-    ...s,
+    ...inventory,
     fusions,
     landFloor,
     crafts,
@@ -327,7 +419,17 @@ export function validate(value: unknown): State {
     floorCells.add(p.cell);
   }
   return structuredClone({
-    version: 6,
+    version: 8,
+    tourism,
+    discoveredPlaces: history,
+    firstExplorations: firstExplorations
+      .map(({ theme, ticketId }) => ({
+        theme,
+        ...(ticketId !== undefined ? { ticketId } : {}),
+      }))
+      .sort(
+        (a, b) => collectionThresholds[a.theme] - collectionThresholds[b.theme],
+      ),
     fusions: fusions.map(({ id, landmark, at, from, cell }) => ({
       id,
       landmark,
@@ -373,16 +475,12 @@ function checkLayout(s: State, input: unknown) {
 }
 export const MAX_BACKUP_BYTES = 256 * 1024;
 export function encodeBackup(state: State): string {
-  const text = JSON.stringify(
-    {
-      format: 'landmark-island-backup',
-      version: 1,
-      exportedAt: new Date().toISOString(),
-      state: validate(state),
-    },
-    null,
-    2,
-  );
+  const text = JSON.stringify({
+    format: 'landmark-island-backup',
+    version: 1,
+    exportedAt: new Date().toISOString(),
+    state: validate(state),
+  });
   if (new TextEncoder().encode(text).length > MAX_BACKUP_BYTES)
     throw Error('Backup exceeds the 256 KiB file limit. Nothing was changed.');
   return text;
@@ -414,13 +512,30 @@ export function decodeBackup(text: unknown): {
     throw Error('Unsupported or damaged Orcatopia backup.');
   return { state: validate(data.state), exportedAt: data.exportedAt };
 }
-export function draw(random: () => number): string {
-  const roll = random() * 100;
+export function draw(
+  random: () => number,
+  state?: State,
+  theme?: CollectionTheme,
+): string {
+  const progress = state ? collectionDiscoveries(state).length : Infinity;
+  const candidates = landmarks.filter((l) => {
+    const candidateTheme = collectionTheme(l.id);
+    return theme
+      ? candidateTheme === theme
+      : candidateTheme === 'land' ||
+          progress >= collectionThresholds[candidateTheme];
+  });
+  const tiers = Object.entries(weights).filter(
+    ([tier]) => !theme || candidates.some((l) => l.tier === tier),
+  );
+  const total = tiers.reduce((sum, [, weight]) => sum + weight, 0);
+  const roll = random() * total;
   let cumulative = 0;
-  for (const [tier, weight] of Object.entries(weights)) {
+  for (const [tier, weight] of tiers) {
     cumulative += weight;
     if (roll < cumulative) {
-      const pool = landmarks.filter((l) => l.tier === tier);
+      const pool = candidates.filter((l) => l.tier === tier);
+      if (!pool.length) throw Error('No landmarks available for this tier.');
       return pool[Math.floor(random() * pool.length)].id;
     }
   }
@@ -433,15 +548,39 @@ export interface Store {
   writeBackup?(state: State): Promise<void>;
 }
 export class Game {
+  private pendingState?: State;
+  // 정산과 변경을 한 번에 저장하도록 커밋은 queue 끝에서만 한다.
+  private stage(state: State) {
+    this.pendingState = state;
+  }
   private tail: Promise<unknown> = Promise.resolve();
   constructor(
     private store: Store,
     private random = Math.random,
+    private now = Date.now,
   ) {}
-  private queue<T>(action: (s: State) => Promise<T>) {
-    const result = this.tail.then(async () =>
-      action(validate(await this.store.read())),
-    );
+  private queue<T>(action: (s: State) => Promise<T>, settle = true) {
+    const result = this.tail.then(async () => {
+      this.pendingState = undefined;
+      const state = validate(await this.store.read());
+      let tourismChanged = false;
+      if (settle) {
+        const now = this.now();
+        if (!Number.isSafeInteger(now) || now < 0)
+          throw Error('Invalid tourism clock');
+        const tourism = state.tourism
+          ? settleTourism(state.tourism, tourismRate(state), now)
+          : startTourism(now);
+        if (JSON.stringify(tourism) !== JSON.stringify(state.tourism)) {
+          state.tourism = tourism;
+          tourismChanged = true;
+        }
+      }
+      const output = await action(state);
+      if (this.pendingState || tourismChanged)
+        await this.store.write(this.pendingState ?? state);
+      return output;
+    });
     this.tail = result.catch(() => {});
     return result;
   }
@@ -454,14 +593,41 @@ export class Game {
       const old = await this.store.readBackup?.();
       if (old == null) throw Error('No pre-restore backup is available yet.');
       return encodeBackup(validate(old));
-    });
+    }, !previous);
   }
   restore(input: unknown) {
     return this.queue(async (s) => {
       const data = input as { text?: unknown; expected?: unknown } | null;
       const next = decodeBackup(data?.text).state;
-      // Response-loss retries must not overwrite the pre-restore copy.
-      if (JSON.stringify(next) === JSON.stringify(s)) return s;
+      next.discoveredPlaces = [
+        ...new Set([
+          ...collectionDiscoveries(next),
+          ...collectionDiscoveries(s),
+        ]),
+      ].sort();
+      next.firstExplorations = (['river', 'sea'] as const).flatMap((theme) => {
+        const spent =
+          next.firstExplorations.find((e) => e.theme === theme) ??
+          s.firstExplorations.find((e) => e.theme === theme);
+        if (!spent) return [];
+        // 분기 백업의 같은 탐험권이 다른 보상에 쓰였어도 소비 사실은 남긴다.
+        const reward = next.receipts.find(
+          (r) =>
+            r.workspaceId === spent.ticketId &&
+            collectionTheme(r.landmark) === theme,
+        );
+        return [{ theme, ...(reward ? { ticketId: spent.ticketId } : {}) }];
+      });
+      const content = (state: State) =>
+        JSON.stringify({
+          ...state,
+          tourism: {
+            coins: state.tourism?.coins ?? 0,
+            buildings: state.tourism?.buildings ?? [],
+          },
+        });
+      // 복원은 잔액을 교체하며 과거 기준시각을 가져오지 않는다. 응답 유실 재시도는 무변경이다.
+      if (content(next) === content(s)) return s;
       if (
         !data?.expected ||
         JSON.stringify(validate(data.expected)) !== JSON.stringify(s)
@@ -472,13 +638,49 @@ export class Game {
       if (!this.store.writeBackup)
         throw Error('Recovery storage is unavailable. Nothing was changed.');
       await this.store.writeBackup(s);
-      await this.store.write(next);
+      const now = this.now();
+      if (!Number.isSafeInteger(now) || now < 0)
+        throw Error('Invalid tourism clock');
+      next.tourism = next.tourism
+        ? { ...next.tourism, settledAt: now, remainder: 0, away: null }
+        : startTourism(now);
+      const restored = validate(next);
+      this.stage(restored);
+      return restored;
+    }, false);
+  }
+  construct(input: unknown) {
+    return this.queue(async (s) => {
+      const p = input as {
+        building?: string;
+        cell?: number;
+        expected?: Layout;
+      } | null;
+      const building = p && specialBuilding(p.building!);
+      if (!building || !Number.isInteger(p?.cell))
+        throw Error('Choose a special building and an empty land cell.');
+      // 영구 소유권으로 재시도를 식별해 회수 후에도 재과금·자동 재배치하지 않는다.
+      if (s.tourism!.buildings.includes(building.id)) return s;
+      checkLayout(s, input);
+      if (
+        !canPlaceDecoration(s, building.id, p!.cell!) ||
+        s.placements.some((x) => x.cell === p!.cell) ||
+        s.decorations.some((x) => x.cell === p!.cell)
+      )
+        throw Error('Choose an empty land cell for construction.');
+      if (s.tourism!.coins < building.cost)
+        throw Error('Not enough tourism coins.');
+      s.tourism!.coins -= building.cost;
+      s.tourism!.buildings.push(building.id);
+      s.decorations.push({ decoration: building.id, cell: p!.cell! });
+      const next = validate(s);
+      this.stage(next);
       return next;
     });
   }
   acquire(event: { workspaceId: string; kind: string }) {
+    if (event.kind !== 'worktree') return this.queue(async (s) => s, false);
     return this.queue(async (s) => {
-      if (event.kind !== 'worktree') return s;
       if (
         typeof event.workspaceId !== 'string' ||
         !event.workspaceId ||
@@ -490,7 +692,8 @@ export class Game {
         workspaceId: event.workspaceId,
         at: new Date().toISOString(),
       });
-      await this.store.write(s);
+      s.discoveredPlaces = collectionDiscoveries(s).sort();
+      this.stage(s);
       return s;
     });
   }
@@ -505,11 +708,49 @@ export class Game {
       if (s.receipts.some((r) => r.workspaceId === ticketId)) return s;
       s.receipts.push({
         workspaceId: ticketId,
-        landmark: draw(this.random),
+        landmark: draw(this.random, s),
         at: new Date().toISOString(),
       });
-      await this.store.write(s);
+      s.discoveredPlaces = collectionDiscoveries(s).sort();
+      this.stage(s);
       return s;
+    });
+  }
+  exploreTheme(input: unknown) {
+    return this.queue(async (s) => {
+      const { theme, ticketId } = (input ?? {}) as {
+        theme?: unknown;
+        ticketId?: unknown;
+      };
+      if (
+        (theme !== 'river' && theme !== 'sea') ||
+        typeof ticketId !== 'string' ||
+        !ticketId ||
+        ticketId.length > 256
+      )
+        throw Error('Choose a valid first exploration and ticket.');
+      const prior = s.firstExplorations.find((e) => e.theme === theme);
+      if (
+        prior?.ticketId === ticketId &&
+        s.receipts.some(
+          (r) =>
+            r.workspaceId === ticketId && collectionTheme(r.landmark) === theme,
+        )
+      )
+        return s;
+      if (!firstExplorationAvailable(s, theme))
+        throw Error('This first exploration is not available.');
+      if (!availableTickets(s).some((t) => t.workspaceId === ticketId))
+        throw Error('This ticket is not available');
+      s.receipts.push({
+        workspaceId: ticketId,
+        landmark: draw(this.random, s, theme),
+        at: new Date().toISOString(),
+      });
+      s.firstExplorations.push({ theme, ticketId });
+      const next = validate(s);
+      this.stage(next);
+      return next;
     });
   }
   redeemMany(input: unknown) {
@@ -532,9 +773,10 @@ export class Game {
       if (!unused.length) return s;
       const at = new Date().toISOString();
       for (const workspaceId of unused)
-        s.receipts.push({ workspaceId, landmark: draw(this.random), at });
+        s.receipts.push({ workspaceId, landmark: draw(this.random, s), at });
       // One durable write: a failed save cannot consume only part of the batch.
-      await this.store.write(s);
+      s.discoveredPlaces = collectionDiscoveries(s).sort();
+      this.stage(s);
       return s;
     });
   }
@@ -598,7 +840,7 @@ export class Game {
         ...(onIsland ? { from: p.from, cell: p.cell } : {}),
       });
       const next = validate(s);
-      await this.store.write(next);
+      this.stage(next);
       return next;
     });
   }
@@ -620,7 +862,7 @@ export class Game {
       }
       s.crafts.push({ id: p.id, decoration: p.decoration });
       const next = validate(s);
-      await this.store.write(next);
+      this.stage(next);
       return next;
     });
   }
@@ -638,7 +880,7 @@ export class Game {
       if (sameLayout(layout(s), layout(next))) return s;
       if (!sameLayout(layout(s), p.expected))
         throw Error('Island layout changed. Refresh before editing again.');
-      await this.store.write(next);
+      this.stage(next);
       return next;
     });
   }
@@ -661,7 +903,7 @@ export class Game {
         );
       item.rotation = p!.rotation;
       const next = validate(s);
-      await this.store.write(next);
+      this.stage(next);
       return next;
     });
   }
@@ -699,7 +941,7 @@ export class Game {
         }
       }
       const next = validate(s); // entire stroke succeeds or no cells change
-      await this.store.write(next);
+      this.stage(next);
       return next;
     });
   }
@@ -774,7 +1016,7 @@ export class Game {
         }
       }
       const next = validate(s);
-      await this.store.write(next);
+      this.stage(next);
       return next;
     });
   }
@@ -815,7 +1057,8 @@ export class Game {
           s.placements.push({ cell: p.cell, landmark: p.landmark });
       }
       validate(s);
-      await this.store.write(s);
+      s.discoveredPlaces = collectionDiscoveries(s).sort();
+      this.stage(s);
       return s;
     });
   }

@@ -637,6 +637,7 @@
         "island.drawMany",
         "island.expeditions",
         "island.expeditions.changed",
+        "island.exploreTheme",
         "island.fuse",
         "island.layout",
         "island.paint",
@@ -664,8 +665,10 @@
         "pond",
         "preview",
         "read",
+        "river",
         "rotation",
         "scout",
+        "sea",
         "skip-discovery",
         "status",
         "success",
@@ -677,9 +680,9 @@
         "waiting",
         "water",
         "working",
+        "worktree",
         "{0}-before-restore",
-        "{0}px",
-        "worktree"
+        "{0}px"
       ]
     },
     {
@@ -779,6 +782,7 @@
         "island.drawMany",
         "island.expeditions",
         "island.expeditions.changed",
+        "island.exploreTheme",
         "island.fuse",
         "island.layout",
         "island.paint",
@@ -1266,6 +1270,49 @@
         "M42 87l16 7 25-10",
         "M17 {0}h91"
       ]
+    },
+    {
+      "file": "plugins/orcatopia/src/tourism-visitors.ts",
+      "kind": "literal",
+      "category": "technical",
+      "reason": "Tourism animation state, CSS positioning and worker request identifiers; not visible copy.",
+      "values": [
+        "photographer",
+        "arrive",
+        "left",
+        "right",
+        "walk",
+        "photo",
+        "decoration",
+        "look",
+        "depart",
+        "translate3d({0}px, {1}px, 0) translate(-50%, -92%)"
+      ]
+    },
+    {
+      "file": "plugins/orcatopia/src/tourism.ts",
+      "kind": "literal",
+      "category": "technical",
+      "reason": "Tourism animation state, CSS positioning and worker request identifiers; not visible copy.",
+      "values": ["guide", "drink", "shop", "photo"]
+    },
+    {
+      "file": "plugins/orcatopia/src/ui.ts",
+      "kind": "literal",
+      "category": "technical",
+      "reason": "Tourism animation state, CSS positioning and worker request identifiers; not visible copy.",
+      "values": [
+        "island.construct",
+        "open",
+        ".tourism-panel [data-decor-place=\"{0}\"]"
+      ]
+    },
+    {
+      "file": "plugins/orcatopia/src/worker/main.ts",
+      "kind": "literal",
+      "category": "technical",
+      "reason": "Tourism animation state, CSS positioning and worker request identifiers; not visible copy.",
+      "values": ["island.construct"]
     }
   ],
   "exclusions": [
@@ -1738,9 +1785,9 @@
     },
     {
       "file": "plugins/orcatopia/src/ui.ts",
-      "text": "{14}-landmark prototype · Tier chances: {15}. Each item within a tier is equally likely. No guarantees.",
+      "text": "{17}-landmark prototype · Tier chances: {18}. Unlocked items within a tier are equally likely. First theme explorations are separate.",
       "samples": [
-        "306-landmark prototype · Tier chances: I Discovery 70% / II Treasure 23% / III Marvel 6% / IV Wonder 1%. Each item within a tier is equally likely. No guarantees."
+        "306-landmark prototype · Tier chances: I Discovery 70% / II Treasure 23% / III Marvel 6% / IV Wonder 1%. Unlocked items within a tier are equally likely. First theme explorations are separate."
       ],
       "reason": "Rendered example for optional/compound source fragments; nested source literals are scanned separately.",
       "prefix": ""

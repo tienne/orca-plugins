@@ -1,0 +1,129 @@
+.tourism-panel {
+  margin: 1rem auto;
+  padding: 1rem;
+  border: 1px solid var(--orca-border, #bfceb9);
+  border-radius: 14px;
+  max-width: 1100px;
+  background: var(--orca-card, #f5f0df);
+  color: var(--orca-card-foreground, #354c3b);
+}
+.tourism-panel p {
+  font-size: 0.85rem;
+  line-height: 1.5;
+}
+.tourism-panel .section-title {
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+.tourism-balance {
+  color: var(--orca-foreground, #485f44);
+}
+.tourism-away {
+  padding: 0.6rem;
+  border-left: 3px solid #a58e56;
+}
+.tourism-construction summary {
+  cursor: pointer;
+  font-weight: 700;
+}
+.tourism-buildings {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(155px, 1fr));
+  gap: 0.6rem;
+}
+.tourism-buildings article {
+  padding: 0.8rem;
+  border: 1px solid var(--orca-border, #bfceb9);
+  border-radius: 12px;
+}
+.tourism-buildings h3 {
+  font-size: 0.9rem;
+  margin: 0.3rem 0;
+}
+.tourism-buildings svg {
+  height: 90px;
+  width: 80px;
+  display: block;
+  margin: auto;
+}
+.tourism-buildings button {
+  width: 100%;
+  white-space: normal;
+}
+.island-tourist {
+  position: absolute;
+  width: 30px;
+  height: 43px;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  transition: transform 850ms linear;
+}
+.island-tourist > svg {
+  width: 30px;
+  height: 43px;
+  overflow: visible;
+}
+.island-tourist[data-facing='left'] > svg {
+  transform: scaleX(-1);
+}
+.island-tourist .resident-umbrella,
+.island-tourist .resident-lantern,
+.island-tourist .resident-cold,
+.island-tourist .resident-seated-legs,
+.island-tourist .resident-camera-flash {
+  display: none;
+}
+.tourist-token {
+  position: absolute;
+  top: -7px;
+  left: 6px;
+  font-size: 12px;
+  color: #e2b65a;
+}
+.tourist-cup,
+.tourist-bag {
+  display: none;
+  position: absolute;
+  right: -7px;
+  top: 14px;
+  font-size: 13px;
+}
+.island-tourist[data-action='drink'] .tourist-cup,
+.island-tourist[data-action='shop'] .tourist-bag {
+  display: block;
+}
+.island-tourist[data-action='photo'] .resident-camera-flash {
+  display: block;
+  animation: tourist-flash 1.5s steps(1) infinite;
+}
+.island-tourist[data-action='guide'] .tourist-token {
+  color: #69a99a;
+  transform: scale(1.4);
+}
+.ocean[data-life-paused='true'] .island-tourist,
+.ocean[data-life-hidden='true'] .island-tourist {
+  transition: none;
+}
+.ocean[data-life-paused='true'] .island-tourist *,
+.ocean[data-life-hidden='true'] .island-tourist * {
+  animation-play-state: paused !important;
+}
+@keyframes tourist-flash {
+  0%,
+  15%,
+  100% {
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .island-tourist {
+    transition: none;
+  }
+  .island-tourist * {
+    animation: none !important;
+  }
+}

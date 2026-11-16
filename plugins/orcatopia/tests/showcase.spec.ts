@@ -1,3 +1,4 @@
+import { collectionSnapshot } from './tourism-state';
 import { introductionHtml } from './introduction';
 import { writeFile } from 'node:fs/promises';
 import { test, expect } from '@playwright/test';
@@ -274,7 +275,7 @@ test('Orcatopia showcase keeps legacy storage and shows an English fixture islan
   const stored = await page.evaluate(() =>
     JSON.parse(localStorage.getItem('landmark-island-demo-v1')!),
   );
-  expect(stored).toEqual(save);
+  expect(collectionSnapshot(stored)).toEqual(collectionSnapshot(save));
   const cover = await page.context().newPage();
   await cover.setViewportSize({ width: 1600, height: 1000 });
   for (const locale of ['en', 'ko'] as const) {
@@ -355,10 +356,12 @@ test('Orcatopia showcase keeps legacy storage and shows an English fixture islan
       save.placements.length + save.decorations.length,
     );
     expect(
-      await page.evaluate(() =>
-        JSON.parse(localStorage.getItem('landmark-island-demo-v1')!),
+      collectionSnapshot(
+        await page.evaluate(() =>
+          JSON.parse(localStorage.getItem('landmark-island-demo-v1')!),
+        ),
       ),
-    ).toEqual(save);
+    ).toEqual(collectionSnapshot(save));
     await writeFile(
       'test-results/landmark-island/idle-profile.json',
       JSON.stringify(

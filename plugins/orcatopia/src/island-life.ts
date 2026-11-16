@@ -1,3 +1,4 @@
+import { TourismVisitors } from './tourism-visitors';
 import { islandLand, type State } from './game';
 import { decorationById } from './decorations';
 import { IslandAtmosphere } from './island-atmosphere';
@@ -52,6 +53,7 @@ export class IslandLife {
   private context?: Context;
   private ocean?: HTMLElement;
   private residents: Resident[] = [];
+  private tourists = new TourismVisitors();
   private critters: Critter[] = [];
   private free = new Set<number>();
   private perches = new Set<number>();
@@ -93,6 +95,12 @@ export class IslandLife {
       this.addWindField();
     }
     this.reconcile();
+    this.tourists.bind(
+      context.ground,
+      context.state,
+      this.free,
+      context.blocked,
+    );
     this.synchronizeWind();
     this.climateChanged();
   }
@@ -198,6 +206,7 @@ export class IslandLife {
   detach() {
     this.suspend();
     this.listeners?.abort();
+    this.tourists.detach();
     this.context = undefined;
     this.ocean = undefined;
     this.residents = [];
@@ -486,6 +495,7 @@ export class IslandLife {
   private taken(resident: Resident) {
     return new Set([
       this.context!.player,
+      ...this.tourists.occupied(),
       ...this.residents
         .filter((other) => other !== resident)
         .map((other) => other.cell),
@@ -628,6 +638,9 @@ export class IslandLife {
   private tick() {
     if (this.paused()) return;
     const now = Date.now();
+    this.tourists.tick(
+      new Set([this.context!.player, ...this.residents.map((r) => r.cell)]),
+    );
     for (const resident of this.residents) {
       if (resident.motionUntil !== undefined && now >= resident.motionUntil) {
         resident.motionDepth = undefined;

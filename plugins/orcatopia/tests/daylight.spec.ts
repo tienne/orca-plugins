@@ -1,9 +1,10 @@
+import { collectionSnapshot } from './tourism-state';
 import { test, expect } from '@playwright/test';
 import { empty, validate } from '../src/game';
 
 test.use({ timezoneId: 'Asia/Seoul' });
 
-test('device daylight crosses every local boundary without replacing the island or touching saves', async ({
+test('device daylight crosses every local boundary without replacing the island or changing the collection', async ({
   page,
 }) => {
   await page.clock.install({ time: new Date('2026-11-08T04:59:00+09:00') });
@@ -30,8 +31,8 @@ test('device daylight crosses every local boundary without replacing the island 
   await expect(ocean).toHaveAttribute('data-time-source', 'device');
   await expect(ocean).toHaveAttribute('data-phase', 'night');
   await page.getByLabel('Weather', { exact: true }).selectOption('0');
-  const saved = await page.evaluate(() =>
-    localStorage.getItem('landmark-island-demo-v1'),
+  const saved = collectionSnapshot(
+    await page.evaluate(() => localStorage.getItem('landmark-island-demo-v1')),
   );
   const island = await page.locator('.island').elementHandle();
   const camera = await page.locator('.camera').getAttribute('style');
@@ -53,8 +54,12 @@ test('device daylight crosses every local boundary without replacing the island 
     await expect(page.locator('.camera')).toHaveAttribute('style', camera!);
   }
   expect(
-    await page.evaluate(() => localStorage.getItem('landmark-island-demo-v1')),
-  ).toBe(saved);
+    collectionSnapshot(
+      await page.evaluate(() =>
+        localStorage.getItem('landmark-island-demo-v1'),
+      ),
+    ),
+  ).toEqual(saved);
 });
 
 test('manual daylight survives weather and renders, while Auto and focus restore the current clock', async ({

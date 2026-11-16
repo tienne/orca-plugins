@@ -142,7 +142,7 @@ export async function testCatalog600({
     decorations.filter((d) => d.gift && d.shape !== 'starMonument').length,
     613,
   );
-  assert.equal(decorations.filter((d) => !d.landmark).length, 5);
+  assert.equal(decorations.filter((d) => !d.landmark).length, 9);
   const baseline = await read(
     'scripts/data/orcatopia-legacy306-art.sha256.json',
   );

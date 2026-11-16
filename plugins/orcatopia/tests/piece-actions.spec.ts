@@ -1,5 +1,6 @@
+import { collectionSnapshot } from './tourism-state';
 import { test, expect } from '@playwright/test';
-import { empty } from '../src/game';
+import { empty, validate } from '../src/game';
 
 for (const [width, language] of [
   [1000, 'en'],
@@ -42,7 +43,9 @@ for (const [width, language] of [
     const menu = page.locator('.piece-menu');
     await expect(menu).toBeVisible();
     await expect(page.locator('.ocean')).toHaveAttribute('data-mode', 'walk');
-    expect(await saved()).toEqual(legacy);
+    expect(collectionSnapshot(await saved())).toEqual(
+      collectionSnapshot(validate(legacy)),
+    );
     const box = (await menu.boundingBox())!;
     const canvas = (await page.locator('.ocean').boundingBox())!;
     expect(box.x).toBeGreaterThanOrEqual(canvas.x);
@@ -55,7 +58,7 @@ for (const [width, language] of [
     await expect(
       page.locator('[data-world-cell="0"] .building'),
     ).toHaveAttribute('data-rotation', '1');
-    expect((await saved()).version).toBe(6);
+    expect((await saved()).version).toBe(8);
     await page.locator('#rotate-left').click();
     await expect(
       page.locator('[data-world-cell="0"] .building'),
@@ -89,12 +92,16 @@ for (const [width, language] of [
     await page.locator('#move-piece').click();
     await page.keyboard.press('Escape');
     await expect(menu).toBeVisible();
-    expect(await saved()).toEqual(moved);
+    expect(collectionSnapshot(await saved())).toEqual(
+      collectionSnapshot(moved),
+    );
     await page.locator('#cancel').click();
     await expect(menu).toBeHidden();
     await page.reload();
     await expect(
       page.locator('[data-world-cell="2"] .building'),
     ).toHaveAttribute('data-rotation', '1');
-    expect(await saved()).toEqual(moved);
+    expect(collectionSnapshot(await saved())).toEqual(
+      collectionSnapshot(moved),
+    );
   });

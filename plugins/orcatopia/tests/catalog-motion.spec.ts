@@ -1,3 +1,4 @@
+import { collectionSnapshot } from './tourism-state';
 import { test, expect } from '@playwright/test';
 import { empty, landmarks, validate } from '../src/game';
 
@@ -72,8 +73,8 @@ test('the 600-landmark journal only animates visible cards across scrolling, fil
       localStorage.setItem('landmark-island-demo-v1', JSON.stringify(state));
   }, validate(save));
   await page.goto('/?lang=en');
-  const stored = await page.evaluate(() =>
-    localStorage.getItem('landmark-island-demo-v1'),
+  const stored = collectionSnapshot(
+    await page.evaluate(() => localStorage.getItem('landmark-island-demo-v1')),
   );
   const cards = page.locator('.collection .card');
   const first = cards.first();
@@ -149,6 +150,10 @@ test('the 600-landmark journal only animates visible cards across scrolling, fil
     )
     .toBe(0);
   expect(
-    await page.evaluate(() => localStorage.getItem('landmark-island-demo-v1')),
-  ).toBe(stored);
+    collectionSnapshot(
+      await page.evaluate(() =>
+        localStorage.getItem('landmark-island-demo-v1'),
+      ),
+    ),
+  ).toEqual(stored);
 });

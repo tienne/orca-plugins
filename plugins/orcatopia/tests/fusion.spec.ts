@@ -120,7 +120,11 @@ test('failed fusion save retains a stable retry and commits once', async ({
     const set = Storage.prototype.setItem;
     let fail = true;
     Storage.prototype.setItem = function (key, value) {
-      if (key === 'landmark-island-demo-v1' && fail) {
+      if (
+        key === 'landmark-island-demo-v1' &&
+        fail &&
+        JSON.parse(value).fusions.length > 0
+      ) {
         fail = false;
         throw Error('Simulated disk full');
       }
