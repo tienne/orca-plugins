@@ -241,6 +241,12 @@ try {
     illustrations.set(signature, entry.id);
   }
   assert.deepEqual(repeatedGeometry, []);
+  const waterSources = JSON.parse(
+    await readFile('scripts/data/orcatopia-water-100-sources.json', 'utf8'),
+  );
+  const officialWaterHosts = new Set(
+    waterSources.map((entry) => new URL(entry.officialUrl).hostname),
+  );
   for (const landmark of landmarks) {
     assert.ok(Number.isFinite(landmark.lat) && Math.abs(landmark.lat) <= 90);
     assert.ok(Number.isFinite(landmark.lon) && Math.abs(landmark.lon) <= 180);
@@ -250,6 +256,16 @@ try {
         ? /^https:\/\/(?:www\.wikidata\.org\/wiki\/Q\d+|whc\.unesco\.org\/en\/list\/\d+\/)$/
         : /^https:\/\/[a-z0-9.-]+\//,
     );
+    if (landmarks.indexOf(landmark) >= 600) {
+      for (const source of [landmark.source, landmark.descriptionSource]) {
+        const url = new URL(source);
+        assert.equal(url.protocol, 'https:', `${landmark.id}: HTTPS source`);
+        assert.ok(
+          officialWaterHosts.has(url.hostname),
+          `${landmark.id}: source host must match an audited institution`,
+        );
+      }
+    }
     assert.match(landmark.descriptionSource, /^https:\/\//);
     assert.ok(landmark.description.length > 100);
     const set = decorations.filter((d) => d.landmark === landmark.id);
