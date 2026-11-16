@@ -82,11 +82,11 @@ export async function testCollectionExploration(dir) {
   };
   assert.equal(
     landmarks.filter((l) => collectionTheme(l.id) === 'river').length,
-    7,
+    41,
   );
   assert.equal(
     landmarks.filter((l) => collectionTheme(l.id) === 'sea').length,
-    12,
+    55,
   );
   for (const [count, river, sea] of [
     [11, false, false],
@@ -329,7 +329,8 @@ export async function testCollectionExploration(dir) {
   for (const value of [0.99, 0.995, 0.999999]) {
     let call = 0;
     const id = draw(() => (call++ ? 0 : value), fixture(12), 'river');
-    assert.equal(landmarks.find((l) => l.id === id).tier, 'epic');
+    assert.equal(landmarks.find((l) => l.id === id).tier, 'legendary');
+    assert.equal(id, 'canaima');
   }
   console.log(
     'PASS: collection unlock boundaries, all gated tier pools, rescaled theme tiers, mid-batch unlock, fusion history, one-time theme requests, concurrency, restart/response loss, failure rollback and backup anti-reissue',

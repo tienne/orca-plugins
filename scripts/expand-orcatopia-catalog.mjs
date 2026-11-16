@@ -11,6 +11,16 @@ const heritage = JSON.parse(
 const existing = JSON.parse(
   await readFile(root + 'landmarks.json', 'utf8'),
 ).slice(0, 100);
+const priorCatalog = JSON.parse(
+  await readFile(root + 'landmarks.json', 'utf8'),
+).slice(0, 306);
+if (
+  createHash('sha256').update(JSON.stringify(priorCatalog)).digest('hex') !==
+  (await readFile('scripts/data/orcatopia-legacy306.sha256', 'utf8')).trim()
+)
+  throw new Error(
+    'The original 306 catalog records changed; review them before regenerating.',
+  );
 const legacyHash = (
   await readFile('scripts/data/orcatopia-legacy100.sha256', 'utf8')
 ).trim();
@@ -22,6 +32,21 @@ if (
     'The original 100 catalog records changed; review them before regenerating.',
   );
 const korean = JSON.parse(await readFile(root + 'landmarks.ko.json', 'utf8'));
+if (
+  createHash('sha256')
+    .update(
+      JSON.stringify(
+        Object.fromEntries(
+          priorCatalog.map((entry) => [entry.id, korean[entry.id]]),
+        ),
+      ),
+    )
+    .digest('hex') !==
+  (await readFile('scripts/data/orcatopia-legacy306-ko.sha256', 'utf8')).trim()
+)
+  throw new Error(
+    'The original Korean descriptions changed; review them before regenerating.',
+  );
 const iso3 = Object.fromEntries(
   'AR:ARG BD:BGD BE:BEL BR:BRA BW:BWA CA:CAN CL:CHL CN:CHN DE:DEU EG:EGY ES:ESP ET:ETH FR:FRA GB:GBR GR:GRC IN:IND IQ:IRQ IR:IRN IT:ITA JP:JPN KR:KOR LA:LAO MA:MAR MM:MMR MX:MEX PE:PER PT:PRT TH:THA TN:TUN TR:TUR TZ:TZA US:USA ZA:ZAF ZM:ZMB'
     .split(' ')
@@ -138,3 +163,4 @@ console.log(
     ),
   }),
 );
+await import('./expand-orcatopia-600.mjs');

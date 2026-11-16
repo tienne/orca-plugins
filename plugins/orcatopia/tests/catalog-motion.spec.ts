@@ -15,13 +15,17 @@ test('the scene preview pauses offscreen and filtered landmarks while retaining 
   const running = (card: typeof first) =>
     card
       .locator('.landmark-art')
-      .evaluate(
-        (art) =>
-          art
-            .getAnimations({ subtree: true })
-            .filter((animation) => animation.playState === 'running').length,
+      .evaluateAll((arts) =>
+        arts.reduce(
+          (count, art) =>
+            count +
+            art
+              .getAnimations({ subtree: true })
+              .filter((animation) => animation.playState === 'running').length,
+          0,
+        ),
       );
-  await expect(cards).toHaveCount(306);
+  await expect(cards).toHaveCount(600);
   await first.scrollIntoViewIfNeeded();
   await expect(first).toHaveAttribute('data-motion-visible', 'true');
   await expect.poll(() => running(first)).toBeGreaterThan(0);
@@ -49,7 +53,7 @@ test('the scene preview pauses offscreen and filtered landmarks while retaining 
   ).toBe(before);
 });
 
-test('the 300-landmark journal only animates visible cards across scrolling, filtering and rerenders', async ({
+test('the 600-landmark journal only animates visible cards across scrolling, filtering and rerenders', async ({
   page,
 }) => {
   test.setTimeout(60_000);
@@ -78,13 +82,17 @@ test('the 300-landmark journal only animates visible cards across scrolling, fil
   const running = (card: typeof first) =>
     card
       .locator('.landmark-art')
-      .evaluate(
-        (art) =>
-          art
-            .getAnimations({ subtree: true })
-            .filter((animation) => animation.playState === 'running').length,
+      .evaluateAll((arts) =>
+        arts.reduce(
+          (count, art) =>
+            count +
+            art
+              .getAnimations({ subtree: true })
+              .filter((animation) => animation.playState === 'running').length,
+          0,
+        ),
       );
-  await expect(cards).toHaveCount(306);
+  await expect(cards).toHaveCount(600);
   await expect.poll(() => running(first)).toBe(0);
   await page.locator('[data-inventory="landmarks"]').click();
   await expect(first).toHaveAttribute('data-motion-visible', 'true');

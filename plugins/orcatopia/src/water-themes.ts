@@ -1,4 +1,5 @@
 import waterCatalog from './water-catalog.json';
+import catalog600 from './catalog-600.json';
 
 export type WaterSurface = 'sea' | 'river';
 export type WaterShape =
@@ -48,6 +49,14 @@ export const waterThemes: WaterTheme[] = [
           ? 'buoy'
           : 'sailboat',
   })),
+  ...catalog600
+    .filter((entry) => entry.placement !== 'land')
+    .map((entry): WaterTheme => ({
+      id: entry.id,
+      placement: entry.placement as WaterSurface | 'coastal',
+      gift: entry.placement === 'river' ? 'lotus' : 'buoy',
+      special: entry.placement === 'river' ? 'raft' : 'sailboat',
+    })),
 ];
 const byId = new Map(waterThemes.map((t) => [t.id, t]));
 /** 전용 장식과 랜드마크가 공유하는 물 영역 분류. */

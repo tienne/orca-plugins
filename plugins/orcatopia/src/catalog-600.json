@@ -1,0 +1,3530 @@
+[
+  {
+    "id": "jam",
+    "placement": "land",
+    "heights": [
+      0,
+      18,
+      99,
+      15,
+      0
+    ],
+    "detail": "brick"
+  },
+  {
+    "id": "bamiyan",
+    "placement": "land",
+    "heights": [
+      73,
+      91,
+      85,
+      62,
+      77
+    ],
+    "detail": "niches"
+  },
+  {
+    "id": "butrint",
+    "placement": "land",
+    "heights": [
+      24,
+      39,
+      52,
+      35,
+      19
+    ],
+    "detail": "theatre"
+  },
+  {
+    "id": "berat",
+    "placement": "land",
+    "heights": [
+      42,
+      58,
+      70,
+      55,
+      35
+    ],
+    "detail": "windows"
+  },
+  {
+    "id": "haghpat",
+    "placement": "land",
+    "heights": [
+      25,
+      52,
+      79,
+      48,
+      30
+    ],
+    "detail": "cross"
+  },
+  {
+    "id": "geghard",
+    "placement": "land",
+    "heights": [
+      64,
+      79,
+      96,
+      74,
+      54
+    ],
+    "detail": "niches"
+  },
+  {
+    "id": "zvartnots",
+    "placement": "land",
+    "heights": [
+      18,
+      35,
+      63,
+      38,
+      21
+    ],
+    "detail": "columns"
+  },
+  {
+    "id": "bakuwalled",
+    "placement": "land",
+    "heights": [
+      44,
+      61,
+      82,
+      53,
+      36
+    ],
+    "detail": "bastions"
+  },
+  {
+    "id": "gobustan",
+    "placement": "land",
+    "heights": [
+      47,
+      59,
+      40,
+      64,
+      32
+    ],
+    "detail": "engravings"
+  },
+  {
+    "id": "sheki",
+    "placement": "land",
+    "heights": [
+      31,
+      47,
+      68,
+      49,
+      28
+    ],
+    "detail": "lattice"
+  },
+  {
+    "id": "visegrad",
+    "placement": "river",
+    "heights": [
+      26,
+      33,
+      39,
+      33,
+      26
+    ],
+    "detail": "arches"
+  },
+  {
+    "id": "vjetrenica",
+    "placement": "land",
+    "heights": [
+      61,
+      82,
+      87,
+      72,
+      44
+    ],
+    "detail": "cave"
+  },
+  {
+    "id": "boyana",
+    "placement": "land",
+    "heights": [
+      29,
+      42,
+      58,
+      39,
+      24
+    ],
+    "detail": "fresco"
+  },
+  {
+    "id": "madara",
+    "placement": "land",
+    "heights": [
+      68,
+      87,
+      99,
+      85,
+      62
+    ],
+    "detail": "horse"
+  },
+  {
+    "id": "kazanlak",
+    "placement": "land",
+    "heights": [
+      18,
+      30,
+      53,
+      32,
+      19
+    ],
+    "detail": "fresco"
+  },
+  {
+    "id": "ivanovo",
+    "placement": "land",
+    "heights": [
+      54,
+      82,
+      91,
+      76,
+      55
+    ],
+    "detail": "niches"
+  },
+  {
+    "id": "nessebar",
+    "placement": "coastal",
+    "heights": [
+      28,
+      48,
+      60,
+      41,
+      24
+    ],
+    "detail": "seabird"
+  },
+  {
+    "id": "srebarna",
+    "placement": "river",
+    "heights": [
+      17,
+      23,
+      31,
+      20,
+      14
+    ],
+    "detail": "waterbirds"
+  },
+  {
+    "id": "pirin",
+    "placement": "land",
+    "heights": [
+      55,
+      80,
+      98,
+      77,
+      48
+    ],
+    "detail": "snow"
+  },
+  {
+    "id": "qalabahrain",
+    "placement": "coastal",
+    "heights": [
+      26,
+      45,
+      55,
+      42,
+      27
+    ],
+    "detail": "bastions"
+  },
+  {
+    "id": "dilmunmounds",
+    "placement": "land",
+    "heights": [
+      24,
+      35,
+      45,
+      31,
+      22
+    ],
+    "detail": "mounds"
+  },
+  {
+    "id": "mir",
+    "placement": "land",
+    "heights": [
+      72,
+      51,
+      38,
+      54,
+      78
+    ],
+    "detail": "spires"
+  },
+  {
+    "id": "nesvizh",
+    "placement": "land",
+    "heights": [
+      34,
+      49,
+      66,
+      48,
+      33
+    ],
+    "detail": "garden"
+  },
+  {
+    "id": "paphos",
+    "placement": "land",
+    "heights": [
+      18,
+      32,
+      44,
+      28,
+      20
+    ],
+    "detail": "mosaic"
+  },
+  {
+    "id": "troodos",
+    "placement": "land",
+    "heights": [
+      27,
+      43,
+      68,
+      41,
+      25
+    ],
+    "detail": "fresco"
+  },
+  {
+    "id": "choirokoitia",
+    "placement": "land",
+    "heights": [
+      25,
+      39,
+      46,
+      36,
+      22
+    ],
+    "detail": "roundhouses"
+  },
+  {
+    "id": "ceskykrumlov",
+    "placement": "land",
+    "heights": [
+      44,
+      67,
+      91,
+      60,
+      36
+    ],
+    "detail": "spires"
+  },
+  {
+    "id": "telc",
+    "placement": "land",
+    "heights": [
+      47,
+      54,
+      66,
+      50,
+      41
+    ],
+    "detail": "arcade"
+  },
+  {
+    "id": "zelenahora",
+    "placement": "land",
+    "heights": [
+      32,
+      57,
+      87,
+      59,
+      34
+    ],
+    "detail": "star"
+  },
+  {
+    "id": "kutnahora",
+    "placement": "land",
+    "heights": [
+      39,
+      71,
+      94,
+      68,
+      37
+    ],
+    "detail": "spires"
+  },
+  {
+    "id": "lednice",
+    "placement": "land",
+    "heights": [
+      42,
+      63,
+      83,
+      66,
+      44
+    ],
+    "detail": "garden"
+  },
+  {
+    "id": "olomouc",
+    "placement": "land",
+    "heights": [
+      0,
+      24,
+      96,
+      21,
+      0
+    ],
+    "detail": "sculpture"
+  },
+  {
+    "id": "kromeriz",
+    "placement": "land",
+    "heights": [
+      19,
+      37,
+      58,
+      35,
+      21
+    ],
+    "detail": "garden"
+  },
+  {
+    "id": "litomysl",
+    "placement": "land",
+    "heights": [
+      37,
+      48,
+      60,
+      46,
+      34
+    ],
+    "detail": "sgraffito"
+  },
+  {
+    "id": "mtskheta",
+    "placement": "land",
+    "heights": [
+      33,
+      51,
+      76,
+      49,
+      31
+    ],
+    "detail": "cross"
+  },
+  {
+    "id": "svaneti",
+    "placement": "land",
+    "heights": [
+      73,
+      51,
+      85,
+      62,
+      94
+    ],
+    "detail": "towers"
+  },
+  {
+    "id": "gelati",
+    "placement": "land",
+    "heights": [
+      27,
+      46,
+      72,
+      43,
+      28
+    ],
+    "detail": "mosaic"
+  },
+  {
+    "id": "colchic",
+    "placement": "river",
+    "heights": [
+      44,
+      62,
+      79,
+      58,
+      38
+    ],
+    "detail": "forestwater"
+  },
+  {
+    "id": "split",
+    "placement": "land",
+    "heights": [
+      34,
+      48,
+      71,
+      46,
+      29
+    ],
+    "detail": "arcade"
+  },
+  {
+    "id": "plitvice",
+    "placement": "river",
+    "heights": [
+      28,
+      43,
+      62,
+      46,
+      26
+    ],
+    "detail": "cascade"
+  },
+  {
+    "id": "porec",
+    "placement": "land",
+    "heights": [
+      27,
+      46,
+      64,
+      43,
+      25
+    ],
+    "detail": "mosaic"
+  },
+  {
+    "id": "trogir",
+    "placement": "coastal",
+    "heights": [
+      37,
+      58,
+      78,
+      52,
+      30
+    ],
+    "detail": "seabird"
+  },
+  {
+    "id": "sibenik",
+    "placement": "land",
+    "heights": [
+      30,
+      53,
+      84,
+      52,
+      28
+    ],
+    "detail": "dome"
+  },
+  {
+    "id": "starigrad",
+    "placement": "land",
+    "heights": [
+      23,
+      35,
+      49,
+      36,
+      21
+    ],
+    "detail": "fields"
+  },
+  {
+    "id": "holloko",
+    "placement": "land",
+    "heights": [
+      32,
+      45,
+      59,
+      43,
+      27
+    ],
+    "detail": "timber"
+  },
+  {
+    "id": "hortobagy",
+    "placement": "land",
+    "heights": [
+      13,
+      20,
+      26,
+      18,
+      11
+    ],
+    "detail": "herd"
+  },
+  {
+    "id": "pannonhalma",
+    "placement": "land",
+    "heights": [
+      38,
+      56,
+      82,
+      59,
+      35
+    ],
+    "detail": "cross"
+  },
+  {
+    "id": "tokaj",
+    "placement": "land",
+    "heights": [
+      20,
+      37,
+      54,
+      36,
+      19
+    ],
+    "detail": "vineyard"
+  },
+  {
+    "id": "sulaimantoo",
+    "placement": "land",
+    "heights": [
+      38,
+      60,
+      83,
+      57,
+      33
+    ],
+    "detail": "cairns"
+  },
+  {
+    "id": "yasawi",
+    "placement": "land",
+    "heights": [
+      25,
+      55,
+      86,
+      57,
+      28
+    ],
+    "detail": "blue"
+  },
+  {
+    "id": "tanbaly",
+    "placement": "land",
+    "heights": [
+      38,
+      56,
+      69,
+      49,
+      28
+    ],
+    "detail": "engravings"
+  },
+  {
+    "id": "saryarka",
+    "placement": "river",
+    "heights": [
+      16,
+      27,
+      39,
+      23,
+      15
+    ],
+    "detail": "waterbirds"
+  },
+  {
+    "id": "vilnius",
+    "placement": "land",
+    "heights": [
+      47,
+      64,
+      83,
+      57,
+      34
+    ],
+    "detail": "spires"
+  },
+  {
+    "id": "kernave",
+    "placement": "land",
+    "heights": [
+      25,
+      44,
+      61,
+      49,
+      30
+    ],
+    "detail": "mounds"
+  },
+  {
+    "id": "kuldiga",
+    "placement": "land",
+    "heights": [
+      38,
+      49,
+      64,
+      46,
+      33
+    ],
+    "detail": "timber"
+  },
+  {
+    "id": "durmitor",
+    "placement": "land",
+    "heights": [
+      53,
+      77,
+      96,
+      71,
+      45
+    ],
+    "detail": "snow"
+  },
+  {
+    "id": "kotor",
+    "placement": "coastal",
+    "heights": [
+      65,
+      87,
+      96,
+      75,
+      53
+    ],
+    "detail": "seabird"
+  },
+  {
+    "id": "orkhon",
+    "placement": "land",
+    "heights": [
+      19,
+      34,
+      49,
+      29,
+      17
+    ],
+    "detail": "fields"
+  },
+  {
+    "id": "burkhankhaldun",
+    "placement": "land",
+    "heights": [
+      43,
+      63,
+      90,
+      66,
+      41
+    ],
+    "detail": "cairns"
+  },
+  {
+    "id": "deerstones",
+    "placement": "land",
+    "heights": [
+      42,
+      60,
+      79,
+      56,
+      35
+    ],
+    "detail": "deer"
+  },
+  {
+    "id": "sagarmatha",
+    "placement": "land",
+    "heights": [
+      60,
+      85,
+      108,
+      79,
+      51
+    ],
+    "detail": "snow"
+  },
+  {
+    "id": "chitwan",
+    "placement": "land",
+    "heights": [
+      40,
+      58,
+      72,
+      61,
+      43
+    ],
+    "detail": "rhino"
+  },
+  {
+    "id": "lumbini",
+    "placement": "land",
+    "heights": [
+      23,
+      38,
+      62,
+      41,
+      22
+    ],
+    "detail": "pillar"
+  },
+  {
+    "id": "bahla",
+    "placement": "land",
+    "heights": [
+      53,
+      37,
+      69,
+      42,
+      58
+    ],
+    "detail": "bastions"
+  },
+  {
+    "id": "bat",
+    "placement": "land",
+    "heights": [
+      27,
+      42,
+      51,
+      38,
+      24
+    ],
+    "detail": "beehive"
+  },
+  {
+    "id": "frankincense",
+    "placement": "land",
+    "heights": [
+      19,
+      34,
+      50,
+      37,
+      20
+    ],
+    "detail": "palm"
+  },
+  {
+    "id": "aflaj",
+    "placement": "river",
+    "heights": [
+      22,
+      38,
+      48,
+      33,
+      18
+    ],
+    "detail": "channels"
+  },
+  {
+    "id": "moenjodaro",
+    "placement": "land",
+    "heights": [
+      21,
+      37,
+      57,
+      32,
+      16
+    ],
+    "detail": "brick"
+  },
+  {
+    "id": "taxila",
+    "placement": "land",
+    "heights": [
+      24,
+      43,
+      59,
+      38,
+      21
+    ],
+    "detail": "stupa"
+  },
+  {
+    "id": "takhtibahi",
+    "placement": "land",
+    "heights": [
+      31,
+      47,
+      63,
+      42,
+      26
+    ],
+    "detail": "niches"
+  },
+  {
+    "id": "rohtas",
+    "placement": "land",
+    "heights": [
+      56,
+      42,
+      74,
+      47,
+      61
+    ],
+    "detail": "bastions"
+  },
+  {
+    "id": "krakow",
+    "placement": "land",
+    "heights": [
+      39,
+      61,
+      84,
+      57,
+      32
+    ],
+    "detail": "arcade"
+  },
+  {
+    "id": "warsaw",
+    "placement": "land",
+    "heights": [
+      46,
+      56,
+      74,
+      51,
+      39
+    ],
+    "detail": "windows"
+  },
+  {
+    "id": "wieliczka",
+    "placement": "land",
+    "heights": [
+      50,
+      73,
+      92,
+      68,
+      41
+    ],
+    "detail": "salt"
+  },
+  {
+    "id": "zamosc",
+    "placement": "land",
+    "heights": [
+      40,
+      53,
+      72,
+      54,
+      36
+    ],
+    "detail": "arcade"
+  },
+  {
+    "id": "torun",
+    "placement": "land",
+    "heights": [
+      45,
+      64,
+      86,
+      58,
+      34
+    ],
+    "detail": "brick"
+  },
+  {
+    "id": "malbork",
+    "placement": "land",
+    "heights": [
+      61,
+      47,
+      91,
+      52,
+      72
+    ],
+    "detail": "brick"
+  },
+  {
+    "id": "centennialhall",
+    "placement": "land",
+    "heights": [
+      25,
+      48,
+      77,
+      49,
+      24
+    ],
+    "detail": "ribs"
+  },
+  {
+    "id": "danubedelta",
+    "placement": "river",
+    "heights": [
+      20,
+      31,
+      42,
+      28,
+      17
+    ],
+    "detail": "waterbirds"
+  },
+  {
+    "id": "hurezi",
+    "placement": "land",
+    "heights": [
+      30,
+      47,
+      70,
+      45,
+      28
+    ],
+    "detail": "arcade"
+  },
+  {
+    "id": "moldavia",
+    "placement": "land",
+    "heights": [
+      33,
+      48,
+      72,
+      44,
+      27
+    ],
+    "detail": "fresco"
+  },
+  {
+    "id": "sighisoara",
+    "placement": "land",
+    "heights": [
+      49,
+      71,
+      94,
+      63,
+      40
+    ],
+    "detail": "clock"
+  },
+  {
+    "id": "maramures",
+    "placement": "land",
+    "heights": [
+      28,
+      47,
+      102,
+      43,
+      25
+    ],
+    "detail": "timber"
+  },
+  {
+    "id": "studenica",
+    "placement": "land",
+    "heights": [
+      29,
+      49,
+      75,
+      46,
+      26
+    ],
+    "detail": "marble"
+  },
+  {
+    "id": "gamzigrad",
+    "placement": "land",
+    "heights": [
+      35,
+      51,
+      66,
+      47,
+      30
+    ],
+    "detail": "mosaic"
+  },
+  {
+    "id": "skocjan",
+    "placement": "river",
+    "heights": [
+      56,
+      81,
+      95,
+      74,
+      48
+    ],
+    "detail": "caveriver"
+  },
+  {
+    "id": "spis",
+    "placement": "land",
+    "heights": [
+      68,
+      46,
+      84,
+      58,
+      39
+    ],
+    "detail": "bastions"
+  },
+  {
+    "id": "vlkolinec",
+    "placement": "land",
+    "heights": [
+      33,
+      44,
+      57,
+      41,
+      29
+    ],
+    "detail": "timber"
+  },
+  {
+    "id": "bardejov",
+    "placement": "land",
+    "heights": [
+      43,
+      56,
+      76,
+      53,
+      37
+    ],
+    "detail": "windows"
+  },
+  {
+    "id": "sarazm",
+    "placement": "land",
+    "heights": [
+      17,
+      28,
+      43,
+      31,
+      21
+    ],
+    "detail": "brick"
+  },
+  {
+    "id": "pamirs",
+    "placement": "land",
+    "heights": [
+      58,
+      88,
+      103,
+      82,
+      49
+    ],
+    "detail": "snow"
+  },
+  {
+    "id": "merv",
+    "placement": "land",
+    "heights": [
+      20,
+      39,
+      65,
+      35,
+      18
+    ],
+    "detail": "brick"
+  },
+  {
+    "id": "kunyaurgench",
+    "placement": "land",
+    "heights": [
+      25,
+      47,
+      101,
+      52,
+      29
+    ],
+    "detail": "brick"
+  },
+  {
+    "id": "nisa",
+    "placement": "land",
+    "heights": [
+      26,
+      40,
+      57,
+      37,
+      23
+    ],
+    "detail": "bastions"
+  },
+  {
+    "id": "kyivsophia",
+    "placement": "land",
+    "heights": [
+      36,
+      63,
+      91,
+      61,
+      33
+    ],
+    "detail": "gold"
+  },
+  {
+    "id": "lviv",
+    "placement": "land",
+    "heights": [
+      46,
+      59,
+      81,
+      54,
+      38
+    ],
+    "detail": "windows"
+  },
+  {
+    "id": "itchankala",
+    "placement": "land",
+    "heights": [
+      43,
+      62,
+      84,
+      51,
+      38
+    ],
+    "detail": "blue"
+  },
+  {
+    "id": "bukhara",
+    "placement": "land",
+    "heights": [
+      34,
+      57,
+      93,
+      62,
+      32
+    ],
+    "detail": "blue"
+  },
+  {
+    "id": "shakhrisyabz",
+    "placement": "land",
+    "heights": [
+      28,
+      88,
+      52,
+      92,
+      31
+    ],
+    "detail": "blue"
+  },
+  {
+    "id": "abomey",
+    "placement": "land",
+    "heights": [
+      31,
+      42,
+      54,
+      38,
+      27
+    ],
+    "detail": "earth"
+  },
+  {
+    "id": "loropeni",
+    "placement": "land",
+    "heights": [
+      51,
+      62,
+      58,
+      66,
+      46
+    ],
+    "detail": "bastions"
+  },
+  {
+    "id": "tiebele",
+    "placement": "land",
+    "heights": [
+      24,
+      37,
+      48,
+      34,
+      25
+    ],
+    "detail": "paintedearth"
+  },
+  {
+    "id": "virunga",
+    "placement": "land",
+    "heights": [
+      44,
+      75,
+      99,
+      70,
+      40
+    ],
+    "detail": "gorilla"
+  },
+  {
+    "id": "okapi",
+    "placement": "land",
+    "heights": [
+      49,
+      68,
+      82,
+      62,
+      45
+    ],
+    "detail": "okapi"
+  },
+  {
+    "id": "odzala",
+    "placement": "land",
+    "heights": [
+      45,
+      64,
+      79,
+      58,
+      41
+    ],
+    "detail": "gorilla"
+  },
+  {
+    "id": "taiforest",
+    "placement": "land",
+    "heights": [
+      48,
+      69,
+      86,
+      65,
+      43
+    ],
+    "detail": "forest"
+  },
+  {
+    "id": "grandbassam",
+    "placement": "coastal",
+    "heights": [
+      29,
+      45,
+      60,
+      43,
+      26
+    ],
+    "detail": "seabird"
+  },
+  {
+    "id": "dja",
+    "placement": "land",
+    "heights": [
+      51,
+      71,
+      89,
+      67,
+      47
+    ],
+    "detail": "monkey"
+  },
+  {
+    "id": "benihammad",
+    "placement": "land",
+    "heights": [
+      45,
+      38,
+      87,
+      42,
+      51
+    ],
+    "detail": "brick"
+  },
+  {
+    "id": "tassili",
+    "placement": "land",
+    "heights": [
+      57,
+      77,
+      62,
+      91,
+      44
+    ],
+    "detail": "engravings"
+  },
+  {
+    "id": "mzab",
+    "placement": "land",
+    "heights": [
+      35,
+      54,
+      94,
+      49,
+      30
+    ],
+    "detail": "earth"
+  },
+  {
+    "id": "djemila",
+    "placement": "land",
+    "heights": [
+      21,
+      38,
+      56,
+      33,
+      19
+    ],
+    "detail": "columns"
+  },
+  {
+    "id": "tipasa",
+    "placement": "coastal",
+    "heights": [
+      23,
+      41,
+      58,
+      36,
+      18
+    ],
+    "detail": "seabird"
+  },
+  {
+    "id": "asmara",
+    "placement": "land",
+    "heights": [
+      29,
+      48,
+      67,
+      44,
+      26
+    ],
+    "detail": "windows"
+  },
+  {
+    "id": "fasilghebbi",
+    "placement": "land",
+    "heights": [
+      66,
+      49,
+      80,
+      55,
+      69
+    ],
+    "detail": "bastions"
+  },
+  {
+    "id": "harar",
+    "placement": "land",
+    "heights": [
+      34,
+      52,
+      69,
+      47,
+      29
+    ],
+    "detail": "earth"
+  },
+  {
+    "id": "balemountains",
+    "placement": "land",
+    "heights": [
+      48,
+      71,
+      93,
+      68,
+      43
+    ],
+    "detail": "moorland"
+  },
+  {
+    "id": "asante",
+    "placement": "land",
+    "heights": [
+      27,
+      39,
+      53,
+      36,
+      24
+    ],
+    "detail": "paintedearth"
+  },
+  {
+    "id": "mountkenya",
+    "placement": "land",
+    "heights": [
+      51,
+      83,
+      105,
+      74,
+      46
+    ],
+    "detail": "snow"
+  },
+  {
+    "id": "turkana",
+    "placement": "river",
+    "heights": [
+      23,
+      37,
+      55,
+      33,
+      20
+    ],
+    "detail": "waterbirds"
+  },
+  {
+    "id": "lamu",
+    "placement": "coastal",
+    "heights": [
+      33,
+      46,
+      62,
+      41,
+      28
+    ],
+    "detail": "seabird"
+  },
+  {
+    "id": "fortjesus",
+    "placement": "coastal",
+    "heights": [
+      43,
+      61,
+      50,
+      67,
+      39
+    ],
+    "detail": "bastions"
+  },
+  {
+    "id": "thimlich",
+    "placement": "land",
+    "heights": [
+      33,
+      42,
+      39,
+      47,
+      30
+    ],
+    "detail": "drystone"
+  },
+  {
+    "id": "ambohimanga",
+    "placement": "land",
+    "heights": [
+      31,
+      48,
+      64,
+      45,
+      27
+    ],
+    "detail": "timber"
+  },
+  {
+    "id": "atsinanana",
+    "placement": "land",
+    "heights": [
+      53,
+      73,
+      88,
+      66,
+      47
+    ],
+    "detail": "forest"
+  },
+  {
+    "id": "timbuktu",
+    "placement": "land",
+    "heights": [
+      29,
+      54,
+      87,
+      48,
+      27
+    ],
+    "detail": "earth"
+  },
+  {
+    "id": "bandiagara",
+    "placement": "land",
+    "heights": [
+      67,
+      88,
+      99,
+      79,
+      55
+    ],
+    "detail": "granaries"
+  },
+  {
+    "id": "askia",
+    "placement": "land",
+    "heights": [
+      20,
+      43,
+      80,
+      46,
+      24
+    ],
+    "detail": "earth"
+  },
+  {
+    "id": "bancarguin",
+    "placement": "sea",
+    "heights": [
+      15,
+      24,
+      35,
+      20,
+      12
+    ],
+    "detail": "waterbirds"
+  },
+  {
+    "id": "lemorne",
+    "placement": "land",
+    "heights": [
+      47,
+      76,
+      101,
+      72,
+      42
+    ],
+    "detail": "quiet"
+  },
+  {
+    "id": "lakemalawi",
+    "placement": "river",
+    "heights": [
+      20,
+      34,
+      51,
+      31,
+      18
+    ],
+    "detail": "fish"
+  },
+  {
+    "id": "mozambiqueisland",
+    "placement": "coastal",
+    "heights": [
+      26,
+      42,
+      56,
+      38,
+      23
+    ],
+    "detail": "seabird"
+  },
+  {
+    "id": "twyfelfontein",
+    "placement": "land",
+    "heights": [
+      38,
+      55,
+      71,
+      51,
+      29
+    ],
+    "detail": "engravings"
+  },
+  {
+    "id": "agadez",
+    "placement": "land",
+    "heights": [
+      19,
+      42,
+      103,
+      37,
+      24
+    ],
+    "detail": "earth"
+  },
+  {
+    "id": "osunosogbo",
+    "placement": "land",
+    "heights": [
+      48,
+      67,
+      83,
+      61,
+      43
+    ],
+    "detail": "sculpture"
+  },
+  {
+    "id": "aldabra",
+    "placement": "sea",
+    "heights": [
+      17,
+      31,
+      43,
+      29,
+      15
+    ],
+    "detail": "turtle"
+  },
+  {
+    "id": "valleedemai",
+    "placement": "land",
+    "heights": [
+      45,
+      65,
+      81,
+      60,
+      42
+    ],
+    "detail": "palm"
+  },
+  {
+    "id": "sanganeb",
+    "placement": "sea",
+    "heights": [
+      15,
+      28,
+      39,
+      24,
+      13
+    ],
+    "detail": "fish"
+  },
+  {
+    "id": "djoudj",
+    "placement": "river",
+    "heights": [
+      18,
+      26,
+      38,
+      24,
+      14
+    ],
+    "detail": "waterbirds"
+  },
+  {
+    "id": "saintlouis",
+    "placement": "river",
+    "heights": [
+      30,
+      43,
+      58,
+      39,
+      25
+    ],
+    "detail": "boat"
+  },
+  {
+    "id": "saloum",
+    "placement": "river",
+    "heights": [
+      25,
+      44,
+      59,
+      39,
+      21
+    ],
+    "detail": "forestwater"
+  },
+  {
+    "id": "ounianga",
+    "placement": "river",
+    "heights": [
+      27,
+      46,
+      61,
+      42,
+      24
+    ],
+    "detail": "dunes"
+  },
+  {
+    "id": "ennedi",
+    "placement": "land",
+    "heights": [
+      59,
+      81,
+      67,
+      95,
+      47
+    ],
+    "detail": "archrock"
+  },
+  {
+    "id": "ichkeul",
+    "placement": "river",
+    "heights": [
+      21,
+      34,
+      46,
+      29,
+      17
+    ],
+    "detail": "waterbirds"
+  },
+  {
+    "id": "kilwa",
+    "placement": "coastal",
+    "heights": [
+      25,
+      41,
+      57,
+      36,
+      22
+    ],
+    "detail": "seabird"
+  },
+  {
+    "id": "bwindi",
+    "placement": "land",
+    "heights": [
+      56,
+      75,
+      91,
+      69,
+      50
+    ],
+    "detail": "gorilla"
+  },
+  {
+    "id": "rwenzori",
+    "placement": "land",
+    "heights": [
+      57,
+      84,
+      104,
+      78,
+      48
+    ],
+    "detail": "snow"
+  },
+  {
+    "id": "capefloral",
+    "placement": "land",
+    "heights": [
+      24,
+      40,
+      56,
+      36,
+      21
+    ],
+    "detail": "flowers"
+  },
+  {
+    "id": "mapungubwe",
+    "placement": "land",
+    "heights": [
+      54,
+      73,
+      68,
+      82,
+      43
+    ],
+    "detail": "quiet"
+  },
+  {
+    "id": "manapools",
+    "placement": "river",
+    "heights": [
+      23,
+      37,
+      49,
+      33,
+      20
+    ],
+    "detail": "herd"
+  },
+  {
+    "id": "matobo",
+    "placement": "land",
+    "heights": [
+      48,
+      65,
+      83,
+      61,
+      36
+    ],
+    "detail": "engravings"
+  },
+  {
+    "id": "khami",
+    "placement": "land",
+    "heights": [
+      24,
+      39,
+      54,
+      35,
+      21
+    ],
+    "detail": "drystone"
+  },
+  {
+    "id": "antiguadockyard",
+    "placement": "coastal",
+    "heights": [
+      28,
+      41,
+      53,
+      37,
+      24
+    ],
+    "detail": "sail"
+  },
+  {
+    "id": "bridgetown",
+    "placement": "coastal",
+    "heights": [
+      34,
+      47,
+      61,
+      43,
+      29
+    ],
+    "detail": "windows"
+  },
+  {
+    "id": "potosi",
+    "placement": "land",
+    "heights": [
+      41,
+      63,
+      87,
+      58,
+      35
+    ],
+    "detail": "mine"
+  },
+  {
+    "id": "sucre",
+    "placement": "land",
+    "heights": [
+      39,
+      52,
+      73,
+      49,
+      32
+    ],
+    "detail": "white"
+  },
+  {
+    "id": "samaipata",
+    "placement": "land",
+    "heights": [
+      38,
+      58,
+      76,
+      53,
+      31
+    ],
+    "detail": "engravings"
+  },
+  {
+    "id": "noelkempff",
+    "placement": "land",
+    "heights": [
+      47,
+      68,
+      84,
+      63,
+      44
+    ],
+    "detail": "forest"
+  },
+  {
+    "id": "olinda",
+    "placement": "land",
+    "heights": [
+      42,
+      57,
+      76,
+      53,
+      34
+    ],
+    "detail": "painted"
+  },
+  {
+    "id": "congonhas",
+    "placement": "land",
+    "heights": [
+      38,
+      56,
+      81,
+      59,
+      35
+    ],
+    "detail": "sculpture"
+  },
+  {
+    "id": "pantanal",
+    "placement": "river",
+    "heights": [
+      21,
+      35,
+      47,
+      31,
+      19
+    ],
+    "detail": "herd"
+  },
+  {
+    "id": "fernandonoronha",
+    "placement": "sea",
+    "heights": [
+      29,
+      57,
+      78,
+      48,
+      23
+    ],
+    "detail": "fish"
+  },
+  {
+    "id": "lencois",
+    "placement": "river",
+    "heights": [
+      18,
+      35,
+      48,
+      31,
+      16
+    ],
+    "detail": "dunes"
+  },
+  {
+    "id": "pampulha",
+    "placement": "land",
+    "heights": [
+      22,
+      42,
+      63,
+      35,
+      19
+    ],
+    "detail": "curves"
+  },
+  {
+    "id": "lanseauxmeadows",
+    "placement": "land",
+    "heights": [
+      26,
+      38,
+      49,
+      35,
+      23
+    ],
+    "detail": "turf"
+  },
+  {
+    "id": "sgang",
+    "placement": "coastal",
+    "heights": [
+      48,
+      63,
+      85,
+      59,
+      38
+    ],
+    "detail": "poles"
+  },
+  {
+    "id": "woodbuffalo",
+    "placement": "land",
+    "heights": [
+      46,
+      62,
+      78,
+      56,
+      39
+    ],
+    "detail": "bison"
+  },
+  {
+    "id": "oldquebec",
+    "placement": "land",
+    "heights": [
+      54,
+      41,
+      79,
+      46,
+      62
+    ],
+    "detail": "bastions"
+  },
+  {
+    "id": "rideau",
+    "placement": "river",
+    "heights": [
+      21,
+      37,
+      52,
+      31,
+      18
+    ],
+    "detail": "lock"
+  },
+  {
+    "id": "joggins",
+    "placement": "coastal",
+    "heights": [
+      57,
+      71,
+      86,
+      64,
+      42
+    ],
+    "detail": "fossils"
+  },
+  {
+    "id": "humberstone",
+    "placement": "land",
+    "heights": [
+      31,
+      56,
+      91,
+      47,
+      24
+    ],
+    "detail": "wheel"
+  },
+  {
+    "id": "sewell",
+    "placement": "land",
+    "heights": [
+      43,
+      61,
+      78,
+      54,
+      36
+    ],
+    "detail": "stairs"
+  },
+  {
+    "id": "mompox",
+    "placement": "river",
+    "heights": [
+      31,
+      46,
+      63,
+      41,
+      27
+    ],
+    "detail": "boat"
+  },
+  {
+    "id": "sanagustin",
+    "placement": "land",
+    "heights": [
+      46,
+      65,
+      83,
+      59,
+      35
+    ],
+    "detail": "sculpture"
+  },
+  {
+    "id": "chiribiquete",
+    "placement": "land",
+    "heights": [
+      79,
+      95,
+      88,
+      102,
+      63
+    ],
+    "detail": "tablemountain"
+  },
+  {
+    "id": "cocosisland",
+    "placement": "sea",
+    "heights": [
+      28,
+      54,
+      73,
+      46,
+      24
+    ],
+    "detail": "fish"
+  },
+  {
+    "id": "diquis",
+    "placement": "land",
+    "heights": [
+      26,
+      41,
+      54,
+      36,
+      23
+    ],
+    "detail": "spheres"
+  },
+  {
+    "id": "havana",
+    "placement": "coastal",
+    "heights": [
+      41,
+      58,
+      82,
+      53,
+      32
+    ],
+    "detail": "arcade"
+  },
+  {
+    "id": "vinales",
+    "placement": "land",
+    "heights": [
+      49,
+      71,
+      91,
+      66,
+      40
+    ],
+    "detail": "karst"
+  },
+  {
+    "id": "sanpedroroca",
+    "placement": "coastal",
+    "heights": [
+      56,
+      41,
+      72,
+      48,
+      61
+    ],
+    "detail": "bastions"
+  },
+  {
+    "id": "mornetrois",
+    "placement": "land",
+    "heights": [
+      42,
+      68,
+      95,
+      61,
+      35
+    ],
+    "detail": "steam"
+  },
+  {
+    "id": "santodomingo",
+    "placement": "land",
+    "heights": [
+      36,
+      49,
+      68,
+      45,
+      30
+    ],
+    "detail": "arcade"
+  },
+  {
+    "id": "galapagos",
+    "placement": "sea",
+    "heights": [
+      27,
+      48,
+      76,
+      43,
+      21
+    ],
+    "detail": "turtle"
+  },
+  {
+    "id": "sangay",
+    "placement": "land",
+    "heights": [
+      41,
+      72,
+      101,
+      64,
+      34
+    ],
+    "detail": "steam"
+  },
+  {
+    "id": "antiguaguatemala",
+    "placement": "land",
+    "heights": [
+      40,
+      59,
+      79,
+      55,
+      32
+    ],
+    "detail": "arcade"
+  },
+  {
+    "id": "quirigua",
+    "placement": "land",
+    "heights": [
+      48,
+      71,
+      93,
+      65,
+      39
+    ],
+    "detail": "engravings"
+  },
+  {
+    "id": "rioplatano",
+    "placement": "land",
+    "heights": [
+      50,
+      68,
+      85,
+      63,
+      44
+    ],
+    "detail": "forest"
+  },
+  {
+    "id": "pitons",
+    "placement": "coastal",
+    "heights": [
+      17,
+      100,
+      31,
+      91,
+      19
+    ],
+    "detail": "twin"
+  },
+  {
+    "id": "eltajin",
+    "placement": "land",
+    "heights": [
+      24,
+      45,
+      81,
+      48,
+      22
+    ],
+    "detail": "niches"
+  },
+  {
+    "id": "paquime",
+    "placement": "land",
+    "heights": [
+      21,
+      39,
+      62,
+      34,
+      18
+    ],
+    "detail": "earth"
+  },
+  {
+    "id": "vizcaino",
+    "placement": "sea",
+    "heights": [
+      13,
+      22,
+      34,
+      20,
+      11
+    ],
+    "detail": "whale"
+  },
+  {
+    "id": "xochicalco",
+    "placement": "land",
+    "heights": [
+      26,
+      47,
+      79,
+      44,
+      23
+    ],
+    "detail": "relief"
+  },
+  {
+    "id": "monarch",
+    "placement": "land",
+    "heights": [
+      48,
+      67,
+      84,
+      61,
+      42
+    ],
+    "detail": "butterflies"
+  },
+  {
+    "id": "pinacate",
+    "placement": "land",
+    "heights": [
+      32,
+      55,
+      72,
+      47,
+      26
+    ],
+    "detail": "crater"
+  },
+  {
+    "id": "padretembleque",
+    "placement": "river",
+    "heights": [
+      32,
+      47,
+      59,
+      46,
+      30
+    ],
+    "detail": "arches"
+  },
+  {
+    "id": "coiba",
+    "placement": "sea",
+    "heights": [
+      29,
+      52,
+      71,
+      45,
+      22
+    ],
+    "detail": "fish"
+  },
+  {
+    "id": "chavin",
+    "placement": "land",
+    "heights": [
+      35,
+      53,
+      73,
+      48,
+      29
+    ],
+    "detail": "relief"
+  },
+  {
+    "id": "huascaran",
+    "placement": "land",
+    "heights": [
+      55,
+      82,
+      106,
+      79,
+      47
+    ],
+    "detail": "snow"
+  },
+  {
+    "id": "caral",
+    "placement": "land",
+    "heights": [
+      21,
+      43,
+      74,
+      39,
+      19
+    ],
+    "detail": "platforms"
+  },
+  {
+    "id": "chankillo",
+    "placement": "land",
+    "heights": [
+      38,
+      55,
+      70,
+      53,
+      34
+    ],
+    "detail": "sun"
+  },
+  {
+    "id": "paramaribo",
+    "placement": "land",
+    "heights": [
+      34,
+      48,
+      65,
+      42,
+      28
+    ],
+    "detail": "timber"
+  },
+  {
+    "id": "redwood",
+    "placement": "land",
+    "heights": [
+      65,
+      85,
+      107,
+      89,
+      59
+    ],
+    "detail": "gianttrees"
+  },
+  {
+    "id": "olympic",
+    "placement": "land",
+    "heights": [
+      55,
+      77,
+      98,
+      73,
+      47
+    ],
+    "detail": "forest"
+  },
+  {
+    "id": "cahokia",
+    "placement": "land",
+    "heights": [
+      19,
+      40,
+      67,
+      36,
+      17
+    ],
+    "detail": "mounds"
+  },
+  {
+    "id": "hawaiivolcanoes",
+    "placement": "land",
+    "heights": [
+      25,
+      48,
+      79,
+      43,
+      22
+    ],
+    "detail": "lava"
+  },
+  {
+    "id": "colonia",
+    "placement": "coastal",
+    "heights": [
+      30,
+      44,
+      59,
+      39,
+      26
+    ],
+    "detail": "sail"
+  },
+  {
+    "id": "canaima",
+    "placement": "river",
+    "heights": [
+      73,
+      98,
+      85,
+      103,
+      59
+    ],
+    "detail": "waterfall"
+  },
+  {
+    "id": "kakadu",
+    "placement": "river",
+    "heights": [
+      38,
+      58,
+      77,
+      53,
+      32
+    ],
+    "detail": "waterbirds"
+  },
+  {
+    "id": "uluru",
+    "placement": "land",
+    "heights": [
+      31,
+      68,
+      76,
+      65,
+      27
+    ],
+    "detail": "monolith"
+  },
+  {
+    "id": "sharkbay",
+    "placement": "sea",
+    "heights": [
+      12,
+      24,
+      36,
+      21,
+      10
+    ],
+    "detail": "stromatolite"
+  },
+  {
+    "id": "bluemountains",
+    "placement": "land",
+    "heights": [
+      63,
+      82,
+      91,
+      76,
+      49
+    ],
+    "detail": "forest"
+  },
+  {
+    "id": "purnululu",
+    "placement": "land",
+    "heights": [
+      45,
+      69,
+      88,
+      62,
+      38
+    ],
+    "detail": "bands"
+  },
+  {
+    "id": "ningaloo",
+    "placement": "sea",
+    "heights": [
+      16,
+      29,
+      42,
+      26,
+      14
+    ],
+    "detail": "whaleshark"
+  },
+  {
+    "id": "tongariro",
+    "placement": "land",
+    "heights": [
+      39,
+      69,
+      97,
+      63,
+      33
+    ],
+    "detail": "steam"
+  },
+  {
+    "id": "tewahipounamu",
+    "placement": "coastal",
+    "heights": [
+      59,
+      81,
+      96,
+      74,
+      46
+    ],
+    "detail": "ice"
+  },
+  {
+    "id": "levuka",
+    "placement": "coastal",
+    "heights": [
+      27,
+      41,
+      54,
+      36,
+      23
+    ],
+    "detail": "timber"
+  },
+  {
+    "id": "roimata",
+    "placement": "coastal",
+    "heights": [
+      24,
+      47,
+      68,
+      41,
+      20
+    ],
+    "detail": "quiet"
+  },
+  {
+    "id": "eastrennell",
+    "placement": "sea",
+    "heights": [
+      21,
+      38,
+      56,
+      34,
+      18
+    ],
+    "detail": "lagoon"
+  },
+  {
+    "id": "kuk",
+    "placement": "land",
+    "heights": [
+      17,
+      31,
+      46,
+      28,
+      15
+    ],
+    "detail": "drainage"
+  },
+  {
+    "id": "bagerhat",
+    "placement": "land",
+    "heights": [
+      26,
+      47,
+      68,
+      43,
+      24
+    ],
+    "detail": "brick"
+  },
+  {
+    "id": "paharpur",
+    "placement": "land",
+    "heights": [
+      25,
+      48,
+      86,
+      44,
+      22
+    ],
+    "detail": "terracotta"
+  },
+  {
+    "id": "preahvihear",
+    "placement": "land",
+    "heights": [
+      38,
+      59,
+      81,
+      54,
+      32
+    ],
+    "detail": "stairs"
+  },
+  {
+    "id": "kohker",
+    "placement": "land",
+    "heights": [
+      23,
+      44,
+      90,
+      46,
+      21
+    ],
+    "detail": "steps"
+  },
+  {
+    "id": "komodo",
+    "placement": "sea",
+    "heights": [
+      32,
+      59,
+      81,
+      51,
+      26
+    ],
+    "detail": "dragon"
+  },
+  {
+    "id": "prambanan",
+    "placement": "land",
+    "heights": [
+      46,
+      74,
+      104,
+      70,
+      40
+    ],
+    "detail": "towers"
+  },
+  {
+    "id": "balisubak",
+    "placement": "river",
+    "heights": [
+      23,
+      42,
+      61,
+      37,
+      20
+    ],
+    "detail": "channels"
+  },
+  {
+    "id": "kinabalu",
+    "placement": "land",
+    "heights": [
+      54,
+      84,
+      102,
+      76,
+      45
+    ],
+    "detail": "granite"
+  },
+  {
+    "id": "gunungmulu",
+    "placement": "land",
+    "heights": [
+      63,
+      89,
+      104,
+      78,
+      52
+    ],
+    "detail": "cave"
+  },
+  {
+    "id": "puertoprincesa",
+    "placement": "river",
+    "heights": [
+      52,
+      76,
+      92,
+      69,
+      43
+    ],
+    "detail": "caveriver"
+  },
+  {
+    "id": "tubbataha",
+    "placement": "sea",
+    "heights": [
+      14,
+      27,
+      41,
+      25,
+      12
+    ],
+    "detail": "fish"
+  },
+  {
+    "id": "cordilleraterraces",
+    "placement": "river",
+    "heights": [
+      29,
+      49,
+      72,
+      44,
+      25
+    ],
+    "detail": "channels"
+  },
+  {
+    "id": "hue",
+    "placement": "land",
+    "heights": [
+      34,
+      52,
+      77,
+      48,
+      30
+    ],
+    "detail": "tiles"
+  },
+  {
+    "id": "hoian",
+    "placement": "land",
+    "heights": [
+      35,
+      47,
+      61,
+      43,
+      29
+    ],
+    "detail": "timber"
+  },
+  {
+    "id": "trangan",
+    "placement": "river",
+    "heights": [
+      51,
+      79,
+      99,
+      72,
+      43
+    ],
+    "detail": "karst"
+  },
+  {
+    "id": "anuradhapura",
+    "placement": "land",
+    "heights": [
+      24,
+      46,
+      83,
+      43,
+      21
+    ],
+    "detail": "bodhi"
+  },
+  {
+    "id": "galle",
+    "placement": "coastal",
+    "heights": [
+      48,
+      36,
+      67,
+      41,
+      55
+    ],
+    "detail": "bastions"
+  },
+  {
+    "id": "dambulla",
+    "placement": "land",
+    "heights": [
+      55,
+      77,
+      89,
+      68,
+      45
+    ],
+    "detail": "niches"
+  },
+  {
+    "id": "gyeongju",
+    "placement": "land",
+    "heights": [
+      24,
+      41,
+      58,
+      37,
+      20
+    ],
+    "detail": "mounds"
+  },
+  {
+    "id": "hahoeyangdong",
+    "placement": "land",
+    "heights": [
+      32,
+      46,
+      63,
+      42,
+      27
+    ],
+    "detail": "tiles"
+  },
+  {
+    "id": "namhansanseong",
+    "placement": "land",
+    "heights": [
+      57,
+      41,
+      78,
+      47,
+      62
+    ],
+    "detail": "bastions"
+  },
+  {
+    "id": "seowon",
+    "placement": "land",
+    "heights": [
+      26,
+      39,
+      57,
+      36,
+      23
+    ],
+    "detail": "tiles"
+  },
+  {
+    "id": "qinmausoleum",
+    "placement": "land",
+    "heights": [
+      38,
+      57,
+      78,
+      53,
+      32
+    ],
+    "detail": "army"
+  },
+  {
+    "id": "pingyao",
+    "placement": "land",
+    "heights": [
+      51,
+      38,
+      74,
+      43,
+      57
+    ],
+    "detail": "bastions"
+  },
+  {
+    "id": "yungang",
+    "placement": "land",
+    "heights": [
+      64,
+      87,
+      101,
+      79,
+      52
+    ],
+    "detail": "niches"
+  },
+  {
+    "id": "westlake",
+    "placement": "river",
+    "heights": [
+      22,
+      39,
+      57,
+      34,
+      19
+    ],
+    "detail": "causeway"
+  },
+  {
+    "id": "haniterraces",
+    "placement": "river",
+    "heights": [
+      26,
+      47,
+      69,
+      42,
+      23
+    ],
+    "detail": "channels"
+  },
+  {
+    "id": "pattadakal",
+    "placement": "land",
+    "heights": [
+      39,
+      62,
+      88,
+      57,
+      33
+    ],
+    "detail": "towers"
+  },
+  {
+    "id": "shivajiterminus",
+    "placement": "land",
+    "heights": [
+      47,
+      69,
+      96,
+      65,
+      41
+    ],
+    "detail": "clock"
+  },
+  {
+    "id": "nalanda",
+    "placement": "land",
+    "heights": [
+      22,
+      40,
+      62,
+      36,
+      19
+    ],
+    "detail": "brick"
+  },
+  {
+    "id": "bam",
+    "placement": "land",
+    "heights": [
+      56,
+      42,
+      82,
+      49,
+      63
+    ],
+    "detail": "earth"
+  },
+  {
+    "id": "shushtar",
+    "placement": "river",
+    "heights": [
+      29,
+      46,
+      64,
+      41,
+      25
+    ],
+    "detail": "wheel"
+  },
+  {
+    "id": "gonbadeqabus",
+    "placement": "land",
+    "heights": [
+      0,
+      20,
+      105,
+      18,
+      0
+    ],
+    "detail": "flutes"
+  },
+  {
+    "id": "cappadocia",
+    "placement": "land",
+    "heights": [
+      42,
+      74,
+      96,
+      66,
+      35
+    ],
+    "detail": "niches"
+  },
+  {
+    "id": "nemrut",
+    "placement": "land",
+    "heights": [
+      44,
+      66,
+      89,
+      60,
+      37
+    ],
+    "detail": "heads"
+  },
+  {
+    "id": "pamukkale",
+    "placement": "river",
+    "heights": [
+      27,
+      49,
+      70,
+      44,
+      24
+    ],
+    "detail": "whitewater"
+  },
+  {
+    "id": "troy",
+    "placement": "land",
+    "heights": [
+      20,
+      38,
+      56,
+      32,
+      17
+    ],
+    "detail": "brick"
+  },
+  {
+    "id": "baalbek",
+    "placement": "land",
+    "heights": [
+      40,
+      65,
+      91,
+      61,
+      34
+    ],
+    "detail": "columns"
+  },
+  {
+    "id": "byblos",
+    "placement": "coastal",
+    "heights": [
+      23,
+      43,
+      61,
+      37,
+      20
+    ],
+    "detail": "seabird"
+  },
+  {
+    "id": "quseiramra",
+    "placement": "land",
+    "heights": [
+      22,
+      41,
+      61,
+      38,
+      19
+    ],
+    "detail": "fresco"
+  },
+  {
+    "id": "wadirum",
+    "placement": "land",
+    "heights": [
+      66,
+      91,
+      78,
+      102,
+      52
+    ],
+    "detail": "archrock"
+  },
+  {
+    "id": "atturaif",
+    "placement": "land",
+    "heights": [
+      33,
+      51,
+      73,
+      46,
+      27
+    ],
+    "detail": "earth"
+  },
+  {
+    "id": "alahsa",
+    "placement": "land",
+    "heights": [
+      24,
+      44,
+      62,
+      39,
+      21
+    ],
+    "detail": "palm"
+  },
+  {
+    "id": "alzubarah",
+    "placement": "land",
+    "heights": [
+      44,
+      32,
+      62,
+      38,
+      49
+    ],
+    "detail": "bastions"
+  },
+  {
+    "id": "alain",
+    "placement": "land",
+    "heights": [
+      25,
+      41,
+      58,
+      36,
+      22
+    ],
+    "detail": "palm"
+  },
+  {
+    "id": "shirakami",
+    "placement": "land",
+    "heights": [
+      50,
+      72,
+      88,
+      66,
+      45
+    ],
+    "detail": "forest"
+  },
+  {
+    "id": "ogasawara",
+    "placement": "sea",
+    "heights": [
+      25,
+      49,
+      70,
+      43,
+      21
+    ],
+    "detail": "seabird"
+  },
+  {
+    "id": "tomioka",
+    "placement": "land",
+    "heights": [
+      35,
+      48,
+      64,
+      43,
+      28
+    ],
+    "detail": "silk"
+  },
+  {
+    "id": "salzburg",
+    "placement": "land",
+    "heights": [
+      45,
+      66,
+      89,
+      60,
+      37
+    ],
+    "detail": "dome"
+  },
+  {
+    "id": "hallstatt",
+    "placement": "river",
+    "heights": [
+      58,
+      79,
+      94,
+      71,
+      44
+    ],
+    "detail": "lakeside"
+  },
+  {
+    "id": "berne",
+    "placement": "land",
+    "heights": [
+      42,
+      57,
+      78,
+      52,
+      34
+    ],
+    "detail": "arcade"
+  },
+  {
+    "id": "stgall",
+    "placement": "land",
+    "heights": [
+      39,
+      64,
+      87,
+      61,
+      35
+    ],
+    "detail": "library"
+  },
+  {
+    "id": "wurzburg",
+    "placement": "land",
+    "heights": [
+      37,
+      54,
+      74,
+      51,
+      31
+    ],
+    "detail": "garden"
+  },
+  {
+    "id": "trier",
+    "placement": "land",
+    "heights": [
+      34,
+      71,
+      43,
+      75,
+      30
+    ],
+    "detail": "arches"
+  },
+  {
+    "id": "speicherstadt",
+    "placement": "river",
+    "heights": [
+      49,
+      62,
+      78,
+      57,
+      42
+    ],
+    "detail": "brick"
+  },
+  {
+    "id": "kronborg",
+    "placement": "coastal",
+    "heights": [
+      63,
+      47,
+      88,
+      52,
+      69
+    ],
+    "detail": "spires"
+  },
+  {
+    "id": "ilulissat",
+    "placement": "sea",
+    "heights": [
+      49,
+      76,
+      99,
+      69,
+      41
+    ],
+    "detail": "ice"
+  },
+  {
+    "id": "suomenlinna",
+    "placement": "coastal",
+    "heights": [
+      39,
+      29,
+      58,
+      34,
+      44
+    ],
+    "detail": "bastions"
+  },
+  {
+    "id": "rauma",
+    "placement": "land",
+    "heights": [
+      34,
+      47,
+      63,
+      42,
+      29
+    ],
+    "detail": "timber"
+  },
+  {
+    "id": "orangetheatre",
+    "placement": "land",
+    "heights": [
+      28,
+      51,
+      73,
+      49,
+      25
+    ],
+    "detail": "stagewall"
+  },
+  {
+    "id": "cordouan",
+    "placement": "sea",
+    "heights": [
+      0,
+      29,
+      102,
+      25,
+      0
+    ],
+    "detail": "beacon"
+  },
+  {
+    "id": "maisoncarree",
+    "placement": "land",
+    "heights": [
+      41,
+      65,
+      82,
+      63,
+      36
+    ],
+    "detail": "columns"
+  },
+  {
+    "id": "edinburgh",
+    "placement": "land",
+    "heights": [
+      55,
+      72,
+      96,
+      64,
+      43
+    ],
+    "detail": "spires"
+  },
+  {
+    "id": "pontcysyllte",
+    "placement": "river",
+    "heights": [
+      35,
+      51,
+      64,
+      50,
+      32
+    ],
+    "detail": "ironwater"
+  },
+  {
+    "id": "kew",
+    "placement": "land",
+    "heights": [
+      20,
+      39,
+      62,
+      37,
+      18
+    ],
+    "detail": "glasshouse"
+  },
+  {
+    "id": "delphi",
+    "placement": "land",
+    "heights": [
+      35,
+      56,
+      81,
+      51,
+      29
+    ],
+    "detail": "columns"
+  },
+  {
+    "id": "epidaurus",
+    "placement": "land",
+    "heights": [
+      26,
+      46,
+      65,
+      43,
+      23
+    ],
+    "detail": "theatre"
+  },
+  {
+    "id": "mycenae",
+    "placement": "land",
+    "heights": [
+      40,
+      70,
+      45,
+      74,
+      36
+    ],
+    "detail": "cyclopean"
+  },
+  {
+    "id": "brunaboinne",
+    "placement": "land",
+    "heights": [
+      21,
+      44,
+      65,
+      41,
+      18
+    ],
+    "detail": "spiral"
+  },
+  {
+    "id": "thingvellir",
+    "placement": "land",
+    "heights": [
+      47,
+      68,
+      83,
+      59,
+      37
+    ],
+    "detail": "rift"
+  },
+  {
+    "id": "agrigento",
+    "placement": "land",
+    "heights": [
+      36,
+      62,
+      86,
+      58,
+      31
+    ],
+    "detail": "columns"
+  },
+  {
+    "id": "cinqueterre",
+    "placement": "coastal",
+    "heights": [
+      48,
+      68,
+      89,
+      61,
+      39
+    ],
+    "detail": "terracedtown"
+  },
+  {
+    "id": "bryggen",
+    "placement": "coastal",
+    "heights": [
+      46,
+      59,
+      76,
+      55,
+      40
+    ],
+    "detail": "timber"
+  },
+  {
+    "id": "tomar",
+    "placement": "land",
+    "heights": [
+      33,
+      55,
+      82,
+      51,
+      29
+    ],
+    "detail": "roundchurch"
+  },
+  {
+    "id": "teide",
+    "placement": "land",
+    "heights": [
+      40,
+      73,
+      106,
+      68,
+      34
+    ],
+    "detail": "lava"
+  }
+]

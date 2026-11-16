@@ -1,5 +1,10 @@
 import expansion from './landmark-expansion.json';
 import * as a from './scenes/actors';
+import catalog600 from './catalog-600.json';
+const catalog600Ids = new Set(catalog600.map((entry) => entry.id));
+const legacyExpansion = expansion.filter(
+  (entry) => !catalog600Ids.has(entry.id),
+);
 
 const aquatic = new Set([
   'canal',
@@ -51,7 +56,7 @@ const greenery = new Set([
 ]);
 
 /** 실제 장소의 특징에 맞는 작은 가상 장면을 배치하고 한·영 설명을 함께 둔다. */
-export const expandedScenes = expansion.map((entry) => {
+export const expandedScenes = legacyExpansion.map((entry) => {
   const { id, shape, seed, color, name, nameKo } = entry;
   const x = 18 + (seed % 13),
     offset = seed % 9;

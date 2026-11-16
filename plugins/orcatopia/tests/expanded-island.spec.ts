@@ -47,6 +47,7 @@ test('full collection fits the expanded island and outer placements survive movi
   await page.locator('#overview').click();
   await page.locator('.ocean').screenshot({
     path: 'test-results/landmark-island/300-landmarks-full-island.png',
+    animations: 'disabled',
   });
   const camera = await page.locator('.camera').elementHandle();
   await page
@@ -80,7 +81,10 @@ test('full collection fits the expanded island and outer placements survive movi
   const fresh = await page
     .context()
     .browser()!
-    .newContext({ viewport: { width: 390, height: 844 } });
+    .newContext({
+      viewport: { width: 390, height: 844 },
+      reducedMotion: 'reduce',
+    });
   const narrow = await fresh.newPage();
   await narrow.goto(new URL('/?lang=ko', page.url()).href);
   await narrow.evaluate(
@@ -89,6 +93,13 @@ test('full collection fits the expanded island and outer placements survive movi
     stored,
   );
   await narrow.reload();
+  expect(
+    await narrow.evaluate(
+      () => matchMedia('(prefers-reduced-motion: reduce)').matches,
+    ),
+  ).toBe(true);
+  await narrow.locator('#daylight').selectOption('0');
+  await narrow.locator('#weather').selectOption('0');
   await expect(narrow.locator('.cell')).toHaveCount(1044);
   await expect(
     narrow.locator(`[data-world-cell="${destination}"] .building`),
@@ -101,6 +112,7 @@ test('full collection fits the expanded island and outer placements survive movi
   ).toBe(true);
   await narrow.locator('.ocean').screenshot({
     path: 'test-results/landmark-island/300-landmarks-narrow.png',
+    animations: 'disabled',
   });
   await fresh.close();
   expect(errors).toEqual([]);

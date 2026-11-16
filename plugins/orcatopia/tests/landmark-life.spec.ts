@@ -134,10 +134,13 @@ test('eight landmark stories stay still when unowned, animate on the island and 
     ['colosseum', '.gladiator-left'],
   ];
   await page.goto('/?lang=en');
-  for (const [id] of stories)
+  await page.locator('[data-inventory="landmarks"]').click();
+  for (const [id] of stories) {
+    await page.locator(`[data-landmark="${id}"]`).scrollIntoViewIfNeeded();
     await expect(
       page.locator(`[data-landmark="${id}"] .landmark-life`),
     ).toHaveCSS('display', 'none');
+  }
   await expect(
     page.locator('[data-landmark="kinderdijk"] .mill-sails').first(),
   ).toHaveCSS('animation-name', 'none');
@@ -261,10 +264,10 @@ test('rarity stages grow from ambient moments to grounded Wonder spectacles whil
 }) => {
   await page.goto('/?preview=landmark-life&lang=ko');
   for (const [tier, count] of [
-    ['common', 154],
-    ['rare', 119],
-    ['epic', 25],
-    ['legendary', 8],
+    ['common', 291],
+    ['rare', 243],
+    ['epic', 54],
+    ['legendary', 12],
   ] as const) {
     const section = page.locator(
       `.life-preview-tier[data-animation-tier="${tier}"]`,
@@ -347,11 +350,19 @@ test('the complete catalog has unique localized living scenes, safe SVG artwork 
   });
   await page.emulateMedia({ reducedMotion: 'no-preference' });
   await page.goto('/?lang=en');
-  await expect(page.locator('.card .landmark-life')).toHaveCount(
+  await expect(page.locator('.card [data-catalog-art]')).toHaveCount(
     landmarks.length,
   );
-  for (const scene of await page.locator('.card .landmark-life').all())
-    await expect(scene).toHaveCSS('display', 'none');
+  await expect(page.locator('.card .landmark-art')).toHaveCount(0);
+  await page.locator('[data-inventory="landmarks"]').click();
+  await page.locator('#inventory-search').fill('Bahrain World Trade Center');
+  expect(
+    await page
+      .locator('.card .landmark-life')
+      .evaluateAll((scenes) =>
+        scenes.every((scene) => getComputedStyle(scene).display === 'none'),
+      ),
+  ).toBe(true);
   await expect(
     page.locator('[data-landmark="bahrainwtc"] .catalog-turbine-rotor').first(),
   ).toHaveCSS('animation-name', 'none');
@@ -366,19 +377,37 @@ test('the complete catalog has unique localized living scenes, safe SVG artwork 
     content:
       '.life-preview-card .landmark-art, .life-preview-card .landmark-art * { animation-play-state: paused !important; }',
   });
-  for (const landmark of landmarks) {
+  const animationCounts = await page
+    .locator('.life-preview-card .detail-art')
+    .evaluateAll((elements) =>
+      elements.map((element) => {
+        const animations = element.getAnimations({ subtree: true });
+        for (const animation of animations) {
+          animation.pause();
+          animation.currentTime = 3600;
+        }
+        return animations.length;
+      }),
+    );
+  expect(animationCounts).toHaveLength(600);
+  expect(animationCounts.every((count) => count > 0)).toBe(true);
+  const sampleIds = new Set([
+    'eiffel',
+    'greatwall',
+    'giza',
+    'colosseum',
+    'fuji',
+    'cappadocia',
+    'galapagos',
+    'jam',
+    'canaima',
+    'malbork',
+    'uluru',
+    'yungang',
+  ]);
+  for (const landmark of landmarks.filter((entry) => sampleIds.has(entry.id))) {
     const card = page.locator(`#scene-${landmark.id}`);
     const art = card.locator('.detail-art');
-    expect(
-      await art.evaluate((el) => el.getAnimations({ subtree: true }).length),
-      landmark.id,
-    ).toBeGreaterThan(0);
-    await art.evaluate((el) => {
-      for (const animation of el.getAnimations({ subtree: true })) {
-        animation.pause();
-        animation.currentTime = 3600;
-      }
-    });
     await art.screenshot({
       path: test.info().outputPath(`catalog/${landmark.id}.jpg`),
       quality: 80,
@@ -493,9 +522,11 @@ test('rarity intensity grows on the island without growing hitboxes, and accent 
   page,
 }) => {
   await page.goto('/?lang=en');
-  await expect(page.locator('.card .tier-presence')).toHaveCount(
-    landmarks.length * 2,
-  );
+  await expect(page.locator('.card .tier-presence')).toHaveCount(0);
+  await page.locator('[data-inventory="landmarks"]').click();
+  await expect(
+    page.locator('.card').first().locator('.tier-presence'),
+  ).toHaveCount(2);
   await expect(page.locator('.card .tier-presence').first()).toHaveCSS(
     'display',
     'none',
@@ -536,6 +567,9 @@ test('rarity intensity grows on the island without growing hitboxes, and accent 
     localStorage.getItem('landmark-island-demo-v1'),
   );
   await page.goto('/?preview=landmark-life&lang=en');
+  await expect(page.locator('.life-preview-card .tier-presence')).toHaveCount(
+    landmarks.length * 2,
+  );
   for (const [id, time] of [
     ['gyeongbokgung', 3600],
     ['eiffel', 3600],

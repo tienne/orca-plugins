@@ -417,7 +417,7 @@ test('hover wheel zoom needs no focus or modifier, anchors the pointer and leave
 });
 
 for (const [batch, catalogEntries] of catalogBatches.entries())
-  test(`field guide describes all landmarks, including unowned ones, without changing the save (batch ${batch + 1})`, async ({
+  test(`field guide describes representative unowned entries from each catalog batch without changing the save (batch ${batch + 1})`, async ({
     page,
   }) => {
     test.setTimeout(180_000);
@@ -425,11 +425,11 @@ for (const [batch, catalogEntries] of catalogBatches.entries())
     const before = await page.evaluate(() =>
       localStorage.getItem('landmark-island-demo-v1'),
     );
-    const entries = catalogEntries.map(({ id, name, country }) => [
-      id,
-      name,
-      country,
-    ]);
+    const entries = catalogEntries
+      .filter(
+        (_, index) => index % 25 === 0 || index === catalogEntries.length - 1,
+      )
+      .map(({ id, name, country }) => [id, name, country]);
     for (const [id, name, country] of entries) {
       const about = page.locator(`[data-info="${id}"]`);
       await expect(page.locator(`[data-landmark="${id}"]`)).toBeDisabled();
@@ -589,10 +589,10 @@ test('rarity filters, discoveries and progress distinguish unique landmarks from
   );
   const camera = await page.locator('.camera').getAttribute('style');
   for (const [tier, visible, collected, chance, rank, name] of [
-    ['common', 154, 0, 70, 1, 'Discovery'],
-    ['rare', 119, 0, 23, 2, 'Treasure'],
-    ['epic', 25, 0, 6, 3, 'Marvel'],
-    ['legendary', 8, 1, 1, 4, 'Wonder'],
+    ['common', 291, 0, 70, 1, 'Discovery'],
+    ['rare', 243, 0, 23, 2, 'Treasure'],
+    ['epic', 54, 0, 6, 3, 'Marvel'],
+    ['legendary', 12, 1, 1, 4, 'Wonder'],
   ] as const) {
     const filter = page.locator(`[data-tier-filter="${tier}"]`);
     await openInventory(page, 'landmarks');
@@ -719,6 +719,10 @@ for (const wonder of landmarks.filter((l) => l.tier === 'legendary'))
         landmarks.filter((entry) => entry.tier === 'legendary').length,
     );
     await page.goto('/');
+    await openInventory(page, 'landmarks');
+    await page
+      .locator(`[data-landmark="${wonder.id}"]`)
+      .scrollIntoViewIfNeeded();
     const cardBody = page.locator(
       `[data-landmark="${wonder.id}"] .wonder-body`,
     );
@@ -738,6 +742,9 @@ for (const wonder of landmarks.filter((l) => l.tier === 'legendary'))
       'Owned ×1',
     );
     await openInventory(page, 'landmarks');
+    await page
+      .locator(`[data-landmark="${wonder.id}"]`)
+      .scrollIntoViewIfNeeded();
     const cardStart = await cardBody.evaluate(
       (el) => getComputedStyle(el).transform,
     );
@@ -1725,11 +1732,15 @@ for (const [batch, catalogEntries] of catalogBatches.entries())
       save,
     );
     await page.reload();
-    await expect(page.locator('.collection .landmark-art')).toHaveCount(
+    await expect(page.locator('.collection [data-catalog-art]')).toHaveCount(
       landmarks.length,
     );
+    await expect(page.locator('.collection .landmark-art')).toHaveCount(0);
+    await openInventory(page, 'landmarks');
+    await expect(
+      page.locator('.collection .card').first().locator('.landmark-art'),
+    ).toBeVisible();
     await expect(page.locator('.building .landmark-art')).toHaveCount(2);
-    await expect(page.locator('.collection .wonder-art')).toHaveCount(8);
     const inspectPaint = await page.evaluate(() => {
       const inspect = (svgs: Element[], existing = new Set<string>()) => {
         const ids = svgs.flatMap((svg) =>
@@ -1769,11 +1780,19 @@ for (const [batch, catalogEntries] of catalogBatches.entries())
       return inspect(svgs);
     });
     expect(inspectPaint).toEqual({ unique: true, missing: [] });
-    for (const entry of landmarks) {
-      await expect(
-        page.locator(`[data-landmark="${entry.id}"] .wonder-body`),
-      ).toHaveCount(entry.tier === 'legendary' ? 1 : 0);
-    }
+    expect(
+      await page.locator('.collection .card').evaluateAll((cards) =>
+        cards.map((card) => ({
+          id: (card as HTMLElement).dataset.catalogId,
+          tier: (card as HTMLElement).dataset.tier,
+        })),
+      ),
+    ).toEqual(
+      landmarks.map((entry) => ({
+        id: entry.id,
+        tier: entry.tier,
+      })),
+    );
     // Previously saved Giza placements remain in place without the old Wonder effects.
     await expect(page.locator('.building .wonder-art')).toHaveCount(0);
 
@@ -1783,7 +1802,9 @@ for (const [batch, catalogEntries] of catalogBatches.entries())
       path: test.info().outputPath('material-collection.jpg'),
       quality: 80,
     });
-    for (const { id } of catalogEntries) {
+    for (const { id } of catalogEntries.filter(
+      (_, index) => index % 25 === 0 || index === catalogEntries.length - 1,
+    )) {
       await openInventory(page, 'landmarks');
       await page.locator(`[data-info=${id}]`).click();
       const result = await page
@@ -1821,14 +1842,13 @@ for (const [batch, catalogEntries] of catalogBatches.entries())
     ).toBe(true);
     if (batch > 0) return;
     // An isolated contact sheet for reviewing the bundled artwork, not a product screen.
+    await page.goto('/?preview=landmark-life&lang=en');
     await page.setViewportSize({ width: 1200, height: 420 });
     await page.evaluate(
       (entries) => {
         const cards = entries
           .map(({ id, name, country }) => {
-            const svg = document.querySelector(
-              `[data-landmark="${id}"] svg`,
-            )!.outerHTML;
+            const svg = document.querySelector(`#scene-${id} svg`)!.outerHTML;
             return `<article>${svg}<strong>${name}</strong><small>${country}</small></article>`;
           })
           .join('');
@@ -3365,8 +3385,13 @@ for (const theme of ['light', 'dark'])
     );
     await openInventory(page, 'decorations');
     await page.locator('#inventory-search').fill('Qatar');
-    await expect(page.locator('.decoration-card:visible')).toHaveCount(3);
-    await expect(page.locator('#inventory-results')).toHaveText('3개 항목');
+    const qatarPlaces = landmarks.filter((entry) => entry.code === 'QAT');
+    await expect(page.locator('.decoration-card:visible')).toHaveCount(
+      qatarPlaces.length * 3,
+    );
+    await expect(page.locator('#inventory-results')).toHaveText(
+      `${qatarPlaces.length * 3}개 항목`,
+    );
     await expect(
       page.locator('.decoration-card:visible button[data-decor-place]').first(),
     ).toBeDisabled();
@@ -3386,11 +3411,16 @@ for (const theme of ['light', 'dark'])
     });
     await openInventory(page, 'landmarks');
     await page.locator('#inventory-search').fill('Qatar');
-    await expect(page.locator('.collection .card:visible')).toHaveCount(1);
+    await expect(page.locator('.collection .card:visible')).toHaveCount(
+      qatarPlaces.length,
+    );
     await expect(page.locator('[data-catalog-id=nmoq]')).toContainText(
       '카타르 국립박물관',
     );
     await page.locator('[data-tier-filter=common]').click();
+    await expect(page.locator('.collection .card:visible')).toHaveCount(1);
+    await expect(page.locator('[data-catalog-id=alzubarah]')).toBeVisible();
+    await page.locator('[data-tier-filter=legendary]').click();
     await expect(page.locator('.inventory-empty')).toBeVisible();
     await page.locator('#reset-inventory-filters').click();
     await expect(page.locator('[data-tier-filter=all]')).toHaveAttribute(

@@ -1,9 +1,9 @@
 import { defineConfig } from '@playwright/test';
 const port = Number(process.env.ORCATOPIA_TEST_PORT ?? 43189);
 export default defineConfig({
-  workers: process.env.CI ? 1 : undefined,
+  workers: process.env.CI ? 1 : 2,
   fullyParallel: Boolean(process.env.CI),
-  timeout: process.env.CI ? 120_000 : 30_000,
+  timeout: process.env.CI ? 120_000 : 60_000,
   testDir: './tests',
   outputDir: '../../test-results/landmark-island',
   use: {

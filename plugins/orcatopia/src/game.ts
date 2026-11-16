@@ -475,16 +475,12 @@ function checkLayout(s: State, input: unknown) {
 }
 export const MAX_BACKUP_BYTES = 256 * 1024;
 export function encodeBackup(state: State): string {
-  const text = JSON.stringify(
-    {
-      format: 'landmark-island-backup',
-      version: 1,
-      exportedAt: new Date().toISOString(),
-      state: validate(state),
-    },
-    null,
-    2,
-  );
+  const text = JSON.stringify({
+    format: 'landmark-island-backup',
+    version: 1,
+    exportedAt: new Date().toISOString(),
+    state: validate(state),
+  });
   if (new TextEncoder().encode(text).length > MAX_BACKUP_BYTES)
     throw Error('Backup exceeds the 256 KiB file limit. Nothing was changed.');
   return text;

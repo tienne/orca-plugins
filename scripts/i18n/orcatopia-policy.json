@@ -42,7 +42,9 @@
       "kind": "literal",
       "category": "technical",
       "reason": "Reviewed identifiers, enum values, selectors, CSS and serialized protocol tokens; these are not presentation copy.",
-      "values": ["false"]
+      "values": [
+        "false"
+      ]
     },
     {
       "file": "plugins/orcatopia/src/decorations.ts",
@@ -393,28 +395,47 @@
       "kind": "literal",
       "category": "technical",
       "reason": "Reviewed identifiers, enum values, selectors, CSS and serialized protocol tokens; these are not presentation copy.",
-      "values": ["#tier-{0}", "NFKC", "[data-preview-tier=\"{0}\"]", "ko-KR"]
+      "values": [
+        "#tier-{0}",
+        "NFKC",
+        "[data-preview-tier=\"{0}\"]",
+        "ko-KR"
+      ]
     },
     {
       "file": "plugins/orcatopia/src/landmark-life.ts",
       "kind": "literal",
       "category": "technical",
       "reason": "Reviewed identifiers, enum values, selectors, CSS and serialized protocol tokens; these are not presentation copy.",
-      "values": ["carry", "hammer", "left", "pull", "right"]
+      "values": [
+        "carry",
+        "hammer",
+        "left",
+        "pull",
+        "right"
+      ]
     },
     {
       "file": "plugins/orcatopia/src/placement-preview.ts",
       "kind": "literal",
       "category": "technical",
       "reason": "Reviewed identifiers, enum values, selectors, CSS and serialized protocol tokens; these are not presentation copy.",
-      "values": ["merge", "place", "{0}px"]
+      "values": [
+        "merge",
+        "place",
+        "{0}px"
+      ]
     },
     {
       "file": "plugins/orcatopia/src/placement.ts",
       "kind": "literal",
       "category": "technical",
       "reason": "Reviewed identifiers, enum values, selectors, CSS and serialized protocol tokens; these are not presentation copy.",
-      "values": ["coastal", "land", "sea"]
+      "values": [
+        "coastal",
+        "land",
+        "sea"
+      ]
     },
     {
       "file": "plugins/orcatopia/src/render-island.ts",
@@ -517,7 +538,11 @@
       "kind": "literal",
       "category": "technical",
       "reason": "Reviewed identifiers, enum values, selectors, CSS and serialized protocol tokens; these are not presentation copy.",
-      "values": ["I+", "greatwall+", "translate({0}px, {1}px) scale({2})"]
+      "values": [
+        "I+",
+        "greatwall+",
+        "translate({0}px, {1}px) scale({2})"
+      ]
     },
     {
       "file": "plugins/orcatopia/src/terrain-art.ts",
@@ -665,42 +690,79 @@
       "kind": "literal",
       "category": "technical",
       "reason": "Reviewed identifiers, enum values, selectors, CSS and serialized protocol tokens; these are not presentation copy.",
-      "values": ["gift", "river", "sea", "special", "water-"]
+      "values": [
+        "gift",
+        "river",
+        "sea",
+        "special",
+        "water-"
+      ]
     },
     {
       "file": "plugins/orcatopia/src/water-themes.ts",
       "kind": "literal",
       "category": "technical",
       "reason": "Reviewed identifiers, enum values, selectors, CSS and serialized protocol tokens; these are not presentation copy.",
-      "values": ["buoy", "coral", "lotus", "raft", "sailboat", "waterwheel"]
+      "values": [
+        "buoy",
+        "coral",
+        "lotus",
+        "raft",
+        "sailboat",
+        "waterwheel"
+      ]
     },
     {
       "file": "plugins/orcatopia/src/weather-client.ts",
       "kind": "literal",
       "category": "technical",
       "reason": "Reviewed identifiers, enum values, selectors, CSS and serialized protocol tokens; these are not presentation copy.",
-      "values": ["stale", "unavailable", "unsupported"]
+      "values": [
+        "stale",
+        "unavailable",
+        "unsupported"
+      ]
     },
     {
       "file": "plugins/orcatopia/src/weather.ts",
       "kind": "literal",
       "category": "technical",
       "reason": "Reviewed identifiers, enum values, selectors, CSS and serialized protocol tokens; these are not presentation copy.",
-      "values": ["fresh", "stale", "unavailable", "unsupported"]
+      "values": [
+        "fresh",
+        "stale",
+        "unavailable",
+        "unsupported"
+      ]
     },
     {
       "file": "plugins/orcatopia/src/world.ts",
       "kind": "literal",
       "category": "technical",
       "reason": "Reviewed identifiers, enum values, selectors, CSS and serialized protocol tokens; these are not presentation copy.",
-      "values": ["flowers", "grass", "oak", "path", "pine", "rock", "sand"]
+      "values": [
+        "flowers",
+        "grass",
+        "oak",
+        "path",
+        "pine",
+        "rock",
+        "sand"
+      ]
     },
     {
       "file": "plugins/orcatopia/src/worker/expeditions.ts",
       "kind": "literal",
       "category": "technical",
       "reason": "Reviewed identifiers, enum values, selectors, CSS and serialized protocol tokens; these are not presentation copy.",
-      "values": ["blocked", "done", "hex", "sha256", "waiting", "working"]
+      "values": [
+        "blocked",
+        "done",
+        "hex",
+        "sha256",
+        "waiting",
+        "working"
+      ]
     },
     {
       "file": "plugins/orcatopia/src/worker/main.ts",
@@ -878,7 +940,335 @@
         "title",
         "placeholder",
         "alt",
-        "text"
+        "text",
+        "svg[aria-hidden=\"true\"]",
+        "[aria-label],[title]",
+        "text,title,desc,[aria-label],[title]"
+      ]
+    },
+    {
+      "file": "plugins/orcatopia/src/catalog-600-art.ts",
+      "kind": "literal",
+      "category": "technical",
+      "reason": "SVG materials, contour commands, scene motifs and actor identifiers; never shown as interface text.",
+      "values": [
+        "earth",
+        "paintedearth",
+        "brick",
+        "terracotta",
+        "sandstone",
+        "marble",
+        "stone",
+        "#d3c9a6",
+        "M{0} {1}h{2}v{3}h-{4}z",
+        "M{0} {1}l{2}-{3} {4} {5}z",
+        "copper",
+        "M12 113h23m15 5h28m15-7h21",
+        "#d7e9d6",
+        "M7 113{0}L123 113L65 123z",
+        "L{0} {1}",
+        "M{0} {1}v-{2}",
+        "#7e7050",
+        "castle",
+        "fortress",
+        "M10 84h41m29 0h37M10 108h38m34 0h34",
+        "M{0} 114l4-{1}h{2}l5 {3}z",
+        "M{0} {1}h{2}",
+        "#6d9ea4",
+        "#dfc7a2",
+        "basilica",
+        "cathedral",
+        "dome",
+        "mosque",
+        "roundtemple",
+        "stupa",
+        "M29 85q0-{0} 35-{1}t35 {2}z",
+        "M64 {0}v-12",
+        "#d9c391",
+        "M35 75q-3-{0} 29-{1}t29 {2}z",
+        "glass",
+        "cross",
+        "gold",
+        "M64 {0}v-13m-4 5h8",
+        "#b8a57c",
+        "M64 30l8 20 21-2-16 15 5 22-18-12-18 12 5-22-16-15 21 2z",
+        "M64 {0}Q{1} 53 {2} 75",
+        "#bbbba3",
+        "palace",
+        "cloister",
+        "hall",
+        "town",
+        "square",
+        "thatched",
+        "adobe",
+        "roundhouse",
+        "woodchurch",
+        "modern",
+        "harbor",
+        "canal",
+        "iron",
+        "M{0} {1}q10-12 20 0v{2}q-10 8-20 0z",
+        "M{0} {1}h17m-17 17h17",
+        "M65 {0}v5l4 2",
+        "#695f4f",
+        "M{0} 88l5-7 5 7-5 7z",
+        "#7d6a55",
+        "M9 105q15-{0} 32-5t35-9 43 8v12H9z",
+        "templetower",
+        "pyramid",
+        "ziggurat",
+        "#e0cea8",
+        "M61 112V{0}m6 0v{1}",
+        "#c6ba96",
+        "columns",
+        "ruins",
+        "gate",
+        "theatre",
+        "bridge",
+        "aqueduct",
+        "M7 {0}h114m-114 5h114",
+        "#8c8c76",
+        "M{0} {1}v{2}",
+        "#c2b694",
+        "M6 {0}l58-19 58 19v7H6z",
+        "stelae",
+        "jars",
+        "tomb",
+        "observatory",
+        "M5 112l54-15 63 15-58 11z",
+        "grass",
+        "M{0} {1}l7 7-7 7 7 8m-7 8h7",
+        "#7c7359",
+        "M{0} {1}h7m-4-3v7",
+        "#6e6858",
+        "industrial",
+        "mine",
+        "mountain",
+        "#b3a282",
+        "M49 52h32M65 36v32M54 41l22 22m0-22-22 22",
+        "#b49b6d",
+        "M{0} 80v25",
+        "#e0d9b3",
+        "lakes",
+        "wetland",
+        "mangrove",
+        "reef",
+        "island",
+        "coast",
+        "fjord",
+        "waterworks",
+        "redrocks",
+        "pillars",
+        "forest",
+        "garden",
+        "terraces",
+        "savanna",
+        "peaks",
+        "glacier",
+        "M{0} {1}l6-17 12 16-8-3-5 5z",
+        "snow",
+        "cave",
+        "rocktemple",
+        "clifftemple",
+        "cliffbuddha",
+        "M{0} 48l5 {1} 7-{2}z",
+        "M{0} 99l3-15h4l5 15z",
+        "M{0} 114v-{1}m0 8-6-7m6 3 6-9",
+        "#deaf99",
+        "#c6b587",
+        "#e7e6d0",
+        "#c2c795",
+        "volcano",
+        "crater",
+        "M44 79l14 12 9 20",
+        "#d88c57",
+        "#b8c1a1",
+        "M78 {0}l-4 {1}",
+        "#ebf0d9",
+        "M12 {0}q49 13 98-3",
+        "#ceaa79",
+        "mosaic",
+        "fresco",
+        "relief",
+        "engravings",
+        "sculpture",
+        "deer",
+        "horse",
+        "fossils",
+        "M{0} 96v-12l5-5 5 5v7l-7 5m-2-5 9 8",
+        "#ad836c",
+        "#82775d",
+        "channels",
+        "drainage",
+        "causeway",
+        "forestwater",
+        "M20 104l21-12 20 11 22-12 27 14m-49-2-10 13",
+        "#8dc7c6",
+        "tiles",
+        "blue",
+        "lattice",
+        "M20 84h89m-78 7h65",
+        "#68a2ac",
+        "#d9bb81",
+        "M35 111V82q29-43 58 0v29z",
+        "M35 88h58M64 65v46m-16-37v37m32-37v37",
+        "#dfdfc2",
+        "cliff",
+        "minaret",
+        "towers",
+        "waterfall",
+        "M{0} 114l4-{1} 10-{2} 9 {3} 6 {4}z",
+        "M{0} {1}l-4 {2} 12 {3}m-8-{4} 8 {5}",
+        "#a6ac95",
+        "M5 113V{0}l20-8 18 4 23-{1} 25 5 31 10v{2}l-57 13z",
+        "M8 {0}l32-4 22 5 26-2 32 5",
+        "#baa180",
+        "M5 112l29-{0} 55 4 34 12-58 11z",
+        "M{0} 108l3-{1}h7l5 {2}z",
+        "dunes",
+        "stromatolite",
+        "whale",
+        "waterbirds",
+        "M7 112q-4-{0} 31-{1}l48-3q37 2 35 {2}l-57 10z",
+        "M{0} {1}q-5 22 2 {2}",
+        "#bd9975",
+        "M7 112l28-73 62 7 25 65-57 12z",
+        "M4 113l58-21 62 20-59 11z",
+        "M{0} 114l11-{1} 15 {2}z",
+        "M{0} {1}l8-28 13 26z",
+        "M{0} {1}v-9m0 5-4-5m4 4 4-6",
+        "#cfad8f",
+        "M35 112l8-33h43l8 33z",
+        "M51 49l5-24h16l6 24z",
+        "#d6d1b8",
+        "M6 114l54-23 62 20-58 12z",
+        "M{0} {1}h10l2 17h-14z",
+        "M{0} {1}h8m-8 5h8m-8 5h8m-6 4v7m4-7v7",
+        "#8d775d",
+        "M52 58q0-45 25-45t25 45z",
+        "M20 38h59m-57 5v66m54-66v66M91 60v49",
+        "#7da8a7",
+        "M3 113l12-65 25-22 34 12 30-11 22 86-62 10z",
+        "M66 22V9m-5 5h10",
+        "#d5c6a0",
+        "M{0} {1}q0-17 8-17t8 17z",
+        "M{0} {1}l13-13 14 13z",
+        "M{0} {1}h18m-18 7h18m-13-14v7m8 0v7",
+        "#ac9f7e",
+        "M{0} {1}q50-17 96 0",
+        "#d5cfb0",
+        "#d1c5a3",
+        "M{0} {1}l{2}-16 {3} 16z",
+        "M5 113V40l28-8 19 7v75z",
+        "M57 114V31l38-6 28 13v77z",
+        "M5 40l28-8 19 7-24 9z",
+        "M57 31l38-6 28 13-37 5z",
+        "M7 {0}l42 3m11-8 60 5",
+        "#a6aa91",
+        "M84 43l-5 64m8-60-4 55",
+        "#f0edda",
+        "M{0} 78q18-15 18-{1} 0 {2} 18 {3}z",
+        "slate",
+        "M65 41V29m-5 5h10",
+        "#d4c397",
+        "M{0} {1}h{2}v3H{3}z",
+        "M6 112l55-23 62 22-59 12z",
+        "M{0} 79q0-30 15-30t15 30z",
+        "M44 40l20-22 19 22z",
+        "M8 74h35m-35 16h35m-35 15h35m43-31h34m-34 17h34M64 24v14",
+        "#d6c9a7",
+        "M17 32v77m20-77v77M91 29v80m19-80v80",
+        "#6ca4ac",
+        "M41 69q7-18 17-24l-1 11-16 25z",
+        "M87 67q-9-18-18-24v11l18 26z"
+      ]
+    },
+    {
+      "file": "plugins/orcatopia/src/catalog-600-scenes.ts",
+      "kind": "literal",
+      "category": "technical",
+      "reason": "SVG materials, contour commands, scene motifs and actor identifiers; never shown as interface text.",
+      "values": [
+        "fish",
+        "whaleshark",
+        "whale",
+        "turtle",
+        "stromatolite",
+        "ice",
+        "travel",
+        "waterbirds",
+        "seabird",
+        "boat",
+        "sail",
+        "forestwater",
+        "canoe",
+        "gorilla",
+        "okapi",
+        "rhino",
+        "herd",
+        "bison",
+        "dragon",
+        "monkey",
+        "stroll",
+        "wheel",
+        "silk",
+        "lock",
+        "ironwater",
+        "channels",
+        "drainage",
+        "walk",
+        "M43 87v20m12-20v20",
+        "steam",
+        "lava",
+        "crater",
+        "sketch",
+        "waterfall",
+        "cascade",
+        "whitewater",
+        "cave",
+        "caveriver",
+        "salt",
+        "mine",
+        "lantern",
+        "M40 62l8 17m26-19-4 20",
+        "forest",
+        "gianttrees",
+        "palm",
+        "flowers",
+        "garden",
+        "bodhi",
+        "moorland",
+        "snow",
+        "granite",
+        "tablemountain",
+        "karst",
+        "twin",
+        "rift",
+        "monolith",
+        "bands",
+        "dunes",
+        "quiet",
+        "peaks",
+        "redrocks",
+        "cliff",
+        "sun",
+        "beacon",
+        "M16 96h97",
+        "library",
+        "mosaic",
+        "fresco",
+        "engravings",
+        "relief",
+        "sgraffito",
+        "sculpture",
+        "deer",
+        "horse",
+        "heads",
+        "army",
+        "poles",
+        "spiral",
+        "M42 87l16 7 25-10",
+        "M17 {0}h91"
       ]
     },
     {
@@ -1063,6 +1453,13 @@
       "text": "IV",
       "category": "brand",
       "reason": "Product/demo identity or rarity numeral; same spelling in both languages."
+    },
+    {
+      "file": "plugins/orcatopia/src/catalog-600-art.ts",
+      "kind": "error",
+      "text": "Unsupported catalog illustration: {0}",
+      "category": "diagnostic",
+      "reason": "Developer-only catalog invariant failure; all supported catalog entries are exercised by the art coverage test."
     }
   ],
   "fragments": [
@@ -1249,70 +1646,92 @@
     {
       "file": "plugins/orcatopia/src/decorations.ts",
       "text": "{0} star monument",
-      "samples": ["Eiffel Tower star monument"],
+      "samples": [
+        "Eiffel Tower star monument"
+      ],
       "reason": "Generated decoration name; all catalog decorations are also checked by the existing test.",
       "prefix": ""
     },
     {
       "file": "plugins/orcatopia/src/expanded-decorations.ts",
       "text": "{0} garden planting",
-      "samples": ["Robben Island garden planting"],
+      "samples": [
+        "Robben Island garden planting"
+      ],
       "reason": "Generated expansion decoration name.",
       "prefix": ""
     },
     {
       "file": "plugins/orcatopia/src/expanded-decorations.ts",
       "text": "{0} garden retreat",
-      "samples": ["Robben Island garden retreat"],
+      "samples": [
+        "Robben Island garden retreat"
+      ],
       "reason": "Generated expansion decoration name.",
       "prefix": ""
     },
     {
       "file": "plugins/orcatopia/src/water-themes.ts",
       "text": "coral garden",
-      "samples": ["Papahānaumokuākea coral garden"],
+      "samples": [
+        "Papahānaumokuākea coral garden"
+      ],
       "reason": "Water shape suffix is translated as part of each generated landmark decoration name.",
       "prefix": "Papahānaumokuākea "
     },
     {
       "file": "plugins/orcatopia/src/water-themes.ts",
       "text": "navigation buoy",
-      "samples": ["Ha Long Bay navigation buoy"],
+      "samples": [
+        "Ha Long Bay navigation buoy"
+      ],
       "reason": "Water shape suffix is translated as part of each generated landmark decoration name.",
       "prefix": "Ha Long Bay "
     },
     {
       "file": "plugins/orcatopia/src/water-themes.ts",
       "text": "floating lotus bed",
-      "samples": ["Old Bridge of Mostar floating lotus bed"],
+      "samples": [
+        "Old Bridge of Mostar floating lotus bed"
+      ],
       "reason": "Water shape suffix is translated as part of each generated landmark decoration name.",
       "prefix": "Old Bridge of Mostar "
     },
     {
       "file": "plugins/orcatopia/src/water-themes.ts",
       "text": "river raft",
-      "samples": ["Old Bridge of Mostar river raft"],
+      "samples": [
+        "Old Bridge of Mostar river raft"
+      ],
       "reason": "Water shape suffix is translated as part of each generated landmark decoration name.",
       "prefix": "Old Bridge of Mostar "
     },
     {
       "file": "plugins/orcatopia/src/ui.ts",
       "text": "Fuse {0} +",
-      "samples": ["Fuse Eiffel Tower +"],
+      "samples": [
+        "Fuse Eiffel Tower +"
+      ],
       "reason": "Generated fusion confirmation label.",
       "prefix": ""
     },
     {
       "file": "plugins/orcatopia/src/ui.ts",
       "text": "{1}, rarity {2}{3} of 4{4}",
-      "samples": ["Discovery, rarity 1 of 4", "Discovery, rarity 1.5 of 4.5"],
+      "samples": [
+        "Discovery, rarity 1 of 4",
+        "Discovery, rarity 1.5 of 4.5"
+      ],
       "reason": "Normal and enhanced accessible rarity labels.",
       "prefix": ""
     },
     {
       "file": "plugins/orcatopia/src/ui.ts",
       "text": "{5} · Rarity {6}{7}/4{8}",
-      "samples": ["Discovery · Rarity 1/4", "Discovery · Rarity 1.5/4.5"],
+      "samples": [
+        "Discovery · Rarity 1/4",
+        "Discovery · Rarity 1.5/4.5"
+      ],
       "reason": "Normal and enhanced rarity tooltips.",
       "prefix": ""
     },
@@ -1339,21 +1758,28 @@
     {
       "file": "plugins/orcatopia/src/ui.ts",
       "text": "Undo layout{1}",
-      "samples": ["Undo layout"],
+      "samples": [
+        "Undo layout"
+      ],
       "reason": "Rendered example for optional/compound source fragments; nested source literals are scanned separately.",
       "prefix": ""
     },
     {
       "file": "plugins/orcatopia/src/ui.ts",
       "text": "Brush · {1}",
-      "samples": ["Brush · On", "Brush · Off"],
+      "samples": [
+        "Brush · On",
+        "Brush · Off"
+      ],
       "reason": "Rendered example for optional/compound source fragments; nested source literals are scanned separately.",
       "prefix": ""
     },
     {
       "file": "plugins/orcatopia/src/ui.ts",
       "text": "A little island between tasks {0}",
-      "samples": ["A little island between tasks "],
+      "samples": [
+        "A little island between tasks "
+      ],
       "reason": "Rendered example for optional/compound source fragments; nested source literals are scanned separately.",
       "prefix": ""
     },
@@ -1378,21 +1804,27 @@
     {
       "file": "plugins/orcatopia/src/ui.ts",
       "text": "On",
-      "samples": ["Brush · On"],
+      "samples": [
+        "Brush · On"
+      ],
       "reason": "Branch fragment is translated with the complete Brush label.",
       "prefix": "Brush · "
     },
     {
       "file": "plugins/orcatopia/src/ui.ts",
       "text": "Off",
-      "samples": ["Brush · Off"],
+      "samples": [
+        "Brush · Off"
+      ],
       "reason": "Branch fragment is translated with the complete Brush label.",
       "prefix": "Brush · "
     },
     {
       "file": "plugins/orcatopia/src/scene.ts",
       "text": "Weather updated {0}",
-      "samples": ["Weather updated 2026-11-06T00:00:00.000Z"],
+      "samples": [
+        "Weather updated 2026-11-06T00:00:00.000Z"
+      ],
       "reason": "Special date formatter; exercised against the real translator.",
       "prefix": ""
     },
@@ -1408,30 +1840,173 @@
     {
       "file": "plugins/orcatopia/src/i18n.ts",
       "text": "{0} garden planting",
-      "samples": ["Robben Island garden planting"],
+      "samples": [
+        "Robben Island garden planting"
+      ],
       "reason": "Generated expansion decoration name.",
       "prefix": ""
     },
     {
       "file": "plugins/orcatopia/src/i18n.ts",
       "text": "{0} garden retreat",
-      "samples": ["Robben Island garden retreat"],
+      "samples": [
+        "Robben Island garden retreat"
+      ],
       "reason": "Generated expansion decoration name.",
       "prefix": ""
     },
     {
       "file": "plugins/orcatopia/src/i18n.ts",
       "text": "{0} star monument",
-      "samples": ["Eiffel Tower star monument"],
+      "samples": [
+        "Eiffel Tower star monument"
+      ],
       "reason": "Generated decoration name; all catalog decorations are also checked by the existing test.",
       "prefix": ""
     },
     {
       "file": "plugins/orcatopia/src/i18n.ts",
       "text": "Fuse {0} +",
-      "samples": ["Fuse Eiffel Tower +"],
+      "samples": [
+        "Fuse Eiffel Tower +"
+      ],
       "reason": "Generated fusion confirmation label.",
       "prefix": ""
+    },
+    {
+      "file": "plugins/orcatopia/src/catalog-600-scenes.ts",
+      "text": "Small ice fragments drift past the frozen shoreline.",
+      "prefix": "Te Wahipounamu: Glaciers, fjords and ancient forests shape the southwest of New Zealand's South Island. Miniature scene: ",
+      "samples": [
+        "Te Wahipounamu: Glaciers, fjords and ancient forests shape the southwest of New Zealand's South Island. Miniature scene: Small ice fragments drift past the frozen shoreline."
+      ],
+      "reason": "Scene prose is translated with the actual place name and sourced feature; the bound full message must exist."
+    },
+    {
+      "file": "plugins/orcatopia/src/catalog-600-scenes.ts",
+      "text": "A small aquatic silhouette passes the water while ripples follow the shore.",
+      "prefix": "Lake Malawi National Park: Clear lake waters and rocky shores support an exceptional diversity of freshwater fish. Miniature scene: ",
+      "samples": [
+        "Lake Malawi National Park: Clear lake waters and rocky shores support an exceptional diversity of freshwater fish. Miniature scene: A small aquatic silhouette passes the water while ripples follow the shore."
+      ],
+      "reason": "Scene prose is translated with the actual place name and sourced feature; the bound full message must exist."
+    },
+    {
+      "file": "plugins/orcatopia/src/catalog-600-scenes.ts",
+      "text": "A little boat follows the water as birds cross the shoreline.",
+      "prefix": "Ancient Nessebar: Churches and historic houses cluster on a rocky peninsula in the Black Sea. Miniature scene: ",
+      "samples": [
+        "Ancient Nessebar: Churches and historic houses cluster on a rocky peninsula in the Black Sea. Miniature scene: A little boat follows the water as birds cross the shoreline."
+      ],
+      "reason": "Scene prose is translated with the actual place name and sourced feature; the bound full message must exist."
+    },
+    {
+      "file": "plugins/orcatopia/src/catalog-600-scenes.ts",
+      "text": "A tiny animal moves at the edge of the habitat while leaves drift overhead.",
+      "prefix": "Hortobágy Puszta: Open grasslands preserve a long tradition of pastoral life on the Hungarian plain. Miniature scene: ",
+      "samples": [
+        "Hortobágy Puszta: Open grasslands preserve a long tradition of pastoral life on the Hungarian plain. Miniature scene: A tiny animal moves at the edge of the habitat while leaves drift overhead."
+      ],
+      "reason": "Scene prose is translated with the actual place name and sourced feature; the bound full message must exist."
+    },
+    {
+      "file": "plugins/orcatopia/src/catalog-600-scenes.ts",
+      "text": "Orange wings flutter between the trees in a miniature winter gathering.",
+      "prefix": "Monarch Butterfly Reserve: High-elevation forests shelter vast numbers of overwintering monarch butterflies. Miniature scene: ",
+      "samples": [
+        "Monarch Butterfly Reserve: High-elevation forests shelter vast numbers of overwintering monarch butterflies. Miniature scene: Orange wings flutter between the trees in a miniature winter gathering."
+      ],
+      "reason": "Scene prose is translated with the actual place name and sourced feature; the bound full message must exist."
+    },
+    {
+      "file": "plugins/orcatopia/src/catalog-600-scenes.ts",
+      "text": "A little wheel turns beside the working structure while a visitor follows its edge.",
+      "prefix": "Aflaj Irrigation Systems: Gravity-fed water channels distribute precious water through Omani communities and farms. Miniature scene: ",
+      "samples": [
+        "Aflaj Irrigation Systems: Gravity-fed water channels distribute precious water through Omani communities and farms. Miniature scene: A little wheel turns beside the working structure while a visitor follows its edge."
+      ],
+      "reason": "Scene prose is translated with the actual place name and sourced feature; the bound full message must exist."
+    },
+    {
+      "file": "plugins/orcatopia/src/catalog-600-scenes.ts",
+      "text": "A pale plume rises above the volcanic terrain as an observer sketches from the margin.",
+      "prefix": "Morne Trois Pitons: A volcanic mountain landscape contains hot springs, fumaroles and tropical forest. Miniature scene: ",
+      "samples": [
+        "Morne Trois Pitons: A volcanic mountain landscape contains hot springs, fumaroles and tropical forest. Miniature scene: A pale plume rises above the volcanic terrain as an observer sketches from the margin."
+      ],
+      "reason": "Scene prose is translated with the actual place name and sourced feature; the bound full message must exist."
+    },
+    {
+      "file": "plugins/orcatopia/src/catalog-600-scenes.ts",
+      "text": "Water descends in bright threads and spreads into ripples beneath the terraces.",
+      "prefix": "Plitvice Lakes: Water cascades between terraced lakes divided by natural travertine barriers. Miniature scene: ",
+      "samples": [
+        "Plitvice Lakes: Water cascades between terraced lakes divided by natural travertine barriers. Miniature scene: Water descends in bright threads and spreads into ripples beneath the terraces."
+      ],
+      "reason": "Scene prose is translated with the actual place name and sourced feature; the bound full message must exist."
+    },
+    {
+      "file": "plugins/orcatopia/src/catalog-600-scenes.ts",
+      "text": "A lantern-bearing visitor pauses as light traces the underground formations.",
+      "prefix": "Vjetrenica Cave: A karst cave shelters an exceptionally diverse community of underground animals. Miniature scene: ",
+      "samples": [
+        "Vjetrenica Cave: A karst cave shelters an exceptionally diverse community of underground animals. Miniature scene: A lantern-bearing visitor pauses as light traces the underground formations."
+      ],
+      "reason": "Scene prose is translated with the actual place name and sourced feature; the bound full message must exist."
+    },
+    {
+      "file": "plugins/orcatopia/src/catalog-600-scenes.ts",
+      "text": "Leaves turn gently and small wings pass between the plants.",
+      "prefix": "Nesvizh Castle: The Radziwill family's palace complex joins residential buildings with a landscaped setting. Miniature scene: ",
+      "samples": [
+        "Nesvizh Castle: The Radziwill family's palace complex joins residential buildings with a landscaped setting. Miniature scene: Leaves turn gently and small wings pass between the plants."
+      ],
+      "reason": "Scene prose is translated with the actual place name and sourced feature; the bound full message must exist."
+    },
+    {
+      "file": "plugins/orcatopia/src/catalog-600-scenes.ts",
+      "text": "Clouds pass the distinctive rock outline while a quiet light crosses the landscape.",
+      "prefix": "Gobustan Rock Art: Thousands of rock engravings record long human occupation among a plateau of rocky boulders. Miniature scene: ",
+      "samples": [
+        "Gobustan Rock Art: Thousands of rock engravings record long human occupation among a plateau of rocky boulders. Miniature scene: Clouds pass the distinctive rock outline while a quiet light crosses the landscape."
+      ],
+      "reason": "Scene prose is translated with the actual place name and sourced feature; the bound full message must exist."
+    },
+    {
+      "file": "plugins/orcatopia/src/catalog-600-scenes.ts",
+      "text": "A band of light sweeps past the landmark while an observer records its path.",
+      "prefix": "Chankillo: Thirteen towers form the horizon markers of an ancient solar observatory. Miniature scene: ",
+      "samples": [
+        "Chankillo: Thirteen towers form the horizon markers of an ancient solar observatory. Miniature scene: A band of light sweeps past the landmark while an observer records its path."
+      ],
+      "reason": "Scene prose is translated with the actual place name and sourced feature; the bound full message must exist."
+    },
+    {
+      "file": "plugins/orcatopia/src/catalog-600-scenes.ts",
+      "text": "A visitor sketches the decorated surfaces as a soft light reveals their details.",
+      "prefix": "Boyana Church: A small medieval church preserves vivid thirteenth-century wall paintings. Miniature scene: ",
+      "samples": [
+        "Boyana Church: A small medieval church preserves vivid thirteenth-century wall paintings. Miniature scene: A visitor sketches the decorated surfaces as a soft light reveals their details."
+      ],
+      "reason": "Scene prose is translated with the actual place name and sourced feature; the bound full message must exist."
+    },
+    {
+      "file": "plugins/orcatopia/src/catalog-600-scenes.ts",
+      "text": "A visitor walks beside the characteristic structures while daylight moves across their outline.",
+      "prefix": "Minaret of Jam: An intricately decorated brick minaret rises in a remote mountain valley. Miniature scene: ",
+      "samples": [
+        "Minaret of Jam: An intricately decorated brick minaret rises in a remote mountain valley. Miniature scene: A visitor walks beside the characteristic structures while daylight moves across their outline."
+      ],
+      "reason": "Scene prose is translated with the actual place name and sourced feature; the bound full message must exist."
+    },
+    {
+      "file": "plugins/orcatopia/src/catalog-600-scenes.ts",
+      "text": "{0}: {1}. Miniature scene: {2}",
+      "prefix": "",
+      "samples": [
+        "Minaret of Jam: An intricately decorated brick minaret rises in a remote mountain valley. Miniature scene: A visitor walks beside the characteristic structures while daylight moves across their outline."
+      ],
+      "reason": "Full generated scene is translated together; all 294 scenes are checked against the runtime catalog."
     }
   ]
 }

@@ -51,6 +51,61 @@ async function setHostLocale(page: Page, locale: string) {
   );
 }
 
+test('decorative SVG traversal still localizes visible SVG copy, accessible labels and map titles', async ({
+  page,
+}) => {
+  await page.addInitScript(() => {
+    (window as unknown as { orca: unknown }).orca = {
+      locale: 'en-US',
+      plugin: {
+        on() {},
+        async request(name: string) {
+          return name === 'island.expeditions'
+            ? []
+            : {
+                version: 6,
+                fusions: [],
+                floors: [],
+                landFloor: 0,
+                crafts: [],
+                decorations: [],
+                tickets: [],
+                receipts: [],
+                placements: [],
+              };
+        },
+      },
+    };
+  });
+  await page.goto('/');
+  await page.evaluate(() => {
+    const fixture = document.createElement('div');
+    fixture.id = 'svg-locale-fixture';
+    fixture.innerHTML =
+      '<svg aria-hidden="true"><text>World Map</text></svg><svg role="img" aria-label="Open landmarks"><title>France</title></svg><svg aria-hidden="true" data-empty-art><path d="M0 0h5v5z"/></svg>';
+    document.body.append(fixture);
+  });
+  await setHostLocale(page, 'ko-KR');
+  await expect(page.locator('#svg-locale-fixture text')).toHaveText(
+    '세계 지도',
+  );
+  await expect(
+    page.locator('#svg-locale-fixture [role="img"]'),
+  ).toHaveAttribute('aria-label', '랜드마크 열기');
+  await expect(page.locator('#svg-locale-fixture title')).toHaveText('프랑스');
+  await expect(page.locator('[data-empty-art] path')).toHaveAttribute(
+    'd',
+    'M0 0h5v5z',
+  );
+  await setHostLocale(page, 'en-US');
+  await expect(page.locator('#svg-locale-fixture text')).toHaveText(
+    'World Map',
+  );
+  await expect(
+    page.locator('#svg-locale-fixture [role="img"]'),
+  ).toHaveAttribute('aria-label', 'Open landmarks');
+});
+
 test('Orca locale wins over browser and preview settings; live changes preserve the open journal, camera, focus and save', async ({
   page,
 }) => {

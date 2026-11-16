@@ -737,6 +737,18 @@ function workshop() {
       '',
     )}</div><p class="muted">Move or return decorations at no cost. Returned pieces stay in your inventory. Preview locked sets with the menu above.</p></section>`;
 }
+const catalogArtCache = new Map<string, string>();
+function hydrateCatalogCard(card: HTMLElement) {
+  const slot = card.querySelector<HTMLElement>('[data-catalog-art]');
+  if (!slot || slot.hasChildNodes()) return;
+  const id = slot.dataset.catalogArt!;
+  let markup = catalogArtCache.get(id);
+  if (!markup) {
+    markup = art(id);
+    catalogArtCache.set(id, markup);
+  }
+  slot.innerHTML = markup;
+}
 function collection() {
   const owned = landmarks.filter((l) => discovered(state, l.id));
   return `<section class="collection-section"><div class="section-title"><h2><small>Field notes</small> Your collection</h2><span>Souvenirs from faraway places</span></div><div class="collection-progress"><label for="discovery-progress"><strong>${owned.length} / ${landmarks.length}</strong> landmarks discovered${owned.length === landmarks.length ? ' · Collection complete' : ''}</label><progress id="discovery-progress" value="${owned.length}" max="${landmarks.length}"></progress></div><p class="rarity-guide">Rarity I → IV <span>More filled marks = rarer discoveries</span></p><div class="rarity-filters" role="group" aria-label="Collection rarity"><button data-tier-filter="all" aria-pressed="${rarityFilter === 'all'}">All <small>${owned.length}/${landmarks.length}</small></button>${rarities.map((r) => `<button data-tier-filter="${r.id}" data-tier="${r.id}" aria-pressed="${rarityFilter === r.id}">${rarityBadge(r.id)} <small>${owned.filter((l) => l.tier === r.id).length}/${landmarks.filter((l) => l.tier === r.id).length}</small></button>`).join('')}</div><p class="rarity-summary" aria-live="polite"></p><div class="variant-filters" role="group" aria-label="Landmark version"><button data-variant="normal" aria-pressed="${variantFilter === 'normal'}">Normal</button><button data-variant="plus" aria-pressed="${variantFilter === 'plus'}">+ versions</button></div><div class="collection">${collectibleLandmarks
@@ -745,7 +757,7 @@ function collection() {
       const count = quantity(state, l.id),
         available =
           count - state.placements.filter((p) => p.landmark === l.id).length;
-      return `<article class="card ${!discovered(state, l.id) ? 'locked' : ''}" data-catalog-id="${l.id}" data-tier="${l.tier}">${rarityBadge(l.tier, isEnhanced(l.id))}<button class="collect-action" data-landmark="${l.id}" aria-pressed="${selected === l.id}" ${available < 1 ? 'disabled' : ''}>${art(l.id)}<strong>${escape(l.name)}</strong><span class="card-country">${escape(l.country)}</span><small class="placement-type" data-placement-type="${placementType(l.id)}">${placementLabel(l.id)}</small><span>${escape(l.region)}</span><small>${discovered(state, l.id) ? `Owned ×${count} · ${available} available` : 'Not discovered yet'}</small></button><button class="about-landmark" data-info="${l.id}" aria-label="About ${escape(l.name)}" aria-haspopup="dialog">About this landmark ↗</button></article>`;
+      return `<article class="card ${!discovered(state, l.id) ? 'locked' : ''}" data-catalog-id="${l.id}" data-tier="${l.tier}">${rarityBadge(l.tier, isEnhanced(l.id))}<button class="collect-action" data-landmark="${l.id}" aria-pressed="${selected === l.id}" ${available < 1 ? 'disabled' : ''}><span class="catalog-art-slot" data-catalog-art="${l.id}" aria-hidden="true"></span><strong>${escape(l.name)}</strong><span class="card-country">${escape(l.country)}</span><small class="placement-type" data-placement-type="${placementType(l.id)}">${placementLabel(l.id)}</small><span>${escape(l.region)}</span><small>${discovered(state, l.id) ? `Owned ×${count} · ${available} available` : 'Not discovered yet'}</small></button><button class="about-landmark" data-info="${l.id}" aria-label="About ${escape(l.name)}" aria-haspopup="dialog">About this landmark ↗</button></article>`;
     })
     .join('')}</div></section>`;
 }
@@ -1618,6 +1630,8 @@ ${tourismPanel()}
   }
   disposeCatalogMotion = observeCatalogMotion(
     root.querySelector<HTMLElement>('.inventory-scroll')!,
+    root.querySelector<HTMLElement>('.inventory-scroll')!,
+    hydrateCatalogCard,
   );
   const ocean = root.querySelector<HTMLElement>('.ocean');
   if (ocean)
