@@ -1,3 +1,4 @@
+import catalog700 from './catalog-700.json';
 import waterCatalog from './water-catalog.json';
 import catalog600 from './catalog-600.json';
 
@@ -57,6 +58,24 @@ export const waterThemes: WaterTheme[] = [
       gift: entry.placement === 'river' ? 'lotus' : 'buoy',
       special: entry.placement === 'river' ? 'raft' : 'sailboat',
     })),
+  ...catalog700.map((entry): WaterTheme => ({
+    id: entry.record.id,
+    placement: entry.surface as WaterSurface,
+    gift:
+      entry.surface === 'river'
+        ? 'lotus'
+        : ['fish', 'turtle', 'whale', 'seagrass'].includes(entry.visual.motif)
+          ? 'coral'
+          : 'buoy',
+    special:
+      entry.surface === 'river'
+        ? ['lock', 'lift', 'wheel'].includes(entry.visual.motif)
+          ? 'waterwheel'
+          : 'raft'
+        : ['fish', 'turtle', 'whale', 'seagrass'].includes(entry.visual.motif)
+          ? 'buoy'
+          : 'sailboat',
+  })),
 ];
 const byId = new Map(waterThemes.map((t) => [t.id, t]));
 /** 전용 장식과 랜드마크가 공유하는 물 영역 분류. */

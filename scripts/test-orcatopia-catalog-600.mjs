@@ -56,7 +56,9 @@ export async function testCatalog600({
   );
   assert.equal(
     new Set(
-      landmarks.map((entry) => entry.name.normalize('NFKC').toLowerCase()),
+      landmarks
+        .slice(0, 600)
+        .map((entry) => entry.name.normalize('NFKC').toLowerCase()),
     ).size,
     600,
   );
@@ -135,12 +137,12 @@ export async function testCatalog600({
   }
   assert.equal(
     decorations.filter((d) => d.shape === 'starMonument').length,
-    600,
+    landmarks.length,
   );
-  assert.equal(decorations.filter((d) => d.surface).length, 192);
+  assert.equal(decorations.filter((d) => d.surface).length, 392);
   assert.equal(
     decorations.filter((d) => d.gift && d.shape !== 'starMonument').length,
-    613,
+    713,
   );
   assert.equal(decorations.filter((d) => !d.landmark).length, 9);
   const baseline = await read(
@@ -155,6 +157,6 @@ export async function testCatalog600({
       `${id}: unchanged original art and scene`,
     );
   console.log(
-    'PASS: 294 sourced, localized, explicitly classified additions; 600 places/variants/star monuments; 192 water decorations; original 306 complete art+scene hashes',
+    'PASS: 294 sourced, localized, explicitly classified additions; 600-place wave retained; 700 star monuments and 392 water decorations; original 306 complete art+scene hashes',
   );
 }

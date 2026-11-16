@@ -42,9 +42,7 @@
       "kind": "literal",
       "category": "technical",
       "reason": "Reviewed identifiers, enum values, selectors, CSS and serialized protocol tokens; these are not presentation copy.",
-      "values": [
-        "false"
-      ]
+      "values": ["false"]
     },
     {
       "file": "plugins/orcatopia/src/decorations.ts",
@@ -395,47 +393,28 @@
       "kind": "literal",
       "category": "technical",
       "reason": "Reviewed identifiers, enum values, selectors, CSS and serialized protocol tokens; these are not presentation copy.",
-      "values": [
-        "#tier-{0}",
-        "NFKC",
-        "[data-preview-tier=\"{0}\"]",
-        "ko-KR"
-      ]
+      "values": ["#tier-{0}", "NFKC", "[data-preview-tier=\"{0}\"]", "ko-KR"]
     },
     {
       "file": "plugins/orcatopia/src/landmark-life.ts",
       "kind": "literal",
       "category": "technical",
       "reason": "Reviewed identifiers, enum values, selectors, CSS and serialized protocol tokens; these are not presentation copy.",
-      "values": [
-        "carry",
-        "hammer",
-        "left",
-        "pull",
-        "right"
-      ]
+      "values": ["carry", "hammer", "left", "pull", "right"]
     },
     {
       "file": "plugins/orcatopia/src/placement-preview.ts",
       "kind": "literal",
       "category": "technical",
       "reason": "Reviewed identifiers, enum values, selectors, CSS and serialized protocol tokens; these are not presentation copy.",
-      "values": [
-        "merge",
-        "place",
-        "{0}px"
-      ]
+      "values": ["merge", "place", "{0}px"]
     },
     {
       "file": "plugins/orcatopia/src/placement.ts",
       "kind": "literal",
       "category": "technical",
       "reason": "Reviewed identifiers, enum values, selectors, CSS and serialized protocol tokens; these are not presentation copy.",
-      "values": [
-        "coastal",
-        "land",
-        "sea"
-      ]
+      "values": ["coastal", "land", "sea"]
     },
     {
       "file": "plugins/orcatopia/src/render-island.ts",
@@ -538,11 +517,7 @@
       "kind": "literal",
       "category": "technical",
       "reason": "Reviewed identifiers, enum values, selectors, CSS and serialized protocol tokens; these are not presentation copy.",
-      "values": [
-        "I+",
-        "greatwall+",
-        "translate({0}px, {1}px) scale({2})"
-      ]
+      "values": ["I+", "greatwall+", "translate({0}px, {1}px) scale({2})"]
     },
     {
       "file": "plugins/orcatopia/src/terrain-art.ts",
@@ -690,79 +665,35 @@
       "kind": "literal",
       "category": "technical",
       "reason": "Reviewed identifiers, enum values, selectors, CSS and serialized protocol tokens; these are not presentation copy.",
-      "values": [
-        "gift",
-        "river",
-        "sea",
-        "special",
-        "water-"
-      ]
-    },
-    {
-      "file": "plugins/orcatopia/src/water-themes.ts",
-      "kind": "literal",
-      "category": "technical",
-      "reason": "Reviewed identifiers, enum values, selectors, CSS and serialized protocol tokens; these are not presentation copy.",
-      "values": [
-        "buoy",
-        "coral",
-        "lotus",
-        "raft",
-        "sailboat",
-        "waterwheel"
-      ]
+      "values": ["gift", "river", "sea", "special", "water-"]
     },
     {
       "file": "plugins/orcatopia/src/weather-client.ts",
       "kind": "literal",
       "category": "technical",
       "reason": "Reviewed identifiers, enum values, selectors, CSS and serialized protocol tokens; these are not presentation copy.",
-      "values": [
-        "stale",
-        "unavailable",
-        "unsupported"
-      ]
+      "values": ["stale", "unavailable", "unsupported"]
     },
     {
       "file": "plugins/orcatopia/src/weather.ts",
       "kind": "literal",
       "category": "technical",
       "reason": "Reviewed identifiers, enum values, selectors, CSS and serialized protocol tokens; these are not presentation copy.",
-      "values": [
-        "fresh",
-        "stale",
-        "unavailable",
-        "unsupported"
-      ]
+      "values": ["fresh", "stale", "unavailable", "unsupported"]
     },
     {
       "file": "plugins/orcatopia/src/world.ts",
       "kind": "literal",
       "category": "technical",
       "reason": "Reviewed identifiers, enum values, selectors, CSS and serialized protocol tokens; these are not presentation copy.",
-      "values": [
-        "flowers",
-        "grass",
-        "oak",
-        "path",
-        "pine",
-        "rock",
-        "sand"
-      ]
+      "values": ["flowers", "grass", "oak", "path", "pine", "rock", "sand"]
     },
     {
       "file": "plugins/orcatopia/src/worker/expeditions.ts",
       "kind": "literal",
       "category": "technical",
       "reason": "Reviewed identifiers, enum values, selectors, CSS and serialized protocol tokens; these are not presentation copy.",
-      "values": [
-        "blocked",
-        "done",
-        "hex",
-        "sha256",
-        "waiting",
-        "working"
-      ]
+      "values": ["blocked", "done", "hex", "sha256", "waiting", "working"]
     },
     {
       "file": "plugins/orcatopia/src/worker/main.ts",
@@ -1313,6 +1244,317 @@
       "category": "technical",
       "reason": "Tourism animation state, CSS positioning and worker request identifiers; not visible copy.",
       "values": ["island.construct"]
+    },
+    {
+      "file": "plugins/orcatopia/src/catalog-700-art.ts",
+      "kind": "literal",
+      "category": "technical",
+      "reason": "Bundled SVG geometry, material, placement and motion identifiers; localized names and scene prose are verified against the runtime catalog.",
+      "values": [
+        "stone",
+        "#e7e5c8",
+        "M{0} {1}h{2}v{3}h-{4}z",
+        "M7 111h22m10 9h28m24-10h30",
+        "#c8e5d6",
+        "lighthouse",
+        "stripedlight",
+        "pilelight",
+        "caissonlight",
+        "M44 103l6-39m34 39-6-39m-31 23h34m-31-17 29 29m-29 0 29-29",
+        "#53645e",
+        "#d8d3b0",
+        "M39 45l25-17 25 17z",
+        "#8b6f55",
+        "#f5e0a6",
+        "M45 56h37M51 48v13m25-13v13",
+        "#d7d8b9",
+        "#ebe6cb",
+        "#b87562",
+        "#d6d4b7",
+        "M44 {0}h40m-38-3v5m36-5v5",
+        "#72877c",
+        "M15 112l12-{0} 17 4 15-{1} 18 8 22-6 16 {2}z",
+        "mountain",
+        "M{0} 109Q{1} {2} {3} {4}h{5}Q{6} {7} {8} 109z",
+        "#dddcc5",
+        "#b97061",
+        "#556c68",
+        "#49666a",
+        "M{0} 108l9-{1} 9 {2}z",
+        "#e9e3cb",
+        "oryukdolight",
+        "somaemuldolight",
+        "brotherslight",
+        "gageodolight",
+        "#d9dfc3",
+        "M72 91l16-10 15 10z",
+        "#9e7961",
+        "#f0dda3",
+        "M{0} {1}l{2}-8 {3} 8z",
+        "#657b72",
+        "M{0} {1}h{2}",
+        "#556f69",
+        "#6f8177",
+        "M51 {0}v8m26-8v8",
+        "falls",
+        "tieredfalls",
+        "splitfalls",
+        "rapids",
+        "M5 108V{0}l18-9 26 5 22-6 29 8 22-4V110z",
+        "M{0} {1}q{2}-5 {3} 0l-2 {4}q-{5} 7-{6} 0z",
+        "#b1d7d2",
+        "M{0} {1}v{2}m{3}-{4}v{5}",
+        "#eff0d8",
+        "M13 51q49 31 101 0l-4 14q-44 29-94 0z",
+        "#e0e8d2",
+        "M7 35l44 15-8 61H6zM121 29L76 50l8 61h38z",
+        "lock",
+        "stairlock",
+        "shipcanal",
+        "cutcanal",
+        "boatlift",
+        "rotatinglift",
+        "M9 110l18-68h30l-9 68zM82 110L70 42h30l21 68z",
+        "sandstone",
+        "M43 {0}l21 8 21-8M64 {1}v8",
+        "#6e7762",
+        "iron",
+        "M30 32h68M32 38l63 57m0-57L32 95",
+        "#69877f",
+        "#8cafa4",
+        "M39 74h47",
+        "#cee9dd",
+        "M52 108l5-55h14l6 55z",
+        "#9ebdb4",
+        "M41 34l47 50M63 59h3",
+        "#657e76",
+        "M14 62l30 8m40 0 30-8M10 82l32 8m43 0 32-8",
+        "#b9a682",
+        "M{0} {1}l21 4m52-4 22 3",
+        "#92ac83",
+        "steelarch",
+        "bascule",
+        "stonebridge",
+        "chainbridge",
+        "shopbridge",
+        "lowarch",
+        "cablestayed",
+        "railviaduct",
+        "coveredbridge",
+        "waterbridge",
+        "trussbridge",
+        "transporter",
+        "romanbridge",
+        "suspension",
+        "tiltingbridge",
+        "cantilever",
+        "coveredpagoda",
+        "openarch",
+        "chainfootbridge",
+        "fivearch",
+        "fountainbridge",
+        "concretearch",
+        "M{0} 106V{1}q{2}-{3} {4} 0V106",
+        "#a88b66",
+        "#b4b39c",
+        "#ccbc8f",
+        "#bda17b",
+        "#c9a385",
+        "#a08561",
+        "M{0} {1}l11-10 12 10z",
+        "#8f7e62",
+        "M89 102V52l10-10 10 10v50z",
+        "M85 53l14-21 14 21z",
+        "#9b7860",
+        "M56 {0}l8-7 8 7z",
+        "M13 83q9-20 18-4m66 0q9-20 18 4",
+        "#5b8b88",
+        "M105 34l4-30 15 4v40z",
+        "#8bb6ad",
+        "M7 {0}h114M7 {1}h114",
+        "#bdc8b3",
+        "M{0} {1}v-13",
+        "#9b9d7a",
+        "M{0} {1}q18-32 37 0",
+        "M{0} {1}V{2}",
+        "#7e9b8c",
+        "M{0} {1}h37v23h-37zM{2} {3}l12-23 12 23 13-23",
+        "#6d8a7c",
+        "M8 {0}l23-39 19 24 28 0 21-24 21 39M31 {1}v39m68-39v39M8 {2}h112",
+        "M{0} {1}l7-18 7 18",
+        "#8da499",
+        "garabit",
+        "newriverbridge",
+        "M9 101Q64 {0} 119 101",
+        "#6d8a81",
+        "#80988c",
+        "M11 {0}Q64 {1} 117 {2}",
+        "#647f76",
+        "#90a79a",
+        "M{0} {1}l9-14 10 14z",
+        "M24 {0}h78",
+        "#718d81",
+        "M26 18h78",
+        "#66857b",
+        "M60 19v60m17-60v60",
+        "#bcae83",
+        "M{0} 19v83m0-74-8 40m8-40 8 40",
+        "#bec5b4",
+        "M10 105l12-{0} 78 7 17 15-23 10-64 2z",
+        "#7f8d7e",
+        "#97a18b",
+        "M27 98h61m-53 5h65",
+        "#bbbd9e",
+        "#788c80",
+        "M56 81l-12-5m31 5 13-4",
+        "M32 89V64h31m19 30V72h24M47 78v-8m46 8v-5",
+        "#7a8e7e",
+        "M10 89l29-30 61 5 20 29-31 18-58-3z",
+        "#b38365",
+        "M23 85l23-16 46 3 15 17-23 12-43-2z",
+        "#849b77",
+        "M11 89l21 19 57 3 31-18M39 59l-7 49m68-44-11 47",
+        "#e0b897",
+        "#655f50",
+        "seastack",
+        "volcanicisland",
+        "graniteisland",
+        "karstlagoon",
+        "M{0} 111l{1}-{2} {3}-{4} {5} {6} {7} {8}z",
+        "#697c76",
+        "M{0} {1}l{2} {3}",
+        "#b0b99d",
+        "reef",
+        "reefwalls",
+        "atoll",
+        "seagrass",
+        "mangrovereef",
+        "mushroomreef",
+        "sandbar",
+        "sandbank",
+        "M9 91l27-{0} 42 6 39 20-21 20-70-1z",
+        "#779f94",
+        "M7 106q{0}-{1} {2}-8t{3} 8l-18 8-56-4z",
+        "#d9d0a3",
+        "M{0} {1}q-8-{2} 0-{3}m0 {4}q9-{5} 10-{6}",
+        "#6d9b78",
+        "#839b80",
+        "M{0} {1}v-{2}m0 {3}l-7-8m7 1 8-10",
+        "#d8b58f",
+        "M{0} 30l8-15 8 15z",
+        "#7d8770",
+        "M{0} 59v7",
+        "#7b8068",
+        "#cbc4a3",
+        "M7 28l11-11 11 11z",
+        "#aa8068",
+        "#65857b",
+        "#c8be9b",
+        "M36 47l28-12 28 12z",
+        "#c5b690",
+        "#d4c8a4",
+        "M11 106q53 27 108 0m-102 4q48 24 96 0",
+        "#dce6d4",
+        "M32 46v62m63-62v62",
+        "#d3dac4",
+        "#adbdab",
+        "M45 82h33m-27-5h21",
+        "#688c82",
+        "#b98a71",
+        "M3 70l12-10 11 10z",
+        "#7f8e73",
+        "M103 111l-7-63m3 28 8-18m-9 3-8-14",
+        "#7c9b72",
+        "M5 108l20-68 12 5-12 63zM93 110L80 43l20-2 22 69z",
+        "#d4be91",
+        "M13 93l17-7m67-24 12 4",
+        "#bba379",
+        "M14 104l14-58m74 58-12-57",
+        "#8ca581",
+        "M35 49h51m-43-6v7m35-7v7",
+        "#758b7d",
+        "#b8b99b",
+        "#c3cdbb",
+        "M{0} {1}v14m9-14v14",
+        "#76978a",
+        "M34 104v-61m58 61V43",
+        "#4e7068",
+        "#bdcdb9",
+        "M49 57v15m36 13v21",
+        "#68877c"
+      ]
+    },
+    {
+      "file": "plugins/orcatopia/src/catalog-700-art.ts",
+      "kind": "error",
+      "category": "diagnostic",
+      "reason": "Bundled SVG geometry, material, placement and motion identifiers; localized names and scene prose are verified against the runtime catalog.",
+      "values": ["Unsupported water illustration: {0}/{1}"]
+    },
+    {
+      "file": "plugins/orcatopia/src/catalog-700-scenes.ts",
+      "kind": "literal",
+      "category": "technical",
+      "reason": "Bundled SVG geometry, material, placement and motion identifiers; localized names and scene prose are verified against the runtime catalog.",
+      "values": [
+        "#e5e5cc",
+        "#edebd5",
+        "#cadbcb",
+        "pulse",
+        "dash",
+        "sketch",
+        "travel",
+        "ferry",
+        "sway",
+        "spin",
+        "guard",
+        "#e4e6d1",
+        "#7eab85",
+        "walk"
+      ]
+    },
+    {
+      "file": "plugins/orcatopia/src/catalog-700-scenes.ts",
+      "kind": "error",
+      "category": "diagnostic",
+      "reason": "Bundled SVG geometry, material, placement and motion identifiers; localized names and scene prose are verified against the runtime catalog.",
+      "values": ["Unsupported water scene: {0}/{1}"]
+    },
+    {
+      "file": "plugins/orcatopia/src/water-themes.ts",
+      "kind": "literal",
+      "category": "technical",
+      "reason": "Bundled SVG geometry, material, placement and motion identifiers; localized names and scene prose are verified against the runtime catalog.",
+      "values": [
+        "buoy",
+        "sailboat",
+        "coral",
+        "montsaintmichel",
+        "venice",
+        "nanmadol",
+        "liberty",
+        "opera",
+        "belem",
+        "mostar",
+        "pontdugard",
+        "kinderdijk",
+        "grandcanal",
+        "dujiangyan",
+        "lotus",
+        "waterwheel",
+        "raft",
+        "fish",
+        "turtle",
+        "whale",
+        "seagrass",
+        "lock",
+        "lift",
+        "wheel",
+        "coral garden",
+        "navigation buoy",
+        "floating lotus bed",
+        "river raft"
+      ]
     }
   ],
   "exclusions": [
@@ -1646,92 +1888,70 @@
     {
       "file": "plugins/orcatopia/src/decorations.ts",
       "text": "{0} star monument",
-      "samples": [
-        "Eiffel Tower star monument"
-      ],
+      "samples": ["Eiffel Tower star monument"],
       "reason": "Generated decoration name; all catalog decorations are also checked by the existing test.",
       "prefix": ""
     },
     {
       "file": "plugins/orcatopia/src/expanded-decorations.ts",
       "text": "{0} garden planting",
-      "samples": [
-        "Robben Island garden planting"
-      ],
+      "samples": ["Robben Island garden planting"],
       "reason": "Generated expansion decoration name.",
       "prefix": ""
     },
     {
       "file": "plugins/orcatopia/src/expanded-decorations.ts",
       "text": "{0} garden retreat",
-      "samples": [
-        "Robben Island garden retreat"
-      ],
+      "samples": ["Robben Island garden retreat"],
       "reason": "Generated expansion decoration name.",
       "prefix": ""
     },
     {
       "file": "plugins/orcatopia/src/water-themes.ts",
       "text": "coral garden",
-      "samples": [
-        "Papahānaumokuākea coral garden"
-      ],
+      "samples": ["Papahānaumokuākea coral garden"],
       "reason": "Water shape suffix is translated as part of each generated landmark decoration name.",
       "prefix": "Papahānaumokuākea "
     },
     {
       "file": "plugins/orcatopia/src/water-themes.ts",
       "text": "navigation buoy",
-      "samples": [
-        "Ha Long Bay navigation buoy"
-      ],
+      "samples": ["Ha Long Bay navigation buoy"],
       "reason": "Water shape suffix is translated as part of each generated landmark decoration name.",
       "prefix": "Ha Long Bay "
     },
     {
       "file": "plugins/orcatopia/src/water-themes.ts",
       "text": "floating lotus bed",
-      "samples": [
-        "Old Bridge of Mostar floating lotus bed"
-      ],
+      "samples": ["Old Bridge of Mostar floating lotus bed"],
       "reason": "Water shape suffix is translated as part of each generated landmark decoration name.",
       "prefix": "Old Bridge of Mostar "
     },
     {
       "file": "plugins/orcatopia/src/water-themes.ts",
       "text": "river raft",
-      "samples": [
-        "Old Bridge of Mostar river raft"
-      ],
+      "samples": ["Old Bridge of Mostar river raft"],
       "reason": "Water shape suffix is translated as part of each generated landmark decoration name.",
       "prefix": "Old Bridge of Mostar "
     },
     {
       "file": "plugins/orcatopia/src/ui.ts",
       "text": "Fuse {0} +",
-      "samples": [
-        "Fuse Eiffel Tower +"
-      ],
+      "samples": ["Fuse Eiffel Tower +"],
       "reason": "Generated fusion confirmation label.",
       "prefix": ""
     },
     {
       "file": "plugins/orcatopia/src/ui.ts",
       "text": "{1}, rarity {2}{3} of 4{4}",
-      "samples": [
-        "Discovery, rarity 1 of 4",
-        "Discovery, rarity 1.5 of 4.5"
-      ],
+      "samples": ["Discovery, rarity 1 of 4", "Discovery, rarity 1.5 of 4.5"],
       "reason": "Normal and enhanced accessible rarity labels.",
       "prefix": ""
     },
     {
       "file": "plugins/orcatopia/src/ui.ts",
       "text": "{5} · Rarity {6}{7}/4{8}",
-      "samples": [
-        "Discovery · Rarity 1/4",
-        "Discovery · Rarity 1.5/4.5"
-      ],
+      "samples": ["Discovery · Rarity 1/4", "Discovery · Rarity 1.5/4.5"],
       "reason": "Normal and enhanced rarity tooltips.",
       "prefix": ""
     },
@@ -1758,28 +1978,21 @@
     {
       "file": "plugins/orcatopia/src/ui.ts",
       "text": "Undo layout{1}",
-      "samples": [
-        "Undo layout"
-      ],
+      "samples": ["Undo layout"],
       "reason": "Rendered example for optional/compound source fragments; nested source literals are scanned separately.",
       "prefix": ""
     },
     {
       "file": "plugins/orcatopia/src/ui.ts",
       "text": "Brush · {1}",
-      "samples": [
-        "Brush · On",
-        "Brush · Off"
-      ],
+      "samples": ["Brush · On", "Brush · Off"],
       "reason": "Rendered example for optional/compound source fragments; nested source literals are scanned separately.",
       "prefix": ""
     },
     {
       "file": "plugins/orcatopia/src/ui.ts",
       "text": "A little island between tasks {0}",
-      "samples": [
-        "A little island between tasks "
-      ],
+      "samples": ["A little island between tasks "],
       "reason": "Rendered example for optional/compound source fragments; nested source literals are scanned separately.",
       "prefix": ""
     },
@@ -1804,27 +2017,21 @@
     {
       "file": "plugins/orcatopia/src/ui.ts",
       "text": "On",
-      "samples": [
-        "Brush · On"
-      ],
+      "samples": ["Brush · On"],
       "reason": "Branch fragment is translated with the complete Brush label.",
       "prefix": "Brush · "
     },
     {
       "file": "plugins/orcatopia/src/ui.ts",
       "text": "Off",
-      "samples": [
-        "Brush · Off"
-      ],
+      "samples": ["Brush · Off"],
       "reason": "Branch fragment is translated with the complete Brush label.",
       "prefix": "Brush · "
     },
     {
       "file": "plugins/orcatopia/src/scene.ts",
       "text": "Weather updated {0}",
-      "samples": [
-        "Weather updated 2026-11-06T00:00:00.000Z"
-      ],
+      "samples": ["Weather updated 2026-11-06T00:00:00.000Z"],
       "reason": "Special date formatter; exercised against the real translator.",
       "prefix": ""
     },
@@ -1840,36 +2047,28 @@
     {
       "file": "plugins/orcatopia/src/i18n.ts",
       "text": "{0} garden planting",
-      "samples": [
-        "Robben Island garden planting"
-      ],
+      "samples": ["Robben Island garden planting"],
       "reason": "Generated expansion decoration name.",
       "prefix": ""
     },
     {
       "file": "plugins/orcatopia/src/i18n.ts",
       "text": "{0} garden retreat",
-      "samples": [
-        "Robben Island garden retreat"
-      ],
+      "samples": ["Robben Island garden retreat"],
       "reason": "Generated expansion decoration name.",
       "prefix": ""
     },
     {
       "file": "plugins/orcatopia/src/i18n.ts",
       "text": "{0} star monument",
-      "samples": [
-        "Eiffel Tower star monument"
-      ],
+      "samples": ["Eiffel Tower star monument"],
       "reason": "Generated decoration name; all catalog decorations are also checked by the existing test.",
       "prefix": ""
     },
     {
       "file": "plugins/orcatopia/src/i18n.ts",
       "text": "Fuse {0} +",
-      "samples": [
-        "Fuse Eiffel Tower +"
-      ],
+      "samples": ["Fuse Eiffel Tower +"],
       "reason": "Generated fusion confirmation label.",
       "prefix": ""
     },

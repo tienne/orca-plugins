@@ -264,10 +264,10 @@ test('rarity stages grow from ambient moments to grounded Wonder spectacles whil
 }) => {
   await page.goto('/?preview=landmark-life&lang=ko');
   for (const [tier, count] of [
-    ['common', 291],
-    ['rare', 243],
-    ['epic', 54],
-    ['legendary', 12],
+    ['common', 333],
+    ['rare', 289],
+    ['epic', 64],
+    ['legendary', 14],
   ] as const) {
     const section = page.locator(
       `.life-preview-tier[data-animation-tier="${tier}"]`,
@@ -389,7 +389,7 @@ test('the complete catalog has unique localized living scenes, safe SVG artwork 
         return animations.length;
       }),
     );
-  expect(animationCounts).toHaveLength(600);
+  expect(animationCounts).toHaveLength(700);
   expect(animationCounts.every((count) => count > 0)).toBe(true);
   const sampleIds = new Set([
     'eiffel',

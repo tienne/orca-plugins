@@ -1,3 +1,4 @@
+import catalog700 from './catalog-700.json';
 import landmarks from './landmarks.json';
 import waterCatalog from './water-catalog.json';
 import catalog600 from './catalog-600.json';
@@ -5,6 +6,7 @@ import { waterThemes, waterShapeNames, type WaterShape } from './water-themes';
 import type { Decoration } from './decorations';
 
 const newIds = new Set([
+  ...catalog700.map((entry) => entry.record.id),
   ...waterCatalog.map((entry) => entry.record.id),
   ...catalog600
     .filter((entry) => entry.placement !== 'land')
