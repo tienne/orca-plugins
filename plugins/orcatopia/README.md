@@ -8,7 +8,17 @@ Development source: [tienne/orca-plugins · plugins/orcatopia](https://github.co
 
 Orcatopia is a little island getaway between tasks in Orca. Earn exploration tickets when you create worktrees, discover world landmarks, and arrange a place of your own while you wait. This version requires Orca 1.4.248+.
 
-## 0.5.0 — Collection exploration
+## 0.5.0 — Collection, tourism and 600 landmarks
+
+This release brings three additions together:
+
+- **Collection exploration:** unlock rivers at 12 different places and sea/coastal places at 25, with one first-exploration opportunity per theme costing one ticket.
+- **Tourism and construction:** placed unique landmarks earn tourism coins, including up to 12 hours per settlement interval, to build four permanent special buildings.
+- **600-landmark catalog:** 294 new real places bring the collection to 600 normal landmarks and 600 fusion-only + versions across 146 country groupings, with 1,839 decorations.
+
+Before upgrading, export a backup. Opening this version migrates v1–v7 saves to v8, preserving collection progress and used first explorations while starting tourism without historical income. Older builds cannot read v8 backups. The plugin identity, minimum Orca version and requested capabilities remain unchanged.
+
+### Collection exploration
 
 Start with land landmarks. Discover 12 different places to unlock river landmarks, then 25 to unlock sea and coastal landmarks. These initial thresholds match island growth. Normal draws keep the 70/23/6/1% tier chances and choose uniformly among unlocked entries in each tier. Ten-ticket draws evaluate progress after each result, so a newly unlocked theme enters the following draw in that batch. Duplicates and + fusion do not add places; fusion, placement and returning pieces cannot reduce progress. Terrain editing and existing placements stay available.
 
@@ -280,7 +290,7 @@ The 294 additions have individual vector contours, structural details and fictio
 
 English/Korean names, descriptions, country codes and representative component coordinates were checked against the original UNESCO DataHub records. Each field-guide page links to its UNESCO property page. The checked-in source metadata retains the official property name, record API, retrieval date and original-description checksum. These support provenance; automated URL/coordinate/translation checks do not independently establish historical accuracy. Metadata and factual translations are attributed under CC BY-SA 4.0; see [heritage data credits](licenses/heritage.txt). No UNESCO photos or logos are included. Broad or serial properties use a representative point, not a surveyed building footprint. Small countries omitted from the low-resolution world polygons still appear in the country list and landmark map points.
 
-Tier probabilities remain 70/23/6/1%. Within-tier individual chances are now approximately 0.24055% / 0.09465% / 0.11111% / 0.08333% per draw before any theme gating. More places reduce duplicates and lengthen full completion; no pity, rewards or unlock thresholds are added. A fixed-seed 100,000-run simulation gives a mean 12/25 unique discoveries after 12.13/25.61 unrestricted draws, compared with 12.25/26.21 in the former 306-place pool. The new land-only pool reaches them after about 12.15/25.71 draws. The separate 12/25 river/sea unlock change must apply its own conditional draw policy; the strict sea category has no common-tier items. Including coastal places gives a 55-place sea-capable pool with all four tiers (20 / 25 / 8 / 2); verify which pool the expedition policy uses and retain empty-tier handling.
+Tier probabilities remain 70/23/6/1%. After all themes unlock, individual per-draw chances are approximately 0.24055% / 0.09465% / 0.11111% / 0.08333% by tier. Before then, draws use only unlocked entries within each tier. River has 41 places (17 / 17 / 6 / 1 by tier); sea and coastal together have 55 (20 / 25 / 8 / 2), so both first explorations contain all four tiers. Using the actual integrated draw function in 10,000 runs with seed 6257, normal draws reach river/sea unlock after a mean 12.15/25.66 tickets. Spending the first river exploration immediately gives 12.15/25.64 tickets including that exploration; the first sea exploration costs one additional ticket after unlock. These are simulation estimates, not elapsed work time or completion guarantees. The catalog adds no pity or extra unlock thresholds. Fixed-pool comparison baselines are documented in the catalog integration notes.
 
 The browser-only `?preview=landmark-life&lang=en` gallery includes all 600 scenes and bilingual search without reading or writing a save. `node scripts/expand-orcatopia-catalog.mjs` regenerates the original expansion and then the 294 additions from checked-in curated tables and source metadata without network requests. New IDs in backups require this catalog or a later compatible build. See the [catalog statistics, provenance and integration notes](https://github.com/tienne/orca-plugins/blob/main/docs/orcatopia-600.md) for details.
 
@@ -290,7 +300,7 @@ The earlier expansion reached 306 places across 103 countries (154 / 119 / 25 / 
 
 The earlier expansion added 33 real destinations from 33 additional country groupings, including Lalibela, Djenné, Rila Monastery, Paro Taktsang, Wat Arun, Tikal and Nan Madol. That wave brought the catalog to **100 landmarks across 97 countries**, with **56 Discovery / 32 Treasure / 9 Marvel / 3 Wonder**. Existing entries keep their tiers. These are game collection ranks, not official heritage grades. Each addition has English/Korean descriptions, an institutional reference, a verified map point, original textured vector artwork and two garden pieces. Sources are available in each field-guide entry.
 
-The island now supports **1,044 usable land tiles** inside a 40 × 40 address grid; the remaining addresses are water. The first 576 addresses and original 318 land tiles keep their identities, terrain and unlock stages. New addresses are appended, so existing placements stay in place. Saves with more than 12 distinct landmarks gain the corresponding outer gardens when opened; no landmark, ticket or crafting reward is granted by loading. The current schema is version 7, including landmark facing, the fusion ledger and collection exploration records. Backups containing new IDs or outer addresses require this build or a later compatible build.
+The island now supports **1,044 usable land tiles** inside a 40 × 40 address grid; the remaining addresses are water. The first 576 addresses and original 318 land tiles keep their identities, terrain and unlock stages. New addresses are appended, so existing placements stay in place. Saves with more than 12 distinct landmarks gain the corresponding outer gardens when opened; no landmark, ticket or crafting reward is granted by loading. The current schema is version 8, including landmark facing, the fusion ledger, collection exploration records and tourism. Backups containing new IDs or outer addresses require this build or a later compatible build.
 
 ## Garden workshop and growing land
 
