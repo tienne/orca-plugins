@@ -3,7 +3,7 @@ import { empty, landmarks } from '../src/game';
 import additions from '../src/catalog-600.json';
 import korean from '../src/landmarks.ko.json';
 
-test('600-place journal keeps bilingual new-place details, fusion, gifts and map points compatible with an existing receipt', async ({
+test('700-place journal keeps the 600-place expansion’s bilingual new-place details, fusion, gifts and map points compatible with an existing receipt', async ({
   page,
 }) => {
   test.setTimeout(120_000);
@@ -78,7 +78,7 @@ test('600-place journal keeps bilingual new-place details, fusion, gifts and map
   ).toEqual(state.receipts);
 });
 
-test('all 294 new illustrations have readable bilingual contact sheets without touching a save', async ({
+test('all 294 illustrations from the 600-place expansion have readable bilingual contact sheets without touching a save', async ({
   page,
 }) => {
   test.setTimeout(180_000);

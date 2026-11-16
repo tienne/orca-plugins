@@ -23,6 +23,7 @@ export async function testCatalog700({
   landmarks,
   decorations,
   art,
+  landmarkLife,
   translate,
   placementType,
   canPlaceLandmark,
@@ -40,7 +41,18 @@ export async function testCatalog700({
     assert.equal(
       createHash('sha256').update(normalize(art(id))).digest('hex'),
       expected,
-      `${id}: preserve original complete artwork and scene`,
+      `${id}: preserve original complete artwork`,
+    );
+  }
+  const originalScenes = await read(
+    'scripts/data/orcatopia-legacy600-scenes.sha256.json',
+  );
+  assert.equal(Object.keys(originalScenes.hashes).length, 600);
+  for (const [id, expected] of Object.entries(originalScenes.hashes)) {
+    assert.equal(
+      createHash('sha256').update(landmarkLife(id)).digest('hex'),
+      expected,
+      `${id}: preserve original scene`,
     );
   }
   const sources = await read('scripts/data/orcatopia-water-100-sources.json');

@@ -26,6 +26,7 @@ try {
       'plugins/orcatopia/src/placement.ts',
       'plugins/orcatopia/src/terrain-art.ts',
       'plugins/orcatopia/src/art.ts',
+      'plugins/orcatopia/src/landmark-life.ts',
       'plugins/orcatopia/src/enhanced-effects.ts',
       'plugins/orcatopia/src/i18n.ts',
       'plugins/orcatopia/src/decorations.ts',
@@ -171,6 +172,9 @@ try {
     }
   }
   const { art } = await import(pathToFileURL(join(dir, 'art.mjs')));
+  const { landmarkLife } = await import(
+    pathToFileURL(join(dir, 'landmark-life.mjs'))
+  );
   const { placementType } = await import(
     pathToFileURL(join(dir, 'placement.mjs'))
   );
@@ -178,6 +182,7 @@ try {
     landmarks,
     decorations,
     art,
+    landmarkLife,
     translate,
     placementType,
     canPlaceLandmark,
