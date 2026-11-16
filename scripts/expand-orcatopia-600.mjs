@@ -194,5 +194,7 @@ console.log(
     ),
   }),
 );
-// 앞선 확장을 재생성해도 이후 추가한 수상 도감이 사라지지 않도록 연결한다.
-await import('./sync-orcatopia-water-700.mjs');
+// 기존 직접 실행은 700종을 유지하고 Nx는 두 단계를 명시적으로 실행한다.
+if (!process.argv.includes('--600-only')) {
+  await import('./sync-orcatopia-water-700.mjs');
+}
