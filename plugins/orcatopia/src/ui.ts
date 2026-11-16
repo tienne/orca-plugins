@@ -1,3 +1,10 @@
+import {
+  TOURISM,
+  specialBuildings,
+  specialBuilding,
+  tourismRate,
+} from './tourism';
+import './tourism.css';
 import { mountPlacementPreview } from './placement-preview';
 import { allowsSea, placementLabel, placementType } from './placement';
 import {
@@ -285,17 +292,19 @@ async function request(name: string, input: unknown = {}) {
             ? game.redeemMany(input)
             : name === 'island.fuse'
               ? game.fuse(input)
-              : name === 'island.craft'
-                ? game.craft(input)
-                : name === 'island.layout'
-                  ? game.replaceLayout(input)
-                  : name === 'island.paint'
-                    ? game.paint(input)
-                    : name === 'island.rotate'
-                      ? game.rotate(input)
-                      : name === 'island.decorate'
-                        ? game.decorate(input)
-                        : game.place(input));
+              : name === 'island.construct'
+                ? game.construct(input)
+                : name === 'island.craft'
+                  ? game.craft(input)
+                  : name === 'island.layout'
+                    ? game.replaceLayout(input)
+                    : name === 'island.paint'
+                      ? game.paint(input)
+                      : name === 'island.rotate'
+                        ? game.rotate(input)
+                        : name === 'island.decorate'
+                          ? game.decorate(input)
+                          : game.place(input));
   return validate(result);
 }
 let loaded = false;
@@ -606,8 +615,117 @@ function prepareFusion(
 }
 let decorTheme = 'unlocked';
 let pendingCraft: { id: string; decoration: string } | undefined;
+function chooseDecoration(id: string) {
+  view = 'island';
+  setInventory(undefined, false);
+  selectedDecor = id;
+  editLayer = isFloor(selectedDecor) ? 'floor' : 'objects';
+  brushEnabled = false;
+  placementRotation = 0;
+  selected = '';
+  from = undefined;
+  moving = false;
+  moveBlocked = false;
+  scene.mode = 'build';
+  render();
+  const ocean = root.querySelector<HTMLElement>('.ocean');
+  ocean?.focus({ preventScroll: true });
+  if (specialBuilding(id)) ocean?.scrollIntoView({ block: 'start' });
+}
+let tourismRefreshing = false;
+async function refreshTourism() {
+  if (
+    !loaded ||
+    tourismRefreshing ||
+    busy ||
+    document.hidden ||
+    scene.mode !== 'walk' ||
+    document.querySelector('dialog[open]')
+  )
+    return;
+  tourismRefreshing = true;
+  const previous = state;
+  try {
+    const next = await request('island.read');
+    if (busy || state !== previous) return;
+    const collection = ({ tourism: _, ...rest }: State) => JSON.stringify(rest);
+    if (collection(previous) !== collection(next)) {
+      await run(async () => next);
+      return;
+    }
+    const visible = (value: State) =>
+      JSON.stringify({
+        coins: value.tourism?.coins,
+        buildings: value.tourism?.buildings,
+        away: value.tourism?.away,
+      });
+    state = next;
+    if (visible(previous) !== visible(next)) {
+      const panel = root.querySelector<HTMLElement>('.tourism-panel');
+      const focused = document.activeElement as HTMLElement | null;
+      const focusedBuilding = panel?.contains(focused)
+        ? focused?.dataset.decorPlace
+        : undefined;
+      const focusedSummary =
+        panel?.contains(focused) && focused?.tagName === 'SUMMARY';
+      const template = document.createElement('template');
+      template.innerHTML = tourismPanel();
+      panel?.replaceWith(template.content);
+      root
+        .querySelectorAll<HTMLButtonElement>(
+          '.tourism-panel [data-decor-place]',
+        )
+        .forEach((button) => {
+          button.onclick = () => chooseDecoration(button.dataset.decorPlace!);
+        });
+      const balance = root.querySelector<HTMLButtonElement>('#open-tourism')!;
+      balance.textContent = `${next.tourism?.coins ?? 0} tourism coins`;
+      balance.setAttribute(
+        'aria-label',
+        `${next.tourism?.coins ?? 0} tourism coins`,
+      );
+      if (focusedBuilding)
+        root
+          .querySelector<HTMLElement>(
+            `.tourism-panel [data-decor-place="${focusedBuilding}"]`,
+          )
+          ?.focus({ preventScroll: true });
+      else if (focusedSummary)
+        root
+          .querySelector<HTMLElement>('.tourism-construction summary')
+          ?.focus({ preventScroll: true });
+    }
+    root.querySelector<HTMLElement>('.tourism-refresh-status')!.textContent =
+      '';
+  } catch {
+    root.querySelector<HTMLElement>('.tourism-refresh-status')!.textContent =
+      'Tourism could not refresh. It will retry automatically.';
+  } finally {
+    tourismRefreshing = false;
+  }
+}
+let constructionOpen = false;
+function tourismPanel() {
+  constructionOpen =
+    root.querySelector<HTMLDetailsElement>('.tourism-construction')?.open ??
+    constructionOpen;
+  const tourism = state.tourism;
+  const rate = tourismRate(state);
+  const capHours = TOURISM.offlineCapMs / 3_600_000;
+  const away = tourism?.away;
+  return `<section id="tourism-panel" class="tourism-panel" aria-label="Tourism and special buildings"><div class="section-title"><h2>Tourism</h2><strong class="tourism-balance">${tourism?.coins ?? 0} tourism coins</strong></div><p>${rate} visitors / min · ${rate * TOURISM.coinsPerVisit} coins / min</p><p>Different places on your island attract visitors. Normal and + copies count together. Coins arrive automatically, including up to ${capHours} hours away.</p>${away ? `<p class="tourism-away" role="status">While away: ${away.visitors} visitors · ${away.coins} tourism coins · ${Math.floor(away.elapsedMs / TOURISM.minuteMs)} minutes</p>${away.capped ? `<small>${capHours}-hour limit applied</small>` : ''}` : ''}<details class="tourism-construction" ${constructionOpen ? 'open' : ''}><summary>Special buildings</summary><p>Build once with tourism coins. Keep and rearrange forever. These buildings add visitor scenes without increasing income.</p><div class="tourism-buildings">${specialBuildings
+    .map((b) => {
+      const owned = tourism?.buildings.includes(b.id) ?? false;
+      const placed = state.decorations.some((p) => p.decoration === b.id);
+      return `<article data-special-building="${b.id}">${decorationArt(b.id)}<h3>${b.name}</h3><p>${owned ? (placed ? 'Built · On island' : 'Built · Ready to place') : `${b.cost} tourism coins`}</p><button data-decor-place="${b.id}" aria-pressed="${selectedDecor === b.id}" ${busy || placed || (!owned && (tourism?.coins ?? 0) < b.cost) ? 'disabled' : ''}>${owned ? 'Place' : 'Choose construction site'}</button></article>`;
+    })
+    .join(
+      '',
+    )}</div></details><p class="tourism-refresh-status" role="status"></p></section>`;
+}
 function workshop() {
   return `<section class="workshop" aria-label="Decoration workshop"><div class="section-title"><h2><small>The garden workshop</small>Make this place yours</h2><strong class="material-balance">${materials(state)} materials</strong></div><details class="workshop-help"><summary>About gifts &amp; materials</summary><p>Basics are free. First discoveries gift the starter pieces in their set. Each duplicate brings ${DUPLICATE_MATERIALS} materials; your landmark stays yours.</p></details><label for="decor-theme">Garden set</label> <select id="decor-theme"><option value="unlocked">All unlocked sets</option><option value="all">All garden sets</option><option value="basics">Free essentials</option>${collectibleLandmarks.map((l) => `<option value="${l.id}">${l.country} · ${l.name}${discovered(state, l.id) ? '' : ' · Locked'}</option>`).join('')}</select><div class="decoration-shelf">${decorations
+    .filter((d) => !specialBuilding(d.id))
     .map((d) => {
       const unlocked = !d.landmark || discovered(state, d.landmark);
       const count = decorationQuantity(state, d.id);
@@ -1073,12 +1191,13 @@ function render() {
   const latest = landmarks.find(
     (l) => l.id === state.receipts.at(-1)?.landmark,
   );
-  const markup = `<header><div class="book-title"><div class="eyebrow">A little island between tasks ${demo ? '<b>DEMO · LOCAL FIXTURES</b>' : ''}</div><h1>Orcatopia</h1></div><div class="stats"><strong>${numberMarkup(owned.length)}<small> / ${landmarks.length} discovered</small></strong><strong>${numberMarkup(state.receipts.length)}<small> discoveries</small></strong><strong>${numberMarkup(new Set(owned.map((l) => l.code)).size)}<small> countries</small></strong></div></header><nav><button data-view="island" aria-pressed="${view === 'island'}">My Island</button><button data-view="map" aria-pressed="${view === 'map'}">World Map</button>${demo ? '<button id="expedition">＋ Demo worktree</button>' : ''}<button id="refresh">Refresh</button><button id="backups" aria-haspopup="dialog">Backups</button></nav><p class="notice ${latest ? 'discovery-notice' : ''}" ${latest ? `data-tier="${latest.tier}"` : ''} role="status">${latest ? rarityBadge(latest.tier) : ''}<span>${escape(message)}</span></p>${error ? `<p role="alert">${escape(error)}</p>` : ''}
+  const markup = `<header><div class="book-title"><div class="eyebrow">A little island between tasks ${demo ? '<b>DEMO · LOCAL FIXTURES</b>' : ''}</div><h1>Orcatopia</h1></div><div class="stats"><strong>${numberMarkup(owned.length)}<small> / ${landmarks.length} discovered</small></strong><strong>${numberMarkup(state.receipts.length)}<small> discoveries</small></strong><strong>${numberMarkup(new Set(owned.map((l) => l.code)).size)}<small> countries</small></strong></div></header><nav><button data-view="island" aria-pressed="${view === 'island'}">My Island</button><button data-view="map" aria-pressed="${view === 'map'}">World Map</button>${demo ? '<button id="expedition">＋ Demo worktree</button>' : ''}<button id="open-tourism" aria-controls="tourism-panel" aria-label="${state.tourism?.coins ?? 0} tourism coins">${state.tourism?.coins ?? 0} tourism coins</button><button id="refresh">Refresh</button><button id="backups" aria-haspopup="dialog">Backups</button></nav><p class="notice ${latest ? 'discovery-notice' : ''}" ${latest ? `data-tier="${latest.tier}"` : ''} role="status">${latest ? rarityBadge(latest.tier) : ''}<span>${escape(message)}</span></p>${error ? `<p role="alert">${escape(error)}</p>` : ''}
  ${
    view === 'island'
      ? `<section class="island-section"><div class="section-title"><h2><small>Chapter I</small> A place to wander</h2><span>${islandLand(state).length} / ${landTiles.length} land tiles</span></div><p class="land-progress">${islandLevel(state) >= MAX_LAND_LEVEL ? 'Your whole island is open.' : `At ${islandLevel(state) + 1} unique landmarks: +${landAtLevel(islandLevel(state) + 1).length - islandLand(state).length} land tiles · ${owned.length} unique discoveries`}${state.landFloor > owned.length ? ' · Existing settlement preserved; collection will catch up before further growth.' : ''}</p>${scene.markup()}<div class="ocean" tabindex="0" role="region" aria-label="Interactive island"><div class="camera"><div class="island">${terrain(state, from, editLayer === 'objects' && (allowsSea(selected || state.placements.find((p) => p.cell === from)?.landmark || '') || decorationById(selectedDecor || state.decorations.find((p) => p.cell === from)?.decoration || '')?.surface === 'sea'))}${scene.avatar()}</div><div class="sailboat" aria-hidden="true"><svg viewBox="0 0 90 90"><path d="M5 73q15-4 29 0m10 7q18-4 35 0" fill="none" stroke="#e7eedb" stroke-width="2"/><path d="M13 60q32 7 65-1L65 73H26z" fill="#ad7355" stroke="#655542" stroke-width="2"/><path d="M46 60V7" stroke="#655542" stroke-width="2"/><path d="M42 13Q26 29 20 50l22-3z" fill="#fcf3d8" stroke="#8c8268"/><path d="M50 21l20 29-20 2z" fill="#d9b07d" stroke="#8c8268"/><path d="M47 8l14 3-14 6" fill="#b76550"/></svg></div></div>${scene.layers(state)}${canvasInventory()}${canvasEditor()}${pieceMenu()}</div></section>`
      : `<section><div class="section-title"><h2><small>Chapter II</small> A world of discoveries</h2><span>${owned.length} real locations</span></div><svg class="world" viewBox="0 0 720 360" role="img" aria-label="World map of collected landmarks">${world.map((c) => `<path d="${c.path}" class="${owned.some((l) => l.code === c.code) ? 'acquired' : ''}"><title>${escape(c.name)}</title></path>`).join('')}${owned.map((l) => `<circle cx="${(l.lon + 180) * 2}" cy="${(90 - l.lat) * 2}" r="4"><title>${escape(l.name)} · ${escape(l.country)}</title></circle>`).join('')}</svg><p class="muted">Made with Natural Earth · approximate locations · equirectangular projection</p><div class="countries">${[...new Set(landmarks.map((l) => l.country))].map((c) => `<span>${escape(c)} <strong>${owned.filter((l) => l.country === c).length}/${landmarks.filter((l) => l.country === c).length}</strong></span>`).join('')}</div><p><button id="map-journal">Open landmark journal on island</button></p></section><div hidden>${canvasInventory()}</div>`
  }
+${tourismPanel()}
 <footer>${landmarks.length}-landmark prototype · Tier chances: ${rarities.map((r) => `${r.numeral} ${r.name} ${weights[r.id]}%`).join(' / ')}. Unlocked items within a tier are equally likely. First theme explorations are separate.<br>${demo ? 'Demo saves only in this browser.' : 'Saved locally on this Orca host. Events missed while disabled are not backfilled.'}</footer>`;
   renderIsland(root, markup);
   const nextReadyList = root.querySelector<HTMLElement>('.ready-landmark-list');
@@ -1283,6 +1402,13 @@ function render() {
           }
           const decoration = selectedDecor;
           if (!brushEnabled) selectedDecor = '';
+          if (
+            specialBuilding(decoration) &&
+            !state.tourism?.buildings.includes(decoration)
+          ) {
+            edit('island.construct', { cell, building: decoration });
+            return;
+          }
           edit('island.decorate', {
             cell,
             decoration,
@@ -1318,22 +1444,7 @@ function render() {
   root
     .querySelectorAll<HTMLButtonElement>('[data-decor-place]')
     .forEach((button) => {
-      button.onclick = () => {
-        setInventory(undefined, false);
-        selectedDecor = button.dataset.decorPlace!;
-        editLayer = isFloor(selectedDecor) ? 'floor' : 'objects';
-        brushEnabled = false;
-        placementRotation = 0;
-        selected = '';
-        from = undefined;
-        moving = false;
-        moveBlocked = false;
-        scene.mode = 'build';
-        render();
-        root
-          .querySelector<HTMLElement>('.ocean')
-          ?.focus({ preventScroll: true });
-      };
+      button.onclick = () => chooseDecoration(button.dataset.decorPlace!);
     });
   root
     .querySelectorAll<HTMLButtonElement>('[data-variant]')
@@ -1626,6 +1737,14 @@ function render() {
   if (cancel) cancel.onclick = cancelPiece;
   root.querySelector<HTMLButtonElement>('#backups')!.onclick = () =>
     void openBackups();
+  root.querySelector<HTMLButtonElement>('#open-tourism')!.onclick = () => {
+    constructionOpen = true;
+    root.querySelector<HTMLDetailsElement>('.tourism-construction')!.open =
+      true;
+    root
+      .querySelector<HTMLElement>('.tourism-panel')!
+      .scrollIntoView({ block: 'start' });
+  };
   root.querySelector<HTMLButtonElement>('#refresh')!.onclick = () =>
     void run(() => request('island.read')).then(() => readCrew());
   root.querySelector<HTMLButtonElement>('#open-treasure')!.onclick = () =>
@@ -1932,6 +2051,18 @@ if (
   });
   render();
   void reload();
+  setInterval(() => {
+    if (
+      !document.hidden &&
+      !busy &&
+      scene.mode === 'walk' &&
+      !document.querySelector('dialog[open]')
+    )
+      void refreshTourism();
+  }, TOURISM.pollMs);
+  document.addEventListener('visibilitychange', () => {
+    if (!document.hidden && !busy) void refreshTourism();
+  });
 }
 // Refreshing replaces the canvas. Wait for its reward dialog to close as well
 // as the request, so the draw's own notification cannot remove the reveal.

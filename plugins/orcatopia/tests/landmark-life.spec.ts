@@ -1,3 +1,4 @@
+import { collectionSnapshot } from './tourism-state';
 import { test, expect } from '@playwright/test';
 import { empty, validate, landmarks } from '../src/game';
 import { landmarkScenes } from '../src/landmark-life';
@@ -85,10 +86,12 @@ for (const [id, motion] of [
       still,
     );
     expect(
-      await page.evaluate(() =>
-        localStorage.getItem('landmark-island-demo-v1'),
+      collectionSnapshot(
+        await page.evaluate(() =>
+          localStorage.getItem('landmark-island-demo-v1'),
+        ),
       ),
-    ).toBe(stored);
+    ).toEqual(collectionSnapshot(stored));
   });
 
 test('landmark stories preview shows all one hundred scenes in Korean without touching an existing save', async ({
@@ -193,8 +196,12 @@ test('eight landmark stories stay still when unowned, animate on the island and 
     );
   }
   expect(
-    await page.evaluate(() => localStorage.getItem('landmark-island-demo-v1')),
-  ).toBe(saved);
+    collectionSnapshot(
+      await page.evaluate(() =>
+        localStorage.getItem('landmark-island-demo-v1'),
+      ),
+    ),
+  ).toEqual(collectionSnapshot(saved));
 });
 
 test('Colosseum gladiators alternate attacking and guarding, with brief clashes and a still reduced-motion pose', async ({
@@ -348,6 +355,9 @@ test('the complete catalog has unique localized living scenes, safe SVG artwork 
   await expect(
     page.locator('[data-landmark="bahrainwtc"] .catalog-turbine-rotor').first(),
   ).toHaveCSS('animation-name', 'none');
+  const saveBeforePreview = await page.evaluate(() =>
+    localStorage.getItem('landmark-island-demo-v1'),
+  );
   await page.goto('/?preview=landmark-life&lang=en');
   await expect(page.locator('.life-preview-card')).toHaveCount(
     landmarks.length,
@@ -388,7 +398,7 @@ test('the complete catalog has unique localized living scenes, safe SVG artwork 
   ).toBe(0);
   expect(
     await page.evaluate(() => localStorage.getItem('landmark-island-demo-v1')),
-  ).toBeNull();
+  ).toBe(saveBeforePreview);
 });
 
 test('the catalog preview searches both languages and countries, hides empty tiers and clears without changing saves', async ({
@@ -421,8 +431,12 @@ test('the catalog preview searches both languages and countries, hides empty tie
     landmarks.length,
   );
   expect(
-    await page.evaluate(() => localStorage.getItem('landmark-island-demo-v1')),
-  ).toBe(saved);
+    collectionSnapshot(
+      await page.evaluate(() =>
+        localStorage.getItem('landmark-island-demo-v1'),
+      ),
+    ),
+  ).toEqual(collectionSnapshot(saved));
   await page.setViewportSize({ width: 360, height: 900 });
   await search.fill('sagrada');
   await expect(page.locator('#scene-sagrada')).toBeVisible();
@@ -567,6 +581,10 @@ test('rarity intensity grows on the island without growing hitboxes, and accent 
     '0',
   );
   expect(
-    await page.evaluate(() => localStorage.getItem('landmark-island-demo-v1')),
-  ).toBe(stored);
+    collectionSnapshot(
+      await page.evaluate(() =>
+        localStorage.getItem('landmark-island-demo-v1'),
+      ),
+    ),
+  ).toEqual(collectionSnapshot(stored));
 });

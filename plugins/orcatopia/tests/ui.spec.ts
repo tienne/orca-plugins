@@ -1,3 +1,4 @@
+import { collectionSnapshot } from './tourism-state';
 import { openTreasure } from './treasure-menu';
 import { test, expect, type Page } from '@playwright/test';
 import { landTiles, landAtLevel } from '../src/world';
@@ -52,11 +53,11 @@ test('demo acquisition, duplicate, placement, move, removal and persistent map',
   await page.goto('/');
   await expect(page.getByText('DEMO · LOCAL FIXTURES')).toBeVisible();
   await demoDiscovery(page);
-  await expect(page.getByRole('status')).toContainText(
+  await expect(page.locator('.notice[role="status"]')).toContainText(
     'New discovery: Eiffel Tower',
   );
   await demoDiscovery(page);
-  await expect(page.getByRole('status')).toContainText(
+  await expect(page.locator('.notice[role="status"]')).toContainText(
     'Duplicate discovered: Eiffel Tower',
   );
   await openInventory(page, 'landmarks');
@@ -244,8 +245,12 @@ test('walk, camera and weather are independent from collection ownership', async
   await page.getByLabel('Weather', { exact: true }).selectOption('3');
   await expect(ocean).toHaveAttribute('data-weather', 'snow');
   expect(
-    await page.evaluate(() => localStorage.getItem('landmark-island-demo-v1')),
-  ).toBe(saved);
+    collectionSnapshot(
+      await page.evaluate(() =>
+        localStorage.getItem('landmark-island-demo-v1'),
+      ),
+    ),
+  ).toEqual(collectionSnapshot(saved));
   await page.getByRole('button', { name: 'World Map', exact: true }).click();
   await expect(page.locator('.world circle')).toHaveCount(1);
 });
@@ -448,10 +453,12 @@ for (const [batch, catalogEntries] of catalogBatches.entries())
       await expect(about).toBeFocused();
     }
     expect(
-      await page.evaluate(() =>
-        localStorage.getItem('landmark-island-demo-v1'),
+      collectionSnapshot(
+        await page.evaluate(() =>
+          localStorage.getItem('landmark-island-demo-v1'),
+        ),
       ),
-    ).toBe(before);
+    ).toEqual(collectionSnapshot(before));
     await expect(page.locator('.ocean')).toHaveAttribute('data-mode', 'walk');
     if (batch > 0) return;
     await page.setViewportSize({ width: 360, height: 800 });
@@ -501,8 +508,12 @@ test('a placed building opens actions first and exposes its story without losing
   await expect(dialog).toContainText('Mumtaz Mahal');
   await expect(page.locator('.walker')).toHaveAttribute('data-cell', '30');
   expect(
-    await page.evaluate(() => localStorage.getItem('landmark-island-demo-v1')),
-  ).toBe(saved);
+    collectionSnapshot(
+      await page.evaluate(() =>
+        localStorage.getItem('landmark-island-demo-v1'),
+      ),
+    ),
+  ).toEqual(collectionSnapshot(saved));
   await page.screenshot({
     path: 'test-results/landmark-island/details-demo.png',
   });
@@ -542,13 +553,15 @@ test('rarity filters, discoveries and progress distinguish unique landmarks from
   });
   await page.goto('/');
   await demoDiscovery(page);
-  await expect(page.getByRole('status')).toContainText('New discovery: Petra');
-  await expect(page.getByRole('status').locator('.rarity-badge')).toHaveText(
-    'IVWonder',
+  await expect(page.locator('.notice[role="status"]')).toContainText(
+    'New discovery: Petra',
   );
   await expect(
+    page.locator('.notice[role="status"]').locator('.rarity-badge'),
+  ).toHaveText('IVWonder');
+  await expect(
     page
-      .getByRole('status')
+      .locator('.notice[role="status"]')
       .getByRole('img', { name: 'Wonder, rarity 4 of 4', exact: true }),
   ).toBeVisible();
   await expect(page.locator('#discovery-progress')).toHaveAttribute(
@@ -556,7 +569,7 @@ test('rarity filters, discoveries and progress distinguish unique landmarks from
     '1',
   );
   await demoDiscovery(page);
-  await expect(page.getByRole('status')).toContainText(
+  await expect(page.locator('.notice[role="status"]')).toContainText(
     'Duplicate discovered: Petra',
   );
   await expect(page.locator('[data-landmark="petra"]')).toContainText(
@@ -564,7 +577,7 @@ test('rarity filters, discoveries and progress distinguish unique landmarks from
   );
   await expect(
     page
-      .getByRole('status')
+      .locator('.notice[role="status"]')
       .getByRole('img', { name: 'Wonder, rarity 4 of 4', exact: true }),
   ).toBeVisible();
   await expect(page.locator('#discovery-progress')).toHaveAttribute(
@@ -615,8 +628,12 @@ test('rarity filters, discoveries and progress distinguish unique landmarks from
     );
   }
   expect(
-    await page.evaluate(() => localStorage.getItem('landmark-island-demo-v1')),
-  ).toBe(before);
+    collectionSnapshot(
+      await page.evaluate(() =>
+        localStorage.getItem('landmark-island-demo-v1'),
+      ),
+    ),
+  ).toEqual(collectionSnapshot(before));
   expect(await page.locator('.camera').getAttribute('style')).toBe(camera);
   await expect(page.locator('.ocean')).toHaveAttribute('data-mode', 'walk');
   await openInventory(page, 'landmarks');
@@ -637,9 +654,9 @@ test('rarity filters, discoveries and progress distinguish unique landmarks from
     (window as typeof window & { fixtureRoll: number }).fixtureRoll = 0;
   });
   await demoDiscovery(page);
-  await expect(page.getByRole('status').locator('.rarity-badge')).toContainText(
-    'Discovery',
-  );
+  await expect(
+    page.locator('.notice[role="status"]').locator('.rarity-badge'),
+  ).toContainText('Discovery');
   await expect(page.locator('#discovery-progress')).toHaveAttribute(
     'value',
     '2',
@@ -1052,8 +1069,12 @@ test('cinematic discovery reveals rarity before artwork, then information and ac
     theatre.getByRole('button', { name: 'Place on island' }),
   ).toBeFocused();
   expect(
-    await page.evaluate(() => localStorage.getItem('landmark-island-demo-v1')),
-  ).toBe(saved);
+    collectionSnapshot(
+      await page.evaluate(() =>
+        localStorage.getItem('landmark-island-demo-v1'),
+      ),
+    ),
+  ).toEqual(collectionSnapshot(saved));
   await page.waitForTimeout(1300);
   await theatre.screenshot({
     path: 'test-results/landmark-island/cinematic-result-demo.png',
@@ -1416,7 +1437,11 @@ test('backup download, confirmed replacement, restart and pre-restore recovery',
   const chunks: Buffer[] = [];
   for await (const chunk of stream!) chunks.push(chunk);
   const exported = JSON.parse(Buffer.concat(chunks).toString());
-  expect(exported.state).toEqual(validate(backupFixture));
+  expect(collectionSnapshot(exported.state)).toEqual(
+    collectionSnapshot(validate(backupFixture)),
+  );
+  expect(exported.state.tourism).toMatchObject({ coins: 0, buildings: [] });
+  expect(Number.isSafeInteger(exported.state.tourism.settledAt)).toBe(true);
   const incoming = {
     ...backupFixture,
     receipts: [
@@ -1439,10 +1464,12 @@ test('backup download, confirmed replacement, restart and pre-restore recovery',
   await expect(page.locator('#backup-restore')).toBeDisabled();
   await page.keyboard.press('Escape');
   expect(
-    await page.evaluate(() =>
-      JSON.parse(localStorage.getItem('landmark-island-demo-v1')!),
+    collectionSnapshot(
+      await page.evaluate(() =>
+        JSON.parse(localStorage.getItem('landmark-island-demo-v1')!),
+      ),
     ),
-  ).toEqual(backupFixture);
+  ).toEqual(collectionSnapshot(validate(backupFixture)));
   await expect(
     page.getByRole('button', { name: 'Backups', exact: true }),
   ).toBeFocused();
@@ -1454,18 +1481,27 @@ test('backup download, confirmed replacement, restart and pre-restore recovery',
     'Island restored.',
   );
   expect(
-    await page.evaluate(() =>
-      JSON.parse(
-        localStorage.getItem('landmark-island-demo-v1-before-restore')!,
+    collectionSnapshot(
+      await page.evaluate(() =>
+        JSON.parse(
+          localStorage.getItem('landmark-island-demo-v1-before-restore')!,
+        ),
       ),
     ),
-  ).toEqual(validate(backupFixture));
+  ).toEqual(collectionSnapshot(validate(backupFixture)));
   await page.reload();
   expect(
-    await page.evaluate(() =>
-      JSON.parse(localStorage.getItem('landmark-island-demo-v1')!),
+    collectionSnapshot(
+      await page.evaluate(() =>
+        JSON.parse(localStorage.getItem('landmark-island-demo-v1')!),
+      ),
     ),
-  ).toEqual({ ...validate(incoming), discoveredPlaces: restoredPlaces });
+  ).toEqual(
+    collectionSnapshot({
+      ...validate(incoming),
+      discoveredPlaces: restoredPlaces,
+    }),
+  );
   await expect(page.locator('[data-landmark=giza]')).toContainText('Owned ×1');
   await page.getByRole('button', { name: 'Backups', exact: true }).click();
   await page.locator('#backup-previous').click();
@@ -1487,10 +1523,17 @@ test('backup download, confirmed replacement, restart and pre-restore recovery',
     'Island restored.',
   );
   expect(
-    await page.evaluate(() =>
-      JSON.parse(localStorage.getItem('landmark-island-demo-v1')!),
+    collectionSnapshot(
+      await page.evaluate(() =>
+        JSON.parse(localStorage.getItem('landmark-island-demo-v1')!),
+      ),
     ),
-  ).toEqual({ ...validate(backupFixture), discoveredPlaces: restoredPlaces });
+  ).toEqual(
+    collectionSnapshot({
+      ...validate(backupFixture),
+      discoveredPlaces: restoredPlaces,
+    }),
+  );
 });
 
 test('backup rejects damaged, future, oversized files and stale restore previews', async ({
@@ -1512,10 +1555,12 @@ test('backup rejects damaged, future, oversized files and stale restore previews
     );
     await expect(page.locator('#backup-restore')).toBeDisabled();
     expect(
-      await page.evaluate(() =>
-        JSON.parse(localStorage.getItem('landmark-island-demo-v1')!),
+      collectionSnapshot(
+        await page.evaluate(() =>
+          JSON.parse(localStorage.getItem('landmark-island-demo-v1')!),
+        ),
       ),
-    ).toEqual(backupFixture);
+    ).toEqual(collectionSnapshot(validate(backupFixture)));
   }
   await uploadBackup(
     page,
@@ -1570,10 +1615,12 @@ test('restore keeps the current island when recovery storage fails', async ({
     'Recovery storage full',
   );
   expect(
-    await page.evaluate(() =>
-      JSON.parse(localStorage.getItem('landmark-island-demo-v1')!),
+    collectionSnapshot(
+      await page.evaluate(() =>
+        JSON.parse(localStorage.getItem('landmark-island-demo-v1')!),
+      ),
     ),
-  ).toEqual(backupFixture);
+  ).toEqual(collectionSnapshot(validate(backupFixture)));
 });
 
 test('host backup export calls saveAs only from a fresh click and reports cancellation/errors', async ({
@@ -1759,10 +1806,12 @@ for (const [batch, catalogEntries] of catalogBatches.entries())
       await page.keyboard.press('Escape');
     }
     expect(
-      await page.evaluate(() =>
-        JSON.parse(localStorage.getItem('landmark-island-demo-v1')!),
+      collectionSnapshot(
+        await page.evaluate(() =>
+          JSON.parse(localStorage.getItem('landmark-island-demo-v1')!),
+        ),
       ),
-    ).toEqual(save);
+    ).toEqual(collectionSnapshot(validate(save)));
     expect(svgErrors).toEqual([]);
     expect(
       await page.locator('.landmark-art [id]').evaluateAll((nodes) => {
@@ -2775,12 +2824,14 @@ for (const wave of [
       wave.featuredFact,
     );
     expect(
-      JSON.parse(
-        (await page.evaluate(() =>
-          localStorage.getItem('landmark-island-demo-v1'),
-        ))!,
+      collectionSnapshot(
+        JSON.parse(
+          (await page.evaluate(() =>
+            localStorage.getItem('landmark-island-demo-v1'),
+          ))!,
+        ),
       ),
-    ).toEqual(saved);
+    ).toEqual(collectionSnapshot(validate(saved)));
   });
 
 for (const notification of ['before response', 'during reveal'])
@@ -3294,10 +3345,12 @@ test('inventory search combines bilingual names, countries, ownership and catego
   await expect(search).toHaveValue('');
   await expect(page.locator('.decoration-card:visible')).toHaveCount(4);
   expect(
-    await page.evaluate(() =>
-      JSON.parse(localStorage.getItem('landmark-island-demo-v1')!),
+    collectionSnapshot(
+      await page.evaluate(() =>
+        JSON.parse(localStorage.getItem('landmark-island-demo-v1')!),
+      ),
     ),
-  ).toEqual(save);
+  ).toEqual(collectionSnapshot(validate(save)));
 });
 
 for (const theme of ['light', 'dark'])

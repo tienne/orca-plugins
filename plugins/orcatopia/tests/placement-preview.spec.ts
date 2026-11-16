@@ -105,7 +105,11 @@ test('picking a landmark hides the tray; the cursor preview follows, rejects occ
     type: 'jpeg',
     quality: 80,
   });
-  await page.mouse.click(destination.x, destination.y);
+  const clickDestination = await pointOnCell(
+    page,
+    `.cell[data-cell="${destination.cell}"]`,
+  );
+  await page.mouse.click(clickDestination.x, clickDestination.y);
   await expect(preview).toHaveCount(0);
   await expect(page.locator('.ready-landmarks')).toBeVisible();
   await expect(page.locator('[data-place-ready=eiffel]')).toHaveCount(0);

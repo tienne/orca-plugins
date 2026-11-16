@@ -1,6 +1,7 @@
 import { test, expect, type Page } from '@playwright/test';
 import { empty, landmarks, collectionTheme } from '../src/game';
 import { openTreasure } from './treasure-menu';
+import { collectionSnapshot } from './tourism-state';
 
 async function seed(
   page: Page,
@@ -105,7 +106,7 @@ for (const lang of ['en', 'ko']) {
       .poll(async () => (await saved(page)).firstExplorations.length)
       .toBe(1);
     const state = await saved(page);
-    expect(state.version).toBe(7);
+    expect(state.version).toBe(8);
     expect(state.receipts).toHaveLength(13);
     expect(collectionTheme(state.receipts.at(-1).landmark)).toBe('river');
     expect(state.firstExplorations).toEqual([
@@ -210,7 +211,10 @@ test('lost first-exploration response retries the same theme and ticket', async 
     .getByRole('button', { name: 'Retry discovery', exact: true })
     .click();
   await expect(page.locator('.reveal-keep')).toBeVisible();
-  expect(await saved(page)).toEqual(committed);
+  const retried = await saved(page);
+  expect(collectionSnapshot(retried)).toEqual(collectionSnapshot(committed));
+  expect(retried.tourism.coins).toBe(committed.tourism.coins);
+  expect(retried.tourism.buildings).toEqual(committed.tourism.buildings);
   await page.locator('.reveal-keep').click();
   await openTreasure(page);
   await expect(page.locator('[data-first-exploration=river]')).toBeDisabled();
