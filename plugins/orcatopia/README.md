@@ -60,12 +60,12 @@ The first fusion of each landmark unlocks its named, colored **star monument**, 
 
 Different real places **placed on the island** attract visitors: duplicates and normal/+ copies of the same place count once. One unique place brings one visitor and one tourism coin per minute; no placed landmarks means no new income. Coins are automatic and separate from duplicate crafting materials. Open **Special buildings** beneath the island, choose a construction site, then click an empty land cell. Canceling before choosing the cell costs nothing.
 
-| Building            | Tourism coins | Visual reward                  |
-| ------------------- | ------------: | ------------------------------ |
-| Tourist information |            10 | Visitors read the guide marker |
-| Island café         |            60 | Visitors stop for a drink      |
-| Souvenir shop       |           180 | Visitors carry shopping bags   |
-| Scenic lookout      |           360 | Visitors take photographs      |
+| Building | Tourism coins | Visual reward |
+| --- | ---: | --- |
+| Tourist information | 10 | Visitors read the guide marker |
+| Island café | 60 | Visitors stop for a drink |
+| Souvenir shop | 180 | Visitors carry shopping bags |
+| Scenic lookout | 360 | Visitors take photographs |
 
 These are initial balancing choices, not fixed user requirements. At one placed unique landmark, the first building takes **10 minutes** (10 coins / 1 coin per minute), whether online or away. At three places it takes 3 minutes 20 seconds. Rates, prices and visual limits live in `src/tourism.ts`. Each building is owned once forever. Construction debits coins and places the building in one save; the worker rechecks ownership, funds, layout and the empty land cell. Repeating a request after a lost response cannot charge again. Returning, moving, canceling a selection or undoing a layout never refunds or charges coins, and never removes ownership. Place returned buildings again from Special buildings. Buildings add scenes only: no income multipliers, collection odds, exploration tickets or automation.
 
@@ -297,7 +297,7 @@ English/Korean names, descriptions, country codes and representative component c
 
 Tier probabilities remain 70/23/6/1%. After all themes unlock, individual per-draw chances are approximately 0.24055% / 0.09465% / 0.11111% / 0.08333% by tier. Before then, draws use only unlocked entries within each tier. River has 41 places (17 / 17 / 6 / 1 by tier); sea and coastal together have 55 (20 / 25 / 8 / 2), so both first explorations contain all four tiers. Using the actual integrated draw function in 10,000 runs with seed 6257, normal draws reach river/sea unlock after a mean 12.15/25.66 tickets. Spending the first river exploration immediately gives 12.15/25.64 tickets including that exploration; the first sea exploration costs one additional ticket after unlock. These are simulation estimates, not elapsed work time or completion guarantees. The catalog adds no pity or extra unlock thresholds. Fixed-pool comparison baselines are documented in the catalog integration notes.
 
-The browser-only `?preview=landmark-life&lang=en` gallery includes all 700 scenes and bilingual search without reading or writing a save. `node scripts/expand-orcatopia-catalog.mjs` regenerates the original expansion, the 294-place wave and the new 100 water entries from checked-in curated data without network requests. `node scripts/sync-orcatopia-water-700.mjs` synchronises just the newest wave while verifying the original 600 hashes. New IDs in backups require this catalog or a later compatible build. See the [catalog statistics, provenance and integration notes](https://github.com/tienne/orca-plugins/blob/main/docs/orcatopia-600.md) for details.
+The browser-only `?preview=landmark-life&lang=en` gallery includes all 700 scenes and bilingual search without reading or writing a save. `pnpm nx run landmark-island:regenerate-catalog` explicitly runs catalog generation and water synchronization in order. The existing `node scripts/expand-orcatopia-catalog.mjs` command also regenerates the original expansion, the 294-place wave and the new 100 water entries from checked-in curated data without network requests. `node scripts/sync-orcatopia-water-700.mjs` synchronises just the newest wave while verifying the original 600 hashes. New IDs in backups require this catalog or a later compatible build. See the [catalog statistics, provenance and integration notes](https://github.com/tienne/orca-plugins/blob/main/docs/orcatopia-600.md) for details.
 
 The earlier expansion reached 306 places across 103 countries (154 / 119 / 25 / 8) by adding 206 places to the original 100. Those are historical counts; the dated verification records below describe their original builds.
 

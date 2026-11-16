@@ -4,7 +4,7 @@ English · [한국어](orcatopia-700.ko.md)
 
 ## Scope and counts
 
-This unreleased source change preserves all 600 existing places and adds 50 sea places and 50 river places. It provides **700 normal places, 1,400 normal/+ variants and 153 country groupings**. The final placement counts are **504 land / 72 sea / 91 river / 33 coastal**. Country labels are collection groupings. The seven additional groupings are Isle of Man, Marshall Islands, Kiribati, Bahamas, Sweden, Guyana and Paraguay. South Korea grows from 14 land places to 19 total: 14 land, three sea lights and two river bridges.
+This unreleased source change preserves all 600 existing places and adds 50 sea places and 50 river places. It provides **700 normal places, 1,400 normal/+ variants and 153 country groupings**. The final placement counts are **504 land / 72 sea / 91 river / 33 land & sea**. Country labels are collection groupings. The seven additional groupings are Isle of Man, Marshall Islands, Kiribati, Bahamas, Sweden, Guyana and Paraguay. South Korea grows from 14 land places to 19 total: 14 land, three sea lights and two river bridges.
 
 | Pool                     | Discovery | Treasure | Marvel | Wonder | Total |
 | ------------------------ | --------: | -------: | -----: | -----: | ----: |
@@ -12,7 +12,7 @@ This unreleased source change preserves all 600 existing places and adds 50 sea 
 | Added river              |        22 |       22 |      5 |      1 |    50 |
 | Full catalog             |       333 |      289 |     64 |     14 |   700 |
 | River collection         |        39 |       39 |     11 |      2 |    91 |
-| Sea + coastal collection |        40 |       49 |     13 |      3 |   105 |
+| Sea + land & sea collection |        40 |       49 |     13 |      3 |   105 |
 
 Tiers were allocated based on the existing water catalog and place features, with all four tiers present in each new theme. Rare entries emphasise recognisable engineering or ecological forms; Epic entries include the named arch bridge, major protected marine systems, historic engineering and a major waterfall; Phoenix Islands and Panama Canal form the two Wonder entries. These are collection ranks. Existing 600 ranks stay unchanged. Draw weights remain **70/23/6/1%**. With every theme unlocked, per-place chances are about 0.21021% / 0.07958% / 0.09375% / 0.07143%; a locked collection uses only the unlocked candidates within each tier.
 
@@ -30,7 +30,7 @@ Coordinates are atlas representative points. **39** use official operator/map me
 
 ## Integration and preservation
 
-`catalog-700.json` is the curated source for the new records, Korean translations, water surface, structural proportions and scene composition. `sync-orcatopia-water-700.mjs` synchronises the runtime catalogs after checking the original 600 records and translations against committed hashes. The existing expansion generator applies this synchronisation after regenerating its earlier waves, keeping the new 100 entries. Illustration and scene modules are bundled locally. Placement, collection, map points, filtering, first-discovery gifts and fusion monuments reuse the existing dynamic catalog contracts.
+`catalog-700.json` is the curated source for the new records, Korean translations, water surface, structural proportions and scene composition. `sync-orcatopia-water-700.mjs` synchronises the runtime catalogs after checking the original 600 records and translations against committed hashes. `pnpm nx run landmark-island:regenerate-catalog` runs the earlier expansion waves and this synchronisation as two ordered steps. Direct execution of the existing generator also keeps the new 100 entries. Illustration and scene modules are bundled locally. Placement, collection, map points, filtering, first-discovery gifts and fusion monuments reuse the existing dynamic catalog contracts.
 
 Existing IDs, quantities, placements, gifts, fusions, opened land, save keys and v8 backups stay compatible. Loading the larger catalog grants no landmarks, tickets or materials. River/sea collection thresholds stay at 12/25 different discoveries, and first exploration still consumes one existing ticket per theme. Locked themes remain outside normal draws; every expanded guaranteed-theme pool contains four tiers. Empty-tier rescaling remains covered. Tourism uses distinct base place IDs, keeping duplicate and normal/+ counting, the offline cap, rates and special-building prices unchanged. No tourism expansion or host capability is added.
 
