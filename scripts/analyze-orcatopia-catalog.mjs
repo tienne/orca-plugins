@@ -7,14 +7,21 @@ import { pathToFileURL } from 'node:url';
 const temp = await mkdtemp(join(tmpdir(), 'orcatopia-catalog-'));
 try {
   await build({
-    entryPoints: ['plugins/orcatopia/src/placement.ts'],
+    entryPoints: [
+      'plugins/orcatopia/src/placement.ts',
+      'plugins/orcatopia/src/game.ts',
+    ],
     bundle: true,
     platform: 'node',
     format: 'esm',
-    outfile: join(temp, 'placement.mjs'),
+    outdir: temp,
+    outExtension: { '.js': '.mjs' },
   });
   const { placementType } = await import(
     pathToFileURL(join(temp, 'placement.mjs'))
+  );
+  const { draw, empty, collectionTheme } = await import(
+    pathToFileURL(join(temp, 'game.mjs'))
   );
   const catalog = JSON.parse(
     await readFile('plugins/orcatopia/src/landmarks.json', 'utf8'),
@@ -58,6 +65,45 @@ try {
       meanDrawsTo25: sums[1] / 100_000,
     };
   };
+  const simulateActual = (firstRiver) => {
+    seed = 6257;
+    const runs = 10_000;
+    const sums = [0, 0];
+    for (let run = 0; run < runs; run++) {
+      const state = empty();
+      const unique = new Set();
+      let draws = 0;
+      let reachedTwelve = false;
+      while (unique.size < 25) {
+        const id = draw(random, state);
+        unique.add(id);
+        state.discoveredPlaces = [...unique];
+        draws++;
+        if (unique.size === 12 && !reachedTwelve) {
+          sums[0] += draws;
+          reachedTwelve = true;
+          if (firstRiver) {
+            unique.add(draw(random, state, 'river'));
+            state.discoveredPlaces = [...unique];
+            draws++;
+          }
+        }
+      }
+      sums[1] += draws;
+    }
+    return {
+      runs,
+      seed: 6257,
+      firstRiver,
+      meanTicketsTo12: sums[0] / runs,
+      meanTicketsTo25: sums[1] / runs,
+    };
+  };
+  const baselineScenarios = [
+    simulate(catalog.slice(0, 306)),
+    simulate(catalog),
+    simulate(catalog.filter((l) => placementType(l.id) === 'land')),
+  ];
   const tierCounts = counts(catalog);
   console.log(
     JSON.stringify(
@@ -89,12 +135,15 @@ try {
         simulation: {
           runs: 100_000,
           seed: 6257,
-          note: 'Independent pool scenarios; land-only is an integration estimate, not an implemented unlock policy.',
-          scenarios: [
-            simulate(catalog.slice(0, 306)),
-            simulate(catalog),
-            simulate(catalog.filter((l) => placementType(l.id) === 'land')),
-          ],
+          note: 'Independent fixed-pool baselines; actualDraw uses the integrated draw function with river/sea thresholds 12/25 and coastal classified as sea.',
+          actualDraw: [simulateActual(false), simulateActual(true)],
+          themeTiers: Object.fromEntries(
+            ['land', 'river', 'sea'].map((theme) => [
+              theme,
+              counts(catalog.filter((l) => collectionTheme(l.id) === theme)),
+            ]),
+          ),
+          scenarios: baselineScenarios,
         },
       },
       null,
