@@ -1,19 +1,9 @@
-import catalog700 from './catalog-700.json';
-import waterCatalog from './water-catalog.json';
 import expansion from './landmark-expansion.json';
-import catalog600 from './catalog-600.json';
+import { expandedWaterIds } from './water-themes';
 import type { Decoration } from './decorations';
 
-/** 새 랜드마크마다 기존 제작 규칙을 따르는 두 가지 가상 정원 장식을 만든다. */
-const waterIds = new Set([
-  ...catalog700.map((entry) => entry.record.id),
-  ...waterCatalog.map((entry) => entry.record.id),
-  ...catalog600
-    .filter((entry) => entry.placement !== 'land')
-    .map((entry) => entry.id),
-]);
 export const expandedDecorations: Decoration[] = expansion
-  .filter((entry) => !waterIds.has(entry.id))
+  .filter((entry) => !expandedWaterIds.has(entry.id))
   .flatMap((entry) => {
     const nature = [
       'peaks',
