@@ -855,252 +855,6 @@ var ExpeditionLog = class {
   }
 };
 
-// plugins/orcatopia/src/water-catalog.json
-var water_catalog_default = [
-  {
-    record: {
-      id: "greatbarrierreef",
-      name: "Great Barrier Reef",
-      country: "Australia",
-      code: "AUS",
-      tier: "epic",
-      lat: -18.2871,
-      lon: 147.6992,
-      source: "https://whc.unesco.org/en/list/154/",
-      region: "Queensland",
-      description: "Coral gardens and shallow lagoons spread along northeastern Australia, providing habitats for marine turtles, dugongs and many kinds of reef fish. The miniature represents part of this extensive marine landscape.",
-      descriptionSourceName: "UNESCO World Heritage Centre",
-      descriptionSource: "https://whc.unesco.org/en/list/154/"
-    },
-    korean: {
-      name: "\uADF8\uB808\uC774\uD2B8\uBC30\uB9AC\uC5B4\uB9AC\uD504",
-      country: "\uD638\uC8FC",
-      region: "\uD038\uC990\uB79C\uB4DC",
-      description: "\uD638\uC8FC \uBD81\uB3D9\uBD80 \uBC14\uB2E4\uC5D0 \uC0B0\uD638\uCD08\uC640 \uC595\uC740 \uC11D\uD638\uAC00 \uD3BC\uCCD0\uC9D1\uB2C8\uB2E4. \uBC14\uB2E4\uAC70\uBD81\uACFC \uB4C0\uACF5, \uB2E4\uC591\uD55C \uC0B0\uD638\uCD08 \uBB3C\uACE0\uAE30\uAC00 \uC0B4\uC544\uAC00\uB294 \uB113\uC740 \uD574\uC591 \uACBD\uAD00\uC758 \uC77C\uBD80\uB97C \uC791\uC740 \uBAA8\uD615\uC73C\uB85C \uD45C\uD604\uD588\uC2B5\uB2C8\uB2E4.",
-      descriptionSourceName: "\uC720\uB124\uC2A4\uCF54 \uC138\uACC4\uC720\uC0B0\uC13C\uD130"
-    },
-    visual: {
-      id: "greatbarrierreef",
-      name: "Great Barrier Reef",
-      nameKo: "\uADF8\uB808\uC774\uD2B8\uBC30\uB9AC\uC5B4\uB9AC\uD504",
-      shape: "reef",
-      feature: "Coral gardens and shallow lagoons spread along northeastern Australia, providing habitats for marine turtles, dugongs and many kinds of reef fish. The miniature represents part of this extensive marine landscape.",
-      featureKo: "\uD638\uC8FC \uBD81\uB3D9\uBD80 \uBC14\uB2E4\uC5D0 \uC0B0\uD638\uCD08\uC640 \uC595\uC740 \uC11D\uD638\uAC00 \uD3BC\uCCD0\uC9D1\uB2C8\uB2E4. \uBC14\uB2E4\uAC70\uBD81\uACFC \uB4C0\uACF5, \uB2E4\uC591\uD55C \uC0B0\uD638\uCD08 \uBB3C\uACE0\uAE30\uAC00 \uC0B4\uC544\uAC00\uB294 \uB113\uC740 \uD574\uC591 \uACBD\uAD00\uC758 \uC77C\uBD80\uB97C \uC791\uC740 \uBAA8\uD615\uC73C\uB85C \uD45C\uD604\uD588\uC2B5\uB2C8\uB2E4.",
-      seed: 201,
-      color: "#5ab7ad"
-    },
-    surface: "sea"
-  },
-  {
-    record: {
-      id: "bluehole",
-      name: "Great Blue Hole",
-      country: "Belize",
-      code: "BLZ",
-      tier: "rare",
-      lat: 17.316,
-      lon: -87.534,
-      source: "https://whc.unesco.org/en/list/764/",
-      region: "Lighthouse Reef",
-      description: "A deep circular marine sinkhole opens within Lighthouse Reef in Belize. Blue Hole Natural Monument is one of the protected areas of the Belize Barrier Reef Reserve System; its dark water contrasts with the surrounding shallows.",
-      descriptionSourceName: "UNESCO World Heritage Centre",
-      descriptionSource: "https://whc.unesco.org/en/list/764/"
-    },
-    korean: {
-      name: "\uADF8\uB808\uC774\uD2B8\uBE14\uB8E8\uD640",
-      country: "\uBCA8\uB9AC\uC988",
-      region: "\uB77C\uC774\uD2B8\uD558\uC6B0\uC2A4\uB9AC\uD504",
-      description: "\uBCA8\uB9AC\uC988 \uB77C\uC774\uD2B8\uD558\uC6B0\uC2A4\uB9AC\uD504 \uC548\uCABD\uC5D0 \uB465\uADFC \uD574\uC591 \uC2F1\uD06C\uD640\uC774 \uC790\uB9AC\uD569\uB2C8\uB2E4. \uBCA8\uB9AC\uC988 \uC0B0\uD638\uCD08 \uBCF4\uD638\uAD6C\uC5ED\uC744 \uC774\uB8E8\uB294 \uBE14\uB8E8\uD640 \uC790\uC5F0\uAE30\uB150\uBB3C\uB85C, \uC9D9\uC740 \uBB3C\uBE5B\uACFC \uC8FC\uBCC0\uC758 \uC595\uC740 \uBC14\uB2E4\uAC00 \uB69C\uB837\uD558\uAC8C \uB300\uBE44\uB429\uB2C8\uB2E4.",
-      descriptionSourceName: "\uC720\uB124\uC2A4\uCF54 \uC138\uACC4\uC720\uC0B0\uC13C\uD130"
-    },
-    visual: {
-      id: "bluehole",
-      name: "Great Blue Hole",
-      nameKo: "\uADF8\uB808\uC774\uD2B8\uBE14\uB8E8\uD640",
-      shape: "reef",
-      feature: "A deep circular marine sinkhole opens within Lighthouse Reef in Belize. Blue Hole Natural Monument is one of the protected areas of the Belize Barrier Reef Reserve System; its dark water contrasts with the surrounding shallows.",
-      featureKo: "\uBCA8\uB9AC\uC988 \uB77C\uC774\uD2B8\uD558\uC6B0\uC2A4\uB9AC\uD504 \uC548\uCABD\uC5D0 \uB465\uADFC \uD574\uC591 \uC2F1\uD06C\uD640\uC774 \uC790\uB9AC\uD569\uB2C8\uB2E4. \uBCA8\uB9AC\uC988 \uC0B0\uD638\uCD08 \uBCF4\uD638\uAD6C\uC5ED\uC744 \uC774\uB8E8\uB294 \uBE14\uB8E8\uD640 \uC790\uC5F0\uAE30\uB150\uBB3C\uB85C, \uC9D9\uC740 \uBB3C\uBE5B\uACFC \uC8FC\uBCC0\uC758 \uC595\uC740 \uBC14\uB2E4\uAC00 \uB69C\uB837\uD558\uAC8C \uB300\uBE44\uB429\uB2C8\uB2E4.",
-      seed: 202,
-      color: "#4f9fac"
-    },
-    surface: "sea"
-  },
-  {
-    record: {
-      id: "geirangerfjord",
-      name: "Geirangerfjord",
-      country: "Norway",
-      code: "NOR",
-      tier: "rare",
-      lat: 62.105,
-      lon: 7.01,
-      source: "https://whc.unesco.org/en/list/1195/",
-      region: "Western Norway",
-      description: "Steep rock walls enclose a narrow arm of the sea in western Norway. Waterfalls descend from the mountain sides into the fjord, one of the two fjord areas recognized in the West Norwegian Fjords World Heritage property.",
-      descriptionSourceName: "UNESCO World Heritage Centre",
-      descriptionSource: "https://whc.unesco.org/en/list/1195/"
-    },
-    korean: {
-      name: "\uAC8C\uC774\uB791\uC5D0\uB974\uD53C\uC624\uB974",
-      country: "\uB178\uB974\uC6E8\uC774",
-      region: "\uB178\uB974\uC6E8\uC774 \uC11C\uBD80",
-      description: "\uB178\uB974\uC6E8\uC774 \uC11C\uBD80\uC758 \uAC00\uD30C\uB978 \uC554\uBCBD \uC0AC\uC774\uB85C \uC881\uACE0 \uAE34 \uBC14\uB2F7\uAE38\uC774 \uB4E4\uC5B4\uC635\uB2C8\uB2E4. \uC0B0\uBE44\uD0C8\uC758 \uD3ED\uD3EC\uAC00 \uD53C\uC624\uB974\uB85C \uD758\uB7EC\uB4E4\uBA70, \uB178\uB974\uC6E8\uC774 \uC11C\uBD80 \uD53C\uC624\uB974 \uC138\uACC4\uC720\uC0B0\uC744 \uC774\uB8E8\uB294 \uB450 \uC9C0\uC5ED \uC911 \uD558\uB098\uC785\uB2C8\uB2E4.",
-      descriptionSourceName: "\uC720\uB124\uC2A4\uCF54 \uC138\uACC4\uC720\uC0B0\uC13C\uD130"
-    },
-    visual: {
-      id: "geirangerfjord",
-      name: "Geirangerfjord",
-      nameKo: "\uAC8C\uC774\uB791\uC5D0\uB974\uD53C\uC624\uB974",
-      shape: "fjord",
-      feature: "Steep rock walls enclose a narrow arm of the sea in western Norway. Waterfalls descend from the mountain sides into the fjord, one of the two fjord areas recognized in the West Norwegian Fjords World Heritage property.",
-      featureKo: "\uB178\uB974\uC6E8\uC774 \uC11C\uBD80\uC758 \uAC00\uD30C\uB978 \uC554\uBCBD \uC0AC\uC774\uB85C \uC881\uACE0 \uAE34 \uBC14\uB2F7\uAE38\uC774 \uB4E4\uC5B4\uC635\uB2C8\uB2E4. \uC0B0\uBE44\uD0C8\uC758 \uD3ED\uD3EC\uAC00 \uD53C\uC624\uB974\uB85C \uD758\uB7EC\uB4E4\uBA70, \uB178\uB974\uC6E8\uC774 \uC11C\uBD80 \uD53C\uC624\uB974 \uC138\uACC4\uC720\uC0B0\uC744 \uC774\uB8E8\uB294 \uB450 \uC9C0\uC5ED \uC911 \uD558\uB098\uC785\uB2C8\uB2E4.",
-      seed: 203,
-      color: "#759eaf"
-    },
-    surface: "sea"
-  },
-  {
-    record: {
-      id: "rockislands",
-      name: "Rock Islands Southern Lagoon",
-      country: "Palau",
-      code: "PLW",
-      tier: "rare",
-      lat: 7.2,
-      lon: 134.35,
-      source: "https://whc.unesco.org/en/list/1386/",
-      region: "Southern Lagoon",
-      description: "Green limestone islets rise from turquoise lagoons in Palau. Their undercut, mushroom-like profiles sit among coral reefs, while the wider Rock Islands landscape includes marine lakes and traces of former island settlements.",
-      descriptionSourceName: "UNESCO World Heritage Centre",
-      descriptionSource: "https://whc.unesco.org/en/list/1386/"
-    },
-    korean: {
-      name: "\uD314\uB77C\uC6B0 \uB85D\uC544\uC77C\uB79C\uB4DC",
-      country: "\uD314\uB77C\uC6B0",
-      region: "\uB0A8\uBD80 \uC11D\uD638",
-      description: "\uD314\uB77C\uC6B0\uC758 \uCCAD\uB85D\uBE5B \uC11D\uD638 \uC704\uB85C \uCD08\uB85D\uBE5B \uC11D\uD68C\uC554 \uC12C\uB4E4\uC774 \uC19F\uC544 \uC788\uC2B5\uB2C8\uB2E4. \uC544\uB7AB\uBD80\uBD84\uC774 \uAE4E\uC778 \uBC84\uC12F \uBAA8\uC591 \uC12C\uACFC \uC0B0\uD638\uCD08\uAC00 \uC5B4\uC6B0\uB7EC\uC9C0\uBA70, \uC8FC\uBCC0\uC5D0\uB294 \uD574\uC591 \uD638\uC218\uC640 \uC61B \uC12C \uACF5\uB3D9\uCCB4\uC758 \uD754\uC801\uB3C4 \uB0A8\uC544 \uC788\uC2B5\uB2C8\uB2E4.",
-      descriptionSourceName: "\uC720\uB124\uC2A4\uCF54 \uC138\uACC4\uC720\uC0B0\uC13C\uD130"
-    },
-    visual: {
-      id: "rockislands",
-      name: "Rock Islands Southern Lagoon",
-      nameKo: "\uD314\uB77C\uC6B0 \uB85D\uC544\uC77C\uB79C\uB4DC",
-      shape: "island",
-      feature: "Green limestone islets rise from turquoise lagoons in Palau. Their undercut, mushroom-like profiles sit among coral reefs, while the wider Rock Islands landscape includes marine lakes and traces of former island settlements.",
-      featureKo: "\uD314\uB77C\uC6B0\uC758 \uCCAD\uB85D\uBE5B \uC11D\uD638 \uC704\uB85C \uCD08\uB85D\uBE5B \uC11D\uD68C\uC554 \uC12C\uB4E4\uC774 \uC19F\uC544 \uC788\uC2B5\uB2C8\uB2E4. \uC544\uB7AB\uBD80\uBD84\uC774 \uAE4E\uC778 \uBC84\uC12F \uBAA8\uC591 \uC12C\uACFC \uC0B0\uD638\uCD08\uAC00 \uC5B4\uC6B0\uB7EC\uC9C0\uBA70, \uC8FC\uBCC0\uC5D0\uB294 \uD574\uC591 \uD638\uC218\uC640 \uC61B \uC12C \uACF5\uB3D9\uCCB4\uC758 \uD754\uC801\uB3C4 \uB0A8\uC544 \uC788\uC2B5\uB2C8\uB2E4.",
-      seed: 204,
-      color: "#68b6a2"
-    },
-    surface: "sea"
-  },
-  {
-    record: {
-      id: "liriver",
-      name: "Li River Karst",
-      country: "China",
-      code: "CHN",
-      tier: "rare",
-      lat: 25.0022,
-      lon: 110.425,
-      source: "https://whc.unesco.org/en/list/1248/",
-      region: "Guilin",
-      description: "Towering limestone peaks line the Li River around Guilin. The Lijiang karst component of South China Karst preserves a landscape of steep green hills and river corridors, represented here by a small riverside scene.",
-      descriptionSourceName: "UNESCO World Heritage Centre",
-      descriptionSource: "https://whc.unesco.org/en/list/1248/"
-    },
-    korean: {
-      name: "\uB9AC\uAC15 \uCE74\uB974\uC2A4\uD2B8",
-      country: "\uC911\uAD6D",
-      region: "\uAD6C\uC774\uB9B0",
-      description: "\uAD6C\uC774\uB9B0\uC758 \uB9AC\uAC15\uC744 \uB530\uB77C \uAC00\uD30C\uB978 \uC11D\uD68C\uC554 \uBD09\uC6B0\uB9AC\uAC00 \uC774\uC5B4\uC9D1\uB2C8\uB2E4. \uC911\uAD6D \uB0A8\uBD80 \uCE74\uB974\uC2A4\uD2B8 \uC720\uC0B0\uC758 \uB9AC\uC7A5 \uAD6C\uC5ED\uC5D0 \uC18D\uD55C \uC0B0\uBD09\uC6B0\uB9AC\uC640 \uAC15\uBCC0 \uD48D\uACBD\uC744 \uC791\uC740 \uBAA8\uD615\uC73C\uB85C \uD45C\uD604\uD588\uC2B5\uB2C8\uB2E4.",
-      descriptionSourceName: "\uC720\uB124\uC2A4\uCF54 \uC138\uACC4\uC720\uC0B0\uC13C\uD130"
-    },
-    visual: {
-      id: "liriver",
-      name: "Li River Karst",
-      nameKo: "\uB9AC\uAC15 \uCE74\uB974\uC2A4\uD2B8",
-      shape: "coast",
-      feature: "Towering limestone peaks line the Li River around Guilin. The Lijiang karst component of South China Karst preserves a landscape of steep green hills and river corridors, represented here by a small riverside scene.",
-      featureKo: "\uAD6C\uC774\uB9B0\uC758 \uB9AC\uAC15\uC744 \uB530\uB77C \uAC00\uD30C\uB978 \uC11D\uD68C\uC554 \uBD09\uC6B0\uB9AC\uAC00 \uC774\uC5B4\uC9D1\uB2C8\uB2E4. \uC911\uAD6D \uB0A8\uBD80 \uCE74\uB974\uC2A4\uD2B8 \uC720\uC0B0\uC758 \uB9AC\uC7A5 \uAD6C\uC5ED\uC5D0 \uC18D\uD55C \uC0B0\uBD09\uC6B0\uB9AC\uC640 \uAC15\uBCC0 \uD48D\uACBD\uC744 \uC791\uC740 \uBAA8\uD615\uC73C\uB85C \uD45C\uD604\uD588\uC2B5\uB2C8\uB2E4.",
-      seed: 205,
-      color: "#77aaa0"
-    },
-    surface: "river"
-  },
-  {
-    record: {
-      id: "middlerhine",
-      name: "Upper Middle Rhine Valley",
-      country: "Germany",
-      code: "DEU",
-      tier: "common",
-      lat: 50.173,
-      lon: 7.694,
-      source: "https://whc.unesco.org/en/list/1066/",
-      region: "Middle Rhine",
-      description: "Castles, vineyard slopes and historic towns follow the Middle Rhine in Germany. The World Heritage cultural landscape records centuries of settlement and travel along the river; the miniature combines a river bend and a hillside castle.",
-      descriptionSourceName: "UNESCO World Heritage Centre",
-      descriptionSource: "https://whc.unesco.org/en/list/1066/"
-    },
-    korean: {
-      name: "\uB77C\uC778\uAC15 \uC911\uC0C1\uB958 \uACC4\uACE1",
-      country: "\uB3C5\uC77C",
-      region: "\uB77C\uC778\uAC15 \uC911\uB958",
-      description: "\uB3C5\uC77C \uB77C\uC778\uAC15\uC744 \uB530\uB77C \uACE0\uC131\uACFC \uD3EC\uB3C4\uBC2D, \uC624\uB798\uB41C \uB9C8\uC744\uC774 \uC774\uC5B4\uC9D1\uB2C8\uB2E4. \uC218\uBC31 \uB144 \uB3D9\uC548 \uAC15\uACFC \uD568\uAED8 \uC0B4\uC544\uC628 \uBB38\uD654\uACBD\uAD00\uC744 \uAD7D\uC774\uCE58\uB294 \uBB3C\uAE38\uACFC \uC5B8\uB355 \uC704 \uC131\uC73C\uB85C \uD45C\uD604\uD588\uC2B5\uB2C8\uB2E4.",
-      descriptionSourceName: "\uC720\uB124\uC2A4\uCF54 \uC138\uACC4\uC720\uC0B0\uC13C\uD130"
-    },
-    visual: {
-      id: "middlerhine",
-      name: "Upper Middle Rhine Valley",
-      nameKo: "\uB77C\uC778\uAC15 \uC911\uC0C1\uB958 \uACC4\uACE1",
-      shape: "castle",
-      feature: "Castles, vineyard slopes and historic towns follow the Middle Rhine in Germany. The World Heritage cultural landscape records centuries of settlement and travel along the river; the miniature combines a river bend and a hillside castle.",
-      featureKo: "\uB3C5\uC77C \uB77C\uC778\uAC15\uC744 \uB530\uB77C \uACE0\uC131\uACFC \uD3EC\uB3C4\uBC2D, \uC624\uB798\uB41C \uB9C8\uC744\uC774 \uC774\uC5B4\uC9D1\uB2C8\uB2E4. \uC218\uBC31 \uB144 \uB3D9\uC548 \uAC15\uACFC \uD568\uAED8 \uC0B4\uC544\uC628 \uBB38\uD654\uACBD\uAD00\uC744 \uAD7D\uC774\uCE58\uB294 \uBB3C\uAE38\uACFC \uC5B8\uB355 \uC704 \uC131\uC73C\uB85C \uD45C\uD604\uD588\uC2B5\uB2C8\uB2E4.",
-      seed: 206,
-      color: "#9baf86"
-    },
-    surface: "river"
-  }
-];
-
-// plugins/orcatopia/src/water-themes.ts
-var waterThemes = [
-  { id: "halong", placement: "sea", gift: "buoy", special: "sailboat" },
-  { id: "papahanaumokuakea", placement: "sea", gift: "coral", special: "buoy" },
-  ...["montsaintmichel", "venice", "nanmadol", "liberty", "opera", "belem"].map(
-    (id) => ({
-      id,
-      placement: "coastal",
-      gift: "buoy",
-      special: "sailboat"
-    })
-  ),
-  ...["mostar", "pontdugard", "kinderdijk", "grandcanal", "dujiangyan"].map(
-    (id) => ({
-      id,
-      placement: "river",
-      gift: "lotus",
-      special: ["kinderdijk", "dujiangyan"].includes(id) ? "waterwheel" : "raft"
-    })
-  ),
-  ...water_catalog_default.map((entry) => ({
-    id: entry.record.id,
-    placement: entry.surface,
-    gift: entry.surface === "river" ? "lotus" : entry.record.id === "bluehole" || entry.record.id === "geirangerfjord" ? "buoy" : "coral",
-    special: entry.surface === "river" ? entry.record.id === "middlerhine" ? "waterwheel" : "raft" : entry.record.id === "greatbarrierreef" ? "buoy" : "sailboat"
-  }))
-];
-var byId = new Map(waterThemes.map((t) => [t.id, t]));
-var waterTheme = (id) => byId.get(id.endsWith("+") ? id.slice(0, -1) : id);
-var waterShapeNames = {
-  coral: ["coral garden", "\uC0B0\uD638 \uC815\uC6D0"],
-  buoy: ["navigation buoy", "\uD56D\uB85C \uBD80\uD45C"],
-  sailboat: ["sailboat", "\uBC94\uC120"],
-  lotus: ["floating lotus bed", "\uC218\uC0C1 \uC5F0\uAF43\uBC2D"],
-  raft: ["river raft", "\uAC15 \uB5CF\uBAA9"],
-  waterwheel: ["waterwheel", "\uBB3C\uB808\uBC29\uC544"]
-};
-
 // plugins/orcatopia/src/landmarks.json
 var landmarks_default = [
   {
@@ -5386,6 +5140,4122 @@ var landmarks_default = [
     description: "Castles, vineyard slopes and historic towns follow the Middle Rhine in Germany. The World Heritage cultural landscape records centuries of settlement and travel along the river; the miniature combines a river bend and a hillside castle.",
     descriptionSourceName: "UNESCO World Heritage Centre",
     descriptionSource: "https://whc.unesco.org/en/list/1066/"
+  },
+  {
+    id: "jam",
+    name: "Minaret of Jam",
+    country: "Afghanistan",
+    code: "AFG",
+    tier: "rare",
+    lat: 34.3964166667,
+    lon: 64.5158888889,
+    source: "https://whc.unesco.org/en/list/211/",
+    region: "Asia and the Pacific",
+    description: "An intricately decorated brick minaret rises in a remote mountain valley. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/211/"
+  },
+  {
+    id: "bamiyan",
+    name: "Bamiyan Valley",
+    country: "Afghanistan",
+    code: "AFG",
+    tier: "epic",
+    lat: 34.8469444444,
+    lon: 67.82525,
+    source: "https://whc.unesco.org/en/list/208/",
+    region: "Asia and the Pacific",
+    description: "Tall niches and Buddhist cave sanctuaries survive along the valley's sandstone cliffs. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/208/"
+  },
+  {
+    id: "butrint",
+    name: "Butrint",
+    country: "Albania",
+    code: "ALB",
+    tier: "rare",
+    lat: 39.745732,
+    lon: 20.02095,
+    source: "https://whc.unesco.org/en/list/570/",
+    region: "Europe and North America",
+    description: "A Greek and Roman archaeological city occupies a peninsula beside a lagoon. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/570/"
+  },
+  {
+    id: "berat",
+    name: "Berat and Gjirokastra",
+    country: "Albania",
+    code: "ALB",
+    tier: "common",
+    lat: 40.0741666667,
+    lon: 20.1408333333,
+    source: "https://whc.unesco.org/en/list/569/",
+    region: "Europe and North America",
+    description: "Ottoman-period houses climb the slopes of two historic Albanian towns. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/569/"
+  },
+  {
+    id: "haghpat",
+    name: "Haghpat and Sanahin Monasteries",
+    country: "Armenia",
+    code: "ARM",
+    tier: "rare",
+    lat: 41.0991128309,
+    lon: 44.6581005821,
+    source: "https://whc.unesco.org/en/list/777/",
+    region: "Europe and North America",
+    description: "Medieval Armenian monasteries combine domed churches with local vernacular building traditions. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/777/"
+  },
+  {
+    id: "geghard",
+    name: "Geghard Monastery",
+    country: "Armenia",
+    code: "ARM",
+    tier: "rare",
+    lat: 40.140439,
+    lon: 44.818525,
+    source: "https://whc.unesco.org/en/list/960/",
+    region: "Europe and North America",
+    description: "Churches and tombs are cut into rock within the steep Upper Azat Valley. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/960/"
+  },
+  {
+    id: "zvartnots",
+    name: "Echmiatsin and Zvartnots",
+    country: "Armenia",
+    code: "ARM",
+    tier: "common",
+    lat: 40.1586666667,
+    lon: 44.3246388889,
+    source: "https://whc.unesco.org/en/list/1011/",
+    region: "Europe and North America",
+    description: "Early Armenian churches and the remains of Zvartnots illustrate the development of central-domed architecture. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/1011/"
+  },
+  {
+    id: "bakuwalled",
+    name: "Walled City of Baku",
+    country: "Azerbaijan",
+    code: "AZE",
+    tier: "rare",
+    lat: 40.36666667,
+    lon: 49.83333333,
+    source: "https://whc.unesco.org/en/list/958/",
+    region: "Europe and North America",
+    description: "The Maiden Tower and Shirvanshah palace stand within Baku's surviving fortified city. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/958/"
+  },
+  {
+    id: "gobustan",
+    name: "Gobustan Rock Art",
+    country: "Azerbaijan",
+    code: "AZE",
+    tier: "common",
+    lat: 40.112561,
+    lon: 49.381896,
+    source: "https://whc.unesco.org/en/list/1076/",
+    region: "Europe and North America",
+    description: "Thousands of rock engravings record long human occupation among a plateau of rocky boulders. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/1076/"
+  },
+  {
+    id: "sheki",
+    name: "Sheki Khan's Palace",
+    country: "Azerbaijan",
+    code: "AZE",
+    tier: "rare",
+    lat: 41.2033333333,
+    lon: 47.1875,
+    source: "https://whc.unesco.org/en/list/1549/",
+    region: "Europe and North America",
+    description: "The khan's palace anchors a trading town shaped by silk production and caravan routes. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/1549/"
+  },
+  {
+    id: "visegrad",
+    name: "Vi\u0161egrad Bridge",
+    country: "Bosnia and Herzegovina",
+    code: "BIH",
+    tier: "rare",
+    lat: 43.7814444444,
+    lon: 19.288025,
+    source: "https://whc.unesco.org/en/list/1260/",
+    region: "Europe and North America",
+    description: "Eleven masonry arches carry an Ottoman bridge over the Drina River. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/1260/"
+  },
+  {
+    id: "vjetrenica",
+    name: "Vjetrenica Cave",
+    country: "Bosnia and Herzegovina",
+    code: "BIH",
+    tier: "common",
+    lat: 42.845,
+    lon: 17.9888888889,
+    source: "https://whc.unesco.org/en/list/1673/",
+    region: "Europe and North America",
+    description: "A karst cave shelters an exceptionally diverse community of underground animals. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/1673/"
+  },
+  {
+    id: "boyana",
+    name: "Boyana Church",
+    country: "Bulgaria",
+    code: "BGR",
+    tier: "common",
+    lat: 42.6446707809,
+    lon: 23.2661877076,
+    source: "https://whc.unesco.org/en/list/42/",
+    region: "Europe and North America",
+    description: "A small medieval church preserves vivid thirteenth-century wall paintings. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/42/"
+  },
+  {
+    id: "madara",
+    name: "Madara Rider",
+    country: "Bulgaria",
+    code: "BGR",
+    tier: "common",
+    lat: 43.2774166667,
+    lon: 27.1189444444,
+    source: "https://whc.unesco.org/en/list/43/",
+    region: "Europe and North America",
+    description: "A carved horseman stands high on a near-vertical cliff above an early Bulgarian sacred site. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/43/"
+  },
+  {
+    id: "kazanlak",
+    name: "Thracian Tomb of Kazanlak",
+    country: "Bulgaria",
+    code: "BGR",
+    tier: "common",
+    lat: 42.625774,
+    lon: 25.399172,
+    source: "https://whc.unesco.org/en/list/44/",
+    region: "Europe and North America",
+    description: "A vaulted Thracian tomb preserves painted scenes of a funerary banquet. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/44/"
+  },
+  {
+    id: "ivanovo",
+    name: "Rock-Hewn Churches of Ivanovo",
+    country: "Bulgaria",
+    code: "BGR",
+    tier: "common",
+    lat: 43.694858,
+    lon: 25.987893,
+    source: "https://whc.unesco.org/en/list/45/",
+    region: "Europe and North America",
+    description: "Medieval churches and monastic cells are carved into the cliffs above a river valley. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/45/"
+  },
+  {
+    id: "nessebar",
+    name: "Ancient Nessebar",
+    country: "Bulgaria",
+    code: "BGR",
+    tier: "rare",
+    lat: 42.6591111111,
+    lon: 27.7360277778,
+    source: "https://whc.unesco.org/en/list/217/",
+    region: "Europe and North America",
+    description: "Churches and historic houses cluster on a rocky peninsula in the Black Sea. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/217/"
+  },
+  {
+    id: "srebarna",
+    name: "Srebarna Nature Reserve",
+    country: "Bulgaria",
+    code: "BGR",
+    tier: "common",
+    lat: 44.11444,
+    lon: 27.07806,
+    source: "https://whc.unesco.org/en/list/219/",
+    region: "Europe and North America",
+    description: "A freshwater lake beside the Danube provides breeding grounds for waterbirds. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/219/"
+  },
+  {
+    id: "pirin",
+    name: "Pirin National Park",
+    country: "Bulgaria",
+    code: "BGR",
+    tier: "rare",
+    lat: 41.7427222222,
+    lon: 23.4304722222,
+    source: "https://whc.unesco.org/en/list/225/",
+    region: "Europe and North America",
+    description: "Alpine peaks, glacial lakes and forests cover the Pirin mountain landscape. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/225/"
+  },
+  {
+    id: "qalabahrain",
+    name: "Qal'at al-Bahrain",
+    country: "Bahrain",
+    code: "BHR",
+    tier: "common",
+    lat: 26.2344444444,
+    lon: 50.5183333333,
+    source: "https://whc.unesco.org/en/list/1192/",
+    region: "Arab States",
+    description: "An archaeological mound and coastal fort preserve layers of the ancient Dilmun trading centre. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/1192/"
+  },
+  {
+    id: "dilmunmounds",
+    name: "Dilmun Burial Mounds",
+    country: "Bahrain",
+    code: "BHR",
+    tier: "common",
+    lat: 26.1802777778,
+    lon: 50.4733333334,
+    source: "https://whc.unesco.org/en/list/1542/",
+    region: "Arab States",
+    description: "Extensive fields of burial mounds reflect the funerary traditions of ancient Dilmun. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/1542/"
+  },
+  {
+    id: "mir",
+    name: "Mir Castle",
+    country: "Belarus",
+    code: "BLR",
+    tier: "rare",
+    lat: 53.45108333,
+    lon: 26.47272222,
+    source: "https://whc.unesco.org/en/list/625/",
+    region: "Europe and North America",
+    description: "A quadrangular castle combines Gothic, Renaissance and Baroque architectural elements. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/625/"
+  },
+  {
+    id: "nesvizh",
+    name: "Nesvizh Castle",
+    country: "Belarus",
+    code: "BLR",
+    tier: "common",
+    lat: 53.22278,
+    lon: 26.69139,
+    source: "https://whc.unesco.org/en/list/1196/",
+    region: "Europe and North America",
+    description: "The Radziwill family's palace complex joins residential buildings with a landscaped setting. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/1196/"
+  },
+  {
+    id: "paphos",
+    name: "Paphos",
+    country: "Cyprus",
+    code: "CYP",
+    tier: "common",
+    lat: 34.7583333333,
+    lon: 32.4055555556,
+    source: "https://whc.unesco.org/en/list/79/",
+    region: "Europe and North America",
+    description: "Roman villas preserve richly decorated mosaic floors in an ancient coastal city. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/79/"
+  },
+  {
+    id: "troodos",
+    name: "Painted Churches of Troodos",
+    country: "Cyprus",
+    code: "CYP",
+    tier: "common",
+    lat: 34.9218331732,
+    lon: 33.0947801737,
+    source: "https://whc.unesco.org/en/list/351/",
+    region: "Europe and North America",
+    description: "Mountain churches with steep timber roofs preserve Byzantine wall paintings. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/351/"
+  },
+  {
+    id: "choirokoitia",
+    name: "Choirokoitia",
+    country: "Cyprus",
+    code: "CYP",
+    tier: "common",
+    lat: 34.7967406661,
+    lon: 33.3439431453,
+    source: "https://whc.unesco.org/en/list/848/",
+    region: "Europe and North America",
+    description: "Remains of circular stone houses reveal a Neolithic settlement on Cyprus. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/848/"
+  },
+  {
+    id: "ceskykrumlov",
+    name: "\u010Cesk\xFD Krumlov",
+    country: "Czechia",
+    code: "CZE",
+    tier: "rare",
+    lat: 48.8106944444,
+    lon: 14.3150277778,
+    source: "https://whc.unesco.org/en/list/617/",
+    region: "Europe and North America",
+    description: "A large castle overlooks a medieval town wrapped in bends of the Vltava River. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/617/"
+  },
+  {
+    id: "telc",
+    name: "Tel\u010D",
+    country: "Czechia",
+    code: "CZE",
+    tier: "common",
+    lat: 49.1841388889,
+    lon: 15.4539722222,
+    source: "https://whc.unesco.org/en/list/621/",
+    region: "Europe and North America",
+    description: "Renaissance and Baroque houses line a historic market square beneath a castle. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/621/"
+  },
+  {
+    id: "zelenahora",
+    name: "Zelen\xE1 Hora Pilgrimage Church",
+    country: "Czechia",
+    code: "CZE",
+    tier: "rare",
+    lat: 49.5802,
+    lon: 15.9420583333,
+    source: "https://whc.unesco.org/en/list/690/",
+    region: "Europe and North America",
+    description: "A star-shaped pilgrimage church brings together Gothic and Baroque design. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/690/"
+  },
+  {
+    id: "kutnahora",
+    name: "Kutn\xE1 Hora",
+    country: "Czechia",
+    code: "CZE",
+    tier: "rare",
+    lat: 49.959828,
+    lon: 15.290152,
+    source: "https://whc.unesco.org/en/list/732/",
+    region: "Europe and North America",
+    description: "St Barbara's church rises above a historic town made prosperous by silver mining. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/732/"
+  },
+  {
+    id: "lednice",
+    name: "Lednice-Valtice",
+    country: "Czechia",
+    code: "CZE",
+    tier: "common",
+    lat: 48.7999444444,
+    lon: 16.8033861111,
+    source: "https://whc.unesco.org/en/list/763/",
+    region: "Europe and North America",
+    description: "Castles, gardens and romantic buildings form an extensive designed landscape. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/763/"
+  },
+  {
+    id: "olomouc",
+    name: "Holy Trinity Column in Olomouc",
+    country: "Czechia",
+    code: "CZE",
+    tier: "common",
+    lat: 49.5939361111,
+    lon: 17.2504583333,
+    source: "https://whc.unesco.org/en/list/859/",
+    region: "Europe and North America",
+    description: "A tall Baroque column is covered in religious sculpture in the town square. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/859/"
+  },
+  {
+    id: "kromeriz",
+    name: "Krom\u011B\u0159\xED\u017E Gardens and Castle",
+    country: "Czechia",
+    code: "CZE",
+    tier: "common",
+    lat: 49.296474,
+    lon: 17.38186,
+    source: "https://whc.unesco.org/en/list/860/",
+    region: "Europe and North America",
+    description: "An episcopal residence adjoins formal gardens and a landscaped pleasure garden. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/860/"
+  },
+  {
+    id: "litomysl",
+    name: "Litomy\u0161l Castle",
+    country: "Czechia",
+    code: "CZE",
+    tier: "common",
+    lat: 49.87361,
+    lon: 16.31444,
+    source: "https://whc.unesco.org/en/list/901/",
+    region: "Europe and North America",
+    description: "An arcaded Renaissance castle is decorated with elaborate sgraffito facades. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/901/"
+  },
+  {
+    id: "mtskheta",
+    name: "Mtskheta Monuments",
+    country: "Georgia",
+    code: "GEO",
+    tier: "rare",
+    lat: 41.8428333333,
+    lon: 44.7209444444,
+    source: "https://whc.unesco.org/en/list/708/",
+    region: "Europe and North America",
+    description: "Historic churches in Georgia's former capital illustrate early Christian architecture. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/708/"
+  },
+  {
+    id: "svaneti",
+    name: "Upper Svaneti",
+    country: "Georgia",
+    code: "GEO",
+    tier: "rare",
+    lat: 42.914,
+    lon: 43.009,
+    source: "https://whc.unesco.org/en/list/709/",
+    region: "Europe and North America",
+    description: "Medieval defensive tower houses stand among mountain villages in the Caucasus. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/709/"
+  },
+  {
+    id: "gelati",
+    name: "Gelati Monastery",
+    country: "Georgia",
+    code: "GEO",
+    tier: "common",
+    lat: 42.2947222222,
+    lon: 42.7683333333,
+    source: "https://whc.unesco.org/en/list/710/",
+    region: "Europe and North America",
+    description: "A medieval Georgian monastery preserves churches decorated with mosaics and paintings. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/710/"
+  },
+  {
+    id: "colchic",
+    name: "Colchic Rainforests and Wetlands",
+    country: "Georgia",
+    code: "GEO",
+    tier: "common",
+    lat: 41.8620194444,
+    lon: 41.8015277778,
+    source: "https://whc.unesco.org/en/list/1616/",
+    region: "Europe and North America",
+    description: "Humid forests and wetlands survive along the warm, wet eastern Black Sea coast. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/1616/"
+  },
+  {
+    id: "split",
+    name: "Diocletian's Palace at Split",
+    country: "Croatia",
+    code: "HRV",
+    tier: "rare",
+    lat: 43.5088888889,
+    lon: 16.4391666667,
+    source: "https://whc.unesco.org/en/list/97/",
+    region: "Europe and North America",
+    description: "A living historic city grew within and around a Roman emperor's palace. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/97/"
+  },
+  {
+    id: "plitvice",
+    name: "Plitvice Lakes",
+    country: "Croatia",
+    code: "HRV",
+    tier: "epic",
+    lat: 44.87778,
+    lon: 15.61444,
+    source: "https://whc.unesco.org/en/list/98/",
+    region: "Europe and North America",
+    description: "Water cascades between terraced lakes divided by natural travertine barriers. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/98/"
+  },
+  {
+    id: "porec",
+    name: "Euphrasian Basilica at Pore\u010D",
+    country: "Croatia",
+    code: "HRV",
+    tier: "common",
+    lat: 45.2285833333,
+    lon: 13.5933333333,
+    source: "https://whc.unesco.org/en/list/809/",
+    region: "Europe and North America",
+    description: "An early Christian episcopal complex preserves outstanding Byzantine mosaics. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/809/"
+  },
+  {
+    id: "trogir",
+    name: "Historic Trogir",
+    country: "Croatia",
+    code: "HRV",
+    tier: "common",
+    lat: 43.5170833333,
+    lon: 16.2513611111,
+    source: "https://whc.unesco.org/en/list/810/",
+    region: "Europe and North America",
+    description: "Romanesque churches and later palaces fill the compact historic island town. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/810/"
+  },
+  {
+    id: "sibenik",
+    name: "Cathedral of St James in \u0160ibenik",
+    country: "Croatia",
+    code: "HRV",
+    tier: "common",
+    lat: 43.7356919539,
+    lon: 15.8891302403,
+    source: "https://whc.unesco.org/en/list/963/",
+    region: "Europe and North America",
+    description: "A stone cathedral combines Gothic and Renaissance forms beneath a distinctive dome. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/963/"
+  },
+  {
+    id: "starigrad",
+    name: "Stari Grad Plain",
+    country: "Croatia",
+    code: "HRV",
+    tier: "common",
+    lat: 43.1816666667,
+    lon: 16.6386111111,
+    source: "https://whc.unesco.org/en/list/1240/",
+    region: "Europe and North America",
+    description: "Ancient field divisions remain visible in an agricultural plain on Hvar Island. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/1240/"
+  },
+  {
+    id: "holloko",
+    name: "Holl\xF3k\u0151",
+    country: "Hungary",
+    code: "HUN",
+    tier: "common",
+    lat: 47.99444,
+    lon: 19.52917,
+    source: "https://whc.unesco.org/en/list/401/",
+    region: "Europe and North America",
+    description: "A traditional village preserves houses and a rural layout developed before modern agricultural change. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/401/"
+  },
+  {
+    id: "hortobagy",
+    name: "Hortob\xE1gy Puszta",
+    country: "Hungary",
+    code: "HUN",
+    tier: "common",
+    lat: 47.59458,
+    lon: 21.15678,
+    source: "https://whc.unesco.org/en/list/474/",
+    region: "Europe and North America",
+    description: "Open grasslands preserve a long tradition of pastoral life on the Hungarian plain. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/474/"
+  },
+  {
+    id: "pannonhalma",
+    name: "Pannonhalma Abbey",
+    country: "Hungary",
+    code: "HUN",
+    tier: "common",
+    lat: 47.55889,
+    lon: 17.78444,
+    source: "https://whc.unesco.org/en/list/758/",
+    region: "Europe and North America",
+    description: "A Benedictine abbey crowns a hill and records a long monastic history. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/758/"
+  },
+  {
+    id: "tokaj",
+    name: "Tokaj Wine Landscape",
+    country: "Hungary",
+    code: "HUN",
+    tier: "common",
+    lat: 48.2666666667,
+    lon: 21.45,
+    source: "https://whc.unesco.org/en/list/1063/",
+    region: "Europe and North America",
+    description: "Vineyards and historic wine cellars form a landscape shaped by Tokaj wine production. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/1063/"
+  },
+  {
+    id: "sulaimantoo",
+    name: "Sulaiman-Too",
+    country: "Kyrgyzstan",
+    code: "KGZ",
+    tier: "rare",
+    lat: 40.5311111111,
+    lon: 72.7827777778,
+    source: "https://whc.unesco.org/en/list/1230/",
+    region: "Asia and the Pacific",
+    description: "A sacred mountain above Osh contains pilgrimage places, caves and rock carvings. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/1230/"
+  },
+  {
+    id: "yasawi",
+    name: "Mausoleum of Khoja Ahmed Yasawi",
+    country: "Kazakhstan",
+    code: "KAZ",
+    tier: "rare",
+    lat: 43.2976944444,
+    lon: 68.2710555556,
+    source: "https://whc.unesco.org/en/list/1103/",
+    region: "Asia and the Pacific",
+    description: "A monumental Timurid mausoleum combines a vast portal with domed chambers. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/1103/"
+  },
+  {
+    id: "tanbaly",
+    name: "Tanbaly Petroglyphs",
+    country: "Kazakhstan",
+    code: "KAZ",
+    tier: "common",
+    lat: 43.80333333,
+    lon: 75.535,
+    source: "https://whc.unesco.org/en/list/1145/",
+    region: "Asia and the Pacific",
+    description: "Rock engravings and archaeological remains mark a landscape used over many generations. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/1145/"
+  },
+  {
+    id: "saryarka",
+    name: "Saryarka Steppe and Lakes",
+    country: "Kazakhstan",
+    code: "KAZ",
+    tier: "common",
+    lat: 51.4861111111,
+    lon: 64.3036111111,
+    source: "https://whc.unesco.org/en/list/1102/",
+    region: "Asia and the Pacific",
+    description: "Steppe grasslands and lakes provide important resting places for migratory waterbirds. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/1102/"
+  },
+  {
+    id: "vilnius",
+    name: "Vilnius Historic Centre",
+    country: "Lithuania",
+    code: "LTU",
+    tier: "rare",
+    lat: 54.68667,
+    lon: 25.29306,
+    source: "https://whc.unesco.org/en/list/541/",
+    region: "Europe and North America",
+    description: "A historic city preserves a mixture of Gothic, Renaissance, Baroque and classical buildings. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/541/"
+  },
+  {
+    id: "kernave",
+    name: "Kernav\u0117",
+    country: "Lithuania",
+    code: "LTU",
+    tier: "common",
+    lat: 54.879,
+    lon: 24.853,
+    source: "https://whc.unesco.org/en/list/1137/",
+    region: "Europe and North America",
+    description: "Fortified hill mounds overlook archaeological traces of settlements in the Neris Valley. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/1137/"
+  },
+  {
+    id: "kuldiga",
+    name: "Old Town of Kuld\u012Bga",
+    country: "Latvia",
+    code: "LVA",
+    tier: "common",
+    lat: 56.96775,
+    lon: 21.9715277778,
+    source: "https://whc.unesco.org/en/list/1658/",
+    region: "Europe and North America",
+    description: "A historic town preserves streets and buildings associated with the Duchy of Courland. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/1658/"
+  },
+  {
+    id: "durmitor",
+    name: "Durmitor National Park",
+    country: "Montenegro",
+    code: "MNE",
+    tier: "rare",
+    lat: 43.133,
+    lon: 19.0166,
+    source: "https://whc.unesco.org/en/list/100/",
+    region: "Europe and North America",
+    description: "Glaciated mountains rise above deep canyons and clear mountain lakes. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/100/"
+  },
+  {
+    id: "kotor",
+    name: "Kotor Region",
+    country: "Montenegro",
+    code: "MNE",
+    tier: "rare",
+    lat: 42.48333,
+    lon: 18.7,
+    source: "https://whc.unesco.org/en/list/125/",
+    region: "Europe and North America",
+    description: "Fortified towns and churches occupy a deeply indented Adriatic bay. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/125/"
+  },
+  {
+    id: "orkhon",
+    name: "Orkhon Valley",
+    country: "Mongolia",
+    code: "MNG",
+    tier: "common",
+    lat: 47.479214,
+    lon: 102.678482,
+    source: "https://whc.unesco.org/en/list/1081/",
+    region: "Asia and the Pacific",
+    description: "Grassland, archaeological remains and monastic sites follow the Orkhon River valley. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/1081/"
+  },
+  {
+    id: "burkhankhaldun",
+    name: "Burkhan Khaldun Mountain",
+    country: "Mongolia",
+    code: "MNG",
+    tier: "rare",
+    lat: 48.7619777778,
+    lon: 109.0093277778,
+    source: "https://whc.unesco.org/en/list/1440/",
+    region: "Asia and the Pacific",
+    description: "A sacred mountain and its surrounding landscape are associated with Mongolian worship traditions. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/1440/"
+  },
+  {
+    id: "deerstones",
+    name: "Mongolian Deer Stones",
+    country: "Mongolia",
+    code: "MNG",
+    tier: "common",
+    lat: 47.7427777777,
+    lon: 101.225833333,
+    source: "https://whc.unesco.org/en/list/1621/",
+    region: "Asia and the Pacific",
+    description: "Bronze Age standing stones bear stylized deer and other carved motifs. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/1621/"
+  },
+  {
+    id: "sagarmatha",
+    name: "Sagarmatha National Park",
+    country: "Nepal",
+    code: "NPL",
+    tier: "legendary",
+    lat: 27.96528,
+    lon: 86.91306,
+    source: "https://whc.unesco.org/en/list/120/",
+    region: "Asia and the Pacific",
+    description: "Mount Everest rises above glaciers and deeply incised valleys in a Himalayan landscape. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/120/"
+  },
+  {
+    id: "chitwan",
+    name: "Chitwan National Park",
+    country: "Nepal",
+    code: "NPL",
+    tier: "rare",
+    lat: 27.5,
+    lon: 84.33333,
+    source: "https://whc.unesco.org/en/list/284/",
+    region: "Asia and the Pacific",
+    description: "Subtropical lowland forests and grasslands shelter rhinoceroses and Bengal tigers. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/284/"
+  },
+  {
+    id: "lumbini",
+    name: "Lumbini",
+    country: "Nepal",
+    code: "NPL",
+    tier: "rare",
+    lat: 27.46889,
+    lon: 83.27611,
+    source: "https://whc.unesco.org/en/list/666/",
+    region: "Asia and the Pacific",
+    description: "The Buddha's birthplace preserves an Ashokan pillar and archaeological remains of early sanctuaries. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/666/"
+  },
+  {
+    id: "bahla",
+    name: "Bahla Fort",
+    country: "Oman",
+    code: "OMN",
+    tier: "rare",
+    lat: 22.96417,
+    lon: 57.30111,
+    source: "https://whc.unesco.org/en/list/433/",
+    region: "Arab States",
+    description: "Mud-brick walls and towers protect an oasis settlement in the Omani interior. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/433/"
+  },
+  {
+    id: "bat",
+    name: "Bat, Al-Khutm and Al-Ayn",
+    country: "Oman",
+    code: "OMN",
+    tier: "common",
+    lat: 23.26986,
+    lon: 56.745,
+    source: "https://whc.unesco.org/en/list/434/",
+    region: "Arab States",
+    description: "Stone towers and beehive tombs preserve a Bronze Age landscape in Oman. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/434/"
+  },
+  {
+    id: "frankincense",
+    name: "Land of Frankincense",
+    country: "Oman",
+    code: "OMN",
+    tier: "common",
+    lat: 18.2511111111,
+    lon: 53.6352777778,
+    source: "https://whc.unesco.org/en/list/1010/",
+    region: "Arab States",
+    description: "Ancient ports and an inland oasis recall the trade in frankincense from Dhofar. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/1010/"
+  },
+  {
+    id: "aflaj",
+    name: "Aflaj Irrigation Systems",
+    country: "Oman",
+    code: "OMN",
+    tier: "common",
+    lat: 22.9833333333,
+    lon: 57.5333333333,
+    source: "https://whc.unesco.org/en/list/1207/",
+    region: "Arab States",
+    description: "Gravity-fed water channels distribute precious water through Omani communities and farms. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/1207/"
+  },
+  {
+    id: "moenjodaro",
+    name: "Moenjodaro",
+    country: "Pakistan",
+    code: "PAK",
+    tier: "epic",
+    lat: 27.32916667,
+    lon: 68.13888889,
+    source: "https://whc.unesco.org/en/list/138/",
+    region: "Asia and the Pacific",
+    description: "Planned streets and brick buildings preserve a major city of the Indus civilization. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/138/"
+  },
+  {
+    id: "taxila",
+    name: "Taxila",
+    country: "Pakistan",
+    code: "PAK",
+    tier: "rare",
+    lat: 33.7439437902,
+    lon: 72.8193318876,
+    source: "https://whc.unesco.org/en/list/139/",
+    region: "Asia and the Pacific",
+    description: "Successive ancient cities and Buddhist monuments reflect a crossroads of Asian cultures. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/139/"
+  },
+  {
+    id: "takhtibahi",
+    name: "Takht-i-Bahi",
+    country: "Pakistan",
+    code: "PAK",
+    tier: "common",
+    lat: 34.2861111111,
+    lon: 71.9472222222,
+    source: "https://whc.unesco.org/en/list/140/",
+    region: "Asia and the Pacific",
+    description: "A Buddhist monastery occupies a hilltop above the remains of a neighbouring fortified city. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/140/"
+  },
+  {
+    id: "rohtas",
+    name: "Rohtas Fort",
+    country: "Pakistan",
+    code: "PAK",
+    tier: "rare",
+    lat: 32.9625,
+    lon: 73.58888889,
+    source: "https://whc.unesco.org/en/list/586/",
+    region: "Asia and the Pacific",
+    description: "Massive walls, bastions and monumental gateways enclose a sixteenth-century fort. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/586/"
+  },
+  {
+    id: "krakow",
+    name: "Krak\xF3w Historic Centre",
+    country: "Poland",
+    code: "POL",
+    tier: "rare",
+    lat: 50.0613888889,
+    lon: 19.9372222222,
+    source: "https://whc.unesco.org/en/list/29/",
+    region: "Europe and North America",
+    description: "A medieval market square, royal castle and historic churches anchor the old city. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/29/"
+  },
+  {
+    id: "warsaw",
+    name: "Warsaw Historic Centre",
+    country: "Poland",
+    code: "POL",
+    tier: "common",
+    lat: 52.25,
+    lon: 21.013,
+    source: "https://whc.unesco.org/en/list/30/",
+    region: "Europe and North America",
+    description: "The reconstructed old town restores streets and buildings destroyed during the Second World War. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/30/"
+  },
+  {
+    id: "wieliczka",
+    name: "Wieliczka and Bochnia Salt Mines",
+    country: "Poland",
+    code: "POL",
+    tier: "rare",
+    lat: 49.9691666667,
+    lon: 20.4175,
+    source: "https://whc.unesco.org/en/list/32/",
+    region: "Europe and North America",
+    description: "Underground galleries and chambers record centuries of rock-salt mining. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/32/"
+  },
+  {
+    id: "zamosc",
+    name: "Zamo\u015B\u0107",
+    country: "Poland",
+    code: "POL",
+    tier: "common",
+    lat: 50.7169444444,
+    lon: 23.2527777778,
+    source: "https://whc.unesco.org/en/list/564/",
+    region: "Europe and North America",
+    description: "An arcaded market square sits within a planned Renaissance town. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/564/"
+  },
+  {
+    id: "torun",
+    name: "Medieval Toru\u0144",
+    country: "Poland",
+    code: "POL",
+    tier: "common",
+    lat: 53.0105555556,
+    lon: 18.6041666667,
+    source: "https://whc.unesco.org/en/list/835/",
+    region: "Europe and North America",
+    description: "Brick churches, town houses and fortifications preserve a medieval trading town. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/835/"
+  },
+  {
+    id: "malbork",
+    name: "Malbork Castle",
+    country: "Poland",
+    code: "POL",
+    tier: "epic",
+    lat: 54.041,
+    lon: 19.0297222222,
+    source: "https://whc.unesco.org/en/list/847/",
+    region: "Europe and North America",
+    description: "An immense brick castle complex was built by the Teutonic Order. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/847/"
+  },
+  {
+    id: "centennialhall",
+    name: "Centennial Hall in Wroc\u0142aw",
+    country: "Poland",
+    code: "POL",
+    tier: "common",
+    lat: 51.1069472222,
+    lon: 17.0770138888,
+    source: "https://whc.unesco.org/en/list/1165/",
+    region: "Europe and North America",
+    description: "A pioneering reinforced-concrete hall spans a vast circular interior beneath a ribbed dome. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/1165/"
+  },
+  {
+    id: "danubedelta",
+    name: "Danube Delta",
+    country: "Romania",
+    code: "ROU",
+    tier: "rare",
+    lat: 45.08333,
+    lon: 29.5,
+    source: "https://whc.unesco.org/en/list/588/",
+    region: "Europe and North America",
+    description: "Reed beds, lakes and branching waterways support abundant birds at the Danube's mouth. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/588/"
+  },
+  {
+    id: "hurezi",
+    name: "Hurezi Monastery",
+    country: "Romania",
+    code: "ROU",
+    tier: "common",
+    lat: 45.1697222222,
+    lon: 24.0072222222,
+    source: "https://whc.unesco.org/en/list/597/",
+    region: "Europe and North America",
+    description: "A richly decorated monastery illustrates the Brancovan style of Wallachian architecture. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/597/"
+  },
+  {
+    id: "moldavia",
+    name: "Painted Churches of Moldavia",
+    country: "Romania",
+    code: "ROU",
+    tier: "common",
+    lat: 47.5938888889,
+    lon: 25.8541666667,
+    source: "https://whc.unesco.org/en/list/598/",
+    region: "Europe and North America",
+    description: "Monastic churches carry elaborate frescoes across their exterior walls. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/598/"
+  },
+  {
+    id: "sighisoara",
+    name: "Sighi\u0219oara",
+    country: "Romania",
+    code: "ROU",
+    tier: "common",
+    lat: 46.21777778,
+    lon: 24.79222222,
+    source: "https://whc.unesco.org/en/list/902/",
+    region: "Europe and North America",
+    description: "A fortified hill town preserves medieval houses and towers linked to its craft guilds. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/902/"
+  },
+  {
+    id: "maramures",
+    name: "Wooden Churches of Maramure\u0219",
+    country: "Romania",
+    code: "ROU",
+    tier: "common",
+    lat: 47.7238888889,
+    lon: 23.9786111111,
+    source: "https://whc.unesco.org/en/list/904/",
+    region: "Europe and North America",
+    description: "Tall, slender wooden towers rise above steep-roofed village churches. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/904/"
+  },
+  {
+    id: "studenica",
+    name: "Studenica Monastery",
+    country: "Serbia",
+    code: "SRB",
+    tier: "common",
+    lat: 43.4865277778,
+    lon: 20.5316666667,
+    source: "https://whc.unesco.org/en/list/389/",
+    region: "Europe and North America",
+    description: "A medieval Serbian monastery preserves marble churches and Byzantine-style frescoes. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/389/"
+  },
+  {
+    id: "gamzigrad",
+    name: "Gamzigrad-Romuliana",
+    country: "Serbia",
+    code: "SRB",
+    tier: "common",
+    lat: 43.8993055556,
+    lon: 22.1861111111,
+    source: "https://whc.unesco.org/en/list/1253/",
+    region: "Europe and North America",
+    description: "Fortified walls surround the palace complex built for the Roman emperor Galerius. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/1253/"
+  },
+  {
+    id: "skocjan",
+    name: "\u0160kocjan Caves",
+    country: "Slovenia",
+    code: "SVN",
+    tier: "epic",
+    lat: 45.66667,
+    lon: 14,
+    source: "https://whc.unesco.org/en/list/390/",
+    region: "Europe and North America",
+    description: "An underground river has carved an immense canyon through a limestone cave system. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/390/"
+  },
+  {
+    id: "spis",
+    name: "Spi\u0161 Castle and Levo\u010Da",
+    country: "Slovakia",
+    code: "SVK",
+    tier: "rare",
+    lat: 49.0256083334,
+    lon: 20.5898888889,
+    source: "https://whc.unesco.org/en/list/620/",
+    region: "Europe and North America",
+    description: "A vast ruined castle overlooks a region of medieval towns and religious monuments. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/620/"
+  },
+  {
+    id: "vlkolinec",
+    name: "Vlkol\xEDnec",
+    country: "Slovakia",
+    code: "SVK",
+    tier: "common",
+    lat: 49.0391666667,
+    lon: 19.2783333333,
+    source: "https://whc.unesco.org/en/list/622/",
+    region: "Europe and North America",
+    description: "Traditional log houses preserve a remarkably intact mountain village. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/622/"
+  },
+  {
+    id: "bardejov",
+    name: "Bardejov",
+    country: "Slovakia",
+    code: "SVK",
+    tier: "common",
+    lat: 49.2927777778,
+    lon: 21.2755555556,
+    source: "https://whc.unesco.org/en/list/973/",
+    region: "Europe and North America",
+    description: "A fortified medieval town preserves a central market square and historic burgher houses. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/973/"
+  },
+  {
+    id: "sarazm",
+    name: "Sarazm",
+    country: "Tajikistan",
+    code: "TJK",
+    tier: "common",
+    lat: 39.5078888889,
+    lon: 67.4587222222,
+    source: "https://whc.unesco.org/en/list/1141/",
+    region: "Asia and the Pacific",
+    description: "An early settlement records contacts between farming communities and wider Central Asian trade. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/1141/"
+  },
+  {
+    id: "pamirs",
+    name: "Tajik National Park",
+    country: "Tajikistan",
+    code: "TJK",
+    tier: "epic",
+    lat: 38.765,
+    lon: 72.3052777778,
+    source: "https://whc.unesco.org/en/list/1252/",
+    region: "Asia and the Pacific",
+    description: "High Pamir peaks, glaciers and mountain lakes form an immense remote wilderness. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/1252/"
+  },
+  {
+    id: "merv",
+    name: "Ancient Merv",
+    country: "Turkmenistan",
+    code: "TKM",
+    tier: "rare",
+    lat: 37.6648296397,
+    lon: 62.1748923337,
+    source: "https://whc.unesco.org/en/list/886/",
+    region: "Asia and the Pacific",
+    description: "Successive walled cities preserve a major oasis centre on the Silk Roads. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/886/"
+  },
+  {
+    id: "kunyaurgench",
+    name: "Kunya-Urgench",
+    country: "Turkmenistan",
+    code: "TKM",
+    tier: "rare",
+    lat: 42.3258333333,
+    lon: 59.1458333333,
+    source: "https://whc.unesco.org/en/list/1199/",
+    region: "Asia and the Pacific",
+    description: "Minarets, mausoleums and other monuments remain from a historic city on the Amu Darya. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/1199/"
+  },
+  {
+    id: "nisa",
+    name: "Parthian Fortresses of Nisa",
+    country: "Turkmenistan",
+    code: "TKM",
+    tier: "common",
+    lat: 37.9663888889,
+    lon: 58.1986111111,
+    source: "https://whc.unesco.org/en/list/1242/",
+    region: "Asia and the Pacific",
+    description: "Two archaeological tells preserve the fortresses and ceremonial buildings of Parthian Nisa. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/1242/"
+  },
+  {
+    id: "kyivsophia",
+    name: "Saint Sophia and Kyiv-Pechersk Lavra",
+    country: "Ukraine",
+    code: "UKR",
+    tier: "rare",
+    lat: 50.4339333333,
+    lon: 30.558375,
+    source: "https://whc.unesco.org/en/list/527/",
+    region: "Europe and North America",
+    description: "A cathedral and monastic ensemble preserve outstanding medieval mosaics and frescoes. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/527/"
+  },
+  {
+    id: "lviv",
+    name: "Lviv Historic Centre",
+    country: "Ukraine",
+    code: "UKR",
+    tier: "common",
+    lat: 49.8416666667,
+    lon: 24.0319444444,
+    source: "https://whc.unesco.org/en/list/865/",
+    region: "Europe and North America",
+    description: "A historic urban centre brings together architectural traditions from several Central European cultures. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/865/"
+  },
+  {
+    id: "itchankala",
+    name: "Itchan Kala",
+    country: "Uzbekistan",
+    code: "UZB",
+    tier: "rare",
+    lat: 41.378088,
+    lon: 60.360253,
+    source: "https://whc.unesco.org/en/list/543/",
+    region: "Asia and the Pacific",
+    description: "High mud walls enclose Khiva's inner town with mosques, minarets and palaces. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/543/"
+  },
+  {
+    id: "bukhara",
+    name: "Historic Bukhara",
+    country: "Uzbekistan",
+    code: "UZB",
+    tier: "rare",
+    lat: 39.77472,
+    lon: 64.42861,
+    source: "https://whc.unesco.org/en/list/602/",
+    region: "Asia and the Pacific",
+    description: "A Central Asian trading city preserves mosques, madrasas and monumental minarets. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/602/"
+  },
+  {
+    id: "shakhrisyabz",
+    name: "Shakhrisyabz",
+    country: "Uzbekistan",
+    code: "UZB",
+    tier: "common",
+    lat: 39.05,
+    lon: 66.83333,
+    source: "https://whc.unesco.org/en/list/885/",
+    region: "Asia and the Pacific",
+    description: "Monumental palace remains and religious buildings recall the Timurid city's importance. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/885/"
+  },
+  {
+    id: "abomey",
+    name: "Royal Palaces of Abomey",
+    country: "Benin",
+    code: "BEN",
+    tier: "rare",
+    lat: 7.1875,
+    lon: 1.9922222222,
+    source: "https://whc.unesco.org/en/list/323/",
+    region: "Africa",
+    description: "Earthen royal palaces preserve the history and artistic traditions of the Kingdom of Dahomey. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/323/"
+  },
+  {
+    id: "loropeni",
+    name: "Ruins of Lorop\xE9ni",
+    country: "Burkina Faso",
+    code: "BFA",
+    tier: "common",
+    lat: 10.2500229431,
+    lon: -3.5833384934,
+    source: "https://whc.unesco.org/en/list/1225/",
+    region: "Africa",
+    description: "Imposing stone walls survive from a fortified settlement linked to West African gold trading. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/1225/"
+  },
+  {
+    id: "tiebele",
+    name: "Royal Court of Ti\xE9b\xE9l\xE9",
+    country: "Burkina Faso",
+    code: "BFA",
+    tier: "common",
+    lat: 11.0892222222,
+    lon: -0.9618611111,
+    source: "https://whc.unesco.org/en/list/1713/",
+    region: "Africa",
+    description: "An earthen royal compound displays the decorated domestic architecture of the Kassena people. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/1713/"
+  },
+  {
+    id: "virunga",
+    name: "Virunga National Park",
+    country: "Congo - Kinshasa",
+    code: "COD",
+    tier: "epic",
+    lat: -0.0500064233,
+    lon: 29.5142959262,
+    source: "https://whc.unesco.org/en/list/63/",
+    region: "Africa",
+    description: "Volcanoes, forests and savannas provide habitats for mountain gorillas and diverse wildlife. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/63/"
+  },
+  {
+    id: "okapi",
+    name: "Okapi Wildlife Reserve",
+    country: "Congo - Kinshasa",
+    code: "COD",
+    tier: "rare",
+    lat: 2,
+    lon: 28.5,
+    source: "https://whc.unesco.org/en/list/718/",
+    region: "Africa",
+    description: "The Ituri rainforest shelters okapis within a rich tropical forest ecosystem. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/718/"
+  },
+  {
+    id: "odzala",
+    name: "Odzala-Kokoua Forest",
+    country: "Congo - Brazzaville",
+    code: "COG",
+    tier: "common",
+    lat: 1.3355555556,
+    lon: 14.8602777778,
+    source: "https://whc.unesco.org/en/list/692/",
+    region: "Africa",
+    description: "Congo Basin forest and clearings support forest elephants, gorillas and other wildlife. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/692/"
+  },
+  {
+    id: "taiforest",
+    name: "Ta\xEF National Park",
+    country: "C\xF4te d\u2019Ivoire",
+    code: "CIV",
+    tier: "common",
+    lat: 5.6488888889,
+    lon: -7.0952777778,
+    source: "https://whc.unesco.org/en/list/195/",
+    region: "Africa",
+    description: "One of West Africa's remaining primary tropical forests shelters a rich variety of mammals. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/195/"
+  },
+  {
+    id: "grandbassam",
+    name: "Grand-Bassam",
+    country: "C\xF4te d\u2019Ivoire",
+    code: "CIV",
+    tier: "common",
+    lat: 5.205,
+    lon: -3.7316666667,
+    source: "https://whc.unesco.org/en/list/1322/",
+    region: "Africa",
+    description: "A coastal historic town preserves a planned colonial quarter beside a traditional fishing village. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/1322/"
+  },
+  {
+    id: "dja",
+    name: "Dja Faunal Reserve",
+    country: "Cameroon",
+    code: "CMR",
+    tier: "common",
+    lat: 3.125,
+    lon: 12.995,
+    source: "https://whc.unesco.org/en/list/407/",
+    region: "Africa",
+    description: "Dense equatorial rainforest is almost enclosed by the looping Dja River. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/407/"
+  },
+  {
+    id: "benihammad",
+    name: "Al Qal'a of Beni Hammad",
+    country: "Algeria",
+    code: "DZA",
+    tier: "common",
+    lat: 35.81844,
+    lon: 4.78684,
+    source: "https://whc.unesco.org/en/list/102/",
+    region: "Arab States",
+    description: "The ruins of a fortified mountain capital preserve the remains of a monumental mosque. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/102/"
+  },
+  {
+    id: "tassili",
+    name: "Tassili n'Ajjer",
+    country: "Algeria",
+    code: "DZA",
+    tier: "rare",
+    lat: 25.5,
+    lon: 9,
+    source: "https://whc.unesco.org/en/list/179/",
+    region: "Arab States",
+    description: "Sandstone formations and rock art record environmental and human changes in the Sahara. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/179/"
+  },
+  {
+    id: "mzab",
+    name: "M'Zab Valley",
+    country: "Algeria",
+    code: "DZA",
+    tier: "common",
+    lat: 32.48313,
+    lon: 3.68668,
+    source: "https://whc.unesco.org/en/list/188/",
+    region: "Arab States",
+    description: "Compact fortified oasis towns are arranged around distinctive mosque minarets. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/188/"
+  },
+  {
+    id: "djemila",
+    name: "Dj\xE9mila",
+    country: "Algeria",
+    code: "DZA",
+    tier: "common",
+    lat: 36.32056,
+    lon: 5.73667,
+    source: "https://whc.unesco.org/en/list/191/",
+    region: "Arab States",
+    description: "Roman forums, temples and houses adapt an ancient town to a mountain setting. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/191/"
+  },
+  {
+    id: "tipasa",
+    name: "Tipasa",
+    country: "Algeria",
+    code: "DZA",
+    tier: "common",
+    lat: 36.5748333333,
+    lon: 2.5531666667,
+    source: "https://whc.unesco.org/en/list/193/",
+    region: "Arab States",
+    description: "Roman and early Christian ruins overlook the Mediterranean along an ancient trading shore. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/193/"
+  },
+  {
+    id: "asmara",
+    name: "Asmara",
+    country: "Eritrea",
+    code: "ERI",
+    tier: "common",
+    lat: 15.3352777778,
+    lon: 38.9358333333,
+    source: "https://whc.unesco.org/en/list/1550/",
+    region: "Africa",
+    description: "An African capital preserves an extensive ensemble of early modernist urban architecture. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/1550/"
+  },
+  {
+    id: "fasilghebbi",
+    name: "Fasil Ghebbi",
+    country: "Ethiopia",
+    code: "ETH",
+    tier: "rare",
+    lat: 12.607909,
+    lon: 37.4697,
+    source: "https://whc.unesco.org/en/list/19/",
+    region: "Africa",
+    description: "Stone castles and palaces fill the royal enclosure of Ethiopia's former capital Gondar. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/19/"
+  },
+  {
+    id: "harar",
+    name: "Harar Jugol",
+    country: "Ethiopia",
+    code: "ETH",
+    tier: "common",
+    lat: 9.3088888888,
+    lon: 42.1377777777,
+    source: "https://whc.unesco.org/en/list/1189/",
+    region: "Africa",
+    description: "A walled Islamic city preserves numerous mosques, shrines and traditional town houses. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/1189/"
+  },
+  {
+    id: "balemountains",
+    name: "Bale Mountains",
+    country: "Ethiopia",
+    code: "ETH",
+    tier: "rare",
+    lat: 6.7977777778,
+    lon: 39.7488888889,
+    source: "https://whc.unesco.org/en/list/111/",
+    region: "Africa",
+    description: "High plateaux, peaks and forests shelter endemic wildlife in Ethiopia's mountain landscape. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/111/"
+  },
+  {
+    id: "asante",
+    name: "Asante Traditional Buildings",
+    country: "Ghana",
+    code: "GHA",
+    tier: "common",
+    lat: 6.4011111111,
+    lon: -1.6258333333,
+    source: "https://whc.unesco.org/en/list/35/",
+    region: "Africa",
+    description: "Earth, timber and thatch buildings preserve the architectural traditions of Asante culture. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/35/"
+  },
+  {
+    id: "mountkenya",
+    name: "Mount Kenya",
+    country: "Kenya",
+    code: "KEN",
+    tier: "rare",
+    lat: -0.155,
+    lon: 37.3155555556,
+    source: "https://whc.unesco.org/en/list/800/",
+    region: "Africa",
+    description: "A deeply eroded ancient volcano carries rugged peaks, glaciers and alpine vegetation. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/800/"
+  },
+  {
+    id: "turkana",
+    name: "Lake Turkana",
+    country: "Kenya",
+    code: "KEN",
+    tier: "rare",
+    lat: 2.6325,
+    lon: 36.5947222222,
+    source: "https://whc.unesco.org/en/list/801/",
+    region: "Africa",
+    description: "Desert lake parks protect breeding grounds for crocodiles, hippos and migratory birds. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/801/"
+  },
+  {
+    id: "lamu",
+    name: "Lamu Old Town",
+    country: "Kenya",
+    code: "KEN",
+    tier: "common",
+    lat: -2.284444444,
+    lon: 40.8525,
+    source: "https://whc.unesco.org/en/list/1055/",
+    region: "Africa",
+    description: "Coral-stone and mangrove-timber houses preserve a Swahili town on the East African coast. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/1055/"
+  },
+  {
+    id: "fortjesus",
+    name: "Fort Jesus",
+    country: "Kenya",
+    code: "KEN",
+    tier: "common",
+    lat: -4.0627777778,
+    lon: 39.6794444444,
+    source: "https://whc.unesco.org/en/list/1295/",
+    region: "Africa",
+    description: "A Portuguese-built fort guards the old harbour entrance at Mombasa. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/1295/"
+  },
+  {
+    id: "thimlich",
+    name: "Thimlich Ohinga",
+    country: "Kenya",
+    code: "KEN",
+    tier: "common",
+    lat: -0.8913380556,
+    lon: 34.326107,
+    source: "https://whc.unesco.org/en/list/1450/",
+    region: "Africa",
+    description: "Dry-stone enclosures preserve a fortified settlement near Lake Victoria. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/1450/"
+  },
+  {
+    id: "ambohimanga",
+    name: "Royal Hill of Ambohimanga",
+    country: "Madagascar",
+    code: "MDG",
+    tier: "common",
+    lat: -18.75917,
+    lon: 47.56278,
+    source: "https://whc.unesco.org/en/list/950/",
+    region: "Africa",
+    description: "A fortified royal city and burial places occupy a sacred wooded hill. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/950/"
+  },
+  {
+    id: "atsinanana",
+    name: "Atsinanana Rainforests",
+    country: "Madagascar",
+    code: "MDG",
+    tier: "rare",
+    lat: -15.6144444444,
+    lon: 50.1777777778,
+    source: "https://whc.unesco.org/en/list/1257/",
+    region: "Africa",
+    description: "Eastern Madagascar's rainforests protect ancient lineages of plants and endemic animals. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/1257/"
+  },
+  {
+    id: "timbuktu",
+    name: "Timbuktu",
+    country: "Mali",
+    code: "MLI",
+    tier: "rare",
+    lat: 16.77333333,
+    lon: -2.999444444,
+    source: "https://whc.unesco.org/en/list/119/",
+    region: "Africa",
+    description: "Earthen mosques recall the city's role as a centre of Islamic learning and trans-Saharan trade. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/119/"
+  },
+  {
+    id: "bandiagara",
+    name: "Cliff of Bandiagara",
+    country: "Mali",
+    code: "MLI",
+    tier: "rare",
+    lat: 14.4049575002,
+    lon: -3.6986554779,
+    source: "https://whc.unesco.org/en/list/516/",
+    region: "Africa",
+    description: "Dogon villages and granaries occupy a dramatic landscape of cliffs and sandy plateaux. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/516/"
+  },
+  {
+    id: "askia",
+    name: "Tomb of Askia",
+    country: "Mali",
+    code: "MLI",
+    tier: "common",
+    lat: 16.2898,
+    lon: -0.04456,
+    source: "https://whc.unesco.org/en/list/1139/",
+    region: "Africa",
+    description: "A pyramidal earthen tomb and mosque complex stand in the historic city of Gao. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/1139/"
+  },
+  {
+    id: "bancarguin",
+    name: "Banc d'Arguin",
+    country: "Mauritania",
+    code: "MRT",
+    tier: "rare",
+    lat: 20.23472,
+    lon: -16.10889,
+    source: "https://whc.unesco.org/en/list/506/",
+    region: "Arab States",
+    description: "Coastal dunes, islands and shallow waters shelter immense gatherings of migratory birds. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/506/"
+  },
+  {
+    id: "lemorne",
+    name: "Le Morne",
+    country: "Mauritius",
+    code: "MUS",
+    tier: "rare",
+    lat: -20.4519444444,
+    lon: 57.3283333333,
+    source: "https://whc.unesco.org/en/list/1259/",
+    region: "Africa",
+    description: "A rugged mountain overlooking the ocean recalls the refuge sought by escaped enslaved people. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/1259/"
+  },
+  {
+    id: "lakemalawi",
+    name: "Lake Malawi National Park",
+    country: "Malawi",
+    code: "MWI",
+    tier: "common",
+    lat: -14.03333,
+    lon: 34.88333,
+    source: "https://whc.unesco.org/en/list/289/",
+    region: "Africa",
+    description: "Clear lake waters and rocky shores support an exceptional diversity of freshwater fish. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/289/"
+  },
+  {
+    id: "mozambiqueisland",
+    name: "Island of Mozambique",
+    country: "Mozambique",
+    code: "MOZ",
+    tier: "common",
+    lat: -15.0503611111,
+    lon: 40.7263888889,
+    source: "https://whc.unesco.org/en/list/599/",
+    region: "Africa",
+    description: "Stone-built houses and fortifications recall a historic maritime trading centre. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/599/"
+  },
+  {
+    id: "twyfelfontein",
+    name: "Twyfelfontein",
+    country: "Namibia",
+    code: "NAM",
+    tier: "common",
+    lat: -20.5947689881,
+    lon: 14.3750965572,
+    source: "https://whc.unesco.org/en/list/1255/",
+    region: "Africa",
+    description: "Rock engravings depicting animals survive in a dry sandstone landscape. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/1255/"
+  },
+  {
+    id: "agadez",
+    name: "Agadez",
+    country: "Niger",
+    code: "NER",
+    tier: "common",
+    lat: 16.9736111111,
+    lon: 7.9913888889,
+    source: "https://whc.unesco.org/en/list/1268/",
+    region: "Africa",
+    description: "An earthen minaret rises above a Saharan trading town of traditional mud-brick houses. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/1268/"
+  },
+  {
+    id: "osunosogbo",
+    name: "Osun-Osogbo Sacred Grove",
+    country: "Nigeria",
+    code: "NGA",
+    tier: "common",
+    lat: 7.75556,
+    lon: 4.55222,
+    source: "https://whc.unesco.org/en/list/1118/",
+    region: "Africa",
+    description: "Sacred forest, shrines and sculptures line the Osun River near Osogbo. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/1118/"
+  },
+  {
+    id: "aldabra",
+    name: "Aldabra Atoll",
+    country: "Seychelles",
+    code: "SYC",
+    tier: "epic",
+    lat: -9.416666667,
+    lon: 46.41666667,
+    source: "https://whc.unesco.org/en/list/185/",
+    region: "Africa",
+    description: "Coral islands surround a shallow lagoon that supports a large giant-tortoise population. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/185/"
+  },
+  {
+    id: "valleedemai",
+    name: "Vall\xE9e de Mai",
+    country: "Seychelles",
+    code: "SYC",
+    tier: "common",
+    lat: -4.331,
+    lon: 55.738,
+    source: "https://whc.unesco.org/en/list/261/",
+    region: "Africa",
+    description: "A remnant palm forest preserves the distinctive coco-de-mer palm. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/261/"
+  },
+  {
+    id: "sanganeb",
+    name: "Sanganeb Marine Parks",
+    country: "Sudan",
+    code: "SDN",
+    tier: "rare",
+    lat: 19.7361111111,
+    lon: 37.4430555556,
+    source: "https://whc.unesco.org/en/list/262/",
+    region: "Arab States",
+    description: "Red Sea coral reefs, islands and lagoons shelter diverse marine life. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/262/"
+  },
+  {
+    id: "djoudj",
+    name: "Djoudj Bird Sanctuary",
+    country: "Senegal",
+    code: "SEN",
+    tier: "common",
+    lat: 16.414602,
+    lon: -16.237906,
+    source: "https://whc.unesco.org/en/list/25/",
+    region: "Africa",
+    description: "Wetlands at the Senegal River delta provide a refuge for migratory waterbirds. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/25/"
+  },
+  {
+    id: "saintlouis",
+    name: "Island of Saint-Louis",
+    country: "Senegal",
+    code: "SEN",
+    tier: "common",
+    lat: 16.02778,
+    lon: -16.50444,
+    source: "https://whc.unesco.org/en/list/956/",
+    region: "Africa",
+    description: "A planned historic town occupies an island near the mouth of the Senegal River. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/956/"
+  },
+  {
+    id: "saloum",
+    name: "Saloum Delta",
+    country: "Senegal",
+    code: "SEN",
+    tier: "rare",
+    lat: 13.8352777778,
+    lon: -16.4986111111,
+    source: "https://whc.unesco.org/en/list/1359/",
+    region: "Africa",
+    description: "Brackish channels, mangrove islands and shell mounds form a coastal cultural landscape. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/1359/"
+  },
+  {
+    id: "ounianga",
+    name: "Lakes of Ounianga",
+    country: "Chad",
+    code: "TCD",
+    tier: "rare",
+    lat: 19.055,
+    lon: 20.5055555556,
+    source: "https://whc.unesco.org/en/list/1400/",
+    region: "Africa",
+    description: "Permanent desert lakes lie between dunes and sandstone formations in the Sahara. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/1400/"
+  },
+  {
+    id: "ennedi",
+    name: "Ennedi Massif",
+    country: "Chad",
+    code: "TCD",
+    tier: "rare",
+    lat: 17.0416666667,
+    lon: 21.8627777778,
+    source: "https://whc.unesco.org/en/list/1475/",
+    region: "Africa",
+    description: "Sandstone arches and pillars rise above desert valleys containing rock art. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/1475/"
+  },
+  {
+    id: "ichkeul",
+    name: "Ichkeul National Park",
+    country: "Tunisia",
+    code: "TUN",
+    tier: "common",
+    lat: 37.16361,
+    lon: 9.67472,
+    source: "https://whc.unesco.org/en/list/8/",
+    region: "Arab States",
+    description: "A lake and marshes provide a seasonal stopping place for migrating waterbirds. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/8/"
+  },
+  {
+    id: "kilwa",
+    name: "Kilwa Kisiwani and Songo Mnara",
+    country: "Tanzania",
+    code: "TZA",
+    tier: "common",
+    lat: -9.0494444444,
+    lon: 39.5672222222,
+    source: "https://whc.unesco.org/en/list/144/",
+    region: "Africa",
+    description: "Mosque and palace ruins recall prosperous Swahili trading towns on offshore islands. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/144/"
+  },
+  {
+    id: "bwindi",
+    name: "Bwindi Impenetrable Forest",
+    country: "Uganda",
+    code: "UGA",
+    tier: "epic",
+    lat: -1.047,
+    lon: 29.692,
+    source: "https://whc.unesco.org/en/list/682/",
+    region: "Africa",
+    description: "Dense montane forest shelters mountain gorillas and exceptionally rich plant life. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/682/"
+  },
+  {
+    id: "rwenzori",
+    name: "Rwenzori Mountains",
+    country: "Uganda",
+    code: "UGA",
+    tier: "rare",
+    lat: 0.223611111,
+    lon: 29.92416667,
+    source: "https://whc.unesco.org/en/list/684/",
+    region: "Africa",
+    description: "Equatorial mountains carry glaciers above moorlands and distinctive high-altitude vegetation. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/684/"
+  },
+  {
+    id: "capefloral",
+    name: "Cape Floral Region",
+    country: "South Africa",
+    code: "ZAF",
+    tier: "rare",
+    lat: -34.3558051153,
+    lon: 18.4750321846,
+    source: "https://whc.unesco.org/en/list/1007/",
+    region: "Africa",
+    description: "Fynbos shrublands contain an extraordinary concentration of endemic plant species. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/1007/"
+  },
+  {
+    id: "mapungubwe",
+    name: "Mapungubwe",
+    country: "South Africa",
+    code: "ZAF",
+    tier: "common",
+    lat: -22.1925,
+    lon: 29.23889,
+    source: "https://whc.unesco.org/en/list/1099/",
+    region: "Africa",
+    description: "A sandstone hill and archaeological remains recall a southern African trading kingdom. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/1099/"
+  },
+  {
+    id: "manapools",
+    name: "Mana Pools",
+    country: "Zimbabwe",
+    code: "ZWE",
+    tier: "rare",
+    lat: -15.81944444,
+    lon: 29.40805556,
+    source: "https://whc.unesco.org/en/list/302/",
+    region: "Africa",
+    description: "Floodplain pools beside the Zambezi support elephants and many other large animals. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/302/"
+  },
+  {
+    id: "matobo",
+    name: "Matobo Hills",
+    country: "Zimbabwe",
+    code: "ZWE",
+    tier: "common",
+    lat: -20.5,
+    lon: 28.5,
+    source: "https://whc.unesco.org/en/list/306/",
+    region: "Africa",
+    description: "Granite formations and rock paintings mark a landscape with enduring spiritual significance. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/306/"
+  },
+  {
+    id: "khami",
+    name: "Khami Ruins",
+    country: "Zimbabwe",
+    code: "ZWE",
+    tier: "common",
+    lat: -20.15833333,
+    lon: 28.37666667,
+    source: "https://whc.unesco.org/en/list/365/",
+    region: "Africa",
+    description: "Terraced dry-stone walls preserve the remains of a former southern African capital. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/365/"
+  },
+  {
+    id: "antiguadockyard",
+    name: "Antigua Naval Dockyard",
+    country: "Antigua & Barbuda",
+    code: "ATG",
+    tier: "common",
+    lat: 17.0069444444,
+    lon: -61.7616666667,
+    source: "https://whc.unesco.org/en/list/1499/",
+    region: "Latin America and the Caribbean",
+    description: "Georgian naval buildings and dockyard structures stand within a sheltered Caribbean harbour. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/1499/"
+  },
+  {
+    id: "bridgetown",
+    name: "Historic Bridgetown",
+    country: "Barbados",
+    code: "BRB",
+    tier: "common",
+    lat: 13.0966666667,
+    lon: -59.6138888889,
+    source: "https://whc.unesco.org/en/list/1376/",
+    region: "Latin America and the Caribbean",
+    description: "A historic port and garrison preserve an early British colonial urban layout in the Caribbean. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/1376/"
+  },
+  {
+    id: "potosi",
+    name: "Potos\xED",
+    country: "Bolivia",
+    code: "BOL",
+    tier: "rare",
+    lat: -19.599112,
+    lon: -65.749813,
+    source: "https://whc.unesco.org/en/list/420/",
+    region: "Latin America and the Caribbean",
+    description: "A mining city below Cerro Rico preserves the legacy of large-scale silver extraction. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/420/"
+  },
+  {
+    id: "sucre",
+    name: "Historic Sucre",
+    country: "Bolivia",
+    code: "BOL",
+    tier: "common",
+    lat: -19.04799,
+    lon: -65.259592,
+    source: "https://whc.unesco.org/en/list/566/",
+    region: "Latin America and the Caribbean",
+    description: "Whitewashed churches and historic civic buildings preserve Bolivia's early capital. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/566/"
+  },
+  {
+    id: "samaipata",
+    name: "Fuerte de Samaipata",
+    country: "Bolivia",
+    code: "BOL",
+    tier: "common",
+    lat: -18.178323,
+    lon: -63.820485,
+    source: "https://whc.unesco.org/en/list/883/",
+    region: "Latin America and the Caribbean",
+    description: "A great carved rock and surrounding remains record pre-Hispanic ceremonial traditions. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/883/"
+  },
+  {
+    id: "noelkempff",
+    name: "Noel Kempff Mercado",
+    country: "Bolivia",
+    code: "BOL",
+    tier: "common",
+    lat: -14.26667,
+    lon: -60.86667,
+    source: "https://whc.unesco.org/en/list/967/",
+    region: "Latin America and the Caribbean",
+    description: "Forest, savanna and escarpments protect varied ecosystems at the edge of the Amazon basin. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/967/"
+  },
+  {
+    id: "olinda",
+    name: "Historic Olinda",
+    country: "Brazil",
+    code: "BRA",
+    tier: "common",
+    lat: -8.013333333,
+    lon: -34.845,
+    source: "https://whc.unesco.org/en/list/189/",
+    region: "Latin America and the Caribbean",
+    description: "Churches and colourful houses fill a hillside town shaped by the sugar economy. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/189/"
+  },
+  {
+    id: "congonhas",
+    name: "Bom Jesus do Congonhas",
+    country: "Brazil",
+    code: "BRA",
+    tier: "rare",
+    lat: -20.508201,
+    lon: -43.860806,
+    source: "https://whc.unesco.org/en/list/334/",
+    region: "Latin America and the Caribbean",
+    description: "A pilgrimage sanctuary displays Baroque sculptures along its stairway and chapels. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/334/"
+  },
+  {
+    id: "pantanal",
+    name: "Pantanal Conservation Area",
+    country: "Brazil",
+    code: "BRA",
+    tier: "rare",
+    lat: -17.656,
+    lon: -57.359,
+    source: "https://whc.unesco.org/en/list/999/",
+    region: "Latin America and the Caribbean",
+    description: "Seasonal floodwaters create a mosaic of wetlands rich in aquatic and terrestrial wildlife. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/999/"
+  },
+  {
+    id: "fernandonoronha",
+    name: "Fernando de Noronha and Atol das Rocas",
+    country: "Brazil",
+    code: "BRA",
+    tier: "rare",
+    lat: -3.8604444444,
+    lon: -33.8196666667,
+    source: "https://whc.unesco.org/en/list/1000/",
+    region: "Latin America and the Caribbean",
+    description: "Atlantic volcanic islands and an atoll provide feeding and breeding grounds for marine wildlife. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/1000/"
+  },
+  {
+    id: "lencois",
+    name: "Len\xE7\xF3is Maranhenses",
+    country: "Brazil",
+    code: "BRA",
+    tier: "epic",
+    lat: -2.5366666667,
+    lon: -43.0636111111,
+    source: "https://whc.unesco.org/en/list/1611/",
+    region: "Latin America and the Caribbean",
+    description: "White coastal dunes surround seasonal rain-fed lagoons. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/1611/"
+  },
+  {
+    id: "pampulha",
+    name: "Pampulha Modern Ensemble",
+    country: "Brazil",
+    code: "BRA",
+    tier: "common",
+    lat: -19.8519444444,
+    lon: -43.9736111111,
+    source: "https://whc.unesco.org/en/list/1493/",
+    region: "Latin America and the Caribbean",
+    description: "Curving modern buildings and designed gardens surround an artificial lake. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/1493/"
+  },
+  {
+    id: "lanseauxmeadows",
+    name: "L'Anse aux Meadows",
+    country: "Canada",
+    code: "CAN",
+    tier: "rare",
+    lat: 51.5847222222,
+    lon: -55.55,
+    source: "https://whc.unesco.org/en/list/4/",
+    region: "Europe and North America",
+    description: "Remains of timber-framed turf buildings record a Norse settlement in Newfoundland. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/4/"
+  },
+  {
+    id: "sgang",
+    name: "SGang Gwaay",
+    country: "Canada",
+    code: "CAN",
+    tier: "common",
+    lat: 52.095,
+    lon: -131.2202778,
+    source: "https://whc.unesco.org/en/list/157/",
+    region: "Europe and North America",
+    description: "Carved mortuary and memorial poles survive in the remains of a Haida village. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/157/"
+  },
+  {
+    id: "woodbuffalo",
+    name: "Wood Buffalo National Park",
+    country: "Canada",
+    code: "CAN",
+    tier: "common",
+    lat: 59.35833333,
+    lon: -112.2933333,
+    source: "https://whc.unesco.org/en/list/256/",
+    region: "Europe and North America",
+    description: "Boreal forest and a vast inland delta support wood bison and other wildlife. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/256/"
+  },
+  {
+    id: "oldquebec",
+    name: "Old Qu\xE9bec",
+    country: "Canada",
+    code: "CAN",
+    tier: "rare",
+    lat: 46.80944444,
+    lon: -71.21055556,
+    source: "https://whc.unesco.org/en/list/300/",
+    region: "Europe and North America",
+    description: "Fortified upper and lower towns preserve a historic French colonial city in North America. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/300/"
+  },
+  {
+    id: "rideau",
+    name: "Rideau Canal",
+    country: "Canada",
+    code: "CAN",
+    tier: "common",
+    lat: 44.9943861111,
+    lon: -75.765125,
+    source: "https://whc.unesco.org/en/list/1221/",
+    region: "Europe and North America",
+    description: "Locks, dams and channels preserve an early nineteenth-century slackwater canal. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/1221/"
+  },
+  {
+    id: "joggins",
+    name: "Joggins Fossil Cliffs",
+    country: "Canada",
+    code: "CAN",
+    tier: "common",
+    lat: 45.7097222222,
+    lon: -64.4358333333,
+    source: "https://whc.unesco.org/en/list/1285/",
+    region: "Europe and North America",
+    description: "Coastal cliffs expose fossil-rich layers from ancient coal-age tropical forests. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/1285/"
+  },
+  {
+    id: "humberstone",
+    name: "Humberstone and Santa Laura",
+    country: "Chile",
+    code: "CHL",
+    tier: "common",
+    lat: -20.20582,
+    lon: -69.79406,
+    source: "https://whc.unesco.org/en/list/1178/",
+    region: "Latin America and the Caribbean",
+    description: "Abandoned nitrate works preserve industrial structures in the Atacama Desert. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/1178/"
+  },
+  {
+    id: "sewell",
+    name: "Sewell Mining Town",
+    country: "Chile",
+    code: "CHL",
+    tier: "common",
+    lat: -34.0844444444,
+    lon: -70.3827777777,
+    source: "https://whc.unesco.org/en/list/1214/",
+    region: "Latin America and the Caribbean",
+    description: "A mountain mining town uses stairways to connect buildings across steep Andean slopes. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/1214/"
+  },
+  {
+    id: "mompox",
+    name: "Santa Cruz de Mompox",
+    country: "Colombia",
+    code: "COL",
+    tier: "common",
+    lat: 9.240492,
+    lon: -74.423084,
+    source: "https://whc.unesco.org/en/list/742/",
+    region: "Latin America and the Caribbean",
+    description: "A historic river town preserves houses and churches along the Magdalena River. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/742/"
+  },
+  {
+    id: "sanagustin",
+    name: "San Agust\xEDn Archaeological Park",
+    country: "Colombia",
+    code: "COL",
+    tier: "rare",
+    lat: 1.887475,
+    lon: -76.297726,
+    source: "https://whc.unesco.org/en/list/744/",
+    region: "Latin America and the Caribbean",
+    description: "Large stone sculptures and burial monuments preserve a distinctive Andean ceremonial landscape. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/744/"
+  },
+  {
+    id: "chiribiquete",
+    name: "Chiribiquete National Park",
+    country: "Colombia",
+    code: "COL",
+    tier: "epic",
+    lat: 0.5252777778,
+    lon: -72.7972222222,
+    source: "https://whc.unesco.org/en/list/1174/",
+    region: "Latin America and the Caribbean",
+    description: "Table mountains rise over tropical forests containing extensive rock paintings. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/1174/"
+  },
+  {
+    id: "cocosisland",
+    name: "Cocos Island",
+    country: "Costa Rica",
+    code: "CRI",
+    tier: "rare",
+    lat: 5.533333333,
+    lon: -87.06666667,
+    source: "https://whc.unesco.org/en/list/820/",
+    region: "Latin America and the Caribbean",
+    description: "A remote oceanic island supports humid forest and exceptionally rich surrounding marine life. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/820/"
+  },
+  {
+    id: "diquis",
+    name: "Diqu\xEDs Stone Spheres",
+    country: "Costa Rica",
+    code: "CRI",
+    tier: "common",
+    lat: 8.910732,
+    lon: -83.478855,
+    source: "https://whc.unesco.org/en/list/1453/",
+    region: "Latin America and the Caribbean",
+    description: "Large stone spheres survive at pre-Columbian settlements in the Diqu\xEDs Delta. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/1453/"
+  },
+  {
+    id: "havana",
+    name: "Old Havana",
+    country: "Cuba",
+    code: "CUB",
+    tier: "rare",
+    lat: 23.136521,
+    lon: -82.352078,
+    source: "https://whc.unesco.org/en/list/204/",
+    region: "Latin America and the Caribbean",
+    description: "Fortifications, plazas and arcaded buildings preserve a historic Caribbean port city. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/204/"
+  },
+  {
+    id: "vinales",
+    name: "Vi\xF1ales Valley",
+    country: "Cuba",
+    code: "CUB",
+    tier: "rare",
+    lat: 22.61667,
+    lon: -83.71667,
+    source: "https://whc.unesco.org/en/list/840/",
+    region: "Latin America and the Caribbean",
+    description: "Limestone hills rise above a valley of traditional farms and tobacco fields. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/840/"
+  },
+  {
+    id: "sanpedroroca",
+    name: "San Pedro de la Roca Castle",
+    country: "Cuba",
+    code: "CUB",
+    tier: "common",
+    lat: 19.968446,
+    lon: -75.870441,
+    source: "https://whc.unesco.org/en/list/841/",
+    region: "Latin America and the Caribbean",
+    description: "Terraced fortifications guard a Caribbean harbour entrance from a rocky promontory. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/841/"
+  },
+  {
+    id: "mornetrois",
+    name: "Morne Trois Pitons",
+    country: "Dominica",
+    code: "DMA",
+    tier: "rare",
+    lat: 15.331113,
+    lon: -61.30661,
+    source: "https://whc.unesco.org/en/list/814/",
+    region: "Latin America and the Caribbean",
+    description: "A volcanic mountain landscape contains hot springs, fumaroles and tropical forest. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/814/"
+  },
+  {
+    id: "santodomingo",
+    name: "Colonial Santo Domingo",
+    country: "Dominican Republic",
+    code: "DOM",
+    tier: "common",
+    lat: 18.472394,
+    lon: -69.885841,
+    source: "https://whc.unesco.org/en/list/526/",
+    region: "Latin America and the Caribbean",
+    description: "An early European colonial city preserves a grid of historic streets and monuments. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/526/"
+  },
+  {
+    id: "galapagos",
+    name: "Gal\xE1pagos Islands",
+    country: "Ecuador",
+    code: "ECU",
+    tier: "legendary",
+    lat: -0.68986,
+    lon: -90.501319,
+    source: "https://whc.unesco.org/en/list/1/",
+    region: "Latin America and the Caribbean",
+    description: "Remote volcanic islands harbour distinctive wildlife shaped by isolation and ocean conditions. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/1/"
+  },
+  {
+    id: "sangay",
+    name: "Sangay National Park",
+    country: "Ecuador",
+    code: "ECU",
+    tier: "rare",
+    lat: -1.83333,
+    lon: -78.33333,
+    source: "https://whc.unesco.org/en/list/260/",
+    region: "Latin America and the Caribbean",
+    description: "Active volcanoes rise above a range of ecosystems from tropical forest to mountain grassland. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/260/"
+  },
+  {
+    id: "antiguaguatemala",
+    name: "Antigua Guatemala",
+    country: "Guatemala",
+    code: "GTM",
+    tier: "common",
+    lat: 14.549022,
+    lon: -90.75448,
+    source: "https://whc.unesco.org/en/list/65/",
+    region: "Latin America and the Caribbean",
+    description: "Baroque churches and civic buildings preserve a former colonial capital beneath volcanoes. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/65/"
+  },
+  {
+    id: "quirigua",
+    name: "Quirigu\xE1",
+    country: "Guatemala",
+    code: "GTM",
+    tier: "common",
+    lat: 15.27059,
+    lon: -89.04025,
+    source: "https://whc.unesco.org/en/list/149/",
+    region: "Latin America and the Caribbean",
+    description: "Finely carved Maya stelae and sculpted monuments survive in a tropical archaeological park. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/149/"
+  },
+  {
+    id: "rioplatano",
+    name: "R\xEDo Pl\xE1tano Biosphere Reserve",
+    country: "Honduras",
+    code: "HND",
+    tier: "common",
+    lat: 15.74444444,
+    lon: -84.675,
+    source: "https://whc.unesco.org/en/list/196/",
+    region: "Latin America and the Caribbean",
+    description: "Tropical rainforest and mountainous lowlands follow a river toward the Caribbean coast. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/196/"
+  },
+  {
+    id: "pitons",
+    name: "Saint Lucia Pitons",
+    country: "St. Lucia",
+    code: "LCA",
+    tier: "rare",
+    lat: 13.80708333,
+    lon: -61.07036111,
+    source: "https://whc.unesco.org/en/list/1161/",
+    region: "Latin America and the Caribbean",
+    description: "Two steep volcanic spires rise above the Caribbean Sea beside a volcanic landscape. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/1161/"
+  },
+  {
+    id: "eltajin",
+    name: "El Taj\xEDn",
+    country: "Mexico",
+    code: "MEX",
+    tier: "rare",
+    lat: 20.446095,
+    lon: -97.377642,
+    source: "https://whc.unesco.org/en/list/631/",
+    region: "Latin America and the Caribbean",
+    description: "Pyramids with decorative niches preserve the ceremonial core of an ancient Gulf Coast city. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/631/"
+  },
+  {
+    id: "paquime",
+    name: "Paquim\xE9",
+    country: "Mexico",
+    code: "MEX",
+    tier: "common",
+    lat: 30.367128,
+    lon: -107.948122,
+    source: "https://whc.unesco.org/en/list/560/",
+    region: "Latin America and the Caribbean",
+    description: "Multi-storeyed earthen ruins preserve a trading settlement in northern Mexico. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/560/"
+  },
+  {
+    id: "vizcaino",
+    name: "El Vizca\xEDno Whale Sanctuary",
+    country: "Mexico",
+    code: "MEX",
+    tier: "rare",
+    lat: 26.97861,
+    lon: -113.164903,
+    source: "https://whc.unesco.org/en/list/554/",
+    region: "Latin America and the Caribbean",
+    description: "Coastal lagoons provide winter breeding grounds for grey whales. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/554/"
+  },
+  {
+    id: "xochicalco",
+    name: "Xochicalco",
+    country: "Mexico",
+    code: "MEX",
+    tier: "common",
+    lat: 18.803972,
+    lon: -99.29639,
+    source: "https://whc.unesco.org/en/list/939/",
+    region: "Latin America and the Caribbean",
+    description: "A fortified ceremonial city preserves pyramids and relief-carved monuments on a hilltop. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/939/"
+  },
+  {
+    id: "monarch",
+    name: "Monarch Butterfly Reserve",
+    country: "Mexico",
+    code: "MEX",
+    tier: "rare",
+    lat: 19.3691666667,
+    lon: -100.2602777778,
+    source: "https://whc.unesco.org/en/list/1290/",
+    region: "Latin America and the Caribbean",
+    description: "High-elevation forests shelter vast numbers of overwintering monarch butterflies. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/1290/"
+  },
+  {
+    id: "pinacate",
+    name: "El Pinacate and Gran Desierto",
+    country: "Mexico",
+    code: "MEX",
+    tier: "epic",
+    lat: 32,
+    lon: -113.9166666667,
+    source: "https://whc.unesco.org/en/list/1410/",
+    region: "Latin America and the Caribbean",
+    description: "Volcanic craters and dark lava fields meet a vast sand-dune desert. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/1410/"
+  },
+  {
+    id: "padretembleque",
+    name: "Padre Tembleque Aqueduct",
+    country: "Mexico",
+    code: "MEX",
+    tier: "common",
+    lat: 19.8352777778,
+    lon: -98.6625666667,
+    source: "https://whc.unesco.org/en/list/1463/",
+    region: "Latin America and the Caribbean",
+    description: "A colonial hydraulic system includes a remarkable high arcade carrying water across a valley. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/1463/"
+  },
+  {
+    id: "coiba",
+    name: "Coiba National Park",
+    country: "Panama",
+    code: "PAN",
+    tier: "rare",
+    lat: 7.433,
+    lon: -81.766,
+    source: "https://whc.unesco.org/en/list/1138/",
+    region: "Latin America and the Caribbean",
+    description: "Forested Pacific islands and surrounding waters protect rich marine and terrestrial ecosystems. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/1138/"
+  },
+  {
+    id: "chavin",
+    name: "Chav\xEDn",
+    country: "Peru",
+    code: "PER",
+    tier: "rare",
+    lat: -9.5927725444,
+    lon: -77.1784535027,
+    source: "https://whc.unesco.org/en/list/330/",
+    region: "Latin America and the Caribbean",
+    description: "Ancient stone temples and carved monuments stand in a high Andean valley. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/330/"
+  },
+  {
+    id: "huascaran",
+    name: "Huascar\xE1n National Park",
+    country: "Peru",
+    code: "PER",
+    tier: "rare",
+    lat: -9.33333,
+    lon: -77.4,
+    source: "https://whc.unesco.org/en/list/333/",
+    region: "Latin America and the Caribbean",
+    description: "Glaciers and deep ravines shape the high peaks of the Cordillera Blanca. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/333/"
+  },
+  {
+    id: "caral",
+    name: "Sacred City of Caral-Supe",
+    country: "Peru",
+    code: "PER",
+    tier: "epic",
+    lat: -10.8916666667,
+    lon: -77.5213888889,
+    source: "https://whc.unesco.org/en/list/1269/",
+    region: "Latin America and the Caribbean",
+    description: "Ancient platform mounds and circular courts preserve an early urban centre in the Supe Valley. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/1269/"
+  },
+  {
+    id: "chankillo",
+    name: "Chankillo",
+    country: "Peru",
+    code: "PER",
+    tier: "rare",
+    lat: -9.5568611111,
+    lon: -78.2359166666,
+    source: "https://whc.unesco.org/en/list/1624/",
+    region: "Latin America and the Caribbean",
+    description: "Thirteen towers form the horizon markers of an ancient solar observatory. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/1624/"
+  },
+  {
+    id: "paramaribo",
+    name: "Paramaribo Historic Centre",
+    country: "Suriname",
+    code: "SUR",
+    tier: "common",
+    lat: 5.82611,
+    lon: -55.15,
+    source: "https://whc.unesco.org/en/list/940/",
+    region: "Latin America and the Caribbean",
+    description: "Timber buildings combine European urban planning with local building techniques. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/940/"
+  },
+  {
+    id: "redwood",
+    name: "Redwood National and State Parks",
+    country: "United States",
+    code: "USA",
+    tier: "rare",
+    lat: 41.37388889,
+    lon: -123.9980556,
+    source: "https://whc.unesco.org/en/list/134/",
+    region: "Europe and North America",
+    description: "Towering coast redwoods grow along a Pacific landscape of forests, rivers and coastline. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/134/"
+  },
+  {
+    id: "olympic",
+    name: "Olympic National Park",
+    country: "United States",
+    code: "USA",
+    tier: "rare",
+    lat: 47.79848,
+    lon: -123.5792,
+    source: "https://whc.unesco.org/en/list/151/",
+    region: "Europe and North America",
+    description: "Glaciated peaks and temperate rainforest meet a wild Pacific coastline. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/151/"
+  },
+  {
+    id: "cahokia",
+    name: "Cahokia Mounds",
+    country: "United States",
+    code: "USA",
+    tier: "common",
+    lat: 38.65861111,
+    lon: -90.06138889,
+    source: "https://whc.unesco.org/en/list/198/",
+    region: "Europe and North America",
+    description: "Large earthen mounds preserve the centre of a major pre-Columbian settlement. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/198/"
+  },
+  {
+    id: "hawaiivolcanoes",
+    name: "Hawaii Volcanoes",
+    country: "United States",
+    code: "USA",
+    tier: "epic",
+    lat: 19.5,
+    lon: -155.25,
+    source: "https://whc.unesco.org/en/list/409/",
+    region: "Europe and North America",
+    description: "Active shield volcanoes continually reshape a landscape of lava flows and craters. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/409/"
+  },
+  {
+    id: "colonia",
+    name: "Colonia del Sacramento",
+    country: "Uruguay",
+    code: "URY",
+    tier: "common",
+    lat: -34.47119,
+    lon: -57.849898,
+    source: "https://whc.unesco.org/en/list/747/",
+    region: "Latin America and the Caribbean",
+    description: "A historic riverside settlement preserves a mixture of Portuguese and Spanish colonial traditions. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/747/"
+  },
+  {
+    id: "canaima",
+    name: "Canaima National Park",
+    country: "Venezuela",
+    code: "VEN",
+    tier: "legendary",
+    lat: 5.337994,
+    lon: -62.037883,
+    source: "https://whc.unesco.org/en/list/701/",
+    region: "Latin America and the Caribbean",
+    description: "Table mountains and towering waterfalls dominate the Guiana Shield landscape. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/701/"
+  },
+  {
+    id: "kakadu",
+    name: "Kakadu National Park",
+    country: "Australia",
+    code: "AUS",
+    tier: "rare",
+    lat: -12.1052777778,
+    lon: 132.3838888889,
+    source: "https://whc.unesco.org/en/list/147/",
+    region: "Asia and the Pacific",
+    description: "Escarpments, wetlands and rock-art sites preserve a landscape with a long Aboriginal history. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/147/"
+  },
+  {
+    id: "uluru",
+    name: "Uluru-Kata Tjuta",
+    country: "Australia",
+    code: "AUS",
+    tier: "legendary",
+    lat: -25.33333333,
+    lon: 131,
+    source: "https://whc.unesco.org/en/list/447/",
+    region: "Asia and the Pacific",
+    description: "An immense sandstone monolith and rounded rock domes rise from the central Australian plain. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/447/"
+  },
+  {
+    id: "sharkbay",
+    name: "Shark Bay",
+    country: "Australia",
+    code: "AUS",
+    tier: "rare",
+    lat: -25.48611111,
+    lon: 113.4361111,
+    source: "https://whc.unesco.org/en/list/578/",
+    region: "Asia and the Pacific",
+    description: "Seagrass beds and stromatolites occur in a broad bay on Australia's western coast. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/578/"
+  },
+  {
+    id: "bluemountains",
+    name: "Greater Blue Mountains",
+    country: "Australia",
+    code: "AUS",
+    tier: "rare",
+    lat: -33.7,
+    lon: 150,
+    source: "https://whc.unesco.org/en/list/917/",
+    region: "Asia and the Pacific",
+    description: "Sandstone plateaux and deep gorges support a remarkable diversity of eucalypt vegetation. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/917/"
+  },
+  {
+    id: "purnululu",
+    name: "Purnululu",
+    country: "Australia",
+    code: "AUS",
+    tier: "epic",
+    lat: -17.5,
+    lon: 128.5,
+    source: "https://whc.unesco.org/en/list/1094/",
+    region: "Asia and the Pacific",
+    description: "Orange and dark-striped sandstone domes form the distinctive Bungle Bungle range. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/1094/"
+  },
+  {
+    id: "ningaloo",
+    name: "Ningaloo Coast",
+    country: "Australia",
+    code: "AUS",
+    tier: "rare",
+    lat: -22.451,
+    lon: 113.81,
+    source: "https://whc.unesco.org/en/list/1369/",
+    region: "Asia and the Pacific",
+    description: "An extensive fringing reef lies beside an arid coast visited by whale sharks. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/1369/"
+  },
+  {
+    id: "tongariro",
+    name: "Tongariro National Park",
+    country: "New Zealand",
+    code: "NZL",
+    tier: "epic",
+    lat: -39.2770935487,
+    lon: 175.568632584,
+    source: "https://whc.unesco.org/en/list/421/",
+    region: "Asia and the Pacific",
+    description: "Volcanoes and lakes form a mountain landscape of deep cultural significance to M\u0101ori people. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/421/"
+  },
+  {
+    id: "tewahipounamu",
+    name: "Te Wahipounamu",
+    country: "New Zealand",
+    code: "NZL",
+    tier: "rare",
+    lat: -45.03602778,
+    lon: 167.3196111,
+    source: "https://whc.unesco.org/en/list/551/",
+    region: "Asia and the Pacific",
+    description: "Glaciers, fjords and ancient forests shape the southwest of New Zealand's South Island. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/551/"
+  },
+  {
+    id: "levuka",
+    name: "Levuka Historical Port Town",
+    country: "Fiji",
+    code: "FJI",
+    tier: "common",
+    lat: -17.6833777778,
+    lon: 178.8345333333,
+    source: "https://whc.unesco.org/en/list/1399/",
+    region: "Asia and the Pacific",
+    description: "Low timber buildings preserve a Pacific port town beneath steep volcanic slopes. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/1399/"
+  },
+  {
+    id: "roimata",
+    name: "Chief Roi Mata's Domain",
+    country: "Vanuatu",
+    code: "VUT",
+    tier: "common",
+    lat: -17.6280694444,
+    lon: 168.1777194444,
+    source: "https://whc.unesco.org/en/list/1280/",
+    region: "Asia and the Pacific",
+    description: "Settlement, burial and cave sites recall a Pacific chief and the traditions surrounding his life. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/1280/"
+  },
+  {
+    id: "eastrennell",
+    name: "East Rennell",
+    country: "Solomon Islands",
+    code: "SLB",
+    tier: "rare",
+    lat: -11.68333,
+    lon: 160.33333,
+    source: "https://whc.unesco.org/en/list/854/",
+    region: "Asia and the Pacific",
+    description: "A raised coral atoll contains a large lake surrounded by dense tropical forest. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/854/"
+  },
+  {
+    id: "kuk",
+    name: "Kuk Early Agricultural Site",
+    country: "Papua New Guinea",
+    code: "PNG",
+    tier: "common",
+    lat: -5.7837111111,
+    lon: 144.3317222222,
+    source: "https://whc.unesco.org/en/list/887/",
+    region: "Asia and the Pacific",
+    description: "Ancient drainage systems record the development of agriculture in the New Guinea highlands. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/887/"
+  },
+  {
+    id: "bagerhat",
+    name: "Mosque City of Bagerhat",
+    country: "Bangladesh",
+    code: "BGD",
+    tier: "common",
+    lat: 22.66667,
+    lon: 89.8,
+    source: "https://whc.unesco.org/en/list/321/",
+    region: "Asia and the Pacific",
+    description: "Historic brick mosques and water infrastructure survive in a city founded near the Ganges delta. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/321/"
+  },
+  {
+    id: "paharpur",
+    name: "Somapura Mahavihara at Paharpur",
+    country: "Bangladesh",
+    code: "BGD",
+    tier: "rare",
+    lat: 25.03333333,
+    lon: 88.98333333,
+    source: "https://whc.unesco.org/en/list/322/",
+    region: "Asia and the Pacific",
+    description: "A great Buddhist monastery surrounds a monumental central shrine decorated with terracotta plaques. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/322/"
+  },
+  {
+    id: "preahvihear",
+    name: "Temple of Preah Vihear",
+    country: "Cambodia",
+    code: "KHM",
+    tier: "rare",
+    lat: 14.390841,
+    lon: 104.680325,
+    source: "https://whc.unesco.org/en/list/1224/",
+    region: "Asia and the Pacific",
+    description: "A sequence of sanctuaries follows a long axis along a high plateau edge. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/1224/"
+  },
+  {
+    id: "kohker",
+    name: "Koh Ker",
+    country: "Cambodia",
+    code: "KHM",
+    tier: "rare",
+    lat: 13.7830555556,
+    lon: 104.5372222222,
+    source: "https://whc.unesco.org/en/list/1667/",
+    region: "Asia and the Pacific",
+    description: "A stepped temple pyramid rises above the remains of a former Khmer capital. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/1667/"
+  },
+  {
+    id: "komodo",
+    name: "Komodo National Park",
+    country: "Indonesia",
+    code: "IDN",
+    tier: "epic",
+    lat: -8.54333,
+    lon: 119.48944,
+    source: "https://whc.unesco.org/en/list/609/",
+    region: "Asia and the Pacific",
+    description: "Rugged islands shelter Komodo dragons beside a rich marine environment. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/609/"
+  },
+  {
+    id: "prambanan",
+    name: "Prambanan Temple Compounds",
+    country: "Indonesia",
+    code: "IDN",
+    tier: "rare",
+    lat: -7.75222,
+    lon: 110.49167,
+    source: "https://whc.unesco.org/en/list/642/",
+    region: "Asia and the Pacific",
+    description: "Tall Hindu temple towers rise from a complex decorated with narrative reliefs. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/642/"
+  },
+  {
+    id: "balisubak",
+    name: "Bali Subak Landscape",
+    country: "Indonesia",
+    code: "IDN",
+    tier: "rare",
+    lat: -8.2591666667,
+    lon: 115.4027777778,
+    source: "https://whc.unesco.org/en/list/1194/",
+    region: "Asia and the Pacific",
+    description: "Water temples and terraced rice fields form a landscape managed by the subak irrigation system. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/1194/"
+  },
+  {
+    id: "kinabalu",
+    name: "Kinabalu Park",
+    country: "Malaysia",
+    code: "MYS",
+    tier: "rare",
+    lat: 6.147,
+    lon: 116.642,
+    source: "https://whc.unesco.org/en/list/1012/",
+    region: "Asia and the Pacific",
+    description: "A granite mountain supports vegetation ranging from tropical forest to alpine habitats. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/1012/"
+  },
+  {
+    id: "gunungmulu",
+    name: "Gunung Mulu",
+    country: "Malaysia",
+    code: "MYS",
+    tier: "epic",
+    lat: 4.13333,
+    lon: 114.91667,
+    source: "https://whc.unesco.org/en/list/1013/",
+    region: "Asia and the Pacific",
+    description: "Limestone pinnacles and immense caves form a spectacular tropical karst landscape. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/1013/"
+  },
+  {
+    id: "puertoprincesa",
+    name: "Puerto-Princesa Subterranean River",
+    country: "Philippines",
+    code: "PHL",
+    tier: "rare",
+    lat: 10.16666667,
+    lon: 118.9166667,
+    source: "https://whc.unesco.org/en/list/652/",
+    region: "Asia and the Pacific",
+    description: "A subterranean river flows through limestone caves before reaching the sea. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/652/"
+  },
+  {
+    id: "tubbataha",
+    name: "Tubbataha Reefs",
+    country: "Philippines",
+    code: "PHL",
+    tier: "epic",
+    lat: 8.9533333333,
+    lon: 119.8675,
+    source: "https://whc.unesco.org/en/list/653/",
+    region: "Asia and the Pacific",
+    description: "Remote coral atolls support rich reef communities and breeding seabirds. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/653/"
+  },
+  {
+    id: "cordilleraterraces",
+    name: "Philippine Cordilleras Rice Terraces",
+    country: "Philippines",
+    code: "PHL",
+    tier: "rare",
+    lat: 16.8333333333,
+    lon: 120.9666666667,
+    source: "https://whc.unesco.org/en/list/722/",
+    region: "Asia and the Pacific",
+    description: "Steep mountain slopes are shaped into irrigated rice terraces maintained by local communities. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/722/"
+  },
+  {
+    id: "hue",
+    name: "Hu\xE9 Monuments",
+    country: "Vietnam",
+    code: "VNM",
+    tier: "rare",
+    lat: 16.4694444444,
+    lon: 107.577777778,
+    source: "https://whc.unesco.org/en/list/678/",
+    region: "Asia and the Pacific",
+    description: "Palaces, temples and fortified enclosures preserve the ceremonial heart of Vietnam's former capital. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/678/"
+  },
+  {
+    id: "hoian",
+    name: "Hoi An",
+    country: "Vietnam",
+    code: "VNM",
+    tier: "common",
+    lat: 15.88333333,
+    lon: 108.3333333,
+    source: "https://whc.unesco.org/en/list/948/",
+    region: "Asia and the Pacific",
+    description: "Timber buildings and narrow streets preserve a Southeast Asian trading port. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/948/"
+  },
+  {
+    id: "trangan",
+    name: "Trang An",
+    country: "Vietnam",
+    code: "VNM",
+    tier: "epic",
+    lat: 20.2566666667,
+    lon: 105.8963888889,
+    source: "https://whc.unesco.org/en/list/1438/",
+    region: "Asia and the Pacific",
+    description: "Limestone towers rise above waterways, caves and archaeological sites. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/1438/"
+  },
+  {
+    id: "anuradhapura",
+    name: "Anuradhapura",
+    country: "Sri Lanka",
+    code: "LKA",
+    tier: "rare",
+    lat: 8.333333333,
+    lon: 80.38333333,
+    source: "https://whc.unesco.org/en/list/200/",
+    region: "Asia and the Pacific",
+    description: "Large stupas and monastic ruins preserve a sacred city centred on a revered Bodhi tree. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/200/"
+  },
+  {
+    id: "galle",
+    name: "Galle Fort",
+    country: "Sri Lanka",
+    code: "LKA",
+    tier: "common",
+    lat: 6.028051,
+    lon: 80.216346,
+    source: "https://whc.unesco.org/en/list/451/",
+    region: "Asia and the Pacific",
+    description: "Fortified streets and buildings combine European planning with South Asian traditions. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/451/"
+  },
+  {
+    id: "dambulla",
+    name: "Dambulla Cave Temple",
+    country: "Sri Lanka",
+    code: "LKA",
+    tier: "rare",
+    lat: 7.856666667,
+    lon: 80.64916667,
+    source: "https://whc.unesco.org/en/list/561/",
+    region: "Asia and the Pacific",
+    description: "Cave sanctuaries preserve Buddhist statues and extensive painted surfaces. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/561/"
+  },
+  {
+    id: "gyeongju",
+    name: "Gyeongju Historic Areas",
+    country: "South Korea",
+    code: "KOR",
+    tier: "rare",
+    lat: 35.83,
+    lon: 129.22,
+    source: "https://whc.unesco.org/en/list/976/",
+    region: "Asia and the Pacific",
+    description: "Royal tombs, temple remains and palace sites preserve the former Silla capital. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/976/"
+  },
+  {
+    id: "hahoeyangdong",
+    name: "Hahoe and Yangdong Villages",
+    country: "South Korea",
+    code: "KOR",
+    tier: "common",
+    lat: 36.5391666667,
+    lon: 128.5166666667,
+    source: "https://whc.unesco.org/en/list/1324/",
+    region: "Asia and the Pacific",
+    description: "Traditional clan villages preserve tiled and thatched houses within wooded river landscapes. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/1324/"
+  },
+  {
+    id: "namhansanseong",
+    name: "Namhansanseong",
+    country: "South Korea",
+    code: "KOR",
+    tier: "rare",
+    lat: 37.4788888889,
+    lon: 127.181111111,
+    source: "https://whc.unesco.org/en/list/1439/",
+    region: "Asia and the Pacific",
+    description: "Mountain walls and gates surround a refuge capital developed for the Joseon dynasty. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/1439/"
+  },
+  {
+    id: "seowon",
+    name: "Seowon Academies",
+    country: "South Korea",
+    code: "KOR",
+    tier: "common",
+    lat: 36.9254055556,
+    lon: 128.580108333,
+    source: "https://whc.unesco.org/en/list/1498/",
+    region: "Asia and the Pacific",
+    description: "Neo-Confucian academies place study halls and shrines within carefully chosen natural settings. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/1498/"
+  },
+  {
+    id: "qinmausoleum",
+    name: "First Qin Emperor's Mausoleum",
+    country: "China",
+    code: "CHN",
+    tier: "epic",
+    lat: 34.3851944444,
+    lon: 109.273444445,
+    source: "https://whc.unesco.org/en/list/441/",
+    region: "Asia and the Pacific",
+    description: "An imperial burial complex includes a vast terracotta army arranged in underground pits. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/441/"
+  },
+  {
+    id: "pingyao",
+    name: "Ancient Ping Yao",
+    country: "China",
+    code: "CHN",
+    tier: "common",
+    lat: 37.286204,
+    lon: 112.278907,
+    source: "https://whc.unesco.org/en/list/812/",
+    region: "Asia and the Pacific",
+    description: "A walled Chinese city preserves traditional houses and historic commercial buildings. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/812/"
+  },
+  {
+    id: "yungang",
+    name: "Yungang Grottoes",
+    country: "China",
+    code: "CHN",
+    tier: "epic",
+    lat: 40.10972,
+    lon: 113.12222,
+    source: "https://whc.unesco.org/en/list/1039/",
+    region: "Asia and the Pacific",
+    description: "Buddhist cave temples contain monumental statues carved into sandstone cliffs. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/1039/"
+  },
+  {
+    id: "westlake",
+    name: "West Lake of Hangzhou",
+    country: "China",
+    code: "CHN",
+    tier: "rare",
+    lat: 30.2375,
+    lon: 120.1408333333,
+    source: "https://whc.unesco.org/en/list/1334/",
+    region: "Asia and the Pacific",
+    description: "Causeways, gardens and temples shape a lake landscape celebrated in Chinese art. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/1334/"
+  },
+  {
+    id: "haniterraces",
+    name: "Honghe Hani Rice Terraces",
+    country: "China",
+    code: "CHN",
+    tier: "rare",
+    lat: 23.0932777778,
+    lon: 102.7799805556,
+    source: "https://whc.unesco.org/en/list/1111/",
+    region: "Asia and the Pacific",
+    description: "Irrigated terraces descend from forested mountains past Hani villages. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/1111/"
+  },
+  {
+    id: "pattadakal",
+    name: "Pattadakal",
+    country: "India",
+    code: "IND",
+    tier: "common",
+    lat: 15.950194,
+    lon: 75.815611,
+    source: "https://whc.unesco.org/en/list/239/",
+    region: "Asia and the Pacific",
+    description: "Chalukya-period temples bring together northern and southern Indian architectural forms. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/239/"
+  },
+  {
+    id: "shivajiterminus",
+    name: "Chhatrapati Shivaji Terminus",
+    country: "India",
+    code: "IND",
+    tier: "rare",
+    lat: 18.9401222222,
+    lon: 72.8362027777,
+    source: "https://whc.unesco.org/en/list/945/",
+    region: "Asia and the Pacific",
+    description: "A monumental railway station combines Victorian Gothic Revival and Indian architectural traditions. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/945/"
+  },
+  {
+    id: "nalanda",
+    name: "Nalanda Mahavihara",
+    country: "India",
+    code: "IND",
+    tier: "rare",
+    lat: 25.1366666667,
+    lon: 85.4438888889,
+    source: "https://whc.unesco.org/en/list/1502/",
+    region: "Asia and the Pacific",
+    description: "Monasteries, shrines and educational remains record a long-lived Buddhist learning centre. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/1502/"
+  },
+  {
+    id: "bam",
+    name: "Bam and its Cultural Landscape",
+    country: "Iran",
+    code: "IRN",
+    tier: "rare",
+    lat: 29.11683,
+    lon: 58.3666666667,
+    source: "https://whc.unesco.org/en/list/1208/",
+    region: "Asia and the Pacific",
+    description: "An earthen citadel and oasis landscape record the history of a desert trading city. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/1208/"
+  },
+  {
+    id: "shushtar",
+    name: "Shushtar Hydraulic System",
+    country: "Iran",
+    code: "IRN",
+    tier: "rare",
+    lat: 32.0186111111,
+    lon: 48.8358333333,
+    source: "https://whc.unesco.org/en/list/1315/",
+    region: "Asia and the Pacific",
+    description: "Dams, tunnels and canals distribute water through a historic system of mills and irrigation. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/1315/"
+  },
+  {
+    id: "gonbadeqabus",
+    name: "Gonbad-e Q\u0101bus",
+    country: "Iran",
+    code: "IRN",
+    tier: "common",
+    lat: 37.2580277778,
+    lon: 55.169,
+    source: "https://whc.unesco.org/en/list/1398/",
+    region: "Asia and the Pacific",
+    description: "A tall brick funerary tower rises above a star-shaped plan beneath a conical roof. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/1398/"
+  },
+  {
+    id: "cappadocia",
+    name: "G\xF6reme and Cappadocia",
+    country: "T\xFCrkiye",
+    code: "TUR",
+    tier: "epic",
+    lat: 38.5947222222,
+    lon: 34.9988055556,
+    source: "https://whc.unesco.org/en/list/357/",
+    region: "Europe and North America",
+    description: "Eroded volcanic rock formations contain rock-cut churches and dwellings. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/357/"
+  },
+  {
+    id: "nemrut",
+    name: "Nemrut Da\u011F",
+    country: "T\xFCrkiye",
+    code: "TUR",
+    tier: "rare",
+    lat: 37.9807939663,
+    lon: 38.7409837493,
+    source: "https://whc.unesco.org/en/list/448/",
+    region: "Europe and North America",
+    description: "Colossal stone statues flank a royal funerary mound high in the mountains. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/448/"
+  },
+  {
+    id: "pamukkale",
+    name: "Hierapolis-Pamukkale",
+    country: "T\xFCrkiye",
+    code: "TUR",
+    tier: "epic",
+    lat: 37.92389,
+    lon: 29.12333,
+    source: "https://whc.unesco.org/en/list/485/",
+    region: "Europe and North America",
+    description: "White travertine terraces formed by thermal waters lie below the remains of an ancient city. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/485/"
+  },
+  {
+    id: "troy",
+    name: "Troy",
+    country: "T\xFCrkiye",
+    code: "TUR",
+    tier: "rare",
+    lat: 39.95644,
+    lon: 26.239,
+    source: "https://whc.unesco.org/en/list/849/",
+    region: "Europe and North America",
+    description: "Successive settlement layers preserve a city associated with ancient Mediterranean history and epic poetry. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/849/"
+  },
+  {
+    id: "baalbek",
+    name: "Baalbek",
+    country: "Lebanon",
+    code: "LBN",
+    tier: "epic",
+    lat: 34.0066666667,
+    lon: 36.2041666667,
+    source: "https://whc.unesco.org/en/list/294/",
+    region: "Arab States",
+    description: "Monumental Roman temples preserve towering columns and richly carved stonework. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/294/"
+  },
+  {
+    id: "byblos",
+    name: "Byblos",
+    country: "Lebanon",
+    code: "LBN",
+    tier: "rare",
+    lat: 34.11917,
+    lon: 35.6455555556,
+    source: "https://whc.unesco.org/en/list/295/",
+    region: "Arab States",
+    description: "A long-inhabited coastal city preserves traces of successive Mediterranean civilizations. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/295/"
+  },
+  {
+    id: "quseiramra",
+    name: "Quseir Amra",
+    country: "Jordan",
+    code: "JOR",
+    tier: "common",
+    lat: 31.8018055556,
+    lon: 36.5873055556,
+    source: "https://whc.unesco.org/en/list/327/",
+    region: "Arab States",
+    description: "An early Islamic desert residence preserves remarkable wall paintings inside its bath complex. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/327/"
+  },
+  {
+    id: "wadirum",
+    name: "Wadi Rum",
+    country: "Jordan",
+    code: "JOR",
+    tier: "epic",
+    lat: 29.6397222222,
+    lon: 35.4338888889,
+    source: "https://whc.unesco.org/en/list/1377/",
+    region: "Arab States",
+    description: "Sandstone cliffs, narrow gorges and natural arches form a desert landscape rich in rock art. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/1377/"
+  },
+  {
+    id: "atturaif",
+    name: "At-Turaif",
+    country: "Saudi Arabia",
+    code: "SAU",
+    tier: "common",
+    lat: 24.7341333333,
+    lon: 46.5724666667,
+    source: "https://whc.unesco.org/en/list/1329/",
+    region: "Arab States",
+    description: "Mud-brick palaces and urban remains preserve the early Saudi capital at ad-Dir'iyah. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/1329/"
+  },
+  {
+    id: "alahsa",
+    name: "Al-Ahsa Oasis",
+    country: "Saudi Arabia",
+    code: "SAU",
+    tier: "rare",
+    lat: 25.3785194444,
+    lon: 49.5757138889,
+    source: "https://whc.unesco.org/en/list/1563/",
+    region: "Arab States",
+    description: "Palm groves, springs and canals form an extensive oasis shaped by long settlement. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/1563/"
+  },
+  {
+    id: "alzubarah",
+    name: "Al Zubarah",
+    country: "Qatar",
+    code: "QAT",
+    tier: "common",
+    lat: 25.9780555556,
+    lon: 51.0297222222,
+    source: "https://whc.unesco.org/en/list/1402/",
+    region: "Arab States",
+    description: "The remains of a walled Gulf town record pearling and maritime trade. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/1402/"
+  },
+  {
+    id: "alain",
+    name: "Al Ain Cultural Sites",
+    country: "United Arab Emirates",
+    code: "ARE",
+    tier: "common",
+    lat: 24.290984,
+    lon: 55.77942,
+    source: "https://whc.unesco.org/en/list/1343/",
+    region: "Arab States",
+    description: "Oases, tombs and ancient settlements record life in the Arabian desert over millennia. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/1343/"
+  },
+  {
+    id: "shirakami",
+    name: "Shirakami-Sanchi",
+    country: "Japan",
+    code: "JPN",
+    tier: "common",
+    lat: 40.4525,
+    lon: 140.1155555556,
+    source: "https://whc.unesco.org/en/list/663/",
+    region: "Asia and the Pacific",
+    description: "An extensive cool-temperate beech forest survives across a rugged mountain landscape. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/663/"
+  },
+  {
+    id: "ogasawara",
+    name: "Ogasawara Islands",
+    country: "Japan",
+    code: "JPN",
+    tier: "rare",
+    lat: 24.235,
+    lon: 141.4625,
+    source: "https://whc.unesco.org/en/list/1362/",
+    region: "Asia and the Pacific",
+    description: "Oceanic islands harbour many endemic species shaped by isolated evolution. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/1362/"
+  },
+  {
+    id: "tomioka",
+    name: "Tomioka Silk Mill",
+    country: "Japan",
+    code: "JPN",
+    tier: "common",
+    lat: 36.2552777778,
+    lon: 138.8877777778,
+    source: "https://whc.unesco.org/en/list/1449/",
+    region: "Asia and the Pacific",
+    description: "A historic silk mill and related sites record Japan's transition to industrial silk production. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/1449/"
+  },
+  {
+    id: "salzburg",
+    name: "Historic Salzburg",
+    country: "Austria",
+    code: "AUT",
+    tier: "rare",
+    lat: 47.80055556,
+    lon: 13.04333333,
+    source: "https://whc.unesco.org/en/list/784/",
+    region: "Europe and North America",
+    description: "Ecclesiastical and civic buildings preserve a Baroque city between the river and surrounding hills. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/784/"
+  },
+  {
+    id: "hallstatt",
+    name: "Hallstatt-Dachstein",
+    country: "Austria",
+    code: "AUT",
+    tier: "rare",
+    lat: 47.55944444,
+    lon: 13.64638889,
+    source: "https://whc.unesco.org/en/list/806/",
+    region: "Europe and North America",
+    description: "Alpine settlement and mountain scenery reflect a long history of salt mining. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/806/"
+  },
+  {
+    id: "berne",
+    name: "Old City of Berne",
+    country: "Switzerland",
+    code: "CHE",
+    tier: "common",
+    lat: 46.94806,
+    lon: 7.45028,
+    source: "https://whc.unesco.org/en/list/267/",
+    region: "Europe and North America",
+    description: "Arcaded streets and historic fountains preserve a planned medieval city beside the Aare River. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/267/"
+  },
+  {
+    id: "stgall",
+    name: "Abbey of St Gall",
+    country: "Switzerland",
+    code: "CHE",
+    tier: "rare",
+    lat: 47.42333,
+    lon: 9.37778,
+    source: "https://whc.unesco.org/en/list/268/",
+    region: "Europe and North America",
+    description: "A monastic complex and its library preserve an important centre of European learning. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/268/"
+  },
+  {
+    id: "wurzburg",
+    name: "W\xFCrzburg Residence",
+    country: "Germany",
+    code: "DEU",
+    tier: "rare",
+    lat: 49.7927777778,
+    lon: 9.9388888889,
+    source: "https://whc.unesco.org/en/list/169/",
+    region: "Europe and North America",
+    description: "A richly decorated Baroque residence combines a grand staircase with formal court gardens. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/169/"
+  },
+  {
+    id: "trier",
+    name: "Roman Monuments of Trier",
+    country: "Germany",
+    code: "DEU",
+    tier: "common",
+    lat: 49.7561944444,
+    lon: 6.6432222222,
+    source: "https://whc.unesco.org/en/list/367/",
+    region: "Europe and North America",
+    description: "Roman gates, baths and later churches preserve layers of a city on the Moselle. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/367/"
+  },
+  {
+    id: "speicherstadt",
+    name: "Speicherstadt and Kontorhaus",
+    country: "Germany",
+    code: "DEU",
+    tier: "common",
+    lat: 53.5455555556,
+    lon: 9.9994444444,
+    source: "https://whc.unesco.org/en/list/1467/",
+    region: "Europe and North America",
+    description: "Brick warehouses line canals beside a district of early modern office buildings. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/1467/"
+  },
+  {
+    id: "kronborg",
+    name: "Kronborg Castle",
+    country: "Denmark",
+    code: "DNK",
+    tier: "rare",
+    lat: 56.03889,
+    lon: 12.62083333,
+    source: "https://whc.unesco.org/en/list/696/",
+    region: "Europe and North America",
+    description: "A Renaissance castle guards the narrow sound between Denmark and Sweden. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/696/"
+  },
+  {
+    id: "ilulissat",
+    name: "Ilulissat Icefjord",
+    country: "Denmark",
+    code: "DNK",
+    tier: "epic",
+    lat: 69.13333333,
+    lon: -49.5,
+    source: "https://whc.unesco.org/en/list/1149/",
+    region: "Europe and North America",
+    description: "A fast-moving glacier releases immense icebergs into a Greenland fjord. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/1149/"
+  },
+  {
+    id: "suomenlinna",
+    name: "Suomenlinna Fortress",
+    country: "Finland",
+    code: "FIN",
+    tier: "rare",
+    lat: 60.14722,
+    lon: 24.98722,
+    source: "https://whc.unesco.org/en/list/583/",
+    region: "Europe and North America",
+    description: "Bastions and military buildings spread across islands at the entrance to Helsinki's harbour. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/583/"
+  },
+  {
+    id: "rauma",
+    name: "Old Rauma",
+    country: "Finland",
+    code: "FIN",
+    tier: "common",
+    lat: 61.12806,
+    lon: 21.51167,
+    source: "https://whc.unesco.org/en/list/582/",
+    region: "Europe and North America",
+    description: "Colourful timber houses preserve a traditional Nordic town around its medieval core. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/582/"
+  },
+  {
+    id: "orangetheatre",
+    name: "Roman Theatre of Orange",
+    country: "France",
+    code: "FRA",
+    tier: "rare",
+    lat: 44.1421109344,
+    lon: 4.8047909061,
+    source: "https://whc.unesco.org/en/list/163/",
+    region: "Europe and North America",
+    description: "A Roman theatre retains its monumental stage wall beside other ancient urban remains. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/163/"
+  },
+  {
+    id: "cordouan",
+    name: "Cordouan Lighthouse",
+    country: "France",
+    code: "FRA",
+    tier: "rare",
+    lat: 45.5863055556,
+    lon: -1.1733333333,
+    source: "https://whc.unesco.org/en/list/1625/",
+    region: "Europe and North America",
+    description: "A monumental stone lighthouse stands on a rocky platform at the Gironde estuary. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/1625/"
+  },
+  {
+    id: "maisoncarree",
+    name: "Maison Carr\xE9e of N\xEEmes",
+    country: "France",
+    code: "FRA",
+    tier: "common",
+    lat: 43.8382222222,
+    lon: 4.3561944444,
+    source: "https://whc.unesco.org/en/list/1569/",
+    region: "Europe and North America",
+    description: "A well-preserved Roman temple stands on a high podium behind a columned portico. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/1569/"
+  },
+  {
+    id: "edinburgh",
+    name: "Old and New Edinburgh",
+    country: "United Kingdom",
+    code: "GBR",
+    tier: "rare",
+    lat: 55.95,
+    lon: -3.216666667,
+    source: "https://whc.unesco.org/en/list/728/",
+    region: "Europe and North America",
+    description: "A medieval old town contrasts with a carefully planned neoclassical new town. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/728/"
+  },
+  {
+    id: "pontcysyllte",
+    name: "Pontcysyllte Aqueduct",
+    country: "United Kingdom",
+    code: "GBR",
+    tier: "rare",
+    lat: 52.9702777778,
+    lon: -3.0877777778,
+    source: "https://whc.unesco.org/en/list/1303/",
+    region: "Europe and North America",
+    description: "A cast-iron water trough carries a navigable canal high above the River Dee. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/1303/"
+  },
+  {
+    id: "kew",
+    name: "Royal Botanic Gardens Kew",
+    country: "United Kingdom",
+    code: "GBR",
+    tier: "common",
+    lat: 51.48194444,
+    lon: -0.2940277778,
+    source: "https://whc.unesco.org/en/list/1084/",
+    region: "Europe and North America",
+    description: "Historic glasshouses and designed landscapes preserve a major centre of botanical study. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/1084/"
+  },
+  {
+    id: "delphi",
+    name: "Delphi",
+    country: "Greece",
+    code: "GRC",
+    tier: "epic",
+    lat: 38.48149,
+    lon: 22.49617,
+    source: "https://whc.unesco.org/en/list/393/",
+    region: "Europe and North America",
+    description: "The sanctuary of Apollo occupies terraces on the slopes of Mount Parnassus. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/393/"
+  },
+  {
+    id: "epidaurus",
+    name: "Sanctuary of Asklepios at Epidaurus",
+    country: "Greece",
+    code: "GRC",
+    tier: "rare",
+    lat: 37.6,
+    lon: 23.0805555556,
+    source: "https://whc.unesco.org/en/list/491/",
+    region: "Europe and North America",
+    description: "A theatre and religious buildings preserve an ancient sanctuary associated with healing. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/491/"
+  },
+  {
+    id: "mycenae",
+    name: "Mycenae and Tiryns",
+    country: "Greece",
+    code: "GRC",
+    tier: "rare",
+    lat: 37.6,
+    lon: 22.8,
+    source: "https://whc.unesco.org/en/list/941/",
+    region: "Europe and North America",
+    description: "Massive stone fortifications preserve centres of the Mycenaean civilization. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/941/"
+  },
+  {
+    id: "brunaboinne",
+    name: "Br\xFA na B\xF3inne",
+    country: "Ireland",
+    code: "IRL",
+    tier: "rare",
+    lat: 53.6946944444,
+    lon: -6.4755,
+    source: "https://whc.unesco.org/en/list/659/",
+    region: "Europe and North America",
+    description: "Large prehistoric passage tombs occupy a river landscape decorated with megalithic art. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/659/"
+  },
+  {
+    id: "thingvellir",
+    name: "\xDEingvellir",
+    country: "Iceland",
+    code: "ISL",
+    tier: "rare",
+    lat: 64.25380556,
+    lon: -21.03725,
+    source: "https://whc.unesco.org/en/list/1152/",
+    region: "Europe and North America",
+    description: "A rift-valley landscape preserves the site of Iceland's historic open-air assembly. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/1152/"
+  },
+  {
+    id: "agrigento",
+    name: "Valley of the Temples at Agrigento",
+    country: "Italy",
+    code: "ITA",
+    tier: "rare",
+    lat: 37.28972222,
+    lon: 13.59333333,
+    source: "https://whc.unesco.org/en/list/831/",
+    region: "Europe and North America",
+    description: "Doric temples preserve the monumental remains of a major ancient Greek city in Sicily. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/831/"
+  },
+  {
+    id: "cinqueterre",
+    name: "Portovenere and Cinque Terre",
+    country: "Italy",
+    code: "ITA",
+    tier: "rare",
+    lat: 44.0430555556,
+    lon: 9.8425,
+    source: "https://whc.unesco.org/en/list/826/",
+    region: "Europe and North America",
+    description: "Coastal villages and cultivated terraces cling to steep slopes above the Ligurian Sea. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/826/"
+  },
+  {
+    id: "bryggen",
+    name: "Bryggen",
+    country: "Norway",
+    code: "NOR",
+    tier: "common",
+    lat: 60.3974955,
+    lon: 5.3242268,
+    source: "https://whc.unesco.org/en/list/59/",
+    region: "Europe and North America",
+    description: "Rows of timber merchants' buildings preserve Bergen's historic Hanseatic waterfront. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/59/"
+  },
+  {
+    id: "tomar",
+    name: "Convent of Christ in Tomar",
+    country: "Portugal",
+    code: "PRT",
+    tier: "rare",
+    lat: 39.60472,
+    lon: -8.4175,
+    source: "https://whc.unesco.org/en/list/265/",
+    region: "Europe and North America",
+    description: "A fortified religious complex combines a round Templar church with later monastic buildings. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/265/"
+  },
+  {
+    id: "teide",
+    name: "Teide National Park",
+    country: "Spain",
+    code: "ESP",
+    tier: "epic",
+    lat: 28.2713888889,
+    lon: -16.6436111111,
+    source: "https://whc.unesco.org/en/list/1258/",
+    region: "Europe and North America",
+    description: "A high volcanic cone rises above lava fields and a vast caldera on Tenerife. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/1258/"
   }
 ];
 
@@ -5397,10 +9267,3886 @@ var collectibleLandmarks = landmarks_default.flatMap((landmark) => [
   landmark,
   { ...landmark, id: enhancedId(landmark.id), name: `${landmark.name} +` }
 ]);
-var byId2 = new Map(
+var byId = new Map(
   collectibleLandmarks.map((landmark) => [landmark.id, landmark])
 );
-var landmarkById = (id) => byId2.get(id);
+var landmarkById = (id) => byId.get(id);
+
+// plugins/orcatopia/src/tourism.ts
+var TOURISM = {
+  minuteMs: 6e4,
+  visitsPerPlacePerMinute: 1,
+  coinsPerVisit: 1,
+  offlineCapMs: 12 * 60 * 6e4,
+  awaySummaryMs: 6e4,
+  pollMs: 3e4,
+  maxCoins: 1e9,
+  maxVisitors: 6,
+  entranceCell: 14,
+  visualPlacesPerVisitor: 2
+};
+var specialBuildings = [
+  {
+    id: "tourism-info",
+    name: "Tourist information",
+    cost: 10,
+    color: "#69a99a",
+    activity: "guide"
+  },
+  {
+    id: "tourism-cafe",
+    name: "Island caf\xE9",
+    cost: 60,
+    color: "#d2a078",
+    activity: "drink"
+  },
+  {
+    id: "tourism-shop",
+    name: "Souvenir shop",
+    cost: 180,
+    color: "#c58a9e",
+    activity: "shop"
+  },
+  {
+    id: "tourism-lookout",
+    name: "Scenic lookout",
+    cost: 360,
+    color: "#829fc0",
+    activity: "photo"
+  }
+];
+var specialBuilding = (id) => specialBuildings.find((b) => b.id === id);
+function tourismRate(state) {
+  return new Set(
+    state.placements.filter((p) => landmarkById(p.landmark)).map((p) => baseId(p.landmark))
+  ).size * TOURISM.visitsPerPlacePerMinute;
+}
+function startTourism(now) {
+  return { coins: 0, settledAt: now, remainder: 0, buildings: [], away: null };
+}
+function settleTourism(tourism, rate, now) {
+  if (tourism.settledAt - now > TOURISM.offlineCapMs)
+    return { ...tourism, settledAt: now };
+  const elapsed = Math.max(0, now - tourism.settledAt);
+  const creditedMs = Math.min(elapsed, TOURISM.offlineCapMs);
+  const units = creditedMs * rate + tourism.remainder;
+  const visitors = Math.floor(units / TOURISM.minuteMs);
+  const coins = Math.min(
+    TOURISM.maxCoins - tourism.coins,
+    visitors * TOURISM.coinsPerVisit
+  );
+  return {
+    ...tourism,
+    coins: tourism.coins + coins,
+    settledAt: Math.max(now, tourism.settledAt),
+    remainder: units % TOURISM.minuteMs,
+    away: elapsed >= TOURISM.awaySummaryMs ? {
+      at: now,
+      elapsedMs: creditedMs,
+      coins,
+      visitors,
+      capped: elapsed > creditedMs
+    } : tourism.away
+  };
+}
+function validateTourism(value) {
+  if (value === null) return null;
+  const t = value;
+  const integer = (n) => Number.isSafeInteger(n) && n >= 0;
+  if (!t || !integer(t.coins) || t.coins > TOURISM.maxCoins || !integer(t.settledAt) || !integer(t.remainder) || t.remainder >= TOURISM.minuteMs || !Array.isArray(t.buildings) || new Set(t.buildings).size !== t.buildings.length || t.buildings.some((id) => !specialBuilding(id)) || t.away !== null && (!t.away || !integer(t.away.at) || !integer(t.away.elapsedMs) || t.away.elapsedMs > TOURISM.offlineCapMs || !integer(t.away.coins) || !integer(t.away.visitors) || typeof t.away.capped !== "boolean"))
+    throw Error("Invalid tourism ledger. Save was not overwritten.");
+  return structuredClone({
+    coins: t.coins,
+    settledAt: t.settledAt,
+    remainder: t.remainder,
+    buildings: t.buildings,
+    away: t.away
+  });
+}
+
+// plugins/orcatopia/src/water-catalog.json
+var water_catalog_default = [
+  {
+    record: {
+      id: "greatbarrierreef",
+      name: "Great Barrier Reef",
+      country: "Australia",
+      code: "AUS",
+      tier: "epic",
+      lat: -18.2871,
+      lon: 147.6992,
+      source: "https://whc.unesco.org/en/list/154/",
+      region: "Queensland",
+      description: "Coral gardens and shallow lagoons spread along northeastern Australia, providing habitats for marine turtles, dugongs and many kinds of reef fish. The miniature represents part of this extensive marine landscape.",
+      descriptionSourceName: "UNESCO World Heritage Centre",
+      descriptionSource: "https://whc.unesco.org/en/list/154/"
+    },
+    korean: {
+      name: "\uADF8\uB808\uC774\uD2B8\uBC30\uB9AC\uC5B4\uB9AC\uD504",
+      country: "\uD638\uC8FC",
+      region: "\uD038\uC990\uB79C\uB4DC",
+      description: "\uD638\uC8FC \uBD81\uB3D9\uBD80 \uBC14\uB2E4\uC5D0 \uC0B0\uD638\uCD08\uC640 \uC595\uC740 \uC11D\uD638\uAC00 \uD3BC\uCCD0\uC9D1\uB2C8\uB2E4. \uBC14\uB2E4\uAC70\uBD81\uACFC \uB4C0\uACF5, \uB2E4\uC591\uD55C \uC0B0\uD638\uCD08 \uBB3C\uACE0\uAE30\uAC00 \uC0B4\uC544\uAC00\uB294 \uB113\uC740 \uD574\uC591 \uACBD\uAD00\uC758 \uC77C\uBD80\uB97C \uC791\uC740 \uBAA8\uD615\uC73C\uB85C \uD45C\uD604\uD588\uC2B5\uB2C8\uB2E4.",
+      descriptionSourceName: "\uC720\uB124\uC2A4\uCF54 \uC138\uACC4\uC720\uC0B0\uC13C\uD130"
+    },
+    visual: {
+      id: "greatbarrierreef",
+      name: "Great Barrier Reef",
+      nameKo: "\uADF8\uB808\uC774\uD2B8\uBC30\uB9AC\uC5B4\uB9AC\uD504",
+      shape: "reef",
+      feature: "Coral gardens and shallow lagoons spread along northeastern Australia, providing habitats for marine turtles, dugongs and many kinds of reef fish. The miniature represents part of this extensive marine landscape.",
+      featureKo: "\uD638\uC8FC \uBD81\uB3D9\uBD80 \uBC14\uB2E4\uC5D0 \uC0B0\uD638\uCD08\uC640 \uC595\uC740 \uC11D\uD638\uAC00 \uD3BC\uCCD0\uC9D1\uB2C8\uB2E4. \uBC14\uB2E4\uAC70\uBD81\uACFC \uB4C0\uACF5, \uB2E4\uC591\uD55C \uC0B0\uD638\uCD08 \uBB3C\uACE0\uAE30\uAC00 \uC0B4\uC544\uAC00\uB294 \uB113\uC740 \uD574\uC591 \uACBD\uAD00\uC758 \uC77C\uBD80\uB97C \uC791\uC740 \uBAA8\uD615\uC73C\uB85C \uD45C\uD604\uD588\uC2B5\uB2C8\uB2E4.",
+      seed: 201,
+      color: "#5ab7ad"
+    },
+    surface: "sea"
+  },
+  {
+    record: {
+      id: "bluehole",
+      name: "Great Blue Hole",
+      country: "Belize",
+      code: "BLZ",
+      tier: "rare",
+      lat: 17.316,
+      lon: -87.534,
+      source: "https://whc.unesco.org/en/list/764/",
+      region: "Lighthouse Reef",
+      description: "A deep circular marine sinkhole opens within Lighthouse Reef in Belize. Blue Hole Natural Monument is one of the protected areas of the Belize Barrier Reef Reserve System; its dark water contrasts with the surrounding shallows.",
+      descriptionSourceName: "UNESCO World Heritage Centre",
+      descriptionSource: "https://whc.unesco.org/en/list/764/"
+    },
+    korean: {
+      name: "\uADF8\uB808\uC774\uD2B8\uBE14\uB8E8\uD640",
+      country: "\uBCA8\uB9AC\uC988",
+      region: "\uB77C\uC774\uD2B8\uD558\uC6B0\uC2A4\uB9AC\uD504",
+      description: "\uBCA8\uB9AC\uC988 \uB77C\uC774\uD2B8\uD558\uC6B0\uC2A4\uB9AC\uD504 \uC548\uCABD\uC5D0 \uB465\uADFC \uD574\uC591 \uC2F1\uD06C\uD640\uC774 \uC790\uB9AC\uD569\uB2C8\uB2E4. \uBCA8\uB9AC\uC988 \uC0B0\uD638\uCD08 \uBCF4\uD638\uAD6C\uC5ED\uC744 \uC774\uB8E8\uB294 \uBE14\uB8E8\uD640 \uC790\uC5F0\uAE30\uB150\uBB3C\uB85C, \uC9D9\uC740 \uBB3C\uBE5B\uACFC \uC8FC\uBCC0\uC758 \uC595\uC740 \uBC14\uB2E4\uAC00 \uB69C\uB837\uD558\uAC8C \uB300\uBE44\uB429\uB2C8\uB2E4.",
+      descriptionSourceName: "\uC720\uB124\uC2A4\uCF54 \uC138\uACC4\uC720\uC0B0\uC13C\uD130"
+    },
+    visual: {
+      id: "bluehole",
+      name: "Great Blue Hole",
+      nameKo: "\uADF8\uB808\uC774\uD2B8\uBE14\uB8E8\uD640",
+      shape: "reef",
+      feature: "A deep circular marine sinkhole opens within Lighthouse Reef in Belize. Blue Hole Natural Monument is one of the protected areas of the Belize Barrier Reef Reserve System; its dark water contrasts with the surrounding shallows.",
+      featureKo: "\uBCA8\uB9AC\uC988 \uB77C\uC774\uD2B8\uD558\uC6B0\uC2A4\uB9AC\uD504 \uC548\uCABD\uC5D0 \uB465\uADFC \uD574\uC591 \uC2F1\uD06C\uD640\uC774 \uC790\uB9AC\uD569\uB2C8\uB2E4. \uBCA8\uB9AC\uC988 \uC0B0\uD638\uCD08 \uBCF4\uD638\uAD6C\uC5ED\uC744 \uC774\uB8E8\uB294 \uBE14\uB8E8\uD640 \uC790\uC5F0\uAE30\uB150\uBB3C\uB85C, \uC9D9\uC740 \uBB3C\uBE5B\uACFC \uC8FC\uBCC0\uC758 \uC595\uC740 \uBC14\uB2E4\uAC00 \uB69C\uB837\uD558\uAC8C \uB300\uBE44\uB429\uB2C8\uB2E4.",
+      seed: 202,
+      color: "#4f9fac"
+    },
+    surface: "sea"
+  },
+  {
+    record: {
+      id: "geirangerfjord",
+      name: "Geirangerfjord",
+      country: "Norway",
+      code: "NOR",
+      tier: "rare",
+      lat: 62.105,
+      lon: 7.01,
+      source: "https://whc.unesco.org/en/list/1195/",
+      region: "Western Norway",
+      description: "Steep rock walls enclose a narrow arm of the sea in western Norway. Waterfalls descend from the mountain sides into the fjord, one of the two fjord areas recognized in the West Norwegian Fjords World Heritage property.",
+      descriptionSourceName: "UNESCO World Heritage Centre",
+      descriptionSource: "https://whc.unesco.org/en/list/1195/"
+    },
+    korean: {
+      name: "\uAC8C\uC774\uB791\uC5D0\uB974\uD53C\uC624\uB974",
+      country: "\uB178\uB974\uC6E8\uC774",
+      region: "\uB178\uB974\uC6E8\uC774 \uC11C\uBD80",
+      description: "\uB178\uB974\uC6E8\uC774 \uC11C\uBD80\uC758 \uAC00\uD30C\uB978 \uC554\uBCBD \uC0AC\uC774\uB85C \uC881\uACE0 \uAE34 \uBC14\uB2F7\uAE38\uC774 \uB4E4\uC5B4\uC635\uB2C8\uB2E4. \uC0B0\uBE44\uD0C8\uC758 \uD3ED\uD3EC\uAC00 \uD53C\uC624\uB974\uB85C \uD758\uB7EC\uB4E4\uBA70, \uB178\uB974\uC6E8\uC774 \uC11C\uBD80 \uD53C\uC624\uB974 \uC138\uACC4\uC720\uC0B0\uC744 \uC774\uB8E8\uB294 \uB450 \uC9C0\uC5ED \uC911 \uD558\uB098\uC785\uB2C8\uB2E4.",
+      descriptionSourceName: "\uC720\uB124\uC2A4\uCF54 \uC138\uACC4\uC720\uC0B0\uC13C\uD130"
+    },
+    visual: {
+      id: "geirangerfjord",
+      name: "Geirangerfjord",
+      nameKo: "\uAC8C\uC774\uB791\uC5D0\uB974\uD53C\uC624\uB974",
+      shape: "fjord",
+      feature: "Steep rock walls enclose a narrow arm of the sea in western Norway. Waterfalls descend from the mountain sides into the fjord, one of the two fjord areas recognized in the West Norwegian Fjords World Heritage property.",
+      featureKo: "\uB178\uB974\uC6E8\uC774 \uC11C\uBD80\uC758 \uAC00\uD30C\uB978 \uC554\uBCBD \uC0AC\uC774\uB85C \uC881\uACE0 \uAE34 \uBC14\uB2F7\uAE38\uC774 \uB4E4\uC5B4\uC635\uB2C8\uB2E4. \uC0B0\uBE44\uD0C8\uC758 \uD3ED\uD3EC\uAC00 \uD53C\uC624\uB974\uB85C \uD758\uB7EC\uB4E4\uBA70, \uB178\uB974\uC6E8\uC774 \uC11C\uBD80 \uD53C\uC624\uB974 \uC138\uACC4\uC720\uC0B0\uC744 \uC774\uB8E8\uB294 \uB450 \uC9C0\uC5ED \uC911 \uD558\uB098\uC785\uB2C8\uB2E4.",
+      seed: 203,
+      color: "#759eaf"
+    },
+    surface: "sea"
+  },
+  {
+    record: {
+      id: "rockislands",
+      name: "Rock Islands Southern Lagoon",
+      country: "Palau",
+      code: "PLW",
+      tier: "rare",
+      lat: 7.2,
+      lon: 134.35,
+      source: "https://whc.unesco.org/en/list/1386/",
+      region: "Southern Lagoon",
+      description: "Green limestone islets rise from turquoise lagoons in Palau. Their undercut, mushroom-like profiles sit among coral reefs, while the wider Rock Islands landscape includes marine lakes and traces of former island settlements.",
+      descriptionSourceName: "UNESCO World Heritage Centre",
+      descriptionSource: "https://whc.unesco.org/en/list/1386/"
+    },
+    korean: {
+      name: "\uD314\uB77C\uC6B0 \uB85D\uC544\uC77C\uB79C\uB4DC",
+      country: "\uD314\uB77C\uC6B0",
+      region: "\uB0A8\uBD80 \uC11D\uD638",
+      description: "\uD314\uB77C\uC6B0\uC758 \uCCAD\uB85D\uBE5B \uC11D\uD638 \uC704\uB85C \uCD08\uB85D\uBE5B \uC11D\uD68C\uC554 \uC12C\uB4E4\uC774 \uC19F\uC544 \uC788\uC2B5\uB2C8\uB2E4. \uC544\uB7AB\uBD80\uBD84\uC774 \uAE4E\uC778 \uBC84\uC12F \uBAA8\uC591 \uC12C\uACFC \uC0B0\uD638\uCD08\uAC00 \uC5B4\uC6B0\uB7EC\uC9C0\uBA70, \uC8FC\uBCC0\uC5D0\uB294 \uD574\uC591 \uD638\uC218\uC640 \uC61B \uC12C \uACF5\uB3D9\uCCB4\uC758 \uD754\uC801\uB3C4 \uB0A8\uC544 \uC788\uC2B5\uB2C8\uB2E4.",
+      descriptionSourceName: "\uC720\uB124\uC2A4\uCF54 \uC138\uACC4\uC720\uC0B0\uC13C\uD130"
+    },
+    visual: {
+      id: "rockislands",
+      name: "Rock Islands Southern Lagoon",
+      nameKo: "\uD314\uB77C\uC6B0 \uB85D\uC544\uC77C\uB79C\uB4DC",
+      shape: "island",
+      feature: "Green limestone islets rise from turquoise lagoons in Palau. Their undercut, mushroom-like profiles sit among coral reefs, while the wider Rock Islands landscape includes marine lakes and traces of former island settlements.",
+      featureKo: "\uD314\uB77C\uC6B0\uC758 \uCCAD\uB85D\uBE5B \uC11D\uD638 \uC704\uB85C \uCD08\uB85D\uBE5B \uC11D\uD68C\uC554 \uC12C\uB4E4\uC774 \uC19F\uC544 \uC788\uC2B5\uB2C8\uB2E4. \uC544\uB7AB\uBD80\uBD84\uC774 \uAE4E\uC778 \uBC84\uC12F \uBAA8\uC591 \uC12C\uACFC \uC0B0\uD638\uCD08\uAC00 \uC5B4\uC6B0\uB7EC\uC9C0\uBA70, \uC8FC\uBCC0\uC5D0\uB294 \uD574\uC591 \uD638\uC218\uC640 \uC61B \uC12C \uACF5\uB3D9\uCCB4\uC758 \uD754\uC801\uB3C4 \uB0A8\uC544 \uC788\uC2B5\uB2C8\uB2E4.",
+      seed: 204,
+      color: "#68b6a2"
+    },
+    surface: "sea"
+  },
+  {
+    record: {
+      id: "liriver",
+      name: "Li River Karst",
+      country: "China",
+      code: "CHN",
+      tier: "rare",
+      lat: 25.0022,
+      lon: 110.425,
+      source: "https://whc.unesco.org/en/list/1248/",
+      region: "Guilin",
+      description: "Towering limestone peaks line the Li River around Guilin. The Lijiang karst component of South China Karst preserves a landscape of steep green hills and river corridors, represented here by a small riverside scene.",
+      descriptionSourceName: "UNESCO World Heritage Centre",
+      descriptionSource: "https://whc.unesco.org/en/list/1248/"
+    },
+    korean: {
+      name: "\uB9AC\uAC15 \uCE74\uB974\uC2A4\uD2B8",
+      country: "\uC911\uAD6D",
+      region: "\uAD6C\uC774\uB9B0",
+      description: "\uAD6C\uC774\uB9B0\uC758 \uB9AC\uAC15\uC744 \uB530\uB77C \uAC00\uD30C\uB978 \uC11D\uD68C\uC554 \uBD09\uC6B0\uB9AC\uAC00 \uC774\uC5B4\uC9D1\uB2C8\uB2E4. \uC911\uAD6D \uB0A8\uBD80 \uCE74\uB974\uC2A4\uD2B8 \uC720\uC0B0\uC758 \uB9AC\uC7A5 \uAD6C\uC5ED\uC5D0 \uC18D\uD55C \uC0B0\uBD09\uC6B0\uB9AC\uC640 \uAC15\uBCC0 \uD48D\uACBD\uC744 \uC791\uC740 \uBAA8\uD615\uC73C\uB85C \uD45C\uD604\uD588\uC2B5\uB2C8\uB2E4.",
+      descriptionSourceName: "\uC720\uB124\uC2A4\uCF54 \uC138\uACC4\uC720\uC0B0\uC13C\uD130"
+    },
+    visual: {
+      id: "liriver",
+      name: "Li River Karst",
+      nameKo: "\uB9AC\uAC15 \uCE74\uB974\uC2A4\uD2B8",
+      shape: "coast",
+      feature: "Towering limestone peaks line the Li River around Guilin. The Lijiang karst component of South China Karst preserves a landscape of steep green hills and river corridors, represented here by a small riverside scene.",
+      featureKo: "\uAD6C\uC774\uB9B0\uC758 \uB9AC\uAC15\uC744 \uB530\uB77C \uAC00\uD30C\uB978 \uC11D\uD68C\uC554 \uBD09\uC6B0\uB9AC\uAC00 \uC774\uC5B4\uC9D1\uB2C8\uB2E4. \uC911\uAD6D \uB0A8\uBD80 \uCE74\uB974\uC2A4\uD2B8 \uC720\uC0B0\uC758 \uB9AC\uC7A5 \uAD6C\uC5ED\uC5D0 \uC18D\uD55C \uC0B0\uBD09\uC6B0\uB9AC\uC640 \uAC15\uBCC0 \uD48D\uACBD\uC744 \uC791\uC740 \uBAA8\uD615\uC73C\uB85C \uD45C\uD604\uD588\uC2B5\uB2C8\uB2E4.",
+      seed: 205,
+      color: "#77aaa0"
+    },
+    surface: "river"
+  },
+  {
+    record: {
+      id: "middlerhine",
+      name: "Upper Middle Rhine Valley",
+      country: "Germany",
+      code: "DEU",
+      tier: "common",
+      lat: 50.173,
+      lon: 7.694,
+      source: "https://whc.unesco.org/en/list/1066/",
+      region: "Middle Rhine",
+      description: "Castles, vineyard slopes and historic towns follow the Middle Rhine in Germany. The World Heritage cultural landscape records centuries of settlement and travel along the river; the miniature combines a river bend and a hillside castle.",
+      descriptionSourceName: "UNESCO World Heritage Centre",
+      descriptionSource: "https://whc.unesco.org/en/list/1066/"
+    },
+    korean: {
+      name: "\uB77C\uC778\uAC15 \uC911\uC0C1\uB958 \uACC4\uACE1",
+      country: "\uB3C5\uC77C",
+      region: "\uB77C\uC778\uAC15 \uC911\uB958",
+      description: "\uB3C5\uC77C \uB77C\uC778\uAC15\uC744 \uB530\uB77C \uACE0\uC131\uACFC \uD3EC\uB3C4\uBC2D, \uC624\uB798\uB41C \uB9C8\uC744\uC774 \uC774\uC5B4\uC9D1\uB2C8\uB2E4. \uC218\uBC31 \uB144 \uB3D9\uC548 \uAC15\uACFC \uD568\uAED8 \uC0B4\uC544\uC628 \uBB38\uD654\uACBD\uAD00\uC744 \uAD7D\uC774\uCE58\uB294 \uBB3C\uAE38\uACFC \uC5B8\uB355 \uC704 \uC131\uC73C\uB85C \uD45C\uD604\uD588\uC2B5\uB2C8\uB2E4.",
+      descriptionSourceName: "\uC720\uB124\uC2A4\uCF54 \uC138\uACC4\uC720\uC0B0\uC13C\uD130"
+    },
+    visual: {
+      id: "middlerhine",
+      name: "Upper Middle Rhine Valley",
+      nameKo: "\uB77C\uC778\uAC15 \uC911\uC0C1\uB958 \uACC4\uACE1",
+      shape: "castle",
+      feature: "Castles, vineyard slopes and historic towns follow the Middle Rhine in Germany. The World Heritage cultural landscape records centuries of settlement and travel along the river; the miniature combines a river bend and a hillside castle.",
+      featureKo: "\uB3C5\uC77C \uB77C\uC778\uAC15\uC744 \uB530\uB77C \uACE0\uC131\uACFC \uD3EC\uB3C4\uBC2D, \uC624\uB798\uB41C \uB9C8\uC744\uC774 \uC774\uC5B4\uC9D1\uB2C8\uB2E4. \uC218\uBC31 \uB144 \uB3D9\uC548 \uAC15\uACFC \uD568\uAED8 \uC0B4\uC544\uC628 \uBB38\uD654\uACBD\uAD00\uC744 \uAD7D\uC774\uCE58\uB294 \uBB3C\uAE38\uACFC \uC5B8\uB355 \uC704 \uC131\uC73C\uB85C \uD45C\uD604\uD588\uC2B5\uB2C8\uB2E4.",
+      seed: 206,
+      color: "#9baf86"
+    },
+    surface: "river"
+  }
+];
+
+// plugins/orcatopia/src/catalog-600.json
+var catalog_600_default = [
+  {
+    id: "jam",
+    placement: "land",
+    heights: [
+      0,
+      18,
+      99,
+      15,
+      0
+    ],
+    detail: "brick"
+  },
+  {
+    id: "bamiyan",
+    placement: "land",
+    heights: [
+      73,
+      91,
+      85,
+      62,
+      77
+    ],
+    detail: "niches"
+  },
+  {
+    id: "butrint",
+    placement: "land",
+    heights: [
+      24,
+      39,
+      52,
+      35,
+      19
+    ],
+    detail: "theatre"
+  },
+  {
+    id: "berat",
+    placement: "land",
+    heights: [
+      42,
+      58,
+      70,
+      55,
+      35
+    ],
+    detail: "windows"
+  },
+  {
+    id: "haghpat",
+    placement: "land",
+    heights: [
+      25,
+      52,
+      79,
+      48,
+      30
+    ],
+    detail: "cross"
+  },
+  {
+    id: "geghard",
+    placement: "land",
+    heights: [
+      64,
+      79,
+      96,
+      74,
+      54
+    ],
+    detail: "niches"
+  },
+  {
+    id: "zvartnots",
+    placement: "land",
+    heights: [
+      18,
+      35,
+      63,
+      38,
+      21
+    ],
+    detail: "columns"
+  },
+  {
+    id: "bakuwalled",
+    placement: "land",
+    heights: [
+      44,
+      61,
+      82,
+      53,
+      36
+    ],
+    detail: "bastions"
+  },
+  {
+    id: "gobustan",
+    placement: "land",
+    heights: [
+      47,
+      59,
+      40,
+      64,
+      32
+    ],
+    detail: "engravings"
+  },
+  {
+    id: "sheki",
+    placement: "land",
+    heights: [
+      31,
+      47,
+      68,
+      49,
+      28
+    ],
+    detail: "lattice"
+  },
+  {
+    id: "visegrad",
+    placement: "river",
+    heights: [
+      26,
+      33,
+      39,
+      33,
+      26
+    ],
+    detail: "arches"
+  },
+  {
+    id: "vjetrenica",
+    placement: "land",
+    heights: [
+      61,
+      82,
+      87,
+      72,
+      44
+    ],
+    detail: "cave"
+  },
+  {
+    id: "boyana",
+    placement: "land",
+    heights: [
+      29,
+      42,
+      58,
+      39,
+      24
+    ],
+    detail: "fresco"
+  },
+  {
+    id: "madara",
+    placement: "land",
+    heights: [
+      68,
+      87,
+      99,
+      85,
+      62
+    ],
+    detail: "horse"
+  },
+  {
+    id: "kazanlak",
+    placement: "land",
+    heights: [
+      18,
+      30,
+      53,
+      32,
+      19
+    ],
+    detail: "fresco"
+  },
+  {
+    id: "ivanovo",
+    placement: "land",
+    heights: [
+      54,
+      82,
+      91,
+      76,
+      55
+    ],
+    detail: "niches"
+  },
+  {
+    id: "nessebar",
+    placement: "coastal",
+    heights: [
+      28,
+      48,
+      60,
+      41,
+      24
+    ],
+    detail: "seabird"
+  },
+  {
+    id: "srebarna",
+    placement: "river",
+    heights: [
+      17,
+      23,
+      31,
+      20,
+      14
+    ],
+    detail: "waterbirds"
+  },
+  {
+    id: "pirin",
+    placement: "land",
+    heights: [
+      55,
+      80,
+      98,
+      77,
+      48
+    ],
+    detail: "snow"
+  },
+  {
+    id: "qalabahrain",
+    placement: "coastal",
+    heights: [
+      26,
+      45,
+      55,
+      42,
+      27
+    ],
+    detail: "bastions"
+  },
+  {
+    id: "dilmunmounds",
+    placement: "land",
+    heights: [
+      24,
+      35,
+      45,
+      31,
+      22
+    ],
+    detail: "mounds"
+  },
+  {
+    id: "mir",
+    placement: "land",
+    heights: [
+      72,
+      51,
+      38,
+      54,
+      78
+    ],
+    detail: "spires"
+  },
+  {
+    id: "nesvizh",
+    placement: "land",
+    heights: [
+      34,
+      49,
+      66,
+      48,
+      33
+    ],
+    detail: "garden"
+  },
+  {
+    id: "paphos",
+    placement: "land",
+    heights: [
+      18,
+      32,
+      44,
+      28,
+      20
+    ],
+    detail: "mosaic"
+  },
+  {
+    id: "troodos",
+    placement: "land",
+    heights: [
+      27,
+      43,
+      68,
+      41,
+      25
+    ],
+    detail: "fresco"
+  },
+  {
+    id: "choirokoitia",
+    placement: "land",
+    heights: [
+      25,
+      39,
+      46,
+      36,
+      22
+    ],
+    detail: "roundhouses"
+  },
+  {
+    id: "ceskykrumlov",
+    placement: "land",
+    heights: [
+      44,
+      67,
+      91,
+      60,
+      36
+    ],
+    detail: "spires"
+  },
+  {
+    id: "telc",
+    placement: "land",
+    heights: [
+      47,
+      54,
+      66,
+      50,
+      41
+    ],
+    detail: "arcade"
+  },
+  {
+    id: "zelenahora",
+    placement: "land",
+    heights: [
+      32,
+      57,
+      87,
+      59,
+      34
+    ],
+    detail: "star"
+  },
+  {
+    id: "kutnahora",
+    placement: "land",
+    heights: [
+      39,
+      71,
+      94,
+      68,
+      37
+    ],
+    detail: "spires"
+  },
+  {
+    id: "lednice",
+    placement: "land",
+    heights: [
+      42,
+      63,
+      83,
+      66,
+      44
+    ],
+    detail: "garden"
+  },
+  {
+    id: "olomouc",
+    placement: "land",
+    heights: [
+      0,
+      24,
+      96,
+      21,
+      0
+    ],
+    detail: "sculpture"
+  },
+  {
+    id: "kromeriz",
+    placement: "land",
+    heights: [
+      19,
+      37,
+      58,
+      35,
+      21
+    ],
+    detail: "garden"
+  },
+  {
+    id: "litomysl",
+    placement: "land",
+    heights: [
+      37,
+      48,
+      60,
+      46,
+      34
+    ],
+    detail: "sgraffito"
+  },
+  {
+    id: "mtskheta",
+    placement: "land",
+    heights: [
+      33,
+      51,
+      76,
+      49,
+      31
+    ],
+    detail: "cross"
+  },
+  {
+    id: "svaneti",
+    placement: "land",
+    heights: [
+      73,
+      51,
+      85,
+      62,
+      94
+    ],
+    detail: "towers"
+  },
+  {
+    id: "gelati",
+    placement: "land",
+    heights: [
+      27,
+      46,
+      72,
+      43,
+      28
+    ],
+    detail: "mosaic"
+  },
+  {
+    id: "colchic",
+    placement: "river",
+    heights: [
+      44,
+      62,
+      79,
+      58,
+      38
+    ],
+    detail: "forestwater"
+  },
+  {
+    id: "split",
+    placement: "land",
+    heights: [
+      34,
+      48,
+      71,
+      46,
+      29
+    ],
+    detail: "arcade"
+  },
+  {
+    id: "plitvice",
+    placement: "river",
+    heights: [
+      28,
+      43,
+      62,
+      46,
+      26
+    ],
+    detail: "cascade"
+  },
+  {
+    id: "porec",
+    placement: "land",
+    heights: [
+      27,
+      46,
+      64,
+      43,
+      25
+    ],
+    detail: "mosaic"
+  },
+  {
+    id: "trogir",
+    placement: "coastal",
+    heights: [
+      37,
+      58,
+      78,
+      52,
+      30
+    ],
+    detail: "seabird"
+  },
+  {
+    id: "sibenik",
+    placement: "land",
+    heights: [
+      30,
+      53,
+      84,
+      52,
+      28
+    ],
+    detail: "dome"
+  },
+  {
+    id: "starigrad",
+    placement: "land",
+    heights: [
+      23,
+      35,
+      49,
+      36,
+      21
+    ],
+    detail: "fields"
+  },
+  {
+    id: "holloko",
+    placement: "land",
+    heights: [
+      32,
+      45,
+      59,
+      43,
+      27
+    ],
+    detail: "timber"
+  },
+  {
+    id: "hortobagy",
+    placement: "land",
+    heights: [
+      13,
+      20,
+      26,
+      18,
+      11
+    ],
+    detail: "herd"
+  },
+  {
+    id: "pannonhalma",
+    placement: "land",
+    heights: [
+      38,
+      56,
+      82,
+      59,
+      35
+    ],
+    detail: "cross"
+  },
+  {
+    id: "tokaj",
+    placement: "land",
+    heights: [
+      20,
+      37,
+      54,
+      36,
+      19
+    ],
+    detail: "vineyard"
+  },
+  {
+    id: "sulaimantoo",
+    placement: "land",
+    heights: [
+      38,
+      60,
+      83,
+      57,
+      33
+    ],
+    detail: "cairns"
+  },
+  {
+    id: "yasawi",
+    placement: "land",
+    heights: [
+      25,
+      55,
+      86,
+      57,
+      28
+    ],
+    detail: "blue"
+  },
+  {
+    id: "tanbaly",
+    placement: "land",
+    heights: [
+      38,
+      56,
+      69,
+      49,
+      28
+    ],
+    detail: "engravings"
+  },
+  {
+    id: "saryarka",
+    placement: "river",
+    heights: [
+      16,
+      27,
+      39,
+      23,
+      15
+    ],
+    detail: "waterbirds"
+  },
+  {
+    id: "vilnius",
+    placement: "land",
+    heights: [
+      47,
+      64,
+      83,
+      57,
+      34
+    ],
+    detail: "spires"
+  },
+  {
+    id: "kernave",
+    placement: "land",
+    heights: [
+      25,
+      44,
+      61,
+      49,
+      30
+    ],
+    detail: "mounds"
+  },
+  {
+    id: "kuldiga",
+    placement: "land",
+    heights: [
+      38,
+      49,
+      64,
+      46,
+      33
+    ],
+    detail: "timber"
+  },
+  {
+    id: "durmitor",
+    placement: "land",
+    heights: [
+      53,
+      77,
+      96,
+      71,
+      45
+    ],
+    detail: "snow"
+  },
+  {
+    id: "kotor",
+    placement: "coastal",
+    heights: [
+      65,
+      87,
+      96,
+      75,
+      53
+    ],
+    detail: "seabird"
+  },
+  {
+    id: "orkhon",
+    placement: "land",
+    heights: [
+      19,
+      34,
+      49,
+      29,
+      17
+    ],
+    detail: "fields"
+  },
+  {
+    id: "burkhankhaldun",
+    placement: "land",
+    heights: [
+      43,
+      63,
+      90,
+      66,
+      41
+    ],
+    detail: "cairns"
+  },
+  {
+    id: "deerstones",
+    placement: "land",
+    heights: [
+      42,
+      60,
+      79,
+      56,
+      35
+    ],
+    detail: "deer"
+  },
+  {
+    id: "sagarmatha",
+    placement: "land",
+    heights: [
+      60,
+      85,
+      108,
+      79,
+      51
+    ],
+    detail: "snow"
+  },
+  {
+    id: "chitwan",
+    placement: "land",
+    heights: [
+      40,
+      58,
+      72,
+      61,
+      43
+    ],
+    detail: "rhino"
+  },
+  {
+    id: "lumbini",
+    placement: "land",
+    heights: [
+      23,
+      38,
+      62,
+      41,
+      22
+    ],
+    detail: "pillar"
+  },
+  {
+    id: "bahla",
+    placement: "land",
+    heights: [
+      53,
+      37,
+      69,
+      42,
+      58
+    ],
+    detail: "bastions"
+  },
+  {
+    id: "bat",
+    placement: "land",
+    heights: [
+      27,
+      42,
+      51,
+      38,
+      24
+    ],
+    detail: "beehive"
+  },
+  {
+    id: "frankincense",
+    placement: "land",
+    heights: [
+      19,
+      34,
+      50,
+      37,
+      20
+    ],
+    detail: "palm"
+  },
+  {
+    id: "aflaj",
+    placement: "river",
+    heights: [
+      22,
+      38,
+      48,
+      33,
+      18
+    ],
+    detail: "channels"
+  },
+  {
+    id: "moenjodaro",
+    placement: "land",
+    heights: [
+      21,
+      37,
+      57,
+      32,
+      16
+    ],
+    detail: "brick"
+  },
+  {
+    id: "taxila",
+    placement: "land",
+    heights: [
+      24,
+      43,
+      59,
+      38,
+      21
+    ],
+    detail: "stupa"
+  },
+  {
+    id: "takhtibahi",
+    placement: "land",
+    heights: [
+      31,
+      47,
+      63,
+      42,
+      26
+    ],
+    detail: "niches"
+  },
+  {
+    id: "rohtas",
+    placement: "land",
+    heights: [
+      56,
+      42,
+      74,
+      47,
+      61
+    ],
+    detail: "bastions"
+  },
+  {
+    id: "krakow",
+    placement: "land",
+    heights: [
+      39,
+      61,
+      84,
+      57,
+      32
+    ],
+    detail: "arcade"
+  },
+  {
+    id: "warsaw",
+    placement: "land",
+    heights: [
+      46,
+      56,
+      74,
+      51,
+      39
+    ],
+    detail: "windows"
+  },
+  {
+    id: "wieliczka",
+    placement: "land",
+    heights: [
+      50,
+      73,
+      92,
+      68,
+      41
+    ],
+    detail: "salt"
+  },
+  {
+    id: "zamosc",
+    placement: "land",
+    heights: [
+      40,
+      53,
+      72,
+      54,
+      36
+    ],
+    detail: "arcade"
+  },
+  {
+    id: "torun",
+    placement: "land",
+    heights: [
+      45,
+      64,
+      86,
+      58,
+      34
+    ],
+    detail: "brick"
+  },
+  {
+    id: "malbork",
+    placement: "land",
+    heights: [
+      61,
+      47,
+      91,
+      52,
+      72
+    ],
+    detail: "brick"
+  },
+  {
+    id: "centennialhall",
+    placement: "land",
+    heights: [
+      25,
+      48,
+      77,
+      49,
+      24
+    ],
+    detail: "ribs"
+  },
+  {
+    id: "danubedelta",
+    placement: "river",
+    heights: [
+      20,
+      31,
+      42,
+      28,
+      17
+    ],
+    detail: "waterbirds"
+  },
+  {
+    id: "hurezi",
+    placement: "land",
+    heights: [
+      30,
+      47,
+      70,
+      45,
+      28
+    ],
+    detail: "arcade"
+  },
+  {
+    id: "moldavia",
+    placement: "land",
+    heights: [
+      33,
+      48,
+      72,
+      44,
+      27
+    ],
+    detail: "fresco"
+  },
+  {
+    id: "sighisoara",
+    placement: "land",
+    heights: [
+      49,
+      71,
+      94,
+      63,
+      40
+    ],
+    detail: "clock"
+  },
+  {
+    id: "maramures",
+    placement: "land",
+    heights: [
+      28,
+      47,
+      102,
+      43,
+      25
+    ],
+    detail: "timber"
+  },
+  {
+    id: "studenica",
+    placement: "land",
+    heights: [
+      29,
+      49,
+      75,
+      46,
+      26
+    ],
+    detail: "marble"
+  },
+  {
+    id: "gamzigrad",
+    placement: "land",
+    heights: [
+      35,
+      51,
+      66,
+      47,
+      30
+    ],
+    detail: "mosaic"
+  },
+  {
+    id: "skocjan",
+    placement: "river",
+    heights: [
+      56,
+      81,
+      95,
+      74,
+      48
+    ],
+    detail: "caveriver"
+  },
+  {
+    id: "spis",
+    placement: "land",
+    heights: [
+      68,
+      46,
+      84,
+      58,
+      39
+    ],
+    detail: "bastions"
+  },
+  {
+    id: "vlkolinec",
+    placement: "land",
+    heights: [
+      33,
+      44,
+      57,
+      41,
+      29
+    ],
+    detail: "timber"
+  },
+  {
+    id: "bardejov",
+    placement: "land",
+    heights: [
+      43,
+      56,
+      76,
+      53,
+      37
+    ],
+    detail: "windows"
+  },
+  {
+    id: "sarazm",
+    placement: "land",
+    heights: [
+      17,
+      28,
+      43,
+      31,
+      21
+    ],
+    detail: "brick"
+  },
+  {
+    id: "pamirs",
+    placement: "land",
+    heights: [
+      58,
+      88,
+      103,
+      82,
+      49
+    ],
+    detail: "snow"
+  },
+  {
+    id: "merv",
+    placement: "land",
+    heights: [
+      20,
+      39,
+      65,
+      35,
+      18
+    ],
+    detail: "brick"
+  },
+  {
+    id: "kunyaurgench",
+    placement: "land",
+    heights: [
+      25,
+      47,
+      101,
+      52,
+      29
+    ],
+    detail: "brick"
+  },
+  {
+    id: "nisa",
+    placement: "land",
+    heights: [
+      26,
+      40,
+      57,
+      37,
+      23
+    ],
+    detail: "bastions"
+  },
+  {
+    id: "kyivsophia",
+    placement: "land",
+    heights: [
+      36,
+      63,
+      91,
+      61,
+      33
+    ],
+    detail: "gold"
+  },
+  {
+    id: "lviv",
+    placement: "land",
+    heights: [
+      46,
+      59,
+      81,
+      54,
+      38
+    ],
+    detail: "windows"
+  },
+  {
+    id: "itchankala",
+    placement: "land",
+    heights: [
+      43,
+      62,
+      84,
+      51,
+      38
+    ],
+    detail: "blue"
+  },
+  {
+    id: "bukhara",
+    placement: "land",
+    heights: [
+      34,
+      57,
+      93,
+      62,
+      32
+    ],
+    detail: "blue"
+  },
+  {
+    id: "shakhrisyabz",
+    placement: "land",
+    heights: [
+      28,
+      88,
+      52,
+      92,
+      31
+    ],
+    detail: "blue"
+  },
+  {
+    id: "abomey",
+    placement: "land",
+    heights: [
+      31,
+      42,
+      54,
+      38,
+      27
+    ],
+    detail: "earth"
+  },
+  {
+    id: "loropeni",
+    placement: "land",
+    heights: [
+      51,
+      62,
+      58,
+      66,
+      46
+    ],
+    detail: "bastions"
+  },
+  {
+    id: "tiebele",
+    placement: "land",
+    heights: [
+      24,
+      37,
+      48,
+      34,
+      25
+    ],
+    detail: "paintedearth"
+  },
+  {
+    id: "virunga",
+    placement: "land",
+    heights: [
+      44,
+      75,
+      99,
+      70,
+      40
+    ],
+    detail: "gorilla"
+  },
+  {
+    id: "okapi",
+    placement: "land",
+    heights: [
+      49,
+      68,
+      82,
+      62,
+      45
+    ],
+    detail: "okapi"
+  },
+  {
+    id: "odzala",
+    placement: "land",
+    heights: [
+      45,
+      64,
+      79,
+      58,
+      41
+    ],
+    detail: "gorilla"
+  },
+  {
+    id: "taiforest",
+    placement: "land",
+    heights: [
+      48,
+      69,
+      86,
+      65,
+      43
+    ],
+    detail: "forest"
+  },
+  {
+    id: "grandbassam",
+    placement: "coastal",
+    heights: [
+      29,
+      45,
+      60,
+      43,
+      26
+    ],
+    detail: "seabird"
+  },
+  {
+    id: "dja",
+    placement: "land",
+    heights: [
+      51,
+      71,
+      89,
+      67,
+      47
+    ],
+    detail: "monkey"
+  },
+  {
+    id: "benihammad",
+    placement: "land",
+    heights: [
+      45,
+      38,
+      87,
+      42,
+      51
+    ],
+    detail: "brick"
+  },
+  {
+    id: "tassili",
+    placement: "land",
+    heights: [
+      57,
+      77,
+      62,
+      91,
+      44
+    ],
+    detail: "engravings"
+  },
+  {
+    id: "mzab",
+    placement: "land",
+    heights: [
+      35,
+      54,
+      94,
+      49,
+      30
+    ],
+    detail: "earth"
+  },
+  {
+    id: "djemila",
+    placement: "land",
+    heights: [
+      21,
+      38,
+      56,
+      33,
+      19
+    ],
+    detail: "columns"
+  },
+  {
+    id: "tipasa",
+    placement: "coastal",
+    heights: [
+      23,
+      41,
+      58,
+      36,
+      18
+    ],
+    detail: "seabird"
+  },
+  {
+    id: "asmara",
+    placement: "land",
+    heights: [
+      29,
+      48,
+      67,
+      44,
+      26
+    ],
+    detail: "windows"
+  },
+  {
+    id: "fasilghebbi",
+    placement: "land",
+    heights: [
+      66,
+      49,
+      80,
+      55,
+      69
+    ],
+    detail: "bastions"
+  },
+  {
+    id: "harar",
+    placement: "land",
+    heights: [
+      34,
+      52,
+      69,
+      47,
+      29
+    ],
+    detail: "earth"
+  },
+  {
+    id: "balemountains",
+    placement: "land",
+    heights: [
+      48,
+      71,
+      93,
+      68,
+      43
+    ],
+    detail: "moorland"
+  },
+  {
+    id: "asante",
+    placement: "land",
+    heights: [
+      27,
+      39,
+      53,
+      36,
+      24
+    ],
+    detail: "paintedearth"
+  },
+  {
+    id: "mountkenya",
+    placement: "land",
+    heights: [
+      51,
+      83,
+      105,
+      74,
+      46
+    ],
+    detail: "snow"
+  },
+  {
+    id: "turkana",
+    placement: "river",
+    heights: [
+      23,
+      37,
+      55,
+      33,
+      20
+    ],
+    detail: "waterbirds"
+  },
+  {
+    id: "lamu",
+    placement: "coastal",
+    heights: [
+      33,
+      46,
+      62,
+      41,
+      28
+    ],
+    detail: "seabird"
+  },
+  {
+    id: "fortjesus",
+    placement: "coastal",
+    heights: [
+      43,
+      61,
+      50,
+      67,
+      39
+    ],
+    detail: "bastions"
+  },
+  {
+    id: "thimlich",
+    placement: "land",
+    heights: [
+      33,
+      42,
+      39,
+      47,
+      30
+    ],
+    detail: "drystone"
+  },
+  {
+    id: "ambohimanga",
+    placement: "land",
+    heights: [
+      31,
+      48,
+      64,
+      45,
+      27
+    ],
+    detail: "timber"
+  },
+  {
+    id: "atsinanana",
+    placement: "land",
+    heights: [
+      53,
+      73,
+      88,
+      66,
+      47
+    ],
+    detail: "forest"
+  },
+  {
+    id: "timbuktu",
+    placement: "land",
+    heights: [
+      29,
+      54,
+      87,
+      48,
+      27
+    ],
+    detail: "earth"
+  },
+  {
+    id: "bandiagara",
+    placement: "land",
+    heights: [
+      67,
+      88,
+      99,
+      79,
+      55
+    ],
+    detail: "granaries"
+  },
+  {
+    id: "askia",
+    placement: "land",
+    heights: [
+      20,
+      43,
+      80,
+      46,
+      24
+    ],
+    detail: "earth"
+  },
+  {
+    id: "bancarguin",
+    placement: "sea",
+    heights: [
+      15,
+      24,
+      35,
+      20,
+      12
+    ],
+    detail: "waterbirds"
+  },
+  {
+    id: "lemorne",
+    placement: "land",
+    heights: [
+      47,
+      76,
+      101,
+      72,
+      42
+    ],
+    detail: "quiet"
+  },
+  {
+    id: "lakemalawi",
+    placement: "river",
+    heights: [
+      20,
+      34,
+      51,
+      31,
+      18
+    ],
+    detail: "fish"
+  },
+  {
+    id: "mozambiqueisland",
+    placement: "coastal",
+    heights: [
+      26,
+      42,
+      56,
+      38,
+      23
+    ],
+    detail: "seabird"
+  },
+  {
+    id: "twyfelfontein",
+    placement: "land",
+    heights: [
+      38,
+      55,
+      71,
+      51,
+      29
+    ],
+    detail: "engravings"
+  },
+  {
+    id: "agadez",
+    placement: "land",
+    heights: [
+      19,
+      42,
+      103,
+      37,
+      24
+    ],
+    detail: "earth"
+  },
+  {
+    id: "osunosogbo",
+    placement: "land",
+    heights: [
+      48,
+      67,
+      83,
+      61,
+      43
+    ],
+    detail: "sculpture"
+  },
+  {
+    id: "aldabra",
+    placement: "sea",
+    heights: [
+      17,
+      31,
+      43,
+      29,
+      15
+    ],
+    detail: "turtle"
+  },
+  {
+    id: "valleedemai",
+    placement: "land",
+    heights: [
+      45,
+      65,
+      81,
+      60,
+      42
+    ],
+    detail: "palm"
+  },
+  {
+    id: "sanganeb",
+    placement: "sea",
+    heights: [
+      15,
+      28,
+      39,
+      24,
+      13
+    ],
+    detail: "fish"
+  },
+  {
+    id: "djoudj",
+    placement: "river",
+    heights: [
+      18,
+      26,
+      38,
+      24,
+      14
+    ],
+    detail: "waterbirds"
+  },
+  {
+    id: "saintlouis",
+    placement: "river",
+    heights: [
+      30,
+      43,
+      58,
+      39,
+      25
+    ],
+    detail: "boat"
+  },
+  {
+    id: "saloum",
+    placement: "river",
+    heights: [
+      25,
+      44,
+      59,
+      39,
+      21
+    ],
+    detail: "forestwater"
+  },
+  {
+    id: "ounianga",
+    placement: "river",
+    heights: [
+      27,
+      46,
+      61,
+      42,
+      24
+    ],
+    detail: "dunes"
+  },
+  {
+    id: "ennedi",
+    placement: "land",
+    heights: [
+      59,
+      81,
+      67,
+      95,
+      47
+    ],
+    detail: "archrock"
+  },
+  {
+    id: "ichkeul",
+    placement: "river",
+    heights: [
+      21,
+      34,
+      46,
+      29,
+      17
+    ],
+    detail: "waterbirds"
+  },
+  {
+    id: "kilwa",
+    placement: "coastal",
+    heights: [
+      25,
+      41,
+      57,
+      36,
+      22
+    ],
+    detail: "seabird"
+  },
+  {
+    id: "bwindi",
+    placement: "land",
+    heights: [
+      56,
+      75,
+      91,
+      69,
+      50
+    ],
+    detail: "gorilla"
+  },
+  {
+    id: "rwenzori",
+    placement: "land",
+    heights: [
+      57,
+      84,
+      104,
+      78,
+      48
+    ],
+    detail: "snow"
+  },
+  {
+    id: "capefloral",
+    placement: "land",
+    heights: [
+      24,
+      40,
+      56,
+      36,
+      21
+    ],
+    detail: "flowers"
+  },
+  {
+    id: "mapungubwe",
+    placement: "land",
+    heights: [
+      54,
+      73,
+      68,
+      82,
+      43
+    ],
+    detail: "quiet"
+  },
+  {
+    id: "manapools",
+    placement: "river",
+    heights: [
+      23,
+      37,
+      49,
+      33,
+      20
+    ],
+    detail: "herd"
+  },
+  {
+    id: "matobo",
+    placement: "land",
+    heights: [
+      48,
+      65,
+      83,
+      61,
+      36
+    ],
+    detail: "engravings"
+  },
+  {
+    id: "khami",
+    placement: "land",
+    heights: [
+      24,
+      39,
+      54,
+      35,
+      21
+    ],
+    detail: "drystone"
+  },
+  {
+    id: "antiguadockyard",
+    placement: "coastal",
+    heights: [
+      28,
+      41,
+      53,
+      37,
+      24
+    ],
+    detail: "sail"
+  },
+  {
+    id: "bridgetown",
+    placement: "coastal",
+    heights: [
+      34,
+      47,
+      61,
+      43,
+      29
+    ],
+    detail: "windows"
+  },
+  {
+    id: "potosi",
+    placement: "land",
+    heights: [
+      41,
+      63,
+      87,
+      58,
+      35
+    ],
+    detail: "mine"
+  },
+  {
+    id: "sucre",
+    placement: "land",
+    heights: [
+      39,
+      52,
+      73,
+      49,
+      32
+    ],
+    detail: "white"
+  },
+  {
+    id: "samaipata",
+    placement: "land",
+    heights: [
+      38,
+      58,
+      76,
+      53,
+      31
+    ],
+    detail: "engravings"
+  },
+  {
+    id: "noelkempff",
+    placement: "land",
+    heights: [
+      47,
+      68,
+      84,
+      63,
+      44
+    ],
+    detail: "forest"
+  },
+  {
+    id: "olinda",
+    placement: "land",
+    heights: [
+      42,
+      57,
+      76,
+      53,
+      34
+    ],
+    detail: "painted"
+  },
+  {
+    id: "congonhas",
+    placement: "land",
+    heights: [
+      38,
+      56,
+      81,
+      59,
+      35
+    ],
+    detail: "sculpture"
+  },
+  {
+    id: "pantanal",
+    placement: "river",
+    heights: [
+      21,
+      35,
+      47,
+      31,
+      19
+    ],
+    detail: "herd"
+  },
+  {
+    id: "fernandonoronha",
+    placement: "sea",
+    heights: [
+      29,
+      57,
+      78,
+      48,
+      23
+    ],
+    detail: "fish"
+  },
+  {
+    id: "lencois",
+    placement: "river",
+    heights: [
+      18,
+      35,
+      48,
+      31,
+      16
+    ],
+    detail: "dunes"
+  },
+  {
+    id: "pampulha",
+    placement: "land",
+    heights: [
+      22,
+      42,
+      63,
+      35,
+      19
+    ],
+    detail: "curves"
+  },
+  {
+    id: "lanseauxmeadows",
+    placement: "land",
+    heights: [
+      26,
+      38,
+      49,
+      35,
+      23
+    ],
+    detail: "turf"
+  },
+  {
+    id: "sgang",
+    placement: "coastal",
+    heights: [
+      48,
+      63,
+      85,
+      59,
+      38
+    ],
+    detail: "poles"
+  },
+  {
+    id: "woodbuffalo",
+    placement: "land",
+    heights: [
+      46,
+      62,
+      78,
+      56,
+      39
+    ],
+    detail: "bison"
+  },
+  {
+    id: "oldquebec",
+    placement: "land",
+    heights: [
+      54,
+      41,
+      79,
+      46,
+      62
+    ],
+    detail: "bastions"
+  },
+  {
+    id: "rideau",
+    placement: "river",
+    heights: [
+      21,
+      37,
+      52,
+      31,
+      18
+    ],
+    detail: "lock"
+  },
+  {
+    id: "joggins",
+    placement: "coastal",
+    heights: [
+      57,
+      71,
+      86,
+      64,
+      42
+    ],
+    detail: "fossils"
+  },
+  {
+    id: "humberstone",
+    placement: "land",
+    heights: [
+      31,
+      56,
+      91,
+      47,
+      24
+    ],
+    detail: "wheel"
+  },
+  {
+    id: "sewell",
+    placement: "land",
+    heights: [
+      43,
+      61,
+      78,
+      54,
+      36
+    ],
+    detail: "stairs"
+  },
+  {
+    id: "mompox",
+    placement: "river",
+    heights: [
+      31,
+      46,
+      63,
+      41,
+      27
+    ],
+    detail: "boat"
+  },
+  {
+    id: "sanagustin",
+    placement: "land",
+    heights: [
+      46,
+      65,
+      83,
+      59,
+      35
+    ],
+    detail: "sculpture"
+  },
+  {
+    id: "chiribiquete",
+    placement: "land",
+    heights: [
+      79,
+      95,
+      88,
+      102,
+      63
+    ],
+    detail: "tablemountain"
+  },
+  {
+    id: "cocosisland",
+    placement: "sea",
+    heights: [
+      28,
+      54,
+      73,
+      46,
+      24
+    ],
+    detail: "fish"
+  },
+  {
+    id: "diquis",
+    placement: "land",
+    heights: [
+      26,
+      41,
+      54,
+      36,
+      23
+    ],
+    detail: "spheres"
+  },
+  {
+    id: "havana",
+    placement: "coastal",
+    heights: [
+      41,
+      58,
+      82,
+      53,
+      32
+    ],
+    detail: "arcade"
+  },
+  {
+    id: "vinales",
+    placement: "land",
+    heights: [
+      49,
+      71,
+      91,
+      66,
+      40
+    ],
+    detail: "karst"
+  },
+  {
+    id: "sanpedroroca",
+    placement: "coastal",
+    heights: [
+      56,
+      41,
+      72,
+      48,
+      61
+    ],
+    detail: "bastions"
+  },
+  {
+    id: "mornetrois",
+    placement: "land",
+    heights: [
+      42,
+      68,
+      95,
+      61,
+      35
+    ],
+    detail: "steam"
+  },
+  {
+    id: "santodomingo",
+    placement: "land",
+    heights: [
+      36,
+      49,
+      68,
+      45,
+      30
+    ],
+    detail: "arcade"
+  },
+  {
+    id: "galapagos",
+    placement: "sea",
+    heights: [
+      27,
+      48,
+      76,
+      43,
+      21
+    ],
+    detail: "turtle"
+  },
+  {
+    id: "sangay",
+    placement: "land",
+    heights: [
+      41,
+      72,
+      101,
+      64,
+      34
+    ],
+    detail: "steam"
+  },
+  {
+    id: "antiguaguatemala",
+    placement: "land",
+    heights: [
+      40,
+      59,
+      79,
+      55,
+      32
+    ],
+    detail: "arcade"
+  },
+  {
+    id: "quirigua",
+    placement: "land",
+    heights: [
+      48,
+      71,
+      93,
+      65,
+      39
+    ],
+    detail: "engravings"
+  },
+  {
+    id: "rioplatano",
+    placement: "land",
+    heights: [
+      50,
+      68,
+      85,
+      63,
+      44
+    ],
+    detail: "forest"
+  },
+  {
+    id: "pitons",
+    placement: "coastal",
+    heights: [
+      17,
+      100,
+      31,
+      91,
+      19
+    ],
+    detail: "twin"
+  },
+  {
+    id: "eltajin",
+    placement: "land",
+    heights: [
+      24,
+      45,
+      81,
+      48,
+      22
+    ],
+    detail: "niches"
+  },
+  {
+    id: "paquime",
+    placement: "land",
+    heights: [
+      21,
+      39,
+      62,
+      34,
+      18
+    ],
+    detail: "earth"
+  },
+  {
+    id: "vizcaino",
+    placement: "sea",
+    heights: [
+      13,
+      22,
+      34,
+      20,
+      11
+    ],
+    detail: "whale"
+  },
+  {
+    id: "xochicalco",
+    placement: "land",
+    heights: [
+      26,
+      47,
+      79,
+      44,
+      23
+    ],
+    detail: "relief"
+  },
+  {
+    id: "monarch",
+    placement: "land",
+    heights: [
+      48,
+      67,
+      84,
+      61,
+      42
+    ],
+    detail: "butterflies"
+  },
+  {
+    id: "pinacate",
+    placement: "land",
+    heights: [
+      32,
+      55,
+      72,
+      47,
+      26
+    ],
+    detail: "crater"
+  },
+  {
+    id: "padretembleque",
+    placement: "river",
+    heights: [
+      32,
+      47,
+      59,
+      46,
+      30
+    ],
+    detail: "arches"
+  },
+  {
+    id: "coiba",
+    placement: "sea",
+    heights: [
+      29,
+      52,
+      71,
+      45,
+      22
+    ],
+    detail: "fish"
+  },
+  {
+    id: "chavin",
+    placement: "land",
+    heights: [
+      35,
+      53,
+      73,
+      48,
+      29
+    ],
+    detail: "relief"
+  },
+  {
+    id: "huascaran",
+    placement: "land",
+    heights: [
+      55,
+      82,
+      106,
+      79,
+      47
+    ],
+    detail: "snow"
+  },
+  {
+    id: "caral",
+    placement: "land",
+    heights: [
+      21,
+      43,
+      74,
+      39,
+      19
+    ],
+    detail: "platforms"
+  },
+  {
+    id: "chankillo",
+    placement: "land",
+    heights: [
+      38,
+      55,
+      70,
+      53,
+      34
+    ],
+    detail: "sun"
+  },
+  {
+    id: "paramaribo",
+    placement: "land",
+    heights: [
+      34,
+      48,
+      65,
+      42,
+      28
+    ],
+    detail: "timber"
+  },
+  {
+    id: "redwood",
+    placement: "land",
+    heights: [
+      65,
+      85,
+      107,
+      89,
+      59
+    ],
+    detail: "gianttrees"
+  },
+  {
+    id: "olympic",
+    placement: "land",
+    heights: [
+      55,
+      77,
+      98,
+      73,
+      47
+    ],
+    detail: "forest"
+  },
+  {
+    id: "cahokia",
+    placement: "land",
+    heights: [
+      19,
+      40,
+      67,
+      36,
+      17
+    ],
+    detail: "mounds"
+  },
+  {
+    id: "hawaiivolcanoes",
+    placement: "land",
+    heights: [
+      25,
+      48,
+      79,
+      43,
+      22
+    ],
+    detail: "lava"
+  },
+  {
+    id: "colonia",
+    placement: "coastal",
+    heights: [
+      30,
+      44,
+      59,
+      39,
+      26
+    ],
+    detail: "sail"
+  },
+  {
+    id: "canaima",
+    placement: "river",
+    heights: [
+      73,
+      98,
+      85,
+      103,
+      59
+    ],
+    detail: "waterfall"
+  },
+  {
+    id: "kakadu",
+    placement: "river",
+    heights: [
+      38,
+      58,
+      77,
+      53,
+      32
+    ],
+    detail: "waterbirds"
+  },
+  {
+    id: "uluru",
+    placement: "land",
+    heights: [
+      31,
+      68,
+      76,
+      65,
+      27
+    ],
+    detail: "monolith"
+  },
+  {
+    id: "sharkbay",
+    placement: "sea",
+    heights: [
+      12,
+      24,
+      36,
+      21,
+      10
+    ],
+    detail: "stromatolite"
+  },
+  {
+    id: "bluemountains",
+    placement: "land",
+    heights: [
+      63,
+      82,
+      91,
+      76,
+      49
+    ],
+    detail: "forest"
+  },
+  {
+    id: "purnululu",
+    placement: "land",
+    heights: [
+      45,
+      69,
+      88,
+      62,
+      38
+    ],
+    detail: "bands"
+  },
+  {
+    id: "ningaloo",
+    placement: "sea",
+    heights: [
+      16,
+      29,
+      42,
+      26,
+      14
+    ],
+    detail: "whaleshark"
+  },
+  {
+    id: "tongariro",
+    placement: "land",
+    heights: [
+      39,
+      69,
+      97,
+      63,
+      33
+    ],
+    detail: "steam"
+  },
+  {
+    id: "tewahipounamu",
+    placement: "coastal",
+    heights: [
+      59,
+      81,
+      96,
+      74,
+      46
+    ],
+    detail: "ice"
+  },
+  {
+    id: "levuka",
+    placement: "coastal",
+    heights: [
+      27,
+      41,
+      54,
+      36,
+      23
+    ],
+    detail: "timber"
+  },
+  {
+    id: "roimata",
+    placement: "coastal",
+    heights: [
+      24,
+      47,
+      68,
+      41,
+      20
+    ],
+    detail: "quiet"
+  },
+  {
+    id: "eastrennell",
+    placement: "sea",
+    heights: [
+      21,
+      38,
+      56,
+      34,
+      18
+    ],
+    detail: "lagoon"
+  },
+  {
+    id: "kuk",
+    placement: "land",
+    heights: [
+      17,
+      31,
+      46,
+      28,
+      15
+    ],
+    detail: "drainage"
+  },
+  {
+    id: "bagerhat",
+    placement: "land",
+    heights: [
+      26,
+      47,
+      68,
+      43,
+      24
+    ],
+    detail: "brick"
+  },
+  {
+    id: "paharpur",
+    placement: "land",
+    heights: [
+      25,
+      48,
+      86,
+      44,
+      22
+    ],
+    detail: "terracotta"
+  },
+  {
+    id: "preahvihear",
+    placement: "land",
+    heights: [
+      38,
+      59,
+      81,
+      54,
+      32
+    ],
+    detail: "stairs"
+  },
+  {
+    id: "kohker",
+    placement: "land",
+    heights: [
+      23,
+      44,
+      90,
+      46,
+      21
+    ],
+    detail: "steps"
+  },
+  {
+    id: "komodo",
+    placement: "sea",
+    heights: [
+      32,
+      59,
+      81,
+      51,
+      26
+    ],
+    detail: "dragon"
+  },
+  {
+    id: "prambanan",
+    placement: "land",
+    heights: [
+      46,
+      74,
+      104,
+      70,
+      40
+    ],
+    detail: "towers"
+  },
+  {
+    id: "balisubak",
+    placement: "river",
+    heights: [
+      23,
+      42,
+      61,
+      37,
+      20
+    ],
+    detail: "channels"
+  },
+  {
+    id: "kinabalu",
+    placement: "land",
+    heights: [
+      54,
+      84,
+      102,
+      76,
+      45
+    ],
+    detail: "granite"
+  },
+  {
+    id: "gunungmulu",
+    placement: "land",
+    heights: [
+      63,
+      89,
+      104,
+      78,
+      52
+    ],
+    detail: "cave"
+  },
+  {
+    id: "puertoprincesa",
+    placement: "river",
+    heights: [
+      52,
+      76,
+      92,
+      69,
+      43
+    ],
+    detail: "caveriver"
+  },
+  {
+    id: "tubbataha",
+    placement: "sea",
+    heights: [
+      14,
+      27,
+      41,
+      25,
+      12
+    ],
+    detail: "fish"
+  },
+  {
+    id: "cordilleraterraces",
+    placement: "river",
+    heights: [
+      29,
+      49,
+      72,
+      44,
+      25
+    ],
+    detail: "channels"
+  },
+  {
+    id: "hue",
+    placement: "land",
+    heights: [
+      34,
+      52,
+      77,
+      48,
+      30
+    ],
+    detail: "tiles"
+  },
+  {
+    id: "hoian",
+    placement: "land",
+    heights: [
+      35,
+      47,
+      61,
+      43,
+      29
+    ],
+    detail: "timber"
+  },
+  {
+    id: "trangan",
+    placement: "river",
+    heights: [
+      51,
+      79,
+      99,
+      72,
+      43
+    ],
+    detail: "karst"
+  },
+  {
+    id: "anuradhapura",
+    placement: "land",
+    heights: [
+      24,
+      46,
+      83,
+      43,
+      21
+    ],
+    detail: "bodhi"
+  },
+  {
+    id: "galle",
+    placement: "coastal",
+    heights: [
+      48,
+      36,
+      67,
+      41,
+      55
+    ],
+    detail: "bastions"
+  },
+  {
+    id: "dambulla",
+    placement: "land",
+    heights: [
+      55,
+      77,
+      89,
+      68,
+      45
+    ],
+    detail: "niches"
+  },
+  {
+    id: "gyeongju",
+    placement: "land",
+    heights: [
+      24,
+      41,
+      58,
+      37,
+      20
+    ],
+    detail: "mounds"
+  },
+  {
+    id: "hahoeyangdong",
+    placement: "land",
+    heights: [
+      32,
+      46,
+      63,
+      42,
+      27
+    ],
+    detail: "tiles"
+  },
+  {
+    id: "namhansanseong",
+    placement: "land",
+    heights: [
+      57,
+      41,
+      78,
+      47,
+      62
+    ],
+    detail: "bastions"
+  },
+  {
+    id: "seowon",
+    placement: "land",
+    heights: [
+      26,
+      39,
+      57,
+      36,
+      23
+    ],
+    detail: "tiles"
+  },
+  {
+    id: "qinmausoleum",
+    placement: "land",
+    heights: [
+      38,
+      57,
+      78,
+      53,
+      32
+    ],
+    detail: "army"
+  },
+  {
+    id: "pingyao",
+    placement: "land",
+    heights: [
+      51,
+      38,
+      74,
+      43,
+      57
+    ],
+    detail: "bastions"
+  },
+  {
+    id: "yungang",
+    placement: "land",
+    heights: [
+      64,
+      87,
+      101,
+      79,
+      52
+    ],
+    detail: "niches"
+  },
+  {
+    id: "westlake",
+    placement: "river",
+    heights: [
+      22,
+      39,
+      57,
+      34,
+      19
+    ],
+    detail: "causeway"
+  },
+  {
+    id: "haniterraces",
+    placement: "river",
+    heights: [
+      26,
+      47,
+      69,
+      42,
+      23
+    ],
+    detail: "channels"
+  },
+  {
+    id: "pattadakal",
+    placement: "land",
+    heights: [
+      39,
+      62,
+      88,
+      57,
+      33
+    ],
+    detail: "towers"
+  },
+  {
+    id: "shivajiterminus",
+    placement: "land",
+    heights: [
+      47,
+      69,
+      96,
+      65,
+      41
+    ],
+    detail: "clock"
+  },
+  {
+    id: "nalanda",
+    placement: "land",
+    heights: [
+      22,
+      40,
+      62,
+      36,
+      19
+    ],
+    detail: "brick"
+  },
+  {
+    id: "bam",
+    placement: "land",
+    heights: [
+      56,
+      42,
+      82,
+      49,
+      63
+    ],
+    detail: "earth"
+  },
+  {
+    id: "shushtar",
+    placement: "river",
+    heights: [
+      29,
+      46,
+      64,
+      41,
+      25
+    ],
+    detail: "wheel"
+  },
+  {
+    id: "gonbadeqabus",
+    placement: "land",
+    heights: [
+      0,
+      20,
+      105,
+      18,
+      0
+    ],
+    detail: "flutes"
+  },
+  {
+    id: "cappadocia",
+    placement: "land",
+    heights: [
+      42,
+      74,
+      96,
+      66,
+      35
+    ],
+    detail: "niches"
+  },
+  {
+    id: "nemrut",
+    placement: "land",
+    heights: [
+      44,
+      66,
+      89,
+      60,
+      37
+    ],
+    detail: "heads"
+  },
+  {
+    id: "pamukkale",
+    placement: "river",
+    heights: [
+      27,
+      49,
+      70,
+      44,
+      24
+    ],
+    detail: "whitewater"
+  },
+  {
+    id: "troy",
+    placement: "land",
+    heights: [
+      20,
+      38,
+      56,
+      32,
+      17
+    ],
+    detail: "brick"
+  },
+  {
+    id: "baalbek",
+    placement: "land",
+    heights: [
+      40,
+      65,
+      91,
+      61,
+      34
+    ],
+    detail: "columns"
+  },
+  {
+    id: "byblos",
+    placement: "coastal",
+    heights: [
+      23,
+      43,
+      61,
+      37,
+      20
+    ],
+    detail: "seabird"
+  },
+  {
+    id: "quseiramra",
+    placement: "land",
+    heights: [
+      22,
+      41,
+      61,
+      38,
+      19
+    ],
+    detail: "fresco"
+  },
+  {
+    id: "wadirum",
+    placement: "land",
+    heights: [
+      66,
+      91,
+      78,
+      102,
+      52
+    ],
+    detail: "archrock"
+  },
+  {
+    id: "atturaif",
+    placement: "land",
+    heights: [
+      33,
+      51,
+      73,
+      46,
+      27
+    ],
+    detail: "earth"
+  },
+  {
+    id: "alahsa",
+    placement: "land",
+    heights: [
+      24,
+      44,
+      62,
+      39,
+      21
+    ],
+    detail: "palm"
+  },
+  {
+    id: "alzubarah",
+    placement: "land",
+    heights: [
+      44,
+      32,
+      62,
+      38,
+      49
+    ],
+    detail: "bastions"
+  },
+  {
+    id: "alain",
+    placement: "land",
+    heights: [
+      25,
+      41,
+      58,
+      36,
+      22
+    ],
+    detail: "palm"
+  },
+  {
+    id: "shirakami",
+    placement: "land",
+    heights: [
+      50,
+      72,
+      88,
+      66,
+      45
+    ],
+    detail: "forest"
+  },
+  {
+    id: "ogasawara",
+    placement: "sea",
+    heights: [
+      25,
+      49,
+      70,
+      43,
+      21
+    ],
+    detail: "seabird"
+  },
+  {
+    id: "tomioka",
+    placement: "land",
+    heights: [
+      35,
+      48,
+      64,
+      43,
+      28
+    ],
+    detail: "silk"
+  },
+  {
+    id: "salzburg",
+    placement: "land",
+    heights: [
+      45,
+      66,
+      89,
+      60,
+      37
+    ],
+    detail: "dome"
+  },
+  {
+    id: "hallstatt",
+    placement: "river",
+    heights: [
+      58,
+      79,
+      94,
+      71,
+      44
+    ],
+    detail: "lakeside"
+  },
+  {
+    id: "berne",
+    placement: "land",
+    heights: [
+      42,
+      57,
+      78,
+      52,
+      34
+    ],
+    detail: "arcade"
+  },
+  {
+    id: "stgall",
+    placement: "land",
+    heights: [
+      39,
+      64,
+      87,
+      61,
+      35
+    ],
+    detail: "library"
+  },
+  {
+    id: "wurzburg",
+    placement: "land",
+    heights: [
+      37,
+      54,
+      74,
+      51,
+      31
+    ],
+    detail: "garden"
+  },
+  {
+    id: "trier",
+    placement: "land",
+    heights: [
+      34,
+      71,
+      43,
+      75,
+      30
+    ],
+    detail: "arches"
+  },
+  {
+    id: "speicherstadt",
+    placement: "river",
+    heights: [
+      49,
+      62,
+      78,
+      57,
+      42
+    ],
+    detail: "brick"
+  },
+  {
+    id: "kronborg",
+    placement: "coastal",
+    heights: [
+      63,
+      47,
+      88,
+      52,
+      69
+    ],
+    detail: "spires"
+  },
+  {
+    id: "ilulissat",
+    placement: "sea",
+    heights: [
+      49,
+      76,
+      99,
+      69,
+      41
+    ],
+    detail: "ice"
+  },
+  {
+    id: "suomenlinna",
+    placement: "coastal",
+    heights: [
+      39,
+      29,
+      58,
+      34,
+      44
+    ],
+    detail: "bastions"
+  },
+  {
+    id: "rauma",
+    placement: "land",
+    heights: [
+      34,
+      47,
+      63,
+      42,
+      29
+    ],
+    detail: "timber"
+  },
+  {
+    id: "orangetheatre",
+    placement: "land",
+    heights: [
+      28,
+      51,
+      73,
+      49,
+      25
+    ],
+    detail: "stagewall"
+  },
+  {
+    id: "cordouan",
+    placement: "sea",
+    heights: [
+      0,
+      29,
+      102,
+      25,
+      0
+    ],
+    detail: "beacon"
+  },
+  {
+    id: "maisoncarree",
+    placement: "land",
+    heights: [
+      41,
+      65,
+      82,
+      63,
+      36
+    ],
+    detail: "columns"
+  },
+  {
+    id: "edinburgh",
+    placement: "land",
+    heights: [
+      55,
+      72,
+      96,
+      64,
+      43
+    ],
+    detail: "spires"
+  },
+  {
+    id: "pontcysyllte",
+    placement: "river",
+    heights: [
+      35,
+      51,
+      64,
+      50,
+      32
+    ],
+    detail: "ironwater"
+  },
+  {
+    id: "kew",
+    placement: "land",
+    heights: [
+      20,
+      39,
+      62,
+      37,
+      18
+    ],
+    detail: "glasshouse"
+  },
+  {
+    id: "delphi",
+    placement: "land",
+    heights: [
+      35,
+      56,
+      81,
+      51,
+      29
+    ],
+    detail: "columns"
+  },
+  {
+    id: "epidaurus",
+    placement: "land",
+    heights: [
+      26,
+      46,
+      65,
+      43,
+      23
+    ],
+    detail: "theatre"
+  },
+  {
+    id: "mycenae",
+    placement: "land",
+    heights: [
+      40,
+      70,
+      45,
+      74,
+      36
+    ],
+    detail: "cyclopean"
+  },
+  {
+    id: "brunaboinne",
+    placement: "land",
+    heights: [
+      21,
+      44,
+      65,
+      41,
+      18
+    ],
+    detail: "spiral"
+  },
+  {
+    id: "thingvellir",
+    placement: "land",
+    heights: [
+      47,
+      68,
+      83,
+      59,
+      37
+    ],
+    detail: "rift"
+  },
+  {
+    id: "agrigento",
+    placement: "land",
+    heights: [
+      36,
+      62,
+      86,
+      58,
+      31
+    ],
+    detail: "columns"
+  },
+  {
+    id: "cinqueterre",
+    placement: "coastal",
+    heights: [
+      48,
+      68,
+      89,
+      61,
+      39
+    ],
+    detail: "terracedtown"
+  },
+  {
+    id: "bryggen",
+    placement: "coastal",
+    heights: [
+      46,
+      59,
+      76,
+      55,
+      40
+    ],
+    detail: "timber"
+  },
+  {
+    id: "tomar",
+    placement: "land",
+    heights: [
+      33,
+      55,
+      82,
+      51,
+      29
+    ],
+    detail: "roundchurch"
+  },
+  {
+    id: "teide",
+    placement: "land",
+    heights: [
+      40,
+      73,
+      106,
+      68,
+      34
+    ],
+    detail: "lava"
+  }
+];
+
+// plugins/orcatopia/src/water-themes.ts
+var waterThemes = [
+  { id: "halong", placement: "sea", gift: "buoy", special: "sailboat" },
+  { id: "papahanaumokuakea", placement: "sea", gift: "coral", special: "buoy" },
+  ...["montsaintmichel", "venice", "nanmadol", "liberty", "opera", "belem"].map(
+    (id) => ({
+      id,
+      placement: "coastal",
+      gift: "buoy",
+      special: "sailboat"
+    })
+  ),
+  ...["mostar", "pontdugard", "kinderdijk", "grandcanal", "dujiangyan"].map(
+    (id) => ({
+      id,
+      placement: "river",
+      gift: "lotus",
+      special: ["kinderdijk", "dujiangyan"].includes(id) ? "waterwheel" : "raft"
+    })
+  ),
+  ...water_catalog_default.map((entry) => ({
+    id: entry.record.id,
+    placement: entry.surface,
+    gift: entry.surface === "river" ? "lotus" : entry.record.id === "bluehole" || entry.record.id === "geirangerfjord" ? "buoy" : "coral",
+    special: entry.surface === "river" ? entry.record.id === "middlerhine" ? "waterwheel" : "raft" : entry.record.id === "greatbarrierreef" ? "buoy" : "sailboat"
+  })),
+  ...catalog_600_default.filter((entry) => entry.placement !== "land").map((entry) => ({
+    id: entry.id,
+    placement: entry.placement,
+    gift: entry.placement === "river" ? "lotus" : "buoy",
+    special: entry.placement === "river" ? "raft" : "sailboat"
+  }))
+];
+var byId2 = new Map(waterThemes.map((t) => [t.id, t]));
+var waterTheme = (id) => byId2.get(id.endsWith("+") ? id.slice(0, -1) : id);
+var waterShapeNames = {
+  coral: ["coral garden", "\uC0B0\uD638 \uC815\uC6D0"],
+  buoy: ["navigation buoy", "\uD56D\uB85C \uBD80\uD45C"],
+  sailboat: ["sailboat", "\uBC94\uC120"],
+  lotus: ["floating lotus bed", "\uC218\uC0C1 \uC5F0\uAF43\uBC2D"],
+  raft: ["river raft", "\uAC15 \uB5CF\uBAA9"],
+  waterwheel: ["waterwheel", "\uBB3C\uB808\uBC29\uC544"]
+};
 
 // plugins/orcatopia/src/world.ts
 var SIZE = 40;
@@ -5532,7 +13278,10 @@ var allowsSea = (id) => ["sea", "coastal"].includes(placementType(id));
 var allowsRiver = (id) => placementType(id) === "river";
 
 // plugins/orcatopia/src/water-decorations.ts
-var newIds = new Set(water_catalog_default.map((entry) => entry.record.id));
+var newIds = /* @__PURE__ */ new Set([
+  ...water_catalog_default.map((entry) => entry.record.id),
+  ...catalog_600_default.filter((entry) => entry.placement !== "land").map((entry) => entry.id)
+]);
 var waterDecorations = waterThemes.flatMap((theme) => {
   const landmark = landmarks_default.find((l) => l.id === theme.id);
   return [theme.gift, theme.special].map((shape, index) => ({
@@ -7609,11 +15358,2954 @@ var landmark_expansion_default = [
     featureKo: "\uB3C5\uC77C \uB77C\uC778\uAC15\uC744 \uB530\uB77C \uACE0\uC131\uACFC \uD3EC\uB3C4\uBC2D, \uC624\uB798\uB41C \uB9C8\uC744\uC774 \uC774\uC5B4\uC9D1\uB2C8\uB2E4. \uC218\uBC31 \uB144 \uB3D9\uC548 \uAC15\uACFC \uD568\uAED8 \uC0B4\uC544\uC628 \uBB38\uD654\uACBD\uAD00\uC744 \uAD7D\uC774\uCE58\uB294 \uBB3C\uAE38\uACFC \uC5B8\uB355 \uC704 \uC131\uC73C\uB85C \uD45C\uD604\uD588\uC2B5\uB2C8\uB2E4.",
     seed: 206,
     color: "#9baf86"
+  },
+  {
+    id: "jam",
+    name: "Minaret of Jam",
+    nameKo: "\uC7A0\uC758 \uBBF8\uB098\uB808\uD2B8",
+    shape: "minaret",
+    feature: "An intricately decorated brick minaret rises in a remote mountain valley",
+    featureKo: "\uC678\uB534 \uC0B0\uACE8\uC9DC\uAE30\uC5D0 \uC815\uAD50\uD55C \uBCBD\uB3CC \uC7A5\uC2DD\uC744 \uB450\uB978 \uBBF8\uB098\uB808\uD2B8\uAC00 \uC19F\uC544 \uC788\uC2B5\uB2C8\uB2E4",
+    seed: 207,
+    color: "#b69772"
+  },
+  {
+    id: "bamiyan",
+    name: "Bamiyan Valley",
+    nameKo: "\uBC14\uBBF8\uC548 \uACC4\uACE1",
+    shape: "cliffbuddha",
+    feature: "Tall niches and Buddhist cave sanctuaries survive along the valley's sandstone cliffs",
+    featureKo: "\uACC4\uACE1\uC758 \uC0AC\uC554 \uC808\uBCBD\uC5D0 \uCEE4\uB2E4\uB780 \uAC10\uC2E4\uACFC \uBD88\uAD50 \uC11D\uAD74 \uC0AC\uC6D0\uC774 \uB0A8\uC544 \uC788\uC2B5\uB2C8\uB2E4",
+    seed: 208,
+    color: "#c4ac88"
+  },
+  {
+    id: "butrint",
+    name: "Butrint",
+    nameKo: "\uBD80\uD2B8\uB9B0\uD2B8",
+    shape: "theatre",
+    feature: "A Greek and Roman archaeological city occupies a peninsula beside a lagoon",
+    featureKo: "\uC11D\uD638 \uC606 \uBC18\uB3C4\uC5D0 \uADF8\uB9AC\uC2A4\uC640 \uB85C\uB9C8 \uC2DC\uB300 \uB3C4\uC2DC \uC720\uC801\uC774 \uB0A8\uC544 \uC788\uC2B5\uB2C8\uB2E4",
+    seed: 209,
+    color: "#aeb9a0"
+  },
+  {
+    id: "berat",
+    name: "Berat and Gjirokastra",
+    nameKo: "\uBCA0\uB77C\uD2B8\uC640 \uC9C0\uB85C\uCE74\uC2A4\uD2B8\uB77C",
+    shape: "town",
+    feature: "Ottoman-period houses climb the slopes of two historic Albanian towns",
+    featureKo: "\uC54C\uBC14\uB2C8\uC544\uC758 \uB450 \uC5ED\uC0AC \uB3C4\uC2DC\uC5D0 \uC624\uC2A4\uB9CC \uC2DC\uB300 \uC8FC\uD0DD\uC774 \uC0B0\uBE44\uD0C8\uC744 \uB530\uB77C \uB4E4\uC5B4\uC11C \uC788\uC2B5\uB2C8\uB2E4",
+    seed: 210,
+    color: "#bc8b70"
+  },
+  {
+    id: "haghpat",
+    name: "Haghpat and Sanahin Monasteries",
+    nameKo: "\uD558\uADF8\uD30C\uD2B8\uC640 \uC0AC\uB098\uD78C \uC218\uB3C4\uC6D0",
+    shape: "cloister",
+    feature: "Medieval Armenian monasteries combine domed churches with local vernacular building traditions",
+    featureKo: "\uC911\uC138 \uC544\uB974\uBA54\uB2C8\uC544 \uC218\uB3C4\uC6D0\uC5D0\uC11C \uB3D4 \uAD50\uD68C\uC640 \uD1A0\uCC29 \uAC74\uCD95 \uC804\uD1B5\uC774 \uC5B4\uC6B0\uB7EC\uC9D1\uB2C8\uB2E4",
+    seed: 211,
+    color: "#8baba4"
+  },
+  {
+    id: "geghard",
+    name: "Geghard Monastery",
+    nameKo: "\uAC8C\uD558\uB974\uD2B8 \uC218\uB3C4\uC6D0",
+    shape: "rocktemple",
+    feature: "Churches and tombs are cut into rock within the steep Upper Azat Valley",
+    featureKo: "\uAC00\uD30C\uB978 \uC544\uC790\uD2B8 \uACC4\uACE1\uC758 \uBC14\uC704 \uC18D\uC5D0 \uAD50\uD68C\uC640 \uBB34\uB364\uC774 \uC0C8\uACA8\uC838 \uC788\uC2B5\uB2C8\uB2E4",
+    seed: 212,
+    color: "#d3b17c"
+  },
+  {
+    id: "zvartnots",
+    name: "Echmiatsin and Zvartnots",
+    nameKo: "\uC5D0\uCE58\uBBF8\uC544\uC9C4\uACFC \uC988\uBC14\uB974\uD2B8\uB178\uCE20",
+    shape: "ruins",
+    feature: "Early Armenian churches and the remains of Zvartnots illustrate the development of central-domed architecture",
+    featureKo: "\uCD08\uAE30 \uC544\uB974\uBA54\uB2C8\uC544 \uAD50\uD68C\uC640 \uC988\uBC14\uB974\uD2B8\uB178\uCE20 \uC720\uC801\uC774 \uC911\uC559 \uB3D4 \uAC74\uCD95\uC758 \uBC1C\uC804\uC744 \uBCF4\uC5EC \uC90D\uB2C8\uB2E4",
+    seed: 213,
+    color: "#b7a28c"
+  },
+  {
+    id: "bakuwalled",
+    name: "Walled City of Baku",
+    nameKo: "\uBC14\uCFE0 \uC131\uACFD\uB3C4\uC2DC",
+    shape: "fortress",
+    feature: "The Maiden Tower and Shirvanshah palace stand within Baku's surviving fortified city",
+    featureKo: "\uBC14\uCFE0\uC758 \uC131\uACFD \uC548\uC5D0 \uCC98\uB140\uC758 \uD0D1\uACFC \uC2DC\uB974\uBC18\uC0E4 \uAD81\uC804\uC774 \uB0A8\uC544 \uC788\uC2B5\uB2C8\uB2E4",
+    seed: 214,
+    color: "#829b8a"
+  },
+  {
+    id: "gobustan",
+    name: "Gobustan Rock Art",
+    nameKo: "\uACE0\uBD80\uC2A4\uD0C4 \uC554\uAC01\uD654",
+    shape: "redrocks",
+    feature: "Thousands of rock engravings record long human occupation among a plateau of rocky boulders",
+    featureKo: "\uBC14\uC704\uAC00 \uB110\uB9B0 \uACE0\uC6D0\uC5D0 \uC218\uB9CE\uC740 \uC554\uAC01\uD654\uAC00 \uC624\uB79C \uC778\uAC04\uC758 \uD754\uC801\uC744 \uB0A8\uACBC\uC2B5\uB2C8\uB2E4",
+    seed: 215,
+    color: "#bca6a0"
+  },
+  {
+    id: "sheki",
+    name: "Sheki Khan's Palace",
+    nameKo: "\uC170\uD0A4 \uCE78 \uAD81\uC804",
+    shape: "palace",
+    feature: "The khan's palace anchors a trading town shaped by silk production and caravan routes",
+    featureKo: "\uBE44\uB2E8 \uC0DD\uC0B0\uACFC \uB300\uC0C1 \uAD50\uC5ED\uB85C\uB85C \uC131\uC7A5\uD55C \uB3C4\uC2DC\uC758 \uC911\uC2EC\uC5D0 \uCE78\uC758 \uAD81\uC804\uC774 \uC788\uC2B5\uB2C8\uB2E4",
+    seed: 216,
+    color: "#b69772"
+  },
+  {
+    id: "visegrad",
+    name: "Vi\u0161egrad Bridge",
+    nameKo: "\uBE44\uC170\uADF8\uB77C\uB4DC \uB2E4\uB9AC",
+    shape: "bridge",
+    feature: "Eleven masonry arches carry an Ottoman bridge over the Drina River",
+    featureKo: "\uC5F4\uD55C \uAC1C\uC758 \uC11D\uC870 \uC544\uCE58\uAC00 \uB4DC\uB9AC\uB098\uAC15 \uC704\uC758 \uC624\uC2A4\uB9CC \uC2DC\uB300 \uB2E4\uB9AC\uB97C \uB5A0\uBC1B\uCE69\uB2C8\uB2E4",
+    seed: 217,
+    color: "#c4ac88"
+  },
+  {
+    id: "vjetrenica",
+    name: "Vjetrenica Cave",
+    nameKo: "\uBE44\uC608\uD2B8\uB808\uB2C8\uCC28 \uB3D9\uAD74",
+    shape: "cave",
+    feature: "A karst cave shelters an exceptionally diverse community of underground animals",
+    featureKo: "\uCE74\uB974\uC2A4\uD2B8 \uB3D9\uAD74 \uC548\uC5D0 \uB2E4\uC591\uD55C \uC9C0\uD558 \uB3D9\uBB3C\uC774 \uC0B4\uC544\uAC11\uB2C8\uB2E4",
+    seed: 218,
+    color: "#aeb9a0"
+  },
+  {
+    id: "boyana",
+    name: "Boyana Church",
+    nameKo: "\uBCF4\uC57C\uB098 \uAD50\uD68C",
+    shape: "basilica",
+    feature: "A small medieval church preserves vivid thirteenth-century wall paintings",
+    featureKo: "\uC791\uC740 \uC911\uC138 \uAD50\uD68C\uC5D0 \uC0DD\uC0DD\uD55C 13\uC138\uAE30 \uBCBD\uD654\uAC00 \uB0A8\uC544 \uC788\uC2B5\uB2C8\uB2E4",
+    seed: 219,
+    color: "#bc8b70"
+  },
+  {
+    id: "madara",
+    name: "Madara Rider",
+    nameKo: "\uB9C8\uB2E4\uB77C \uAE30\uB9C8\uC0C1",
+    shape: "cliff",
+    feature: "A carved horseman stands high on a near-vertical cliff above an early Bulgarian sacred site",
+    featureKo: "\uCD08\uAE30 \uBD88\uAC00\uB9AC\uC544 \uC131\uC9C0 \uC704\uC758 \uAC00\uD30C\uB978 \uC808\uBCBD\uC5D0 \uB9D0\uC744 \uD0C4 \uC778\uBB3C\uC774 \uC0C8\uACA8\uC838 \uC788\uC2B5\uB2C8\uB2E4",
+    seed: 220,
+    color: "#8baba4"
+  },
+  {
+    id: "kazanlak",
+    name: "Thracian Tomb of Kazanlak",
+    nameKo: "\uCE74\uC794\uB77C\uD06C \uD2B8\uB77C\uD0A4\uC544 \uBB34\uB364",
+    shape: "tomb",
+    feature: "A vaulted Thracian tomb preserves painted scenes of a funerary banquet",
+    featureKo: "\uB465\uADFC \uCC9C\uC7A5\uC758 \uD2B8\uB77C\uD0A4\uC544 \uBB34\uB364\uC5D0 \uC7A5\uB840 \uC5F0\uD68C \uC7A5\uBA74\uC744 \uADF8\uB9B0 \uBCBD\uD654\uAC00 \uB0A8\uC544 \uC788\uC2B5\uB2C8\uB2E4",
+    seed: 221,
+    color: "#d3b17c"
+  },
+  {
+    id: "ivanovo",
+    name: "Rock-Hewn Churches of Ivanovo",
+    nameKo: "\uC774\uBC14\uB178\uBCF4 \uC554\uAD74\uAD50\uD68C",
+    shape: "clifftemple",
+    feature: "Medieval churches and monastic cells are carved into the cliffs above a river valley",
+    featureKo: "\uAC15 \uACC4\uACE1 \uC704\uC758 \uC808\uBCBD\uC5D0 \uC911\uC138 \uAD50\uD68C\uC640 \uC218\uB3C4\uC2E4\uC774 \uD30C\uC5EC \uC788\uC2B5\uB2C8\uB2E4",
+    seed: 222,
+    color: "#b7a28c"
+  },
+  {
+    id: "nessebar",
+    name: "Ancient Nessebar",
+    nameKo: "\uACE0\uB300 \uB124\uC138\uBC14\uB974",
+    shape: "coast",
+    feature: "Churches and historic houses cluster on a rocky peninsula in the Black Sea",
+    featureKo: "\uD751\uD574\uC758 \uBC14\uC704 \uBC18\uB3C4\uC5D0 \uAD50\uD68C\uC640 \uC61B \uC8FC\uD0DD\uC774 \uBAA8\uC5EC \uC788\uC2B5\uB2C8\uB2E4",
+    seed: 223,
+    color: "#829b8a"
+  },
+  {
+    id: "srebarna",
+    name: "Srebarna Nature Reserve",
+    nameKo: "\uC2A4\uB808\uBC14\uB974\uB098 \uC790\uC5F0\uBCF4\uD638\uAD6C\uC5ED",
+    shape: "wetland",
+    feature: "A freshwater lake beside the Danube provides breeding grounds for waterbirds",
+    featureKo: "\uB2E4\uB274\uBE0C\uAC15 \uC606 \uB2F4\uC218\uD638\uAC00 \uBB3C\uC0C8\uC758 \uBC88\uC2DD\uC9C0\uAC00 \uB429\uB2C8\uB2E4",
+    seed: 224,
+    color: "#bca6a0"
+  },
+  {
+    id: "pirin",
+    name: "Pirin National Park",
+    nameKo: "\uD53C\uB9B0 \uAD6D\uB9BD\uACF5\uC6D0",
+    shape: "peaks",
+    feature: "Alpine peaks, glacial lakes and forests cover the Pirin mountain landscape",
+    featureKo: "\uD53C\uB9B0\uC0B0\uB9E5\uC5D0 \uACE0\uC0B0 \uBD09\uC6B0\uB9AC\uC640 \uBE59\uD558\uD638, \uC232\uC774 \uD3BC\uCCD0\uC9D1\uB2C8\uB2E4",
+    seed: 225,
+    color: "#b69772"
+  },
+  {
+    id: "qalabahrain",
+    name: "Qal'at al-Bahrain",
+    nameKo: "\uCE7C\uB77C\uD2B8 \uC54C\uBC14\uB808\uC778",
+    shape: "fortress",
+    feature: "An archaeological mound and coastal fort preserve layers of the ancient Dilmun trading centre",
+    featureKo: "\uD574\uC548 \uC694\uC0C8\uC640 \uC720\uC801 \uC5B8\uB355\uC5D0 \uACE0\uB300 \uB51C\uBB38 \uAD50\uC5ED \uC911\uC2EC\uC9C0\uC758 \uD754\uC801\uC774 \uACB9\uACB9\uC774 \uB0A8\uC544 \uC788\uC2B5\uB2C8\uB2E4",
+    seed: 226,
+    color: "#c4ac88"
+  },
+  {
+    id: "dilmunmounds",
+    name: "Dilmun Burial Mounds",
+    nameKo: "\uB51C\uBB38 \uACE0\uBD84\uAD70",
+    shape: "tomb",
+    feature: "Extensive fields of burial mounds reflect the funerary traditions of ancient Dilmun",
+    featureKo: "\uB113\uAC8C \uD3BC\uCCD0\uC9C4 \uBD09\uBD84 \uBB34\uB364\uB4E4\uC774 \uACE0\uB300 \uB51C\uBB38\uC758 \uC7A5\uB840 \uC804\uD1B5\uC744 \uBCF4\uC5EC \uC90D\uB2C8\uB2E4",
+    seed: 227,
+    color: "#aeb9a0"
+  },
+  {
+    id: "mir",
+    name: "Mir Castle",
+    nameKo: "\uBBF8\uB974\uC131",
+    shape: "castle",
+    feature: "A quadrangular castle combines Gothic, Renaissance and Baroque architectural elements",
+    featureKo: "\uC0AC\uAC01\uD615 \uC131\uC5D0 \uACE0\uB515\uACFC \uB974\uB124\uC0C1\uC2A4, \uBC14\uB85C\uD06C \uAC74\uCD95 \uC694\uC18C\uAC00 \uC5B4\uC6B0\uB7EC\uC838 \uC788\uC2B5\uB2C8\uB2E4",
+    seed: 228,
+    color: "#bc8b70"
+  },
+  {
+    id: "nesvizh",
+    name: "Nesvizh Castle",
+    nameKo: "\uB124\uC2A4\uBE44\uC2DC\uC131",
+    shape: "palace",
+    feature: "The Radziwill family's palace complex joins residential buildings with a landscaped setting",
+    featureKo: "\uB77C\uC9C0\uBE44\uC6B0 \uAC00\uBB38\uC758 \uAD81\uC804 \uB2E8\uC9C0\uC5D0 \uC8FC\uAC70 \uAC74\uBB3C\uACFC \uC870\uACBD \uACF5\uAC04\uC774 \uC5B4\uC6B0\uB7EC\uC838 \uC788\uC2B5\uB2C8\uB2E4",
+    seed: 229,
+    color: "#8baba4"
+  },
+  {
+    id: "paphos",
+    name: "Paphos",
+    nameKo: "\uD30C\uD3EC\uC2A4",
+    shape: "ruins",
+    feature: "Roman villas preserve richly decorated mosaic floors in an ancient coastal city",
+    featureKo: "\uACE0\uB300 \uD574\uC548 \uB3C4\uC2DC\uC758 \uB85C\uB9C8 \uC2DC\uB300 \uC800\uD0DD\uC5D0 \uC815\uAD50\uD55C \uBAA8\uC790\uC774\uD06C \uBC14\uB2E5\uC774 \uB0A8\uC544 \uC788\uC2B5\uB2C8\uB2E4",
+    seed: 230,
+    color: "#d3b17c"
+  },
+  {
+    id: "troodos",
+    name: "Painted Churches of Troodos",
+    nameKo: "\uD2B8\uB85C\uB3C4\uC2A4 \uBCBD\uD654\uAD50\uD68C",
+    shape: "woodchurch",
+    feature: "Mountain churches with steep timber roofs preserve Byzantine wall paintings",
+    featureKo: "\uAC00\uD30C\uB978 \uBAA9\uC870 \uC9C0\uBD95\uC744 \uC5B9\uC740 \uC0B0\uC545 \uAD50\uD68C\uC5D0 \uBE44\uC794\uD2F4 \uBCBD\uD654\uAC00 \uB0A8\uC544 \uC788\uC2B5\uB2C8\uB2E4",
+    seed: 231,
+    color: "#b7a28c"
+  },
+  {
+    id: "choirokoitia",
+    name: "Choirokoitia",
+    nameKo: "\uD0A4\uB85C\uD0A4\uD2F0\uC544",
+    shape: "roundhouse",
+    feature: "Remains of circular stone houses reveal a Neolithic settlement on Cyprus",
+    featureKo: "\uB465\uADFC \uC11D\uC870 \uC8FC\uD0DD \uC720\uC801\uC774 \uD0A4\uD504\uB85C\uC2A4\uC758 \uC2E0\uC11D\uAE30 \uC815\uCC29\uC9C0\uB97C \uBCF4\uC5EC \uC90D\uB2C8\uB2E4",
+    seed: 232,
+    color: "#829b8a"
+  },
+  {
+    id: "ceskykrumlov",
+    name: "\u010Cesk\xFD Krumlov",
+    nameKo: "\uCCB4\uC2A4\uD0A4\uD06C\uB8F8\uB85C\uD504",
+    shape: "castle",
+    feature: "A large castle overlooks a medieval town wrapped in bends of the Vltava River",
+    featureKo: "\uCEE4\uB2E4\uB780 \uC131 \uC544\uB798\uB85C \uBE14\uD0C0\uBC14\uAC15 \uAD7D\uC774\uC5D0 \uB458\uB7EC\uC2F8\uC778 \uC911\uC138 \uB3C4\uC2DC\uAC00 \uD3BC\uCCD0\uC9D1\uB2C8\uB2E4",
+    seed: 233,
+    color: "#bca6a0"
+  },
+  {
+    id: "telc",
+    name: "Tel\u010D",
+    nameKo: "\uD154\uCE58",
+    shape: "square",
+    feature: "Renaissance and Baroque houses line a historic market square beneath a castle",
+    featureKo: "\uC131 \uC544\uB798\uC758 \uC61B \uC2DC\uC7A5 \uAD11\uC7A5\uC744 \uB974\uB124\uC0C1\uC2A4\uC640 \uBC14\uB85C\uD06C \uC8FC\uD0DD\uC774 \uB458\uB7EC\uC2F8\uACE0 \uC788\uC2B5\uB2C8\uB2E4",
+    seed: 234,
+    color: "#b69772"
+  },
+  {
+    id: "zelenahora",
+    name: "Zelen\xE1 Hora Pilgrimage Church",
+    nameKo: "\uC824\uB808\uB098\uD638\uB77C \uC21C\uB840\uAD50\uD68C",
+    shape: "roundtemple",
+    feature: "A star-shaped pilgrimage church brings together Gothic and Baroque design",
+    featureKo: "\uBCC4 \uBAA8\uC591\uC758 \uC21C\uB840\uAD50\uD68C\uC5D0 \uACE0\uB515\uACFC \uBC14\uB85C\uD06C \uC124\uACC4\uAC00 \uC5B4\uC6B0\uB7EC\uC838 \uC788\uC2B5\uB2C8\uB2E4",
+    seed: 235,
+    color: "#c4ac88"
+  },
+  {
+    id: "kutnahora",
+    name: "Kutn\xE1 Hora",
+    nameKo: "\uCFE0\uD2B8\uB098\uD638\uB77C",
+    shape: "cathedral",
+    feature: "St Barbara's church rises above a historic town made prosperous by silver mining",
+    featureKo: "\uC740\uAD11\uC73C\uB85C \uBC88\uC601\uD55C \uC5ED\uC0AC \uB3C4\uC2DC \uC704\uB85C \uC131 \uBC14\uB974\uBC14\uB77C \uAD50\uD68C\uAC00 \uC19F\uC544 \uC788\uC2B5\uB2C8\uB2E4",
+    seed: 236,
+    color: "#aeb9a0"
+  },
+  {
+    id: "lednice",
+    name: "Lednice-Valtice",
+    nameKo: "\uB808\uB4DC\uB2C8\uCCB4\uBC1C\uD2F0\uCCB4",
+    shape: "palace",
+    feature: "Castles, gardens and romantic buildings form an extensive designed landscape",
+    featureKo: "\uC131\uACFC \uC815\uC6D0, \uB0AD\uB9CC\uC801\uC778 \uAC74\uBB3C\uB4E4\uC774 \uB113\uC740 \uC870\uACBD \uACBD\uAD00\uC744 \uC774\uB8F9\uB2C8\uB2E4",
+    seed: 237,
+    color: "#bc8b70"
+  },
+  {
+    id: "olomouc",
+    name: "Holy Trinity Column in Olomouc",
+    nameKo: "\uC62C\uB85C\uBAA8\uC6B0\uCE20 \uC0BC\uC704\uC77C\uCCB4 \uAE30\uB150\uC8FC",
+    shape: "minaret",
+    feature: "A tall Baroque column is covered in religious sculpture in the town square",
+    featureKo: "\uB3C4\uC2DC \uAD11\uC7A5\uC758 \uB192\uC740 \uBC14\uB85C\uD06C \uAE30\uB150\uC8FC\uB97C \uC885\uAD50 \uC870\uAC01\uC774 \uB458\uB7EC\uC2F8\uACE0 \uC788\uC2B5\uB2C8\uB2E4",
+    seed: 238,
+    color: "#8baba4"
+  },
+  {
+    id: "kromeriz",
+    name: "Krom\u011B\u0159\xED\u017E Gardens and Castle",
+    nameKo: "\uD06C\uB85C\uBA54\uB974\uC9C0\uC2DC \uC815\uC6D0\uACFC \uC131",
+    shape: "garden",
+    feature: "An episcopal residence adjoins formal gardens and a landscaped pleasure garden",
+    featureKo: "\uC8FC\uAD50\uC758 \uAC70\uCC98 \uC606\uC5D0 \uC815\uD615\uC2DD \uC815\uC6D0\uACFC \uC870\uACBD \uC815\uC6D0\uC774 \uD3BC\uCCD0\uC9D1\uB2C8\uB2E4",
+    seed: 239,
+    color: "#d3b17c"
+  },
+  {
+    id: "litomysl",
+    name: "Litomy\u0161l Castle",
+    nameKo: "\uB9AC\uD1A0\uBBF8\uC290\uC131",
+    shape: "palace",
+    feature: "An arcaded Renaissance castle is decorated with elaborate sgraffito facades",
+    featureKo: "\uC544\uCF00\uC774\uB4DC\uAC00 \uC788\uB294 \uB974\uB124\uC0C1\uC2A4 \uC131\uC758 \uC815\uBA74\uC744 \uC815\uAD50\uD55C \uC2A4\uADF8\uB77C\uD53C\uD1A0 \uC7A5\uC2DD\uC774 \uB36E\uACE0 \uC788\uC2B5\uB2C8\uB2E4",
+    seed: 240,
+    color: "#b7a28c"
+  },
+  {
+    id: "mtskheta",
+    name: "Mtskheta Monuments",
+    nameKo: "\uBBC0\uCE20\uD5E4\uD0C0 \uC720\uC801",
+    shape: "basilica",
+    feature: "Historic churches in Georgia's former capital illustrate early Christian architecture",
+    featureKo: "\uC870\uC9C0\uC544\uC758 \uC61B \uC218\uB3C4\uC5D0 \uC788\uB294 \uAD50\uD68C\uB4E4\uC774 \uCD08\uAE30 \uAE30\uB3C5\uAD50 \uAC74\uCD95\uC744 \uBCF4\uC5EC \uC90D\uB2C8\uB2E4",
+    seed: 241,
+    color: "#829b8a"
+  },
+  {
+    id: "svaneti",
+    name: "Upper Svaneti",
+    nameKo: "\uC0C1\uC2A4\uBC14\uB124\uD2F0",
+    shape: "towers",
+    feature: "Medieval defensive tower houses stand among mountain villages in the Caucasus",
+    featureKo: "\uCF54\uCE74\uC11C\uC2A4 \uC0B0\uC545 \uB9C8\uC744\uC5D0 \uC911\uC138\uC758 \uBC29\uC5B4\uC6A9 \uD0D1\uC9D1\uC774 \uC19F\uC544 \uC788\uC2B5\uB2C8\uB2E4",
+    seed: 242,
+    color: "#bca6a0"
+  },
+  {
+    id: "gelati",
+    name: "Gelati Monastery",
+    nameKo: "\uAC94\uB77C\uD2F0 \uC218\uB3C4\uC6D0",
+    shape: "cloister",
+    feature: "A medieval Georgian monastery preserves churches decorated with mosaics and paintings",
+    featureKo: "\uC911\uC138 \uC870\uC9C0\uC544 \uC218\uB3C4\uC6D0\uC5D0 \uBAA8\uC790\uC774\uD06C\uC640 \uBCBD\uD654\uB85C \uC7A5\uC2DD\uD55C \uAD50\uD68C\uB4E4\uC774 \uB0A8\uC544 \uC788\uC2B5\uB2C8\uB2E4",
+    seed: 243,
+    color: "#b69772"
+  },
+  {
+    id: "colchic",
+    name: "Colchic Rainforests and Wetlands",
+    nameKo: "\uCF5C\uD0A4\uC2A4 \uC6B0\uB9BC\uACFC \uC2B5\uC9C0",
+    shape: "wetland",
+    feature: "Humid forests and wetlands survive along the warm, wet eastern Black Sea coast",
+    featureKo: "\uB530\uB73B\uD558\uACE0 \uBE44\uAC00 \uB9CE\uC740 \uD751\uD574 \uB3D9\uBD80 \uD574\uC548\uC5D0 \uC2B5\uC724\uD55C \uC232\uACFC \uC2B5\uC9C0\uAC00 \uB0A8\uC544 \uC788\uC2B5\uB2C8\uB2E4",
+    seed: 244,
+    color: "#c4ac88"
+  },
+  {
+    id: "split",
+    name: "Diocletian's Palace at Split",
+    nameKo: "\uC2A4\uD50C\uB9AC\uD2B8 \uB514\uC624\uD074\uB808\uD2F0\uC544\uB204\uC2A4 \uAD81\uC804",
+    shape: "palace",
+    feature: "A living historic city grew within and around a Roman emperor's palace",
+    featureKo: "\uB85C\uB9C8 \uD669\uC81C\uC758 \uAD81\uC804 \uC548\uD30E\uC73C\uB85C \uC624\uB298\uB0A0\uAE4C\uC9C0 \uC0AC\uB78C\uC774 \uC0AC\uB294 \uC5ED\uC0AC \uB3C4\uC2DC\uAC00 \uC790\uB790\uC2B5\uB2C8\uB2E4",
+    seed: 245,
+    color: "#aeb9a0"
+  },
+  {
+    id: "plitvice",
+    name: "Plitvice Lakes",
+    nameKo: "\uD50C\uB9AC\uD2B8\uBE44\uCCB4 \uD638\uC218",
+    shape: "lakes",
+    feature: "Water cascades between terraced lakes divided by natural travertine barriers",
+    featureKo: "\uC790\uC5F0\uC801\uC73C\uB85C \uC790\uB780 \uC11D\uD68C\uC9C8 \uB451 \uC0AC\uC774\uB85C \uACC4\uB2E8\uC2DD \uD638\uC218\uC758 \uBB3C\uC774 \uD758\uB7EC\uB0B4\uB9BD\uB2C8\uB2E4",
+    seed: 246,
+    color: "#bc8b70"
+  },
+  {
+    id: "porec",
+    name: "Euphrasian Basilica at Pore\u010D",
+    nameKo: "\uD3EC\uB808\uCE58 \uC5D0\uC6B0\uD504\uB77C\uC2DC\uC6B0\uC2A4 \uB300\uC131\uB2F9",
+    shape: "basilica",
+    feature: "An early Christian episcopal complex preserves outstanding Byzantine mosaics",
+    featureKo: "\uCD08\uAE30 \uAE30\uB3C5\uAD50 \uC8FC\uAD50\uC88C \uB2E8\uC9C0\uC5D0 \uB6F0\uC5B4\uB09C \uBE44\uC794\uD2F4 \uBAA8\uC790\uC774\uD06C\uAC00 \uB0A8\uC544 \uC788\uC2B5\uB2C8\uB2E4",
+    seed: 247,
+    color: "#8baba4"
+  },
+  {
+    id: "trogir",
+    name: "Historic Trogir",
+    nameKo: "\uD2B8\uB85C\uAE30\uB974 \uC5ED\uC0AC\uB3C4\uC2DC",
+    shape: "town",
+    feature: "Romanesque churches and later palaces fill the compact historic island town",
+    featureKo: "\uC791\uC740 \uC12C\uC758 \uC5ED\uC0AC \uB3C4\uC2DC\uC5D0 \uB85C\uB9C8\uB124\uC2A4\uD06C \uAD50\uD68C\uC640 \uD6C4\uB300\uC758 \uAD81\uC804\uB4E4\uC774 \uBAA8\uC5EC \uC788\uC2B5\uB2C8\uB2E4",
+    seed: 248,
+    color: "#d3b17c"
+  },
+  {
+    id: "sibenik",
+    name: "Cathedral of St James in \u0160ibenik",
+    nameKo: "\uC2DC\uBCA0\uB2C8\uD06C \uC131 \uC57C\uACE0\uBCF4 \uB300\uC131\uB2F9",
+    shape: "dome",
+    feature: "A stone cathedral combines Gothic and Renaissance forms beneath a distinctive dome",
+    featureKo: "\uB3CC\uB85C \uC9C0\uC740 \uC131\uB2F9\uC5D0 \uACE0\uB515\uACFC \uB974\uB124\uC0C1\uC2A4 \uD615\uC2DD\uC774 \uC5B4\uC6B0\uB7EC\uC9C0\uACE0 \uB3C5\uD2B9\uD55C \uB3D4\uC774 \uC5B9\uD600 \uC788\uC2B5\uB2C8\uB2E4",
+    seed: 249,
+    color: "#b7a28c"
+  },
+  {
+    id: "starigrad",
+    name: "Stari Grad Plain",
+    nameKo: "\uC2A4\uD0C0\uB9AC\uADF8\uB77C\uB4DC \uD3C9\uC6D0",
+    shape: "terraces",
+    feature: "Ancient field divisions remain visible in an agricultural plain on Hvar Island",
+    featureKo: "\uD750\uBC14\uB974\uC12C\uC758 \uB18D\uACBD \uD3C9\uC6D0\uC5D0 \uACE0\uB300\uC758 \uACBD\uC791\uC9C0 \uAD6C\uD68D\uC774 \uB0A8\uC544 \uC788\uC2B5\uB2C8\uB2E4",
+    seed: 250,
+    color: "#829b8a"
+  },
+  {
+    id: "holloko",
+    name: "Holl\xF3k\u0151",
+    nameKo: "\uD640\uB85C\uCFA8",
+    shape: "thatched",
+    feature: "A traditional village preserves houses and a rural layout developed before modern agricultural change",
+    featureKo: "\uC804\uD1B5 \uB9C8\uC744\uC5D0 \uADFC\uB300 \uB18D\uC5C5 \uBCC0\uD654 \uC774\uC804\uC758 \uC8FC\uD0DD\uACFC \uB18D\uCD0C \uBC30\uCE58\uAC00 \uB0A8\uC544 \uC788\uC2B5\uB2C8\uB2E4",
+    seed: 251,
+    color: "#bca6a0"
+  },
+  {
+    id: "hortobagy",
+    name: "Hortob\xE1gy Puszta",
+    nameKo: "\uD638\uB974\uD1A0\uBC14\uC9C0 \uD478\uC2A4\uD0C0",
+    shape: "savanna",
+    feature: "Open grasslands preserve a long tradition of pastoral life on the Hungarian plain",
+    featureKo: "\uD5DD\uAC00\uB9AC \uD3C9\uC6D0\uC758 \uB4DC\uB113\uC740 \uCD08\uC9C0\uC5D0 \uC624\uB79C \uBAA9\uCD95 \uC0DD\uD65C\uC758 \uC804\uD1B5\uC774 \uC774\uC5B4\uC9D1\uB2C8\uB2E4",
+    seed: 252,
+    color: "#b69772"
+  },
+  {
+    id: "pannonhalma",
+    name: "Pannonhalma Abbey",
+    nameKo: "\uD310\uB17C\uD560\uBA38 \uC218\uB3C4\uC6D0",
+    shape: "cloister",
+    feature: "A Benedictine abbey crowns a hill and records a long monastic history",
+    featureKo: "\uC5B8\uB355 \uC704\uC758 \uBCA0\uB124\uB515\uD2B8\uD68C \uC218\uB3C4\uC6D0\uC774 \uC624\uB79C \uC218\uB3C4 \uC0DD\uD65C\uC758 \uC5ED\uC0AC\uB97C \uAC04\uC9C1\uD558\uACE0 \uC788\uC2B5\uB2C8\uB2E4",
+    seed: 253,
+    color: "#c4ac88"
+  },
+  {
+    id: "tokaj",
+    name: "Tokaj Wine Landscape",
+    nameKo: "\uD1A0\uCEE4\uC774 \uC640\uC778 \uACBD\uAD00",
+    shape: "terraces",
+    feature: "Vineyards and historic wine cellars form a landscape shaped by Tokaj wine production",
+    featureKo: "\uD3EC\uB3C4\uBC2D\uACFC \uC61B \uC640\uC778 \uC800\uC7A5\uACE0\uAC00 \uD1A0\uCEE4\uC774 \uC640\uC778 \uC0DD\uC0B0\uC774 \uBE5A\uC740 \uACBD\uAD00\uC744 \uC774\uB8F9\uB2C8\uB2E4",
+    seed: 254,
+    color: "#aeb9a0"
+  },
+  {
+    id: "sulaimantoo",
+    name: "Sulaiman-Too",
+    nameKo: "\uC220\uB77C\uC774\uB9CC\uD22C",
+    shape: "peaks",
+    feature: "A sacred mountain above Osh contains pilgrimage places, caves and rock carvings",
+    featureKo: "\uC624\uC2DC \uC704\uC758 \uC131\uC0B0\uC5D0 \uC21C\uB840 \uC7A5\uC18C\uC640 \uB3D9\uAD74, \uC554\uAC01\uD654\uAC00 \uB0A8\uC544 \uC788\uC2B5\uB2C8\uB2E4",
+    seed: 255,
+    color: "#bc8b70"
+  },
+  {
+    id: "yasawi",
+    name: "Mausoleum of Khoja Ahmed Yasawi",
+    nameKo: "\uD638\uC790 \uC544\uD750\uBA54\uB4DC \uC57C\uC0AC\uC704 \uC601\uBB18",
+    shape: "dome",
+    feature: "A monumental Timurid mausoleum combines a vast portal with domed chambers",
+    featureKo: "\uD2F0\uBB34\uB974 \uC2DC\uB300\uC758 \uAC70\uB300\uD55C \uC601\uBB18\uC5D0 \uB192\uC740 \uC815\uBB38\uACFC \uB3D4\uC744 \uC5B9\uC740 \uBC29\uB4E4\uC774 \uB4E4\uC5B4\uC11C \uC788\uC2B5\uB2C8\uB2E4",
+    seed: 256,
+    color: "#8baba4"
+  },
+  {
+    id: "tanbaly",
+    name: "Tanbaly Petroglyphs",
+    nameKo: "\uD0C4\uBC1C\uB9AC \uC554\uAC01\uD654",
+    shape: "redrocks",
+    feature: "Rock engravings and archaeological remains mark a landscape used over many generations",
+    featureKo: "\uC5EC\uB7EC \uC138\uB300\uAC00 \uC774\uC6A9\uD55C \uACBD\uAD00\uC5D0 \uC554\uAC01\uD654\uC640 \uACE0\uACE0 \uC720\uC801\uC774 \uB0A8\uC544 \uC788\uC2B5\uB2C8\uB2E4",
+    seed: 257,
+    color: "#d3b17c"
+  },
+  {
+    id: "saryarka",
+    name: "Saryarka Steppe and Lakes",
+    nameKo: "\uC0AC\uB7B4\uB974\uCE74 \uCD08\uC6D0\uACFC \uD638\uC218",
+    shape: "wetland",
+    feature: "Steppe grasslands and lakes provide important resting places for migratory waterbirds",
+    featureKo: "\uCD08\uC6D0\uACFC \uD638\uC218\uAC00 \uCCA0\uC0C8 \uBB3C\uC0C8\uB4E4\uC758 \uC911\uC694\uD55C \uC27C\uD130\uAC00 \uB429\uB2C8\uB2E4",
+    seed: 258,
+    color: "#b7a28c"
+  },
+  {
+    id: "vilnius",
+    name: "Vilnius Historic Centre",
+    nameKo: "\uBE4C\uB274\uC2A4 \uC5ED\uC0AC\uC911\uC2EC\uC9C0",
+    shape: "town",
+    feature: "A historic city preserves a mixture of Gothic, Renaissance, Baroque and classical buildings",
+    featureKo: "\uC5ED\uC0AC \uB3C4\uC2DC\uC5D0 \uACE0\uB515\uACFC \uB974\uB124\uC0C1\uC2A4, \uBC14\uB85C\uD06C, \uACE0\uC804\uC8FC\uC758 \uAC74\uBB3C\uC774 \uD568\uAED8 \uB0A8\uC544 \uC788\uC2B5\uB2C8\uB2E4",
+    seed: 259,
+    color: "#829b8a"
+  },
+  {
+    id: "kernave",
+    name: "Kernav\u0117",
+    nameKo: "\uCF00\uB974\uB098\uBCA0",
+    shape: "terraces",
+    feature: "Fortified hill mounds overlook archaeological traces of settlements in the Neris Valley",
+    featureKo: "\uBC29\uC5B4\uC6A9 \uC5B8\uB355\uB4E4\uC774 \uB124\uB9AC\uC2A4 \uACC4\uACE1\uC758 \uC815\uCC29\uC9C0 \uD754\uC801 \uC704\uB85C \uC19F\uC544 \uC788\uC2B5\uB2C8\uB2E4",
+    seed: 260,
+    color: "#bca6a0"
+  },
+  {
+    id: "kuldiga",
+    name: "Old Town of Kuld\u012Bga",
+    nameKo: "\uCFE8\uB514\uAC00 \uAD6C\uC2DC\uAC00\uC9C0",
+    shape: "town",
+    feature: "A historic town preserves streets and buildings associated with the Duchy of Courland",
+    featureKo: "\uCFE0\uB97C\uB780\uD2B8 \uACF5\uAD6D\uACFC \uAD00\uB828\uB41C \uAC70\uB9AC\uC640 \uAC74\uBB3C\uB4E4\uC774 \uC5ED\uC0AC \uB3C4\uC2DC\uC5D0 \uB0A8\uC544 \uC788\uC2B5\uB2C8\uB2E4",
+    seed: 261,
+    color: "#b69772"
+  },
+  {
+    id: "durmitor",
+    name: "Durmitor National Park",
+    nameKo: "\uB450\uB974\uBBF8\uD1A0\uB974 \uAD6D\uB9BD\uACF5\uC6D0",
+    shape: "peaks",
+    feature: "Glaciated mountains rise above deep canyons and clear mountain lakes",
+    featureKo: "\uBE59\uD558\uAC00 \uAE4E\uC740 \uC0B0\uB4E4\uC774 \uAE4A\uC740 \uD611\uACE1\uACFC \uB9D1\uC740 \uC0B0\uC545 \uD638\uC218 \uC704\uB85C \uC19F\uC544 \uC788\uC2B5\uB2C8\uB2E4",
+    seed: 262,
+    color: "#c4ac88"
+  },
+  {
+    id: "kotor",
+    name: "Kotor Region",
+    nameKo: "\uCF54\uD1A0\uB974 \uC9C0\uC5ED",
+    shape: "coast",
+    feature: "Fortified towns and churches occupy a deeply indented Adriatic bay",
+    featureKo: "\uAE4A\uC219\uC774 \uB4E4\uC5B4\uC628 \uC544\uB4DC\uB9AC\uC544\uD574\uC758 \uB9CC\uC744 \uB530\uB77C \uC131\uACFD\uB3C4\uC2DC\uC640 \uAD50\uD68C\uAC00 \uC790\uB9AC\uD569\uB2C8\uB2E4",
+    seed: 263,
+    color: "#aeb9a0"
+  },
+  {
+    id: "orkhon",
+    name: "Orkhon Valley",
+    nameKo: "\uC624\uB974\uD63C \uACC4\uACE1",
+    shape: "terraces",
+    feature: "Grassland, archaeological remains and monastic sites follow the Orkhon River valley",
+    featureKo: "\uC624\uB974\uD63C\uAC15 \uACC4\uACE1\uC744 \uB530\uB77C \uCD08\uC6D0\uACFC \uACE0\uACE0 \uC720\uC801, \uC218\uB3C4\uC6D0 \uD130\uAC00 \uC774\uC5B4\uC9D1\uB2C8\uB2E4",
+    seed: 264,
+    color: "#bc8b70"
+  },
+  {
+    id: "burkhankhaldun",
+    name: "Burkhan Khaldun Mountain",
+    nameKo: "\uBD80\uB974\uD55C \uD560\uB454\uC0B0",
+    shape: "peaks",
+    feature: "A sacred mountain and its surrounding landscape are associated with Mongolian worship traditions",
+    featureKo: "\uBABD\uACE8\uC758 \uC2E0\uC559 \uC804\uD1B5\uACFC \uAD00\uB828\uB41C \uC131\uC0B0\uACFC \uC8FC\uBCC0 \uACBD\uAD00\uC774 \uD3BC\uCCD0\uC9D1\uB2C8\uB2E4",
+    seed: 265,
+    color: "#8baba4"
+  },
+  {
+    id: "deerstones",
+    name: "Mongolian Deer Stones",
+    nameKo: "\uBABD\uACE8 \uC0AC\uC2B4\uB3CC",
+    shape: "stelae",
+    feature: "Bronze Age standing stones bear stylized deer and other carved motifs",
+    featureKo: "\uCCAD\uB3D9\uAE30 \uC2DC\uB300\uC758 \uC120\uB3CC\uC5D0 \uC591\uC2DD\uD654\uD55C \uC0AC\uC2B4\uACFC \uC5EC\uB7EC \uBB38\uC591\uC774 \uC0C8\uACA8\uC838 \uC788\uC2B5\uB2C8\uB2E4",
+    seed: 266,
+    color: "#d3b17c"
+  },
+  {
+    id: "sagarmatha",
+    name: "Sagarmatha National Park",
+    nameKo: "\uC0AC\uAC00\uB974\uB9C8\uD0C0 \uAD6D\uB9BD\uACF5\uC6D0",
+    shape: "peaks",
+    feature: "Mount Everest rises above glaciers and deeply incised valleys in a Himalayan landscape",
+    featureKo: "\uD788\uB9D0\uB77C\uC57C \uACBD\uAD00\uC758 \uBE59\uD558\uC640 \uAE4A\uC740 \uACC4\uACE1 \uC704\uB85C \uC5D0\uBCA0\uB808\uC2A4\uD2B8\uC0B0\uC774 \uC19F\uC544 \uC788\uC2B5\uB2C8\uB2E4",
+    seed: 267,
+    color: "#b7a28c"
+  },
+  {
+    id: "chitwan",
+    name: "Chitwan National Park",
+    nameKo: "\uCE58\uD2B8\uC644 \uAD6D\uB9BD\uACF5\uC6D0",
+    shape: "forest",
+    feature: "Subtropical lowland forests and grasslands shelter rhinoceroses and Bengal tigers",
+    featureKo: "\uC544\uC5F4\uB300 \uC800\uC9C0\uB300\uC758 \uC232\uACFC \uCD08\uC9C0\uC5D0 \uCF54\uBFD4\uC18C\uC640 \uBCB5\uACE8\uD638\uB791\uC774\uAC00 \uC0B4\uC544\uAC11\uB2C8\uB2E4",
+    seed: 268,
+    color: "#829b8a"
+  },
+  {
+    id: "lumbini",
+    name: "Lumbini",
+    nameKo: "\uB8F8\uBE44\uB2C8",
+    shape: "stupa",
+    feature: "The Buddha's birthplace preserves an Ashokan pillar and archaeological remains of early sanctuaries",
+    featureKo: "\uBD80\uCC98\uC758 \uD0C4\uC0DD\uC9C0\uC5D0 \uC544\uC18C\uCE74 \uC11D\uC8FC\uC640 \uCD08\uAE30 \uC131\uC18C\uC758 \uC720\uC801\uC774 \uB0A8\uC544 \uC788\uC2B5\uB2C8\uB2E4",
+    seed: 269,
+    color: "#bca6a0"
+  },
+  {
+    id: "bahla",
+    name: "Bahla Fort",
+    nameKo: "\uBC1C\uB77C \uC694\uC0C8",
+    shape: "fortress",
+    feature: "Mud-brick walls and towers protect an oasis settlement in the Omani interior",
+    featureKo: "\uC624\uB9CC \uB0B4\uB959\uC758 \uC624\uC544\uC2DC\uC2A4 \uC815\uCC29\uC9C0\uB97C \uD759\uBCBD\uB3CC \uC131\uBCBD\uACFC \uD0D1\uC774 \uC9C0\uD0A4\uACE0 \uC788\uC2B5\uB2C8\uB2E4",
+    seed: 270,
+    color: "#b69772"
+  },
+  {
+    id: "bat",
+    name: "Bat, Al-Khutm and Al-Ayn",
+    nameKo: "\uBC14\uD2B8\xB7\uC54C\uCFE0\uD2C8\xB7\uC54C\uC544\uC778",
+    shape: "tomb",
+    feature: "Stone towers and beehive tombs preserve a Bronze Age landscape in Oman",
+    featureKo: "\uC624\uB9CC\uC758 \uCCAD\uB3D9\uAE30 \uACBD\uAD00\uC5D0 \uC11D\uD0D1\uACFC \uBC8C\uC9D1 \uBAA8\uC591 \uBB34\uB364\uB4E4\uC774 \uB0A8\uC544 \uC788\uC2B5\uB2C8\uB2E4",
+    seed: 271,
+    color: "#c4ac88"
+  },
+  {
+    id: "frankincense",
+    name: "Land of Frankincense",
+    nameKo: "\uC720\uD5A5\uC758 \uB545",
+    shape: "ruins",
+    feature: "Ancient ports and an inland oasis recall the trade in frankincense from Dhofar",
+    featureKo: "\uC61B \uD56D\uAD6C\uC640 \uB0B4\uB959 \uC624\uC544\uC2DC\uC2A4\uAC00 \uB3C4\uD30C\uB974 \uC720\uD5A5 \uAD50\uC5ED\uC758 \uC5ED\uC0AC\uB97C \uC804\uD569\uB2C8\uB2E4",
+    seed: 272,
+    color: "#aeb9a0"
+  },
+  {
+    id: "aflaj",
+    name: "Aflaj Irrigation Systems",
+    nameKo: "\uC544\uD50C\uB77C\uC9C0 \uAD00\uAC1C\uC2DC\uC124",
+    shape: "waterworks",
+    feature: "Gravity-fed water channels distribute precious water through Omani communities and farms",
+    featureKo: "\uC911\uB825\uC73C\uB85C \uD750\uB974\uB294 \uC218\uB85C\uAC00 \uC624\uB9CC\uC758 \uB9C8\uC744\uACFC \uB18D\uC9C0\uC5D0 \uADC0\uD55C \uBB3C\uC744 \uB098\uB204\uC5B4 \uC90D\uB2C8\uB2E4",
+    seed: 273,
+    color: "#bc8b70"
+  },
+  {
+    id: "moenjodaro",
+    name: "Moenjodaro",
+    nameKo: "\uBAA8\uD5E8\uC870\uB2E4\uB85C",
+    shape: "ruins",
+    feature: "Planned streets and brick buildings preserve a major city of the Indus civilization",
+    featureKo: "\uACC4\uD68D\uC801\uC73C\uB85C \uB0B8 \uAC70\uB9AC\uC640 \uBCBD\uB3CC \uAC74\uBB3C\uB4E4\uC774 \uC778\uB354\uC2A4 \uBB38\uBA85\uC758 \uC8FC\uC694 \uB3C4\uC2DC\uB97C \uBCF4\uC5EC \uC90D\uB2C8\uB2E4",
+    seed: 274,
+    color: "#8baba4"
+  },
+  {
+    id: "taxila",
+    name: "Taxila",
+    nameKo: "\uD0C1\uC2E4\uB77C",
+    shape: "ruins",
+    feature: "Successive ancient cities and Buddhist monuments reflect a crossroads of Asian cultures",
+    featureKo: "\uC5EC\uB7EC \uC2DC\uB300\uC758 \uB3C4\uC2DC\uC640 \uBD88\uAD50 \uC720\uC801\uC774 \uC544\uC2DC\uC544 \uBB38\uD654\uAC00 \uB9CC\uB09C \uC5ED\uC0AC\uB97C \uBCF4\uC5EC \uC90D\uB2C8\uB2E4",
+    seed: 275,
+    color: "#d3b17c"
+  },
+  {
+    id: "takhtibahi",
+    name: "Takht-i-Bahi",
+    nameKo: "\uD0C0\uD06C\uD2F0\uBC14\uD788",
+    shape: "cloister",
+    feature: "A Buddhist monastery occupies a hilltop above the remains of a neighbouring fortified city",
+    featureKo: "\uBD88\uAD50 \uC218\uB3C4\uC6D0\uC774 \uC778\uADFC \uC131\uACFD\uB3C4\uC2DC \uC720\uC801\uC744 \uB0B4\uB824\uB2E4\uBCF4\uB294 \uC5B8\uB355 \uC704\uC5D0 \uC790\uB9AC\uD569\uB2C8\uB2E4",
+    seed: 276,
+    color: "#b7a28c"
+  },
+  {
+    id: "rohtas",
+    name: "Rohtas Fort",
+    nameKo: "\uB85C\uD0C0\uC2A4 \uC694\uC0C8",
+    shape: "fortress",
+    feature: "Massive walls, bastions and monumental gateways enclose a sixteenth-century fort",
+    featureKo: "\uB450\uAEBC\uC6B4 \uC131\uBCBD\uACFC \uBCF4\uB8E8, \uAC70\uB300\uD55C \uC131\uBB38\uC774 16\uC138\uAE30 \uC694\uC0C8\uB97C \uB458\uB7EC\uC2F8\uACE0 \uC788\uC2B5\uB2C8\uB2E4",
+    seed: 277,
+    color: "#829b8a"
+  },
+  {
+    id: "krakow",
+    name: "Krak\xF3w Historic Centre",
+    nameKo: "\uD06C\uB77C\uCFE0\uD504 \uC5ED\uC0AC\uC911\uC2EC\uC9C0",
+    shape: "square",
+    feature: "A medieval market square, royal castle and historic churches anchor the old city",
+    featureKo: "\uC911\uC138 \uC2DC\uC7A5 \uAD11\uC7A5\uACFC \uC655\uC131, \uC61B \uAD50\uD68C\uB4E4\uC774 \uAD6C\uC2DC\uAC00\uC9C0\uC758 \uC911\uC2EC\uC744 \uC774\uB8F9\uB2C8\uB2E4",
+    seed: 278,
+    color: "#bca6a0"
+  },
+  {
+    id: "warsaw",
+    name: "Warsaw Historic Centre",
+    nameKo: "\uBC14\uB974\uC0E4\uBC14 \uC5ED\uC0AC\uC911\uC2EC\uC9C0",
+    shape: "town",
+    feature: "The reconstructed old town restores streets and buildings destroyed during the Second World War",
+    featureKo: "\uBCF5\uC6D0\uB41C \uAD6C\uC2DC\uAC00\uC9C0\uC5D0 \uC81C2\uCC28 \uC138\uACC4\uB300\uC804 \uB54C \uD30C\uAD34\uB41C \uAC70\uB9AC\uC640 \uAC74\uBB3C\uB4E4\uC774 \uB418\uC0B4\uC544\uB0AC\uC2B5\uB2C8\uB2E4",
+    seed: 279,
+    color: "#b69772"
+  },
+  {
+    id: "wieliczka",
+    name: "Wieliczka and Bochnia Salt Mines",
+    nameKo: "\uBE44\uC5D8\uB9AC\uCE58\uCE74\uC640 \uBCF4\uD750\uB2C8\uC544 \uC18C\uAE08\uAD11\uC0B0",
+    shape: "mine",
+    feature: "Underground galleries and chambers record centuries of rock-salt mining",
+    featureKo: "\uC9C0\uD558 \uAC31\uB3C4\uC640 \uBC29\uB4E4\uC774 \uC218\uBC31 \uB144\uC5D0 \uAC78\uCE5C \uC554\uC5FC \uCC44\uAD74\uC758 \uC5ED\uC0AC\uB97C \uBCF4\uC5EC \uC90D\uB2C8\uB2E4",
+    seed: 280,
+    color: "#c4ac88"
+  },
+  {
+    id: "zamosc",
+    name: "Zamo\u015B\u0107",
+    nameKo: "\uC790\uBAA8\uC2DC\uCE58",
+    shape: "square",
+    feature: "An arcaded market square sits within a planned Renaissance town",
+    featureKo: "\uC544\uCF00\uC774\uB4DC\uAC00 \uB458\uB7EC\uC120 \uC2DC\uC7A5 \uAD11\uC7A5\uC774 \uACC4\uD68D\uC801\uC73C\uB85C \uC9C0\uC740 \uB974\uB124\uC0C1\uC2A4 \uB3C4\uC2DC \uC548\uC5D0 \uC790\uB9AC\uD569\uB2C8\uB2E4",
+    seed: 281,
+    color: "#aeb9a0"
+  },
+  {
+    id: "torun",
+    name: "Medieval Toru\u0144",
+    nameKo: "\uC911\uC138 \uD1A0\uB8EC",
+    shape: "town",
+    feature: "Brick churches, town houses and fortifications preserve a medieval trading town",
+    featureKo: "\uBCBD\uB3CC \uAD50\uD68C\uC640 \uC8FC\uD0DD, \uBC29\uC5B4\uC2DC\uC124\uC774 \uC911\uC138 \uAD50\uC5ED\uB3C4\uC2DC\uC758 \uBAA8\uC2B5\uC744 \uAC04\uC9C1\uD558\uACE0 \uC788\uC2B5\uB2C8\uB2E4",
+    seed: 282,
+    color: "#bc8b70"
+  },
+  {
+    id: "malbork",
+    name: "Malbork Castle",
+    nameKo: "\uB9D0\uBCF4\uB974\uD06C\uC131",
+    shape: "castle",
+    feature: "An immense brick castle complex was built by the Teutonic Order",
+    featureKo: "\uD29C\uD134 \uAE30\uC0AC\uB2E8\uC774 \uC9C0\uC740 \uAC70\uB300\uD55C \uBCBD\uB3CC \uC131\uCC44 \uB2E8\uC9C0\uAC00 \uB0A8\uC544 \uC788\uC2B5\uB2C8\uB2E4",
+    seed: 283,
+    color: "#8baba4"
+  },
+  {
+    id: "centennialhall",
+    name: "Centennial Hall in Wroc\u0142aw",
+    nameKo: "\uBE0C\uB85C\uCE20\uC640\uD504 \uBC31\uC8FC\uB144\uAE30\uB150\uAD00",
+    shape: "dome",
+    feature: "A pioneering reinforced-concrete hall spans a vast circular interior beneath a ribbed dome",
+    featureKo: "\uCCA0\uADFC\uCF58\uD06C\uB9AC\uD2B8 \uAC74\uCD95\uC758 \uCD08\uAE30 \uAE30\uB150\uAD00\uC5D0\uC11C \uB9AC\uBE0C \uB3D4\uC774 \uB113\uC740 \uC6D0\uD615 \uB0B4\uBD80\uB97C \uB36E\uACE0 \uC788\uC2B5\uB2C8\uB2E4",
+    seed: 284,
+    color: "#d3b17c"
+  },
+  {
+    id: "danubedelta",
+    name: "Danube Delta",
+    nameKo: "\uB2E4\uB274\uBE0C \uC0BC\uAC01\uC8FC",
+    shape: "wetland",
+    feature: "Reed beds, lakes and branching waterways support abundant birds at the Danube's mouth",
+    featureKo: "\uB2E4\uB274\uBE0C\uAC15 \uD558\uAD6C\uC758 \uAC08\uB300\uBC2D\uACFC \uD638\uC218, \uAC08\uB77C\uC9C0\uB294 \uBB3C\uAE38\uC5D0 \uB9CE\uC740 \uC0C8\uAC00 \uC0B4\uC544\uAC11\uB2C8\uB2E4",
+    seed: 285,
+    color: "#b7a28c"
+  },
+  {
+    id: "hurezi",
+    name: "Hurezi Monastery",
+    nameKo: "\uD6C4\uB808\uC9C0 \uC218\uB3C4\uC6D0",
+    shape: "cloister",
+    feature: "A richly decorated monastery illustrates the Brancovan style of Wallachian architecture",
+    featureKo: "\uC815\uAD50\uD558\uAC8C \uC7A5\uC2DD\uD55C \uC218\uB3C4\uC6D0\uC774 \uC648\uB77C\uD0A4\uC544 \uAC74\uCD95\uC758 \uBE0C\uB780\uCF54\uBCA0\uC544\uB204 \uC591\uC2DD\uC744 \uBCF4\uC5EC \uC90D\uB2C8\uB2E4",
+    seed: 286,
+    color: "#829b8a"
+  },
+  {
+    id: "moldavia",
+    name: "Painted Churches of Moldavia",
+    nameKo: "\uBAB0\uB2E4\uBE44\uC544 \uBCBD\uD654\uAD50\uD68C",
+    shape: "woodchurch",
+    feature: "Monastic churches carry elaborate frescoes across their exterior walls",
+    featureKo: "\uC218\uB3C4\uC6D0 \uAD50\uD68C\uC758 \uBC14\uAE65\uBCBD\uC744 \uC815\uAD50\uD55C \uD504\uB808\uC2A4\uCF54\uD654\uAC00 \uB36E\uACE0 \uC788\uC2B5\uB2C8\uB2E4",
+    seed: 287,
+    color: "#bca6a0"
+  },
+  {
+    id: "sighisoara",
+    name: "Sighi\u0219oara",
+    nameKo: "\uC2DC\uAE30\uC1FC\uC544\uB77C",
+    shape: "towers",
+    feature: "A fortified hill town preserves medieval houses and towers linked to its craft guilds",
+    featureKo: "\uC131\uBCBD\uC73C\uB85C \uB458\uB7EC\uC2FC \uC5B8\uB355 \uB3C4\uC2DC\uC5D0 \uC911\uC138 \uC8FC\uD0DD\uACFC \uC7A5\uC778 \uAE38\uB4DC\uC758 \uD0D1\uB4E4\uC774 \uB0A8\uC544 \uC788\uC2B5\uB2C8\uB2E4",
+    seed: 288,
+    color: "#b69772"
+  },
+  {
+    id: "maramures",
+    name: "Wooden Churches of Maramure\u0219",
+    nameKo: "\uB9C8\uB77C\uBB34\uB808\uC288 \uBAA9\uC870\uAD50\uD68C",
+    shape: "woodchurch",
+    feature: "Tall, slender wooden towers rise above steep-roofed village churches",
+    featureKo: "\uAC00\uD30C\uB978 \uC9C0\uBD95\uC744 \uC5B9\uC740 \uB9C8\uC744 \uAD50\uD68C \uC704\uB85C \uAC00\uB298\uACE0 \uB192\uC740 \uBAA9\uC870 \uD0D1\uC774 \uC19F\uC544 \uC788\uC2B5\uB2C8\uB2E4",
+    seed: 289,
+    color: "#c4ac88"
+  },
+  {
+    id: "studenica",
+    name: "Studenica Monastery",
+    nameKo: "\uC2A4\uD22C\uB370\uB2C8\uCC28 \uC218\uB3C4\uC6D0",
+    shape: "cloister",
+    feature: "A medieval Serbian monastery preserves marble churches and Byzantine-style frescoes",
+    featureKo: "\uC911\uC138 \uC138\uB974\uBE44\uC544 \uC218\uB3C4\uC6D0\uC5D0 \uB300\uB9AC\uC11D \uAD50\uD68C\uC640 \uBE44\uC794\uD2F4 \uC591\uC2DD\uC758 \uD504\uB808\uC2A4\uCF54\uD654\uAC00 \uB0A8\uC544 \uC788\uC2B5\uB2C8\uB2E4",
+    seed: 290,
+    color: "#aeb9a0"
+  },
+  {
+    id: "gamzigrad",
+    name: "Gamzigrad-Romuliana",
+    nameKo: "\uAC10\uC9C0\uADF8\uB77C\uB4DC \uB85C\uBB3C\uB9AC\uC544\uB098",
+    shape: "palace",
+    feature: "Fortified walls surround the palace complex built for the Roman emperor Galerius",
+    featureKo: "\uB85C\uB9C8 \uD669\uC81C \uAC08\uB808\uB9AC\uC6B0\uC2A4\uB97C \uC704\uD574 \uC9C0\uC740 \uAD81\uC804 \uB2E8\uC9C0\uB97C \uC131\uBCBD\uC774 \uB458\uB7EC\uC2F8\uACE0 \uC788\uC2B5\uB2C8\uB2E4",
+    seed: 291,
+    color: "#bc8b70"
+  },
+  {
+    id: "skocjan",
+    name: "\u0160kocjan Caves",
+    nameKo: "\uC288\uCF54\uCE58\uC548 \uB3D9\uAD74",
+    shape: "cave",
+    feature: "An underground river has carved an immense canyon through a limestone cave system",
+    featureKo: "\uC9C0\uD558\uAC15\uC774 \uC11D\uD68C\uC554 \uB3D9\uAD74 \uC548\uC5D0 \uAC70\uB300\uD55C \uD611\uACE1\uC744 \uAE4E\uC544 \uB193\uC558\uC2B5\uB2C8\uB2E4",
+    seed: 292,
+    color: "#8baba4"
+  },
+  {
+    id: "spis",
+    name: "Spi\u0161 Castle and Levo\u010Da",
+    nameKo: "\uC2A4\uD53C\uC288\uC131\uACFC \uB808\uBCF4\uCC28",
+    shape: "castle",
+    feature: "A vast ruined castle overlooks a region of medieval towns and religious monuments",
+    featureKo: "\uAC70\uB300\uD55C \uC131\uD130 \uC544\uB798\uB85C \uC911\uC138 \uB3C4\uC2DC\uC640 \uC885\uAD50 \uC720\uC801\uC774 \uC790\uB9AC\uD55C \uC9C0\uC5ED\uC774 \uD3BC\uCCD0\uC9D1\uB2C8\uB2E4",
+    seed: 293,
+    color: "#d3b17c"
+  },
+  {
+    id: "vlkolinec",
+    name: "Vlkol\xEDnec",
+    nameKo: "\uBE14\uCF5C\uB9AC\uB124\uCE20",
+    shape: "thatched",
+    feature: "Traditional log houses preserve a remarkably intact mountain village",
+    featureKo: "\uC804\uD1B5 \uD1B5\uB098\uBB34\uC9D1\uB4E4\uC774 \uC0B0\uC545 \uB9C8\uC744\uC758 \uC61B \uBAA8\uC2B5\uC744 \uC798 \uAC04\uC9C1\uD558\uACE0 \uC788\uC2B5\uB2C8\uB2E4",
+    seed: 294,
+    color: "#b7a28c"
+  },
+  {
+    id: "bardejov",
+    name: "Bardejov",
+    nameKo: "\uBC14\uB974\uB370\uC694\uC6B0",
+    shape: "square",
+    feature: "A fortified medieval town preserves a central market square and historic burgher houses",
+    featureKo: "\uC131\uBCBD\uC744 \uB450\uB978 \uC911\uC138 \uB3C4\uC2DC\uC5D0 \uC911\uC559 \uC2DC\uC7A5 \uAD11\uC7A5\uACFC \uC61B \uC2DC\uBBFC \uC8FC\uD0DD\uC774 \uB0A8\uC544 \uC788\uC2B5\uB2C8\uB2E4",
+    seed: 295,
+    color: "#829b8a"
+  },
+  {
+    id: "sarazm",
+    name: "Sarazm",
+    nameKo: "\uC0AC\uB77C\uC998",
+    shape: "ruins",
+    feature: "An early settlement records contacts between farming communities and wider Central Asian trade",
+    featureKo: "\uCD08\uAE30 \uC815\uCC29\uC9C0\uC758 \uD754\uC801\uC774 \uB18D\uACBD \uACF5\uB3D9\uCCB4\uC640 \uC911\uC559\uC544\uC2DC\uC544 \uAD50\uC5ED\uC758 \uC5F0\uACB0\uC744 \uBCF4\uC5EC \uC90D\uB2C8\uB2E4",
+    seed: 296,
+    color: "#bca6a0"
+  },
+  {
+    id: "pamirs",
+    name: "Tajik National Park",
+    nameKo: "\uD0C0\uC9C0\uD06C \uAD6D\uB9BD\uACF5\uC6D0",
+    shape: "glacier",
+    feature: "High Pamir peaks, glaciers and mountain lakes form an immense remote wilderness",
+    featureKo: "\uB192\uC740 \uD30C\uBBF8\uB974 \uBD09\uC6B0\uB9AC\uC640 \uBE59\uD558, \uC0B0\uC545 \uD638\uC218\uAC00 \uAD11\uB300\uD55C \uC624\uC9C0 \uACBD\uAD00\uC744 \uC774\uB8F9\uB2C8\uB2E4",
+    seed: 297,
+    color: "#b69772"
+  },
+  {
+    id: "merv",
+    name: "Ancient Merv",
+    nameKo: "\uACE0\uB300 \uBA54\uB974\uBE0C",
+    shape: "ruins",
+    feature: "Successive walled cities preserve a major oasis centre on the Silk Roads",
+    featureKo: "\uC5EC\uB7EC \uC2DC\uB300\uC758 \uC131\uACFD\uB3C4\uC2DC\uAC00 \uC2E4\uD06C\uB85C\uB4DC\uC758 \uC8FC\uC694 \uC624\uC544\uC2DC\uC2A4 \uC911\uC2EC\uC9C0\uC5D0 \uB0A8\uC544 \uC788\uC2B5\uB2C8\uB2E4",
+    seed: 298,
+    color: "#c4ac88"
+  },
+  {
+    id: "kunyaurgench",
+    name: "Kunya-Urgench",
+    nameKo: "\uCFE0\uB0D0\uC6B0\uB974\uAC90\uCE58",
+    shape: "minaret",
+    feature: "Minarets, mausoleums and other monuments remain from a historic city on the Amu Darya",
+    featureKo: "\uC544\uBB34\uB2E4\uB9AC\uC57C\uAC15\uC758 \uC5ED\uC0AC \uB3C4\uC2DC\uC5D0 \uBBF8\uB098\uB808\uD2B8\uC640 \uC601\uBB18 \uB4F1 \uC5EC\uB7EC \uC720\uC801\uC774 \uB0A8\uC544 \uC788\uC2B5\uB2C8\uB2E4",
+    seed: 299,
+    color: "#aeb9a0"
+  },
+  {
+    id: "nisa",
+    name: "Parthian Fortresses of Nisa",
+    nameKo: "\uB2C8\uC0AC\uC758 \uD30C\uB974\uD2F0\uC544 \uC694\uC0C8",
+    shape: "fortress",
+    feature: "Two archaeological tells preserve the fortresses and ceremonial buildings of Parthian Nisa",
+    featureKo: "\uB450 \uC720\uC801 \uC5B8\uB355\uC5D0 \uD30C\uB974\uD2F0\uC544 \uC2DC\uB300 \uB2C8\uC0AC\uC758 \uC694\uC0C8\uC640 \uC758\uB840\uC6A9 \uAC74\uBB3C \uD754\uC801\uC774 \uB0A8\uC544 \uC788\uC2B5\uB2C8\uB2E4",
+    seed: 300,
+    color: "#bc8b70"
+  },
+  {
+    id: "kyivsophia",
+    name: "Saint Sophia and Kyiv-Pechersk Lavra",
+    nameKo: "\uD0A4\uC774\uC6B0 \uC131 \uC18C\uD53C\uC544\uC640 \uD398\uCCB4\uB974\uC2A4\uD06C \uC218\uB3C4\uC6D0",
+    shape: "dome",
+    feature: "A cathedral and monastic ensemble preserve outstanding medieval mosaics and frescoes",
+    featureKo: "\uB300\uC131\uB2F9\uACFC \uC218\uB3C4\uC6D0 \uB2E8\uC9C0\uC5D0 \uB6F0\uC5B4\uB09C \uC911\uC138 \uBAA8\uC790\uC774\uD06C\uC640 \uD504\uB808\uC2A4\uCF54\uD654\uAC00 \uB0A8\uC544 \uC788\uC2B5\uB2C8\uB2E4",
+    seed: 301,
+    color: "#8baba4"
+  },
+  {
+    id: "lviv",
+    name: "Lviv Historic Centre",
+    nameKo: "\uB974\uBE44\uC6B0 \uC5ED\uC0AC\uC911\uC2EC\uC9C0",
+    shape: "town",
+    feature: "A historic urban centre brings together architectural traditions from several Central European cultures",
+    featureKo: "\uC5ED\uC0AC \uB3C4\uC2EC\uC5D0 \uC911\uC559\uC720\uB7FD \uC5EC\uB7EC \uBB38\uD654\uC758 \uAC74\uCD95 \uC804\uD1B5\uC774 \uC5B4\uC6B0\uB7EC\uC838 \uC788\uC2B5\uB2C8\uB2E4",
+    seed: 302,
+    color: "#d3b17c"
+  },
+  {
+    id: "itchankala",
+    name: "Itchan Kala",
+    nameKo: "\uC774\uCC2C\uCE7C\uB77C",
+    shape: "fortress",
+    feature: "High mud walls enclose Khiva's inner town with mosques, minarets and palaces",
+    featureKo: "\uB192\uC740 \uD759 \uC131\uBCBD \uC548\uC758 \uD788\uBC14 \uB0B4\uC131\uC5D0 \uBAA8\uC2A4\uD06C\uC640 \uBBF8\uB098\uB808\uD2B8, \uAD81\uC804\uB4E4\uC774 \uBAA8\uC5EC \uC788\uC2B5\uB2C8\uB2E4",
+    seed: 303,
+    color: "#b7a28c"
+  },
+  {
+    id: "bukhara",
+    name: "Historic Bukhara",
+    nameKo: "\uBD80\uD558\uB77C \uC5ED\uC0AC\uB3C4\uC2DC",
+    shape: "mosque",
+    feature: "A Central Asian trading city preserves mosques, madrasas and monumental minarets",
+    featureKo: "\uC911\uC559\uC544\uC2DC\uC544\uC758 \uAD50\uC5ED\uB3C4\uC2DC\uC5D0 \uBAA8\uC2A4\uD06C\uC640 \uB9C8\uB4DC\uB77C\uC0AC, \uAC70\uB300\uD55C \uBBF8\uB098\uB808\uD2B8\uAC00 \uB0A8\uC544 \uC788\uC2B5\uB2C8\uB2E4",
+    seed: 304,
+    color: "#829b8a"
+  },
+  {
+    id: "shakhrisyabz",
+    name: "Shakhrisyabz",
+    nameKo: "\uC0E4\uD750\uB9AC\uC0AC\uBE0C\uC988",
+    shape: "gate",
+    feature: "Monumental palace remains and religious buildings recall the Timurid city's importance",
+    featureKo: "\uAC70\uB300\uD55C \uAD81\uC804 \uC720\uC801\uACFC \uC885\uAD50 \uAC74\uBB3C\uB4E4\uC774 \uD2F0\uBB34\uB974 \uC2DC\uB300 \uB3C4\uC2DC\uC758 \uC704\uC0C1\uC744 \uC804\uD569\uB2C8\uB2E4",
+    seed: 305,
+    color: "#bca6a0"
+  },
+  {
+    id: "abomey",
+    name: "Royal Palaces of Abomey",
+    nameKo: "\uC544\uBCF4\uBA54 \uC655\uAD81",
+    shape: "adobe",
+    feature: "Earthen royal palaces preserve the history and artistic traditions of the Kingdom of Dahomey",
+    featureKo: "\uD759\uC73C\uB85C \uC9C0\uC740 \uC655\uAD81\uB4E4\uC774 \uB2E4\uD638\uBA54 \uC655\uAD6D\uC758 \uC5ED\uC0AC\uC640 \uC608\uC220 \uC804\uD1B5\uC744 \uAC04\uC9C1\uD558\uACE0 \uC788\uC2B5\uB2C8\uB2E4",
+    seed: 306,
+    color: "#b69772"
+  },
+  {
+    id: "loropeni",
+    name: "Ruins of Lorop\xE9ni",
+    nameKo: "\uB85C\uB85C\uD398\uB2C8 \uC720\uC801",
+    shape: "fortress",
+    feature: "Imposing stone walls survive from a fortified settlement linked to West African gold trading",
+    featureKo: "\uC11C\uC544\uD504\uB9AC\uCE74 \uAE08 \uAD50\uC5ED\uACFC \uC5F0\uACB0\uB41C \uC131\uACFD \uC815\uCC29\uC9C0\uC5D0 \uB450\uAEBC\uC6B4 \uC11D\uBCBD\uC774 \uB0A8\uC544 \uC788\uC2B5\uB2C8\uB2E4",
+    seed: 307,
+    color: "#c4ac88"
+  },
+  {
+    id: "tiebele",
+    name: "Royal Court of Ti\xE9b\xE9l\xE9",
+    nameKo: "\uD2F0\uC5D0\uBCA8\uB808 \uC655\uAD81",
+    shape: "adobe",
+    feature: "An earthen royal compound displays the decorated domestic architecture of the Kassena people",
+    featureKo: "\uD759\uC73C\uB85C \uC9C0\uC740 \uC655\uAD81 \uB2E8\uC9C0\uC5D0 \uCE74\uC138\uB098 \uC0AC\uB78C\uB4E4\uC758 \uC7A5\uC2DD \uC8FC\uAC70 \uAC74\uCD95\uC774 \uB0A8\uC544 \uC788\uC2B5\uB2C8\uB2E4",
+    seed: 308,
+    color: "#aeb9a0"
+  },
+  {
+    id: "virunga",
+    name: "Virunga National Park",
+    nameKo: "\uBE44\uB8FD\uAC00 \uAD6D\uB9BD\uACF5\uC6D0",
+    shape: "volcano",
+    feature: "Volcanoes, forests and savannas provide habitats for mountain gorillas and diverse wildlife",
+    featureKo: "\uD654\uC0B0\uACFC \uC232, \uC0AC\uBC14\uB098\uC5D0 \uB9C8\uC6B4\uD2F4\uACE0\uB9B4\uB77C\uB97C \uBE44\uB86F\uD55C \uB2E4\uC591\uD55C \uC57C\uC0DD\uB3D9\uBB3C\uC774 \uC0B4\uC544\uAC11\uB2C8\uB2E4",
+    seed: 309,
+    color: "#bc8b70"
+  },
+  {
+    id: "okapi",
+    name: "Okapi Wildlife Reserve",
+    nameKo: "\uC624\uCE74\uD53C \uC57C\uC0DD\uB3D9\uBB3C\uBCF4\uD638\uAD6C\uC5ED",
+    shape: "forest",
+    feature: "The Ituri rainforest shelters okapis within a rich tropical forest ecosystem",
+    featureKo: "\uC774\uD22C\uB9AC \uC5F4\uB300\uC6B0\uB9BC\uC758 \uD48D\uBD80\uD55C \uC0DD\uD0DC\uACC4 \uC548\uC5D0 \uC624\uCE74\uD53C\uAC00 \uC0B4\uC544\uAC11\uB2C8\uB2E4",
+    seed: 310,
+    color: "#8baba4"
+  },
+  {
+    id: "odzala",
+    name: "Odzala-Kokoua Forest",
+    nameKo: "\uC624\uC798\uB77C\uCF54\uCFE0\uC544 \uC232",
+    shape: "forest",
+    feature: "Congo Basin forest and clearings support forest elephants, gorillas and other wildlife",
+    featureKo: "\uCF69\uACE0 \uBD84\uC9C0\uC758 \uC232\uACFC \uC232\uC18D \uACF5\uD130\uC5D0 \uC232\uCF54\uB07C\uB9AC\uC640 \uACE0\uB9B4\uB77C \uB4F1 \uC57C\uC0DD\uB3D9\uBB3C\uC774 \uC0B4\uC544\uAC11\uB2C8\uB2E4",
+    seed: 311,
+    color: "#d3b17c"
+  },
+  {
+    id: "taiforest",
+    name: "Ta\xEF National Park",
+    nameKo: "\uD0C0\uC774 \uAD6D\uB9BD\uACF5\uC6D0",
+    shape: "forest",
+    feature: "One of West Africa's remaining primary tropical forests shelters a rich variety of mammals",
+    featureKo: "\uC11C\uC544\uD504\uB9AC\uCE74\uC5D0 \uB0A8\uC740 \uC6D0\uC2DC \uC5F4\uB300\uC6B0\uB9BC\uC5D0 \uB2E4\uC591\uD55C \uD3EC\uC720\uB958\uAC00 \uC0B4\uC544\uAC11\uB2C8\uB2E4",
+    seed: 312,
+    color: "#b7a28c"
+  },
+  {
+    id: "grandbassam",
+    name: "Grand-Bassam",
+    nameKo: "\uADF8\uB791\uBC14\uC0BC",
+    shape: "town",
+    feature: "A coastal historic town preserves a planned colonial quarter beside a traditional fishing village",
+    featureKo: "\uD574\uC548\uC758 \uC5ED\uC0AC \uB3C4\uC2DC\uC5D0 \uACC4\uD68D\uB41C \uC2DD\uBBFC\uC9C0 \uAD6C\uC5ED\uACFC \uC804\uD1B5 \uC5B4\uCD0C\uC774 \uD568\uAED8 \uB0A8\uC544 \uC788\uC2B5\uB2C8\uB2E4",
+    seed: 313,
+    color: "#829b8a"
+  },
+  {
+    id: "dja",
+    name: "Dja Faunal Reserve",
+    nameKo: "\uC790 \uB3D9\uBB3C\uBCF4\uD638\uAD6C\uC5ED",
+    shape: "forest",
+    feature: "Dense equatorial rainforest is almost enclosed by the looping Dja River",
+    featureKo: "\uC6B8\uCC3D\uD55C \uC801\uB3C4 \uC6B0\uB9BC\uC744 \uAD7D\uC774\uCE58\uB294 \uC790\uAC15\uC774 \uAC70\uC758 \uB458\uB7EC\uC2F8\uACE0 \uC788\uC2B5\uB2C8\uB2E4",
+    seed: 314,
+    color: "#bca6a0"
+  },
+  {
+    id: "benihammad",
+    name: "Al Qal'a of Beni Hammad",
+    nameKo: "\uBCA0\uB2C8\uD558\uB9C8\uB4DC \uC694\uC0C8",
+    shape: "fortress",
+    feature: "The ruins of a fortified mountain capital preserve the remains of a monumental mosque",
+    featureKo: "\uC0B0\uC545 \uC131\uACFD \uC218\uB3C4\uC758 \uC720\uC801\uC5D0 \uAC70\uB300\uD55C \uBAA8\uC2A4\uD06C\uC758 \uD754\uC801\uC774 \uB0A8\uC544 \uC788\uC2B5\uB2C8\uB2E4",
+    seed: 315,
+    color: "#b69772"
+  },
+  {
+    id: "tassili",
+    name: "Tassili n'Ajjer",
+    nameKo: "\uD0C0\uC2E4\uB9AC\uB098\uC81C\uB974",
+    shape: "redrocks",
+    feature: "Sandstone formations and rock art record environmental and human changes in the Sahara",
+    featureKo: "\uC0AC\uC554 \uC9C0\uD615\uACFC \uC554\uAC01\uD654\uAC00 \uC0AC\uD558\uB77C\uC758 \uD658\uACBD\uACFC \uC778\uAC04 \uC0DD\uD65C \uBCC0\uD654\uB97C \uC804\uD569\uB2C8\uB2E4",
+    seed: 316,
+    color: "#c4ac88"
+  },
+  {
+    id: "mzab",
+    name: "M'Zab Valley",
+    nameKo: "\uBBC0\uC790\uBE0C \uACC4\uACE1",
+    shape: "adobe",
+    feature: "Compact fortified oasis towns are arranged around distinctive mosque minarets",
+    featureKo: "\uC791\uACE0 \uC870\uBC00\uD55C \uC624\uC544\uC2DC\uC2A4 \uC131\uACFD\uB3C4\uC2DC\uB4E4\uC774 \uB3C5\uD2B9\uD55C \uBAA8\uC2A4\uD06C \uBBF8\uB098\uB808\uD2B8\uB97C \uC911\uC2EC\uC73C\uB85C \uBAA8\uC5EC \uC788\uC2B5\uB2C8\uB2E4",
+    seed: 317,
+    color: "#aeb9a0"
+  },
+  {
+    id: "djemila",
+    name: "Dj\xE9mila",
+    nameKo: "\uC81C\uBC00\uB77C",
+    shape: "ruins",
+    feature: "Roman forums, temples and houses adapt an ancient town to a mountain setting",
+    featureKo: "\uB85C\uB9C8 \uC2DC\uB300\uC758 \uAD11\uC7A5\uACFC \uC2E0\uC804, \uC8FC\uD0DD\uC774 \uC0B0\uC545 \uC9C0\uD615\uC5D0 \uB9DE\uCD94\uC5B4 \uC790\uB9AC\uD569\uB2C8\uB2E4",
+    seed: 318,
+    color: "#bc8b70"
+  },
+  {
+    id: "tipasa",
+    name: "Tipasa",
+    nameKo: "\uD2F0\uD30C\uC0AC",
+    shape: "ruins",
+    feature: "Roman and early Christian ruins overlook the Mediterranean along an ancient trading shore",
+    featureKo: "\uC9C0\uC911\uD574\uC758 \uC61B \uAD50\uC5ED \uD574\uC548\uC5D0 \uB85C\uB9C8\uC640 \uCD08\uAE30 \uAE30\uB3C5\uAD50 \uC720\uC801\uC774 \uB0A8\uC544 \uC788\uC2B5\uB2C8\uB2E4",
+    seed: 319,
+    color: "#8baba4"
+  },
+  {
+    id: "asmara",
+    name: "Asmara",
+    nameKo: "\uC544\uC2A4\uB9C8\uB77C",
+    shape: "modern",
+    feature: "An African capital preserves an extensive ensemble of early modernist urban architecture",
+    featureKo: "\uC544\uD504\uB9AC\uCE74\uC758 \uC218\uB3C4\uC5D0 \uCD08\uAE30 \uBAA8\uB354\uB2C8\uC998 \uB3C4\uC2DC \uAC74\uCD95\uC774 \uB113\uAC8C \uB0A8\uC544 \uC788\uC2B5\uB2C8\uB2E4",
+    seed: 320,
+    color: "#d3b17c"
+  },
+  {
+    id: "fasilghebbi",
+    name: "Fasil Ghebbi",
+    nameKo: "\uD30C\uC2E4\uAC8C\uBE44",
+    shape: "castle",
+    feature: "Stone castles and palaces fill the royal enclosure of Ethiopia's former capital Gondar",
+    featureKo: "\uC5D0\uD2F0\uC624\uD53C\uC544\uC758 \uC61B \uC218\uB3C4 \uACE4\uB2E4\uB974 \uC655\uC2E4 \uAD6C\uC5ED\uC5D0 \uC11D\uC870 \uC131\uACFC \uAD81\uC804\uB4E4\uC774 \uB4E4\uC5B4\uC11C \uC788\uC2B5\uB2C8\uB2E4",
+    seed: 321,
+    color: "#b7a28c"
+  },
+  {
+    id: "harar",
+    name: "Harar Jugol",
+    nameKo: "\uD558\uB77C\uB974 \uC8FC\uACE8",
+    shape: "town",
+    feature: "A walled Islamic city preserves numerous mosques, shrines and traditional town houses",
+    featureKo: "\uC131\uBCBD\uC744 \uB450\uB978 \uC774\uC2AC\uB78C \uB3C4\uC2DC\uC5D0 \uB9CE\uC740 \uBAA8\uC2A4\uD06C\uC640 \uC131\uC18C, \uC804\uD1B5 \uC8FC\uD0DD\uC774 \uB0A8\uC544 \uC788\uC2B5\uB2C8\uB2E4",
+    seed: 322,
+    color: "#829b8a"
+  },
+  {
+    id: "balemountains",
+    name: "Bale Mountains",
+    nameKo: "\uBC1C\uB808\uC0B0\uB9E5",
+    shape: "peaks",
+    feature: "High plateaux, peaks and forests shelter endemic wildlife in Ethiopia's mountain landscape",
+    featureKo: "\uC5D0\uD2F0\uC624\uD53C\uC544 \uC0B0\uC545 \uACBD\uAD00\uC758 \uACE0\uC6D0\uACFC \uBD09\uC6B0\uB9AC, \uC232\uC5D0 \uACE0\uC720 \uC57C\uC0DD\uB3D9\uBB3C\uC774 \uC0B4\uC544\uAC11\uB2C8\uB2E4",
+    seed: 323,
+    color: "#bca6a0"
+  },
+  {
+    id: "asante",
+    name: "Asante Traditional Buildings",
+    nameKo: "\uC544\uC0E8\uD2F0 \uC804\uD1B5\uAC74\uCD95",
+    shape: "adobe",
+    feature: "Earth, timber and thatch buildings preserve the architectural traditions of Asante culture",
+    featureKo: "\uD759\uACFC \uB098\uBB34, \uC774\uC5C9\uC73C\uB85C \uC9C0\uC740 \uAC74\uBB3C\uB4E4\uC774 \uC544\uC0E8\uD2F0 \uBB38\uD654\uC758 \uAC74\uCD95 \uC804\uD1B5\uC744 \uAC04\uC9C1\uD558\uACE0 \uC788\uC2B5\uB2C8\uB2E4",
+    seed: 324,
+    color: "#b69772"
+  },
+  {
+    id: "mountkenya",
+    name: "Mount Kenya",
+    nameKo: "\uCF00\uB0D0\uC0B0",
+    shape: "peaks",
+    feature: "A deeply eroded ancient volcano carries rugged peaks, glaciers and alpine vegetation",
+    featureKo: "\uC624\uB798\uB41C \uD654\uC0B0\uC774 \uCE68\uC2DD\uB41C \uC0B0 \uC704\uC5D0 \uD5D8\uC900\uD55C \uBD09\uC6B0\uB9AC\uC640 \uBE59\uD558, \uACE0\uC0B0 \uC2DD\uC0DD\uC774 \uB0A8\uC544 \uC788\uC2B5\uB2C8\uB2E4",
+    seed: 325,
+    color: "#c4ac88"
+  },
+  {
+    id: "turkana",
+    name: "Lake Turkana",
+    nameKo: "\uD22C\uB974\uCE74\uB098\uD638",
+    shape: "lakes",
+    feature: "Desert lake parks protect breeding grounds for crocodiles, hippos and migratory birds",
+    featureKo: "\uC0AC\uB9C9 \uD638\uC218\uC758 \uACF5\uC6D0\uB4E4\uC774 \uC545\uC5B4\uC640 \uD558\uB9C8, \uCCA0\uC0C8\uC758 \uBC88\uC2DD\uC9C0\uB97C \uC9C0\uD0B5\uB2C8\uB2E4",
+    seed: 326,
+    color: "#aeb9a0"
+  },
+  {
+    id: "lamu",
+    name: "Lamu Old Town",
+    nameKo: "\uB77C\uBB34 \uAD6C\uC2DC\uAC00\uC9C0",
+    shape: "town",
+    feature: "Coral-stone and mangrove-timber houses preserve a Swahili town on the East African coast",
+    featureKo: "\uC0B0\uD638\uC11D\uACFC \uB9F9\uADF8\uB85C\uBE0C \uBAA9\uC7AC\uB85C \uC9C0\uC740 \uC8FC\uD0DD\uB4E4\uC774 \uB3D9\uC544\uD504\uB9AC\uCE74\uC758 \uC2A4\uC640\uD790\uB9AC \uB3C4\uC2DC\uB97C \uC774\uB8E8\uACE0 \uC788\uC2B5\uB2C8\uB2E4",
+    seed: 327,
+    color: "#bc8b70"
+  },
+  {
+    id: "fortjesus",
+    name: "Fort Jesus",
+    nameKo: "\uD3EC\uD2B8\uC9C0\uC800\uC2A4",
+    shape: "fortress",
+    feature: "A Portuguese-built fort guards the old harbour entrance at Mombasa",
+    featureKo: "\uD3EC\uB974\uD22C\uAC08\uC778\uC774 \uC9C0\uC740 \uC694\uC0C8\uAC00 \uBAB8\uBC14\uC0AC\uC758 \uC61B \uD56D\uAD6C \uC785\uAD6C\uB97C \uC9C0\uD0A4\uACE0 \uC788\uC2B5\uB2C8\uB2E4",
+    seed: 328,
+    color: "#8baba4"
+  },
+  {
+    id: "thimlich",
+    name: "Thimlich Ohinga",
+    nameKo: "\uD300\uB9AC\uCE58 \uC624\uD79D\uAC00",
+    shape: "fortress",
+    feature: "Dry-stone enclosures preserve a fortified settlement near Lake Victoria",
+    featureKo: "\uBE45\uD1A0\uB9AC\uC544\uD638 \uADFC\uCC98\uC5D0 \uB3CC\uC744 \uC313\uC544 \uB450\uB978 \uC131\uACFD \uC815\uCC29\uC9C0\uAC00 \uB0A8\uC544 \uC788\uC2B5\uB2C8\uB2E4",
+    seed: 329,
+    color: "#d3b17c"
+  },
+  {
+    id: "ambohimanga",
+    name: "Royal Hill of Ambohimanga",
+    nameKo: "\uC554\uBCF4\uD788\uB9DD\uAC00 \uC655\uC2E4\uC5B8\uB355",
+    shape: "palace",
+    feature: "A fortified royal city and burial places occupy a sacred wooded hill",
+    featureKo: "\uC232\uC73C\uB85C \uB36E\uC778 \uC131\uC2A4\uB7EC\uC6B4 \uC5B8\uB355\uC5D0 \uC655\uC2E4 \uC131\uACFD\uB3C4\uC2DC\uC640 \uBB34\uB364\uB4E4\uC774 \uC790\uB9AC\uD569\uB2C8\uB2E4",
+    seed: 330,
+    color: "#b7a28c"
+  },
+  {
+    id: "atsinanana",
+    name: "Atsinanana Rainforests",
+    nameKo: "\uC544\uCE58\uB098\uB098\uB098 \uC6B0\uB9BC",
+    shape: "forest",
+    feature: "Eastern Madagascar's rainforests protect ancient lineages of plants and endemic animals",
+    featureKo: "\uB9C8\uB2E4\uAC00\uC2A4\uCE74\uB974 \uB3D9\uBD80 \uC6B0\uB9BC\uC774 \uC624\uB79C \uC2DD\uBB3C \uACC4\uD1B5\uACFC \uACE0\uC720 \uB3D9\uBB3C\uB4E4\uC744 \uC9C0\uD0B5\uB2C8\uB2E4",
+    seed: 331,
+    color: "#829b8a"
+  },
+  {
+    id: "timbuktu",
+    name: "Timbuktu",
+    nameKo: "\uD300\uBD81\uD22C",
+    shape: "mosque",
+    feature: "Earthen mosques recall the city's role as a centre of Islamic learning and trans-Saharan trade",
+    featureKo: "\uD759\uC73C\uB85C \uC9C0\uC740 \uBAA8\uC2A4\uD06C\uB4E4\uC774 \uC774\uC2AC\uB78C \uD559\uBB38\uACFC \uC0AC\uD558\uB77C \uAD50\uC5ED \uC911\uC2EC\uC9C0\uC600\uB358 \uB3C4\uC2DC\uC758 \uC5ED\uC0AC\uB97C \uC804\uD569\uB2C8\uB2E4",
+    seed: 332,
+    color: "#bca6a0"
+  },
+  {
+    id: "bandiagara",
+    name: "Cliff of Bandiagara",
+    nameKo: "\uBC18\uB514\uC544\uAC00\uB77C \uC808\uBCBD",
+    shape: "cliff",
+    feature: "Dogon villages and granaries occupy a dramatic landscape of cliffs and sandy plateaux",
+    featureKo: "\uC808\uBCBD\uACFC \uBAA8\uB798 \uACE0\uC6D0\uC774 \uC5B4\uC6B0\uB7EC\uC9C4 \uACBD\uAD00\uC5D0 \uB3C4\uACE4\uC871 \uB9C8\uC744\uACFC \uACE1\uBB3C \uCC3D\uACE0\uAC00 \uC790\uB9AC\uD569\uB2C8\uB2E4",
+    seed: 333,
+    color: "#b69772"
+  },
+  {
+    id: "askia",
+    name: "Tomb of Askia",
+    nameKo: "\uC544\uC2A4\uD0A4\uC544 \uBB34\uB364",
+    shape: "pyramid",
+    feature: "A pyramidal earthen tomb and mosque complex stand in the historic city of Gao",
+    featureKo: "\uAC00\uC624\uC758 \uC5ED\uC0AC \uB3C4\uC2DC\uC5D0 \uD53C\uB77C\uBBF8\uB4DC \uBAA8\uC591 \uD759 \uBB34\uB364\uACFC \uBAA8\uC2A4\uD06C \uB2E8\uC9C0\uAC00 \uB0A8\uC544 \uC788\uC2B5\uB2C8\uB2E4",
+    seed: 334,
+    color: "#c4ac88"
+  },
+  {
+    id: "bancarguin",
+    name: "Banc d'Arguin",
+    nameKo: "\uBC29\uB2E4\uB974\uAC31",
+    shape: "coast",
+    feature: "Coastal dunes, islands and shallow waters shelter immense gatherings of migratory birds",
+    featureKo: "\uD574\uC548 \uC0AC\uAD6C\uC640 \uC12C, \uC595\uC740 \uBC14\uB2E4\uAC00 \uC218\uB9CE\uC740 \uCCA0\uC0C8\uC5D0\uAC8C \uC27C\uD130\uB97C \uC81C\uACF5\uD569\uB2C8\uB2E4",
+    seed: 335,
+    color: "#aeb9a0"
+  },
+  {
+    id: "lemorne",
+    name: "Le Morne",
+    nameKo: "\uB974\uBAA8\uB978",
+    shape: "cliff",
+    feature: "A rugged mountain overlooking the ocean recalls the refuge sought by escaped enslaved people",
+    featureKo: "\uBC14\uB2E4\uB97C \uB0B4\uB824\uB2E4\uBCF4\uB294 \uD5D8\uC900\uD55C \uC0B0\uC774 \uD0C8\uCD9C\uD55C \uB178\uC608\uB4E4\uC774 \uCC3E\uC558\uB358 \uD53C\uB09C\uCC98\uC758 \uC5ED\uC0AC\uB97C \uC804\uD569\uB2C8\uB2E4",
+    seed: 336,
+    color: "#bc8b70"
+  },
+  {
+    id: "lakemalawi",
+    name: "Lake Malawi National Park",
+    nameKo: "\uB9D0\uB77C\uC704\uD638 \uAD6D\uB9BD\uACF5\uC6D0",
+    shape: "lakes",
+    feature: "Clear lake waters and rocky shores support an exceptional diversity of freshwater fish",
+    featureKo: "\uB9D1\uC740 \uD638\uC218\uC640 \uBC14\uC704 \uD574\uC548\uC5D0 \uB9E4\uC6B0 \uB2E4\uC591\uD55C \uB2F4\uC218\uC5B4\uAC00 \uC0B4\uC544\uAC11\uB2C8\uB2E4",
+    seed: 337,
+    color: "#8baba4"
+  },
+  {
+    id: "mozambiqueisland",
+    name: "Island of Mozambique",
+    nameKo: "\uBAA8\uC7A0\uBE44\uD06C\uC12C",
+    shape: "coast",
+    feature: "Stone-built houses and fortifications recall a historic maritime trading centre",
+    featureKo: "\uC11D\uC870 \uC8FC\uD0DD\uACFC \uBC29\uC5B4\uC2DC\uC124\uC774 \uC61B \uD574\uC0C1 \uAD50\uC5ED \uC911\uC2EC\uC9C0\uC758 \uC5ED\uC0AC\uB97C \uC804\uD569\uB2C8\uB2E4",
+    seed: 338,
+    color: "#d3b17c"
+  },
+  {
+    id: "twyfelfontein",
+    name: "Twyfelfontein",
+    nameKo: "\uD2B8\uC704\uD3A0\uD3F0\uD14C\uC778",
+    shape: "redrocks",
+    feature: "Rock engravings depicting animals survive in a dry sandstone landscape",
+    featureKo: "\uBA54\uB9C8\uB978 \uC0AC\uC554 \uACBD\uAD00\uC5D0 \uB3D9\uBB3C\uC744 \uC0C8\uAE34 \uC554\uAC01\uD654\uB4E4\uC774 \uB0A8\uC544 \uC788\uC2B5\uB2C8\uB2E4",
+    seed: 339,
+    color: "#b7a28c"
+  },
+  {
+    id: "agadez",
+    name: "Agadez",
+    nameKo: "\uC544\uAC00\uB370\uC988",
+    shape: "minaret",
+    feature: "An earthen minaret rises above a Saharan trading town of traditional mud-brick houses",
+    featureKo: "\uC804\uD1B5 \uD759\uBCBD\uB3CC \uC8FC\uD0DD\uC774 \uBAA8\uC778 \uC0AC\uD558\uB77C \uAD50\uC5ED\uB3C4\uC2DC \uC704\uB85C \uD759 \uBBF8\uB098\uB808\uD2B8\uAC00 \uC19F\uC544 \uC788\uC2B5\uB2C8\uB2E4",
+    seed: 340,
+    color: "#829b8a"
+  },
+  {
+    id: "osunosogbo",
+    name: "Osun-Osogbo Sacred Grove",
+    nameKo: "\uC624\uC21C\uC624\uC1FC\uADF8\uBCF4 \uC131\uB9BC",
+    shape: "forest",
+    feature: "Sacred forest, shrines and sculptures line the Osun River near Osogbo",
+    featureKo: "\uC624\uC1FC\uADF8\uBCF4 \uADFC\uCC98 \uC624\uC21C\uAC15\uC744 \uB530\uB77C \uC131\uC2A4\uB7EC\uC6B4 \uC232\uACFC \uC131\uC18C, \uC870\uAC01\uB4E4\uC774 \uC790\uB9AC\uD569\uB2C8\uB2E4",
+    seed: 341,
+    color: "#bca6a0"
+  },
+  {
+    id: "aldabra",
+    name: "Aldabra Atoll",
+    nameKo: "\uC54C\uB2E4\uBE0C\uB77C \uD658\uCD08",
+    shape: "reef",
+    feature: "Coral islands surround a shallow lagoon that supports a large giant-tortoise population",
+    featureKo: "\uC0B0\uD638\uC12C\uB4E4\uC774 \uB9CE\uC740 \uAC70\uBD81\uC774 \uC0B4\uC544\uAC00\uB294 \uC595\uC740 \uC11D\uD638\uB97C \uB458\uB7EC\uC2F8\uACE0 \uC788\uC2B5\uB2C8\uB2E4",
+    seed: 342,
+    color: "#b69772"
+  },
+  {
+    id: "valleedemai",
+    name: "Vall\xE9e de Mai",
+    nameKo: "\uBC1C\uB808\uB4DC\uBA54",
+    shape: "forest",
+    feature: "A remnant palm forest preserves the distinctive coco-de-mer palm",
+    featureKo: "\uB0A8\uC544 \uC788\uB294 \uC57C\uC790 \uC232\uC5D0 \uB3C5\uD2B9\uD55C \uCF54\uCF54\uB4DC\uBA54\uB974 \uC57C\uC790\uAC00 \uC790\uB77C\uACE0 \uC788\uC2B5\uB2C8\uB2E4",
+    seed: 343,
+    color: "#c4ac88"
+  },
+  {
+    id: "sanganeb",
+    name: "Sanganeb Marine Parks",
+    nameKo: "\uC0B0\uAC00\uB124\uBE0C \uD574\uC591\uACF5\uC6D0",
+    shape: "reef",
+    feature: "Red Sea coral reefs, islands and lagoons shelter diverse marine life",
+    featureKo: "\uD64D\uD574\uC758 \uC0B0\uD638\uCD08\uC640 \uC12C, \uC11D\uD638\uC5D0 \uB2E4\uC591\uD55C \uD574\uC591\uC0DD\uBB3C\uC774 \uC0B4\uC544\uAC11\uB2C8\uB2E4",
+    seed: 344,
+    color: "#aeb9a0"
+  },
+  {
+    id: "djoudj",
+    name: "Djoudj Bird Sanctuary",
+    nameKo: "\uC8FC\uC9C0 \uC870\uB958\uBCF4\uD638\uAD6C\uC5ED",
+    shape: "wetland",
+    feature: "Wetlands at the Senegal River delta provide a refuge for migratory waterbirds",
+    featureKo: "\uC138\uB124\uAC08\uAC15 \uC0BC\uAC01\uC8FC\uC758 \uC2B5\uC9C0\uAC00 \uCCA0\uC0C8 \uBB3C\uC0C8\uB4E4\uC5D0\uAC8C \uC27C\uD130\uAC00 \uB429\uB2C8\uB2E4",
+    seed: 345,
+    color: "#bc8b70"
+  },
+  {
+    id: "saintlouis",
+    name: "Island of Saint-Louis",
+    nameKo: "\uC0DD\uB8E8\uC774\uC12C",
+    shape: "town",
+    feature: "A planned historic town occupies an island near the mouth of the Senegal River",
+    featureKo: "\uC138\uB124\uAC08\uAC15 \uD558\uAD6C \uADFC\uCC98\uC758 \uC12C\uC5D0 \uACC4\uD68D\uC801\uC73C\uB85C \uC870\uC131\uD55C \uC5ED\uC0AC \uB3C4\uC2DC\uAC00 \uB0A8\uC544 \uC788\uC2B5\uB2C8\uB2E4",
+    seed: 346,
+    color: "#8baba4"
+  },
+  {
+    id: "saloum",
+    name: "Saloum Delta",
+    nameKo: "\uC0B4\uB8F8 \uC0BC\uAC01\uC8FC",
+    shape: "mangrove",
+    feature: "Brackish channels, mangrove islands and shell mounds form a coastal cultural landscape",
+    featureKo: "\uAE30\uC218 \uBB3C\uAE38\uACFC \uB9F9\uADF8\uB85C\uBE0C\uC12C, \uC870\uAC1C\uBB34\uC9C0\uAC00 \uD574\uC548\uC758 \uBB38\uD654 \uACBD\uAD00\uC744 \uC774\uB8F9\uB2C8\uB2E4",
+    seed: 347,
+    color: "#d3b17c"
+  },
+  {
+    id: "ounianga",
+    name: "Lakes of Ounianga",
+    nameKo: "\uC6B0\uB2C8\uC559\uAC00 \uD638\uC218\uAD70",
+    shape: "lakes",
+    feature: "Permanent desert lakes lie between dunes and sandstone formations in the Sahara",
+    featureKo: "\uC0AC\uD558\uB77C\uC758 \uC0AC\uAD6C\uC640 \uC0AC\uC554 \uC9C0\uD615 \uC0AC\uC774\uC5D0 \uB9C8\uB974\uC9C0 \uC54A\uB294 \uC0AC\uB9C9 \uD638\uC218\uB4E4\uC774 \uC790\uB9AC\uD569\uB2C8\uB2E4",
+    seed: 348,
+    color: "#b7a28c"
+  },
+  {
+    id: "ennedi",
+    name: "Ennedi Massif",
+    nameKo: "\uC5D4\uB124\uB514 \uC0B0\uAD34",
+    shape: "redrocks",
+    feature: "Sandstone arches and pillars rise above desert valleys containing rock art",
+    featureKo: "\uC554\uAC01\uD654\uAC00 \uB0A8\uC740 \uC0AC\uB9C9 \uACC4\uACE1 \uC704\uB85C \uC0AC\uC554 \uC544\uCE58\uC640 \uAE30\uB465\uC774 \uC19F\uC544 \uC788\uC2B5\uB2C8\uB2E4",
+    seed: 349,
+    color: "#829b8a"
+  },
+  {
+    id: "ichkeul",
+    name: "Ichkeul National Park",
+    nameKo: "\uC774\uC288\uCF08 \uAD6D\uB9BD\uACF5\uC6D0",
+    shape: "wetland",
+    feature: "A lake and marshes provide a seasonal stopping place for migrating waterbirds",
+    featureKo: "\uD638\uC218\uC640 \uC2B5\uC9C0\uAC00 \uC774\uB3D9\uD558\uB294 \uBB3C\uC0C8\uB4E4\uC758 \uACC4\uC808 \uC27C\uD130\uAC00 \uB429\uB2C8\uB2E4",
+    seed: 350,
+    color: "#bca6a0"
+  },
+  {
+    id: "kilwa",
+    name: "Kilwa Kisiwani and Songo Mnara",
+    nameKo: "\uD0AC\uC640\uD0A4\uC2DC\uC640\uB2C8\uC640 \uC1A1\uACE0\uBBC0\uB098\uB77C",
+    shape: "ruins",
+    feature: "Mosque and palace ruins recall prosperous Swahili trading towns on offshore islands",
+    featureKo: "\uC55E\uBC14\uB2E4 \uC12C\uC758 \uBAA8\uC2A4\uD06C\uC640 \uAD81\uC804 \uC720\uC801\uC774 \uBC88\uC601\uD588\uB358 \uC2A4\uC640\uD790\uB9AC \uAD50\uC5ED\uB3C4\uC2DC\uB97C \uBCF4\uC5EC \uC90D\uB2C8\uB2E4",
+    seed: 351,
+    color: "#b69772"
+  },
+  {
+    id: "bwindi",
+    name: "Bwindi Impenetrable Forest",
+    nameKo: "\uBE0C\uC708\uB514 \uC6D0\uC2DC\uB9BC",
+    shape: "forest",
+    feature: "Dense montane forest shelters mountain gorillas and exceptionally rich plant life",
+    featureKo: "\uC6B8\uCC3D\uD55C \uC0B0\uC9C0\uB9BC\uC5D0 \uB9C8\uC6B4\uD2F4\uACE0\uB9B4\uB77C\uC640 \uB2E4\uC591\uD55C \uC2DD\uBB3C\uC774 \uC0B4\uC544\uAC11\uB2C8\uB2E4",
+    seed: 352,
+    color: "#c4ac88"
+  },
+  {
+    id: "rwenzori",
+    name: "Rwenzori Mountains",
+    nameKo: "\uB974\uC6EC\uC870\uB9AC\uC0B0\uB9E5",
+    shape: "glacier",
+    feature: "Equatorial mountains carry glaciers above moorlands and distinctive high-altitude vegetation",
+    featureKo: "\uC801\uB3C4\uC758 \uC0B0 \uC704\uC5D0\uC11C \uBE59\uD558\uAC00 \uD669\uC57C\uC640 \uB3C5\uD2B9\uD55C \uACE0\uC0B0 \uC2DD\uC0DD \uC704\uB85C \uD3BC\uCCD0\uC9D1\uB2C8\uB2E4",
+    seed: 353,
+    color: "#aeb9a0"
+  },
+  {
+    id: "capefloral",
+    name: "Cape Floral Region",
+    nameKo: "\uCF00\uC774\uD504 \uC2DD\uBB3C\uAD6C",
+    shape: "garden",
+    feature: "Fynbos shrublands contain an extraordinary concentration of endemic plant species",
+    featureKo: "\uD540\uBCF4\uC2A4 \uAD00\uBAA9\uC9C0\uB300\uC5D0 \uC774 \uC9C0\uC5ED\uC5D0\uC11C\uB9CC \uC790\uB77C\uB294 \uC218\uB9CE\uC740 \uC2DD\uBB3C\uC885\uC774 \uBAA8\uC5EC \uC788\uC2B5\uB2C8\uB2E4",
+    seed: 354,
+    color: "#bc8b70"
+  },
+  {
+    id: "mapungubwe",
+    name: "Mapungubwe",
+    nameKo: "\uB9C8\uD48D\uAD6C\uBE0C\uC6E8",
+    shape: "cliff",
+    feature: "A sandstone hill and archaeological remains recall a southern African trading kingdom",
+    featureKo: "\uC0AC\uC554 \uC5B8\uB355\uACFC \uACE0\uACE0 \uC720\uC801\uC774 \uB0A8\uBD80 \uC544\uD504\uB9AC\uCE74 \uAD50\uC5ED\uC655\uAD6D\uC758 \uC5ED\uC0AC\uB97C \uC804\uD569\uB2C8\uB2E4",
+    seed: 355,
+    color: "#8baba4"
+  },
+  {
+    id: "manapools",
+    name: "Mana Pools",
+    nameKo: "\uB9C8\uB098\uD480\uC2A4",
+    shape: "wetland",
+    feature: "Floodplain pools beside the Zambezi support elephants and many other large animals",
+    featureKo: "\uC7A0\uBCA0\uC9C0\uAC15 \uC606 \uBC94\uB78C\uC6D0\uC758 \uC6C5\uB369\uC774\uC5D0 \uCF54\uB07C\uB9AC \uB4F1 \uB9CE\uC740 \uB300\uD615 \uB3D9\uBB3C\uC774 \uBAA8\uC5EC\uB4ED\uB2C8\uB2E4",
+    seed: 356,
+    color: "#d3b17c"
+  },
+  {
+    id: "matobo",
+    name: "Matobo Hills",
+    nameKo: "\uB9C8\uD1A0\uBCF4 \uC5B8\uB355",
+    shape: "redrocks",
+    feature: "Granite formations and rock paintings mark a landscape with enduring spiritual significance",
+    featureKo: "\uD654\uAC15\uC554 \uC9C0\uD615\uACFC \uC554\uBCBD\uD654\uAC00 \uC624\uB7AB\uB3D9\uC548 \uC2E0\uC559\uC758 \uC758\uBBF8\uB97C \uC9C0\uB2CC \uACBD\uAD00\uC5D0 \uB0A8\uC544 \uC788\uC2B5\uB2C8\uB2E4",
+    seed: 357,
+    color: "#b7a28c"
+  },
+  {
+    id: "khami",
+    name: "Khami Ruins",
+    nameKo: "\uCE74\uBBF8 \uC720\uC801",
+    shape: "ruins",
+    feature: "Terraced dry-stone walls preserve the remains of a former southern African capital",
+    featureKo: "\uACC4\uB2E8\uC2DD\uC73C\uB85C \uC313\uC740 \uC11D\uBCBD\uC5D0 \uB0A8\uBD80 \uC544\uD504\uB9AC\uCE74 \uC61B \uC218\uB3C4\uC758 \uD754\uC801\uC774 \uB0A8\uC544 \uC788\uC2B5\uB2C8\uB2E4",
+    seed: 358,
+    color: "#829b8a"
+  },
+  {
+    id: "antiguadockyard",
+    name: "Antigua Naval Dockyard",
+    nameKo: "\uC564\uD2F0\uAC00 \uD574\uAD70\uC870\uC120\uC18C",
+    shape: "harbor",
+    feature: "Georgian naval buildings and dockyard structures stand within a sheltered Caribbean harbour",
+    featureKo: "\uCE74\uB9AC\uBE0C\uD574\uC758 \uC544\uB291\uD55C \uD56D\uAD6C\uC5D0 \uC870\uC9C0 \uC655\uC870 \uC2DC\uB300 \uD574\uAD70 \uAC74\uBB3C\uACFC \uC870\uC120\uC18C \uC2DC\uC124\uC774 \uB0A8\uC544 \uC788\uC2B5\uB2C8\uB2E4",
+    seed: 359,
+    color: "#bca6a0"
+  },
+  {
+    id: "bridgetown",
+    name: "Historic Bridgetown",
+    nameKo: "\uBE0C\uB9AC\uC9C0\uD0C0\uC6B4 \uC5ED\uC0AC\uB3C4\uC2DC",
+    shape: "town",
+    feature: "A historic port and garrison preserve an early British colonial urban layout in the Caribbean",
+    featureKo: "\uCE74\uB9AC\uBE0C\uD574\uC758 \uC61B \uD56D\uAD6C\uC640 \uC8FC\uB454\uC9C0\uC5D0 \uCD08\uAE30 \uC601\uAD6D \uC2DD\uBBFC\uB3C4\uC2DC\uC758 \uBC30\uCE58\uAC00 \uB0A8\uC544 \uC788\uC2B5\uB2C8\uB2E4",
+    seed: 360,
+    color: "#b69772"
+  },
+  {
+    id: "potosi",
+    name: "Potos\xED",
+    nameKo: "\uD3EC\uD1A0\uC2DC",
+    shape: "mine",
+    feature: "A mining city below Cerro Rico preserves the legacy of large-scale silver extraction",
+    featureKo: "\uC138\uB85C\uB9AC\uCF54 \uC544\uB798\uC758 \uAD11\uC0B0\uB3C4\uC2DC\uAC00 \uB300\uADDC\uBAA8 \uC740 \uCC44\uAD74\uC758 \uD754\uC801\uC744 \uAC04\uC9C1\uD558\uACE0 \uC788\uC2B5\uB2C8\uB2E4",
+    seed: 361,
+    color: "#c4ac88"
+  },
+  {
+    id: "sucre",
+    name: "Historic Sucre",
+    nameKo: "\uC218\uD06C\uB808 \uC5ED\uC0AC\uB3C4\uC2DC",
+    shape: "town",
+    feature: "Whitewashed churches and historic civic buildings preserve Bolivia's early capital",
+    featureKo: "\uD770 \uD68C\uBCBD \uAD50\uD68C\uC640 \uC61B \uACF5\uACF5\uAC74\uBB3C\uC774 \uBCFC\uB9AC\uBE44\uC544 \uCD08\uAE30 \uC218\uB3C4\uC758 \uBAA8\uC2B5\uC744 \uAC04\uC9C1\uD558\uACE0 \uC788\uC2B5\uB2C8\uB2E4",
+    seed: 362,
+    color: "#aeb9a0"
+  },
+  {
+    id: "samaipata",
+    name: "Fuerte de Samaipata",
+    nameKo: "\uC0AC\uB9C8\uC774\uD30C\uD0C0 \uC694\uC0C8",
+    shape: "rocktemple",
+    feature: "A great carved rock and surrounding remains record pre-Hispanic ceremonial traditions",
+    featureKo: "\uAC70\uB300\uD55C \uC870\uAC01 \uBC14\uC704\uC640 \uC8FC\uBCC0 \uC720\uC801\uC774 \uC5D0\uC2A4\uD30C\uB0D0 \uC9C4\uCD9C \uC774\uC804\uC758 \uC758\uB840 \uC804\uD1B5\uC744 \uC804\uD569\uB2C8\uB2E4",
+    seed: 363,
+    color: "#bc8b70"
+  },
+  {
+    id: "noelkempff",
+    name: "Noel Kempff Mercado",
+    nameKo: "\uB178\uC5D8\uCF10\uD504\uBA54\uB974\uCE74\uB3C4",
+    shape: "forest",
+    feature: "Forest, savanna and escarpments protect varied ecosystems at the edge of the Amazon basin",
+    featureKo: "\uC544\uB9C8\uC874 \uBD84\uC9C0 \uAC00\uC7A5\uC790\uB9AC\uC758 \uC232\uACFC \uC0AC\uBC14\uB098, \uAE09\uACBD\uC0AC \uC9C0\uD615\uC774 \uB2E4\uC591\uD55C \uC0DD\uD0DC\uACC4\uB97C \uC9C0\uD0B5\uB2C8\uB2E4",
+    seed: 364,
+    color: "#8baba4"
+  },
+  {
+    id: "olinda",
+    name: "Historic Olinda",
+    nameKo: "\uC62C\uB9B0\uB2E4 \uC5ED\uC0AC\uB3C4\uC2DC",
+    shape: "town",
+    feature: "Churches and colourful houses fill a hillside town shaped by the sugar economy",
+    featureKo: "\uC124\uD0D5 \uACBD\uC81C\uB85C \uC131\uC7A5\uD55C \uC5B8\uB355 \uB3C4\uC2DC\uC5D0 \uAD50\uD68C\uC640 \uB2E4\uCC44\uB85C\uC6B4 \uC8FC\uD0DD\uC774 \uBAA8\uC5EC \uC788\uC2B5\uB2C8\uB2E4",
+    seed: 365,
+    color: "#d3b17c"
+  },
+  {
+    id: "congonhas",
+    name: "Bom Jesus do Congonhas",
+    nameKo: "\uCF69\uACE0\uB0D0\uC2A4 \uBD09\uC81C\uC218\uC2A4 \uC131\uC5ED",
+    shape: "basilica",
+    feature: "A pilgrimage sanctuary displays Baroque sculptures along its stairway and chapels",
+    featureKo: "\uC21C\uB840 \uC131\uC5ED\uC758 \uACC4\uB2E8\uACFC \uC608\uBC30\uB2F9\uC744 \uB530\uB77C \uBC14\uB85C\uD06C \uC870\uAC01\uB4E4\uC774 \uC790\uB9AC\uD569\uB2C8\uB2E4",
+    seed: 366,
+    color: "#b7a28c"
+  },
+  {
+    id: "pantanal",
+    name: "Pantanal Conservation Area",
+    nameKo: "\uD310\uD0C0\uB098\uC6B0 \uBCF4\uD638\uC9C0\uC5ED",
+    shape: "wetland",
+    feature: "Seasonal floodwaters create a mosaic of wetlands rich in aquatic and terrestrial wildlife",
+    featureKo: "\uACC4\uC808\uB9C8\uB2E4 \uB118\uCE58\uB294 \uBB3C\uC774 \uC218\uC0DD\xB7\uC721\uC0C1 \uB3D9\uBB3C\uC774 \uD48D\uBD80\uD55C \uC2B5\uC9C0 \uACBD\uAD00\uC744 \uB9CC\uB4ED\uB2C8\uB2E4",
+    seed: 367,
+    color: "#829b8a"
+  },
+  {
+    id: "fernandonoronha",
+    name: "Fernando de Noronha and Atol das Rocas",
+    nameKo: "\uD398\uB974\uB09C\uB450\uC9C0\uB178\uB85C\uB0D0\uC640 \uD638\uCE74\uC2A4\uD658\uCD08",
+    shape: "island",
+    feature: "Atlantic volcanic islands and an atoll provide feeding and breeding grounds for marine wildlife",
+    featureKo: "\uB300\uC11C\uC591\uC758 \uD654\uC0B0\uC12C\uACFC \uD658\uCD08\uAC00 \uD574\uC591\uB3D9\uBB3C\uC758 \uBA39\uC774\uD130\uC640 \uBC88\uC2DD\uC9C0\uAC00 \uB429\uB2C8\uB2E4",
+    seed: 368,
+    color: "#bca6a0"
+  },
+  {
+    id: "lencois",
+    name: "Len\xE7\xF3is Maranhenses",
+    nameKo: "\uB80C\uC18C\uC774\uC2A4\uB9C8\uB77C\uB160\uC2DC\uC2A4",
+    shape: "lakes",
+    feature: "White coastal dunes surround seasonal rain-fed lagoons",
+    featureKo: "\uD770 \uD574\uC548 \uC0AC\uAD6C \uC0AC\uC774\uC5D0 \uBE57\uBB3C\uB85C \uC0DD\uAE30\uB294 \uACC4\uC808 \uC11D\uD638\uAC00 \uC790\uB9AC\uD569\uB2C8\uB2E4",
+    seed: 369,
+    color: "#b69772"
+  },
+  {
+    id: "pampulha",
+    name: "Pampulha Modern Ensemble",
+    nameKo: "\uD31C\uD480\uB7B4 \uADFC\uB300\uAC74\uCD95\uB2E8\uC9C0",
+    shape: "modern",
+    feature: "Curving modern buildings and designed gardens surround an artificial lake",
+    featureKo: "\uACE1\uC120\uC758 \uADFC\uB300 \uAC74\uBB3C\uACFC \uC870\uACBD \uC815\uC6D0\uC774 \uC778\uACF5\uD638\uC218\uB97C \uB458\uB7EC\uC2F8\uACE0 \uC788\uC2B5\uB2C8\uB2E4",
+    seed: 370,
+    color: "#c4ac88"
+  },
+  {
+    id: "lanseauxmeadows",
+    name: "L'Anse aux Meadows",
+    nameKo: "\uB780\uC138\uC624\uBA54\uB3C4\uC2A4",
+    shape: "thatched",
+    feature: "Remains of timber-framed turf buildings record a Norse settlement in Newfoundland",
+    featureKo: "\uB098\uBB34 \uACE8\uC870\uC5D0 \uC794\uB514\uB97C \uB36E\uC740 \uAC74\uBB3C \uC720\uC801\uC774 \uB274\uD380\uB4E4\uB79C\uB4DC\uC758 \uB178\uB974\uB4DC \uC815\uCC29\uC9C0\uB97C \uBCF4\uC5EC \uC90D\uB2C8\uB2E4",
+    seed: 371,
+    color: "#aeb9a0"
+  },
+  {
+    id: "sgang",
+    name: "SGang Gwaay",
+    nameKo: "\uC2A4\uAC15\uACFC\uC774",
+    shape: "stelae",
+    feature: "Carved mortuary and memorial poles survive in the remains of a Haida village",
+    featureKo: "\uD558\uC774\uB2E4 \uB9C8\uC744 \uC720\uC801\uC5D0 \uC870\uAC01\uD55C \uC7A5\uB840 \uAE30\uB465\uACFC \uAE30\uB150 \uAE30\uB465\uB4E4\uC774 \uB0A8\uC544 \uC788\uC2B5\uB2C8\uB2E4",
+    seed: 372,
+    color: "#bc8b70"
+  },
+  {
+    id: "woodbuffalo",
+    name: "Wood Buffalo National Park",
+    nameKo: "\uC6B0\uB4DC\uBC84\uD384\uB85C \uAD6D\uB9BD\uACF5\uC6D0",
+    shape: "forest",
+    feature: "Boreal forest and a vast inland delta support wood bison and other wildlife",
+    featureKo: "\uBD81\uBC29\uB9BC\uACFC \uAC70\uB300\uD55C \uB0B4\uB959 \uC0BC\uAC01\uC8FC\uC5D0 \uC232\uB4E4\uC18C \uB4F1 \uC57C\uC0DD\uB3D9\uBB3C\uC774 \uC0B4\uC544\uAC11\uB2C8\uB2E4",
+    seed: 373,
+    color: "#8baba4"
+  },
+  {
+    id: "oldquebec",
+    name: "Old Qu\xE9bec",
+    nameKo: "\uD018\uBCA1 \uAD6C\uC2DC\uAC00\uC9C0",
+    shape: "fortress",
+    feature: "Fortified upper and lower towns preserve a historic French colonial city in North America",
+    featureKo: "\uBD81\uC544\uBA54\uB9AC\uCE74\uC758 \uC61B \uD504\uB791\uC2A4 \uC2DD\uBBFC\uB3C4\uC2DC\uC5D0 \uC131\uBCBD\uC73C\uB85C \uB458\uB7EC\uC2FC \uC704\xB7\uC544\uB798 \uB9C8\uC744\uC774 \uB0A8\uC544 \uC788\uC2B5\uB2C8\uB2E4",
+    seed: 374,
+    color: "#d3b17c"
+  },
+  {
+    id: "rideau",
+    name: "Rideau Canal",
+    nameKo: "\uB9AC\uB3C4 \uC6B4\uD558",
+    shape: "canal",
+    feature: "Locks, dams and channels preserve an early nineteenth-century slackwater canal",
+    featureKo: "\uC218\uBB38\uACFC \uB310, \uBB3C\uAE38\uC774 19\uC138\uAE30 \uCD08\uC758 \uC644\uB958\uC2DD \uC6B4\uD558\uB97C \uC774\uB8E8\uACE0 \uC788\uC2B5\uB2C8\uB2E4",
+    seed: 375,
+    color: "#b7a28c"
+  },
+  {
+    id: "joggins",
+    name: "Joggins Fossil Cliffs",
+    nameKo: "\uC870\uAE34\uC2A4 \uD654\uC11D\uC808\uBCBD",
+    shape: "cliff",
+    feature: "Coastal cliffs expose fossil-rich layers from ancient coal-age tropical forests",
+    featureKo: "\uD574\uC548 \uC808\uBCBD\uC5D0 \uC11D\uD0C4\uAE30 \uC5F4\uB300\uB9BC\uC758 \uD654\uC11D\uC774 \uD48D\uBD80\uD55C \uC9C0\uCE35\uC774 \uB4DC\uB7EC\uB098 \uC788\uC2B5\uB2C8\uB2E4",
+    seed: 376,
+    color: "#829b8a"
+  },
+  {
+    id: "humberstone",
+    name: "Humberstone and Santa Laura",
+    nameKo: "\uC6C0\uBCA0\uB974\uC2A4\uD1A4\uACFC \uC0B0\uD0C0\uB77C\uC6B0\uB77C",
+    shape: "industrial",
+    feature: "Abandoned nitrate works preserve industrial structures in the Atacama Desert",
+    featureKo: "\uC544\uD0C0\uCE74\uB9C8\uC0AC\uB9C9\uC758 \uD3D0\uCD08\uC11D\uACF5\uC7A5\uC5D0 \uC0B0\uC5C5 \uC2DC\uC124\uB4E4\uC774 \uB0A8\uC544 \uC788\uC2B5\uB2C8\uB2E4",
+    seed: 377,
+    color: "#bca6a0"
+  },
+  {
+    id: "sewell",
+    name: "Sewell Mining Town",
+    nameKo: "\uC138\uC6F0 \uAD11\uC0B0\uB3C4\uC2DC",
+    shape: "town",
+    feature: "A mountain mining town uses stairways to connect buildings across steep Andean slopes",
+    featureKo: "\uC548\uB370\uC2A4\uC758 \uAC00\uD30C\uB978 \uC0B0\uBE44\uD0C8\uC5D0 \uC9C0\uC740 \uAD11\uC0B0\uB3C4\uC2DC\uC5D0\uC11C \uACC4\uB2E8\uC774 \uAC74\uBB3C\uB4E4\uC744 \uC774\uC5B4 \uC90D\uB2C8\uB2E4",
+    seed: 378,
+    color: "#b69772"
+  },
+  {
+    id: "mompox",
+    name: "Santa Cruz de Mompox",
+    nameKo: "\uC0B0\uD0C0\uD06C\uB8E8\uC2A4\uB370\uBAB8\uD3EC\uC2A4",
+    shape: "town",
+    feature: "A historic river town preserves houses and churches along the Magdalena River",
+    featureKo: "\uB9C9\uB2EC\uB808\uB098\uAC15\uC744 \uB530\uB77C \uC61B \uAC15\uBCC0 \uB3C4\uC2DC\uC758 \uC8FC\uD0DD\uACFC \uAD50\uD68C\uAC00 \uB0A8\uC544 \uC788\uC2B5\uB2C8\uB2E4",
+    seed: 379,
+    color: "#c4ac88"
+  },
+  {
+    id: "sanagustin",
+    name: "San Agust\xEDn Archaeological Park",
+    nameKo: "\uC0B0\uC544\uAD6C\uC2A4\uD2F4 \uACE0\uACE0\uACF5\uC6D0",
+    shape: "stelae",
+    feature: "Large stone sculptures and burial monuments preserve a distinctive Andean ceremonial landscape",
+    featureKo: "\uCEE4\uB2E4\uB780 \uC11D\uC0C1\uACFC \uC7A5\uB840 \uC720\uC801\uC774 \uB3C5\uD2B9\uD55C \uC548\uB370\uC2A4 \uC758\uB840 \uACBD\uAD00\uC744 \uC774\uB8E8\uACE0 \uC788\uC2B5\uB2C8\uB2E4",
+    seed: 380,
+    color: "#aeb9a0"
+  },
+  {
+    id: "chiribiquete",
+    name: "Chiribiquete National Park",
+    nameKo: "\uCE58\uB9AC\uBE44\uCF00\uD14C \uAD6D\uB9BD\uACF5\uC6D0",
+    shape: "cliff",
+    feature: "Table mountains rise over tropical forests containing extensive rock paintings",
+    featureKo: "\uB9CE\uC740 \uC554\uBCBD\uD654\uAC00 \uB0A8\uC740 \uC5F4\uB300\uB9BC \uC704\uB85C \uD0C1\uC0C1\uC0B0\uB4E4\uC774 \uC19F\uC544 \uC788\uC2B5\uB2C8\uB2E4",
+    seed: 381,
+    color: "#bc8b70"
+  },
+  {
+    id: "cocosisland",
+    name: "Cocos Island",
+    nameKo: "\uCF54\uCF54\uC2A4\uC12C",
+    shape: "island",
+    feature: "A remote oceanic island supports humid forest and exceptionally rich surrounding marine life",
+    featureKo: "\uC678\uB534 \uB300\uC591\uC12C\uC5D0 \uC2B5\uC724\uD55C \uC232\uC774 \uC790\uB77C\uACE0 \uC8FC\uBCC0 \uBC14\uB2E4\uC5D0 \uB2E4\uC591\uD55C \uD574\uC591\uC0DD\uBB3C\uC774 \uC0B4\uC544\uAC11\uB2C8\uB2E4",
+    seed: 382,
+    color: "#8baba4"
+  },
+  {
+    id: "diquis",
+    name: "Diqu\xEDs Stone Spheres",
+    nameKo: "\uB514\uD0A4\uC2A4 \uC11D\uAD6C",
+    shape: "jars",
+    feature: "Large stone spheres survive at pre-Columbian settlements in the Diqu\xEDs Delta",
+    featureKo: "\uB514\uD0A4\uC2A4 \uC0BC\uAC01\uC8FC\uC758 \uCF5C\uB7FC\uBC84\uC2A4 \uC774\uC804 \uC815\uCC29\uC9C0\uC5D0 \uCEE4\uB2E4\uB780 \uB3CC\uAD6C\uC2AC\uB4E4\uC774 \uB0A8\uC544 \uC788\uC2B5\uB2C8\uB2E4",
+    seed: 383,
+    color: "#d3b17c"
+  },
+  {
+    id: "havana",
+    name: "Old Havana",
+    nameKo: "\uC544\uBC14\uB098 \uAD6C\uC2DC\uAC00\uC9C0",
+    shape: "town",
+    feature: "Fortifications, plazas and arcaded buildings preserve a historic Caribbean port city",
+    featureKo: "\uBC29\uC5B4\uC2DC\uC124\uACFC \uAD11\uC7A5, \uC544\uCF00\uC774\uB4DC \uAC74\uBB3C\uB4E4\uC774 \uCE74\uB9AC\uBE0C\uD574 \uD56D\uAD6C\uB3C4\uC2DC\uC758 \uC5ED\uC0AC\uB97C \uBCF4\uC5EC \uC90D\uB2C8\uB2E4",
+    seed: 384,
+    color: "#b7a28c"
+  },
+  {
+    id: "vinales",
+    name: "Vi\xF1ales Valley",
+    nameKo: "\uBE44\uB0D8\uB808\uC2A4 \uACC4\uACE1",
+    shape: "pillars",
+    feature: "Limestone hills rise above a valley of traditional farms and tobacco fields",
+    featureKo: "\uC804\uD1B5 \uB18D\uAC00\uC640 \uB2F4\uBC30\uBC2D\uC774 \uC788\uB294 \uACC4\uACE1 \uC704\uB85C \uC11D\uD68C\uC554 \uC5B8\uB355\uB4E4\uC774 \uC19F\uC544 \uC788\uC2B5\uB2C8\uB2E4",
+    seed: 385,
+    color: "#829b8a"
+  },
+  {
+    id: "sanpedroroca",
+    name: "San Pedro de la Roca Castle",
+    nameKo: "\uC0B0\uD398\uB4DC\uB85C\uB378\uB77C\uB85C\uCE74\uC131",
+    shape: "fortress",
+    feature: "Terraced fortifications guard a Caribbean harbour entrance from a rocky promontory",
+    featureKo: "\uBC14\uC704 \uACF6\uC758 \uACC4\uB2E8\uC2DD \uBC29\uC5B4\uC2DC\uC124\uC774 \uCE74\uB9AC\uBE0C\uD574 \uD56D\uAD6C\uC758 \uC785\uAD6C\uB97C \uC9C0\uD0A4\uACE0 \uC788\uC2B5\uB2C8\uB2E4",
+    seed: 386,
+    color: "#bca6a0"
+  },
+  {
+    id: "mornetrois",
+    name: "Morne Trois Pitons",
+    nameKo: "\uBAA8\uB978\uD2B8\uB8E8\uC544\uD53C\uD1B5",
+    shape: "volcano",
+    feature: "A volcanic mountain landscape contains hot springs, fumaroles and tropical forest",
+    featureKo: "\uD654\uC0B0 \uC0B0\uC545 \uACBD\uAD00\uC5D0 \uC628\uCC9C\uACFC \uBD84\uAE30\uACF5, \uC5F4\uB300\uB9BC\uC774 \uC790\uB9AC\uD569\uB2C8\uB2E4",
+    seed: 387,
+    color: "#b69772"
+  },
+  {
+    id: "santodomingo",
+    name: "Colonial Santo Domingo",
+    nameKo: "\uC0B0\uD1A0\uB3C4\uBC0D\uACE0 \uC2DD\uBBFC\uB3C4\uC2DC",
+    shape: "town",
+    feature: "An early European colonial city preserves a grid of historic streets and monuments",
+    featureKo: "\uCD08\uAE30 \uC720\uB7FD \uC2DD\uBBFC\uB3C4\uC2DC\uC5D0 \uACA9\uC790\uD615 \uC61B \uAC70\uB9AC\uC640 \uC720\uC801\uB4E4\uC774 \uB0A8\uC544 \uC788\uC2B5\uB2C8\uB2E4",
+    seed: 388,
+    color: "#c4ac88"
+  },
+  {
+    id: "galapagos",
+    name: "Gal\xE1pagos Islands",
+    nameKo: "\uAC08\uB77C\uD30C\uACE0\uC2A4\uC81C\uB3C4",
+    shape: "island",
+    feature: "Remote volcanic islands harbour distinctive wildlife shaped by isolation and ocean conditions",
+    featureKo: "\uC678\uB534 \uD654\uC0B0\uC12C\uB4E4\uC5D0 \uACE0\uB9BD\uACFC \uD574\uC591 \uD658\uACBD\uC774 \uBE5A\uC740 \uB3C5\uD2B9\uD55C \uC57C\uC0DD\uB3D9\uBB3C\uC774 \uC0B4\uC544\uAC11\uB2C8\uB2E4",
+    seed: 389,
+    color: "#aeb9a0"
+  },
+  {
+    id: "sangay",
+    name: "Sangay National Park",
+    nameKo: "\uC0C1\uAC00\uC774 \uAD6D\uB9BD\uACF5\uC6D0",
+    shape: "volcano",
+    feature: "Active volcanoes rise above a range of ecosystems from tropical forest to mountain grassland",
+    featureKo: "\uC5F4\uB300\uB9BC\uC5D0\uC11C \uC0B0\uC545 \uCD08\uC9C0\uB85C \uC774\uC5B4\uC9C0\uB294 \uB2E4\uC591\uD55C \uC0DD\uD0DC\uACC4 \uC704\uB85C \uD65C\uD654\uC0B0\uB4E4\uC774 \uC19F\uC544 \uC788\uC2B5\uB2C8\uB2E4",
+    seed: 390,
+    color: "#bc8b70"
+  },
+  {
+    id: "antiguaguatemala",
+    name: "Antigua Guatemala",
+    nameKo: "\uC548\uD2F0\uACFC\uACFC\uD14C\uB9D0\uB77C",
+    shape: "town",
+    feature: "Baroque churches and civic buildings preserve a former colonial capital beneath volcanoes",
+    featureKo: "\uD654\uC0B0 \uC544\uB798\uC758 \uC61B \uC2DD\uBBFC\uC9C0 \uC218\uB3C4\uC5D0 \uBC14\uB85C\uD06C \uAD50\uD68C\uC640 \uACF5\uACF5\uAC74\uBB3C\uC774 \uB0A8\uC544 \uC788\uC2B5\uB2C8\uB2E4",
+    seed: 391,
+    color: "#8baba4"
+  },
+  {
+    id: "quirigua",
+    name: "Quirigu\xE1",
+    nameKo: "\uD0A4\uB9AC\uACFC",
+    shape: "stelae",
+    feature: "Finely carved Maya stelae and sculpted monuments survive in a tropical archaeological park",
+    featureKo: "\uC5F4\uB300\uC758 \uACE0\uACE0\uACF5\uC6D0\uC5D0 \uC815\uAD50\uD558\uAC8C \uC870\uAC01\uD55C \uB9C8\uC57C \uC11D\uBE44\uC640 \uAE30\uB150\uBB3C\uB4E4\uC774 \uB0A8\uC544 \uC788\uC2B5\uB2C8\uB2E4",
+    seed: 392,
+    color: "#d3b17c"
+  },
+  {
+    id: "rioplatano",
+    name: "R\xEDo Pl\xE1tano Biosphere Reserve",
+    nameKo: "\uB9AC\uC624\uD50C\uB77C\uD0C0\uB178 \uC0DD\uBB3C\uAD8C\uBCF4\uC804\uC9C0\uC5ED",
+    shape: "forest",
+    feature: "Tropical rainforest and mountainous lowlands follow a river toward the Caribbean coast",
+    featureKo: "\uC5F4\uB300\uC6B0\uB9BC\uACFC \uC0B0\uC545 \uC800\uC9C0\uB300\uAC00 \uAC15\uC744 \uB530\uB77C \uCE74\uB9AC\uBE0C\uD574 \uD574\uC548\uC73C\uB85C \uC774\uC5B4\uC9D1\uB2C8\uB2E4",
+    seed: 393,
+    color: "#b7a28c"
+  },
+  {
+    id: "pitons",
+    name: "Saint Lucia Pitons",
+    nameKo: "\uC138\uC778\uD2B8\uB8E8\uC2DC\uC544 \uD53C\uD1B5",
+    shape: "peaks",
+    feature: "Two steep volcanic spires rise above the Caribbean Sea beside a volcanic landscape",
+    featureKo: "\uCE74\uB9AC\uBE0C\uD574 \uC704\uB85C \uAC00\uD30C\uB978 \uD654\uC0B0 \uBD09\uC6B0\uB9AC \uB450 \uAC1C\uAC00 \uC19F\uACE0 \uC8FC\uBCC0\uC5D0 \uD654\uC0B0 \uACBD\uAD00\uC774 \uD3BC\uCCD0\uC9D1\uB2C8\uB2E4",
+    seed: 394,
+    color: "#829b8a"
+  },
+  {
+    id: "eltajin",
+    name: "El Taj\xEDn",
+    nameKo: "\uC5D8\uD0C0\uD78C",
+    shape: "pyramid",
+    feature: "Pyramids with decorative niches preserve the ceremonial core of an ancient Gulf Coast city",
+    featureKo: "\uC7A5\uC2DD \uAC10\uC2E4\uC774 \uC788\uB294 \uD53C\uB77C\uBBF8\uB4DC\uB4E4\uC774 \uBA55\uC2DC\uCF54\uB9CC \uD574\uC548 \uACE0\uB300 \uB3C4\uC2DC\uC758 \uC758\uB840 \uC911\uC2EC\uC9C0\uC5D0 \uB0A8\uC544 \uC788\uC2B5\uB2C8\uB2E4",
+    seed: 395,
+    color: "#bca6a0"
+  },
+  {
+    id: "paquime",
+    name: "Paquim\xE9",
+    nameKo: "\uD30C\uD0A4\uBA54",
+    shape: "adobe",
+    feature: "Multi-storeyed earthen ruins preserve a trading settlement in northern Mexico",
+    featureKo: "\uBA55\uC2DC\uCF54 \uBD81\uBD80\uC758 \uAD50\uC5ED \uC815\uCC29\uC9C0\uC5D0 \uC5EC\uB7EC \uCE35\uC73C\uB85C \uC9C0\uC740 \uD759 \uAC74\uBB3C \uC720\uC801\uC774 \uB0A8\uC544 \uC788\uC2B5\uB2C8\uB2E4",
+    seed: 396,
+    color: "#b69772"
+  },
+  {
+    id: "vizcaino",
+    name: "El Vizca\xEDno Whale Sanctuary",
+    nameKo: "\uC5D8\uBE44\uC2A4\uCE74\uC774\uB178 \uACE0\uB798\uBCF4\uD638\uAD6C\uC5ED",
+    shape: "coast",
+    feature: "Coastal lagoons provide winter breeding grounds for grey whales",
+    featureKo: "\uD574\uC548 \uC11D\uD638\uAC00 \uADC0\uC2E0\uACE0\uB798\uC758 \uACA8\uC6B8 \uBC88\uC2DD\uC9C0\uAC00 \uB429\uB2C8\uB2E4",
+    seed: 397,
+    color: "#c4ac88"
+  },
+  {
+    id: "xochicalco",
+    name: "Xochicalco",
+    nameKo: "\uC18C\uCE58\uCE7C\uCF54",
+    shape: "pyramid",
+    feature: "A fortified ceremonial city preserves pyramids and relief-carved monuments on a hilltop",
+    featureKo: "\uC5B8\uB355 \uC704\uC758 \uC758\uB840 \uC131\uACFD\uB3C4\uC2DC\uC5D0 \uD53C\uB77C\uBBF8\uB4DC\uC640 \uBD80\uC870\uB85C \uC7A5\uC2DD\uD55C \uC720\uC801\uC774 \uB0A8\uC544 \uC788\uC2B5\uB2C8\uB2E4",
+    seed: 398,
+    color: "#aeb9a0"
+  },
+  {
+    id: "monarch",
+    name: "Monarch Butterfly Reserve",
+    nameKo: "\uBAA8\uB098\uD06C\uB098\uBE44 \uBCF4\uD638\uAD6C\uC5ED",
+    shape: "forest",
+    feature: "High-elevation forests shelter vast numbers of overwintering monarch butterflies",
+    featureKo: "\uACE0\uC9C0\uB300 \uC232\uC5D0 \uACA8\uC6B8\uC744 \uB098\uB294 \uC218\uB9CE\uC740 \uBAA8\uB098\uD06C\uB098\uBE44\uAC00 \uBAA8\uC5EC\uB4ED\uB2C8\uB2E4",
+    seed: 399,
+    color: "#bc8b70"
+  },
+  {
+    id: "pinacate",
+    name: "El Pinacate and Gran Desierto",
+    nameKo: "\uC5D8\uD53C\uB098\uCE74\uD14C\uC640 \uADF8\uB780\uB370\uC2DC\uC5D0\uB974\uD1A0",
+    shape: "crater",
+    feature: "Volcanic craters and dark lava fields meet a vast sand-dune desert",
+    featureKo: "\uD654\uC0B0 \uBD84\uD654\uAD6C\uC640 \uAC80\uC740 \uC6A9\uC554 \uC9C0\uB300\uAC00 \uAD11\uB300\uD55C \uBAA8\uB798\uC0AC\uB9C9\uACFC \uB9CC\uB0A9\uB2C8\uB2E4",
+    seed: 400,
+    color: "#8baba4"
+  },
+  {
+    id: "padretembleque",
+    name: "Padre Tembleque Aqueduct",
+    nameKo: "\uD30C\uB4DC\uB808\uD15C\uBE14\uB808\uCF00 \uC218\uB85C\uAD50",
+    shape: "aqueduct",
+    feature: "A colonial hydraulic system includes a remarkable high arcade carrying water across a valley",
+    featureKo: "\uC2DD\uBBFC\uC9C0 \uC2DC\uB300 \uC218\uB9AC\uC2DC\uC124\uC5D0 \uACC4\uACE1\uC744 \uAC74\uB108 \uBB3C\uC744 \uB098\uB974\uB294 \uB192\uC740 \uC544\uCF00\uC774\uB4DC\uAC00 \uB0A8\uC544 \uC788\uC2B5\uB2C8\uB2E4",
+    seed: 401,
+    color: "#d3b17c"
+  },
+  {
+    id: "coiba",
+    name: "Coiba National Park",
+    nameKo: "\uCF54\uC774\uBC14 \uAD6D\uB9BD\uACF5\uC6D0",
+    shape: "island",
+    feature: "Forested Pacific islands and surrounding waters protect rich marine and terrestrial ecosystems",
+    featureKo: "\uC232\uC73C\uB85C \uB36E\uC778 \uD0DC\uD3C9\uC591\uC758 \uC12C\uACFC \uC8FC\uBCC0 \uBC14\uB2E4\uAC00 \uD48D\uBD80\uD55C \uC721\uC0C1\xB7\uD574\uC591 \uC0DD\uD0DC\uACC4\uB97C \uC9C0\uD0B5\uB2C8\uB2E4",
+    seed: 402,
+    color: "#b7a28c"
+  },
+  {
+    id: "chavin",
+    name: "Chav\xEDn",
+    nameKo: "\uCC28\uBE48",
+    shape: "rocktemple",
+    feature: "Ancient stone temples and carved monuments stand in a high Andean valley",
+    featureKo: "\uB192\uC740 \uC548\uB370\uC2A4 \uACC4\uACE1\uC5D0 \uACE0\uB300 \uC11D\uC870 \uC2E0\uC804\uACFC \uC870\uAC01 \uC720\uC801\uC774 \uB0A8\uC544 \uC788\uC2B5\uB2C8\uB2E4",
+    seed: 403,
+    color: "#829b8a"
+  },
+  {
+    id: "huascaran",
+    name: "Huascar\xE1n National Park",
+    nameKo: "\uC6B0\uC544\uC2A4\uCE74\uB780 \uAD6D\uB9BD\uACF5\uC6D0",
+    shape: "glacier",
+    feature: "Glaciers and deep ravines shape the high peaks of the Cordillera Blanca",
+    featureKo: "\uBE59\uD558\uC640 \uAE4A\uC740 \uACE8\uC9DC\uAE30\uAC00 \uCF54\uB974\uB514\uC608\uB77C\uBE14\uB791\uCE74\uC758 \uB192\uC740 \uBD09\uC6B0\uB9AC\uB4E4\uC744 \uBE5A\uC5C8\uC2B5\uB2C8\uB2E4",
+    seed: 404,
+    color: "#bca6a0"
+  },
+  {
+    id: "caral",
+    name: "Sacred City of Caral-Supe",
+    nameKo: "\uCE74\uB784\uC218\uD398 \uC131\uC2DC",
+    shape: "pyramid",
+    feature: "Ancient platform mounds and circular courts preserve an early urban centre in the Supe Valley",
+    featureKo: "\uC218\uD398 \uACC4\uACE1\uC758 \uCD08\uAE30 \uB3C4\uC2DC \uC911\uC2EC\uC9C0\uC5D0 \uB2E8\uC744 \uC313\uC740 \uC5B8\uB355\uACFC \uC6D0\uD615 \uAD11\uC7A5\uC774 \uB0A8\uC544 \uC788\uC2B5\uB2C8\uB2E4",
+    seed: 405,
+    color: "#b69772"
+  },
+  {
+    id: "chankillo",
+    name: "Chankillo",
+    nameKo: "\uCC2C\uD0A4\uC694",
+    shape: "observatory",
+    feature: "Thirteen towers form the horizon markers of an ancient solar observatory",
+    featureKo: "\uC5F4\uC138 \uAC1C\uC758 \uD0D1\uC774 \uACE0\uB300 \uD0DC\uC591 \uAD00\uCE21\uC18C\uC758 \uC9C0\uD3C9\uC120 \uD45C\uC9C0\uB97C \uC774\uB8F9\uB2C8\uB2E4",
+    seed: 406,
+    color: "#c4ac88"
+  },
+  {
+    id: "paramaribo",
+    name: "Paramaribo Historic Centre",
+    nameKo: "\uD30C\uB77C\uB9C8\uB9AC\uBCF4 \uC5ED\uC0AC\uC911\uC2EC\uC9C0",
+    shape: "town",
+    feature: "Timber buildings combine European urban planning with local building techniques",
+    featureKo: "\uBAA9\uC870 \uAC74\uBB3C\uB4E4\uC5D0 \uC720\uB7FD\uC2DD \uB3C4\uC2DC\uACC4\uD68D\uACFC \uD604\uC9C0 \uAC74\uCD95 \uAE30\uC220\uC774 \uC5B4\uC6B0\uB7EC\uC838 \uC788\uC2B5\uB2C8\uB2E4",
+    seed: 407,
+    color: "#aeb9a0"
+  },
+  {
+    id: "redwood",
+    name: "Redwood National and State Parks",
+    nameKo: "\uB808\uB4DC\uC6B0\uB4DC \uAD6D\uB9BD\xB7\uC8FC\uB9BD\uACF5\uC6D0",
+    shape: "forest",
+    feature: "Towering coast redwoods grow along a Pacific landscape of forests, rivers and coastline",
+    featureKo: "\uC232\uACFC \uAC15, \uD574\uC548\uC774 \uC5B4\uC6B0\uB7EC\uC9C4 \uD0DC\uD3C9\uC591 \uACBD\uAD00\uC5D0 \uAC70\uB300\uD55C \uD574\uC548\uC0BC\uB098\uBB34\uB4E4\uC774 \uC790\uB78D\uB2C8\uB2E4",
+    seed: 408,
+    color: "#bc8b70"
+  },
+  {
+    id: "olympic",
+    name: "Olympic National Park",
+    nameKo: "\uC62C\uB9BC\uD53D \uAD6D\uB9BD\uACF5\uC6D0",
+    shape: "forest",
+    feature: "Glaciated peaks and temperate rainforest meet a wild Pacific coastline",
+    featureKo: "\uBE59\uD558\uAC00 \uAE4E\uC740 \uBD09\uC6B0\uB9AC\uC640 \uC628\uB300\uC6B0\uB9BC\uC774 \uD0DC\uD3C9\uC591\uC758 \uC57C\uC0DD \uD574\uC548\uACFC \uB9CC\uB0A9\uB2C8\uB2E4",
+    seed: 409,
+    color: "#8baba4"
+  },
+  {
+    id: "cahokia",
+    name: "Cahokia Mounds",
+    nameKo: "\uCE74\uD638\uD0A4\uC544 \uB9C8\uC6B4\uB4DC",
+    shape: "pyramid",
+    feature: "Large earthen mounds preserve the centre of a major pre-Columbian settlement",
+    featureKo: "\uCEE4\uB2E4\uB780 \uD759 \uC5B8\uB355\uB4E4\uC774 \uCF5C\uB7FC\uBC84\uC2A4 \uC774\uC804 \uC8FC\uC694 \uC815\uCC29\uC9C0\uC758 \uC911\uC2EC\uC744 \uBCF4\uC5EC \uC90D\uB2C8\uB2E4",
+    seed: 410,
+    color: "#d3b17c"
+  },
+  {
+    id: "hawaiivolcanoes",
+    name: "Hawaii Volcanoes",
+    nameKo: "\uD558\uC640\uC774 \uD654\uC0B0",
+    shape: "volcano",
+    feature: "Active shield volcanoes continually reshape a landscape of lava flows and craters",
+    featureKo: "\uD65C\uB3D9\uD558\uB294 \uC21C\uC0C1\uD654\uC0B0\uC774 \uC6A9\uC554\uB958\uC640 \uBD84\uD654\uAD6C\uC758 \uACBD\uAD00\uC744 \uACC4\uC18D \uBC14\uAFB8\uACE0 \uC788\uC2B5\uB2C8\uB2E4",
+    seed: 411,
+    color: "#b7a28c"
+  },
+  {
+    id: "colonia",
+    name: "Colonia del Sacramento",
+    nameKo: "\uCF5C\uB85C\uB2C8\uC544\uB378\uC0AC\uD06C\uB77C\uBA58\uD1A0",
+    shape: "town",
+    feature: "A historic riverside settlement preserves a mixture of Portuguese and Spanish colonial traditions",
+    featureKo: "\uAC15\uBCC0\uC758 \uC5ED\uC0AC \uC815\uCC29\uC9C0\uC5D0 \uD3EC\uB974\uD22C\uAC08\uACFC \uC5D0\uC2A4\uD30C\uB0D0\uC758 \uC2DD\uBBFC \uAC74\uCD95 \uC804\uD1B5\uC774 \uC11E\uC5EC \uC788\uC2B5\uB2C8\uB2E4",
+    seed: 412,
+    color: "#829b8a"
+  },
+  {
+    id: "canaima",
+    name: "Canaima National Park",
+    nameKo: "\uCE74\uB098\uC774\uB9C8 \uAD6D\uB9BD\uACF5\uC6D0",
+    shape: "waterfall",
+    feature: "Table mountains and towering waterfalls dominate the Guiana Shield landscape",
+    featureKo: "\uAE30\uC544\uB098 \uC21C\uC0C1\uC9C0\uC758 \uACBD\uAD00 \uC704\uB85C \uD0C1\uC0C1\uC0B0\uACFC \uB192\uC740 \uD3ED\uD3EC\uB4E4\uC774 \uC790\uB9AC\uD569\uB2C8\uB2E4",
+    seed: 413,
+    color: "#bca6a0"
+  },
+  {
+    id: "kakadu",
+    name: "Kakadu National Park",
+    nameKo: "\uCE74\uCE74\uB450 \uAD6D\uB9BD\uACF5\uC6D0",
+    shape: "wetland",
+    feature: "Escarpments, wetlands and rock-art sites preserve a landscape with a long Aboriginal history",
+    featureKo: "\uC808\uBCBD\uACFC \uC2B5\uC9C0, \uC554\uBCBD\uD654 \uC720\uC801\uC774 \uC624\uB79C \uC6D0\uC8FC\uBBFC \uC5ED\uC0AC\uB97C \uD488\uC740 \uACBD\uAD00\uC5D0 \uB0A8\uC544 \uC788\uC2B5\uB2C8\uB2E4",
+    seed: 414,
+    color: "#b69772"
+  },
+  {
+    id: "uluru",
+    name: "Uluru-Kata Tjuta",
+    nameKo: "\uC6B8\uB8E8\uB8E8\uCE74\uD0C0\uCD94\uD0C0",
+    shape: "redrocks",
+    feature: "An immense sandstone monolith and rounded rock domes rise from the central Australian plain",
+    featureKo: "\uD638\uC8FC \uC911\uBD80 \uD3C9\uC6D0 \uC704\uB85C \uAC70\uB300\uD55C \uC0AC\uC554 \uBC14\uC704\uC640 \uB465\uADFC \uBC14\uC704 \uBD09\uC6B0\uB9AC\uB4E4\uC774 \uC19F\uC544 \uC788\uC2B5\uB2C8\uB2E4",
+    seed: 415,
+    color: "#c4ac88"
+  },
+  {
+    id: "sharkbay",
+    name: "Shark Bay",
+    nameKo: "\uC0E4\uD06C\uB9CC",
+    shape: "coast",
+    feature: "Seagrass beds and stromatolites occur in a broad bay on Australia's western coast",
+    featureKo: "\uD638\uC8FC \uC11C\uD574\uC548\uC758 \uB113\uC740 \uB9CC\uC5D0 \uD574\uCD08 \uAD70\uB77D\uACFC \uC2A4\uD2B8\uB85C\uB9C8\uD1A8\uB77C\uC774\uD2B8\uAC00 \uC790\uB9AC\uD569\uB2C8\uB2E4",
+    seed: 416,
+    color: "#aeb9a0"
+  },
+  {
+    id: "bluemountains",
+    name: "Greater Blue Mountains",
+    nameKo: "\uADF8\uB808\uC774\uD130\uBE14\uB8E8\uB9C8\uC6B4\uD2F4\uC2A4",
+    shape: "cliff",
+    feature: "Sandstone plateaux and deep gorges support a remarkable diversity of eucalypt vegetation",
+    featureKo: "\uC0AC\uC554 \uACE0\uC6D0\uACFC \uAE4A\uC740 \uD611\uACE1\uC5D0 \uB2E4\uC591\uD55C \uC720\uCE7C\uB9BD\uD22C\uC2A4 \uC2DD\uC0DD\uC774 \uC790\uB78D\uB2C8\uB2E4",
+    seed: 417,
+    color: "#bc8b70"
+  },
+  {
+    id: "purnululu",
+    name: "Purnululu",
+    nameKo: "\uD478\uB974\uB20C\uB8F0\uB8E8",
+    shape: "pillars",
+    feature: "Orange and dark-striped sandstone domes form the distinctive Bungle Bungle range",
+    featureKo: "\uC8FC\uD669\uC0C9\uACFC \uC9D9\uC740 \uB760\uB97C \uB450\uB978 \uC0AC\uC554 \uB3D4\uB4E4\uC774 \uB3C5\uD2B9\uD55C \uBC99\uAE00\uBC99\uAE00\uC0B0\uB9E5\uC744 \uC774\uB8F9\uB2C8\uB2E4",
+    seed: 418,
+    color: "#8baba4"
+  },
+  {
+    id: "ningaloo",
+    name: "Ningaloo Coast",
+    nameKo: "\uB2DD\uAC08\uB8E8 \uD574\uC548",
+    shape: "reef",
+    feature: "An extensive fringing reef lies beside an arid coast visited by whale sharks",
+    featureKo: "\uACE0\uB798\uC0C1\uC5B4\uAC00 \uCC3E\uC544\uC624\uB294 \uAC74\uC870\uD55C \uD574\uC548 \uC606\uC5D0 \uB113\uC740 \uAC70\uCD08\uAC00 \uD3BC\uCCD0\uC9D1\uB2C8\uB2E4",
+    seed: 419,
+    color: "#d3b17c"
+  },
+  {
+    id: "tongariro",
+    name: "Tongariro National Park",
+    nameKo: "\uD1B5\uAC00\uB9AC\uB85C \uAD6D\uB9BD\uACF5\uC6D0",
+    shape: "volcano",
+    feature: "Volcanoes and lakes form a mountain landscape of deep cultural significance to M\u0101ori people",
+    featureKo: "\uD654\uC0B0\uACFC \uD638\uC218\uAC00 \uB9C8\uC624\uB9AC\uC778\uC5D0\uAC8C \uAE4A\uC740 \uBB38\uD654\uC801 \uC758\uBBF8\uB97C \uC9C0\uB2CC \uC0B0\uC545 \uACBD\uAD00\uC744 \uC774\uB8F9\uB2C8\uB2E4",
+    seed: 420,
+    color: "#b7a28c"
+  },
+  {
+    id: "tewahipounamu",
+    name: "Te Wahipounamu",
+    nameKo: "\uD14C\uC640\uD788\uD3EC\uC6B0\uB098\uBB34",
+    shape: "fjord",
+    feature: "Glaciers, fjords and ancient forests shape the southwest of New Zealand's South Island",
+    featureKo: "\uBE59\uD558\uC640 \uD53C\uC624\uB974, \uC624\uB798\uB41C \uC232\uC774 \uB274\uC9C8\uB79C\uB4DC \uB0A8\uC12C \uB0A8\uC11C\uBD80\uC758 \uACBD\uAD00\uC744 \uC774\uB8F9\uB2C8\uB2E4",
+    seed: 421,
+    color: "#829b8a"
+  },
+  {
+    id: "levuka",
+    name: "Levuka Historical Port Town",
+    nameKo: "\uB808\uBD80\uCE74 \uC5ED\uC0AC\uD56D\uAD6C\uB3C4\uC2DC",
+    shape: "harbor",
+    feature: "Low timber buildings preserve a Pacific port town beneath steep volcanic slopes",
+    featureKo: "\uAC00\uD30C\uB978 \uD654\uC0B0 \uBE44\uD0C8 \uC544\uB798 \uB0AE\uC740 \uBAA9\uC870 \uAC74\uBB3C\uB4E4\uC774 \uD0DC\uD3C9\uC591 \uD56D\uAD6C\uB3C4\uC2DC\uC758 \uBAA8\uC2B5\uC744 \uAC04\uC9C1\uD558\uACE0 \uC788\uC2B5\uB2C8\uB2E4",
+    seed: 422,
+    color: "#bca6a0"
+  },
+  {
+    id: "roimata",
+    name: "Chief Roi Mata's Domain",
+    nameKo: "\uB85C\uC774\uB9C8\uD0C0 \uCD94\uC7A5 \uC720\uC801",
+    shape: "island",
+    feature: "Settlement, burial and cave sites recall a Pacific chief and the traditions surrounding his life",
+    featureKo: "\uC815\uCC29\uC9C0\uC640 \uBB34\uB364, \uB3D9\uAD74 \uC720\uC801\uC774 \uD0DC\uD3C9\uC591 \uCD94\uC7A5\uACFC \uADF8\uC758 \uC0B6\uC5D0 \uC5BD\uD78C \uC804\uD1B5\uC744 \uC804\uD569\uB2C8\uB2E4",
+    seed: 423,
+    color: "#b69772"
+  },
+  {
+    id: "eastrennell",
+    name: "East Rennell",
+    nameKo: "\uB3D9\uB808\uB12C",
+    shape: "island",
+    feature: "A raised coral atoll contains a large lake surrounded by dense tropical forest",
+    featureKo: "\uC735\uAE30\uD55C \uC0B0\uD638 \uD658\uCD08 \uC548\uC5D0 \uC6B8\uCC3D\uD55C \uC5F4\uB300\uB9BC\uC73C\uB85C \uB458\uB7EC\uC2F8\uC778 \uD070 \uD638\uC218\uAC00 \uC790\uB9AC\uD569\uB2C8\uB2E4",
+    seed: 424,
+    color: "#c4ac88"
+  },
+  {
+    id: "kuk",
+    name: "Kuk Early Agricultural Site",
+    nameKo: "\uCFE0\uD06C \uCD08\uAE30\uB18D\uACBD\uC720\uC801",
+    shape: "terraces",
+    feature: "Ancient drainage systems record the development of agriculture in the New Guinea highlands",
+    featureKo: "\uC61B \uBC30\uC218\uC2DC\uC124\uC774 \uB274\uAE30\uB2C8 \uACE0\uC9C0\uB300\uC5D0\uC11C \uB18D\uC5C5\uC774 \uBC1C\uB2EC\uD55C \uC5ED\uC0AC\uB97C \uBCF4\uC5EC \uC90D\uB2C8\uB2E4",
+    seed: 425,
+    color: "#aeb9a0"
+  },
+  {
+    id: "bagerhat",
+    name: "Mosque City of Bagerhat",
+    nameKo: "\uBC14\uAC8C\uB974\uD558\uD2B8 \uBAA8\uC2A4\uD06C\uB3C4\uC2DC",
+    shape: "mosque",
+    feature: "Historic brick mosques and water infrastructure survive in a city founded near the Ganges delta",
+    featureKo: "\uAC20\uC9C0\uC2A4 \uC0BC\uAC01\uC8FC \uADFC\uCC98\uC5D0 \uC138\uC6B4 \uB3C4\uC2DC\uC5D0 \uC61B \uBCBD\uB3CC \uBAA8\uC2A4\uD06C\uC640 \uC218\uB9AC\uC2DC\uC124\uC774 \uB0A8\uC544 \uC788\uC2B5\uB2C8\uB2E4",
+    seed: 426,
+    color: "#bc8b70"
+  },
+  {
+    id: "paharpur",
+    name: "Somapura Mahavihara at Paharpur",
+    nameKo: "\uD30C\uD558\uB974\uD478\uB974 \uC18C\uB9C8\uD478\uB77C \uC2B9\uC6D0",
+    shape: "ziggurat",
+    feature: "A great Buddhist monastery surrounds a monumental central shrine decorated with terracotta plaques",
+    featureKo: "\uAC70\uB300\uD55C \uBD88\uAD50 \uC2B9\uC6D0\uC774 \uD14C\uB77C\uCF54\uD0C0 \uD310\uC73C\uB85C \uC7A5\uC2DD\uD55C \uC911\uC559 \uC0AC\uC6D0\uC744 \uB458\uB7EC\uC2F8\uACE0 \uC788\uC2B5\uB2C8\uB2E4",
+    seed: 427,
+    color: "#8baba4"
+  },
+  {
+    id: "preahvihear",
+    name: "Temple of Preah Vihear",
+    nameKo: "\uD504\uB808\uC544\uBE44\uD5E4\uC544\uB974 \uC0AC\uC6D0",
+    shape: "clifftemple",
+    feature: "A sequence of sanctuaries follows a long axis along a high plateau edge",
+    featureKo: "\uAE34 \uCD95\uC744 \uB530\uB77C \uC774\uC5B4\uC9C0\uB294 \uC131\uC18C\uB4E4\uC774 \uB192\uC740 \uACE0\uC6D0 \uAC00\uC7A5\uC790\uB9AC\uC5D0 \uC790\uB9AC\uD569\uB2C8\uB2E4",
+    seed: 428,
+    color: "#d3b17c"
+  },
+  {
+    id: "kohker",
+    name: "Koh Ker",
+    nameKo: "\uCF54\uCF00\uB974",
+    shape: "pyramid",
+    feature: "A stepped temple pyramid rises above the remains of a former Khmer capital",
+    featureKo: "\uACC4\uB2E8\uC2DD \uC0AC\uC6D0 \uD53C\uB77C\uBBF8\uB4DC\uAC00 \uD06C\uBA54\uB974\uC758 \uC61B \uC218\uB3C4 \uC720\uC801 \uC704\uB85C \uC19F\uC544 \uC788\uC2B5\uB2C8\uB2E4",
+    seed: 429,
+    color: "#b7a28c"
+  },
+  {
+    id: "komodo",
+    name: "Komodo National Park",
+    nameKo: "\uCF54\uBAA8\uB3C4 \uAD6D\uB9BD\uACF5\uC6D0",
+    shape: "island",
+    feature: "Rugged islands shelter Komodo dragons beside a rich marine environment",
+    featureKo: "\uD5D8\uC900\uD55C \uC12C\uB4E4\uC5D0 \uCF54\uBAA8\uB3C4\uC655\uB3C4\uB9C8\uBC40\uC774 \uC0B4\uACE0 \uC8FC\uBCC0\uC5D0\uB294 \uD48D\uBD80\uD55C \uD574\uC591 \uC0DD\uD0DC\uACC4\uAC00 \uD3BC\uCCD0\uC9D1\uB2C8\uB2E4",
+    seed: 430,
+    color: "#829b8a"
+  },
+  {
+    id: "prambanan",
+    name: "Prambanan Temple Compounds",
+    nameKo: "\uD504\uB78C\uBC14\uB09C \uC0AC\uC6D0\uAD70",
+    shape: "templetower",
+    feature: "Tall Hindu temple towers rise from a complex decorated with narrative reliefs",
+    featureKo: "\uC774\uC57C\uAE30\uB97C \uB2F4\uC740 \uBD80\uC870\uB85C \uC7A5\uC2DD\uD55C \uC0AC\uC6D0 \uB2E8\uC9C0 \uC704\uB85C \uB192\uC740 \uD78C\uB450\uAD50 \uC0AC\uC6D0\uD0D1\uB4E4\uC774 \uC19F\uC544 \uC788\uC2B5\uB2C8\uB2E4",
+    seed: 431,
+    color: "#bca6a0"
+  },
+  {
+    id: "balisubak",
+    name: "Bali Subak Landscape",
+    nameKo: "\uBC1C\uB9AC \uC218\uBC14\uD06C \uACBD\uAD00",
+    shape: "terraces",
+    feature: "Water temples and terraced rice fields form a landscape managed by the subak irrigation system",
+    featureKo: "\uBB3C\uC758 \uC0AC\uC6D0\uACFC \uACC4\uB2E8\uC2DD \uB17C\uC774 \uC218\uBC14\uD06C \uAD00\uAC1C \uCCB4\uACC4\uB85C \uAD00\uB9AC\uD558\uB294 \uACBD\uAD00\uC744 \uC774\uB8F9\uB2C8\uB2E4",
+    seed: 432,
+    color: "#b69772"
+  },
+  {
+    id: "kinabalu",
+    name: "Kinabalu Park",
+    nameKo: "\uD0A4\uB098\uBC1C\uB8E8 \uACF5\uC6D0",
+    shape: "peaks",
+    feature: "A granite mountain supports vegetation ranging from tropical forest to alpine habitats",
+    featureKo: "\uD654\uAC15\uC554 \uC0B0\uC5D0 \uC5F4\uB300\uB9BC\uC5D0\uC11C \uACE0\uC0B0 \uC11C\uC2DD\uC9C0\uAE4C\uC9C0 \uB2E4\uC591\uD55C \uC2DD\uC0DD\uC774 \uC790\uB78D\uB2C8\uB2E4",
+    seed: 433,
+    color: "#c4ac88"
+  },
+  {
+    id: "gunungmulu",
+    name: "Gunung Mulu",
+    nameKo: "\uAD6C\uB219\uBB3C\uB8E8",
+    shape: "cave",
+    feature: "Limestone pinnacles and immense caves form a spectacular tropical karst landscape",
+    featureKo: "\uC11D\uD68C\uC554 \uCCA8\uBD09\uACFC \uAC70\uB300\uD55C \uB3D9\uAD74\uB4E4\uC774 \uC5F4\uB300 \uCE74\uB974\uC2A4\uD2B8 \uACBD\uAD00\uC744 \uC774\uB8F9\uB2C8\uB2E4",
+    seed: 434,
+    color: "#aeb9a0"
+  },
+  {
+    id: "puertoprincesa",
+    name: "Puerto-Princesa Subterranean River",
+    nameKo: "\uD478\uC5D0\uB974\uD1A0\uD504\uB9B0\uC138\uC0AC \uC9C0\uD558\uAC15",
+    shape: "cave",
+    feature: "A subterranean river flows through limestone caves before reaching the sea",
+    featureKo: "\uC9C0\uD558\uAC15\uC774 \uC11D\uD68C\uC554 \uB3D9\uAD74\uC744 \uC9C0\uB098 \uBC14\uB2E4\uB85C \uD758\uB7EC\uAC11\uB2C8\uB2E4",
+    seed: 435,
+    color: "#bc8b70"
+  },
+  {
+    id: "tubbataha",
+    name: "Tubbataha Reefs",
+    nameKo: "\uD22C\uBC14\uD0C0\uD558 \uC0B0\uD638\uCD08",
+    shape: "reef",
+    feature: "Remote coral atolls support rich reef communities and breeding seabirds",
+    featureKo: "\uC678\uB534 \uC0B0\uD638 \uD658\uCD08\uC5D0 \uD48D\uBD80\uD55C \uC0B0\uD638\uCD08 \uC0DD\uD0DC\uACC4\uC640 \uBC88\uC2DD\uD558\uB294 \uBC14\uB2F7\uC0C8\uB4E4\uC774 \uC790\uB9AC\uD569\uB2C8\uB2E4",
+    seed: 436,
+    color: "#8baba4"
+  },
+  {
+    id: "cordilleraterraces",
+    name: "Philippine Cordilleras Rice Terraces",
+    nameKo: "\uD544\uB9AC\uD540 \uCF54\uB974\uB514\uC608\uB77C \uACC4\uB2E8\uC2DD \uB17C",
+    shape: "terraces",
+    feature: "Steep mountain slopes are shaped into irrigated rice terraces maintained by local communities",
+    featureKo: "\uC9C0\uC5ED \uACF5\uB3D9\uCCB4\uAC00 \uAC00\uAFB8\uB294 \uAD00\uAC1C \uACC4\uB2E8\uC2DD \uB17C\uC774 \uAC00\uD30C\uB978 \uC0B0\uBE44\uD0C8\uC744 \uB530\uB77C \uC774\uC5B4\uC9D1\uB2C8\uB2E4",
+    seed: 437,
+    color: "#d3b17c"
+  },
+  {
+    id: "hue",
+    name: "Hu\xE9 Monuments",
+    nameKo: "\uD6C4\uC5D0 \uC720\uC801",
+    shape: "palace",
+    feature: "Palaces, temples and fortified enclosures preserve the ceremonial heart of Vietnam's former capital",
+    featureKo: "\uAD81\uC804\uACFC \uC0AC\uC6D0, \uC131\uACFD \uAD6C\uC5ED\uC774 \uBCA0\uD2B8\uB0A8 \uC61B \uC218\uB3C4\uC758 \uC758\uB840 \uC911\uC2EC\uC9C0\uB97C \uC774\uB8E8\uACE0 \uC788\uC2B5\uB2C8\uB2E4",
+    seed: 438,
+    color: "#b7a28c"
+  },
+  {
+    id: "hoian",
+    name: "Hoi An",
+    nameKo: "\uD638\uC774\uC548",
+    shape: "town",
+    feature: "Timber buildings and narrow streets preserve a Southeast Asian trading port",
+    featureKo: "\uBAA9\uC870 \uAC74\uBB3C\uACFC \uC881\uC740 \uAC70\uB9AC\uB4E4\uC774 \uB3D9\uB0A8\uC544\uC2DC\uC544 \uAD50\uC5ED\uD56D\uC758 \uC61B \uBAA8\uC2B5\uC744 \uAC04\uC9C1\uD558\uACE0 \uC788\uC2B5\uB2C8\uB2E4",
+    seed: 439,
+    color: "#829b8a"
+  },
+  {
+    id: "trangan",
+    name: "Trang An",
+    nameKo: "\uC9F1\uC548",
+    shape: "pillars",
+    feature: "Limestone towers rise above waterways, caves and archaeological sites",
+    featureKo: "\uBB3C\uAE38\uACFC \uB3D9\uAD74, \uACE0\uACE0 \uC720\uC801 \uC704\uB85C \uC11D\uD68C\uC554 \uBD09\uC6B0\uB9AC\uB4E4\uC774 \uC19F\uC544 \uC788\uC2B5\uB2C8\uB2E4",
+    seed: 440,
+    color: "#bca6a0"
+  },
+  {
+    id: "anuradhapura",
+    name: "Anuradhapura",
+    nameKo: "\uC544\uB204\uB77C\uB2E4\uD478\uB77C",
+    shape: "stupa",
+    feature: "Large stupas and monastic ruins preserve a sacred city centred on a revered Bodhi tree",
+    featureKo: "\uC874\uACBD\uBC1B\uB294 \uBCF4\uB9AC\uC218\uB97C \uC911\uC2EC\uC73C\uB85C \uD55C \uC131\uC2A4\uB7EC\uC6B4 \uB3C4\uC2DC\uC5D0 \uD070 \uBD88\uD0D1\uACFC \uC218\uB3C4\uC6D0 \uC720\uC801\uC774 \uB0A8\uC544 \uC788\uC2B5\uB2C8\uB2E4",
+    seed: 441,
+    color: "#b69772"
+  },
+  {
+    id: "galle",
+    name: "Galle Fort",
+    nameKo: "\uAC08\uB808 \uC694\uC0C8",
+    shape: "fortress",
+    feature: "Fortified streets and buildings combine European planning with South Asian traditions",
+    featureKo: "\uC131\uBCBD \uC548\uC758 \uAC70\uB9AC\uC640 \uAC74\uBB3C\uC5D0 \uC720\uB7FD\uC2DD \uACC4\uD68D\uACFC \uB0A8\uC544\uC2DC\uC544 \uC804\uD1B5\uC774 \uC5B4\uC6B0\uB7EC\uC838 \uC788\uC2B5\uB2C8\uB2E4",
+    seed: 442,
+    color: "#c4ac88"
+  },
+  {
+    id: "dambulla",
+    name: "Dambulla Cave Temple",
+    nameKo: "\uB2F4\uBD88\uB77C \uC11D\uAD74\uC0AC\uC6D0",
+    shape: "rocktemple",
+    feature: "Cave sanctuaries preserve Buddhist statues and extensive painted surfaces",
+    featureKo: "\uC11D\uAD74 \uC131\uC18C\uB4E4\uC5D0 \uBD88\uC0C1\uACFC \uB113\uC740 \uBA74\uC744 \uB36E\uC740 \uBD88\uAD50 \uADF8\uB9BC\uC774 \uB0A8\uC544 \uC788\uC2B5\uB2C8\uB2E4",
+    seed: 443,
+    color: "#aeb9a0"
+  },
+  {
+    id: "gyeongju",
+    name: "Gyeongju Historic Areas",
+    nameKo: "\uACBD\uC8FC \uC5ED\uC0AC\uC720\uC801\uC9C0\uAD6C",
+    shape: "tomb",
+    feature: "Royal tombs, temple remains and palace sites preserve the former Silla capital",
+    featureKo: "\uC655\uB989\uACFC \uC0AC\uCC30 \uD130, \uAD81\uAD90 \uC720\uC801\uC774 \uC2E0\uB77C \uC61B \uC218\uB3C4\uC758 \uC5ED\uC0AC\uB97C \uBCF4\uC5EC \uC90D\uB2C8\uB2E4",
+    seed: 444,
+    color: "#bc8b70"
+  },
+  {
+    id: "hahoeyangdong",
+    name: "Hahoe and Yangdong Villages",
+    nameKo: "\uD558\uD68C\uC640 \uC591\uB3D9\uB9C8\uC744",
+    shape: "thatched",
+    feature: "Traditional clan villages preserve tiled and thatched houses within wooded river landscapes",
+    featureKo: "\uC232\uACFC \uAC15\uC774 \uC5B4\uC6B0\uB7EC\uC9C4 \uB3D9\uC871\uB9C8\uC744\uC5D0 \uAE30\uC640\uC9D1\uACFC \uCD08\uAC00\uC9D1\uC774 \uB0A8\uC544 \uC788\uC2B5\uB2C8\uB2E4",
+    seed: 445,
+    color: "#8baba4"
+  },
+  {
+    id: "namhansanseong",
+    name: "Namhansanseong",
+    nameKo: "\uB0A8\uD55C\uC0B0\uC131",
+    shape: "fortress",
+    feature: "Mountain walls and gates surround a refuge capital developed for the Joseon dynasty",
+    featureKo: "\uC0B0\uC744 \uB530\uB77C \uB450\uB978 \uC131\uBCBD\uACFC \uC131\uBB38\uC774 \uC870\uC120\uC758 \uBE44\uC0C1 \uC218\uB3C4\uB97C \uAC10\uC2F8\uACE0 \uC788\uC2B5\uB2C8\uB2E4",
+    seed: 446,
+    color: "#d3b17c"
+  },
+  {
+    id: "seowon",
+    name: "Seowon Academies",
+    nameKo: "\uD55C\uAD6D\uC758 \uC11C\uC6D0",
+    shape: "hall",
+    feature: "Neo-Confucian academies place study halls and shrines within carefully chosen natural settings",
+    featureKo: "\uC790\uC5F0 \uC18D\uC5D0 \uC790\uB9AC \uC7A1\uC740 \uC131\uB9AC\uD559 \uAD50\uC721\uAE30\uAD00\uC5D0 \uAC15\uD559\uB2F9\uACFC \uC0AC\uB2F9\uC774 \uBC30\uCE58\uB418\uC5B4 \uC788\uC2B5\uB2C8\uB2E4",
+    seed: 447,
+    color: "#b7a28c"
+  },
+  {
+    id: "qinmausoleum",
+    name: "First Qin Emperor's Mausoleum",
+    nameKo: "\uC9C4\uC2DC\uD669\uB989",
+    shape: "stelae",
+    feature: "An imperial burial complex includes a vast terracotta army arranged in underground pits",
+    featureKo: "\uD669\uC81C\uC758 \uBB18\uC5ED \uC548 \uC9C0\uD558 \uAC31\uC5D0 \uAC70\uB300\uD55C \uBCD1\uB9C8\uC6A9 \uAD70\uB300\uAC00 \uC904\uC9C0\uC5B4 \uC788\uC2B5\uB2C8\uB2E4",
+    seed: 448,
+    color: "#829b8a"
+  },
+  {
+    id: "pingyao",
+    name: "Ancient Ping Yao",
+    nameKo: "\uD551\uC57C\uC624 \uACE0\uC131",
+    shape: "fortress",
+    feature: "A walled Chinese city preserves traditional houses and historic commercial buildings",
+    featureKo: "\uC131\uBCBD\uC73C\uB85C \uB458\uB7EC\uC2FC \uC911\uAD6D \uB3C4\uC2DC\uC5D0 \uC804\uD1B5 \uC8FC\uD0DD\uACFC \uC61B \uC0C1\uC5C5 \uAC74\uBB3C\uC774 \uB0A8\uC544 \uC788\uC2B5\uB2C8\uB2E4",
+    seed: 449,
+    color: "#bca6a0"
+  },
+  {
+    id: "yungang",
+    name: "Yungang Grottoes",
+    nameKo: "\uC708\uAC15 \uC11D\uAD74",
+    shape: "cliffbuddha",
+    feature: "Buddhist cave temples contain monumental statues carved into sandstone cliffs",
+    featureKo: "\uC0AC\uC554 \uC808\uBCBD\uC5D0 \uC0C8\uAE34 \uBD88\uAD50 \uC11D\uAD74\uC0AC\uC6D0 \uC548\uC5D0 \uAC70\uB300\uD55C \uBD88\uC0C1\uB4E4\uC774 \uC790\uB9AC\uD569\uB2C8\uB2E4",
+    seed: 450,
+    color: "#b69772"
+  },
+  {
+    id: "westlake",
+    name: "West Lake of Hangzhou",
+    nameKo: "\uD56D\uC800\uC6B0 \uC11C\uD638",
+    shape: "lakes",
+    feature: "Causeways, gardens and temples shape a lake landscape celebrated in Chinese art",
+    featureKo: "\uBC29\uC8FD\uACFC \uC815\uC6D0, \uC0AC\uC6D0\uB4E4\uC774 \uC911\uAD6D \uC608\uC220\uC5D0\uC11C \uC0AC\uB791\uBC1B\uC544 \uC628 \uD638\uC218 \uACBD\uAD00\uC744 \uC774\uB8F9\uB2C8\uB2E4",
+    seed: 451,
+    color: "#c4ac88"
+  },
+  {
+    id: "haniterraces",
+    name: "Honghe Hani Rice Terraces",
+    nameKo: "\uD6D9\uD5C8 \uD558\uB2C8 \uACC4\uB2E8\uC2DD \uB17C",
+    shape: "terraces",
+    feature: "Irrigated terraces descend from forested mountains past Hani villages",
+    featureKo: "\uC232\uC73C\uB85C \uB36E\uC778 \uC0B0\uC5D0\uC11C \uD558\uB2C8\uC871 \uB9C8\uC744\uC744 \uC9C0\uB098 \uAD00\uAC1C \uACC4\uB2E8\uC2DD \uB17C\uC774 \uC774\uC5B4\uC9D1\uB2C8\uB2E4",
+    seed: 452,
+    color: "#aeb9a0"
+  },
+  {
+    id: "pattadakal",
+    name: "Pattadakal",
+    nameKo: "\uD30C\uD0C0\uB2E4\uCE7C",
+    shape: "templetower",
+    feature: "Chalukya-period temples bring together northern and southern Indian architectural forms",
+    featureKo: "\uCC30\uB8E8\uD0A4\uC544 \uC2DC\uB300 \uC0AC\uC6D0\uB4E4\uC774 \uC778\uB3C4 \uBD81\uBD80\uC640 \uB0A8\uBD80\uC758 \uAC74\uCD95 \uD615\uC2DD\uC744 \uD568\uAED8 \uBCF4\uC5EC \uC90D\uB2C8\uB2E4",
+    seed: 453,
+    color: "#bc8b70"
+  },
+  {
+    id: "shivajiterminus",
+    name: "Chhatrapati Shivaji Terminus",
+    nameKo: "\uCC28\uD2B8\uB77C\uD30C\uD2F0 \uC2DC\uBC14\uC9C0 \uD130\uBBF8\uB108\uC2A4",
+    shape: "hall",
+    feature: "A monumental railway station combines Victorian Gothic Revival and Indian architectural traditions",
+    featureKo: "\uAC70\uB300\uD55C \uCCA0\uB3C4\uC5ED\uC5D0 \uBE45\uD1A0\uB9AC\uC544 \uACE0\uB515 \uBD80\uD765 \uC591\uC2DD\uACFC \uC778\uB3C4 \uAC74\uCD95 \uC804\uD1B5\uC774 \uC5B4\uC6B0\uB7EC\uC838 \uC788\uC2B5\uB2C8\uB2E4",
+    seed: 454,
+    color: "#8baba4"
+  },
+  {
+    id: "nalanda",
+    name: "Nalanda Mahavihara",
+    nameKo: "\uB0A0\uB780\uB2E4 \uB9C8\uD558\uBE44\uD558\uB77C",
+    shape: "ruins",
+    feature: "Monasteries, shrines and educational remains record a long-lived Buddhist learning centre",
+    featureKo: "\uC218\uB3C4\uC6D0\uACFC \uC131\uC18C, \uAD50\uC721\uC2DC\uC124 \uC720\uC801\uC774 \uC624\uB798 \uC774\uC5B4\uC9C4 \uBD88\uAD50 \uD559\uBB38\uC758 \uC911\uC2EC\uC9C0\uB97C \uBCF4\uC5EC \uC90D\uB2C8\uB2E4",
+    seed: 455,
+    color: "#d3b17c"
+  },
+  {
+    id: "bam",
+    name: "Bam and its Cultural Landscape",
+    nameKo: "\uBC24 \uBB38\uD654\uACBD\uAD00",
+    shape: "adobe",
+    feature: "An earthen citadel and oasis landscape record the history of a desert trading city",
+    featureKo: "\uD759\uC73C\uB85C \uC9C0\uC740 \uC131\uCC44\uC640 \uC624\uC544\uC2DC\uC2A4 \uACBD\uAD00\uC774 \uC0AC\uB9C9 \uAD50\uC5ED\uB3C4\uC2DC\uC758 \uC5ED\uC0AC\uB97C \uC804\uD569\uB2C8\uB2E4",
+    seed: 456,
+    color: "#b7a28c"
+  },
+  {
+    id: "shushtar",
+    name: "Shushtar Hydraulic System",
+    nameKo: "\uC288\uC288\uD0C0\uB974 \uC218\uB9AC\uC2DC\uC124",
+    shape: "waterworks",
+    feature: "Dams, tunnels and canals distribute water through a historic system of mills and irrigation",
+    featureKo: "\uB310\uACFC \uD130\uB110, \uC6B4\uD558\uAC00 \uC61B \uBB3C\uB808\uBC29\uC544\uC640 \uAD00\uAC1C\uC2DC\uC124\uC5D0 \uBB3C\uC744 \uB098\uB204\uC5B4 \uBCF4\uB0C5\uB2C8\uB2E4",
+    seed: 457,
+    color: "#829b8a"
+  },
+  {
+    id: "gonbadeqabus",
+    name: "Gonbad-e Q\u0101bus",
+    nameKo: "\uACE4\uBC14\uB370\uCE74\uBD80\uC2A4",
+    shape: "minaret",
+    feature: "A tall brick funerary tower rises above a star-shaped plan beneath a conical roof",
+    featureKo: "\uBCC4 \uBAA8\uC591 \uD3C9\uBA74 \uC704\uB85C \uB192\uC740 \uBCBD\uB3CC \uC7A5\uB840\uD0D1\uC774 \uC19F\uACE0 \uC6D0\uBFD4 \uC9C0\uBD95\uC774 \uC5B9\uD600 \uC788\uC2B5\uB2C8\uB2E4",
+    seed: 458,
+    color: "#bca6a0"
+  },
+  {
+    id: "cappadocia",
+    name: "G\xF6reme and Cappadocia",
+    nameKo: "\uAD34\uB808\uBA54\uC640 \uCE74\uD30C\uB3C4\uD0A4\uC544",
+    shape: "pillars",
+    feature: "Eroded volcanic rock formations contain rock-cut churches and dwellings",
+    featureKo: "\uCE68\uC2DD\uB41C \uD654\uC0B0\uC554 \uC9C0\uD615 \uC548\uC5D0 \uBC14\uC704\uB97C \uD30C \uB9CC\uB4E0 \uAD50\uD68C\uC640 \uC8FC\uAC70\uC9C0\uAC00 \uC790\uB9AC\uD569\uB2C8\uB2E4",
+    seed: 459,
+    color: "#b69772"
+  },
+  {
+    id: "nemrut",
+    name: "Nemrut Da\u011F",
+    nameKo: "\uB134\uB8E8\uD2B8\uC0B0",
+    shape: "stelae",
+    feature: "Colossal stone statues flank a royal funerary mound high in the mountains",
+    featureKo: "\uB192\uC740 \uC0B0\uC758 \uC655\uC2E4 \uBB34\uB364 \uC5B8\uB355 \uC591\uC606\uC5D0 \uAC70\uB300\uD55C \uC11D\uC0C1\uB4E4\uC774 \uC790\uB9AC\uD569\uB2C8\uB2E4",
+    seed: 460,
+    color: "#c4ac88"
+  },
+  {
+    id: "pamukkale",
+    name: "Hierapolis-Pamukkale",
+    nameKo: "\uD788\uC5D0\uB77C\uD3F4\uB9AC\uC2A4\uD30C\uBB35\uCE7C\uB808",
+    shape: "terraces",
+    feature: "White travertine terraces formed by thermal waters lie below the remains of an ancient city",
+    featureKo: "\uC628\uCC9C\uC218\uAC00 \uBE5A\uC740 \uD770 \uC11D\uD68C\uBD95\uC774 \uACE0\uB300 \uB3C4\uC2DC \uC720\uC801 \uC544\uB798\uB85C \uD3BC\uCCD0\uC9D1\uB2C8\uB2E4",
+    seed: 461,
+    color: "#aeb9a0"
+  },
+  {
+    id: "troy",
+    name: "Troy",
+    nameKo: "\uD2B8\uB85C\uC774",
+    shape: "ruins",
+    feature: "Successive settlement layers preserve a city associated with ancient Mediterranean history and epic poetry",
+    featureKo: "\uC5EC\uB7EC \uC2DC\uB300\uC758 \uC815\uCC29\uCE35\uC774 \uACE0\uB300 \uC9C0\uC911\uD574 \uC5ED\uC0AC\uC640 \uC11C\uC0AC\uC2DC\uB85C \uC54C\uB824\uC9C4 \uB3C4\uC2DC\uB97C \uBCF4\uC5EC \uC90D\uB2C8\uB2E4",
+    seed: 462,
+    color: "#bc8b70"
+  },
+  {
+    id: "baalbek",
+    name: "Baalbek",
+    nameKo: "\uBC14\uC54C\uBCA0\uD06C",
+    shape: "columns",
+    feature: "Monumental Roman temples preserve towering columns and richly carved stonework",
+    featureKo: "\uAC70\uB300\uD55C \uB85C\uB9C8 \uC2E0\uC804\uC5D0 \uB192\uC740 \uAE30\uB465\uACFC \uC815\uAD50\uD55C \uC11D\uC870 \uC7A5\uC2DD\uC774 \uB0A8\uC544 \uC788\uC2B5\uB2C8\uB2E4",
+    seed: 463,
+    color: "#8baba4"
+  },
+  {
+    id: "byblos",
+    name: "Byblos",
+    nameKo: "\uBE44\uBE14\uB85C\uC2A4",
+    shape: "ruins",
+    feature: "A long-inhabited coastal city preserves traces of successive Mediterranean civilizations",
+    featureKo: "\uC624\uB7AB\uB3D9\uC548 \uC0AC\uB78C\uC774 \uC0B4\uC544\uC628 \uD574\uC548 \uB3C4\uC2DC\uC5D0 \uC5EC\uB7EC \uC9C0\uC911\uD574 \uBB38\uBA85\uC758 \uD754\uC801\uC774 \uB0A8\uC544 \uC788\uC2B5\uB2C8\uB2E4",
+    seed: 464,
+    color: "#d3b17c"
+  },
+  {
+    id: "quseiramra",
+    name: "Quseir Amra",
+    nameKo: "\uCFE0\uC138\uC774\uB974\uC554\uB77C",
+    shape: "dome",
+    feature: "An early Islamic desert residence preserves remarkable wall paintings inside its bath complex",
+    featureKo: "\uCD08\uAE30 \uC774\uC2AC\uB78C \uC0AC\uB9C9 \uAC70\uCC98\uC758 \uBAA9\uC695\uC2DC\uC124 \uC548\uC5D0 \uB6F0\uC5B4\uB09C \uBCBD\uD654\uAC00 \uB0A8\uC544 \uC788\uC2B5\uB2C8\uB2E4",
+    seed: 465,
+    color: "#b7a28c"
+  },
+  {
+    id: "wadirum",
+    name: "Wadi Rum",
+    nameKo: "\uC640\uB514\uB7FC",
+    shape: "redrocks",
+    feature: "Sandstone cliffs, narrow gorges and natural arches form a desert landscape rich in rock art",
+    featureKo: "\uC0AC\uC554 \uC808\uBCBD\uACFC \uC881\uC740 \uD611\uACE1, \uC790\uC5F0 \uC544\uCE58\uAC00 \uC554\uAC01\uD654\uAC00 \uD48D\uBD80\uD55C \uC0AC\uB9C9 \uACBD\uAD00\uC744 \uC774\uB8F9\uB2C8\uB2E4",
+    seed: 466,
+    color: "#829b8a"
+  },
+  {
+    id: "atturaif",
+    name: "At-Turaif",
+    nameKo: "\uC557\uD22C\uB77C\uC774\uD504",
+    shape: "adobe",
+    feature: "Mud-brick palaces and urban remains preserve the early Saudi capital at ad-Dir'iyah",
+    featureKo: "\uD759\uBCBD\uB3CC \uAD81\uC804\uACFC \uB3C4\uC2DC \uC720\uC801\uC774 \uB514\uB9AC\uC57C\uC5D0 \uC788\uB358 \uCD08\uAE30 \uC0AC\uC6B0\uB514 \uC218\uB3C4\uC758 \uBAA8\uC2B5\uC744 \uAC04\uC9C1\uD558\uACE0 \uC788\uC2B5\uB2C8\uB2E4",
+    seed: 467,
+    color: "#bca6a0"
+  },
+  {
+    id: "alahsa",
+    name: "Al-Ahsa Oasis",
+    nameKo: "\uC54C\uC544\uD750\uC0AC \uC624\uC544\uC2DC\uC2A4",
+    shape: "garden",
+    feature: "Palm groves, springs and canals form an extensive oasis shaped by long settlement",
+    featureKo: "\uC57C\uC790 \uC232\uACFC \uC0D8, \uC218\uB85C\uAC00 \uC624\uB79C \uC815\uCC29\uC73C\uB85C \uBE5A\uC5B4\uC9C4 \uB113\uC740 \uC624\uC544\uC2DC\uC2A4\uB97C \uC774\uB8F9\uB2C8\uB2E4",
+    seed: 468,
+    color: "#b69772"
+  },
+  {
+    id: "alzubarah",
+    name: "Al Zubarah",
+    nameKo: "\uC54C\uC8FC\uBC14\uB77C",
+    shape: "fortress",
+    feature: "The remains of a walled Gulf town record pearling and maritime trade",
+    featureKo: "\uAC78\uD504 \uC9C0\uC5ED \uC131\uACFD\uB3C4\uC2DC\uC758 \uC720\uC801\uC774 \uC9C4\uC8FC \uCC44\uCDE8\uC640 \uD574\uC0C1 \uAD50\uC5ED\uC758 \uC5ED\uC0AC\uB97C \uBCF4\uC5EC \uC90D\uB2C8\uB2E4",
+    seed: 469,
+    color: "#c4ac88"
+  },
+  {
+    id: "alain",
+    name: "Al Ain Cultural Sites",
+    nameKo: "\uC54C\uC544\uC778 \uBB38\uD654\uC720\uC801",
+    shape: "garden",
+    feature: "Oases, tombs and ancient settlements record life in the Arabian desert over millennia",
+    featureKo: "\uC624\uC544\uC2DC\uC2A4\uC640 \uBB34\uB364, \uC61B \uC815\uCC29\uC9C0\uAC00 \uC218\uCC9C \uB144\uAC04 \uC774\uC5B4\uC9C4 \uC544\uB77C\uBE44\uC544 \uC0AC\uB9C9\uC758 \uC0B6\uC744 \uBCF4\uC5EC \uC90D\uB2C8\uB2E4",
+    seed: 470,
+    color: "#aeb9a0"
+  },
+  {
+    id: "shirakami",
+    name: "Shirakami-Sanchi",
+    nameKo: "\uC2DC\uB77C\uCE74\uBBF8\uC0B0\uC9C0",
+    shape: "forest",
+    feature: "An extensive cool-temperate beech forest survives across a rugged mountain landscape",
+    featureKo: "\uD5D8\uC900\uD55C \uC0B0\uC545 \uACBD\uAD00\uC5D0 \uB113\uC740 \uB0C9\uC628\uB300 \uB108\uB3C4\uBC24\uB098\uBB34 \uC232\uC774 \uB0A8\uC544 \uC788\uC2B5\uB2C8\uB2E4",
+    seed: 471,
+    color: "#bc8b70"
+  },
+  {
+    id: "ogasawara",
+    name: "Ogasawara Islands",
+    nameKo: "\uC624\uAC00\uC0AC\uC640\uB77C\uC81C\uB3C4",
+    shape: "island",
+    feature: "Oceanic islands harbour many endemic species shaped by isolated evolution",
+    featureKo: "\uB300\uC591\uC12C\uB4E4\uC5D0 \uACE0\uB9BD\uB41C \uC9C4\uD654\uAC00 \uBE5A\uC740 \uB9CE\uC740 \uACE0\uC720\uC885\uC774 \uC0B4\uC544\uAC11\uB2C8\uB2E4",
+    seed: 472,
+    color: "#8baba4"
+  },
+  {
+    id: "tomioka",
+    name: "Tomioka Silk Mill",
+    nameKo: "\uB3C4\uBBF8\uC624\uCE74 \uC81C\uC0AC\uC7A5",
+    shape: "industrial",
+    feature: "A historic silk mill and related sites record Japan's transition to industrial silk production",
+    featureKo: "\uC61B \uC81C\uC0AC\uC7A5\uACFC \uAD00\uB828 \uC720\uC801\uC774 \uC77C\uBCF8\uC758 \uC0B0\uC5C5\uC801 \uBE44\uB2E8 \uC0DD\uC0B0 \uC804\uD658\uC744 \uBCF4\uC5EC \uC90D\uB2C8\uB2E4",
+    seed: 473,
+    color: "#d3b17c"
+  },
+  {
+    id: "salzburg",
+    name: "Historic Salzburg",
+    nameKo: "\uC798\uCE20\uBD80\uB974\uD06C \uC5ED\uC0AC\uB3C4\uC2DC",
+    shape: "town",
+    feature: "Ecclesiastical and civic buildings preserve a Baroque city between the river and surrounding hills",
+    featureKo: "\uAC15\uACFC \uC8FC\uBCC0 \uC5B8\uB355 \uC0AC\uC774\uC5D0 \uC885\uAD50\xB7\uACF5\uACF5\uAC74\uBB3C\uC774 \uC5B4\uC6B0\uB7EC\uC9C4 \uBC14\uB85C\uD06C \uB3C4\uC2DC\uAC00 \uB0A8\uC544 \uC788\uC2B5\uB2C8\uB2E4",
+    seed: 474,
+    color: "#b7a28c"
+  },
+  {
+    id: "hallstatt",
+    name: "Hallstatt-Dachstein",
+    nameKo: "\uD560\uC288\uD0C0\uD2B8\uB2E4\uD750\uC288\uD0C0\uC778",
+    shape: "coast",
+    feature: "Alpine settlement and mountain scenery reflect a long history of salt mining",
+    featureKo: "\uC54C\uD504\uC2A4\uC758 \uC815\uCC29\uC9C0\uC640 \uC0B0\uC545 \uACBD\uAD00\uC774 \uC624\uB79C \uC18C\uAE08 \uCC44\uAD74\uC758 \uC5ED\uC0AC\uB97C \uBCF4\uC5EC \uC90D\uB2C8\uB2E4",
+    seed: 475,
+    color: "#829b8a"
+  },
+  {
+    id: "berne",
+    name: "Old City of Berne",
+    nameKo: "\uBCA0\uB978 \uAD6C\uC2DC\uAC00\uC9C0",
+    shape: "town",
+    feature: "Arcaded streets and historic fountains preserve a planned medieval city beside the Aare River",
+    featureKo: "\uC544\uB808\uAC15 \uC606\uC5D0 \uC544\uCF00\uC774\uB4DC \uAC70\uB9AC\uC640 \uC61B \uBD84\uC218\uB4E4\uC774 \uC911\uC138 \uACC4\uD68D\uB3C4\uC2DC\uC758 \uBAA8\uC2B5\uC744 \uAC04\uC9C1\uD558\uACE0 \uC788\uC2B5\uB2C8\uB2E4",
+    seed: 476,
+    color: "#bca6a0"
+  },
+  {
+    id: "stgall",
+    name: "Abbey of St Gall",
+    nameKo: "\uC7A5\uD06C\uD2B8\uAC08\uB80C \uC218\uB3C4\uC6D0",
+    shape: "cloister",
+    feature: "A monastic complex and its library preserve an important centre of European learning",
+    featureKo: "\uC218\uB3C4\uC6D0 \uB2E8\uC9C0\uC640 \uB3C4\uC11C\uAD00\uC774 \uC720\uB7FD \uD559\uBB38\uC758 \uC911\uC694\uD55C \uC911\uC2EC\uC9C0\uB97C \uBCF4\uC5EC \uC90D\uB2C8\uB2E4",
+    seed: 477,
+    color: "#b69772"
+  },
+  {
+    id: "wurzburg",
+    name: "W\xFCrzburg Residence",
+    nameKo: "\uBDD4\uB974\uCE20\uBD80\uB974\uD06C \uC8FC\uAD50\uAD81",
+    shape: "palace",
+    feature: "A richly decorated Baroque residence combines a grand staircase with formal court gardens",
+    featureKo: "\uC815\uAD50\uD558\uAC8C \uC7A5\uC2DD\uD55C \uBC14\uB85C\uD06C \uAD81\uC804\uC5D0 \uC6C5\uC7A5\uD55C \uACC4\uB2E8\uACFC \uC815\uD615\uC2DD \uAD81\uC815 \uC815\uC6D0\uC774 \uC5B4\uC6B0\uB7EC\uC838 \uC788\uC2B5\uB2C8\uB2E4",
+    seed: 478,
+    color: "#c4ac88"
+  },
+  {
+    id: "trier",
+    name: "Roman Monuments of Trier",
+    nameKo: "\uD2B8\uB9AC\uC5B4 \uB85C\uB9C8\uC720\uC801",
+    shape: "gate",
+    feature: "Roman gates, baths and later churches preserve layers of a city on the Moselle",
+    featureKo: "\uB85C\uB9C8 \uC2DC\uB300 \uC131\uBB38\uACFC \uBAA9\uC695\uC7A5, \uD6C4\uB300 \uAD50\uD68C\uB4E4\uC774 \uBAA8\uC824\uAC15 \uB3C4\uC2DC\uC758 \uC5ED\uC0AC\uB97C \uCE35\uCE35\uC774 \uBCF4\uC5EC \uC90D\uB2C8\uB2E4",
+    seed: 479,
+    color: "#aeb9a0"
+  },
+  {
+    id: "speicherstadt",
+    name: "Speicherstadt and Kontorhaus",
+    nameKo: "\uC288\uD30C\uC774\uD5C8\uC288\uD0C0\uD2B8\uC640 \uCF58\uD1A0\uC5B4\uD558\uC6B0\uC2A4",
+    shape: "canal",
+    feature: "Brick warehouses line canals beside a district of early modern office buildings",
+    featureKo: "\uC6B4\uD558\uB97C \uB530\uB77C \uBCBD\uB3CC \uCC3D\uACE0\uB4E4\uC774 \uB298\uC5B4\uC11C\uACE0 \uADFC\uB300 \uCD08\uAE30 \uC0AC\uBB34\uAC74\uBB3C \uAD6C\uC5ED\uC774 \uC774\uC6C3\uD574 \uC788\uC2B5\uB2C8\uB2E4",
+    seed: 480,
+    color: "#bc8b70"
+  },
+  {
+    id: "kronborg",
+    name: "Kronborg Castle",
+    nameKo: "\uD06C\uB860\uBCF4\uB974\uC131",
+    shape: "castle",
+    feature: "A Renaissance castle guards the narrow sound between Denmark and Sweden",
+    featureKo: "\uB974\uB124\uC0C1\uC2A4 \uC131\uC774 \uB374\uB9C8\uD06C\uC640 \uC2A4\uC6E8\uB374 \uC0AC\uC774\uC758 \uC881\uC740 \uD574\uD611\uC744 \uC9C0\uD0A4\uACE0 \uC788\uC2B5\uB2C8\uB2E4",
+    seed: 481,
+    color: "#8baba4"
+  },
+  {
+    id: "ilulissat",
+    name: "Ilulissat Icefjord",
+    nameKo: "\uC77C\uB8E8\uB9AC\uC0AC\uD2B8 \uC544\uC774\uC2A4\uD53C\uC624\uB974",
+    shape: "glacier",
+    feature: "A fast-moving glacier releases immense icebergs into a Greenland fjord",
+    featureKo: "\uBE60\uB974\uAC8C \uC6C0\uC9C1\uC774\uB294 \uBE59\uD558\uAC00 \uADF8\uB9B0\uB780\uB4DC\uC758 \uD53C\uC624\uB974\uB85C \uAC70\uB300\uD55C \uBE59\uC0B0\uC744 \uB0B4\uBCF4\uB0C5\uB2C8\uB2E4",
+    seed: 482,
+    color: "#d3b17c"
+  },
+  {
+    id: "suomenlinna",
+    name: "Suomenlinna Fortress",
+    nameKo: "\uC218\uC624\uBA58\uB9B0\uB098 \uC694\uC0C8",
+    shape: "fortress",
+    feature: "Bastions and military buildings spread across islands at the entrance to Helsinki's harbour",
+    featureKo: "\uD5EC\uC2F1\uD0A4 \uD56D\uAD6C \uC785\uAD6C\uC758 \uC12C\uB4E4\uC744 \uB530\uB77C \uBCF4\uB8E8\uC640 \uAD70\uC0AC \uAC74\uBB3C\uB4E4\uC774 \uD3BC\uCCD0\uC9D1\uB2C8\uB2E4",
+    seed: 483,
+    color: "#b7a28c"
+  },
+  {
+    id: "rauma",
+    name: "Old Rauma",
+    nameKo: "\uB77C\uC6B0\uB9C8 \uAD6C\uC2DC\uAC00\uC9C0",
+    shape: "town",
+    feature: "Colourful timber houses preserve a traditional Nordic town around its medieval core",
+    featureKo: "\uB2E4\uCC44\uB85C\uC6B4 \uBAA9\uC870 \uC8FC\uD0DD\uB4E4\uC774 \uC911\uC138 \uC911\uC2EC\uBD80 \uC8FC\uBCC0\uC5D0 \uBD81\uC720\uB7FD \uC804\uD1B5\uB3C4\uC2DC\uC758 \uBAA8\uC2B5\uC744 \uB0A8\uAE30\uACE0 \uC788\uC2B5\uB2C8\uB2E4",
+    seed: 484,
+    color: "#829b8a"
+  },
+  {
+    id: "orangetheatre",
+    name: "Roman Theatre of Orange",
+    nameKo: "\uC624\uB791\uC8FC \uB85C\uB9C8\uADF9\uC7A5",
+    shape: "theatre",
+    feature: "A Roman theatre retains its monumental stage wall beside other ancient urban remains",
+    featureKo: "\uB85C\uB9C8\uADF9\uC7A5\uC5D0 \uAC70\uB300\uD55C \uBB34\uB300\uBCBD\uC774 \uB0A8\uC544 \uC788\uACE0 \uC8FC\uBCC0\uC5D0 \uACE0\uB300 \uB3C4\uC2DC \uC720\uC801\uC774 \uC790\uB9AC\uD569\uB2C8\uB2E4",
+    seed: 485,
+    color: "#bca6a0"
+  },
+  {
+    id: "cordouan",
+    name: "Cordouan Lighthouse",
+    nameKo: "\uCF54\uB974\uB450\uC559 \uB4F1\uB300",
+    shape: "towers",
+    feature: "A monumental stone lighthouse stands on a rocky platform at the Gironde estuary",
+    featureKo: "\uC9C0\uB871\uB4DC\uAC15 \uD558\uAD6C\uC758 \uBC14\uC704 \uC9C0\uBC18 \uC704\uC5D0 \uAC70\uB300\uD55C \uC11D\uC870 \uB4F1\uB300\uAC00 \uC11C \uC788\uC2B5\uB2C8\uB2E4",
+    seed: 486,
+    color: "#b69772"
+  },
+  {
+    id: "maisoncarree",
+    name: "Maison Carr\xE9e of N\xEEmes",
+    nameKo: "\uB2D8 \uBA54\uC885\uCE74\uB808",
+    shape: "columns",
+    feature: "A well-preserved Roman temple stands on a high podium behind a columned portico",
+    featureKo: "\uC798 \uBCF4\uC874\uB41C \uB85C\uB9C8 \uC2E0\uC804\uC774 \uAE30\uB465 \uD604\uAD00 \uB4A4\uC758 \uB192\uC740 \uAE30\uB2E8 \uC704\uC5D0 \uC11C \uC788\uC2B5\uB2C8\uB2E4",
+    seed: 487,
+    color: "#c4ac88"
+  },
+  {
+    id: "edinburgh",
+    name: "Old and New Edinburgh",
+    nameKo: "\uC5D0\uB4E0\uBC84\uB7EC \uAD6C\xB7\uC2E0\uC2DC\uAC00\uC9C0",
+    shape: "town",
+    feature: "A medieval old town contrasts with a carefully planned neoclassical new town",
+    featureKo: "\uC911\uC138 \uAD6C\uC2DC\uAC00\uC9C0\uC640 \uACC4\uD68D\uC801\uC73C\uB85C \uC870\uC131\uD55C \uC2E0\uACE0\uC804\uC8FC\uC758 \uC2E0\uC2DC\uAC00\uC9C0\uAC00 \uB098\uB780\uD788 \uC790\uB9AC\uD569\uB2C8\uB2E4",
+    seed: 488,
+    color: "#aeb9a0"
+  },
+  {
+    id: "pontcysyllte",
+    name: "Pontcysyllte Aqueduct",
+    nameKo: "\uD3F0\uD2B8\uCE58\uC2E4\uD14C \uC218\uB85C\uAD50",
+    shape: "aqueduct",
+    feature: "A cast-iron water trough carries a navigable canal high above the River Dee",
+    featureKo: "\uC8FC\uCCA0 \uC218\uB85C\uAC00 \uB514\uAC15 \uB192\uC740 \uACF3\uC5D0\uC11C \uBC30\uAC00 \uB2E4\uB2C8\uB294 \uC6B4\uD558\uB97C \uB5A0\uBC1B\uCE69\uB2C8\uB2E4",
+    seed: 489,
+    color: "#bc8b70"
+  },
+  {
+    id: "kew",
+    name: "Royal Botanic Gardens Kew",
+    nameKo: "\uD050 \uC655\uB9BD\uC2DD\uBB3C\uC6D0",
+    shape: "garden",
+    feature: "Historic glasshouses and designed landscapes preserve a major centre of botanical study",
+    featureKo: "\uC61B \uC720\uB9AC\uC628\uC2E4\uACFC \uC870\uACBD \uACBD\uAD00\uC774 \uC2DD\uBB3C \uC5F0\uAD6C\uC758 \uC8FC\uC694 \uC911\uC2EC\uC9C0\uB97C \uC774\uB8E8\uACE0 \uC788\uC2B5\uB2C8\uB2E4",
+    seed: 490,
+    color: "#8baba4"
+  },
+  {
+    id: "delphi",
+    name: "Delphi",
+    nameKo: "\uB378\uD3EC\uC774",
+    shape: "columns",
+    feature: "The sanctuary of Apollo occupies terraces on the slopes of Mount Parnassus",
+    featureKo: "\uC544\uD3F4\uB860 \uC131\uC5ED\uC774 \uD30C\uB974\uB098\uC18C\uC2A4\uC0B0 \uBE44\uD0C8\uC758 \uACC4\uB2E8\uC2DD \uD130\uC5D0 \uC790\uB9AC\uD569\uB2C8\uB2E4",
+    seed: 491,
+    color: "#d3b17c"
+  },
+  {
+    id: "epidaurus",
+    name: "Sanctuary of Asklepios at Epidaurus",
+    nameKo: "\uC5D0\uD53C\uB2E4\uC6B0\uB85C\uC2A4 \uC544\uC2A4\uD074\uB808\uD53C\uC624\uC2A4 \uC131\uC5ED",
+    shape: "theatre",
+    feature: "A theatre and religious buildings preserve an ancient sanctuary associated with healing",
+    featureKo: "\uADF9\uC7A5\uACFC \uC885\uAD50 \uAC74\uBB3C\uB4E4\uC774 \uCE58\uC720\uC640 \uAD00\uB828\uB41C \uACE0\uB300 \uC131\uC5ED\uC5D0 \uB0A8\uC544 \uC788\uC2B5\uB2C8\uB2E4",
+    seed: 492,
+    color: "#b7a28c"
+  },
+  {
+    id: "mycenae",
+    name: "Mycenae and Tiryns",
+    nameKo: "\uBBF8\uCF00\uB124\uC640 \uD2F0\uB9B0\uC2A4",
+    shape: "gate",
+    feature: "Massive stone fortifications preserve centres of the Mycenaean civilization",
+    featureKo: "\uAC70\uB300\uD55C \uC11D\uC870 \uBC29\uC5B4\uC2DC\uC124\uC774 \uBBF8\uCF00\uB124 \uBB38\uBA85\uC758 \uC911\uC2EC\uC9C0\uC5D0 \uB0A8\uC544 \uC788\uC2B5\uB2C8\uB2E4",
+    seed: 493,
+    color: "#829b8a"
+  },
+  {
+    id: "brunaboinne",
+    name: "Br\xFA na B\xF3inne",
+    nameKo: "\uBE0C\uB8E8\uB098\uBCF4\uB108",
+    shape: "tomb",
+    feature: "Large prehistoric passage tombs occupy a river landscape decorated with megalithic art",
+    featureKo: "\uAC70\uC11D \uC608\uC220\uB85C \uC7A5\uC2DD\uD55C \uCEE4\uB2E4\uB780 \uC120\uC0AC \uD1B5\uB85C\uBB34\uB364\uB4E4\uC774 \uAC15\uBCC0 \uACBD\uAD00\uC5D0 \uC790\uB9AC\uD569\uB2C8\uB2E4",
+    seed: 494,
+    color: "#bca6a0"
+  },
+  {
+    id: "thingvellir",
+    name: "\xDEingvellir",
+    nameKo: "\uC2F1\uBCA8\uB9AC\uB974",
+    shape: "cliff",
+    feature: "A rift-valley landscape preserves the site of Iceland's historic open-air assembly",
+    featureKo: "\uC5F4\uACE1 \uACBD\uAD00\uC5D0 \uC544\uC774\uC2AC\uB780\uB4DC\uC758 \uC61B \uC57C\uC678 \uC758\uD68C \uD130\uAC00 \uB0A8\uC544 \uC788\uC2B5\uB2C8\uB2E4",
+    seed: 495,
+    color: "#b69772"
+  },
+  {
+    id: "agrigento",
+    name: "Valley of the Temples at Agrigento",
+    nameKo: "\uC544\uADF8\uB9AC\uC820\uD1A0 \uC2E0\uC804\uACC4\uACE1",
+    shape: "columns",
+    feature: "Doric temples preserve the monumental remains of a major ancient Greek city in Sicily",
+    featureKo: "\uB3C4\uB9AC\uC2A4\uC2DD \uC2E0\uC804\uB4E4\uC774 \uC2DC\uCE60\uB9AC\uC544\uC758 \uC8FC\uC694 \uACE0\uB300 \uADF8\uB9AC\uC2A4 \uB3C4\uC2DC \uC720\uC801\uC5D0 \uB0A8\uC544 \uC788\uC2B5\uB2C8\uB2E4",
+    seed: 496,
+    color: "#c4ac88"
+  },
+  {
+    id: "cinqueterre",
+    name: "Portovenere and Cinque Terre",
+    nameKo: "\uD3EC\uB974\uD1A0\uBCA0\uB124\uB808\uC640 \uCE5C\uD018\uD14C\uB808",
+    shape: "coast",
+    feature: "Coastal villages and cultivated terraces cling to steep slopes above the Ligurian Sea",
+    featureKo: "\uB9AC\uAD6C\uB9AC\uC544\uD574 \uC704\uC758 \uAC00\uD30C\uB978 \uBE44\uD0C8\uC5D0 \uD574\uC548\uB9C8\uC744\uACFC \uACBD\uC791 \uD14C\uB77C\uC2A4\uAC00 \uC774\uC5B4\uC9D1\uB2C8\uB2E4",
+    seed: 497,
+    color: "#aeb9a0"
+  },
+  {
+    id: "bryggen",
+    name: "Bryggen",
+    nameKo: "\uBE0C\uB93C\uAC90",
+    shape: "harbor",
+    feature: "Rows of timber merchants' buildings preserve Bergen's historic Hanseatic waterfront",
+    featureKo: "\uBAA9\uC870 \uC0C1\uC778 \uAC74\uBB3C\uB4E4\uC774 \uC904\uC9C0\uC5B4 \uBCA0\uB974\uAC90\uC758 \uC61B \uD55C\uC790\uB3D9\uB9F9 \uD56D\uAD6C\uB97C \uBCF4\uC5EC \uC90D\uB2C8\uB2E4",
+    seed: 498,
+    color: "#bc8b70"
+  },
+  {
+    id: "tomar",
+    name: "Convent of Christ in Tomar",
+    nameKo: "\uD1A0\uB9C8\uB974 \uADF8\uB9AC\uC2A4\uB3C4 \uC218\uB3C4\uC6D0",
+    shape: "cloister",
+    feature: "A fortified religious complex combines a round Templar church with later monastic buildings",
+    featureKo: "\uBC29\uC5B4\uC2DC\uC124\uC744 \uAC16\uCD98 \uC885\uAD50 \uB2E8\uC9C0\uC5D0 \uB465\uADFC \uAE30\uC0AC\uB2E8 \uAD50\uD68C\uC640 \uD6C4\uB300\uC758 \uC218\uB3C4\uC6D0 \uAC74\uBB3C\uB4E4\uC774 \uC5B4\uC6B0\uB7EC\uC838 \uC788\uC2B5\uB2C8\uB2E4",
+    seed: 499,
+    color: "#8baba4"
+  },
+  {
+    id: "teide",
+    name: "Teide National Park",
+    nameKo: "\uD14C\uC774\uB370 \uAD6D\uB9BD\uACF5\uC6D0",
+    shape: "volcano",
+    feature: "A high volcanic cone rises above lava fields and a vast caldera on Tenerife",
+    featureKo: "\uD14C\uB124\uB9AC\uD398\uC12C\uC758 \uC6A9\uC554 \uC9C0\uB300\uC640 \uAC70\uB300\uD55C \uCE7C\uB370\uB77C \uC704\uB85C \uB192\uC740 \uD654\uC0B0\uCCB4\uAC00 \uC19F\uC544 \uC788\uC2B5\uB2C8\uB2E4",
+    seed: 500,
+    color: "#d3b17c"
   }
 ];
 
 // plugins/orcatopia/src/expanded-decorations.ts
-var waterIds = new Set(water_catalog_default.map((entry) => entry.record.id));
+var waterIds = /* @__PURE__ */ new Set([
+  ...water_catalog_default.map((entry) => entry.record.id),
+  ...catalog_600_default.filter((entry) => entry.placement !== "land").map((entry) => entry.id)
+]);
 var expandedDecorations = landmark_expansion_default.filter((entry) => !waterIds.has(entry.id)).flatMap((entry) => {
   const nature = [
     "peaks",
@@ -8442,6 +19134,15 @@ var decorations = [
     color: "#719c72",
     walkable: false
   },
+  ...specialBuildings.map((b) => ({
+    id: b.id,
+    name: b.name,
+    cost: 0,
+    gift: false,
+    shape: "pavilion",
+    color: b.color,
+    walkable: false
+  })),
   ...expandedDecorations,
   ...waterDecorations,
   ...landmarks_default.map((l, index) => ({
@@ -8462,8 +19163,12 @@ var canRotate = (id) => ["bench", "gate"].includes(decorationById(id)?.shape ?? 
 
 // plugins/orcatopia/src/game.ts
 var weights = { common: 70, rare: 23, epic: 6, legendary: 1 };
+var collectionThresholds = { river: 12, sea: 25 };
 var empty = () => ({
-  version: 6,
+  version: 8,
+  tourism: null,
+  discoveredPlaces: [],
+  firstExplorations: [],
   fusions: [],
   floors: [],
   landFloor: 0,
@@ -8480,8 +19185,26 @@ function quantity(s, id) {
 function discovered(s, id) {
   return isEnhanced(id) ? s.fusions.some((f) => enhancedId(f.landmark) === id) : s.receipts.some((r) => r.landmark === id);
 }
+function collectionDiscoveries(s) {
+  return [
+    .../* @__PURE__ */ new Set([
+      ...s.discoveredPlaces,
+      ...s.receipts.map((r) => baseId(r.landmark))
+    ])
+  ];
+}
+function collectionTheme(id) {
+  const placement = waterTheme(id)?.placement;
+  return placement === "coastal" ? "sea" : placement ?? "land";
+}
+function collectionUnlocked(s, theme) {
+  return collectionDiscoveries(s).length >= collectionThresholds[theme];
+}
+function firstExplorationAvailable(s, theme) {
+  return collectionUnlocked(s, theme) && !s.firstExplorations.some((e) => e.theme === theme);
+}
 function islandLevel(s) {
-  return Math.max(s.landFloor, new Set(s.receipts.map((r) => r.landmark)).size);
+  return Math.max(s.landFloor, collectionDiscoveries(s).length);
 }
 function islandLand(s) {
   const reserved = new Set(
@@ -8506,7 +19229,7 @@ function canPlaceDecoration(s, id, cell) {
   const decoration = decorationById(id);
   const surface = surfaceAt(s, cell);
   return Boolean(
-    decoration && surface && (decoration.surface ? surface === decoration.surface : surface !== "sea")
+    decoration && surface && (specialBuilding(id) ? surface === "land" : decoration.surface ? surface === decoration.surface : surface !== "sea")
   );
 }
 function placedFusionLandmark(s, from, cell) {
@@ -8522,15 +19245,20 @@ function materials(s) {
 function decorationQuantity(s, id) {
   const d = decorationById(id);
   if (!d) return 0;
+  if (specialBuilding(id)) return s.tourism?.buildings.includes(id) ? 1 : 0;
   if (!d.landmark) return Infinity;
   return (d.gift && discovered(s, d.landmark) ? 1 : 0) + s.crafts.filter((c) => c.decoration === id).length;
+}
+function availableTickets(s) {
+  const spent = new Set(s.receipts.map((r) => r.workspaceId));
+  return s.tickets.filter((t) => !spent.has(t.workspaceId));
 }
 function validate(value) {
   if (value == null) return empty();
   const raw = value;
   const version = value.version;
   const s = raw;
-  if (version !== 1 && version !== 2 && version !== 3 && version !== 4 && version !== 5 && version !== 6 || !Array.isArray(s.receipts) || !Array.isArray(s.placements))
+  if (version !== 1 && version !== 2 && version !== 3 && version !== 4 && version !== 5 && version !== 6 && version !== 7 && version !== 8 || !Array.isArray(s.receipts) || !Array.isArray(s.placements))
     throw Error("Unsupported or damaged save. Save was not overwritten.");
   const ids = /* @__PURE__ */ new Set();
   const cells = /* @__PURE__ */ new Set();
@@ -8542,7 +19270,7 @@ function validate(value) {
     ids.add(r.workspaceId);
     owned.set(r.landmark, (owned.get(r.landmark) ?? 0) + 1);
   }
-  const fusions = version === 6 ? s.fusions : [];
+  const fusions = version >= 6 ? s.fusions : [];
   if (!Array.isArray(fusions)) throw Error("Invalid fusion ledger");
   const fusionIds = /* @__PURE__ */ new Set();
   const fusedCounts = /* @__PURE__ */ new Map();
@@ -8554,7 +19282,34 @@ function validate(value) {
     if (fusedCounts.get(f.landmark) * 2 > (owned.get(f.landmark) ?? 0))
       throw Error("Fusion exceeds ownership");
   }
-  const inventory = { ...s, fusions };
+  const tourism = version >= 8 ? validateTourism(s.tourism) : null;
+  const discoveredPlaces = version >= 7 ? s.discoveredPlaces : [];
+  const firstExplorations = version >= 7 ? s.firstExplorations : [];
+  if (!Array.isArray(discoveredPlaces) || discoveredPlaces.some((id) => !landmarks_default.some((l) => l.id === id)) || new Set(discoveredPlaces).size !== discoveredPlaces.length)
+    throw Error("Invalid collection discovery ledger");
+  if (!Array.isArray(firstExplorations) || firstExplorations.length > 2 || new Set(firstExplorations.map((e) => e?.theme)).size !== firstExplorations.length || new Set(
+    firstExplorations.flatMap(
+      (e) => e?.ticketId === void 0 ? [] : [e.ticketId]
+    )
+  ).size !== firstExplorations.filter((e) => e?.ticketId !== void 0).length || firstExplorations.some(
+    (e) => !e || !["river", "sea"].includes(e.theme) || e.ticketId !== void 0 && (typeof e.ticketId !== "string" || !e.ticketId || e.ticketId.length > 256)
+  ))
+    throw Error("Invalid first exploration ledger");
+  const history = [
+    .../* @__PURE__ */ new Set([...discoveredPlaces, ...s.receipts.map((r) => r.landmark)])
+  ].sort();
+  for (const e of firstExplorations) {
+    const reward = s.receipts.find((r) => r.workspaceId === e.ticketId);
+    if (history.length < collectionThresholds[e.theme] || reward && collectionTheme(reward.landmark) !== e.theme)
+      throw Error("Invalid first exploration ledger");
+  }
+  const inventory = {
+    ...s,
+    fusions,
+    tourism,
+    discoveredPlaces: history,
+    firstExplorations
+  };
   for (const p of s.placements) {
     if (!p || !isLand(p.cell) && !(isWorldCell(p.cell) && allowsSea(p.landmark)) || cells.has(p.cell) || !landmarkById(p.landmark) || p.rotation !== void 0 && p.rotation !== 0 && p.rotation !== 1)
       throw Error("Invalid placement");
@@ -8573,15 +19328,15 @@ function validate(value) {
   }
   if (s.receipts.some((r) => !earned.has(r.workspaceId)))
     throw Error("Reward has no matching ticket");
-  const landFloor = version === 3 || version === 4 || version === 5 || version === 6 ? s.landFloor : Math.max(
+  const landFloor = version >= 3 ? s.landFloor : Math.max(
     0,
     ...s.placements.map((p) => expansionLevel.get(p.cell) ?? 0)
   );
-  const crafts = version === 3 || version === 4 || version === 5 || version === 6 ? s.crafts : [];
-  const oldDecor = version === 3 || version === 4 || version === 5 || version === 6 ? s.decorations : [];
+  const crafts = version >= 3 ? s.crafts : [];
+  const oldDecor = version >= 3 ? s.decorations : [];
   if (!Array.isArray(oldDecor)) throw Error("Invalid decoration placements");
-  const floors = version === 4 || version === 5 || version === 6 ? s.floors : oldDecor.filter((p) => p && isFloor(p.decoration));
-  const decor = version === 4 || version === 5 || version === 6 ? oldDecor : oldDecor.filter((p) => !p || !isFloor(p.decoration));
+  const floors = version >= 4 ? s.floors : oldDecor.filter((p) => p && isFloor(p.decoration));
+  const decor = version >= 4 ? oldDecor : oldDecor.filter((p) => !p || !isFloor(p.decoration));
   if (!Number.isInteger(landFloor) || landFloor < 0 || landFloor > MAX_LAND_LEVEL || !Array.isArray(crafts) || !Array.isArray(decor) || !Array.isArray(floors))
     throw Error("Invalid island progression");
   const craftIds = /* @__PURE__ */ new Set();
@@ -8592,7 +19347,7 @@ function validate(value) {
     craftIds.add(c.id);
   }
   const next = {
-    ...s,
+    ...inventory,
     fusions,
     landFloor,
     crafts,
@@ -8619,7 +19374,15 @@ function validate(value) {
     floorCells.add(p.cell);
   }
   return structuredClone({
-    version: 6,
+    version: 8,
+    tourism,
+    discoveredPlaces: history,
+    firstExplorations: firstExplorations.map(({ theme, ticketId }) => ({
+      theme,
+      ...ticketId !== void 0 ? { ticketId } : {}
+    })).sort(
+      (a, b) => collectionThresholds[a.theme] - collectionThresholds[b.theme]
+    ),
     fusions: fusions.map(({ id, landmark, at: at2, from, cell }) => ({
       id,
       landmark,
@@ -8664,16 +19427,12 @@ function checkLayout(s, input) {
 }
 var MAX_BACKUP_BYTES = 256 * 1024;
 function encodeBackup(state) {
-  const text = JSON.stringify(
-    {
-      format: "landmark-island-backup",
-      version: 1,
-      exportedAt: (/* @__PURE__ */ new Date()).toISOString(),
-      state: validate(state)
-    },
-    null,
-    2
-  );
+  const text = JSON.stringify({
+    format: "landmark-island-backup",
+    version: 1,
+    exportedAt: (/* @__PURE__ */ new Date()).toISOString(),
+    state: validate(state)
+  });
   if (new TextEncoder().encode(text).length > MAX_BACKUP_BYTES)
     throw Error("Backup exceeds the 256 KiB file limit. Nothing was changed.");
   return text;
@@ -8691,30 +19450,63 @@ function decodeBackup(text) {
     throw Error("Unsupported or damaged Orcatopia backup.");
   return { state: validate(data.state), exportedAt: data.exportedAt };
 }
-function draw(random) {
-  const roll = random() * 100;
+function draw(random, state, theme) {
+  const progress = state ? collectionDiscoveries(state).length : Infinity;
+  const candidates = landmarks_default.filter((l) => {
+    const candidateTheme = collectionTheme(l.id);
+    return theme ? candidateTheme === theme : candidateTheme === "land" || progress >= collectionThresholds[candidateTheme];
+  });
+  const tiers = Object.entries(weights).filter(
+    ([tier]) => !theme || candidates.some((l) => l.tier === tier)
+  );
+  const total = tiers.reduce((sum, [, weight]) => sum + weight, 0);
+  const roll = random() * total;
   let cumulative = 0;
-  for (const [tier, weight] of Object.entries(weights)) {
+  for (const [tier, weight] of tiers) {
     cumulative += weight;
     if (roll < cumulative) {
-      const pool = landmarks_default.filter((l) => l.tier === tier);
+      const pool = candidates.filter((l) => l.tier === tier);
+      if (!pool.length) throw Error("No landmarks available for this tier.");
       return pool[Math.floor(random() * pool.length)].id;
     }
   }
   throw Error("Invalid random source");
 }
 var Game = class {
-  constructor(store, random = Math.random) {
+  constructor(store, random = Math.random, now = Date.now) {
     this.store = store;
     this.random = random;
+    this.now = now;
   }
   store;
   random;
+  now;
+  pendingState;
+  // 정산과 변경을 한 번에 저장하도록 커밋은 queue 끝에서만 한다.
+  stage(state) {
+    this.pendingState = state;
+  }
   tail = Promise.resolve();
-  queue(action) {
-    const result = this.tail.then(
-      async () => action(validate(await this.store.read()))
-    );
+  queue(action, settle = true) {
+    const result = this.tail.then(async () => {
+      this.pendingState = void 0;
+      const state = validate(await this.store.read());
+      let tourismChanged = false;
+      if (settle) {
+        const now = this.now();
+        if (!Number.isSafeInteger(now) || now < 0)
+          throw Error("Invalid tourism clock");
+        const tourism = state.tourism ? settleTourism(state.tourism, tourismRate(state), now) : startTourism(now);
+        if (JSON.stringify(tourism) !== JSON.stringify(state.tourism)) {
+          state.tourism = tourism;
+          tourismChanged = true;
+        }
+      }
+      const output = await action(state);
+      if (this.pendingState || tourismChanged)
+        await this.store.write(this.pendingState ?? state);
+      return output;
+    });
     this.tail = result.catch(() => {
     });
     return result;
@@ -8728,13 +19520,34 @@ var Game = class {
       const old = await this.store.readBackup?.();
       if (old == null) throw Error("No pre-restore backup is available yet.");
       return encodeBackup(validate(old));
-    });
+    }, !previous);
   }
   restore(input) {
     return this.queue(async (s) => {
       const data = input;
       const next = decodeBackup(data?.text).state;
-      if (JSON.stringify(next) === JSON.stringify(s)) return s;
+      next.discoveredPlaces = [
+        .../* @__PURE__ */ new Set([
+          ...collectionDiscoveries(next),
+          ...collectionDiscoveries(s)
+        ])
+      ].sort();
+      next.firstExplorations = ["river", "sea"].flatMap((theme) => {
+        const spent = next.firstExplorations.find((e) => e.theme === theme) ?? s.firstExplorations.find((e) => e.theme === theme);
+        if (!spent) return [];
+        const reward = next.receipts.find(
+          (r) => r.workspaceId === spent.ticketId && collectionTheme(r.landmark) === theme
+        );
+        return [{ theme, ...reward ? { ticketId: spent.ticketId } : {} }];
+      });
+      const content = (state) => JSON.stringify({
+        ...state,
+        tourism: {
+          coins: state.tourism?.coins ?? 0,
+          buildings: state.tourism?.buildings ?? []
+        }
+      });
+      if (content(next) === content(s)) return s;
       if (!data?.expected || JSON.stringify(validate(data.expected)) !== JSON.stringify(s))
         throw Error(
           "Your island changed. Close Backups and review the file again before restoring."
@@ -8742,13 +19555,38 @@ var Game = class {
       if (!this.store.writeBackup)
         throw Error("Recovery storage is unavailable. Nothing was changed.");
       await this.store.writeBackup(s);
-      await this.store.write(next);
+      const now = this.now();
+      if (!Number.isSafeInteger(now) || now < 0)
+        throw Error("Invalid tourism clock");
+      next.tourism = next.tourism ? { ...next.tourism, settledAt: now, remainder: 0, away: null } : startTourism(now);
+      const restored = validate(next);
+      this.stage(restored);
+      return restored;
+    }, false);
+  }
+  construct(input) {
+    return this.queue(async (s) => {
+      const p = input;
+      const building = p && specialBuilding(p.building);
+      if (!building || !Number.isInteger(p?.cell))
+        throw Error("Choose a special building and an empty land cell.");
+      if (s.tourism.buildings.includes(building.id)) return s;
+      checkLayout(s, input);
+      if (!canPlaceDecoration(s, building.id, p.cell) || s.placements.some((x) => x.cell === p.cell) || s.decorations.some((x) => x.cell === p.cell))
+        throw Error("Choose an empty land cell for construction.");
+      if (s.tourism.coins < building.cost)
+        throw Error("Not enough tourism coins.");
+      s.tourism.coins -= building.cost;
+      s.tourism.buildings.push(building.id);
+      s.decorations.push({ decoration: building.id, cell: p.cell });
+      const next = validate(s);
+      this.stage(next);
       return next;
     });
   }
   acquire(event) {
+    if (event.kind !== "worktree") return this.queue(async (s) => s, false);
     return this.queue(async (s) => {
-      if (event.kind !== "worktree") return s;
       if (typeof event.workspaceId !== "string" || !event.workspaceId || event.workspaceId.length > 256)
         throw Error("Invalid workspace ID");
       if (s.tickets.some((r) => r.workspaceId === event.workspaceId)) return s;
@@ -8756,7 +19594,8 @@ var Game = class {
         workspaceId: event.workspaceId,
         at: (/* @__PURE__ */ new Date()).toISOString()
       });
-      await this.store.write(s);
+      s.discoveredPlaces = collectionDiscoveries(s).sort();
+      this.stage(s);
       return s;
     });
   }
@@ -8770,11 +19609,37 @@ var Game = class {
       if (s.receipts.some((r) => r.workspaceId === ticketId)) return s;
       s.receipts.push({
         workspaceId: ticketId,
-        landmark: draw(this.random),
+        landmark: draw(this.random, s),
         at: (/* @__PURE__ */ new Date()).toISOString()
       });
-      await this.store.write(s);
+      s.discoveredPlaces = collectionDiscoveries(s).sort();
+      this.stage(s);
       return s;
+    });
+  }
+  exploreTheme(input) {
+    return this.queue(async (s) => {
+      const { theme, ticketId } = input ?? {};
+      if (theme !== "river" && theme !== "sea" || typeof ticketId !== "string" || !ticketId || ticketId.length > 256)
+        throw Error("Choose a valid first exploration and ticket.");
+      const prior = s.firstExplorations.find((e) => e.theme === theme);
+      if (prior?.ticketId === ticketId && s.receipts.some(
+        (r) => r.workspaceId === ticketId && collectionTheme(r.landmark) === theme
+      ))
+        return s;
+      if (!firstExplorationAvailable(s, theme))
+        throw Error("This first exploration is not available.");
+      if (!availableTickets(s).some((t) => t.workspaceId === ticketId))
+        throw Error("This ticket is not available");
+      s.receipts.push({
+        workspaceId: ticketId,
+        landmark: draw(this.random, s, theme),
+        at: (/* @__PURE__ */ new Date()).toISOString()
+      });
+      s.firstExplorations.push({ theme, ticketId });
+      const next = validate(s);
+      this.stage(next);
+      return next;
     });
   }
   redeemMany(input) {
@@ -8790,8 +19655,9 @@ var Game = class {
       if (!unused.length) return s;
       const at2 = (/* @__PURE__ */ new Date()).toISOString();
       for (const workspaceId of unused)
-        s.receipts.push({ workspaceId, landmark: draw(this.random), at: at2 });
-      await this.store.write(s);
+        s.receipts.push({ workspaceId, landmark: draw(this.random, s), at: at2 });
+      s.discoveredPlaces = collectionDiscoveries(s).sort();
+      this.stage(s);
       return s;
     });
   }
@@ -8835,7 +19701,7 @@ var Game = class {
         ...onIsland ? { from: p.from, cell: p.cell } : {}
       });
       const next = validate(s);
-      await this.store.write(next);
+      this.stage(next);
       return next;
     });
   }
@@ -8852,7 +19718,7 @@ var Game = class {
       }
       s.crafts.push({ id: p.id, decoration: p.decoration });
       const next = validate(s);
-      await this.store.write(next);
+      this.stage(next);
       return next;
     });
   }
@@ -8869,7 +19735,7 @@ var Game = class {
       if (sameLayout(layout(s), layout(next))) return s;
       if (!sameLayout(layout(s), p.expected))
         throw Error("Island layout changed. Refresh before editing again.");
-      await this.store.write(next);
+      this.stage(next);
       return next;
     });
   }
@@ -8884,7 +19750,7 @@ var Game = class {
         );
       item.rotation = p.rotation;
       const next = validate(s);
-      await this.store.write(next);
+      this.stage(next);
       return next;
     });
   }
@@ -8907,7 +19773,7 @@ var Game = class {
         }
       }
       const next = validate(s);
-      await this.store.write(next);
+      this.stage(next);
       return next;
     });
   }
@@ -8959,7 +19825,7 @@ var Game = class {
         }
       }
       const next = validate(s);
-      await this.store.write(next);
+      this.stage(next);
       return next;
     });
   }
@@ -8987,7 +19853,8 @@ var Game = class {
           s.placements.push({ cell: p.cell, landmark: p.landmark });
       }
       validate(s);
-      await this.store.write(s);
+      s.discoveredPlaces = collectionDiscoveries(s).sort();
+      this.stage(s);
       return s;
     });
   }
@@ -9031,6 +19898,11 @@ function activate(orca) {
     await game.acquire(event);
     await notify();
   });
+  orca.panels.handle("island.construct", async (input) => {
+    const state = await game.construct(input);
+    await notify();
+    return state;
+  });
   orca.panels.handle("island.read", () => game.snapshot());
   orca.panels.handle(
     "island.backup",
@@ -9045,6 +19917,11 @@ function activate(orca) {
   });
   orca.panels.handle("island.draw", async (input) => {
     const state = await game.redeem(input);
+    await notify();
+    return state;
+  });
+  orca.panels.handle("island.exploreTheme", async (input) => {
+    const state = await game.exploreTheme(input);
     await notify();
     return state;
   });
