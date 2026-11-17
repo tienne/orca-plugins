@@ -15,7 +15,7 @@ Orca 작업 화면에 연결해 둔 Jira 계정으로 오른쪽 사이드바에�
 | 항목           | 정보                                                          |
 | -------------- | ------------------------------------------------------------- |
 | 제작자         | [Tienne](https://github.com/tienne)                           |
-| 버전           | 0.1.1                                                         |
+| 버전           | 0.2.0                                                         |
 | 라이선스       | MIT                                                           |
 | 최소 Orca 버전 | 1.4.256                                                       |
 | 기본 단축키    | macOS ⌘J · 그 외 Ctrl+J                                       |
@@ -27,7 +27,7 @@ Orca 작업 화면에 연결해 둔 Jira 계정으로 오른쪽 사이드바에�
 Orca **설정 → 플러그인**의 커뮤니티 카탈로그에서 **Jira Tasks**를 검색합니다. 공개 디렉터리는 [orca.dev/plugins/tienne/jira-tasks](https://orca.dev/plugins/tienne/jira-tasks)이며 새 버전은 검색에 반영되기까지 시간이 걸릴 수 있습니다. 버전 태그로 직접 설치할 수도 있습니다.
 
 ```sh
-orca plugin install tienne/jira-tasks@v0.1.0 --json
+orca plugin install tienne/jira-tasks@v0.2.0 --json
 ```
 
 Orca가 승인을 요청하면 제작자 `tienne`, trusted-worker 실행, `Mod+J` 단축키를 확인한 뒤 반환된 정확한 fingerprint로 승인하십시오. 패널을 열기 전에 Orca 작업에서 Jira 계정을 연결해야 합니다.
