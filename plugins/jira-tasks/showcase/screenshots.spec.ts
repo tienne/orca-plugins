@@ -81,6 +81,8 @@ async function panel(
                 limitReached: false,
               };
             if (name === 'jira.issue') return issue;
+            if (name === 'jira.comments')
+              return { comments: [], limitReached: false };
             if (name === 'jira.children')
               return {
                 tasks: children,

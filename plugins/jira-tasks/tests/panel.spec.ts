@@ -33,6 +33,7 @@ async function start(
     refresh?: boolean;
     refreshFailure?: boolean;
     parent?: boolean;
+    comments?: 'populated' | 'empty' | 'error-once' | 'delayed';
     children?: 'populated' | 'filterable' | 'error';
   } = {},
 ) {
@@ -42,6 +43,7 @@ async function start(
         history.replaceState(null, '', `/?lang=${options.previewLocale}`);
       const calls: string[] = [];
       let resolveInitialConnection: (() => void) | undefined;
+      let commentRequests = 0;
       const listSites: string[] = [];
       (window as unknown as { jiraListSites: string[] }).jiraListSites =
         listSites;
@@ -71,6 +73,32 @@ async function start(
             if (options.error) throw new Error('Connection failed');
             if (name === 'jira.avatar')
               return options.avatarUnavailable ? null : image;
+            if (name === 'jira.comments') {
+              commentRequests++;
+              if (options.comments === 'error-once' && commentRequests === 1)
+                throw new Error('Comments failed');
+              if (options.comments === 'delayed' && commentRequests === 1)
+                await new Promise<void>((resolve) => {
+                  (
+                    window as unknown as { releaseComments: () => void }
+                  ).releaseComments = resolve;
+                });
+              return {
+                comments:
+                  options.comments && options.comments !== 'empty'
+                    ? [
+                        {
+                          id: String(commentRequests),
+                          author: 'Demo reviewer',
+                          createdAt: '2026-11-17T03:00:00Z',
+                          description: `## Review for ${input?.key}\n\n- Keep the selected time.\n- [Design](https://example.com/design)\n\n<script>window.commentInjected=true</script>`,
+                          descriptionTruncated: false,
+                        },
+                      ]
+                    : [],
+                limitReached: false,
+              };
+            }
             if (name === 'jira.connection')
               return options.disconnected
                 ? { sites: [], selectedSiteId: null }
@@ -1421,4 +1449,114 @@ test('formats child counts and limits without changing Jira issue data', async (
   await expect(
     page.getByText('Existing ticket 0', { exact: true }),
   ).toBeVisible();
+});
+
+test('reads comments with author/time, structured body and safe text in both languages', async ({
+  page,
+}, testInfo) => {
+  for (const locale of ['en-US', 'ko-KR']) {
+    await start(page, { locale, comments: 'populated' });
+    await page.getByRole('button', { name: task.title, exact: true }).click();
+    const section = page.locator('#issue-comments');
+    await expect(
+      section.getByRole('heading', {
+        name: locale === 'en-US' ? 'Comments' : '댓글',
+        exact: true,
+      }),
+    ).toBeVisible();
+    await expect(section).toContainText('Demo reviewer');
+    await expect(section.locator('time')).toHaveAttribute(
+      'datetime',
+      '2026-11-17T03:00:00.000Z',
+    );
+    await expect(
+      section.getByRole('heading', { name: `Review for ${task.key}` }),
+    ).toBeVisible();
+    await expect(section.getByRole('listitem')).toHaveCount(2);
+    await expect(section.getByRole('link', { name: 'Design' })).toHaveAttribute(
+      'href',
+      'https://example.com/design',
+    );
+    expect(
+      await page.evaluate(
+        () =>
+          (window as unknown as { commentInjected?: boolean }).commentInjected,
+      ),
+    ).toBeUndefined();
+    await page.evaluate(() => {
+      const label = document.createElement('p');
+      label.textContent = 'DEMO · Sample Jira data';
+      label.style.cssText = 'color:#777;font-size:12px;margin:0 0 8px';
+      document.querySelector('#issue-comments')!.prepend(label);
+    });
+    await section.screenshot({
+      path: testInfo.outputPath(`comments-${locale}.jpg`),
+      type: 'jpeg',
+      quality: 80,
+    });
+  }
+});
+
+test('shows empty comments and retries failures without losing the issue body', async ({
+  page,
+}) => {
+  await start(page, { comments: 'empty' });
+  await page.getByRole('button', { name: task.title, exact: true }).click();
+  await expect(page.locator('#issue-comments')).toContainText(
+    '댓글이 없습니다',
+  );
+  await start(page, { comments: 'error-once' });
+  await page.getByRole('button', { name: task.title, exact: true }).click();
+  const section = page.locator('#issue-comments');
+  await expect(section.getByRole('alert')).toContainText(
+    '댓글을 불러오지 못했습니다',
+  );
+  await expect(
+    page.getByRole('heading', { name: '요약', exact: true }),
+  ).toBeVisible();
+  await section.getByRole('button', { name: '다시 시도' }).click();
+  await expect(section.locator('.comment')).toHaveCount(1);
+});
+
+test('discards late comments on navigation, reloads unfinished snapshots and refreshes comments', async ({
+  page,
+}) => {
+  await start(page, { comments: 'delayed', parent: true });
+  await page.getByRole('button', { name: task.title, exact: true }).click();
+  await expect(page.locator('#issue-comments')).toContainText(
+    '댓글을 불러오는 중',
+  );
+  await page.locator('.parent-link').click();
+  await expect(page.locator('#issue-comments')).toContainText(
+    'Review for DEMO-10',
+  );
+  await page.evaluate(() =>
+    (window as unknown as { releaseComments: () => void }).releaseComments(),
+  );
+  await expect(page.locator('#issue-comments')).not.toContainText(
+    'Review for DEMO-101',
+  );
+  await page.getByRole('button', { name: '‹ 뒤로가기', exact: true }).click();
+  await expect(page.locator('#issue-comments')).toContainText(
+    'Review for DEMO-101',
+  );
+  const count = () =>
+    page.evaluate(
+      () =>
+        (window as unknown as { jiraCalls: string[] }).jiraCalls.filter(
+          (n) => n === 'jira.comments',
+        ).length,
+    );
+  expect(await count()).toBe(3);
+  await page.locator('.parent-link').click();
+  await page.getByRole('button', { name: '‹ 뒤로가기', exact: true }).click();
+  await expect(page.locator('#issue-comments')).toContainText(
+    'Review for DEMO-101',
+  );
+  expect(await count()).toBe(4);
+  await page.getByRole('button', { name: '새로고침', exact: true }).click();
+  await expect.poll(count).toBe(5);
+  await expect(page.locator('#issue-comments')).toContainText(
+    'Review for DEMO-101',
+  );
 });
