@@ -8,11 +8,11 @@ Development source: [tienne/orca-plugins · plugins/orcatopia](https://github.co
 
 Orcatopia is a little island getaway between tasks in Orca. Earn exploration tickets when you create worktrees, discover world landmarks, and arrange a place of your own while you wait. This version requires Orca 1.4.248+.
 
-## Unreleased — 700 landmarks
+## 0.6.0 — 700 landmarks
 
 This source expansion adds **50 sea and 50 river places**, preserving all 600 existing records. The collection now has **700 normal places and 700 fusion-only + versions across 153 country groupings**: 333 Discovery / 289 Treasure / 64 Marvel / 14 Wonder. Placement totals are 504 land, 72 sea, 91 river and 33 land & sea. Decorations total 2,139, including 392 water-only pieces and 700 fusion monuments.
 
-New places have English/Korean field-guide entries, institutional sources, separately recorded coordinate provenance, individual vector structures and miniature scenes. Collection thresholds remain 12/25 different places and tier chances stay 70/23/6/1%. Loading the catalog grants no items. Save v8, prior placements, first-exploration use and tourism rules stay unchanged. This change has no public release, execution approval or real-save injection. See the [700-place selection, source and integration record](https://github.com/tienne/orca-plugins/blob/main/docs/orcatopia-700.md).
+New places have English/Korean field-guide entries, institutional sources, separately recorded coordinate provenance, individual vector structures and miniature scenes. Collection thresholds remain 12/25 different places and tier chances stay 70/23/6/1%. Loading the catalog grants no items. Save v8, prior placements, first-exploration use and tourism rules stay unchanged. Publication is tracked separately from runtime approval and real-save injection. See the [700-place selection, source and integration record](https://github.com/tienne/orca-plugins/blob/main/docs/orcatopia-700.md).
 
 ## 0.5.0 — Collection, tourism and 600 landmarks
 

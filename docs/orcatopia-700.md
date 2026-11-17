@@ -4,7 +4,7 @@ English · [한국어](orcatopia-700.ko.md)
 
 ## Scope and counts
 
-This unreleased source change preserves all 600 existing places and adds 50 sea places and 50 river places. It provides **700 normal places, 1,400 normal/+ variants and 153 country groupings**. The final placement counts are **504 land / 72 sea / 91 river / 33 land & sea**. Country labels are collection groupings. The seven additional groupings are Isle of Man, Marshall Islands, Kiribati, Bahamas, Sweden, Guyana and Paraguay. South Korea grows from 14 land places to 19 total: 14 land, three sea lights and two river bridges.
+This 0.6.0 source expansion preserves all 600 existing places and adds 50 sea places and 50 river places. It provides **700 normal places, 1,400 normal/+ variants and 153 country groupings**. The final placement counts are **504 land / 72 sea / 91 river / 33 land & sea**. Country labels are collection groupings. The seven additional groupings are Isle of Man, Marshall Islands, Kiribati, Bahamas, Sweden, Guyana and Paraguay. South Korea grows from 14 land places to 19 total: 14 land, three sea lights and two river bridges.
 
 | Pool                     | Discovery | Treasure | Marvel | Wonder | Total |
 | ------------------------ | --------: | -------: | -----: | -----: | ----: |
