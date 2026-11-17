@@ -14,8 +14,8 @@
       "path": "plugins/landmark-island"
     },
     "tienne.jira-tasks": {
-      "version": "0.1.1",
-      "sourceCommit": "27e4643d512ed1bcd56398e301bccc226f274836",
+      "version": "0.2.0",
+      "sourceCommit": "0ac97a215d442a0c4334d42b8fdc4102bc846590",
       "repository": "https://github.com/tienne/orca-plugins.git",
       "path": "plugins/jira-tasks"
     }

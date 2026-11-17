@@ -13,6 +13,15 @@ var en = {
   issueType: "Issue type",
   parent: "Parent issue",
   children: "Child issues",
+  comments: "Comments",
+  loadingComments: "Loading comments\u2026",
+  noComments: "No comments",
+  commentsError: "Could not load comments",
+  unknownAuthor: "Unknown author",
+  unknownTime: "Time unavailable",
+  noCommentBody: "No comment text.",
+  commentTruncated: "This comment is shortened. Open Jira for the full text.",
+  commentsLimit: "Only part of the comments is shown. Open Jira to see all comments.",
   childSearch: "Search child issues",
   childStatus: "Child issue status",
   childAssignee: "Child issue assignee",
@@ -73,6 +82,15 @@ var ko = {
   issueType: "\uD2F0\uCF13 \uC720\uD615",
   parent: "\uC0C1\uC704 \uD56D\uBAA9",
   children: "\uD558\uC704 \uD56D\uBAA9",
+  comments: "\uB313\uAE00",
+  loadingComments: "\uB313\uAE00\uC744 \uBD88\uB7EC\uC624\uB294 \uC911\u2026",
+  noComments: "\uB313\uAE00\uC774 \uC5C6\uC2B5\uB2C8\uB2E4",
+  commentsError: "\uB313\uAE00\uC744 \uBD88\uB7EC\uC624\uC9C0 \uBABB\uD588\uC2B5\uB2C8\uB2E4",
+  unknownAuthor: "\uC791\uC131\uC790 \uC815\uBCF4 \uC5C6\uC74C",
+  unknownTime: "\uC791\uC131 \uC2DC\uAC01 \uC815\uBCF4 \uC5C6\uC74C",
+  noCommentBody: "\uB313\uAE00 \uB0B4\uC6A9\uC774 \uC5C6\uC2B5\uB2C8\uB2E4.",
+  commentTruncated: "\uB313\uAE00\uC744 \uC77C\uBD80\uB9CC \uD45C\uC2DC\uD588\uC2B5\uB2C8\uB2E4. \uC804\uCCB4 \uB0B4\uC6A9\uC740 Jira\uC5D0\uC11C \uD655\uC778\uD574 \uC8FC\uC138\uC694.",
+  commentsLimit: "\uB313\uAE00\uC744 \uC77C\uBD80\uB9CC \uD45C\uC2DC\uD588\uC2B5\uB2C8\uB2E4. \uBAA8\uB4E0 \uB313\uAE00\uC740 Jira\uC5D0\uC11C \uD655\uC778\uD574 \uC8FC\uC138\uC694.",
   childSearch: "\uD558\uC704 \uD2F0\uCF13 \uAC80\uC0C9",
   childStatus: "\uD558\uC704 \uD2F0\uCF13 \uC0C1\uD0DC",
   childAssignee: "\uD558\uC704 \uD2F0\uCF13 \uB2F4\uB2F9\uC790",
@@ -220,6 +238,10 @@ var appliedChildCriteria = "";
 var childPending;
 var childOptionsLoaded = false;
 var navigationVersion = 0;
+var comments = { comments: [], limitReached: false };
+var commentsBusy = false;
+var commentsError = false;
+var commentsPending;
 var navigationHistory = [];
 var listScrollY = 0;
 function goToList() {
@@ -256,9 +278,14 @@ function goBack() {
   childOptions = previous.options;
   childOptionsLoaded = previous.optionsLoaded;
   appliedChildCriteria = previous.appliedCriteria;
+  comments = previous.comments;
+  commentsBusy = previous.commentsBusy;
+  commentsError = previous.commentsError;
   render();
   const reload = previous.busy ? loadIssue(previous.task, true) : previous.childrenBusy ? loadChildren(previous.task.key, pending.signal) : void 0;
   const request = pending;
+  if (!previous.busy && previous.commentsBusy)
+    void loadComments(previous.task.key, request.signal);
   const version = navigationVersion;
   const restoreScroll = () => requestAnimationFrame(() => {
     if (request.signal.aborted || version !== navigationVersion || pending !== request || selected?.key !== previous.task.key)
@@ -475,7 +502,7 @@ function imageFigure(image) {
   figure.append(preview, el("figcaption", `${image.alt} \xB7 ${t.enlargeImage}`));
   return figure;
 }
-function description(task) {
+function description(task, emptyMessage = t.noDescription) {
   const root = el("div", "", "description");
   let section = el("section");
   root.append(section);
@@ -541,8 +568,81 @@ function description(task) {
     }
   }
   flush();
-  if (!task.description) section.append(el("p", t.noDescription, "muted"));
+  if (!task.description) section.append(el("p", emptyMessage, "muted"));
   return root;
+}
+function renderComments(section) {
+  section.replaceChildren(el("h2", t.comments));
+  section.setAttribute("aria-label", t.comments);
+  section.setAttribute("aria-busy", String(commentsBusy));
+  if (commentsBusy) {
+    section.append(el("p", t.loadingComments, "muted"));
+  } else if (commentsError) {
+    const message = el("p", t.commentsError, "error");
+    message.setAttribute("role", "alert");
+    section.append(
+      message,
+      button(t.retry, () => {
+        if (selected && pending)
+          return loadComments(selected.key, pending.signal);
+      })
+    );
+  } else {
+    if (!comments.comments.length)
+      section.append(el("p", t.noComments, "muted"));
+    for (const comment of comments.comments) {
+      const article = el("article", "", "comment");
+      const meta = el("div", "", "comment-meta");
+      meta.append(el("strong", comment.author || t.unknownAuthor));
+      if (Number.isFinite(Date.parse(comment.createdAt))) {
+        const time = el(
+          "time",
+          new Date(comment.createdAt).toLocaleString(uiLocale)
+        );
+        time.dateTime = new Date(comment.createdAt).toISOString();
+        meta.append(time);
+      } else meta.append(el("span", t.unknownTime));
+      article.append(meta, description(comment, t.noCommentBody));
+      if (comment.descriptionTruncated)
+        article.append(el("p", t.commentTruncated, "muted"));
+      section.append(article);
+    }
+    if (comments.limitReached)
+      section.append(el("p", t.commentsLimit, "muted"));
+  }
+}
+async function loadComments(key, signal) {
+  commentsPending?.abort();
+  const request = new AbortController();
+  commentsPending = request;
+  const abort = () => request.abort();
+  signal.addEventListener("abort", abort, { once: true });
+  if (signal.aborted) request.abort();
+  commentsBusy = true;
+  commentsError = false;
+  const update = () => {
+    const section = document.querySelector("#issue-comments");
+    if (section) renderComments(section);
+  };
+  update();
+  try {
+    const result = await bridge.plugin.request(
+      "jira.comments",
+      { siteId, key },
+      { signal: request.signal }
+    );
+    if (request.signal.aborted || selected?.key !== key) return;
+    comments = result;
+  } catch {
+    if (request.signal.aborted || selected?.key !== key) return;
+    commentsError = true;
+  } finally {
+    signal.removeEventListener("abort", abort);
+    if (!request.signal.aborted && selected?.key === key) {
+      commentsBusy = false;
+      update();
+    }
+  }
 }
 function selectField(label, value, options, action) {
   const field = el("label", "", "field");
@@ -992,6 +1092,10 @@ function render() {
       );
       if (selected.descriptionTruncated)
         app.append(el("p", t.truncated, "muted"));
+      const commentSection = el("section", "", "issue-comments");
+      commentSection.id = "issue-comments";
+      renderComments(commentSection);
+      app.append(commentSection);
       const footer = el("footer", "", "footer");
       if (selected.url) footer.append(link(t.fullIssue, selected.url));
       app.append(footer);
@@ -1119,7 +1223,10 @@ async function loadIssue(task, preserveFilters = false) {
         childScrollY: document.querySelector(".children-list")?.scrollTop ?? 0,
         options: childOptions,
         optionsLoaded: childOptionsLoaded,
-        appliedCriteria: appliedChildCriteria
+        appliedCriteria: appliedChildCriteria,
+        comments,
+        commentsBusy,
+        commentsError
       });
       if (navigationHistory.length > 30) navigationHistory.shift();
     } else if (!selected) listScrollY = window.scrollY;
@@ -1136,11 +1243,15 @@ async function loadIssue(task, preserveFilters = false) {
   children = { tasks: [], limitReached: false };
   childrenBusy = true;
   childrenError = "";
+  comments = { comments: [], limitReached: false };
+  commentsBusy = true;
+  commentsError = false;
   busy = true;
   error = "";
   render();
   if (!preserveFilters) window.scrollTo(0, 0);
   void loadChildren(task.key, request.signal, true);
+  void loadComments(task.key, request.signal);
   try {
     const detail = await bridge.plugin.request(
       "jira.issue",

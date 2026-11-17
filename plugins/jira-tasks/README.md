@@ -15,7 +15,7 @@ Browse Jira issues in Orca's right sidebar using the Jira accounts already conne
 | Field                | Value                                                         |
 | -------------------- | ------------------------------------------------------------- |
 | Author               | [Tienne](https://github.com/tienne)                           |
-| Version              | 0.1.1                                                         |
+| Version              | 0.2.0                                                         |
 | License              | MIT                                                           |
 | Minimum Orca version | 1.4.256                                                       |
 | Default shortcut     | ⌘J on macOS; Ctrl+J elsewhere                                 |
@@ -27,7 +27,7 @@ Browse Jira issues in Orca's right sidebar using the Jira accounts already conne
 In Orca **Settings → Plugins**, search for **Jira Tasks** in the community catalog. The public directory is [orca.dev/plugins/tienne/jira-tasks](https://orca.dev/plugins/tienne/jira-tasks); a newly published version may take time to appear there. You can also install the tagged package directly:
 
 ```sh
-orca plugin install tienne/jira-tasks@v0.1.0 --json
+orca plugin install tienne/jira-tasks@v0.2.0 --json
 ```
 
 Review the publisher `tienne`, trusted-worker execution and the `Mod+J` shortcut when Orca asks for approval, then approve the exact fingerprint it returns. Configure your Jira account in Orca Tasks before opening the panel.
@@ -43,6 +43,14 @@ Browser captures use sample issues and people. They contain no private Jira data
 ## Use
 
 Open **Jira Tasks** from the right activity bar. A single connected Jira site is selected automatically and its picker is hidden. With multiple connections, choose a Jira site. The compact scope buttons offer: assigned to you, reported by you, all issues, or completed issues. Search the loaded issues by key or title, and filter by project or status. Changing the list scope keeps the search text and project/status choices that still occur in the new loaded list. Only unavailable project/status choices reset to All; changing Jira sites resets list filters. Status text and badge colors distinguish workflow names: blue for IN PROGRESS, purple for IN QA, cyan for PR/review, amber for HOLD, red for BLOCKED, green for DONE, and muted blue-gray for BACKLOG. Other names receive a stable color derived from the name. Issue types have a separate symbol-and-name badge: Bug is red, Task blue, Story green, Epic purple, and Sub-task cyan. Bug sub-tasks keep the Bug color; custom types receive a stable name-based color. The same badges appear in the main list, detail, parent link and child rows. Colors adjust to the Orca theme; the status text stays visible. Select an issue to see its description, assignee and priority, or open it in Jira. The detail header shows the parent issue key, title and issue type when available; select it to open that parent in the sidebar. The main list and detail show each assignee's name and profile photo. Detail properties show the reporter separately, with a profile photo or initials; missing reporter data is labeled Not available. Missing or unavailable photos show initials; unassigned issues show Unassigned.
+
+### Read comments
+
+The detail view shows read-only comments below the description, with each author's name, creation time, paragraphs, lists and links. Comments load independently; an empty list or a failed request is shown in that section. Retry only reloads comments. Detail Refresh reloads them along with the issue; Back restores loaded comments and retries an unfinished load. Writing, editing and deleting comments are not supported.
+
+Comments use the existing authenticated Orca Jira CLI connection. The preview shows up to 100 comments returned by the CLI, with at most 24,000 text characters per comment and a shared 900,000-byte comment payload budget. Shortened content is labeled; use Open in Jira for all comments. Comments keep the order returned by the CLI. When the count or payload budget is reached, later entries are omitted, so recent comments may be missing if the CLI returns oldest first. No comment data is persisted.
+
+Attachment images still enlarge inside the sidebar. The installed plugin host API has no method to draw a panel directly in the central content area. Its worker-only `editor.open` can open a workspace file, which would require a local image file and `workspace:write` (plus workspace discovery access). That alternative is excluded from this change: no image cache files or workspace permissions are added. Open in Jira remains available for the full issue and attachments.
 
 ### Query child issues
 
