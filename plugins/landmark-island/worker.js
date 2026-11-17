@@ -9256,6 +9256,1406 @@ var landmarks_default = [
     description: "A high volcanic cone rises above lava fields and a vast caldera on Tenerife. The illustration is a miniature interpretation; the map marks a representative point of the UNESCO property or one of its components.",
     descriptionSourceName: "UNESCO World Heritage Centre",
     descriptionSource: "https://whc.unesco.org/en/list/1258/"
+  },
+  {
+    id: "eddystone",
+    name: "Eddystone Lighthouse",
+    country: "United Kingdom",
+    code: "GBR",
+    tier: "rare",
+    lat: 50.180717,
+    lon: -4.2656,
+    source: "https://www.trinityhouse.co.uk/lighthouses-and-lightvessels/eddystone-lighthouse",
+    region: "Eddystone Rocks",
+    description: "A tapering granite tower marks the Eddystone rocks off Plymouth; the stump of an earlier lighthouse remains nearby.",
+    descriptionSourceName: "Trinity House",
+    descriptionSource: "https://www.trinityhouse.co.uk/lighthouses-and-lightvessels/eddystone-lighthouse"
+  },
+  {
+    id: "bishoprock",
+    name: "Bishop Rock Lighthouse",
+    country: "United Kingdom",
+    code: "GBR",
+    tier: "rare",
+    lat: 49.872861,
+    lon: -6.445556,
+    source: "https://www.trinityhouse.co.uk/lighthouses-and-lightvessels/bishop-rock-lighthouse",
+    region: "Isles of Scilly",
+    description: "A tall stone lighthouse rises from a small Atlantic rock west of the Isles of Scilly, with a landing platform above its lantern.",
+    descriptionSourceName: "Trinity House",
+    descriptionSource: "https://www.trinityhouse.co.uk/lighthouses-and-lightvessels/bishop-rock-lighthouse"
+  },
+  {
+    id: "wolfrock",
+    name: "Wolf Rock Lighthouse",
+    country: "United Kingdom",
+    code: "GBR",
+    tier: "rare",
+    lat: 49.945317,
+    lon: -5.809167,
+    source: "https://www.trinityhouse.co.uk/lighthouses-and-lightvessels/wolf-rock-lighthouse",
+    region: "Cornwall",
+    description: "Granite masonry forms this isolated lighthouse between Land\u2019s End and the Isles of Scilly, surrounded by open water.",
+    descriptionSourceName: "Trinity House",
+    descriptionSource: "https://www.trinityhouse.co.uk/lighthouses-and-lightvessels/wolf-rock-lighthouse"
+  },
+  {
+    id: "longships",
+    name: "Longships Lighthouse",
+    country: "United Kingdom",
+    code: "GBR",
+    tier: "rare",
+    lat: 50.066867,
+    lon: -5.746867,
+    source: "https://www.trinityhouse.co.uk/lighthouses-and-lightvessels/longships-lighthouse",
+    region: "Land\u2019s End",
+    description: "The stone tower stands on the largest of the Longships rocks, marking the sea approaches to Land\u2019s End.",
+    descriptionSourceName: "Trinity House",
+    descriptionSource: "https://www.trinityhouse.co.uk/lighthouses-and-lightvessels/longships-lighthouse"
+  },
+  {
+    id: "needleslight",
+    name: "The Needles Lighthouse",
+    country: "United Kingdom",
+    code: "GBR",
+    tier: "rare",
+    lat: 50.662233,
+    lon: -1.591667,
+    source: "https://www.trinityhouse.co.uk/lighthouses-and-lightvessels/needles-lighthouse",
+    region: "Isle of Wight",
+    description: "A red-and-white tower stands at the seaward end of the chalk Needles, where pale rock pinnacles meet the Solent approaches.",
+    descriptionSourceName: "Trinity House",
+    descriptionSource: "https://www.trinityhouse.co.uk/lighthouses-and-lightvessels/needles-lighthouse"
+  },
+  {
+    id: "smallslight",
+    name: "Smalls Lighthouse",
+    country: "United Kingdom",
+    code: "GBR",
+    tier: "rare",
+    lat: 51.721267,
+    lon: -5.669867,
+    source: "https://www.trinityhouse.co.uk/lighthouses-and-lightvessels/smalls-lighthouse",
+    region: "Pembrokeshire",
+    description: "A granite tower replaced an earlier timber lighthouse on the remote Smalls rocks off the Welsh coast.",
+    descriptionSourceName: "Trinity House",
+    descriptionSource: "https://www.trinityhouse.co.uk/lighthouses-and-lightvessels/smalls-lighthouse"
+  },
+  {
+    id: "bellrock",
+    name: "Bell Rock Lighthouse",
+    country: "United Kingdom",
+    code: "GBR",
+    tier: "rare",
+    lat: 56.43441667,
+    lon: -2.38716667,
+    source: "https://www.nlb.org.uk/lighthouses/bell-rock/",
+    region: "Firth of Forth approaches",
+    description: "Built on a reef covered at high tide, the slender masonry tower guides shipping off Scotland\u2019s east coast.",
+    descriptionSourceName: "Northern Lighthouse Board",
+    descriptionSource: "https://www.nlb.org.uk/lighthouses/bell-rock/"
+  },
+  {
+    id: "skerryvore",
+    name: "Skerryvore Lighthouse",
+    country: "United Kingdom",
+    code: "GBR",
+    tier: "rare",
+    lat: 56.32276667,
+    lon: -7.1147,
+    source: "https://www.nlb.org.uk/lighthouses/skerryvore/",
+    region: "Tiree",
+    description: "A tall, curved granite tower stands on a reef southwest of Tiree, a landmark of Scottish rock-lighthouse engineering.",
+    descriptionSourceName: "Northern Lighthouse Board",
+    descriptionSource: "https://www.nlb.org.uk/lighthouses/skerryvore/"
+  },
+  {
+    id: "dubhartach",
+    name: "Dubh Artach Lighthouse",
+    country: "United Kingdom",
+    code: "GBR",
+    tier: "rare",
+    lat: 56.13256667,
+    lon: -6.63465,
+    source: "https://www.nlb.org.uk/lighthouses/dubh-artach/",
+    region: "Inner Hebrides",
+    description: "The offshore rock supports a stone lighthouse with a broad red band, exposed to Atlantic waves southwest of Mull.",
+    descriptionSourceName: "Northern Lighthouse Board",
+    descriptionSource: "https://www.nlb.org.uk/lighthouses/dubh-artach/"
+  },
+  {
+    id: "chickenrock",
+    name: "Chicken Rock Lighthouse",
+    country: "Isle of Man",
+    code: "IMN",
+    tier: "common",
+    lat: 54.03785,
+    lon: -4.83858333,
+    source: "https://www.nlb.org.uk/lighthouses/chicken-rock/",
+    region: "Calf of Man",
+    description: "An isolated granite tower marks a submerged hazard off the Calf of Man at the southern approaches to the Isle of Man.",
+    descriptionSourceName: "Northern Lighthouse Board",
+    descriptionSource: "https://www.nlb.org.uk/lighthouses/chicken-rock/"
+  },
+  {
+    id: "fastnet",
+    name: "Fastnet Lighthouse",
+    country: "Ireland",
+    code: "IRL",
+    tier: "rare",
+    lat: 51.3893,
+    lon: -9.60297,
+    source: "https://irishlights.ie/safety-navigation/our-lighthouses/fastnet.aspx",
+    region: "County Cork",
+    description: "A curved granite tower rises above Fastnet Rock southwest of Cape Clear, built to resist powerful Atlantic waves.",
+    descriptionSourceName: "Commissioners of Irish Lights",
+    descriptionSource: "https://irishlights.ie/safety-navigation/our-lighthouses/fastnet.aspx"
+  },
+  {
+    id: "tuskar",
+    name: "Tuskar Lighthouse",
+    country: "Ireland",
+    code: "IRL",
+    tier: "common",
+    lat: 52.20292,
+    lon: -6.20742,
+    source: "https://irishlights.ie/safety-navigation/our-lighthouses/tuskar-rock.aspx",
+    region: "County Wexford",
+    description: "A white round tower marks Tuskar Rock off County Wexford, helping vessels approaching Ireland\u2019s southeast coast.",
+    descriptionSourceName: "Commissioners of Irish Lights",
+    descriptionSource: "https://irishlights.ie/safety-navigation/our-lighthouses/tuskar-rock.aspx"
+  },
+  {
+    id: "rockabill",
+    name: "Rockabill Lighthouse",
+    country: "Ireland",
+    code: "IRL",
+    tier: "common",
+    lat: 53.59685,
+    lon: -6.00495,
+    source: "https://irishlights.ie/safety-navigation/our-lighthouses/rockabill.aspx",
+    region: "County Dublin",
+    description: "A white lighthouse with a dark band stands on one of two small rocky islands off the Dublin coast. The neighbouring rocks form a distinctive offshore pair.",
+    descriptionSourceName: "Commissioners of Irish Lights",
+    descriptionSource: "https://irishlights.ie/safety-navigation/our-lighthouses/rockabill.aspx"
+  },
+  {
+    id: "kishbank",
+    name: "Kish Bank Lighthouse",
+    country: "Ireland",
+    code: "IRL",
+    tier: "rare",
+    lat: 53.31083,
+    lon: -5.9257,
+    source: "https://irishlights.ie/safety-navigation/our-lighthouses/kish-bank.aspx",
+    region: "Dublin Bay approaches",
+    description: "A caisson-based lighthouse with a broad upper platform marks the Kish Bank sandbank in the approaches to Dublin Bay.",
+    descriptionSourceName: "Commissioners of Irish Lights",
+    descriptionSource: "https://irishlights.ie/safety-navigation/our-lighthouses/kish-bank.aspx"
+  },
+  {
+    id: "beanrock",
+    name: "Bean Rock Lighthouse",
+    country: "New Zealand",
+    code: "NZL",
+    tier: "rare",
+    lat: -36.833,
+    lon: 174.831,
+    source: "https://www.heritage.org.nz/list-details/3295/Bean%20Rock%20Lighthouse",
+    region: "Waitemat\u0101 Harbour",
+    description: "A small wooden lighthouse cottage stands above a harbour reef on iron legs, a distinctive form in Auckland\u2019s Waitemat\u0101 Harbour.",
+    descriptionSourceName: "Heritage New Zealand",
+    descriptionSource: "https://www.heritage.org.nz/list-details/3295/Bean%20Rock%20Lighthouse"
+  },
+  {
+    id: "brotherslight",
+    name: "Brothers Islands Lighthouse",
+    country: "New Zealand",
+    code: "NZL",
+    tier: "common",
+    lat: -41.1,
+    lon: 174.43333333,
+    source: "https://www.maritimenz.govt.nz/about-us/who-we-are/our-history-and-heritage/lighthouses-of-new-zealand/brothers-island/",
+    region: "Cook Strait",
+    description: "A compact white lighthouse and keeper buildings occupy a rocky island in Cook Strait between New Zealand\u2019s main islands.",
+    descriptionSourceName: "Maritime New Zealand",
+    descriptionSource: "https://www.maritimenz.govt.nz/about-us/who-we-are/our-history-and-heritage/lighthouses-of-new-zealand/brothers-island/"
+  },
+  {
+    id: "dogisland",
+    name: "Dog Island Lighthouse",
+    country: "New Zealand",
+    code: "NZL",
+    tier: "rare",
+    lat: -46.65,
+    lon: 168.41666667,
+    source: "https://www.maritimenz.govt.nz/about-us/who-we-are/our-history-and-heritage/lighthouses-of-new-zealand/dog-island/",
+    region: "Foveaux Strait",
+    description: "New Zealand\u2019s tallest lighthouse uses broad dark bands on a pale tower to mark the eastern approach to Foveaux Strait.",
+    descriptionSourceName: "Maritime New Zealand",
+    descriptionSource: "https://www.maritimenz.govt.nz/about-us/who-we-are/our-history-and-heritage/lighthouses-of-new-zealand/dog-island/"
+  },
+  {
+    id: "oryukdolight",
+    name: "Oryukdo Lighthouse",
+    country: "South Korea",
+    code: "KOR",
+    tier: "common",
+    lat: 35.09116361,
+    lon: 129.12688634,
+    source: "https://english.visitkorea.or.kr/svc/whereToGo/locIntrdn/rgnContentsView.do?vcontsId=81575",
+    region: "Busan",
+    description: "The white lighthouse crowns Deungdaeseom, one of the offshore rock islands of Oryukdo at the entrance to Busan\u2019s waters.",
+    descriptionSourceName: "Korea Tourism Organization",
+    descriptionSource: "https://english.visitkorea.or.kr/svc/whereToGo/locIntrdn/rgnContentsView.do?vcontsId=81575"
+  },
+  {
+    id: "somaemuldolight",
+    name: "Somaemuldo Lighthouse",
+    country: "South Korea",
+    code: "KOR",
+    tier: "common",
+    lat: 34.61951668,
+    lon: 128.54806406,
+    source: "https://english.visitkorea.or.kr/svc/whereToGo/locIntrdn/rgnContentsView.do?vcontsId=111029",
+    region: "Tongyeong",
+    description: "A white lighthouse tops Deungdaeseom beside Somaemuldo, where a rocky tidal connection separates the two small islands.",
+    descriptionSourceName: "Korea Tourism Organization",
+    descriptionSource: "https://english.visitkorea.or.kr/svc/whereToGo/locIntrdn/rgnContentsView.do?vcontsId=111029"
+  },
+  {
+    id: "gageodolight",
+    name: "Gageodo Lighthouse",
+    country: "South Korea",
+    code: "KOR",
+    tier: "common",
+    lat: 34.094667,
+    lon: 125.099278,
+    source: "https://mokpo.mof.go.kr/en/page.do?menuIdx=1598",
+    region: "Sinan",
+    description: "A low white brick lighthouse stands high on Gageodo\u2019s northern headland, marking the approach from the open East China Sea.",
+    descriptionSourceName: "Mokpo Regional Office of Oceans and Fisheries",
+    descriptionSource: "https://mokpo.mof.go.kr/en/page.do?menuIdx=1598"
+  },
+  {
+    id: "bikiniatoll",
+    name: "Bikini Atoll",
+    country: "Marshall Islands",
+    code: "MHL",
+    tier: "epic",
+    lat: 11.6,
+    lon: 165.38055556,
+    source: "https://whc.unesco.org/en/list/1339/",
+    region: "Bikini Atoll",
+    description: "The lagoon contains sunken test vessels and other remains of twentieth-century nuclear testing; the miniature depicts submerged hulls within the atoll.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/1339/"
+  },
+  {
+    id: "phoenixislands",
+    name: "Phoenix Islands Protected Area",
+    country: "Kiribati",
+    code: "KIR",
+    tier: "legendary",
+    lat: -3.864454,
+    lon: -172.650203,
+    source: "https://whc.unesco.org/en/list/1325/",
+    region: "Phoenix Islands",
+    description: "Remote coral atolls, reefs and deep ocean habitats form this protected Pacific seascape within Kiribati.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/1325/"
+  },
+  {
+    id: "malpelo",
+    name: "Malpelo Sanctuary",
+    country: "Colombia",
+    code: "COL",
+    tier: "epic",
+    lat: 4.003344,
+    lon: -81.607572,
+    source: "https://whc.unesco.org/en/list/1216/",
+    region: "Eastern Pacific",
+    description: "A steep oceanic rock and its surrounding protected waters support large gatherings of sharks in the eastern Pacific.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/1216/"
+  },
+  {
+    id: "surtsey",
+    name: "Surtsey",
+    country: "Iceland",
+    code: "ISL",
+    tier: "rare",
+    lat: 63.30305556,
+    lon: -20.60222222,
+    source: "https://whc.unesco.org/en/list/1267/",
+    region: "Vestmannaeyjar",
+    description: "Formed by a volcanic eruption beginning in 1963, this young ocean island is protected for research into natural colonisation.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/1267/"
+  },
+  {
+    id: "goughislands",
+    name: "Gough and Inaccessible Islands",
+    country: "United Kingdom",
+    code: "GBR",
+    tier: "rare",
+    lat: -38.81236111,
+    lon: -11.30597222,
+    source: "https://whc.unesco.org/en/list/740/",
+    region: "South Atlantic",
+    description: "Steep volcanic islands in the South Atlantic provide nesting grounds for large seabird colonies far from continental shores.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/740/"
+  },
+  {
+    id: "newcaledonialagoons",
+    name: "New Caledonia Lagoons",
+    country: "France",
+    code: "FRA",
+    tier: "epic",
+    lat: -20.49587963,
+    lon: 165.04791667,
+    source: "https://whc.unesco.org/en/list/1115/",
+    region: "New Caledonia",
+    description: "Six marine clusters preserve extensive coral reefs and lagoons around New Caledonia; the model shows a representative reef channel.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/1115/"
+  },
+  {
+    id: "aporeef",
+    name: "Apo Reef Natural Park",
+    country: "Philippines",
+    code: "PHL",
+    tier: "common",
+    lat: 12.74583333,
+    lon: 120.3961111,
+    source: "https://whc.unesco.org/en/tentativelists/5033/",
+    region: "Occidental Mindoro",
+    description: "Shallow reefs, channels and clear marine water form the protected Apo Reef complex west of Mindoro. The miniature separates the reef rim from its interior water channels.",
+    descriptionSourceName: "UNESCO Tentative Lists",
+    descriptionSource: "https://whc.unesco.org/en/tentativelists/5033/"
+  },
+  {
+    id: "bunaken",
+    name: "Bunaken National Park",
+    country: "Indonesia",
+    code: "IDN",
+    tier: "common",
+    lat: 1.66666667,
+    lon: 124.65,
+    source: "https://whc.unesco.org/en/tentativelists/2002/",
+    region: "North Sulawesi",
+    description: "Coral reefs and steep underwater walls surround islands off North Sulawesi, providing a wide range of marine habitats.",
+    descriptionSourceName: "UNESCO Tentative Lists",
+    descriptionSource: "https://whc.unesco.org/en/tentativelists/2002/"
+  },
+  {
+    id: "rajaampat",
+    name: "Raja Ampat Islands Marine Park",
+    country: "Indonesia",
+    code: "IDN",
+    tier: "rare",
+    lat: -0.7125553,
+    lon: 130.3034473,
+    source: "https://kkprajaampat.id/en/kawasan-kelola-kami/kepulauan-raja-ampat/",
+    region: "Southwest Papua",
+    description: "A network of coral reefs and island waters protects marine habitats in Raja Ampat, represented here by limestone islets and a reef passage.",
+    descriptionSourceName: "Kupang National Marine Protected Areas Office",
+    descriptionSource: "https://kkprajaampat.id/en/kawasan-kelola-kami/kepulauan-raja-ampat/"
+  },
+  {
+    id: "wakatobi",
+    name: "Wakatobi National Park",
+    country: "Indonesia",
+    code: "IDN",
+    tier: "common",
+    lat: -5.9011111,
+    lon: 124.1165972,
+    source: "https://whc.unesco.org/en/tentativelists/2006/",
+    region: "Southeast Sulawesi",
+    description: "Coral reefs around the Wakatobi islands form a marine park in the heart of the Coral Triangle. Its name joins the names of the four main islands: Wangi-Wangi, Kaledupa, Tomia and Binongko.",
+    descriptionSourceName: "UNESCO Tentative Lists",
+    descriptionSource: "https://whc.unesco.org/en/tentativelists/2006/"
+  },
+  {
+    id: "sipadan",
+    name: "Sipadan Island Park",
+    country: "Malaysia",
+    code: "MYS",
+    tier: "rare",
+    lat: 4.1122015,
+    lon: 118.6304382,
+    source: "https://www.sabahparks.org.my/sipadan-island-park",
+    region: "Sabah",
+    description: "A small oceanic island rises above deep water, with coral-covered walls and marine turtle habitat around its edge.",
+    descriptionSourceName: "Sabah Parks",
+    descriptionSource: "https://www.sabahparks.org.my/sipadan-island-park"
+  },
+  {
+    id: "surin",
+    name: "Mu Ko Surin National Park",
+    country: "Thailand",
+    code: "THA",
+    tier: "common",
+    lat: 9.4001641,
+    lon: 97.8657727,
+    source: "https://www.tourismthailand.org/Articles/mu-koh-surin-the-tropical-paradise-in-andaman",
+    region: "Phang Nga",
+    description: "The Surin islands and their surrounding Andaman Sea reefs form a protected tropical marine landscape.",
+    descriptionSourceName: "Tourism Authority of Thailand",
+    descriptionSource: "https://www.tourismthailand.org/Articles/mu-koh-surin-the-tropical-paradise-in-andaman"
+  },
+  {
+    id: "similan",
+    name: "Mu Ko Similan National Park",
+    country: "Thailand",
+    code: "THA",
+    tier: "rare",
+    lat: 8.5771331,
+    lon: 97.6463514,
+    source: "https://www.tourismthailand.org/Attraction/mu-ko-similan-national-park",
+    region: "Phang Nga",
+    description: "Large rounded granite boulders rise above turquoise water, while coral reefs shelter marine life around the Similan islands.",
+    descriptionSourceName: "Tourism Authority of Thailand",
+    descriptionSource: "https://www.tourismthailand.org/Attraction/mu-ko-similan-national-park"
+  },
+  {
+    id: "rasmohammed",
+    name: "Ras Mohammed Marine Reserve",
+    country: "Egypt",
+    code: "EGY",
+    tier: "rare",
+    lat: 27.8786491,
+    lon: 34.3578071,
+    source: "https://www.sis.gov.eg/newVR/protected/html/rasmoh.htm",
+    region: "South Sinai",
+    description: "Reefs fringe the southern tip of Sinai where the gulfs of Suez and Aqaba meet, creating a striking underwater landscape.",
+    descriptionSourceName: "Egypt State Information Service",
+    descriptionSource: "https://www.sis.gov.eg/newVR/protected/html/rasmoh.htm"
+  },
+  {
+    id: "bluebay",
+    name: "Blue Bay Marine Park",
+    country: "Mauritius",
+    code: "MUS",
+    tier: "common",
+    lat: -20.45,
+    lon: 57.7,
+    source: "https://rsis.ramsar.org/ris/1744",
+    region: "Grand Port",
+    description: "A sheltered lagoon in southeastern Mauritius contains coral communities and shallow marine habitats. The miniature represents the reef and lagoon rather than the shore facilities.",
+    descriptionSourceName: "Ramsar Sites Information Service",
+    descriptionSource: "https://rsis.ramsar.org/ris/1744"
+  },
+  {
+    id: "sainteanne",
+    name: "Sainte Anne Marine National Park",
+    country: "Seychelles",
+    code: "SYC",
+    tier: "common",
+    lat: -4.605356,
+    lon: 55.504711,
+    source: "https://www.spga.gov.sc/parks/st-anne",
+    region: "Mah\xE9",
+    description: "Island waters near Mah\xE9 protect coral reefs and seagrass beds within Seychelles\u2019 Sainte Anne Marine National Park.",
+    descriptionSourceName: "Seychelles Parks and Gardens Authority",
+    descriptionSource: "https://www.spga.gov.sc/parks/st-anne"
+  },
+  {
+    id: "watamu",
+    name: "Watamu Marine National Park",
+    country: "Kenya",
+    code: "KEN",
+    tier: "common",
+    lat: -3.36777778,
+    lon: 40.01638889,
+    source: "https://kws.go.ke/park/watamu-marine-national-park-reserve/",
+    region: "Kilifi",
+    description: "Reef-protected lagoons and coral gardens shelter fish and sea turtles along Kenya\u2019s Indian Ocean coast.",
+    descriptionSourceName: "Kenya Wildlife Service",
+    descriptionSource: "https://kws.go.ke/park/watamu-marine-national-park-reserve/"
+  },
+  {
+    id: "mafiaisland",
+    name: "Mafia Island Marine Park",
+    country: "Tanzania",
+    code: "TZA",
+    tier: "common",
+    lat: -7.75194444,
+    lon: 39.90027778,
+    source: "https://www.marineparks.go.tz/parks/mafia-island",
+    region: "Mafia Archipelago",
+    description: "Coral reefs, mangroves and sheltered bays form a connected marine landscape around the southern part of Mafia Island.",
+    descriptionSourceName: "Tanzania Marine Parks and Reserves Unit",
+    descriptionSource: "https://www.marineparks.go.tz/parks/mafia-island"
+  },
+  {
+    id: "biscayne",
+    name: "Biscayne National Park",
+    country: "United States",
+    code: "USA",
+    tier: "common",
+    lat: 25.5031223,
+    lon: -80.2348496,
+    source: "https://www.nps.gov/bisc/index.htm",
+    region: "Florida",
+    description: "Biscayne protects marine water, islands and coral reefs beside South Florida, with underwater habitats forming most of the park.",
+    descriptionSourceName: "National Park Service",
+    descriptionSource: "https://www.nps.gov/bisc/index.htm"
+  },
+  {
+    id: "drytortugas",
+    name: "Dry Tortugas National Park",
+    country: "United States",
+    code: "USA",
+    tier: "epic",
+    lat: 24.6377223,
+    lon: -82.8767982,
+    source: "https://www.nps.gov/drto/index.htm",
+    region: "Florida Keys",
+    description: "Fort Jefferson\u2019s brick walls stand on a small island amid the clear water and reefs of the Dry Tortugas.",
+    descriptionSourceName: "National Park Service",
+    descriptionSource: "https://www.nps.gov/drto/index.htm"
+  },
+  {
+    id: "cabopulmo",
+    name: "Cabo Pulmo National Park",
+    country: "Mexico",
+    code: "MEX",
+    tier: "common",
+    lat: 23.4379644,
+    lon: -109.4056184,
+    source: "https://conanp.gob.mx/conanp/dominios/cabo_pulmo/index.php",
+    region: "Baja California Sur",
+    description: "A reef in the Gulf of California supports dense schools of fish along the eastern shore of Baja California Sur.",
+    descriptionSourceName: "CONANP",
+    descriptionSource: "https://conanp.gob.mx/conanp/dominios/cabo_pulmo/index.php"
+  },
+  {
+    id: "abrolhos",
+    name: "Abrolhos Marine National Park",
+    country: "Brazil",
+    code: "BRA",
+    tier: "rare",
+    lat: -17.971,
+    lon: -38.7,
+    source: "https://www.gov.br/icmbio/pt-br/assuntos/unidade-de-conservacao/unidades-de-biomas/marinho/lista-de-ucs/parna-marinho-dos-abrolhos/guia-do-visitante/informacoes-sobre-visitacao",
+    region: "Bahia",
+    description: "Mushroom-shaped coral formations and island waters shelter marine life off Bahia, including a humpback whale breeding area.",
+    descriptionSourceName: "ICMBio",
+    descriptionSource: "https://www.gov.br/icmbio/pt-br/assuntos/unidade-de-conservacao/unidades-de-biomas/marinho/lista-de-ucs/parna-marinho-dos-abrolhos/guia-do-visitante/informacoes-sobre-visitacao"
+  },
+  {
+    id: "namena",
+    name: "Namena Marine Reserve",
+    country: "Fiji",
+    code: "FJI",
+    tier: "rare",
+    lat: -17.1108726,
+    lon: 179.098435,
+    source: "https://fiji.wcs.org/Initiatives/Protected-Areas/Namena-Marine-Reserve.aspx",
+    region: "Bligh Water",
+    description: "A community-established no-take reserve around Namena protects reefs and the marine life that uses them.",
+    descriptionSourceName: "Wildlife Conservation Society Fiji",
+    descriptionSource: "https://fiji.wcs.org/Initiatives/Protected-Areas/Namena-Marine-Reserve.aspx"
+  },
+  {
+    id: "exumacays",
+    name: "Exuma Cays Land and Sea Park",
+    country: "Bahamas",
+    code: "BHS",
+    tier: "common",
+    lat: 24.42,
+    lon: -76.69,
+    source: "https://bnt.bs/explore/exuma/exuma-cays-land-sea-park/",
+    region: "Exuma",
+    description: "Shallow turquoise channels, cays and marine habitats form a protected seascape in the Exuma island chain.",
+    descriptionSourceName: "Bahamas National Trust",
+    descriptionSource: "https://bnt.bs/explore/exuma/exuma-cays-land-sea-park/"
+  },
+  {
+    id: "jardinesreina",
+    name: "Jardines de la Reina",
+    country: "Cuba",
+    code: "CUB",
+    tier: "common",
+    lat: 20.9292729,
+    lon: -79.0706878,
+    source: "https://www.cuba.travel/destinos/ciego-de-avila/naturaleza",
+    region: "Southern Cuba",
+    description: "Coral reefs, mangrove islands and shallow lagoons form a marine archipelago off Cuba\u2019s southern coast.",
+    descriptionSourceName: "Cuba Travel",
+    descriptionSource: "https://www.cuba.travel/destinos/ciego-de-avila/naturaleza"
+  },
+  {
+    id: "flowergarden",
+    name: "Flower Garden Banks Sanctuary",
+    country: "United States",
+    code: "USA",
+    tier: "rare",
+    lat: 27.8700385,
+    lon: -93.8328397,
+    source: "https://flowergarden.noaa.gov/",
+    region: "Northwestern Gulf",
+    description: "Offshore banks rise from deeper Gulf water and support coral communities, sponges and other marine life.",
+    descriptionSourceName: "NOAA",
+    descriptionSource: "https://flowergarden.noaa.gov/"
+  },
+  {
+    id: "stellwagen",
+    name: "Stellwagen Bank Sanctuary",
+    country: "United States",
+    code: "USA",
+    tier: "rare",
+    lat: 42.4006174,
+    lon: -70.3357931,
+    source: "https://stellwagen.noaa.gov/",
+    region: "Massachusetts Bay",
+    description: "A shallow offshore bank at the entrance to Massachusetts Bay creates productive feeding habitat for whales and other marine animals.",
+    descriptionSourceName: "NOAA",
+    descriptionSource: "https://stellwagen.noaa.gov/"
+  },
+  {
+    id: "monitorwreck",
+    name: "USS Monitor Sanctuary",
+    country: "United States",
+    code: "USA",
+    tier: "rare",
+    lat: 35.0016689,
+    lon: -75.4063896,
+    source: "https://monitor.noaa.gov/",
+    region: "Cape Hatteras",
+    description: "The wreck of the ironclad USS Monitor lies offshore from Cape Hatteras, protected as an important maritime archaeological site.",
+    descriptionSourceName: "NOAA",
+    descriptionSource: "https://monitor.noaa.gov/"
+  },
+  {
+    id: "portcros",
+    name: "Port-Cros Marine Waters",
+    country: "France",
+    code: "FRA",
+    tier: "common",
+    lat: 43.064623,
+    lon: 6.4586434,
+    source: "https://portcros-parcnational.fr/fr/des-decouvertes/une-destination-dexception/la-mer",
+    region: "Hy\xE8res Islands",
+    description: "Mediterranean marine habitats around Port-Cros include seagrass meadows and rocky underwater communities.",
+    descriptionSourceName: "Port-Cros National Park",
+    descriptionSource: "https://portcros-parcnational.fr/fr/des-decouvertes/une-destination-dexception/la-mer"
+  },
+  {
+    id: "sydneybridge",
+    name: "Sydney Harbour Bridge",
+    country: "Australia",
+    code: "AUS",
+    tier: "epic",
+    lat: -33.8521165,
+    lon: 151.2107812,
+    source: "https://www.dcceew.gov.au/parks-heritage/heritage/places/national/sydney-harbour-bridge",
+    region: "Port Jackson",
+    description: "A broad steel arch carries traffic across Sydney Harbour; its stone pylons and suspended deck form a silhouette distinct from the Opera House.",
+    descriptionSourceName: "Australian Government DCCEEW",
+    descriptionSource: "https://www.dcceew.gov.au/parks-heritage/heritage/places/national/sydney-harbour-bridge"
+  },
+  {
+    id: "towerbridge",
+    name: "Tower Bridge",
+    country: "United Kingdom",
+    code: "GBR",
+    tier: "epic",
+    lat: 51.5055158,
+    lon: -0.0753665,
+    source: "https://www.towerbridge.org.uk/about-us",
+    region: "River Thames, London",
+    description: "Two stone-clad towers and a lifting central span carry a crossing over the Thames while allowing tall vessels to pass.",
+    descriptionSourceName: "Tower Bridge official website",
+    descriptionSource: "https://www.towerbridge.org.uk/about-us"
+  },
+  {
+    id: "charlesbridge",
+    name: "Charles Bridge",
+    country: "Czechia",
+    code: "CZE",
+    tier: "rare",
+    lat: 50.0864344,
+    lon: 14.41190698,
+    source: "https://prague.eu/en/objevujte/charles-bridge-karluv-most/",
+    region: "Vltava, Prague",
+    description: "Sandstone arches cross the Vltava between Prague\u2019s historic riverbanks, with statues lining the pedestrian bridge.",
+    descriptionSourceName: "Prague City Tourism",
+    descriptionSource: "https://prague.eu/en/objevujte/charles-bridge-karluv-most/"
+  },
+  {
+    id: "chainbridge",
+    name: "Sz\xE9chenyi Chain Bridge",
+    country: "Hungary",
+    code: "HUN",
+    tier: "rare",
+    lat: 47.4989791,
+    lon: 19.0436494,
+    source: "https://visithungary.com/articles/the-szechenyi-chain-bridge",
+    region: "Danube, Budapest",
+    description: "Suspension chains run between stone towers above the Danube, linking the Buda and Pest riverbanks. Its gate-like towers make the chain-supported structure easy to recognise.",
+    descriptionSourceName: "Visit Hungary",
+    descriptionSource: "https://visithungary.com/articles/the-szechenyi-chain-bridge"
+  },
+  {
+    id: "pontevecchio",
+    name: "Ponte Vecchio",
+    country: "Italy",
+    code: "ITA",
+    tier: "rare",
+    lat: 43.7680307,
+    lon: 11.2531614,
+    source: "https://www.visittuscany.com/en/attractions/ponte-vecchio/",
+    region: "Arno, Florence",
+    description: "Shops cluster above three broad arches across the Arno, with the elevated Vasari Corridor running over the bridge.",
+    descriptionSourceName: "Visit Tuscany",
+    descriptionSource: "https://www.visittuscany.com/en/attractions/ponte-vecchio/"
+  },
+  {
+    id: "alexandrebridge",
+    name: "Pont Alexandre III",
+    country: "France",
+    code: "FRA",
+    tier: "rare",
+    lat: 48.8634697,
+    lon: 2.3135181,
+    source: "https://parisjetaime.com/eng/transport/pont-alexandre-iii-p1875",
+    region: "Seine, Paris",
+    description: "A low metal arch crosses the Seine between ornate lamp standards and tall pillars topped with gilded sculptures.",
+    descriptionSourceName: "Paris Tourist Office",
+    descriptionSource: "https://parisjetaime.com/eng/transport/pont-alexandre-iii-p1875"
+  },
+  {
+    id: "millauviaduct",
+    name: "Millau Viaduct",
+    country: "France",
+    code: "FRA",
+    tier: "epic",
+    lat: 44.0799775,
+    lon: 3.0224087,
+    source: "https://www.leviaducdemillau.com/sites/viaducdemillau/accueil-viaduc-de-millau/le-viaduc/le-viaduc-presentation-du-viaduc.html",
+    region: "Tarn Valley",
+    description: "Slender piers and cable stays carry a long deck high above the Tarn River valley near Millau. Seven main piers give the crossing its repeated slender profile.",
+    descriptionSourceName: "Compagnie Eiffage du Viaduc de Millau",
+    descriptionSource: "https://www.leviaducdemillau.com/sites/viaducdemillau/accueil-viaduc-de-millau/le-viaduc/le-viaduc-presentation-du-viaduc.html"
+  },
+  {
+    id: "garabit",
+    name: "Garabit Viaduct",
+    country: "France",
+    code: "FRA",
+    tier: "rare",
+    lat: 44.9745645,
+    lon: 3.1774879,
+    source: "https://www.pays-saint-flour.fr/en/must-see/viaduc-de-garabit/",
+    region: "Truy\xE8re Valley",
+    description: "A red metal arch carries the railway across the Truy\xE8re valley, a prominent work associated with Gustave Eiffel.",
+    descriptionSourceName: "Saint-Flour Tourist Office",
+    descriptionSource: "https://www.pays-saint-flour.fr/en/must-see/viaduc-de-garabit/"
+  },
+  {
+    id: "landwasser",
+    name: "Landwasser Viaduct",
+    country: "Switzerland",
+    code: "CHE",
+    tier: "rare",
+    lat: 46.6809366,
+    lon: 9.6760239,
+    source: "https://www.rhb.ch/en/excursions/landwasser-express/",
+    region: "Landwasser River, Filisur",
+    description: "A curved stone railway viaduct crosses the Landwasser gorge and leads directly into a tunnel in the rock face.",
+    descriptionSourceName: "Rhaetian Railway",
+    descriptionSource: "https://www.rhb.ch/en/excursions/landwasser-express/"
+  },
+  {
+    id: "chapelbridge",
+    name: "Chapel Bridge",
+    country: "Switzerland",
+    code: "CHE",
+    tier: "rare",
+    lat: 47.05134195,
+    lon: 8.30724012,
+    source: "https://www.luzern.com/en/poi/chapel-bridge",
+    region: "Reuss, Lucerne",
+    description: "A covered timber bridge crosses the Reuss beside an octagonal water tower, with painted panels beneath its roof.",
+    descriptionSourceName: "Lucerne Tourism",
+    descriptionSource: "https://www.luzern.com/en/poi/chapel-bridge"
+  },
+  {
+    id: "magdeburgbridge",
+    name: "Magdeburg Water Bridge",
+    country: "Germany",
+    code: "DEU",
+    tier: "rare",
+    lat: 52.230833,
+    lon: 11.701389,
+    source: "https://www.magdeburg-tourist.de/Tourismus-Freizeit/System/Wasserstra%C3%9Fenkreuz.php?object=tx%2C115.3397.1",
+    region: "Elbe, Magdeburg",
+    description: "A navigable trough carries canal boats over the Elbe as part of Magdeburg\u2019s waterway crossing. Canal water and river water pass at different levels.",
+    descriptionSourceName: "Magdeburg Tourism",
+    descriptionSource: "https://www.magdeburg-tourist.de/Tourismus-Freizeit/System/Wasserstra%C3%9Fenkreuz.php?object=tx%2C115.3397.1"
+  },
+  {
+    id: "hohenzollernbridge",
+    name: "Hohenzollern Bridge",
+    country: "Germany",
+    code: "DEU",
+    tier: "common",
+    lat: 50.9414,
+    lon: 6.964602,
+    source: "https://www.koelntourismus.de/kunst-kultur/sehenswuerdigkeiten/detail/hohenzollernbruecke",
+    region: "Rhine, Cologne",
+    description: "Parallel metal arches carry railway tracks and footpaths over the Rhine beside central Cologne. Successive arch groups give the crossing a repeated curved outline.",
+    descriptionSourceName: "Cologne Tourist Board",
+    descriptionSource: "https://www.koelntourismus.de/kunst-kultur/sehenswuerdigkeiten/detail/hohenzollernbruecke"
+  },
+  {
+    id: "glienickebridge",
+    name: "Glienicke Bridge",
+    country: "Germany",
+    code: "DEU",
+    tier: "common",
+    lat: 52.413462,
+    lon: 13.090227,
+    source: "https://www.potsdam.de/en/glienicker-bruecke",
+    region: "Havel, Potsdam",
+    description: "A steel bridge crosses the Havel between Potsdam and Berlin, remembered for exchanges during the Cold War.",
+    descriptionSourceName: "City of Potsdam",
+    descriptionSource: "https://www.potsdam.de/en/glienicker-bruecke"
+  },
+  {
+    id: "regensburgbridge",
+    name: "Regensburg Stone Bridge",
+    country: "Germany",
+    code: "DEU",
+    tier: "common",
+    lat: 49.0226092,
+    lon: 12.0972361,
+    source: "https://tourismus.regensburg.de/en/experience-discover/sightseeing-unesco-world-heritage/stone-bridge",
+    region: "Danube, Regensburg",
+    description: "A long sequence of medieval stone arches crosses the Danube beside Regensburg\u2019s old town. The bridge links the old town with Stadtamhof across the river.",
+    descriptionSourceName: "Regensburg Tourism",
+    descriptionSource: "https://tourismus.regensburg.de/en/experience-discover/sightseeing-unesco-world-heritage/stone-bridge"
+  },
+  {
+    id: "visegradbridge",
+    name: "Mehmed Pa\u0161a Sokolovi\u0107 Bridge",
+    country: "Bosnia and Herzegovina",
+    code: "BIH",
+    tier: "epic",
+    lat: 43.78144444,
+    lon: 19.288025,
+    source: "https://whc.unesco.org/en/list/1260/",
+    region: "Drina, Vi\u0161egrad",
+    description: "Eleven masonry arches span the Drina at Vi\u0161egrad, forming an Ottoman bridge associated with architect Sinan.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/1260/"
+  },
+  {
+    id: "vizcayabridge",
+    name: "Vizcaya Bridge",
+    country: "Spain",
+    code: "ESP",
+    tier: "rare",
+    lat: 43.323175,
+    lon: -3.01683333,
+    source: "https://whc.unesco.org/en/list/1217/",
+    region: "Nervi\xF3n, Biscay",
+    description: "A high iron frame carries a suspended transporter gondola across the Nervi\xF3n estuary without blocking shipping.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/1217/"
+  },
+  {
+    id: "alcantarabridge",
+    name: "Roman Bridge of Alc\xE1ntara",
+    country: "Spain",
+    code: "ESP",
+    tier: "rare",
+    lat: 39.72247234,
+    lon: -6.89229238,
+    source: "https://www.spain.info/en/places-of-interest/puente-alcantara/",
+    region: "Tagus, Extremadura",
+    description: "Large stone arches and a central commemorative arch carry the Roman bridge over the Tagus at Alc\xE1ntara.",
+    descriptionSourceName: "Spain Tourism",
+    descriptionSource: "https://www.spain.info/en/places-of-interest/puente-alcantara/"
+  },
+  {
+    id: "pulteneybridge",
+    name: "Pulteney Bridge",
+    country: "United Kingdom",
+    code: "GBR",
+    tier: "common",
+    lat: 51.38305556,
+    lon: -2.35777778,
+    source: "https://www.visitbath.co.uk/things-to-do/pulteney-bridge-p56151",
+    region: "Avon, Bath",
+    description: "Shops line both sides of this three-arched bridge over the Avon, beside the curved weir in central Bath.",
+    descriptionSourceName: "Visit Bath",
+    descriptionSource: "https://www.visitbath.co.uk/things-to-do/pulteney-bridge-p56151"
+  },
+  {
+    id: "cliftonbridge",
+    name: "Clifton Suspension Bridge",
+    country: "United Kingdom",
+    code: "GBR",
+    tier: "rare",
+    lat: 51.455,
+    lon: -2.62776,
+    source: "https://cliftonbridge.org.uk/",
+    region: "Avon Gorge, Bristol",
+    description: "Suspension chains carry a slender deck between masonry towers high over the tidal Avon Gorge. The bridge\u2019s anchorages meet the steep rocky sides of the gorge.",
+    descriptionSourceName: "Clifton Suspension Bridge Trust",
+    descriptionSource: "https://cliftonbridge.org.uk/"
+  },
+  {
+    id: "gatesheadbridge",
+    name: "Gateshead Millennium Bridge",
+    country: "United Kingdom",
+    code: "GBR",
+    tier: "rare",
+    lat: 54.96944444,
+    lon: -1.59972222,
+    source: "https://wilkinsoneyre.com/projects/gateshead-millennium-bridge",
+    region: "Tyne",
+    description: "A curved pedestrian deck and its supporting arch tilt together so boats can pass along the Tyne. The single sweeping arch rises above a curved walking and cycling route.",
+    descriptionSourceName: "WilkinsonEyre",
+    descriptionSource: "https://wilkinsoneyre.com/projects/gateshead-millennium-bridge"
+  },
+  {
+    id: "newriverbridge",
+    name: "New River Gorge Bridge",
+    country: "United States",
+    code: "USA",
+    tier: "rare",
+    lat: 38.06888889,
+    lon: -81.0825,
+    source: "https://www.nps.gov/neri/planyourvisit/nrgbridge.htm",
+    region: "New River, West Virginia",
+    description: "A great steel arch supports the road high above the New River, framing the wooded gorge beneath it. The miniature keeps the steel arch below the roadway, above the river.",
+    descriptionSourceName: "National Park Service",
+    descriptionSource: "https://www.nps.gov/neri/planyourvisit/nrgbridge.htm"
+  },
+  {
+    id: "howrahbridge",
+    name: "Howrah Bridge",
+    country: "India",
+    code: "IND",
+    tier: "rare",
+    lat: 22.5850528,
+    lon: 88.3469761,
+    source: "https://www.wbtourism.gov.in/district/detail/Howrah",
+    region: "Hooghly, Kolkata",
+    description: "A cantilevered steel truss spans the Hooghly between Kolkata and Howrah without river piers in its main span.",
+    descriptionSourceName: "West Bengal Tourism",
+    descriptionSource: "https://www.wbtourism.gov.in/district/detail/Howrah"
+  },
+  {
+    id: "chengyangbridge",
+    name: "Chengyang Wind and Rain Bridge",
+    country: "China",
+    code: "CHN",
+    tier: "rare",
+    lat: 25.9004032,
+    lon: 109.6380668,
+    source: "https://sjfw.mct.gov.cn/site/dataservice/culdetails?curId=10&id=35025",
+    region: "Linxi River, Guangxi",
+    description: "Multiple timber pavilions and covered walkways stand above stone piers across the Linxi River in a Dong community landscape.",
+    descriptionSourceName: "Ministry of Culture and Tourism of China",
+    descriptionSource: "https://sjfw.mct.gov.cn/site/dataservice/culdetails?curId=10&id=35025"
+  },
+  {
+    id: "zhaozhoubridge",
+    name: "Zhaozhou Bridge",
+    country: "China",
+    code: "CHN",
+    tier: "rare",
+    lat: 37.7202212,
+    lon: 114.7632736,
+    source: "https://www.sjz.gov.cn/english/columns/19e5d37f-e324-41da-826a-bf5ccaa8c428/201706/08/2a04ae55-b98f-4be7-8f71-a0fb4c638069.html",
+    region: "Xiao River, Hebei",
+    description: "A broad segmental stone arch crosses the Xiao River, with smaller open arches reducing the weight above its shoulders.",
+    descriptionSourceName: "Shijiazhuang Municipal Government",
+    descriptionSource: "https://www.sjz.gov.cn/english/columns/19e5d37f-e324-41da-826a-bf5ccaa8c428/201706/08/2a04ae55-b98f-4be7-8f71-a0fb4c638069.html"
+  },
+  {
+    id: "ludingbridge",
+    name: "Luding Bridge",
+    country: "China",
+    code: "CHN",
+    tier: "common",
+    lat: 29.9144973,
+    lon: 102.2302051,
+    source: "https://www.luding.gov.cn/lsyg/article/682783",
+    region: "Dadu River, Sichuan",
+    description: "Iron chains span the Dadu River beneath a plank walkway, with anchoring structures at the two riverbanks.",
+    descriptionSourceName: "Luding County Government",
+    descriptionSource: "https://www.luding.gov.cn/lsyg/article/682783"
+  },
+  {
+    id: "kintaibridge",
+    name: "Kintai Bridge",
+    country: "Japan",
+    code: "JPN",
+    tier: "rare",
+    lat: 34.1676435,
+    lon: 132.1783208,
+    source: "https://kintaikyo.iwakuni-city.net/en/summary.html",
+    region: "Nishiki River, Iwakuni",
+    description: "Five timber arches cross the Nishiki River on stone piers, creating a repeated wave-like profile below Iwakuni\u2019s hills.",
+    descriptionSourceName: "Iwakuni City",
+    descriptionSource: "https://kintaikyo.iwakuni-city.net/en/summary.html"
+  },
+  {
+    id: "banpobridge",
+    name: "Banpo Bridge Rainbow Fountain",
+    country: "South Korea",
+    code: "KOR",
+    tier: "common",
+    lat: 37.514556,
+    lon: 126.9965074,
+    source: "https://english.visitseoul.net/attractions/Banpodaegyo-Bridge-Moonlight-Rainbow-Fountain_/2222",
+    region: "Hangang, Seoul",
+    description: "Rows of water jets extend from the bridge sides toward the Han River, combining a working crossing with a large fountain.",
+    descriptionSourceName: "Seoul Tourism Organization",
+    descriptionSource: "https://english.visitseoul.net/attractions/Banpodaegyo-Bridge-Moonlight-Rainbow-Fountain_/2222"
+  },
+  {
+    id: "seungilbridge",
+    name: "Seungil Bridge",
+    country: "South Korea",
+    code: "KOR",
+    tier: "common",
+    lat: 38.1870538,
+    lon: 127.3003263,
+    source: "https://english.visitkorea.or.kr/svc/whereToGo/locIntrdn/rgnContentsView.do?vcontsId=66587",
+    region: "Hantangang, Cheorwon",
+    description: "Concrete arches carry the old crossing above the Hantangang\u2019s volcanic gorge near Cheorwon. Its construction history connects work undertaken before and after the Korean War.",
+    descriptionSourceName: "Korea Tourism Organization",
+    descriptionSource: "https://english.visitkorea.or.kr/svc/whereToGo/locIntrdn/rgnContentsView.do?vcontsId=66587"
+  },
+  {
+    id: "panamacanal",
+    name: "Panama Canal",
+    country: "Panama",
+    code: "PAN",
+    tier: "legendary",
+    lat: 9.0620248,
+    lon: -79.664308,
+    source: "https://pancanal.com/en/",
+    region: "Isthmus of Panama",
+    description: "Lock chambers lift ships between sea level and an inland waterway across the isthmus, connecting Atlantic and Pacific routes.",
+    descriptionSourceName: "Panama Canal Authority",
+    descriptionSource: "https://pancanal.com/en/"
+  },
+  {
+    id: "suezcanal",
+    name: "Suez Canal",
+    country: "Egypt",
+    code: "EGY",
+    tier: "common",
+    lat: 30.6052767,
+    lon: 32.3331003,
+    source: "https://www.suezcanal.gov.eg/English/About/SuezCanal/Pages/CanalCharacteristics.aspx",
+    region: "Isthmus of Suez",
+    description: "A sea-level shipping canal cuts through the Suez isthmus, linking Mediterranean and Red Sea routes without lock lifts.",
+    descriptionSourceName: "Suez Canal Authority",
+    descriptionSource: "https://www.suezcanal.gov.eg/English/About/SuezCanal/Pages/CanalCharacteristics.aspx"
+  },
+  {
+    id: "corinthcanal",
+    name: "Corinth Canal",
+    country: "Greece",
+    code: "GRC",
+    tier: "common",
+    lat: 37.9341193,
+    lon: 22.9846912,
+    source: "https://corinthcanal.com/",
+    region: "Isthmus of Corinth",
+    description: "A narrow straight waterway cuts between steep rock walls across the isthmus separating the Peloponnese from mainland Greece.",
+    descriptionSourceName: "Corinth Canal Authority",
+    descriptionSource: "https://corinthcanal.com/"
+  },
+  {
+    id: "kielcanal",
+    name: "Kiel Canal",
+    country: "Germany",
+    code: "DEU",
+    tier: "common",
+    lat: 54.2081189,
+    lon: 9.5721775,
+    source: "https://initiative-kiel-canal.de/en/technical-data/",
+    region: "Schleswig-Holstein",
+    description: "An inland shipping canal links North Sea and Baltic approaches, with locks at its ends and bridges above the channel.",
+    descriptionSourceName: "Initiative Kiel Canal",
+    descriptionSource: "https://initiative-kiel-canal.de/en/technical-data/"
+  },
+  {
+    id: "canaldumidi",
+    name: "Canal du Midi",
+    country: "France",
+    code: "FRA",
+    tier: "rare",
+    lat: 43.61,
+    lon: 1.416,
+    source: "https://whc.unesco.org/en/list/770/",
+    region: "Occitanie",
+    description: "Canal channels, locks, aqueducts and bridges form a historic engineered waterway across southern France.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/770/"
+  },
+  {
+    id: "canalcentre",
+    name: "Canal du Centre Boat Lifts",
+    country: "Belgium",
+    code: "BEL",
+    tier: "epic",
+    lat: 50.48111,
+    lon: 4.13722,
+    source: "https://whc.unesco.org/en/list/856/",
+    region: "Hainaut",
+    description: "Four historic hydraulic boat lifts raise and lower vessels between canal levels in Belgium\u2019s industrial waterway landscape.",
+    descriptionSourceName: "UNESCO World Heritage Centre",
+    descriptionSource: "https://whc.unesco.org/en/list/856/"
+  },
+  {
+    id: "falkirkwheel",
+    name: "Falkirk Wheel",
+    country: "United Kingdom",
+    code: "GBR",
+    tier: "rare",
+    lat: 56.0003559,
+    lon: -3.841725,
+    source: "https://www.scottishcanals.co.uk/visit/canals/visit-the-forth-clyde-canal/attractions/the-falkirk-wheel",
+    region: "Forth and Clyde Canal",
+    description: "Two water-filled gondolas rotate around a central axle to move boats between canal levels near Falkirk.",
+    descriptionSourceName: "Scottish Canals",
+    descriptionSource: "https://www.scottishcanals.co.uk/visit/canals/visit-the-forth-clyde-canal/attractions/the-falkirk-wheel"
+  },
+  {
+    id: "andertonlift",
+    name: "Anderton Boat Lift",
+    country: "United Kingdom",
+    code: "GBR",
+    tier: "rare",
+    lat: 53.2729693,
+    lon: -2.53069879,
+    source: "https://canalrivertrust.org.uk/things-to-do/museums-and-attractions/anderton-boat-lift-and-visitor-centre-cheshire",
+    region: "River Weaver",
+    description: "A pair of water-filled caissons lifts boats between the River Weaver and the higher Trent and Mersey Canal.",
+    descriptionSourceName: "Canal and River Trust",
+    descriptionSource: "https://canalrivertrust.org.uk/things-to-do/museums-and-attractions/anderton-boat-lift-and-visitor-centre-cheshire"
+  },
+  {
+    id: "bingleylocks",
+    name: "Bingley Five Rise Locks",
+    country: "United Kingdom",
+    code: "GBR",
+    tier: "common",
+    lat: 53.856254,
+    lon: -1.8381464,
+    source: "https://canalrivertrust.org.uk/news-and-views/media-centre/filming-and-photography/our-filming-and-photography-locations/bingley-five-rise-locks-leeds-and-liverpool-canal",
+    region: "Leeds and Liverpool Canal",
+    description: "Five adjoining lock chambers form a steep staircase for boats on the Leeds and Liverpool Canal. The upper gate of one chamber also serves the chamber above it.",
+    descriptionSourceName: "Canal and River Trust",
+    descriptionSource: "https://canalrivertrust.org.uk/news-and-views/media-centre/filming-and-photography/our-filming-and-photography-locations/bingley-five-rise-locks-leeds-and-liverpool-canal"
+  },
+  {
+    id: "briareaqueduct",
+    name: "Briare Aqueduct",
+    country: "France",
+    code: "FRA",
+    tier: "common",
+    lat: 47.6311883,
+    lon: 2.734394,
+    source: "https://www.terresdeloireetcanaux.com/patrimoine-culturel/pont-canal-de-briare/",
+    region: "Loire, Briare",
+    description: "An iron water trough carries canal boats above the Loire, with decorated lamp posts lining the aqueduct\u2019s walkway.",
+    descriptionSourceName: "Briare Tourist Office",
+    descriptionSource: "https://www.terresdeloireetcanaux.com/patrimoine-culturel/pont-canal-de-briare/"
+  },
+  {
+    id: "gotacanal",
+    name: "G\xF6ta Canal",
+    country: "Sweden",
+    code: "SWE",
+    tier: "common",
+    lat: 58.5587698,
+    lon: 15.0965535,
+    source: "https://www.gotakanal.se/en",
+    region: "G\xF6ta Canal",
+    description: "Locks and hand-worked waterways connect inland stretches across southern Sweden, represented by a stepped lock and towpath.",
+    descriptionSourceName: "G\xF6ta Canal Company",
+    descriptionSource: "https://www.gotakanal.se/en"
+  },
+  {
+    id: "rhinefalls",
+    name: "Rhine Falls",
+    country: "Switzerland",
+    code: "CHE",
+    tier: "common",
+    lat: 47.6783615,
+    lon: 8.6148706,
+    source: "https://rheinfall.ch/en/",
+    region: "Rhine, Schaffhausen",
+    description: "The Rhine tumbles over a broad rocky ledge near Schaffhausen, splitting around rocks that stand within the falling water.",
+    descriptionSourceName: "Rhine Falls Association",
+    descriptionSource: "https://rheinfall.ch/en/"
+  },
+  {
+    id: "gullfoss",
+    name: "Gullfoss",
+    country: "Iceland",
+    code: "ISL",
+    tier: "rare",
+    lat: 64.327316,
+    lon: -20.1191026,
+    source: "https://ust.is/english/visiting-iceland/protected-areas/south/gullfoss/",
+    region: "Hv\xEDt\xE1",
+    description: "The Hv\xEDt\xE1 drops in two stages before entering a narrow canyon, making a stepped waterfall in southern Iceland.",
+    descriptionSourceName: "Environment Agency of Iceland",
+    descriptionSource: "https://ust.is/english/visiting-iceland/protected-areas/south/gullfoss/"
+  },
+  {
+    id: "dettifoss",
+    name: "Dettifoss",
+    country: "Iceland",
+    code: "ISL",
+    tier: "common",
+    lat: 65.8143509,
+    lon: -16.3844911,
+    source: "https://www.vatnajokulsthjodgardur.is/en/areas/jokulsargljufur",
+    region: "J\xF6kuls\xE1 \xE1 Fj\xF6llum",
+    description: "A powerful broad waterfall pours into the J\xF6kuls\xE1rglj\xFAfur canyon, carrying glacier-fed river water through dark rock.",
+    descriptionSourceName: "Vatnaj\xF6kull National Park",
+    descriptionSource: "https://www.vatnajokulsthjodgardur.is/en/areas/jokulsargljufur"
+  },
+  {
+    id: "kaieteur",
+    name: "Kaieteur Falls",
+    country: "Guyana",
+    code: "GUY",
+    tier: "epic",
+    lat: 5.1749417,
+    lon: -59.4806521,
+    source: "https://guyanatourism.com/kaieteur-falls/",
+    region: "Potaro River",
+    description: "The Potaro River drops in a single great plunge over a sandstone escarpment surrounded by forest. The miniature keeps the unbroken drop separate from the surrounding cliff.",
+    descriptionSourceName: "Guyana Tourism Authority",
+    descriptionSource: "https://guyanatourism.com/kaieteur-falls/"
+  },
+  {
+    id: "khonefalls",
+    name: "Khone Phapheng Falls",
+    country: "Laos",
+    code: "LAO",
+    tier: "common",
+    lat: 13.9597676,
+    lon: 105.986526,
+    source: "https://www.tourismlaos.org/waterfalls/",
+    region: "Mekong, Champasak",
+    description: "The Mekong spreads through rocky channels and powerful rapids at Khone Phapheng near the southern border of Laos.",
+    descriptionSourceName: "Laos Tourism",
+    descriptionSource: "https://www.tourismlaos.org/waterfalls/"
+  },
+  {
+    id: "bangiocfalls",
+    name: "Ban Gioc Waterfall",
+    country: "Vietnam",
+    code: "VNM",
+    tier: "rare",
+    lat: 22.8542722,
+    lon: 106.7233149,
+    source: "https://vietnam.travel/things-to-do/ban-gioc-waterfall-majestic-beauty-northern-border/",
+    region: "Qu\xE2y S\u01A1n River, Cao Bang",
+    description: "Broad tiers of water fall among green karst hills on the Qu\xE2y S\u01A1n River at the Vietnam\u2013China border. The miniature uses separate rock shelves for the stepped streams.",
+    descriptionSourceName: "Vietnam National Authority of Tourism",
+    descriptionSource: "https://vietnam.travel/things-to-do/ban-gioc-waterfall-majestic-beauty-northern-border/"
+  },
+  {
+    id: "huangguoshu",
+    name: "Huangguoshu Waterfall",
+    country: "China",
+    code: "CHN",
+    tier: "common",
+    lat: 25.992,
+    lon: 105.666,
+    source: "https://whc.unesco.org/en/tentativelists/6380/",
+    region: "Baishui River, Guizhou",
+    description: "A wide curtain of river water falls over a limestone ledge, with a passage known for running behind the waterfall.",
+    descriptionSourceName: "UNESCO Tentative Lists",
+    descriptionSource: "https://whc.unesco.org/en/tentativelists/6380/"
+  },
+  {
+    id: "shifenfalls",
+    name: "Shifen Waterfall",
+    country: "Taiwan",
+    code: "TWN",
+    tier: "common",
+    lat: 25.04897,
+    lon: 121.78746,
+    source: "https://newtaipei.travel/en/Attractions/Detail/111592",
+    region: "Keelung River, Pingxi",
+    description: "The Keelung River spreads across a curved rock ledge to form a broad horseshoe-shaped waterfall near Shifen.",
+    descriptionSourceName: "New Taipei City Tourism and Travel Department",
+    descriptionSource: "https://newtaipei.travel/en/Attractions/Detail/111592"
+  },
+  {
+    id: "hukoufalls",
+    name: "Hukou Waterfall",
+    country: "China",
+    code: "CHN",
+    tier: "common",
+    lat: 36.14722222,
+    lon: 110.44388889,
+    source: "https://english.www.gov.cn/news/202408/12/content_WS66b96ebbc6d0868f4e8e9da0.html",
+    region: "Yellow River, Shanxi\u2013Shaanxi",
+    description: "The Yellow River narrows sharply through a rocky opening, creating a forceful waterfall between Shanxi and Shaanxi.",
+    descriptionSourceName: "State Council of China",
+    descriptionSource: "https://english.www.gov.cn/news/202408/12/content_WS66b96ebbc6d0868f4e8e9da0.html"
+  },
+  {
+    id: "athirappilly",
+    name: "Athirappilly Falls",
+    country: "India",
+    code: "IND",
+    tier: "common",
+    lat: 10.28472222,
+    lon: 76.56861111,
+    source: "https://www.keralatourism.org/destination/athirappalli-vazhachal-waterfalls/79/",
+    region: "Chalakudy River, Kerala",
+    description: "The Chalakudy River drops over a broad rocky face in forested Kerala, breaking into several white streams.",
+    descriptionSourceName: "Kerala Tourism",
+    descriptionSource: "https://www.keralatourism.org/destination/athirappalli-vazhachal-waterfalls/79/"
+  },
+  {
+    id: "tequendama",
+    name: "Tequendama Falls",
+    country: "Colombia",
+    code: "COL",
+    tier: "common",
+    lat: 4.57486111,
+    lon: -74.29338889,
+    source: "https://colombia.travel/en/cerca-de-bogota-soacha-guatavita-y-la-calera",
+    region: "Bogot\xE1 River, Cundinamarca",
+    description: "The Bogot\xE1 River plunges into a steep forest-lined gorge southwest of the Colombian capital. The miniature contrasts the narrow falling water with the tall rock walls.",
+    descriptionSourceName: "Colombia Travel",
+    descriptionSource: "https://colombia.travel/en/cerca-de-bogota-soacha-guatavita-y-la-calera"
+  },
+  {
+    id: "saltosmonday",
+    name: "Saltos del Monday",
+    country: "Paraguay",
+    code: "PRY",
+    tier: "common",
+    lat: -25.56194444,
+    lon: -54.63138889,
+    source: "https://visitparaguay.travel/places/saltos-del-monday",
+    region: "Monday River, Presidente Franco",
+    description: "Several strong river cascades descend through forest near Presidente Franco, separate from the nearby Iguaz\xFA Falls system.",
+    descriptionSourceName: "Paraguay National Tourism Secretariat",
+    descriptionSource: "https://visitparaguay.travel/places/saltos-del-monday"
   }
 ];
 
@@ -9363,6 +10763,3810 @@ function validateTourism(value) {
     away: t.away
   });
 }
+
+// plugins/orcatopia/src/catalog-700.json
+var catalog_700_default = [
+  {
+    record: {
+      id: "eddystone",
+      name: "Eddystone Lighthouse",
+      country: "United Kingdom",
+      code: "GBR",
+      tier: "rare",
+      lat: 50.180717,
+      lon: -4.2656,
+      source: "https://www.trinityhouse.co.uk/lighthouses-and-lightvessels/eddystone-lighthouse",
+      region: "Eddystone Rocks",
+      description: "A tapering granite tower marks the Eddystone rocks off Plymouth; the stump of an earlier lighthouse remains nearby.",
+      descriptionSourceName: "Trinity House",
+      descriptionSource: "https://www.trinityhouse.co.uk/lighthouses-and-lightvessels/eddystone-lighthouse"
+    },
+    korean: {
+      name: "\uC5D0\uB514\uC2A4\uD1A4 \uB4F1\uB300",
+      country: "\uC601\uAD6D",
+      region: "\uC5D0\uB514\uC2A4\uD1A4 \uC554\uCD08",
+      description: "\uD50C\uB9AC\uBA38\uC2A4 \uC55E\uBC14\uB2E4 \uC5D0\uB514\uC2A4\uD1A4 \uC554\uCD08\uC5D0 \uD654\uAC15\uC554 \uB4F1\uB300\uAC00 \uC11C \uC788\uACE0, \uAC00\uAE4C\uC774\uC5D0\uB294 \uC61B \uB4F1\uB300\uC758 \uBC11\uBD80\uBD84\uC774 \uB0A8\uC544 \uC788\uC2B5\uB2C8\uB2E4.",
+      descriptionSourceName: "\uD2B8\uB9AC\uB2C8\uD2F0\uD558\uC6B0\uC2A4"
+    },
+    surface: "sea",
+    visual: {
+      shape: "lighthouse",
+      height: 74,
+      width: 19,
+      spans: 0,
+      terrainHeight: 8,
+      actorX: 19,
+      color: "#c88b73",
+      motif: "beacon"
+    },
+    scene: {
+      description: "Eddystone Lighthouse: A beacon sweeps above the rock tower.",
+      descriptionKo: "\uC5D0\uB514\uC2A4\uD1A4 \uB4F1\uB300: \uB4F1\uB300\uC758 \uBD88\uBE5B\uC774 \uC554\uCD08 \uC704\uB97C \uD6D1\uC2B5\uB2C8\uB2E4."
+    }
+  },
+  {
+    record: {
+      id: "bishoprock",
+      name: "Bishop Rock Lighthouse",
+      country: "United Kingdom",
+      code: "GBR",
+      tier: "rare",
+      lat: 49.872861,
+      lon: -6.445556,
+      source: "https://www.trinityhouse.co.uk/lighthouses-and-lightvessels/bishop-rock-lighthouse",
+      region: "Isles of Scilly",
+      description: "A tall stone lighthouse rises from a small Atlantic rock west of the Isles of Scilly, with a landing platform above its lantern.",
+      descriptionSourceName: "Trinity House",
+      descriptionSource: "https://www.trinityhouse.co.uk/lighthouses-and-lightvessels/bishop-rock-lighthouse"
+    },
+    korean: {
+      name: "\uBE44\uC20D\uB85D \uB4F1\uB300",
+      country: "\uC601\uAD6D",
+      region: "\uC2E4\uB9AC \uC81C\uB3C4",
+      description: "\uC2E4\uB9AC \uC81C\uB3C4 \uC11C\uCABD\uC758 \uC791\uC740 \uB300\uC11C\uC591 \uC554\uCD08 \uC704\uC5D0 \uB192\uC740 \uC11D\uC870 \uB4F1\uB300\uAC00 \uC19F\uC544 \uC788\uC73C\uBA70, \uB4F1\uB871 \uC704\uB85C \uCC29\uB959\uC7A5\uC774 \uB193\uC5EC \uC788\uC2B5\uB2C8\uB2E4.",
+      descriptionSourceName: "\uD2B8\uB9AC\uB2C8\uD2F0\uD558\uC6B0\uC2A4"
+    },
+    surface: "sea",
+    visual: {
+      shape: "lighthouse",
+      height: 94,
+      width: 18,
+      spans: 0,
+      terrainHeight: 5,
+      actorX: 95,
+      color: "#629b9f",
+      motif: "gulls"
+    },
+    scene: {
+      description: "Bishop Rock Lighthouse: Seabirds glide around the rocky outline.",
+      descriptionKo: "\uBE44\uC20D\uB85D \uB4F1\uB300: \uBC14\uB2F7\uC0C8\uAC00 \uBC14\uC704 \uC724\uACFD \uC8FC\uC704\uB97C \uB0A0\uC544\uAC11\uB2C8\uB2E4."
+    }
+  },
+  {
+    record: {
+      id: "wolfrock",
+      name: "Wolf Rock Lighthouse",
+      country: "United Kingdom",
+      code: "GBR",
+      tier: "rare",
+      lat: 49.945317,
+      lon: -5.809167,
+      source: "https://www.trinityhouse.co.uk/lighthouses-and-lightvessels/wolf-rock-lighthouse",
+      region: "Cornwall",
+      description: "Granite masonry forms this isolated lighthouse between Land\u2019s End and the Isles of Scilly, surrounded by open water.",
+      descriptionSourceName: "Trinity House",
+      descriptionSource: "https://www.trinityhouse.co.uk/lighthouses-and-lightvessels/wolf-rock-lighthouse"
+    },
+    korean: {
+      name: "\uC6B8\uD504\uB85D \uB4F1\uB300",
+      country: "\uC601\uAD6D",
+      region: "\uCF58\uC6D4",
+      description: "\uB79C\uC988\uC5D4\uB4DC\uC640 \uC2E4\uB9AC \uC81C\uB3C4 \uC0AC\uC774 \uBC14\uB2E4 \uD55C\uAC00\uC6B4\uB370, \uD654\uAC15\uC554\uC744 \uC313\uC544 \uC62C\uB9B0 \uB4F1\uB300\uAC00 \uC678\uB530\uB85C \uC11C \uC788\uC2B5\uB2C8\uB2E4.",
+      descriptionSourceName: "\uD2B8\uB9AC\uB2C8\uD2F0\uD558\uC6B0\uC2A4"
+    },
+    surface: "sea",
+    visual: {
+      shape: "lighthouse",
+      height: 80,
+      width: 17,
+      spans: 0,
+      terrainHeight: 10,
+      actorX: 20,
+      color: "#d4b078",
+      motif: "spray"
+    },
+    scene: {
+      description: "Wolf Rock Lighthouse: Small wave crests curl around the tower base.",
+      descriptionKo: "\uC6B8\uD504\uB85D \uB4F1\uB300: \uC791\uC740 \uD30C\uB3C4\uAC00 \uB4F1\uB300 \uBC11\uBD80\uBD84\uC744 \uD718\uAC10\uC2B5\uB2C8\uB2E4."
+    }
+  },
+  {
+    record: {
+      id: "longships",
+      name: "Longships Lighthouse",
+      country: "United Kingdom",
+      code: "GBR",
+      tier: "rare",
+      lat: 50.066867,
+      lon: -5.746867,
+      source: "https://www.trinityhouse.co.uk/lighthouses-and-lightvessels/longships-lighthouse",
+      region: "Land\u2019s End",
+      description: "The stone tower stands on the largest of the Longships rocks, marking the sea approaches to Land\u2019s End.",
+      descriptionSourceName: "Trinity House",
+      descriptionSource: "https://www.trinityhouse.co.uk/lighthouses-and-lightvessels/longships-lighthouse"
+    },
+    korean: {
+      name: "\uB871\uC2ED\uC2A4 \uB4F1\uB300",
+      country: "\uC601\uAD6D",
+      region: "\uB79C\uC988\uC5D4\uB4DC",
+      description: "\uB871\uC2ED\uC2A4 \uC554\uCD08 \uC911 \uAC00\uC7A5 \uD070 \uBC14\uC704\uC5D0 \uC138\uC6B4 \uC11D\uC870 \uB4F1\uB300\uAC00 \uB79C\uC988\uC5D4\uB4DC\uB85C \uB4E4\uC5B4\uC624\uB294 \uBC14\uB2F7\uAE38\uC744 \uC54C\uB9BD\uB2C8\uB2E4.",
+      descriptionSourceName: "\uD2B8\uB9AC\uB2C8\uD2F0\uD558\uC6B0\uC2A4"
+    },
+    surface: "sea",
+    visual: {
+      shape: "lighthouse",
+      height: 65,
+      width: 20,
+      spans: 0,
+      terrainHeight: 21,
+      actorX: 102,
+      color: "#839b70",
+      motif: "beacon"
+    },
+    scene: {
+      description: "Longships Lighthouse: A beacon sweeps above the rock tower.",
+      descriptionKo: "\uB871\uC2ED\uC2A4 \uB4F1\uB300: \uB4F1\uB300\uC758 \uBD88\uBE5B\uC774 \uC554\uCD08 \uC704\uB97C \uD6D1\uC2B5\uB2C8\uB2E4."
+    }
+  },
+  {
+    record: {
+      id: "needleslight",
+      name: "The Needles Lighthouse",
+      country: "United Kingdom",
+      code: "GBR",
+      tier: "rare",
+      lat: 50.662233,
+      lon: -1.591667,
+      source: "https://www.trinityhouse.co.uk/lighthouses-and-lightvessels/needles-lighthouse",
+      region: "Isle of Wight",
+      description: "A red-and-white tower stands at the seaward end of the chalk Needles, where pale rock pinnacles meet the Solent approaches.",
+      descriptionSourceName: "Trinity House",
+      descriptionSource: "https://www.trinityhouse.co.uk/lighthouses-and-lightvessels/needles-lighthouse"
+    },
+    korean: {
+      name: "\uB2C8\uB4E4\uC2A4 \uB4F1\uB300",
+      country: "\uC601\uAD6D",
+      region: "\uC640\uC774\uD2B8\uC12C",
+      description: "\uBD89\uACE0 \uD770 \uB4F1\uB300\uAC00 \uD770 \uBC31\uC545 \uBC14\uC704 \uAE30\uB465\uB4E4\uC774 \uBC14\uB2E4\uB85C \uBED7\uC740 \uB2C8\uB4E4\uC2A4 \uB05D\uC5D0\uC11C \uC194\uB7F0\uD2B8 \uD574\uD611\uC758 \uC785\uAD6C\uB97C \uBE44\uCDA5\uB2C8\uB2E4.",
+      descriptionSourceName: "\uD2B8\uB9AC\uB2C8\uD2F0\uD558\uC6B0\uC2A4"
+    },
+    surface: "sea",
+    visual: {
+      shape: "stripedlight",
+      height: 70,
+      width: 21,
+      spans: 3,
+      terrainHeight: 40,
+      actorX: 16,
+      color: "#93a8b0",
+      motif: "gulls"
+    },
+    scene: {
+      description: "The Needles Lighthouse: Seabirds glide around the rocky outline.",
+      descriptionKo: "\uB2C8\uB4E4\uC2A4 \uB4F1\uB300: \uBC14\uB2F7\uC0C8\uAC00 \uBC14\uC704 \uC724\uACFD \uC8FC\uC704\uB97C \uB0A0\uC544\uAC11\uB2C8\uB2E4."
+    }
+  },
+  {
+    record: {
+      id: "smallslight",
+      name: "Smalls Lighthouse",
+      country: "United Kingdom",
+      code: "GBR",
+      tier: "rare",
+      lat: 51.721267,
+      lon: -5.669867,
+      source: "https://www.trinityhouse.co.uk/lighthouses-and-lightvessels/smalls-lighthouse",
+      region: "Pembrokeshire",
+      description: "A granite tower replaced an earlier timber lighthouse on the remote Smalls rocks off the Welsh coast.",
+      descriptionSourceName: "Trinity House",
+      descriptionSource: "https://www.trinityhouse.co.uk/lighthouses-and-lightvessels/smalls-lighthouse"
+    },
+    korean: {
+      name: "\uC2A4\uBAB0\uC2A4 \uB4F1\uB300",
+      country: "\uC601\uAD6D",
+      region: "\uD3A8\uBE0C\uB85C\uD06C\uC154",
+      description: "\uC6E8\uC77C\uC2A4 \uC55E\uBC14\uB2E4\uC758 \uC678\uB534 \uC2A4\uBAB0\uC2A4 \uC554\uCD08\uC5D0\uB294 \uC61B \uBAA9\uC870 \uB4F1\uB300\uB97C \uB300\uC2E0\uD55C \uD654\uAC15\uC554 \uB4F1\uB300\uAC00 \uC11C \uC788\uC2B5\uB2C8\uB2E4.",
+      descriptionSourceName: "\uD2B8\uB9AC\uB2C8\uD2F0\uD558\uC6B0\uC2A4"
+    },
+    surface: "sea",
+    visual: {
+      shape: "lighthouse",
+      height: 79,
+      width: 20,
+      spans: 0,
+      terrainHeight: 7,
+      actorX: 93,
+      color: "#b79889",
+      motif: "spray"
+    },
+    scene: {
+      description: "Smalls Lighthouse: Small wave crests curl around the tower base.",
+      descriptionKo: "\uC2A4\uBAB0\uC2A4 \uB4F1\uB300: \uC791\uC740 \uD30C\uB3C4\uAC00 \uB4F1\uB300 \uBC11\uBD80\uBD84\uC744 \uD718\uAC10\uC2B5\uB2C8\uB2E4."
+    }
+  },
+  {
+    record: {
+      id: "bellrock",
+      name: "Bell Rock Lighthouse",
+      country: "United Kingdom",
+      code: "GBR",
+      tier: "rare",
+      lat: 56.43441667,
+      lon: -2.38716667,
+      source: "https://www.nlb.org.uk/lighthouses/bell-rock/",
+      region: "Firth of Forth approaches",
+      description: "Built on a reef covered at high tide, the slender masonry tower guides shipping off Scotland\u2019s east coast.",
+      descriptionSourceName: "Northern Lighthouse Board",
+      descriptionSource: "https://www.nlb.org.uk/lighthouses/bell-rock/"
+    },
+    korean: {
+      name: "\uBCA8\uB85D \uB4F1\uB300",
+      country: "\uC601\uAD6D",
+      region: "\uD3EC\uC2A4\uB9CC \uBC14\uAE65 \uD56D\uB85C",
+      description: "\uBC00\uBB3C\uC774\uBA74 \uC7A0\uAE30\uB294 \uC554\uCD08 \uC704\uC5D0 \uAC00\uB290\uB2E4\uB780 \uC11D\uC870 \uB4F1\uB300\uB97C \uC138\uC6CC \uC2A4\uCF54\uD2C0\uB79C\uB4DC \uB3D9\uD574\uC548\uC758 \uBC30\uB4E4\uC744 \uC548\uB0B4\uD569\uB2C8\uB2E4.",
+      descriptionSourceName: "\uBD81\uBD80\uB4F1\uB300\uC704\uC6D0\uD68C"
+    },
+    surface: "sea",
+    visual: {
+      shape: "lighthouse",
+      height: 89,
+      width: 17,
+      spans: 0,
+      terrainHeight: 4,
+      actorX: 18,
+      color: "#c88b73",
+      motif: "beacon"
+    },
+    scene: {
+      description: "Bell Rock Lighthouse: A beacon sweeps above the rock tower.",
+      descriptionKo: "\uBCA8\uB85D \uB4F1\uB300: \uB4F1\uB300\uC758 \uBD88\uBE5B\uC774 \uC554\uCD08 \uC704\uB97C \uD6D1\uC2B5\uB2C8\uB2E4."
+    }
+  },
+  {
+    record: {
+      id: "skerryvore",
+      name: "Skerryvore Lighthouse",
+      country: "United Kingdom",
+      code: "GBR",
+      tier: "rare",
+      lat: 56.32276667,
+      lon: -7.1147,
+      source: "https://www.nlb.org.uk/lighthouses/skerryvore/",
+      region: "Tiree",
+      description: "A tall, curved granite tower stands on a reef southwest of Tiree, a landmark of Scottish rock-lighthouse engineering.",
+      descriptionSourceName: "Northern Lighthouse Board",
+      descriptionSource: "https://www.nlb.org.uk/lighthouses/skerryvore/"
+    },
+    korean: {
+      name: "\uC2A4\uCF00\uB9AC\uBCF4\uC5B4 \uB4F1\uB300",
+      country: "\uC601\uAD6D",
+      region: "\uD0C0\uC774\uB9AC\uC12C \uC55E\uBC14\uB2E4",
+      description: "\uD0C0\uC774\uB9AC\uC12C \uB0A8\uC11C\uCABD \uC554\uCD08 \uC704\uC5D0 \uACE1\uC120\uD615 \uD654\uAC15\uC554 \uB4F1\uB300\uAC00 \uB192\uC774 \uC19F\uC544 \uC2A4\uCF54\uD2C0\uB79C\uB4DC \uD574\uC0C1 \uB4F1\uB300 \uAC74\uCD95\uC758 \uD2B9\uC9D5\uC744 \uBCF4\uC5EC \uC90D\uB2C8\uB2E4.",
+      descriptionSourceName: "\uBD81\uBD80\uB4F1\uB300\uC704\uC6D0\uD68C"
+    },
+    surface: "sea",
+    visual: {
+      shape: "lighthouse",
+      height: 102,
+      width: 20,
+      spans: 0,
+      terrainHeight: 9,
+      actorX: 97,
+      color: "#629b9f",
+      motif: "gulls"
+    },
+    scene: {
+      description: "Skerryvore Lighthouse: Seabirds glide around the rocky outline.",
+      descriptionKo: "\uC2A4\uCF00\uB9AC\uBCF4\uC5B4 \uB4F1\uB300: \uBC14\uB2F7\uC0C8\uAC00 \uBC14\uC704 \uC724\uACFD \uC8FC\uC704\uB97C \uB0A0\uC544\uAC11\uB2C8\uB2E4."
+    }
+  },
+  {
+    record: {
+      id: "dubhartach",
+      name: "Dubh Artach Lighthouse",
+      country: "United Kingdom",
+      code: "GBR",
+      tier: "rare",
+      lat: 56.13256667,
+      lon: -6.63465,
+      source: "https://www.nlb.org.uk/lighthouses/dubh-artach/",
+      region: "Inner Hebrides",
+      description: "The offshore rock supports a stone lighthouse with a broad red band, exposed to Atlantic waves southwest of Mull.",
+      descriptionSourceName: "Northern Lighthouse Board",
+      descriptionSource: "https://www.nlb.org.uk/lighthouses/dubh-artach/"
+    },
+    korean: {
+      name: "\uB450 \uC544\uB974\uD0C0\uD750 \uB4F1\uB300",
+      country: "\uC601\uAD6D",
+      region: "\uC774\uB108\uD5E4\uBE0C\uB9AC\uB514\uC2A4 \uC81C\uB3C4",
+      description: "\uBA40\uC12C \uB0A8\uC11C\uCABD\uC758 \uB300\uC11C\uC591 \uD30C\uB3C4\uB97C \uBC1B\uB294 \uC554\uCD08\uC5D0 \uBD89\uC740 \uB760\uB97C \uB450\uB978 \uC11D\uC870 \uB4F1\uB300\uAC00 \uC11C \uC788\uC2B5\uB2C8\uB2E4.",
+      descriptionSourceName: "\uBD81\uBD80\uB4F1\uB300\uC704\uC6D0\uD68C"
+    },
+    surface: "sea",
+    visual: {
+      shape: "stripedlight",
+      height: 76,
+      width: 23,
+      spans: 1,
+      terrainHeight: 16,
+      actorX: 20,
+      color: "#d4b078",
+      motif: "spray"
+    },
+    scene: {
+      description: "Dubh Artach Lighthouse: Small wave crests curl around the tower base.",
+      descriptionKo: "\uB450 \uC544\uB974\uD0C0\uD750 \uB4F1\uB300: \uC791\uC740 \uD30C\uB3C4\uAC00 \uB4F1\uB300 \uBC11\uBD80\uBD84\uC744 \uD718\uAC10\uC2B5\uB2C8\uB2E4."
+    }
+  },
+  {
+    record: {
+      id: "chickenrock",
+      name: "Chicken Rock Lighthouse",
+      country: "Isle of Man",
+      code: "IMN",
+      tier: "common",
+      lat: 54.03785,
+      lon: -4.83858333,
+      source: "https://www.nlb.org.uk/lighthouses/chicken-rock/",
+      region: "Calf of Man",
+      description: "An isolated granite tower marks a submerged hazard off the Calf of Man at the southern approaches to the Isle of Man.",
+      descriptionSourceName: "Northern Lighthouse Board",
+      descriptionSource: "https://www.nlb.org.uk/lighthouses/chicken-rock/"
+    },
+    korean: {
+      name: "\uCE58\uD0A8\uB85D \uB4F1\uB300",
+      country: "\uB9E8\uC12C",
+      region: "\uCE7C\uD504\uC624\uBE0C\uB9E8 \uC55E\uBC14\uB2E4",
+      description: "\uB9E8\uC12C \uB0A8\uCABD \uCE7C\uD504\uC624\uBE0C\uB9E8 \uC55E\uBC14\uB2E4\uC758 \uC7A0\uAE34 \uC554\uCD08\uB97C \uC678\uB530\uB85C \uC120 \uD654\uAC15\uC554 \uB4F1\uB300\uAC00 \uC54C\uB9BD\uB2C8\uB2E4.",
+      descriptionSourceName: "\uBD81\uBD80\uB4F1\uB300\uC704\uC6D0\uD68C"
+    },
+    surface: "sea",
+    visual: {
+      shape: "lighthouse",
+      height: 86,
+      width: 21,
+      spans: 0,
+      terrainHeight: 5,
+      actorX: 102,
+      color: "#839b70",
+      motif: "beacon"
+    },
+    scene: {
+      description: "Chicken Rock Lighthouse: A beacon sweeps above the rock tower.",
+      descriptionKo: "\uCE58\uD0A8\uB85D \uB4F1\uB300: \uB4F1\uB300\uC758 \uBD88\uBE5B\uC774 \uC554\uCD08 \uC704\uB97C \uD6D1\uC2B5\uB2C8\uB2E4."
+    }
+  },
+  {
+    record: {
+      id: "fastnet",
+      name: "Fastnet Lighthouse",
+      country: "Ireland",
+      code: "IRL",
+      tier: "rare",
+      lat: 51.3893,
+      lon: -9.60297,
+      source: "https://irishlights.ie/safety-navigation/our-lighthouses/fastnet.aspx",
+      region: "County Cork",
+      description: "A curved granite tower rises above Fastnet Rock southwest of Cape Clear, built to resist powerful Atlantic waves.",
+      descriptionSourceName: "Commissioners of Irish Lights",
+      descriptionSource: "https://irishlights.ie/safety-navigation/our-lighthouses/fastnet.aspx"
+    },
+    korean: {
+      name: "\uD328\uC2A4\uD2B8\uB137 \uB4F1\uB300",
+      country: "\uC544\uC77C\uB79C\uB4DC",
+      region: "\uCF54\uD06C\uC8FC",
+      description: "\uCF00\uC774\uD504\uD074\uB9AC\uC5B4 \uB0A8\uC11C\uCABD \uD328\uC2A4\uD2B8\uB137 \uC554\uCD08 \uC704\uC5D0 \uB300\uC11C\uC591\uC758 \uAC70\uC13C \uD30C\uB3C4\uB97C \uACAC\uB514\uB3C4\uB85D \uACE1\uC120\uD615 \uD654\uAC15\uC554 \uB4F1\uB300\uB97C \uC138\uC6E0\uC2B5\uB2C8\uB2E4.",
+      descriptionSourceName: "\uC544\uC77C\uB79C\uB4DC \uB4F1\uB300\uC704\uC6D0\uD68C"
+    },
+    surface: "sea",
+    visual: {
+      shape: "lighthouse",
+      height: 91,
+      width: 25,
+      spans: 0,
+      terrainHeight: 24,
+      actorX: 16,
+      color: "#93a8b0",
+      motif: "gulls"
+    },
+    scene: {
+      description: "Fastnet Lighthouse: Seabirds glide around the rocky outline.",
+      descriptionKo: "\uD328\uC2A4\uD2B8\uB137 \uB4F1\uB300: \uBC14\uB2F7\uC0C8\uAC00 \uBC14\uC704 \uC724\uACFD \uC8FC\uC704\uB97C \uB0A0\uC544\uAC11\uB2C8\uB2E4."
+    }
+  },
+  {
+    record: {
+      id: "tuskar",
+      name: "Tuskar Lighthouse",
+      country: "Ireland",
+      code: "IRL",
+      tier: "common",
+      lat: 52.20292,
+      lon: -6.20742,
+      source: "https://irishlights.ie/safety-navigation/our-lighthouses/tuskar-rock.aspx",
+      region: "County Wexford",
+      description: "A white round tower marks Tuskar Rock off County Wexford, helping vessels approaching Ireland\u2019s southeast coast.",
+      descriptionSourceName: "Commissioners of Irish Lights",
+      descriptionSource: "https://irishlights.ie/safety-navigation/our-lighthouses/tuskar-rock.aspx"
+    },
+    korean: {
+      name: "\uD130\uC2A4\uCEE4 \uB4F1\uB300",
+      country: "\uC544\uC77C\uB79C\uB4DC",
+      region: "\uC6E9\uC2A4\uD37C\uB4DC\uC8FC",
+      description: "\uC6E9\uC2A4\uD37C\uB4DC\uC8FC \uC55E\uBC14\uB2E4 \uD130\uC2A4\uCEE4 \uC554\uCD08\uC758 \uD770 \uC6D0\uD615 \uB4F1\uB300\uAC00 \uC544\uC77C\uB79C\uB4DC \uB0A8\uB3D9\uCABD \uD574\uC548\uC73C\uB85C \uB2E4\uAC00\uC624\uB294 \uBC30\uB97C \uC548\uB0B4\uD569\uB2C8\uB2E4.",
+      descriptionSourceName: "\uC544\uC77C\uB79C\uB4DC \uB4F1\uB300\uC704\uC6D0\uD68C"
+    },
+    surface: "sea",
+    visual: {
+      shape: "lighthouse",
+      height: 77,
+      width: 25,
+      spans: 0,
+      terrainHeight: 13,
+      actorX: 99,
+      color: "#b79889",
+      motif: "spray"
+    },
+    scene: {
+      description: "Tuskar Lighthouse: Small wave crests curl around the tower base.",
+      descriptionKo: "\uD130\uC2A4\uCEE4 \uB4F1\uB300: \uC791\uC740 \uD30C\uB3C4\uAC00 \uB4F1\uB300 \uBC11\uBD80\uBD84\uC744 \uD718\uAC10\uC2B5\uB2C8\uB2E4."
+    }
+  },
+  {
+    record: {
+      id: "rockabill",
+      name: "Rockabill Lighthouse",
+      country: "Ireland",
+      code: "IRL",
+      tier: "common",
+      lat: 53.59685,
+      lon: -6.00495,
+      source: "https://irishlights.ie/safety-navigation/our-lighthouses/rockabill.aspx",
+      region: "County Dublin",
+      description: "A white lighthouse with a dark band stands on one of two small rocky islands off the Dublin coast. The neighbouring rocks form a distinctive offshore pair.",
+      descriptionSourceName: "Commissioners of Irish Lights",
+      descriptionSource: "https://irishlights.ie/safety-navigation/our-lighthouses/rockabill.aspx"
+    },
+    korean: {
+      name: "\uB85C\uCEE4\uBE4C \uB4F1\uB300",
+      country: "\uC544\uC77C\uB79C\uB4DC",
+      region: "\uB354\uBE14\uB9B0\uC8FC \uC55E\uBC14\uB2E4",
+      description: "\uB354\uBE14\uB9B0 \uC55E\uBC14\uB2E4\uC758 \uC791\uC740 \uBC14\uC704\uC12C \uB450 \uAC1C \uC911 \uD55C \uACF3\uC5D0 \uAC80\uC740 \uB760\uB97C \uB450\uB978 \uD770 \uB4F1\uB300\uAC00 \uC11C \uC788\uC2B5\uB2C8\uB2E4. \uC774\uC6C3\uD55C \uB450 \uBC14\uC704\uC12C\uC774 \uBC14\uB2E4 \uC704\uC5D0\uC11C \uB69C\uB837\uD55C \uD55C \uC30D\uC744 \uC774\uB8F9\uB2C8\uB2E4.",
+      descriptionSourceName: "\uC544\uC77C\uB79C\uB4DC \uB4F1\uB300\uC704\uC6D0\uD68C"
+    },
+    surface: "sea",
+    visual: {
+      shape: "stripedlight",
+      height: 68,
+      width: 22,
+      spans: 1,
+      terrainHeight: 14,
+      actorX: 18,
+      color: "#c88b73",
+      motif: "beacon"
+    },
+    scene: {
+      description: "Rockabill Lighthouse: A beacon sweeps above the rock tower.",
+      descriptionKo: "\uB85C\uCEE4\uBE4C \uB4F1\uB300: \uB4F1\uB300\uC758 \uBD88\uBE5B\uC774 \uC554\uCD08 \uC704\uB97C \uD6D1\uC2B5\uB2C8\uB2E4."
+    }
+  },
+  {
+    record: {
+      id: "kishbank",
+      name: "Kish Bank Lighthouse",
+      country: "Ireland",
+      code: "IRL",
+      tier: "rare",
+      lat: 53.31083,
+      lon: -5.9257,
+      source: "https://irishlights.ie/safety-navigation/our-lighthouses/kish-bank.aspx",
+      region: "Dublin Bay approaches",
+      description: "A caisson-based lighthouse with a broad upper platform marks the Kish Bank sandbank in the approaches to Dublin Bay.",
+      descriptionSourceName: "Commissioners of Irish Lights",
+      descriptionSource: "https://irishlights.ie/safety-navigation/our-lighthouses/kish-bank.aspx"
+    },
+    korean: {
+      name: "\uD0A4\uC2DC\uBC45\uD06C \uB4F1\uB300",
+      country: "\uC544\uC77C\uB79C\uB4DC",
+      region: "\uB354\uBE14\uB9B0\uB9CC \uBC14\uAE65 \uD56D\uB85C",
+      description: "\uB354\uBE14\uB9B0\uB9CC\uC73C\uB85C \uB4E4\uC5B4\uAC00\uB294 \uD56D\uB85C\uC758 \uD0A4\uC2DC\uBC45\uD06C \uBAA8\uB798\uD1B1\uC5D0 \uB113\uC740 \uC0C1\uBD80 \uD50C\uB7AB\uD3FC\uC744 \uAC16\uCD98 \uCF00\uC774\uC2A8\uC2DD \uB4F1\uB300\uAC00 \uC11C \uC788\uC2B5\uB2C8\uB2E4.",
+      descriptionSourceName: "\uC544\uC77C\uB79C\uB4DC \uB4F1\uB300\uC704\uC6D0\uD68C"
+    },
+    surface: "sea",
+    visual: {
+      shape: "caissonlight",
+      height: 59,
+      width: 30,
+      spans: 2,
+      terrainHeight: 3,
+      actorX: 96,
+      color: "#629b9f",
+      motif: "gulls"
+    },
+    scene: {
+      description: "Kish Bank Lighthouse: Seabirds glide around the rocky outline.",
+      descriptionKo: "\uD0A4\uC2DC\uBC45\uD06C \uB4F1\uB300: \uBC14\uB2F7\uC0C8\uAC00 \uBC14\uC704 \uC724\uACFD \uC8FC\uC704\uB97C \uB0A0\uC544\uAC11\uB2C8\uB2E4."
+    }
+  },
+  {
+    record: {
+      id: "beanrock",
+      name: "Bean Rock Lighthouse",
+      country: "New Zealand",
+      code: "NZL",
+      tier: "rare",
+      lat: -36.833,
+      lon: 174.831,
+      source: "https://www.heritage.org.nz/list-details/3295/Bean%20Rock%20Lighthouse",
+      region: "Waitemat\u0101 Harbour",
+      description: "A small wooden lighthouse cottage stands above a harbour reef on iron legs, a distinctive form in Auckland\u2019s Waitemat\u0101 Harbour.",
+      descriptionSourceName: "Heritage New Zealand",
+      descriptionSource: "https://www.heritage.org.nz/list-details/3295/Bean%20Rock%20Lighthouse"
+    },
+    korean: {
+      name: "\uBE48\uB85D \uB4F1\uB300",
+      country: "\uB274\uC9C8\uB79C\uB4DC",
+      region: "\uC640\uC774\uD14C\uB9C8\uD0C0\uD56D",
+      description: "\uC624\uD074\uB79C\uB4DC \uC640\uC774\uD14C\uB9C8\uD0C0\uD56D\uC758 \uC554\uCD08 \uC704\uC5D0 \uCCA0\uC81C \uB2E4\uB9AC\uB97C \uC138\uC6B0\uACE0 \uC791\uC740 \uBAA9\uC870 \uB4F1\uB300\uC9D1\uC744 \uC5B9\uC5C8\uC2B5\uB2C8\uB2E4.",
+      descriptionSourceName: "\uB274\uC9C8\uB79C\uB4DC \uAD6D\uAC00\uC720\uC0B0\uCCAD"
+    },
+    surface: "sea",
+    visual: {
+      shape: "pilelight",
+      height: 37,
+      width: 35,
+      spans: 0,
+      terrainHeight: 3,
+      actorX: 22,
+      color: "#d4b078",
+      motif: "spray"
+    },
+    scene: {
+      description: "Bean Rock Lighthouse: Small wave crests curl around the tower base.",
+      descriptionKo: "\uBE48\uB85D \uB4F1\uB300: \uC791\uC740 \uD30C\uB3C4\uAC00 \uB4F1\uB300 \uBC11\uBD80\uBD84\uC744 \uD718\uAC10\uC2B5\uB2C8\uB2E4."
+    }
+  },
+  {
+    record: {
+      id: "brotherslight",
+      name: "Brothers Islands Lighthouse",
+      country: "New Zealand",
+      code: "NZL",
+      tier: "common",
+      lat: -41.1,
+      lon: 174.43333333,
+      source: "https://www.maritimenz.govt.nz/about-us/who-we-are/our-history-and-heritage/lighthouses-of-new-zealand/brothers-island/",
+      region: "Cook Strait",
+      description: "A compact white lighthouse and keeper buildings occupy a rocky island in Cook Strait between New Zealand\u2019s main islands.",
+      descriptionSourceName: "Maritime New Zealand",
+      descriptionSource: "https://www.maritimenz.govt.nz/about-us/who-we-are/our-history-and-heritage/lighthouses-of-new-zealand/brothers-island/"
+    },
+    korean: {
+      name: "\uBE0C\uB77C\uB354\uC2A4 \uC81C\uB3C4 \uB4F1\uB300",
+      country: "\uB274\uC9C8\uB79C\uB4DC",
+      region: "\uCFE1 \uD574\uD611",
+      description: "\uB274\uC9C8\uB79C\uB4DC\uC758 \uB450 \uD070 \uC12C \uC0AC\uC774 \uCFE1 \uD574\uD611\uC758 \uBC14\uC704\uC12C\uC5D0 \uC544\uB2F4\uD55C \uD770 \uB4F1\uB300\uC640 \uAD00\uB9AC \uAC74\uBB3C\uC774 \uC790\uB9AC\uD569\uB2C8\uB2E4.",
+      descriptionSourceName: "\uB274\uC9C8\uB79C\uB4DC \uD574\uC0AC\uCCAD"
+    },
+    surface: "sea",
+    visual: {
+      shape: "lighthouse",
+      height: 48,
+      width: 21,
+      spans: 0,
+      terrainHeight: 34,
+      actorX: 100,
+      color: "#839b70",
+      motif: "beacon"
+    },
+    scene: {
+      description: "Brothers Islands Lighthouse: A beacon sweeps above the rock tower.",
+      descriptionKo: "\uBE0C\uB77C\uB354\uC2A4 \uC81C\uB3C4 \uB4F1\uB300: \uB4F1\uB300\uC758 \uBD88\uBE5B\uC774 \uC554\uCD08 \uC704\uB97C \uD6D1\uC2B5\uB2C8\uB2E4."
+    }
+  },
+  {
+    record: {
+      id: "dogisland",
+      name: "Dog Island Lighthouse",
+      country: "New Zealand",
+      code: "NZL",
+      tier: "rare",
+      lat: -46.65,
+      lon: 168.41666667,
+      source: "https://www.maritimenz.govt.nz/about-us/who-we-are/our-history-and-heritage/lighthouses-of-new-zealand/dog-island/",
+      region: "Foveaux Strait",
+      description: "New Zealand\u2019s tallest lighthouse uses broad dark bands on a pale tower to mark the eastern approach to Foveaux Strait.",
+      descriptionSourceName: "Maritime New Zealand",
+      descriptionSource: "https://www.maritimenz.govt.nz/about-us/who-we-are/our-history-and-heritage/lighthouses-of-new-zealand/dog-island/"
+    },
+    korean: {
+      name: "\uB3C4\uADF8\uC12C \uB4F1\uB300",
+      country: "\uB274\uC9C8\uB79C\uB4DC",
+      region: "\uD3EC\uBCF4 \uD574\uD611",
+      description: "\uB274\uC9C8\uB79C\uB4DC\uC5D0\uC11C \uAC00\uC7A5 \uB192\uC740 \uB4F1\uB300\uAC00 \uBC1D\uC740 \uD0D1\uC5D0 \uAD75\uC740 \uAC80\uC740 \uB760\uB97C \uB450\uB974\uACE0 \uD3EC\uBCF4 \uD574\uD611 \uB3D9\uCABD \uC785\uAD6C\uB97C \uC54C\uB9BD\uB2C8\uB2E4.",
+      descriptionSourceName: "\uB274\uC9C8\uB79C\uB4DC \uD574\uC0AC\uCCAD"
+    },
+    surface: "sea",
+    visual: {
+      shape: "stripedlight",
+      height: 99,
+      width: 24,
+      spans: 3,
+      terrainHeight: 5,
+      actorX: 16,
+      color: "#93a8b0",
+      motif: "gulls"
+    },
+    scene: {
+      description: "Dog Island Lighthouse: Seabirds glide around the rocky outline.",
+      descriptionKo: "\uB3C4\uADF8\uC12C \uB4F1\uB300: \uBC14\uB2F7\uC0C8\uAC00 \uBC14\uC704 \uC724\uACFD \uC8FC\uC704\uB97C \uB0A0\uC544\uAC11\uB2C8\uB2E4."
+    }
+  },
+  {
+    record: {
+      id: "oryukdolight",
+      name: "Oryukdo Lighthouse",
+      country: "South Korea",
+      code: "KOR",
+      tier: "common",
+      lat: 35.09116361,
+      lon: 129.12688634,
+      source: "https://english.visitkorea.or.kr/svc/whereToGo/locIntrdn/rgnContentsView.do?vcontsId=81575",
+      region: "Busan",
+      description: "The white lighthouse crowns Deungdaeseom, one of the offshore rock islands of Oryukdo at the entrance to Busan\u2019s waters.",
+      descriptionSourceName: "Korea Tourism Organization",
+      descriptionSource: "https://english.visitkorea.or.kr/svc/whereToGo/locIntrdn/rgnContentsView.do?vcontsId=81575"
+    },
+    korean: {
+      name: "\uC624\uB959\uB3C4 \uB4F1\uB300",
+      country: "\uB300\uD55C\uBBFC\uAD6D",
+      region: "\uBD80\uC0B0",
+      description: "\uBD80\uC0B0 \uBC14\uB2F7\uAE38 \uC785\uAD6C\uC5D0 \uB298\uC5B4\uC120 \uC624\uB959\uB3C4 \uBC14\uC704\uC12C \uC911 \uB4F1\uB300\uC12C \uAF2D\uB300\uAE30\uC5D0 \uD770 \uB4F1\uB300\uAC00 \uC11C \uC788\uC2B5\uB2C8\uB2E4.",
+      descriptionSourceName: "\uD55C\uAD6D\uAD00\uAD11\uACF5\uC0AC"
+    },
+    surface: "sea",
+    visual: {
+      shape: "lighthouse",
+      height: 40,
+      width: 19,
+      spans: 0,
+      terrainHeight: 44,
+      actorX: 99,
+      color: "#b79889",
+      motif: "spray"
+    },
+    scene: {
+      description: "Oryukdo Lighthouse: Small wave crests curl around the tower base.",
+      descriptionKo: "\uC624\uB959\uB3C4 \uB4F1\uB300: \uC791\uC740 \uD30C\uB3C4\uAC00 \uB4F1\uB300 \uBC11\uBD80\uBD84\uC744 \uD718\uAC10\uC2B5\uB2C8\uB2E4."
+    }
+  },
+  {
+    record: {
+      id: "somaemuldolight",
+      name: "Somaemuldo Lighthouse",
+      country: "South Korea",
+      code: "KOR",
+      tier: "common",
+      lat: 34.61951668,
+      lon: 128.54806406,
+      source: "https://english.visitkorea.or.kr/svc/whereToGo/locIntrdn/rgnContentsView.do?vcontsId=111029",
+      region: "Tongyeong",
+      description: "A white lighthouse tops Deungdaeseom beside Somaemuldo, where a rocky tidal connection separates the two small islands.",
+      descriptionSourceName: "Korea Tourism Organization",
+      descriptionSource: "https://english.visitkorea.or.kr/svc/whereToGo/locIntrdn/rgnContentsView.do?vcontsId=111029"
+    },
+    korean: {
+      name: "\uC18C\uB9E4\uBB3C\uB3C4 \uB4F1\uB300",
+      country: "\uB300\uD55C\uBBFC\uAD6D",
+      region: "\uD1B5\uC601",
+      description: "\uC18C\uB9E4\uBB3C\uB3C4 \uACC1 \uB4F1\uB300\uC12C \uC815\uC0C1\uC5D0 \uD770 \uB4F1\uB300\uAC00 \uC11C \uC788\uACE0, \uB450 \uC12C \uC0AC\uC774\uC5D0\uB294 \uBB3C\uB54C\uC5D0 \uB530\uB77C \uB4DC\uB7EC\uB098\uB294 \uBC14\uC717\uAE38\uC774 \uC774\uC5B4\uC9D1\uB2C8\uB2E4.",
+      descriptionSourceName: "\uD55C\uAD6D\uAD00\uAD11\uACF5\uC0AC"
+    },
+    surface: "sea",
+    visual: {
+      shape: "lighthouse",
+      height: 32,
+      width: 18,
+      spans: 0,
+      terrainHeight: 54,
+      actorX: 17,
+      color: "#c88b73",
+      motif: "beacon"
+    },
+    scene: {
+      description: "Somaemuldo Lighthouse: A beacon sweeps above the rock tower.",
+      descriptionKo: "\uC18C\uB9E4\uBB3C\uB3C4 \uB4F1\uB300: \uB4F1\uB300\uC758 \uBD88\uBE5B\uC774 \uC554\uCD08 \uC704\uB97C \uD6D1\uC2B5\uB2C8\uB2E4."
+    }
+  },
+  {
+    record: {
+      id: "gageodolight",
+      name: "Gageodo Lighthouse",
+      country: "South Korea",
+      code: "KOR",
+      tier: "common",
+      lat: 34.094667,
+      lon: 125.099278,
+      source: "https://mokpo.mof.go.kr/en/page.do?menuIdx=1598",
+      region: "Sinan",
+      description: "A low white brick lighthouse stands high on Gageodo\u2019s northern headland, marking the approach from the open East China Sea.",
+      descriptionSourceName: "Mokpo Regional Office of Oceans and Fisheries",
+      descriptionSource: "https://mokpo.mof.go.kr/en/page.do?menuIdx=1598"
+    },
+    korean: {
+      name: "\uAC00\uAC70\uB3C4 \uB4F1\uB300",
+      country: "\uB300\uD55C\uBBFC\uAD6D",
+      region: "\uC2E0\uC548",
+      description: "\uAC00\uAC70\uB3C4 \uBD81\uCABD\uC758 \uB192\uC740 \uACF6\uC5D0 \uB0AE\uC740 \uD770 \uBCBD\uB3CC \uB4F1\uB300\uAC00 \uC11C\uC11C \uB3D9\uC911\uAD6D\uD574 \uC678\uD574\uC5D0\uC11C \uB2E4\uAC00\uC624\uB294 \uBC30\uC5D0 \uC721\uC9C0\uC758 \uC704\uCE58\uB97C \uC54C\uB9BD\uB2C8\uB2E4.",
+      descriptionSourceName: "\uBAA9\uD3EC\uC9C0\uBC29\uD574\uC591\uC218\uC0B0\uCCAD"
+    },
+    surface: "sea",
+    visual: {
+      shape: "lighthouse",
+      height: 27,
+      width: 20,
+      spans: 0,
+      terrainHeight: 66,
+      actorX: 100,
+      color: "#629b9f",
+      motif: "gulls"
+    },
+    scene: {
+      description: "Gageodo Lighthouse: Seabirds glide around the rocky outline.",
+      descriptionKo: "\uAC00\uAC70\uB3C4 \uB4F1\uB300: \uBC14\uB2F7\uC0C8\uAC00 \uBC14\uC704 \uC724\uACFD \uC8FC\uC704\uB97C \uB0A0\uC544\uAC11\uB2C8\uB2E4."
+    }
+  },
+  {
+    record: {
+      id: "bikiniatoll",
+      name: "Bikini Atoll",
+      country: "Marshall Islands",
+      code: "MHL",
+      tier: "epic",
+      lat: 11.6,
+      lon: 165.38055556,
+      source: "https://whc.unesco.org/en/list/1339/",
+      region: "Bikini Atoll",
+      description: "The lagoon contains sunken test vessels and other remains of twentieth-century nuclear testing; the miniature depicts submerged hulls within the atoll.",
+      descriptionSourceName: "UNESCO World Heritage Centre",
+      descriptionSource: "https://whc.unesco.org/en/list/1339/"
+    },
+    korean: {
+      name: "\uBE44\uD0A4\uB2C8 \uD658\uCD08",
+      country: "\uB9C8\uC15C \uC81C\uB3C4",
+      region: "\uBE44\uD0A4\uB2C8 \uD658\uCD08",
+      description: "\uD658\uCD08\uC758 \uC11D\uD638\uC5D0\uB294 20\uC138\uAE30 \uD575\uC2E4\uD5D8\uC5D0 \uC4F0\uC778 \uCE68\uBAB0 \uC120\uBC15 \uB4F1 \uC720\uC0B0\uC774 \uB0A8\uC544 \uC788\uC73C\uBA70, \uBAA8\uD615\uC740 \uD658\uCD08 \uC548\uC758 \uC218\uC911 \uC120\uCCB4\uB97C \uD45C\uD604\uD569\uB2C8\uB2E4.",
+      descriptionSourceName: "\uC720\uB124\uC2A4\uCF54 \uC138\uACC4\uC720\uC0B0\uC13C\uD130"
+    },
+    surface: "sea",
+    visual: {
+      shape: "wreck",
+      height: 19,
+      width: 81,
+      spans: 2,
+      terrainHeight: 8,
+      actorX: 21,
+      color: "#d4b078",
+      motif: "diver"
+    },
+    scene: {
+      description: "Bikini Atoll: A small diver surveys the submerged hull.",
+      descriptionKo: "\uBE44\uD0A4\uB2C8 \uD658\uCD08: \uC791\uC740 \uC7A0\uC218\uBD80\uAC00 \uAC00\uB77C\uC549\uC740 \uC120\uCCB4\uB97C \uC0B4\uD54D\uB2C8\uB2E4."
+    }
+  },
+  {
+    record: {
+      id: "phoenixislands",
+      name: "Phoenix Islands Protected Area",
+      country: "Kiribati",
+      code: "KIR",
+      tier: "legendary",
+      lat: -3.864454,
+      lon: -172.650203,
+      source: "https://whc.unesco.org/en/list/1325/",
+      region: "Phoenix Islands",
+      description: "Remote coral atolls, reefs and deep ocean habitats form this protected Pacific seascape within Kiribati.",
+      descriptionSourceName: "UNESCO World Heritage Centre",
+      descriptionSource: "https://whc.unesco.org/en/list/1325/"
+    },
+    korean: {
+      name: "\uD53C\uB2C9\uC2A4 \uC81C\uB3C4 \uBCF4\uD638\uAD6C\uC5ED",
+      country: "\uD0A4\uB9AC\uBC14\uC2DC",
+      region: "\uD53C\uB2C9\uC2A4 \uC81C\uB3C4",
+      description: "\uD0A4\uB9AC\uBC14\uC2DC\uC758 \uC678\uB534 \uC0B0\uD638 \uD658\uCD08\uC640 \uC554\uCD08, \uAE4A\uC740 \uBC14\uB2E4 \uC11C\uC2DD\uC9C0\uAC00 \uD0DC\uD3C9\uC591\uC758 \uB113\uC740 \uBCF4\uD638 \uD574\uC5ED\uC744 \uC774\uB8F9\uB2C8\uB2E4.",
+      descriptionSourceName: "\uC720\uB124\uC2A4\uCF54 \uC138\uACC4\uC720\uC0B0\uC13C\uD130"
+    },
+    surface: "sea",
+    visual: {
+      shape: "atoll",
+      height: 24,
+      width: 103,
+      spans: 5,
+      terrainHeight: 12,
+      actorX: 98,
+      color: "#839b70",
+      motif: "fish"
+    },
+    scene: {
+      description: "Phoenix Islands Protected Area: A fish school weaves between the reef forms.",
+      descriptionKo: "\uD53C\uB2C9\uC2A4 \uC81C\uB3C4 \uBCF4\uD638\uAD6C\uC5ED: \uBB3C\uACE0\uAE30 \uB5BC\uAC00 \uC0B0\uD638\uCD08 \uC0AC\uC774\uB97C \uC624\uAC11\uB2C8\uB2E4."
+    }
+  },
+  {
+    record: {
+      id: "malpelo",
+      name: "Malpelo Sanctuary",
+      country: "Colombia",
+      code: "COL",
+      tier: "epic",
+      lat: 4.003344,
+      lon: -81.607572,
+      source: "https://whc.unesco.org/en/list/1216/",
+      region: "Eastern Pacific",
+      description: "A steep oceanic rock and its surrounding protected waters support large gatherings of sharks in the eastern Pacific.",
+      descriptionSourceName: "UNESCO World Heritage Centre",
+      descriptionSource: "https://whc.unesco.org/en/list/1216/"
+    },
+    korean: {
+      name: "\uB9D0\uD3A0\uB85C \uBCF4\uD638\uAD6C\uC5ED",
+      country: "\uCF5C\uB86C\uBE44\uC544",
+      region: "\uB3D9\uD0DC\uD3C9\uC591",
+      description: "\uB3D9\uD0DC\uD3C9\uC591\uC758 \uAC00\uD30C\uB978 \uBC14\uC704\uC12C\uACFC \uC8FC\uBCC0 \uBCF4\uD638 \uD574\uC5ED\uC740 \uC0C1\uC5B4\uB4E4\uC774 \uD070 \uBB34\uB9AC\uB97C \uC774\uB8E8\uB294 \uC11C\uC2DD\uC9C0\uC785\uB2C8\uB2E4.",
+      descriptionSourceName: "\uC720\uB124\uC2A4\uCF54 \uC138\uACC4\uC720\uC0B0\uC13C\uD130"
+    },
+    surface: "sea",
+    visual: {
+      shape: "seastack",
+      height: 83,
+      width: 51,
+      spans: 3,
+      terrainHeight: 14,
+      actorX: 17,
+      color: "#93a8b0",
+      motif: "gulls"
+    },
+    scene: {
+      description: "Malpelo Sanctuary: Seabirds glide around the rocky outline.",
+      descriptionKo: "\uB9D0\uD3A0\uB85C \uBCF4\uD638\uAD6C\uC5ED: \uBC14\uB2F7\uC0C8\uAC00 \uBC14\uC704 \uC724\uACFD \uC8FC\uC704\uB97C \uB0A0\uC544\uAC11\uB2C8\uB2E4."
+    }
+  },
+  {
+    record: {
+      id: "surtsey",
+      name: "Surtsey",
+      country: "Iceland",
+      code: "ISL",
+      tier: "rare",
+      lat: 63.30305556,
+      lon: -20.60222222,
+      source: "https://whc.unesco.org/en/list/1267/",
+      region: "Vestmannaeyjar",
+      description: "Formed by a volcanic eruption beginning in 1963, this young ocean island is protected for research into natural colonisation.",
+      descriptionSourceName: "UNESCO World Heritage Centre",
+      descriptionSource: "https://whc.unesco.org/en/list/1267/"
+    },
+    korean: {
+      name: "\uC26C\uB974\uD2B8\uC138\uC774",
+      country: "\uC544\uC774\uC2AC\uB780\uB4DC",
+      region: "\uBCA0\uC2A4\uD2B8\uB9CC \uC81C\uB3C4",
+      description: "1963\uB144\uC5D0 \uC2DC\uC791\uB41C \uD654\uC0B0 \uBD84\uCD9C\uB85C \uC0DD\uAE34 \uC5B4\uB9B0 \uBC14\uB2E4\uC12C\uC73C\uB85C, \uC0DD\uBB3C\uC774 \uC790\uC5F0\uC2A4\uB7FD\uAC8C \uC815\uCC29\uD558\uB294 \uACFC\uC815\uC744 \uC5F0\uAD6C\uD558\uB3C4\uB85D \uBCF4\uD638\uD569\uB2C8\uB2E4.",
+      descriptionSourceName: "\uC720\uB124\uC2A4\uCF54 \uC138\uACC4\uC720\uC0B0\uC13C\uD130"
+    },
+    surface: "sea",
+    visual: {
+      shape: "volcanicisland",
+      height: 52,
+      width: 97,
+      spans: 2,
+      terrainHeight: 10,
+      actorX: 101,
+      color: "#b79889",
+      motif: "gulls"
+    },
+    scene: {
+      description: "Surtsey: Seabirds glide around the rocky outline.",
+      descriptionKo: "\uC26C\uB974\uD2B8\uC138\uC774: \uBC14\uB2F7\uC0C8\uAC00 \uBC14\uC704 \uC724\uACFD \uC8FC\uC704\uB97C \uB0A0\uC544\uAC11\uB2C8\uB2E4."
+    }
+  },
+  {
+    record: {
+      id: "goughislands",
+      name: "Gough and Inaccessible Islands",
+      country: "United Kingdom",
+      code: "GBR",
+      tier: "rare",
+      lat: -38.81236111,
+      lon: -11.30597222,
+      source: "https://whc.unesco.org/en/list/740/",
+      region: "South Atlantic",
+      description: "Steep volcanic islands in the South Atlantic provide nesting grounds for large seabird colonies far from continental shores.",
+      descriptionSourceName: "UNESCO World Heritage Centre",
+      descriptionSource: "https://whc.unesco.org/en/list/740/"
+    },
+    korean: {
+      name: "\uACE0\uD504\uC12C\uACFC \uC774\uB108\uC561\uC138\uC11C\uBE14\uC12C",
+      country: "\uC601\uAD6D",
+      region: "\uB0A8\uB300\uC11C\uC591",
+      description: "\uB300\uB959\uC5D0\uC11C \uBA40\uB9AC \uB5A8\uC5B4\uC9C4 \uB0A8\uB300\uC11C\uC591\uC758 \uAC00\uD30C\uB978 \uD654\uC0B0\uC12C\uB4E4\uC774 \uC218\uB9CE\uC740 \uBC14\uB2F7\uC0C8\uC758 \uBC88\uC2DD\uC9C0\uAC00 \uB429\uB2C8\uB2E4.",
+      descriptionSourceName: "\uC720\uB124\uC2A4\uCF54 \uC138\uACC4\uC720\uC0B0\uC13C\uD130"
+    },
+    surface: "sea",
+    visual: {
+      shape: "seastack",
+      height: 75,
+      width: 79,
+      spans: 2,
+      terrainHeight: 11,
+      actorX: 20,
+      color: "#c88b73",
+      motif: "gulls"
+    },
+    scene: {
+      description: "Gough and Inaccessible Islands: Seabirds glide around the rocky outline.",
+      descriptionKo: "\uACE0\uD504\uC12C\uACFC \uC774\uB108\uC561\uC138\uC11C\uBE14\uC12C: \uBC14\uB2F7\uC0C8\uAC00 \uBC14\uC704 \uC724\uACFD \uC8FC\uC704\uB97C \uB0A0\uC544\uAC11\uB2C8\uB2E4."
+    }
+  },
+  {
+    record: {
+      id: "newcaledonialagoons",
+      name: "New Caledonia Lagoons",
+      country: "France",
+      code: "FRA",
+      tier: "epic",
+      lat: -20.49587963,
+      lon: 165.04791667,
+      source: "https://whc.unesco.org/en/list/1115/",
+      region: "New Caledonia",
+      description: "Six marine clusters preserve extensive coral reefs and lagoons around New Caledonia; the model shows a representative reef channel.",
+      descriptionSourceName: "UNESCO World Heritage Centre",
+      descriptionSource: "https://whc.unesco.org/en/list/1115/"
+    },
+    korean: {
+      name: "\uB204\uBCA8\uCE7C\uB808\uB3C4\uB2C8 \uC11D\uD638",
+      country: "\uD504\uB791\uC2A4",
+      region: "\uB204\uBCA8\uCE7C\uB808\uB3C4\uB2C8",
+      description: "\uB204\uBCA8\uCE7C\uB808\uB3C4\uB2C8 \uC8FC\uBCC0 \uC5EC\uC12F \uD574\uC5ED\uC5D0 \uB113\uC740 \uC0B0\uD638\uCD08\uC640 \uC11D\uD638\uAC00 \uBCF4\uC874\uB418\uC5B4 \uC788\uC73C\uBA70, \uBAA8\uD615\uC740 \uADF8\uC911 \uB300\uD45C\uC801\uC778 \uC0B0\uD638\uCD08 \uBB3C\uAE38\uC744 \uD45C\uD604\uD569\uB2C8\uB2E4.",
+      descriptionSourceName: "\uC720\uB124\uC2A4\uCF54 \uC138\uACC4\uC720\uC0B0\uC13C\uD130"
+    },
+    surface: "sea",
+    visual: {
+      shape: "reef",
+      height: 18,
+      width: 105,
+      spans: 6,
+      terrainHeight: 9,
+      actorX: 96,
+      color: "#629b9f",
+      motif: "fish"
+    },
+    scene: {
+      description: "New Caledonia Lagoons: A fish school weaves between the reef forms.",
+      descriptionKo: "\uB204\uBCA8\uCE7C\uB808\uB3C4\uB2C8 \uC11D\uD638: \uBB3C\uACE0\uAE30 \uB5BC\uAC00 \uC0B0\uD638\uCD08 \uC0AC\uC774\uB97C \uC624\uAC11\uB2C8\uB2E4."
+    }
+  },
+  {
+    record: {
+      id: "aporeef",
+      name: "Apo Reef Natural Park",
+      country: "Philippines",
+      code: "PHL",
+      tier: "common",
+      lat: 12.74583333,
+      lon: 120.3961111,
+      source: "https://whc.unesco.org/en/tentativelists/5033/",
+      region: "Occidental Mindoro",
+      description: "Shallow reefs, channels and clear marine water form the protected Apo Reef complex west of Mindoro. The miniature separates the reef rim from its interior water channels.",
+      descriptionSourceName: "UNESCO Tentative Lists",
+      descriptionSource: "https://whc.unesco.org/en/tentativelists/5033/"
+    },
+    korean: {
+      name: "\uC544\uD3EC\uB9AC\uD504 \uC790\uC5F0\uACF5\uC6D0",
+      country: "\uD544\uB9AC\uD540",
+      region: "\uC11C\uBBFC\uB3C4\uB85C",
+      description: "\uBBFC\uB3C4\uB85C \uC11C\uCABD\uC758 \uC544\uD3EC\uB9AC\uD504\uC5D0\uB294 \uC595\uC740 \uC0B0\uD638\uCD08\uC640 \uC218\uB85C, \uB9D1\uC740 \uBC14\uB2E4\uAC00 \uC5B4\uC6B0\uB7EC\uC9C4 \uBCF4\uD638 \uD574\uC5ED\uC774 \uD3BC\uCCD0\uC9D1\uB2C8\uB2E4. \uBAA8\uD615\uC740 \uC0B0\uD638\uCD08\uC758 \uD14C\uB450\uB9AC\uC640 \uC548\uCABD \uBB3C\uAE38\uC744 \uAD6C\uBD84\uD574 \uD45C\uD604\uD569\uB2C8\uB2E4.",
+      descriptionSourceName: "\uC720\uB124\uC2A4\uCF54 \uC138\uACC4\uC720\uC0B0 \uC7A0\uC815\uBAA9\uB85D"
+    },
+    surface: "sea",
+    visual: {
+      shape: "reef",
+      height: 23,
+      width: 98,
+      spans: 2,
+      terrainHeight: 12,
+      actorX: 18,
+      color: "#d4b078",
+      motif: "fish"
+    },
+    scene: {
+      description: "Apo Reef Natural Park: A fish school weaves between the reef forms.",
+      descriptionKo: "\uC544\uD3EC\uB9AC\uD504 \uC790\uC5F0\uACF5\uC6D0: \uBB3C\uACE0\uAE30 \uB5BC\uAC00 \uC0B0\uD638\uCD08 \uC0AC\uC774\uB97C \uC624\uAC11\uB2C8\uB2E4."
+    }
+  },
+  {
+    record: {
+      id: "bunaken",
+      name: "Bunaken National Park",
+      country: "Indonesia",
+      code: "IDN",
+      tier: "common",
+      lat: 1.66666667,
+      lon: 124.65,
+      source: "https://whc.unesco.org/en/tentativelists/2002/",
+      region: "North Sulawesi",
+      description: "Coral reefs and steep underwater walls surround islands off North Sulawesi, providing a wide range of marine habitats.",
+      descriptionSourceName: "UNESCO Tentative Lists",
+      descriptionSource: "https://whc.unesco.org/en/tentativelists/2002/"
+    },
+    korean: {
+      name: "\uBD80\uB098\uCF04 \uAD6D\uB9BD\uACF5\uC6D0",
+      country: "\uC778\uB3C4\uB124\uC2DC\uC544",
+      region: "\uBD81\uC220\uB77C\uC6E8\uC2DC",
+      description: "\uBD81\uC220\uB77C\uC6E8\uC2DC \uC55E\uBC14\uB2E4\uC758 \uC12C \uB458\uB808\uC5D0 \uC0B0\uD638\uCD08\uC640 \uAC00\uD30C\uB978 \uC218\uC911 \uC808\uBCBD\uC774 \uBC1C\uB2EC\uD574 \uB2E4\uC591\uD55C \uD574\uC591 \uC11C\uC2DD\uC9C0\uB97C \uC774\uB8F9\uB2C8\uB2E4.",
+      descriptionSourceName: "\uC720\uB124\uC2A4\uCF54 \uC138\uACC4\uC720\uC0B0 \uC7A0\uC815\uBAA9\uB85D"
+    },
+    surface: "sea",
+    visual: {
+      shape: "reefwalls",
+      height: 65,
+      width: 94,
+      spans: 3,
+      terrainHeight: 8,
+      actorX: 103,
+      color: "#839b70",
+      motif: "fish"
+    },
+    scene: {
+      description: "Bunaken National Park: A fish school weaves between the reef forms.",
+      descriptionKo: "\uBD80\uB098\uCF04 \uAD6D\uB9BD\uACF5\uC6D0: \uBB3C\uACE0\uAE30 \uB5BC\uAC00 \uC0B0\uD638\uCD08 \uC0AC\uC774\uB97C \uC624\uAC11\uB2C8\uB2E4."
+    }
+  },
+  {
+    record: {
+      id: "rajaampat",
+      name: "Raja Ampat Islands Marine Park",
+      country: "Indonesia",
+      code: "IDN",
+      tier: "rare",
+      lat: -0.7125553,
+      lon: 130.3034473,
+      source: "https://kkprajaampat.id/en/kawasan-kelola-kami/kepulauan-raja-ampat/",
+      region: "Southwest Papua",
+      description: "A network of coral reefs and island waters protects marine habitats in Raja Ampat, represented here by limestone islets and a reef passage.",
+      descriptionSourceName: "Kupang National Marine Protected Areas Office",
+      descriptionSource: "https://kkprajaampat.id/en/kawasan-kelola-kami/kepulauan-raja-ampat/"
+    },
+    korean: {
+      name: "\uB77C\uC790\uC554\uD31F \uC81C\uB3C4 \uD574\uC591\uACF5\uC6D0",
+      country: "\uC778\uB3C4\uB124\uC2DC\uC544",
+      region: "\uD30C\uD478\uC544 \uB0A8\uC11C\uBD80",
+      description: "\uB77C\uC790\uC554\uD31F\uC758 \uC0B0\uD638\uCD08\uC640 \uC12C \uC8FC\uBCC0 \uD574\uC5ED\uC774 \uD574\uC591 \uC11C\uC2DD\uC9C0\uB97C \uC9C0\uD0A4\uBA70, \uBAA8\uD615\uC5D0\uC11C\uB294 \uC11D\uD68C\uC554 \uC791\uC740 \uC12C\uACFC \uC0B0\uD638\uCD08 \uC218\uB85C\uB85C \uD45C\uD604\uD569\uB2C8\uB2E4.",
+      descriptionSourceName: "\uCFE0\uD321 \uAD6D\uB9BD\uD574\uC591\uBCF4\uD638\uAD6C\uC5ED\uAD00\uB9AC\uC0AC\uBB34\uC18C"
+    },
+    surface: "sea",
+    visual: {
+      shape: "karstlagoon",
+      height: 63,
+      width: 88,
+      spans: 4,
+      terrainHeight: 10,
+      actorX: 23,
+      color: "#93a8b0",
+      motif: "fish"
+    },
+    scene: {
+      description: "Raja Ampat Islands Marine Park: A fish school weaves between the reef forms.",
+      descriptionKo: "\uB77C\uC790\uC554\uD31F \uC81C\uB3C4 \uD574\uC591\uACF5\uC6D0: \uBB3C\uACE0\uAE30 \uB5BC\uAC00 \uC0B0\uD638\uCD08 \uC0AC\uC774\uB97C \uC624\uAC11\uB2C8\uB2E4."
+    }
+  },
+  {
+    record: {
+      id: "wakatobi",
+      name: "Wakatobi National Park",
+      country: "Indonesia",
+      code: "IDN",
+      tier: "common",
+      lat: -5.9011111,
+      lon: 124.1165972,
+      source: "https://whc.unesco.org/en/tentativelists/2006/",
+      region: "Southeast Sulawesi",
+      description: "Coral reefs around the Wakatobi islands form a marine park in the heart of the Coral Triangle. Its name joins the names of the four main islands: Wangi-Wangi, Kaledupa, Tomia and Binongko.",
+      descriptionSourceName: "UNESCO Tentative Lists",
+      descriptionSource: "https://whc.unesco.org/en/tentativelists/2006/"
+    },
+    korean: {
+      name: "\uC640\uCE74\uD1A0\uBE44 \uAD6D\uB9BD\uACF5\uC6D0",
+      country: "\uC778\uB3C4\uB124\uC2DC\uC544",
+      region: "\uC220\uB77C\uC6E8\uC2DC \uB0A8\uB3D9\uBD80",
+      description: "\uCF54\uB784\uD2B8\uB77C\uC774\uC575\uAE00 \uC548\uCABD \uC640\uCE74\uD1A0\uBE44 \uC81C\uB3C4 \uC8FC\uBCC0\uC758 \uC0B0\uD638\uCD08\uAC00 \uD574\uC591 \uAD6D\uB9BD\uACF5\uC6D0\uC744 \uC774\uB8F9\uB2C8\uB2E4. \uC774\uB984\uC740 \uC8FC\uC694 \uB124 \uC12C\uC778 \uC655\uC774\uC655\uC774, \uCE7C\uB808\uB450\uD30C, \uD1A0\uBBF8\uC544, \uBE44\uB18D\uCF54\uC5D0\uC11C \uB530\uC654\uC2B5\uB2C8\uB2E4.",
+      descriptionSourceName: "\uC720\uB124\uC2A4\uCF54 \uC138\uACC4\uC720\uC0B0 \uC7A0\uC815\uBAA9\uB85D"
+    },
+    surface: "sea",
+    visual: {
+      shape: "reef",
+      height: 22,
+      width: 109,
+      spans: 4,
+      terrainHeight: 7,
+      actorX: 94,
+      color: "#b79889",
+      motif: "fish"
+    },
+    scene: {
+      description: "Wakatobi National Park: A fish school weaves between the reef forms.",
+      descriptionKo: "\uC640\uCE74\uD1A0\uBE44 \uAD6D\uB9BD\uACF5\uC6D0: \uBB3C\uACE0\uAE30 \uB5BC\uAC00 \uC0B0\uD638\uCD08 \uC0AC\uC774\uB97C \uC624\uAC11\uB2C8\uB2E4."
+    }
+  },
+  {
+    record: {
+      id: "sipadan",
+      name: "Sipadan Island Park",
+      country: "Malaysia",
+      code: "MYS",
+      tier: "rare",
+      lat: 4.1122015,
+      lon: 118.6304382,
+      source: "https://www.sabahparks.org.my/sipadan-island-park",
+      region: "Sabah",
+      description: "A small oceanic island rises above deep water, with coral-covered walls and marine turtle habitat around its edge.",
+      descriptionSourceName: "Sabah Parks",
+      descriptionSource: "https://www.sabahparks.org.my/sipadan-island-park"
+    },
+    korean: {
+      name: "\uC2DC\uD30C\uB2E8\uC12C \uACF5\uC6D0",
+      country: "\uB9D0\uB808\uC774\uC2DC\uC544",
+      region: "\uC0AC\uBC14",
+      description: "\uAE4A\uC740 \uBC14\uB2E4 \uC704\uB85C \uC791\uC740 \uC12C\uC774 \uC19F\uC544 \uC788\uC73C\uBA70, \uAC00\uC7A5\uC790\uB9AC\uC5D0\uB294 \uC0B0\uD638\uB85C \uB36E\uC778 \uC218\uC911 \uC808\uBCBD\uACFC \uBC14\uB2E4\uAC70\uBD81 \uC11C\uC2DD\uC9C0\uAC00 \uC774\uC5B4\uC9D1\uB2C8\uB2E4.",
+      descriptionSourceName: "\uC0AC\uBC14 \uACF5\uC6D0\uAD00\uB9AC\uCCAD"
+    },
+    surface: "sea",
+    visual: {
+      shape: "reefwalls",
+      height: 70,
+      width: 73,
+      spans: 1,
+      terrainHeight: 11,
+      actorX: 19,
+      color: "#c88b73",
+      motif: "turtle"
+    },
+    scene: {
+      description: "Sipadan Island Park: A turtle glides past the reef edge.",
+      descriptionKo: "\uC2DC\uD30C\uB2E8\uC12C \uACF5\uC6D0: \uAC70\uBD81\uC774 \uC0B0\uD638\uCD08 \uAC00\uC7A5\uC790\uB9AC\uB97C \uB530\uB77C \uD5E4\uC5C4\uCE69\uB2C8\uB2E4."
+    }
+  },
+  {
+    record: {
+      id: "surin",
+      name: "Mu Ko Surin National Park",
+      country: "Thailand",
+      code: "THA",
+      tier: "common",
+      lat: 9.4001641,
+      lon: 97.8657727,
+      source: "https://www.tourismthailand.org/Articles/mu-koh-surin-the-tropical-paradise-in-andaman",
+      region: "Phang Nga",
+      description: "The Surin islands and their surrounding Andaman Sea reefs form a protected tropical marine landscape.",
+      descriptionSourceName: "Tourism Authority of Thailand",
+      descriptionSource: "https://www.tourismthailand.org/Articles/mu-koh-surin-the-tropical-paradise-in-andaman"
+    },
+    korean: {
+      name: "\uC218\uB9B0 \uC81C\uB3C4 \uAD6D\uB9BD\uACF5\uC6D0",
+      country: "\uD0DC\uAD6D",
+      region: "\uD321\uC751\uC544",
+      description: "\uC218\uB9B0 \uC81C\uB3C4\uC640 \uC8FC\uBCC0 \uC548\uB2E4\uB9CC\uD574\uC758 \uC0B0\uD638\uCD08\uAC00 \uBCF4\uD638\uBC1B\uB294 \uC5F4\uB300 \uD574\uC591 \uACBD\uAD00\uC744 \uC774\uB8F9\uB2C8\uB2E4.",
+      descriptionSourceName: "\uD0DC\uAD6D\uC815\uBD80\uAD00\uAD11\uCCAD"
+    },
+    surface: "sea",
+    visual: {
+      shape: "reef",
+      height: 31,
+      width: 106,
+      spans: 5,
+      terrainHeight: 9,
+      actorX: 101,
+      color: "#629b9f",
+      motif: "fish"
+    },
+    scene: {
+      description: "Mu Ko Surin National Park: A fish school weaves between the reef forms.",
+      descriptionKo: "\uC218\uB9B0 \uC81C\uB3C4 \uAD6D\uB9BD\uACF5\uC6D0: \uBB3C\uACE0\uAE30 \uB5BC\uAC00 \uC0B0\uD638\uCD08 \uC0AC\uC774\uB97C \uC624\uAC11\uB2C8\uB2E4."
+    }
+  },
+  {
+    record: {
+      id: "similan",
+      name: "Mu Ko Similan National Park",
+      country: "Thailand",
+      code: "THA",
+      tier: "rare",
+      lat: 8.5771331,
+      lon: 97.6463514,
+      source: "https://www.tourismthailand.org/Attraction/mu-ko-similan-national-park",
+      region: "Phang Nga",
+      description: "Large rounded granite boulders rise above turquoise water, while coral reefs shelter marine life around the Similan islands.",
+      descriptionSourceName: "Tourism Authority of Thailand",
+      descriptionSource: "https://www.tourismthailand.org/Attraction/mu-ko-similan-national-park"
+    },
+    korean: {
+      name: "\uC2DC\uBC00\uB780 \uC81C\uB3C4 \uAD6D\uB9BD\uACF5\uC6D0",
+      country: "\uD0DC\uAD6D",
+      region: "\uD321\uC751\uC544",
+      description: "\uB465\uADFC \uD654\uAC15\uC554 \uBC14\uC704\uAC00 \uCCAD\uB85D\uBE5B \uBC14\uB2E4 \uC704\uB85C \uC19F\uACE0, \uC2DC\uBC00\uB780 \uC81C\uB3C4 \uC8FC\uBCC0 \uC0B0\uD638\uCD08\uC5D0\uB294 \uC5EC\uB7EC \uD574\uC591 \uC0DD\uBB3C\uC774 \uC0B4\uC544\uAC11\uB2C8\uB2E4.",
+      descriptionSourceName: "\uD0DC\uAD6D\uC815\uBD80\uAD00\uAD11\uCCAD"
+    },
+    surface: "sea",
+    visual: {
+      shape: "graniteisland",
+      height: 54,
+      width: 92,
+      spans: 3,
+      terrainHeight: 12,
+      actorX: 20,
+      color: "#d4b078",
+      motif: "gulls"
+    },
+    scene: {
+      description: "Mu Ko Similan National Park: Seabirds glide around the rocky outline.",
+      descriptionKo: "\uC2DC\uBC00\uB780 \uC81C\uB3C4 \uAD6D\uB9BD\uACF5\uC6D0: \uBC14\uB2F7\uC0C8\uAC00 \uBC14\uC704 \uC724\uACFD \uC8FC\uC704\uB97C \uB0A0\uC544\uAC11\uB2C8\uB2E4."
+    }
+  },
+  {
+    record: {
+      id: "rasmohammed",
+      name: "Ras Mohammed Marine Reserve",
+      country: "Egypt",
+      code: "EGY",
+      tier: "rare",
+      lat: 27.8786491,
+      lon: 34.3578071,
+      source: "https://www.sis.gov.eg/newVR/protected/html/rasmoh.htm",
+      region: "South Sinai",
+      description: "Reefs fringe the southern tip of Sinai where the gulfs of Suez and Aqaba meet, creating a striking underwater landscape.",
+      descriptionSourceName: "Egypt State Information Service",
+      descriptionSource: "https://www.sis.gov.eg/newVR/protected/html/rasmoh.htm"
+    },
+    korean: {
+      name: "\uB77C\uC2A4\uBAA8\uD558\uBA54\uB4DC \uD574\uC591\uBCF4\uD638\uAD6C\uC5ED",
+      country: "\uC774\uC9D1\uD2B8",
+      region: "\uB0A8\uC2DC\uB098\uC774",
+      description: "\uC218\uC5D0\uC988\uB9CC\uACFC \uC544\uCE74\uBC14\uB9CC\uC774 \uB9CC\uB098\uB294 \uC2DC\uB098\uC774\uBC18\uB3C4 \uB0A8\uB2E8\uC744 \uC0B0\uD638\uCD08\uAC00 \uB458\uB7EC\uC2F8 \uB3C5\uD2B9\uD55C \uC218\uC911 \uACBD\uAD00\uC744 \uC774\uB8F9\uB2C8\uB2E4.",
+      descriptionSourceName: "\uC774\uC9D1\uD2B8 \uAD6D\uAC00\uC815\uBCF4\uCCAD"
+    },
+    surface: "sea",
+    visual: {
+      shape: "reefwalls",
+      height: 68,
+      width: 105,
+      spans: 2,
+      terrainHeight: 13,
+      actorX: 97,
+      color: "#839b70",
+      motif: "fish"
+    },
+    scene: {
+      description: "Ras Mohammed Marine Reserve: A fish school weaves between the reef forms.",
+      descriptionKo: "\uB77C\uC2A4\uBAA8\uD558\uBA54\uB4DC \uD574\uC591\uBCF4\uD638\uAD6C\uC5ED: \uBB3C\uACE0\uAE30 \uB5BC\uAC00 \uC0B0\uD638\uCD08 \uC0AC\uC774\uB97C \uC624\uAC11\uB2C8\uB2E4."
+    }
+  },
+  {
+    record: {
+      id: "bluebay",
+      name: "Blue Bay Marine Park",
+      country: "Mauritius",
+      code: "MUS",
+      tier: "common",
+      lat: -20.45,
+      lon: 57.7,
+      source: "https://rsis.ramsar.org/ris/1744",
+      region: "Grand Port",
+      description: "A sheltered lagoon in southeastern Mauritius contains coral communities and shallow marine habitats. The miniature represents the reef and lagoon rather than the shore facilities.",
+      descriptionSourceName: "Ramsar Sites Information Service",
+      descriptionSource: "https://rsis.ramsar.org/ris/1744"
+    },
+    korean: {
+      name: "\uBE14\uB8E8\uBCA0\uC774 \uD574\uC591\uACF5\uC6D0",
+      country: "\uBAA8\uB9AC\uC154\uC2A4",
+      region: "\uADF8\uB791\uD3EC\uB974",
+      description: "\uBAA8\uB9AC\uC154\uC2A4 \uB0A8\uB3D9\uCABD\uC758 \uC794\uC794\uD55C \uC11D\uD638\uC5D0 \uC0B0\uD638 \uAD70\uB77D\uACFC \uC595\uC740 \uBC14\uB2E4 \uC11C\uC2DD\uC9C0\uAC00 \uC790\uB9AC\uD569\uB2C8\uB2E4. \uBAA8\uD615\uC740 \uD574\uC548 \uC2DC\uC124\uC774 \uC544\uB2CC \uC0B0\uD638\uCD08\uC640 \uC11D\uD638\uB97C \uD45C\uD604\uD569\uB2C8\uB2E4.",
+      descriptionSourceName: "\uB78C\uC0AC\uB974 \uC2B5\uC9C0\uC815\uBCF4\uC11C\uBE44\uC2A4"
+    },
+    surface: "sea",
+    visual: {
+      shape: "reef",
+      height: 19,
+      width: 97,
+      spans: 7,
+      terrainHeight: 8,
+      actorX: 18,
+      color: "#93a8b0",
+      motif: "fish"
+    },
+    scene: {
+      description: "Blue Bay Marine Park: A fish school weaves between the reef forms.",
+      descriptionKo: "\uBE14\uB8E8\uBCA0\uC774 \uD574\uC591\uACF5\uC6D0: \uBB3C\uACE0\uAE30 \uB5BC\uAC00 \uC0B0\uD638\uCD08 \uC0AC\uC774\uB97C \uC624\uAC11\uB2C8\uB2E4."
+    }
+  },
+  {
+    record: {
+      id: "sainteanne",
+      name: "Sainte Anne Marine National Park",
+      country: "Seychelles",
+      code: "SYC",
+      tier: "common",
+      lat: -4.605356,
+      lon: 55.504711,
+      source: "https://www.spga.gov.sc/parks/st-anne",
+      region: "Mah\xE9",
+      description: "Island waters near Mah\xE9 protect coral reefs and seagrass beds within Seychelles\u2019 Sainte Anne Marine National Park.",
+      descriptionSourceName: "Seychelles Parks and Gardens Authority",
+      descriptionSource: "https://www.spga.gov.sc/parks/st-anne"
+    },
+    korean: {
+      name: "\uC0DD\uD2B8\uC548 \uD574\uC591\uAD6D\uB9BD\uACF5\uC6D0",
+      country: "\uC138\uC774\uC178",
+      region: "\uB9C8\uC5D0\uC12C \uC55E\uBC14\uB2E4",
+      description: "\uC138\uC774\uC178 \uB9C8\uC5D0\uC12C \uAC00\uAE4C\uC6B4 \uC0DD\uD2B8\uC548 \uD574\uC591\uAD6D\uB9BD\uACF5\uC6D0\uC758 \uC12C \uC8FC\uBCC0 \uBC14\uB2E4\uC5D0\uB294 \uC0B0\uD638\uCD08\uC640 \uD574\uCD08\uBC2D\uC774 \uBCF4\uD638\uB429\uB2C8\uB2E4.",
+      descriptionSourceName: "\uC138\uC774\uC178 \uACF5\uC6D0\uC815\uC6D0\uAD00\uB9AC\uCCAD"
+    },
+    surface: "sea",
+    visual: {
+      shape: "seagrass",
+      height: 36,
+      width: 91,
+      spans: 6,
+      terrainHeight: 9,
+      actorX: 100,
+      color: "#b79889",
+      motif: "seagrass"
+    },
+    scene: {
+      description: "Sainte Anne Marine National Park: Underwater leaves sway beside the protected shallows.",
+      descriptionKo: "\uC0DD\uD2B8\uC548 \uD574\uC591\uAD6D\uB9BD\uACF5\uC6D0: \uBCF4\uD638\uBC1B\uB294 \uC595\uC740 \uBC14\uB2E4\uC5D0\uC11C \uD574\uCD08 \uC78E\uC774 \uD754\uB4E4\uB9BD\uB2C8\uB2E4."
+    }
+  },
+  {
+    record: {
+      id: "watamu",
+      name: "Watamu Marine National Park",
+      country: "Kenya",
+      code: "KEN",
+      tier: "common",
+      lat: -3.36777778,
+      lon: 40.01638889,
+      source: "https://kws.go.ke/park/watamu-marine-national-park-reserve/",
+      region: "Kilifi",
+      description: "Reef-protected lagoons and coral gardens shelter fish and sea turtles along Kenya\u2019s Indian Ocean coast.",
+      descriptionSourceName: "Kenya Wildlife Service",
+      descriptionSource: "https://kws.go.ke/park/watamu-marine-national-park-reserve/"
+    },
+    korean: {
+      name: "\uC640\uD0C0\uBB34 \uD574\uC591\uAD6D\uB9BD\uACF5\uC6D0",
+      country: "\uCF00\uB0D0",
+      region: "\uD0AC\uB9AC\uD53C",
+      description: "\uCF00\uB0D0\uC758 \uC778\uB3C4\uC591 \uD574\uC548\uC5D0 \uC0B0\uD638\uCD08\uAC00 \uAC10\uC2FC \uC11D\uD638\uC640 \uC0B0\uD638 \uC815\uC6D0\uC774 \uC774\uC5B4\uC838 \uBB3C\uACE0\uAE30\uC640 \uBC14\uB2E4\uAC70\uBD81\uC758 \uD130\uC804\uC774 \uB429\uB2C8\uB2E4.",
+      descriptionSourceName: "\uCF00\uB0D0 \uC57C\uC0DD\uB3D9\uBB3C\uAD00\uB9AC\uCCAD"
+    },
+    surface: "sea",
+    visual: {
+      shape: "reef",
+      height: 24,
+      width: 107,
+      spans: 4,
+      terrainHeight: 7,
+      actorX: 20,
+      color: "#c88b73",
+      motif: "turtle"
+    },
+    scene: {
+      description: "Watamu Marine National Park: A turtle glides past the reef edge.",
+      descriptionKo: "\uC640\uD0C0\uBB34 \uD574\uC591\uAD6D\uB9BD\uACF5\uC6D0: \uAC70\uBD81\uC774 \uC0B0\uD638\uCD08 \uAC00\uC7A5\uC790\uB9AC\uB97C \uB530\uB77C \uD5E4\uC5C4\uCE69\uB2C8\uB2E4."
+    }
+  },
+  {
+    record: {
+      id: "mafiaisland",
+      name: "Mafia Island Marine Park",
+      country: "Tanzania",
+      code: "TZA",
+      tier: "common",
+      lat: -7.75194444,
+      lon: 39.90027778,
+      source: "https://www.marineparks.go.tz/parks/mafia-island",
+      region: "Mafia Archipelago",
+      description: "Coral reefs, mangroves and sheltered bays form a connected marine landscape around the southern part of Mafia Island.",
+      descriptionSourceName: "Tanzania Marine Parks and Reserves Unit",
+      descriptionSource: "https://www.marineparks.go.tz/parks/mafia-island"
+    },
+    korean: {
+      name: "\uB9C8\uD53C\uC544\uC12C \uD574\uC591\uACF5\uC6D0",
+      country: "\uD0C4\uC790\uB2C8\uC544",
+      region: "\uB9C8\uD53C\uC544 \uC81C\uB3C4",
+      description: "\uB9C8\uD53C\uC544\uC12C \uB0A8\uCABD\uC5D0 \uC0B0\uD638\uCD08\uC640 \uB9F9\uADF8\uB85C\uBE0C, \uC794\uC794\uD55C \uB9CC\uC774 \uC11C\uB85C \uC774\uC5B4\uC9C4 \uD574\uC591 \uACBD\uAD00\uC774 \uD3BC\uCCD0\uC9D1\uB2C8\uB2E4.",
+      descriptionSourceName: "\uD0C4\uC790\uB2C8\uC544 \uD574\uC591\uACF5\uC6D0\uBCF4\uD638\uAD6C\uC5ED\uAD00\uB9AC\uCCAD"
+    },
+    surface: "sea",
+    visual: {
+      shape: "mangrovereef",
+      height: 37,
+      width: 103,
+      spans: 5,
+      terrainHeight: 11,
+      actorX: 97,
+      color: "#629b9f",
+      motif: "seagrass"
+    },
+    scene: {
+      description: "Mafia Island Marine Park: Underwater leaves sway beside the protected shallows.",
+      descriptionKo: "\uB9C8\uD53C\uC544\uC12C \uD574\uC591\uACF5\uC6D0: \uBCF4\uD638\uBC1B\uB294 \uC595\uC740 \uBC14\uB2E4\uC5D0\uC11C \uD574\uCD08 \uC78E\uC774 \uD754\uB4E4\uB9BD\uB2C8\uB2E4."
+    }
+  },
+  {
+    record: {
+      id: "biscayne",
+      name: "Biscayne National Park",
+      country: "United States",
+      code: "USA",
+      tier: "common",
+      lat: 25.5031223,
+      lon: -80.2348496,
+      source: "https://www.nps.gov/bisc/index.htm",
+      region: "Florida",
+      description: "Biscayne protects marine water, islands and coral reefs beside South Florida, with underwater habitats forming most of the park.",
+      descriptionSourceName: "National Park Service",
+      descriptionSource: "https://www.nps.gov/bisc/index.htm"
+    },
+    korean: {
+      name: "\uBE44\uC2A4\uCF00\uC778 \uAD6D\uB9BD\uACF5\uC6D0",
+      country: "\uBBF8\uAD6D",
+      region: "\uD50C\uB85C\uB9AC\uB2E4",
+      description: "\uD50C\uB85C\uB9AC\uB2E4 \uB0A8\uCABD\uC758 \uBC14\uB2E4\uC640 \uC12C, \uC0B0\uD638\uCD08\uB97C \uBCF4\uD638\uD558\uBA70 \uACF5\uC6D0 \uB300\uBD80\uBD84\uC744 \uC218\uC911 \uC11C\uC2DD\uC9C0\uAC00 \uCC28\uC9C0\uD569\uB2C8\uB2E4.",
+      descriptionSourceName: "\uBBF8\uAD6D \uAD6D\uB9BD\uACF5\uC6D0\uAD00\uB9AC\uCCAD"
+    },
+    surface: "sea",
+    visual: {
+      shape: "seagrass",
+      height: 17,
+      width: 99,
+      spans: 6,
+      terrainHeight: 8,
+      actorX: 19,
+      color: "#d4b078",
+      motif: "seagrass"
+    },
+    scene: {
+      description: "Biscayne National Park: Underwater leaves sway beside the protected shallows.",
+      descriptionKo: "\uBE44\uC2A4\uCF00\uC778 \uAD6D\uB9BD\uACF5\uC6D0: \uBCF4\uD638\uBC1B\uB294 \uC595\uC740 \uBC14\uB2E4\uC5D0\uC11C \uD574\uCD08 \uC78E\uC774 \uD754\uB4E4\uB9BD\uB2C8\uB2E4."
+    }
+  },
+  {
+    record: {
+      id: "drytortugas",
+      name: "Dry Tortugas National Park",
+      country: "United States",
+      code: "USA",
+      tier: "epic",
+      lat: 24.6377223,
+      lon: -82.8767982,
+      source: "https://www.nps.gov/drto/index.htm",
+      region: "Florida Keys",
+      description: "Fort Jefferson\u2019s brick walls stand on a small island amid the clear water and reefs of the Dry Tortugas.",
+      descriptionSourceName: "National Park Service",
+      descriptionSource: "https://www.nps.gov/drto/index.htm"
+    },
+    korean: {
+      name: "\uB4DC\uB77C\uC774\uD1A0\uB974\uD22C\uAC00\uC2A4 \uAD6D\uB9BD\uACF5\uC6D0",
+      country: "\uBBF8\uAD6D",
+      region: "\uD50C\uB85C\uB9AC\uB2E4\uD0A4\uC2A4",
+      description: "\uB4DC\uB77C\uC774\uD1A0\uB974\uD22C\uAC00\uC2A4\uC758 \uB9D1\uC740 \uBC14\uB2E4\uC640 \uC0B0\uD638\uCD08 \uC0AC\uC774 \uC791\uC740 \uC12C\uC5D0 \uD3EC\uD2B8\uC81C\uD37C\uC2A8\uC758 \uBCBD\uB3CC \uC131\uBCBD\uC774 \uC11C \uC788\uC2B5\uB2C8\uB2E4.",
+      descriptionSourceName: "\uBBF8\uAD6D \uAD6D\uB9BD\uACF5\uC6D0\uAD00\uB9AC\uCCAD"
+    },
+    surface: "sea",
+    visual: {
+      shape: "seafort",
+      height: 52,
+      width: 103,
+      spans: 6,
+      terrainHeight: 10,
+      actorX: 101,
+      color: "#839b70",
+      motif: "flag"
+    },
+    scene: {
+      description: "Dry Tortugas National Park: A flag moves above the island fort.",
+      descriptionKo: "\uB4DC\uB77C\uC774\uD1A0\uB974\uD22C\uAC00\uC2A4 \uAD6D\uB9BD\uACF5\uC6D0: \uC791\uC740 \uC12C\uC758 \uC694\uC0C8 \uC704\uC5D0\uC11C \uAE43\uBC1C\uC774 \uC6C0\uC9C1\uC785\uB2C8\uB2E4."
+    }
+  },
+  {
+    record: {
+      id: "cabopulmo",
+      name: "Cabo Pulmo National Park",
+      country: "Mexico",
+      code: "MEX",
+      tier: "common",
+      lat: 23.4379644,
+      lon: -109.4056184,
+      source: "https://conanp.gob.mx/conanp/dominios/cabo_pulmo/index.php",
+      region: "Baja California Sur",
+      description: "A reef in the Gulf of California supports dense schools of fish along the eastern shore of Baja California Sur.",
+      descriptionSourceName: "CONANP",
+      descriptionSource: "https://conanp.gob.mx/conanp/dominios/cabo_pulmo/index.php"
+    },
+    korean: {
+      name: "\uCE74\uBCF4\uD480\uBAA8 \uAD6D\uB9BD\uACF5\uC6D0",
+      country: "\uBA55\uC2DC\uCF54",
+      region: "\uBC14\uD558\uCE7C\uB9AC\uD3EC\uB974\uB2C8\uC544\uC218\uB974",
+      description: "\uBC14\uD558\uCE7C\uB9AC\uD3EC\uB974\uB2C8\uC544\uC218\uB974 \uB3D9\uCABD \uCE98\uB9AC\uD3EC\uB2C8\uC544\uB9CC\uC758 \uC0B0\uD638\uCD08 \uC8FC\uBCC0\uC5D0 \uBB3C\uACE0\uAE30 \uB5BC\uAC00 \uBAA8\uC5EC\uB4ED\uB2C8\uB2E4.",
+      descriptionSourceName: "\uBA55\uC2DC\uCF54 \uC790\uC5F0\uBCF4\uD638\uAD6C\uC5ED\uC704\uC6D0\uD68C"
+    },
+    surface: "sea",
+    visual: {
+      shape: "reef",
+      height: 28,
+      width: 100,
+      spans: 5,
+      terrainHeight: 7,
+      actorX: 22,
+      color: "#93a8b0",
+      motif: "fish"
+    },
+    scene: {
+      description: "Cabo Pulmo National Park: A fish school weaves between the reef forms.",
+      descriptionKo: "\uCE74\uBCF4\uD480\uBAA8 \uAD6D\uB9BD\uACF5\uC6D0: \uBB3C\uACE0\uAE30 \uB5BC\uAC00 \uC0B0\uD638\uCD08 \uC0AC\uC774\uB97C \uC624\uAC11\uB2C8\uB2E4."
+    }
+  },
+  {
+    record: {
+      id: "abrolhos",
+      name: "Abrolhos Marine National Park",
+      country: "Brazil",
+      code: "BRA",
+      tier: "rare",
+      lat: -17.971,
+      lon: -38.7,
+      source: "https://www.gov.br/icmbio/pt-br/assuntos/unidade-de-conservacao/unidades-de-biomas/marinho/lista-de-ucs/parna-marinho-dos-abrolhos/guia-do-visitante/informacoes-sobre-visitacao",
+      region: "Bahia",
+      description: "Mushroom-shaped coral formations and island waters shelter marine life off Bahia, including a humpback whale breeding area.",
+      descriptionSourceName: "ICMBio",
+      descriptionSource: "https://www.gov.br/icmbio/pt-br/assuntos/unidade-de-conservacao/unidades-de-biomas/marinho/lista-de-ucs/parna-marinho-dos-abrolhos/guia-do-visitante/informacoes-sobre-visitacao"
+    },
+    korean: {
+      name: "\uC544\uBE0C\uB864\uB958\uC2A4 \uD574\uC591\uAD6D\uB9BD\uACF5\uC6D0",
+      country: "\uBE0C\uB77C\uC9C8",
+      region: "\uBC14\uC774\uC544",
+      description: "\uBC14\uC774\uC544 \uC55E\uBC14\uB2E4\uC758 \uBC84\uC12F \uBAA8\uC591 \uC0B0\uD638\uC640 \uC12C \uC8FC\uBCC0 \uBC14\uB2E4\uAC00 \uD574\uC591 \uC0DD\uBB3C\uC758 \uD130\uC804\uC774\uBA70 \uD639\uB4F1\uACE0\uB798\uC758 \uBC88\uC2DD \uD574\uC5ED\uC774\uAE30\uB3C4 \uD569\uB2C8\uB2E4.",
+      descriptionSourceName: "\uBE0C\uB77C\uC9C8 \uCE58\uCFE0\uBA58\uC9C0\uC2A4 \uC0DD\uBB3C\uB2E4\uC591\uC131\uBCF4\uC804\uC5F0\uAD6C\uC18C"
+    },
+    surface: "sea",
+    visual: {
+      shape: "mushroomreef",
+      height: 40,
+      width: 102,
+      spans: 4,
+      terrainHeight: 11,
+      actorX: 94,
+      color: "#b79889",
+      motif: "whale"
+    },
+    scene: {
+      description: "Abrolhos Marine National Park: A whale silhouette passes above the offshore bank.",
+      descriptionKo: "\uC544\uBE0C\uB864\uB958\uC2A4 \uD574\uC591\uAD6D\uB9BD\uACF5\uC6D0: \uACE0\uB798\uC758 \uBAA8\uC2B5\uC774 \uD574\uC800 \uB454\uB355 \uC704\uB97C \uC9C0\uB098\uAC11\uB2C8\uB2E4."
+    }
+  },
+  {
+    record: {
+      id: "namena",
+      name: "Namena Marine Reserve",
+      country: "Fiji",
+      code: "FJI",
+      tier: "rare",
+      lat: -17.1108726,
+      lon: 179.098435,
+      source: "https://fiji.wcs.org/Initiatives/Protected-Areas/Namena-Marine-Reserve.aspx",
+      region: "Bligh Water",
+      description: "A community-established no-take reserve around Namena protects reefs and the marine life that uses them.",
+      descriptionSourceName: "Wildlife Conservation Society Fiji",
+      descriptionSource: "https://fiji.wcs.org/Initiatives/Protected-Areas/Namena-Marine-Reserve.aspx"
+    },
+    korean: {
+      name: "\uB098\uBA54\uB098 \uD574\uC591\uBCF4\uD638\uAD6C\uC5ED",
+      country: "\uD53C\uC9C0",
+      region: "\uBE14\uB77C\uC774\uC6CC\uD130",
+      description: "\uB098\uBA54\uB098 \uC8FC\uBCC0\uC5D0\uB294 \uC9C0\uC5ED \uACF5\uB3D9\uCCB4\uAC00 \uC870\uC131\uD55C \uCC44\uCDE8 \uAE08\uC9C0 \uBCF4\uD638\uAD6C\uC5ED\uC774 \uC788\uC5B4 \uC0B0\uD638\uCD08\uC640 \uD574\uC591 \uC0DD\uBB3C\uC744 \uC9C0\uD0B5\uB2C8\uB2E4.",
+      descriptionSourceName: "\uC57C\uC0DD\uB3D9\uBB3C\uBCF4\uC804\uD611\uD68C \uD53C\uC9C0"
+    },
+    surface: "sea",
+    visual: {
+      shape: "reef",
+      height: 31,
+      width: 99,
+      spans: 5,
+      terrainHeight: 10,
+      actorX: 20,
+      color: "#c88b73",
+      motif: "fish"
+    },
+    scene: {
+      description: "Namena Marine Reserve: A fish school weaves between the reef forms.",
+      descriptionKo: "\uB098\uBA54\uB098 \uD574\uC591\uBCF4\uD638\uAD6C\uC5ED: \uBB3C\uACE0\uAE30 \uB5BC\uAC00 \uC0B0\uD638\uCD08 \uC0AC\uC774\uB97C \uC624\uAC11\uB2C8\uB2E4."
+    }
+  },
+  {
+    record: {
+      id: "exumacays",
+      name: "Exuma Cays Land and Sea Park",
+      country: "Bahamas",
+      code: "BHS",
+      tier: "common",
+      lat: 24.42,
+      lon: -76.69,
+      source: "https://bnt.bs/explore/exuma/exuma-cays-land-sea-park/",
+      region: "Exuma",
+      description: "Shallow turquoise channels, cays and marine habitats form a protected seascape in the Exuma island chain.",
+      descriptionSourceName: "Bahamas National Trust",
+      descriptionSource: "https://bnt.bs/explore/exuma/exuma-cays-land-sea-park/"
+    },
+    korean: {
+      name: "\uC5D1\uC218\uB9C8\uCF00\uC774\uC2A4 \uC721\uD574\uC0C1\uACF5\uC6D0",
+      country: "\uBC14\uD558\uB9C8",
+      region: "\uC5D1\uC218\uB9C8",
+      description: "\uC5D1\uC218\uB9C8 \uC81C\uB3C4\uC5D0 \uC595\uC740 \uCCAD\uB85D\uBE5B \uC218\uB85C\uC640 \uC791\uC740 \uC12C, \uD574\uC591 \uC11C\uC2DD\uC9C0\uAC00 \uC5B4\uC6B0\uB7EC\uC9C4 \uBCF4\uD638 \uACBD\uAD00\uC774 \uD3BC\uCCD0\uC9D1\uB2C8\uB2E4.",
+      descriptionSourceName: "\uBC14\uD558\uB9C8 \uB0B4\uC154\uB110\uD2B8\uB7EC\uC2A4\uD2B8"
+    },
+    surface: "sea",
+    visual: {
+      shape: "sandbar",
+      height: 18,
+      width: 108,
+      spans: 4,
+      terrainHeight: 7,
+      actorX: 103,
+      color: "#629b9f",
+      motif: "fish"
+    },
+    scene: {
+      description: "Exuma Cays Land and Sea Park: A fish school weaves between the reef forms.",
+      descriptionKo: "\uC5D1\uC218\uB9C8\uCF00\uC774\uC2A4 \uC721\uD574\uC0C1\uACF5\uC6D0: \uBB3C\uACE0\uAE30 \uB5BC\uAC00 \uC0B0\uD638\uCD08 \uC0AC\uC774\uB97C \uC624\uAC11\uB2C8\uB2E4."
+    }
+  },
+  {
+    record: {
+      id: "jardinesreina",
+      name: "Jardines de la Reina",
+      country: "Cuba",
+      code: "CUB",
+      tier: "common",
+      lat: 20.9292729,
+      lon: -79.0706878,
+      source: "https://www.cuba.travel/destinos/ciego-de-avila/naturaleza",
+      region: "Southern Cuba",
+      description: "Coral reefs, mangrove islands and shallow lagoons form a marine archipelago off Cuba\u2019s southern coast.",
+      descriptionSourceName: "Cuba Travel",
+      descriptionSource: "https://www.cuba.travel/destinos/ciego-de-avila/naturaleza"
+    },
+    korean: {
+      name: "\uD558\uB974\uB514\uB124\uC2A4\uB370\uB77C\uB808\uC774\uB098",
+      country: "\uCFE0\uBC14",
+      region: "\uCFE0\uBC14 \uB0A8\uCABD \uD574\uC5ED",
+      description: "\uCFE0\uBC14 \uB0A8\uCABD \uD574\uC548 \uC55E\uBC14\uB2E4\uC5D0 \uC0B0\uD638\uCD08\uC640 \uB9F9\uADF8\uB85C\uBE0C\uC12C, \uC595\uC740 \uC11D\uD638\uB85C \uC774\uB8E8\uC5B4\uC9C4 \uD574\uC591 \uAD70\uB3C4\uAC00 \uD3BC\uCCD0\uC9D1\uB2C8\uB2E4.",
+      descriptionSourceName: "\uCFE0\uBC14 \uAD00\uAD11\uCCAD"
+    },
+    surface: "sea",
+    visual: {
+      shape: "mangrovereef",
+      height: 42,
+      width: 97,
+      spans: 6,
+      terrainHeight: 12,
+      actorX: 16,
+      color: "#d4b078",
+      motif: "seagrass"
+    },
+    scene: {
+      description: "Jardines de la Reina: Underwater leaves sway beside the protected shallows.",
+      descriptionKo: "\uD558\uB974\uB514\uB124\uC2A4\uB370\uB77C\uB808\uC774\uB098: \uBCF4\uD638\uBC1B\uB294 \uC595\uC740 \uBC14\uB2E4\uC5D0\uC11C \uD574\uCD08 \uC78E\uC774 \uD754\uB4E4\uB9BD\uB2C8\uB2E4."
+    }
+  },
+  {
+    record: {
+      id: "flowergarden",
+      name: "Flower Garden Banks Sanctuary",
+      country: "United States",
+      code: "USA",
+      tier: "rare",
+      lat: 27.8700385,
+      lon: -93.8328397,
+      source: "https://flowergarden.noaa.gov/",
+      region: "Northwestern Gulf",
+      description: "Offshore banks rise from deeper Gulf water and support coral communities, sponges and other marine life.",
+      descriptionSourceName: "NOAA",
+      descriptionSource: "https://flowergarden.noaa.gov/"
+    },
+    korean: {
+      name: "\uD50C\uB77C\uC6CC\uAC00\uB4E0\uBC45\uD06C\uC2A4 \uBCF4\uD638\uAD6C\uC5ED",
+      country: "\uBBF8\uAD6D",
+      region: "\uBA55\uC2DC\uCF54\uB9CC \uBD81\uC11C\uBD80",
+      description: "\uBA55\uC2DC\uCF54\uB9CC\uC758 \uAE4A\uC740 \uBB3C\uC18D\uC5D0\uC11C \uC19F\uC740 \uD574\uC800 \uB454\uB355\uC5D0 \uC0B0\uD638 \uAD70\uB77D\uACFC \uD574\uBA74 \uB4F1 \uD574\uC591 \uC0DD\uBB3C\uC774 \uC790\uB9AC\uD569\uB2C8\uB2E4.",
+      descriptionSourceName: "\uBBF8\uAD6D \uD574\uC591\uB300\uAE30\uCCAD"
+    },
+    surface: "sea",
+    visual: {
+      shape: "mushroomreef",
+      height: 37,
+      width: 105,
+      spans: 5,
+      terrainHeight: 9,
+      actorX: 95,
+      color: "#839b70",
+      motif: "fish"
+    },
+    scene: {
+      description: "Flower Garden Banks Sanctuary: A fish school weaves between the reef forms.",
+      descriptionKo: "\uD50C\uB77C\uC6CC\uAC00\uB4E0\uBC45\uD06C\uC2A4 \uBCF4\uD638\uAD6C\uC5ED: \uBB3C\uACE0\uAE30 \uB5BC\uAC00 \uC0B0\uD638\uCD08 \uC0AC\uC774\uB97C \uC624\uAC11\uB2C8\uB2E4."
+    }
+  },
+  {
+    record: {
+      id: "stellwagen",
+      name: "Stellwagen Bank Sanctuary",
+      country: "United States",
+      code: "USA",
+      tier: "rare",
+      lat: 42.4006174,
+      lon: -70.3357931,
+      source: "https://stellwagen.noaa.gov/",
+      region: "Massachusetts Bay",
+      description: "A shallow offshore bank at the entrance to Massachusetts Bay creates productive feeding habitat for whales and other marine animals.",
+      descriptionSourceName: "NOAA",
+      descriptionSource: "https://stellwagen.noaa.gov/"
+    },
+    korean: {
+      name: "\uC2A4\uD154\uC640\uAC90\uBC45\uD06C \uBCF4\uD638\uAD6C\uC5ED",
+      country: "\uBBF8\uAD6D",
+      region: "\uB9E4\uC0AC\uCD94\uC138\uCE20\uB9CC",
+      description: "\uB9E4\uC0AC\uCD94\uC138\uCE20\uB9CC \uC785\uAD6C\uC758 \uC595\uC740 \uD574\uC800 \uB454\uB355\uC774 \uACE0\uB798\uC640 \uC5EC\uB7EC \uD574\uC591 \uB3D9\uBB3C\uC758 \uD48D\uBD80\uD55C \uBA39\uC774\uD130\uAC00 \uB429\uB2C8\uB2E4.",
+      descriptionSourceName: "\uBBF8\uAD6D \uD574\uC591\uB300\uAE30\uCCAD"
+    },
+    surface: "sea",
+    visual: {
+      shape: "sandbank",
+      height: 26,
+      width: 109,
+      spans: 2,
+      terrainHeight: 11,
+      actorX: 19,
+      color: "#93a8b0",
+      motif: "whale"
+    },
+    scene: {
+      description: "Stellwagen Bank Sanctuary: A whale silhouette passes above the offshore bank.",
+      descriptionKo: "\uC2A4\uD154\uC640\uAC90\uBC45\uD06C \uBCF4\uD638\uAD6C\uC5ED: \uACE0\uB798\uC758 \uBAA8\uC2B5\uC774 \uD574\uC800 \uB454\uB355 \uC704\uB97C \uC9C0\uB098\uAC11\uB2C8\uB2E4."
+    }
+  },
+  {
+    record: {
+      id: "monitorwreck",
+      name: "USS Monitor Sanctuary",
+      country: "United States",
+      code: "USA",
+      tier: "rare",
+      lat: 35.0016689,
+      lon: -75.4063896,
+      source: "https://monitor.noaa.gov/",
+      region: "Cape Hatteras",
+      description: "The wreck of the ironclad USS Monitor lies offshore from Cape Hatteras, protected as an important maritime archaeological site.",
+      descriptionSourceName: "NOAA",
+      descriptionSource: "https://monitor.noaa.gov/"
+    },
+    korean: {
+      name: "USS \uBAA8\uB2C8\uD130 \uBCF4\uD638\uAD6C\uC5ED",
+      country: "\uBBF8\uAD6D",
+      region: "\uD574\uD130\uB7EC\uC2A4\uACF6 \uC55E\uBC14\uB2E4",
+      description: "\uCCA0\uAC11\uD568 USS \uBAA8\uB2C8\uD130\uC758 \uC794\uD574\uAC00 \uD574\uD130\uB7EC\uC2A4\uACF6 \uC55E\uBC14\uB2E4\uC5D0 \uAC00\uB77C\uC549\uC544 \uC911\uC694\uD55C \uD574\uC591 \uACE0\uACE0\uD559 \uC720\uC0B0\uC73C\uB85C \uBCF4\uD638\uB429\uB2C8\uB2E4.",
+      descriptionSourceName: "\uBBF8\uAD6D \uD574\uC591\uB300\uAE30\uCCAD"
+    },
+    surface: "sea",
+    visual: {
+      shape: "wreck",
+      height: 18,
+      width: 98,
+      spans: 2,
+      terrainHeight: 8,
+      actorX: 101,
+      color: "#b79889",
+      motif: "diver"
+    },
+    scene: {
+      description: "USS Monitor Sanctuary: A small diver surveys the submerged hull.",
+      descriptionKo: "USS \uBAA8\uB2C8\uD130 \uBCF4\uD638\uAD6C\uC5ED: \uC791\uC740 \uC7A0\uC218\uBD80\uAC00 \uAC00\uB77C\uC549\uC740 \uC120\uCCB4\uB97C \uC0B4\uD54D\uB2C8\uB2E4."
+    }
+  },
+  {
+    record: {
+      id: "portcros",
+      name: "Port-Cros Marine Waters",
+      country: "France",
+      code: "FRA",
+      tier: "common",
+      lat: 43.064623,
+      lon: 6.4586434,
+      source: "https://portcros-parcnational.fr/fr/des-decouvertes/une-destination-dexception/la-mer",
+      region: "Hy\xE8res Islands",
+      description: "Mediterranean marine habitats around Port-Cros include seagrass meadows and rocky underwater communities.",
+      descriptionSourceName: "Port-Cros National Park",
+      descriptionSource: "https://portcros-parcnational.fr/fr/des-decouvertes/une-destination-dexception/la-mer"
+    },
+    korean: {
+      name: "\uD3EC\uB974\uD06C\uB85C \uD574\uC591\uAD6C\uC5ED",
+      country: "\uD504\uB791\uC2A4",
+      region: "\uC774\uC5D0\uB974 \uC81C\uB3C4",
+      description: "\uD3EC\uB974\uD06C\uB85C \uC8FC\uBCC0 \uC9C0\uC911\uD574 \uBC14\uB2E4\uC5D0\uB294 \uD574\uCD08\uBC2D\uACFC \uBC14\uC704 \uC9C0\uD615\uC758 \uC218\uC911 \uC0DD\uD0DC\uACC4\uAC00 \uC790\uB9AC\uD569\uB2C8\uB2E4.",
+      descriptionSourceName: "\uD3EC\uB974\uD06C\uB85C \uAD6D\uB9BD\uACF5\uC6D0"
+    },
+    surface: "sea",
+    visual: {
+      shape: "seagrass",
+      height: 39,
+      width: 103,
+      spans: 7,
+      terrainHeight: 9,
+      actorX: 21,
+      color: "#c88b73",
+      motif: "seagrass"
+    },
+    scene: {
+      description: "Port-Cros Marine Waters: Underwater leaves sway beside the protected shallows.",
+      descriptionKo: "\uD3EC\uB974\uD06C\uB85C \uD574\uC591\uAD6C\uC5ED: \uBCF4\uD638\uBC1B\uB294 \uC595\uC740 \uBC14\uB2E4\uC5D0\uC11C \uD574\uCD08 \uC78E\uC774 \uD754\uB4E4\uB9BD\uB2C8\uB2E4."
+    }
+  },
+  {
+    record: {
+      id: "sydneybridge",
+      name: "Sydney Harbour Bridge",
+      country: "Australia",
+      code: "AUS",
+      tier: "epic",
+      lat: -33.8521165,
+      lon: 151.2107812,
+      source: "https://www.dcceew.gov.au/parks-heritage/heritage/places/national/sydney-harbour-bridge",
+      region: "Port Jackson",
+      description: "A broad steel arch carries traffic across Sydney Harbour; its stone pylons and suspended deck form a silhouette distinct from the Opera House.",
+      descriptionSourceName: "Australian Government DCCEEW",
+      descriptionSource: "https://www.dcceew.gov.au/parks-heritage/heritage/places/national/sydney-harbour-bridge"
+    },
+    korean: {
+      name: "\uC2DC\uB4DC\uB2C8 \uD558\uBC84\uBE0C\uB9AC\uC9C0",
+      country: "\uD638\uC8FC",
+      region: "\uD3EC\uD2B8\uC7AD\uC2A8",
+      description: "\uB113\uC740 \uAC15\uCCA0 \uC544\uCE58\uAC00 \uC2DC\uB4DC\uB2C8\uD56D\uC744 \uAC00\uB85C\uC9C0\uB974\uBA70, \uC11D\uC870 \uC8FC\uD0D1\uACFC \uB9E4\uB2EC\uB9B0 \uC0C1\uD310\uC774 \uC624\uD398\uB77C\uD558\uC6B0\uC2A4\uC640 \uB2E4\uB978 \uC724\uACFD\uC744 \uB9CC\uB4ED\uB2C8\uB2E4.",
+      descriptionSourceName: "\uD638\uC8FC \uAE30\uD6C4\uBCC0\uD654\uC5D0\uB108\uC9C0\uD658\uACBD\uC218\uC790\uC6D0\uBD80"
+    },
+    surface: "sea",
+    visual: {
+      shape: "steelarch",
+      height: 83,
+      width: 110,
+      spans: 1,
+      terrainHeight: 8,
+      actorX: 98,
+      color: "#68847c",
+      motif: "train"
+    },
+    scene: {
+      description: "Sydney Harbour Bridge: A tiny train follows the elevated crossing.",
+      descriptionKo: "\uC2DC\uB4DC\uB2C8 \uD558\uBC84\uBE0C\uB9AC\uC9C0: \uC791\uC740 \uAE30\uCC28\uAC00 \uB192\uC774 \uB193\uC778 \uB2E4\uB9AC\uB97C \uAC74\uB119\uB2C8\uB2E4."
+    }
+  },
+  {
+    record: {
+      id: "towerbridge",
+      name: "Tower Bridge",
+      country: "United Kingdom",
+      code: "GBR",
+      tier: "epic",
+      lat: 51.5055158,
+      lon: -0.0753665,
+      source: "https://www.towerbridge.org.uk/about-us",
+      region: "River Thames, London",
+      description: "Two stone-clad towers and a lifting central span carry a crossing over the Thames while allowing tall vessels to pass.",
+      descriptionSourceName: "Tower Bridge official website",
+      descriptionSource: "https://www.towerbridge.org.uk/about-us"
+    },
+    korean: {
+      name: "\uD0C0\uC6CC\uBE0C\uB9AC\uC9C0",
+      country: "\uC601\uAD6D",
+      region: "\uB7F0\uB358 \uD15C\uC2A4\uAC15",
+      description: "\uC11D\uC7AC\uB85C \uAC10\uC2FC \uB450 \uD0D1 \uC0AC\uC774 \uC911\uC559 \uC0C1\uD310\uC774 \uC5F4\uB824 \uD15C\uC2A4\uAC15\uC744 \uC9C0\uB098\uB294 \uD070 \uBC30\uC5D0 \uAE38\uC744 \uB0B4\uC90D\uB2C8\uB2E4.",
+      descriptionSourceName: "\uD0C0\uC6CC\uBE0C\uB9AC\uC9C0 \uACF5\uC2DD \uC6F9\uC0AC\uC774\uD2B8"
+    },
+    surface: "river",
+    visual: {
+      shape: "bascule",
+      height: 70,
+      width: 108,
+      spans: 2,
+      terrainHeight: 0,
+      actorX: 18,
+      color: "#d4b078",
+      motif: "walk"
+    },
+    scene: {
+      description: "Tower Bridge: A visitor follows the crossing above the river.",
+      descriptionKo: "\uD0C0\uC6CC\uBE0C\uB9AC\uC9C0: \uAD00\uB78C\uAC1D\uC774 \uAC15 \uC704\uC758 \uB2E4\uB9AC\uB97C \uB530\uB77C \uAC77\uC2B5\uB2C8\uB2E4."
+    }
+  },
+  {
+    record: {
+      id: "charlesbridge",
+      name: "Charles Bridge",
+      country: "Czechia",
+      code: "CZE",
+      tier: "rare",
+      lat: 50.0864344,
+      lon: 14.41190698,
+      source: "https://prague.eu/en/objevujte/charles-bridge-karluv-most/",
+      region: "Vltava, Prague",
+      description: "Sandstone arches cross the Vltava between Prague\u2019s historic riverbanks, with statues lining the pedestrian bridge.",
+      descriptionSourceName: "Prague City Tourism",
+      descriptionSource: "https://prague.eu/en/objevujte/charles-bridge-karluv-most/"
+    },
+    korean: {
+      name: "\uCE74\uB97C\uAD50",
+      country: "\uCCB4\uCF54",
+      region: "\uD504\uB77C\uD558 \uBE14\uD0C0\uBC14\uAC15",
+      description: "\uC0AC\uC554 \uC544\uCE58\uAC00 \uD504\uB77C\uD558\uC758 \uC61B \uAC15\uBCC0 \uC0AC\uC774 \uBE14\uD0C0\uBC14\uAC15\uC744 \uAC00\uB85C\uC9C0\uB974\uBA70, \uBCF4\uD589\uAD50\uB97C \uB530\uB77C \uC870\uAC01\uC0C1\uB4E4\uC774 \uB298\uC5B4\uC11C \uC788\uC2B5\uB2C8\uB2E4.",
+      descriptionSourceName: "\uD504\uB77C\uD558 \uACF5\uC2DD \uAD00\uAD11 \uC548\uB0B4"
+    },
+    surface: "river",
+    visual: {
+      shape: "stonebridge",
+      height: 44,
+      width: 112,
+      spans: 8,
+      terrainHeight: 0,
+      actorX: 100,
+      color: "#839b70",
+      motif: "walk"
+    },
+    scene: {
+      description: "Charles Bridge: A visitor follows the crossing above the river.",
+      descriptionKo: "\uCE74\uB97C\uAD50: \uAD00\uB78C\uAC1D\uC774 \uAC15 \uC704\uC758 \uB2E4\uB9AC\uB97C \uB530\uB77C \uAC77\uC2B5\uB2C8\uB2E4."
+    }
+  },
+  {
+    record: {
+      id: "chainbridge",
+      name: "Sz\xE9chenyi Chain Bridge",
+      country: "Hungary",
+      code: "HUN",
+      tier: "rare",
+      lat: 47.4989791,
+      lon: 19.0436494,
+      source: "https://visithungary.com/articles/the-szechenyi-chain-bridge",
+      region: "Danube, Budapest",
+      description: "Suspension chains run between stone towers above the Danube, linking the Buda and Pest riverbanks. Its gate-like towers make the chain-supported structure easy to recognise.",
+      descriptionSourceName: "Visit Hungary",
+      descriptionSource: "https://visithungary.com/articles/the-szechenyi-chain-bridge"
+    },
+    korean: {
+      name: "\uC138\uCCB4\uB2C8 \uC0AC\uC2AC\uAD50",
+      country: "\uD5DD\uAC00\uB9AC",
+      region: "\uBD80\uB2E4\uD398\uC2A4\uD2B8 \uB2E4\uB274\uBE0C\uAC15",
+      description: "\uB2E4\uB274\uBE0C\uAC15 \uC704 \uC11D\uC870 \uC8FC\uD0D1 \uC0AC\uC774\uB85C \uD604\uC218 \uC0AC\uC2AC\uC774 \uC774\uC5B4\uC838 \uBD80\uB2E4\uC640 \uD398\uC2A4\uD2B8 \uAC15\uBCC0\uC744 \uC787\uC2B5\uB2C8\uB2E4. \uBB38\uCC98\uB7FC \uC0DD\uAE34 \uC8FC\uD0D1\uC774 \uC0AC\uC2AC\uB85C \uBC1B\uCE5C \uAD6C\uC870\uC758 \uD2B9\uC9D5\uC744 \uB4DC\uB7EC\uB0C5\uB2C8\uB2E4.",
+      descriptionSourceName: "\uD5DD\uAC00\uB9AC \uAD00\uAD11\uCCAD"
+    },
+    surface: "river",
+    visual: {
+      shape: "chainbridge",
+      height: 53,
+      width: 110,
+      spans: 2,
+      terrainHeight: 0,
+      actorX: 18,
+      color: "#93a8b0",
+      motif: "walk"
+    },
+    scene: {
+      description: "Sz\xE9chenyi Chain Bridge: A visitor follows the crossing above the river.",
+      descriptionKo: "\uC138\uCCB4\uB2C8 \uC0AC\uC2AC\uAD50: \uAD00\uB78C\uAC1D\uC774 \uAC15 \uC704\uC758 \uB2E4\uB9AC\uB97C \uB530\uB77C \uAC77\uC2B5\uB2C8\uB2E4."
+    }
+  },
+  {
+    record: {
+      id: "pontevecchio",
+      name: "Ponte Vecchio",
+      country: "Italy",
+      code: "ITA",
+      tier: "rare",
+      lat: 43.7680307,
+      lon: 11.2531614,
+      source: "https://www.visittuscany.com/en/attractions/ponte-vecchio/",
+      region: "Arno, Florence",
+      description: "Shops cluster above three broad arches across the Arno, with the elevated Vasari Corridor running over the bridge.",
+      descriptionSourceName: "Visit Tuscany",
+      descriptionSource: "https://www.visittuscany.com/en/attractions/ponte-vecchio/"
+    },
+    korean: {
+      name: "\uBCA0\uD0A4\uC624 \uB2E4\uB9AC",
+      country: "\uC774\uD0C8\uB9AC\uC544",
+      region: "\uD53C\uB80C\uCCB4 \uC544\uB974\uB178\uAC15",
+      description: "\uC544\uB974\uB178\uAC15\uC744 \uAC74\uB108\uB294 \uB113\uC740 \uC544\uCE58 \uC138 \uAC1C \uC704\uC5D0 \uC0C1\uC810\uB4E4\uC774 \uBAA8\uC5EC \uC788\uACE0, \uADF8 \uC704\uB85C \uBC14\uC0AC\uB9AC \uD68C\uB791\uC774 \uC774\uC5B4\uC9D1\uB2C8\uB2E4.",
+      descriptionSourceName: "\uD1A0\uC2A4\uCE74\uB098 \uAD00\uAD11\uCCAD"
+    },
+    surface: "river",
+    visual: {
+      shape: "shopbridge",
+      height: 39,
+      width: 107,
+      spans: 3,
+      terrainHeight: 0,
+      actorX: 98,
+      color: "#b79889",
+      motif: "walk"
+    },
+    scene: {
+      description: "Ponte Vecchio: A visitor follows the crossing above the river.",
+      descriptionKo: "\uBCA0\uD0A4\uC624 \uB2E4\uB9AC: \uAD00\uB78C\uAC1D\uC774 \uAC15 \uC704\uC758 \uB2E4\uB9AC\uB97C \uB530\uB77C \uAC77\uC2B5\uB2C8\uB2E4."
+    }
+  },
+  {
+    record: {
+      id: "alexandrebridge",
+      name: "Pont Alexandre III",
+      country: "France",
+      code: "FRA",
+      tier: "rare",
+      lat: 48.8634697,
+      lon: 2.3135181,
+      source: "https://parisjetaime.com/eng/transport/pont-alexandre-iii-p1875",
+      region: "Seine, Paris",
+      description: "A low metal arch crosses the Seine between ornate lamp standards and tall pillars topped with gilded sculptures.",
+      descriptionSourceName: "Paris Tourist Office",
+      descriptionSource: "https://parisjetaime.com/eng/transport/pont-alexandre-iii-p1875"
+    },
+    korean: {
+      name: "\uC54C\uB809\uC0C1\uB4DC\uB974 3\uC138 \uB2E4\uB9AC",
+      country: "\uD504\uB791\uC2A4",
+      region: "\uD30C\uB9AC \uC13C\uAC15",
+      description: "\uD654\uB824\uD55C \uAC00\uB85C\uB4F1\uACFC \uAE08\uBE5B \uC870\uAC01\uC0C1\uC744 \uC5B9\uC740 \uB192\uC740 \uAE30\uB465 \uC0AC\uC774\uB85C \uB0AE\uC740 \uAE08\uC18D \uC544\uCE58\uAC00 \uC13C\uAC15\uC744 \uAC00\uB85C\uC9C0\uB985\uB2C8\uB2E4.",
+      descriptionSourceName: "\uD30C\uB9AC \uAD00\uAD11\uCCAD"
+    },
+    surface: "river",
+    visual: {
+      shape: "lowarch",
+      height: 29,
+      width: 109,
+      spans: 1,
+      terrainHeight: 0,
+      actorX: 19,
+      color: "#c88b73",
+      motif: "walk"
+    },
+    scene: {
+      description: "Pont Alexandre III: A visitor follows the crossing above the river.",
+      descriptionKo: "\uC54C\uB809\uC0C1\uB4DC\uB974 3\uC138 \uB2E4\uB9AC: \uAD00\uB78C\uAC1D\uC774 \uAC15 \uC704\uC758 \uB2E4\uB9AC\uB97C \uB530\uB77C \uAC77\uC2B5\uB2C8\uB2E4."
+    }
+  },
+  {
+    record: {
+      id: "millauviaduct",
+      name: "Millau Viaduct",
+      country: "France",
+      code: "FRA",
+      tier: "epic",
+      lat: 44.0799775,
+      lon: 3.0224087,
+      source: "https://www.leviaducdemillau.com/sites/viaducdemillau/accueil-viaduc-de-millau/le-viaduc/le-viaduc-presentation-du-viaduc.html",
+      region: "Tarn Valley",
+      description: "Slender piers and cable stays carry a long deck high above the Tarn River valley near Millau. Seven main piers give the crossing its repeated slender profile.",
+      descriptionSourceName: "Compagnie Eiffage du Viaduc de Millau",
+      descriptionSource: "https://www.leviaducdemillau.com/sites/viaducdemillau/accueil-viaduc-de-millau/le-viaduc/le-viaduc-presentation-du-viaduc.html"
+    },
+    korean: {
+      name: "\uBBF8\uC694 \uACE0\uAC00\uAD50",
+      country: "\uD504\uB791\uC2A4",
+      region: "\uD0C0\uB978 \uACC4\uACE1",
+      description: "\uAC00\uB290\uB2E4\uB780 \uAD50\uAC01\uACFC \uC0AC\uC7A5 \uCF00\uC774\uBE14\uC774 \uBBF8\uC694 \uADFC\uCC98 \uD0C0\uB978\uAC15 \uACC4\uACE1 \uB192\uC740 \uACF3\uC5D0\uC11C \uAE34 \uC0C1\uD310\uC744 \uBC1B\uCE69\uB2C8\uB2E4. \uC77C\uACF1 \uC8FC \uAD50\uAC01\uC774 \uBC18\uBCF5\uB418\uB294 \uAC00\uB290\uB2E4\uB780 \uC724\uACFD\uC744 \uB9CC\uB4ED\uB2C8\uB2E4.",
+      descriptionSourceName: "\uC5D0\uD30C\uC8FC \uBBF8\uC694 \uACE0\uAC00\uAD50 \uC6B4\uC601\uC0AC"
+    },
+    surface: "river",
+    visual: {
+      shape: "cablestayed",
+      height: 92,
+      width: 113,
+      spans: 7,
+      terrainHeight: 0,
+      actorX: 102,
+      color: "#629b9f",
+      motif: "walk"
+    },
+    scene: {
+      description: "Millau Viaduct: A visitor follows the crossing above the river.",
+      descriptionKo: "\uBBF8\uC694 \uACE0\uAC00\uAD50: \uAD00\uB78C\uAC1D\uC774 \uAC15 \uC704\uC758 \uB2E4\uB9AC\uB97C \uB530\uB77C \uAC77\uC2B5\uB2C8\uB2E4."
+    }
+  },
+  {
+    record: {
+      id: "garabit",
+      name: "Garabit Viaduct",
+      country: "France",
+      code: "FRA",
+      tier: "rare",
+      lat: 44.9745645,
+      lon: 3.1774879,
+      source: "https://www.pays-saint-flour.fr/en/must-see/viaduc-de-garabit/",
+      region: "Truy\xE8re Valley",
+      description: "A red metal arch carries the railway across the Truy\xE8re valley, a prominent work associated with Gustave Eiffel.",
+      descriptionSourceName: "Saint-Flour Tourist Office",
+      descriptionSource: "https://www.pays-saint-flour.fr/en/must-see/viaduc-de-garabit/"
+    },
+    korean: {
+      name: "\uAC00\uB77C\uBE44 \uACE0\uAC00\uAD50",
+      country: "\uD504\uB791\uC2A4",
+      region: "\uD2B8\uB93C\uC608\uB974 \uACC4\uACE1",
+      description: "\uBD89\uC740 \uAE08\uC18D \uC544\uCE58\uAC00 \uD2B8\uB93C\uC608\uB974 \uACC4\uACE1\uC744 \uAC74\uB108\uB294 \uCCA0\uB3C4\uB97C \uBC1B\uCE58\uBA70, \uADC0\uC2A4\uD0C0\uBE0C \uC5D0\uD3A0\uACFC \uAD00\uB828\uB41C \uB300\uD45C\uC801\uC778 \uD1A0\uBAA9 \uC720\uC0B0\uC785\uB2C8\uB2E4.",
+      descriptionSourceName: "\uC0DD\uD50C\uB8E8\uB974 \uAD00\uAD11\uCCAD"
+    },
+    surface: "river",
+    visual: {
+      shape: "steelarch",
+      height: 70,
+      width: 109,
+      spans: 1,
+      terrainHeight: 0,
+      actorX: 18,
+      color: "#d4b078",
+      motif: "train"
+    },
+    scene: {
+      description: "Garabit Viaduct: A tiny train follows the elevated crossing.",
+      descriptionKo: "\uAC00\uB77C\uBE44 \uACE0\uAC00\uAD50: \uC791\uC740 \uAE30\uCC28\uAC00 \uB192\uC774 \uB193\uC778 \uB2E4\uB9AC\uB97C \uAC74\uB119\uB2C8\uB2E4."
+    }
+  },
+  {
+    record: {
+      id: "landwasser",
+      name: "Landwasser Viaduct",
+      country: "Switzerland",
+      code: "CHE",
+      tier: "rare",
+      lat: 46.6809366,
+      lon: 9.6760239,
+      source: "https://www.rhb.ch/en/excursions/landwasser-express/",
+      region: "Landwasser River, Filisur",
+      description: "A curved stone railway viaduct crosses the Landwasser gorge and leads directly into a tunnel in the rock face.",
+      descriptionSourceName: "Rhaetian Railway",
+      descriptionSource: "https://www.rhb.ch/en/excursions/landwasser-express/"
+    },
+    korean: {
+      name: "\uB780\uD2B8\uBC14\uC11C \uACE0\uAC00\uAD50",
+      country: "\uC2A4\uC704\uC2A4",
+      region: "\uD544\uB9AC\uC8FC\uC5B4 \uB780\uD2B8\uBC14\uC11C\uAC15",
+      description: "\uAD7D\uC740 \uC11D\uC870 \uCCA0\uB3C4\uAD50\uAC00 \uB780\uD2B8\uBC14\uC11C\uAC15 \uD611\uACE1\uC744 \uAC74\uB108 \uBC14\uC704 \uC808\uBCBD\uC758 \uD130\uB110\uB85C \uACE7\uC7A5 \uC774\uC5B4\uC9D1\uB2C8\uB2E4.",
+      descriptionSourceName: "\uB808\uD2F0\uC170 \uCCA0\uB3C4"
+    },
+    surface: "river",
+    visual: {
+      shape: "railviaduct",
+      height: 86,
+      width: 104,
+      spans: 6,
+      terrainHeight: 0,
+      actorX: 97,
+      color: "#839b70",
+      motif: "train"
+    },
+    scene: {
+      description: "Landwasser Viaduct: A tiny train follows the elevated crossing.",
+      descriptionKo: "\uB780\uD2B8\uBC14\uC11C \uACE0\uAC00\uAD50: \uC791\uC740 \uAE30\uCC28\uAC00 \uB192\uC774 \uB193\uC778 \uB2E4\uB9AC\uB97C \uAC74\uB119\uB2C8\uB2E4."
+    }
+  },
+  {
+    record: {
+      id: "chapelbridge",
+      name: "Chapel Bridge",
+      country: "Switzerland",
+      code: "CHE",
+      tier: "rare",
+      lat: 47.05134195,
+      lon: 8.30724012,
+      source: "https://www.luzern.com/en/poi/chapel-bridge",
+      region: "Reuss, Lucerne",
+      description: "A covered timber bridge crosses the Reuss beside an octagonal water tower, with painted panels beneath its roof.",
+      descriptionSourceName: "Lucerne Tourism",
+      descriptionSource: "https://www.luzern.com/en/poi/chapel-bridge"
+    },
+    korean: {
+      name: "\uCE74\uD3A0\uAD50",
+      country: "\uC2A4\uC704\uC2A4",
+      region: "\uB8E8\uCCB4\uB978 \uB85C\uC774\uC2A4\uAC15",
+      description: "\uD314\uAC01\uD615 \uC218\uD0D1 \uACC1\uC73C\uB85C \uC9C0\uBD95\uC744 \uC5B9\uC740 \uBAA9\uC870 \uB2E4\uB9AC\uAC00 \uB85C\uC774\uC2A4\uAC15\uC744 \uAC74\uB108\uBA70, \uC9C0\uBD95 \uC544\uB798\uC5D0\uB294 \uADF8\uB9BC \uD328\uB110\uC774 \uAC78\uB824 \uC788\uC2B5\uB2C8\uB2E4.",
+      descriptionSourceName: "\uB8E8\uCCB4\uB978 \uAD00\uAD11\uCCAD"
+    },
+    surface: "river",
+    visual: {
+      shape: "coveredbridge",
+      height: 34,
+      width: 108,
+      spans: 5,
+      terrainHeight: 0,
+      actorX: 20,
+      color: "#93a8b0",
+      motif: "walk"
+    },
+    scene: {
+      description: "Chapel Bridge: A visitor follows the crossing above the river.",
+      descriptionKo: "\uCE74\uD3A0\uAD50: \uAD00\uB78C\uAC1D\uC774 \uAC15 \uC704\uC758 \uB2E4\uB9AC\uB97C \uB530\uB77C \uAC77\uC2B5\uB2C8\uB2E4."
+    }
+  },
+  {
+    record: {
+      id: "magdeburgbridge",
+      name: "Magdeburg Water Bridge",
+      country: "Germany",
+      code: "DEU",
+      tier: "rare",
+      lat: 52.230833,
+      lon: 11.701389,
+      source: "https://www.magdeburg-tourist.de/Tourismus-Freizeit/System/Wasserstra%C3%9Fenkreuz.php?object=tx%2C115.3397.1",
+      region: "Elbe, Magdeburg",
+      description: "A navigable trough carries canal boats over the Elbe as part of Magdeburg\u2019s waterway crossing. Canal water and river water pass at different levels.",
+      descriptionSourceName: "Magdeburg Tourism",
+      descriptionSource: "https://www.magdeburg-tourist.de/Tourismus-Freizeit/System/Wasserstra%C3%9Fenkreuz.php?object=tx%2C115.3397.1"
+    },
+    korean: {
+      name: "\uB9C8\uADF8\uB370\uBD80\uB974\uD06C \uC218\uB85C\uAD50",
+      country: "\uB3C5\uC77C",
+      region: "\uB9C8\uADF8\uB370\uBD80\uB974\uD06C \uC5D8\uBCA0\uAC15",
+      description: "\uB9C8\uADF8\uB370\uBD80\uB974\uD06C \uC218\uB85C \uAD50\uCC28 \uC9C0\uC810\uC5D0\uC11C \uC120\uBC15\uC774 \uC9C0\uB098\uB294 \uC218\uB85C\uAD50\uAC00 \uC5D8\uBCA0\uAC15 \uC704\uB97C \uAC74\uB119\uB2C8\uB2E4. \uC6B4\uD558\uC758 \uBB3C\uACFC \uAC15\uBB3C\uC774 \uC11C\uB85C \uB2E4\uB978 \uB192\uC774\uB85C \uC9C0\uB098\uAC11\uB2C8\uB2E4.",
+      descriptionSourceName: "\uB9C8\uADF8\uB370\uBD80\uB974\uD06C \uAD00\uAD11\uCCAD"
+    },
+    surface: "river",
+    visual: {
+      shape: "waterbridge",
+      height: 40,
+      width: 112,
+      spans: 3,
+      terrainHeight: 0,
+      actorX: 100,
+      color: "#b79889",
+      motif: "walk"
+    },
+    scene: {
+      description: "Magdeburg Water Bridge: A visitor follows the crossing above the river.",
+      descriptionKo: "\uB9C8\uADF8\uB370\uBD80\uB974\uD06C \uC218\uB85C\uAD50: \uAD00\uB78C\uAC1D\uC774 \uAC15 \uC704\uC758 \uB2E4\uB9AC\uB97C \uB530\uB77C \uAC77\uC2B5\uB2C8\uB2E4."
+    }
+  },
+  {
+    record: {
+      id: "hohenzollernbridge",
+      name: "Hohenzollern Bridge",
+      country: "Germany",
+      code: "DEU",
+      tier: "common",
+      lat: 50.9414,
+      lon: 6.964602,
+      source: "https://www.koelntourismus.de/kunst-kultur/sehenswuerdigkeiten/detail/hohenzollernbruecke",
+      region: "Rhine, Cologne",
+      description: "Parallel metal arches carry railway tracks and footpaths over the Rhine beside central Cologne. Successive arch groups give the crossing a repeated curved outline.",
+      descriptionSourceName: "Cologne Tourist Board",
+      descriptionSource: "https://www.koelntourismus.de/kunst-kultur/sehenswuerdigkeiten/detail/hohenzollernbruecke"
+    },
+    korean: {
+      name: "\uD638\uC5D4\uCD10\uB808\uB978 \uB2E4\uB9AC",
+      country: "\uB3C5\uC77C",
+      region: "\uCFB0\uB978 \uB77C\uC778\uAC15",
+      description: "\uB098\uB780\uD788 \uC120 \uAE08\uC18D \uC544\uCE58\uB4E4\uC774 \uCFB0\uB978 \uB3C4\uC2EC \uC606 \uB77C\uC778\uAC15\uC744 \uAC74\uB108\uB294 \uCCA0\uB85C\uC640 \uBCF4\uD589\uB85C\uB97C \uBC1B\uCE69\uB2C8\uB2E4. \uC5F0\uC18D\uB41C \uC544\uCE58 \uBB36\uC74C\uC774 \uBC18\uBCF5\uB418\uB294 \uACE1\uC120 \uC724\uACFD\uC744 \uB9CC\uB4ED\uB2C8\uB2E4.",
+      descriptionSourceName: "\uCFB0\uB978 \uAD00\uAD11\uCCAD"
+    },
+    surface: "river",
+    visual: {
+      shape: "trussbridge",
+      height: 53,
+      width: 111,
+      spans: 3,
+      terrainHeight: 0,
+      actorX: 18,
+      color: "#c88b73",
+      motif: "train"
+    },
+    scene: {
+      description: "Hohenzollern Bridge: A tiny train follows the elevated crossing.",
+      descriptionKo: "\uD638\uC5D4\uCD10\uB808\uB978 \uB2E4\uB9AC: \uC791\uC740 \uAE30\uCC28\uAC00 \uB192\uC774 \uB193\uC778 \uB2E4\uB9AC\uB97C \uAC74\uB119\uB2C8\uB2E4."
+    }
+  },
+  {
+    record: {
+      id: "glienickebridge",
+      name: "Glienicke Bridge",
+      country: "Germany",
+      code: "DEU",
+      tier: "common",
+      lat: 52.413462,
+      lon: 13.090227,
+      source: "https://www.potsdam.de/en/glienicker-bruecke",
+      region: "Havel, Potsdam",
+      description: "A steel bridge crosses the Havel between Potsdam and Berlin, remembered for exchanges during the Cold War.",
+      descriptionSourceName: "City of Potsdam",
+      descriptionSource: "https://www.potsdam.de/en/glienicker-bruecke"
+    },
+    korean: {
+      name: "\uAE00\uB9AC\uB2C8\uCF00 \uB2E4\uB9AC",
+      country: "\uB3C5\uC77C",
+      region: "\uD3EC\uCE20\uB2F4 \uD558\uD3A0\uAC15",
+      description: "\uD3EC\uCE20\uB2F4\uACFC \uBCA0\uB97C\uB9B0 \uC0AC\uC774 \uD558\uD3A0\uAC15\uC744 \uAC74\uB108\uB294 \uAC15\uCCA0 \uB2E4\uB9AC\uB85C, \uB0C9\uC804\uAE30\uC758 \uAD50\uD658 \uC7A5\uC18C\uB85C\uB3C4 \uAE30\uC5B5\uB429\uB2C8\uB2E4.",
+      descriptionSourceName: "\uD3EC\uCE20\uB2F4\uC2DC"
+    },
+    surface: "river",
+    visual: {
+      shape: "trussbridge",
+      height: 41,
+      width: 108,
+      spans: 3,
+      terrainHeight: 0,
+      actorX: 102,
+      color: "#629b9f",
+      motif: "walk"
+    },
+    scene: {
+      description: "Glienicke Bridge: A visitor follows the crossing above the river.",
+      descriptionKo: "\uAE00\uB9AC\uB2C8\uCF00 \uB2E4\uB9AC: \uAD00\uB78C\uAC1D\uC774 \uAC15 \uC704\uC758 \uB2E4\uB9AC\uB97C \uB530\uB77C \uAC77\uC2B5\uB2C8\uB2E4."
+    }
+  },
+  {
+    record: {
+      id: "regensburgbridge",
+      name: "Regensburg Stone Bridge",
+      country: "Germany",
+      code: "DEU",
+      tier: "common",
+      lat: 49.0226092,
+      lon: 12.0972361,
+      source: "https://tourismus.regensburg.de/en/experience-discover/sightseeing-unesco-world-heritage/stone-bridge",
+      region: "Danube, Regensburg",
+      description: "A long sequence of medieval stone arches crosses the Danube beside Regensburg\u2019s old town. The bridge links the old town with Stadtamhof across the river.",
+      descriptionSourceName: "Regensburg Tourism",
+      descriptionSource: "https://tourismus.regensburg.de/en/experience-discover/sightseeing-unesco-world-heritage/stone-bridge"
+    },
+    korean: {
+      name: "\uB808\uAC90\uC2A4\uBD80\uB974\uD06C \uC11D\uAD50",
+      country: "\uB3C5\uC77C",
+      region: "\uB808\uAC90\uC2A4\uBD80\uB974\uD06C \uB2E4\uB274\uBE0C\uAC15",
+      description: "\uB808\uAC90\uC2A4\uBD80\uB974\uD06C \uAD6C\uC2DC\uAC00\uC9C0 \uACC1\uC5D0\uC11C \uC911\uC138 \uC11D\uC870 \uC544\uCE58\uAC00 \uAE38\uAC8C \uC774\uC5B4\uC838 \uB2E4\uB274\uBE0C\uAC15\uC744 \uAC74\uB119\uB2C8\uB2E4. \uB2E4\uB9AC\uB294 \uAC15 \uAC74\uB108 \uC288\uD0C0\uD2B8\uC554\uD638\uD504\uC640 \uAD6C\uC2DC\uAC00\uC9C0\uB97C \uC787\uC2B5\uB2C8\uB2E4.",
+      descriptionSourceName: "\uB808\uAC90\uC2A4\uBD80\uB974\uD06C \uAD00\uAD11\uCCAD"
+    },
+    surface: "river",
+    visual: {
+      shape: "stonebridge",
+      height: 40,
+      width: 113,
+      spans: 8,
+      terrainHeight: 0,
+      actorX: 18,
+      color: "#d4b078",
+      motif: "walk"
+    },
+    scene: {
+      description: "Regensburg Stone Bridge: A visitor follows the crossing above the river.",
+      descriptionKo: "\uB808\uAC90\uC2A4\uBD80\uB974\uD06C \uC11D\uAD50: \uAD00\uB78C\uAC1D\uC774 \uAC15 \uC704\uC758 \uB2E4\uB9AC\uB97C \uB530\uB77C \uAC77\uC2B5\uB2C8\uB2E4."
+    }
+  },
+  {
+    record: {
+      id: "visegradbridge",
+      name: "Mehmed Pa\u0161a Sokolovi\u0107 Bridge",
+      country: "Bosnia and Herzegovina",
+      code: "BIH",
+      tier: "epic",
+      lat: 43.78144444,
+      lon: 19.288025,
+      source: "https://whc.unesco.org/en/list/1260/",
+      region: "Drina, Vi\u0161egrad",
+      description: "Eleven masonry arches span the Drina at Vi\u0161egrad, forming an Ottoman bridge associated with architect Sinan.",
+      descriptionSourceName: "UNESCO World Heritage Centre",
+      descriptionSource: "https://whc.unesco.org/en/list/1260/"
+    },
+    korean: {
+      name: "\uBA54\uD750\uBA54\uB4DC\uD30C\uC0E4 \uC18C\uCF5C\uB85C\uBE44\uCE58 \uB2E4\uB9AC",
+      country: "\uBCF4\uC2A4\uB2C8\uC544 \uD5E4\uB974\uCCB4\uACE0\uBE44\uB098",
+      region: "\uBE44\uC170\uADF8\uB77C\uB4DC \uB4DC\uB9AC\uB098\uAC15",
+      description: "\uBE44\uC170\uADF8\uB77C\uB4DC\uC758 \uB4DC\uB9AC\uB098\uAC15\uC744 \uC5F4\uD55C \uAC1C\uC758 \uC11D\uC870 \uC544\uCE58\uAC00 \uAC00\uB85C\uC9C0\uB974\uBA70, \uAC74\uCD95\uAC00 \uC2DC\uB09C\uACFC \uAD00\uB828\uB41C \uC624\uC2A4\uB9CC \uC2DC\uB300 \uB2E4\uB9AC\uC785\uB2C8\uB2E4.",
+      descriptionSourceName: "\uC720\uB124\uC2A4\uCF54 \uC138\uACC4\uC720\uC0B0\uC13C\uD130"
+    },
+    surface: "river",
+    visual: {
+      shape: "stonebridge",
+      height: 45,
+      width: 111,
+      spans: 11,
+      terrainHeight: 0,
+      actorX: 96,
+      color: "#839b70",
+      motif: "walk"
+    },
+    scene: {
+      description: "Mehmed Pa\u0161a Sokolovi\u0107 Bridge: A visitor follows the crossing above the river.",
+      descriptionKo: "\uBA54\uD750\uBA54\uB4DC\uD30C\uC0E4 \uC18C\uCF5C\uB85C\uBE44\uCE58 \uB2E4\uB9AC: \uAD00\uB78C\uAC1D\uC774 \uAC15 \uC704\uC758 \uB2E4\uB9AC\uB97C \uB530\uB77C \uAC77\uC2B5\uB2C8\uB2E4."
+    }
+  },
+  {
+    record: {
+      id: "vizcayabridge",
+      name: "Vizcaya Bridge",
+      country: "Spain",
+      code: "ESP",
+      tier: "rare",
+      lat: 43.323175,
+      lon: -3.01683333,
+      source: "https://whc.unesco.org/en/list/1217/",
+      region: "Nervi\xF3n, Biscay",
+      description: "A high iron frame carries a suspended transporter gondola across the Nervi\xF3n estuary without blocking shipping.",
+      descriptionSourceName: "UNESCO World Heritage Centre",
+      descriptionSource: "https://whc.unesco.org/en/list/1217/"
+    },
+    korean: {
+      name: "\uBE44\uC2A4\uCE74\uC57C \uB2E4\uB9AC",
+      country: "\uC2A4\uD398\uC778",
+      region: "\uBE44\uC2A4\uCE74\uC57C \uB124\uB974\uBE44\uC628\uAC15",
+      description: "\uB192\uC740 \uCCA0\uC81C \uAD6C\uC870\uBB3C\uC5D0 \uB9E4\uB2E8 \uC6B4\uBC18 \uACE4\uB3CC\uB77C\uAC00 \uC120\uBC15\uC758 \uD1B5\uD589\uC744 \uB9C9\uC9C0 \uC54A\uACE0 \uB124\uB974\uBE44\uC628\uAC15 \uD558\uAD6C\uB97C \uC624\uAC11\uB2C8\uB2E4.",
+      descriptionSourceName: "\uC720\uB124\uC2A4\uCF54 \uC138\uACC4\uC720\uC0B0\uC13C\uD130"
+    },
+    surface: "river",
+    visual: {
+      shape: "transporter",
+      height: 86,
+      width: 109,
+      spans: 2,
+      terrainHeight: 0,
+      actorX: 20,
+      color: "#93a8b0",
+      motif: "gondola"
+    },
+    scene: {
+      description: "Vizcaya Bridge: A suspended gondola travels across the river.",
+      descriptionKo: "\uBE44\uC2A4\uCE74\uC57C \uB2E4\uB9AC: \uB9E4\uB2EC\uB9B0 \uACE4\uB3CC\uB77C\uAC00 \uAC15\uC744 \uAC00\uB85C\uC9C0\uB985\uB2C8\uB2E4."
+    }
+  },
+  {
+    record: {
+      id: "alcantarabridge",
+      name: "Roman Bridge of Alc\xE1ntara",
+      country: "Spain",
+      code: "ESP",
+      tier: "rare",
+      lat: 39.72247234,
+      lon: -6.89229238,
+      source: "https://www.spain.info/en/places-of-interest/puente-alcantara/",
+      region: "Tagus, Extremadura",
+      description: "Large stone arches and a central commemorative arch carry the Roman bridge over the Tagus at Alc\xE1ntara.",
+      descriptionSourceName: "Spain Tourism",
+      descriptionSource: "https://www.spain.info/en/places-of-interest/puente-alcantara/"
+    },
+    korean: {
+      name: "\uC54C\uCE78\uD0C0\uB77C \uB85C\uB9C8 \uB2E4\uB9AC",
+      country: "\uC2A4\uD398\uC778",
+      region: "\uC5D1\uC2A4\uD2B8\uB808\uB9C8\uB450\uB77C \uD0C0\uD638\uAC15",
+      description: "\uD070 \uC11D\uC870 \uC544\uCE58\uC640 \uC911\uC559\uC758 \uAE30\uB150 \uC544\uCE58\uB97C \uAC16\uCD98 \uB85C\uB9C8 \uB2E4\uB9AC\uAC00 \uC54C\uCE78\uD0C0\uB77C\uC5D0\uC11C \uD0C0\uD638\uAC15\uC744 \uAC74\uB119\uB2C8\uB2E4.",
+      descriptionSourceName: "\uC2A4\uD398\uC778 \uAD00\uAD11\uCCAD"
+    },
+    surface: "river",
+    visual: {
+      shape: "romanbridge",
+      height: 64,
+      width: 110,
+      spans: 6,
+      terrainHeight: 0,
+      actorX: 98,
+      color: "#b79889",
+      motif: "walk"
+    },
+    scene: {
+      description: "Roman Bridge of Alc\xE1ntara: A visitor follows the crossing above the river.",
+      descriptionKo: "\uC54C\uCE78\uD0C0\uB77C \uB85C\uB9C8 \uB2E4\uB9AC: \uAD00\uB78C\uAC1D\uC774 \uAC15 \uC704\uC758 \uB2E4\uB9AC\uB97C \uB530\uB77C \uAC77\uC2B5\uB2C8\uB2E4."
+    }
+  },
+  {
+    record: {
+      id: "pulteneybridge",
+      name: "Pulteney Bridge",
+      country: "United Kingdom",
+      code: "GBR",
+      tier: "common",
+      lat: 51.38305556,
+      lon: -2.35777778,
+      source: "https://www.visitbath.co.uk/things-to-do/pulteney-bridge-p56151",
+      region: "Avon, Bath",
+      description: "Shops line both sides of this three-arched bridge over the Avon, beside the curved weir in central Bath.",
+      descriptionSourceName: "Visit Bath",
+      descriptionSource: "https://www.visitbath.co.uk/things-to-do/pulteney-bridge-p56151"
+    },
+    korean: {
+      name: "\uD384\uD2B8\uB2C8 \uB2E4\uB9AC",
+      country: "\uC601\uAD6D",
+      region: "\uBC30\uC2A4 \uC5D0\uC774\uBC88\uAC15",
+      description: "\uBC30\uC2A4 \uB3C4\uC2EC \uC5D0\uC774\uBC88\uAC15\uC758 \uAD7D\uC740 \uBCF4 \uACC1\uC5D0 \uC138 \uC544\uCE58 \uB2E4\uB9AC\uAC00 \uB193\uC5EC \uC788\uACE0, \uB2E4\uB9AC \uC591\uC606\uC744 \uC0C1\uC810\uB4E4\uC774 \uCC44\uC6C1\uB2C8\uB2E4.",
+      descriptionSourceName: "\uBC30\uC2A4 \uAD00\uAD11\uCCAD"
+    },
+    surface: "river",
+    visual: {
+      shape: "shopbridge",
+      height: 43,
+      width: 105,
+      spans: 3,
+      terrainHeight: 0,
+      actorX: 20,
+      color: "#c88b73",
+      motif: "walk"
+    },
+    scene: {
+      description: "Pulteney Bridge: A visitor follows the crossing above the river.",
+      descriptionKo: "\uD384\uD2B8\uB2C8 \uB2E4\uB9AC: \uAD00\uB78C\uAC1D\uC774 \uAC15 \uC704\uC758 \uB2E4\uB9AC\uB97C \uB530\uB77C \uAC77\uC2B5\uB2C8\uB2E4."
+    }
+  },
+  {
+    record: {
+      id: "cliftonbridge",
+      name: "Clifton Suspension Bridge",
+      country: "United Kingdom",
+      code: "GBR",
+      tier: "rare",
+      lat: 51.455,
+      lon: -2.62776,
+      source: "https://cliftonbridge.org.uk/",
+      region: "Avon Gorge, Bristol",
+      description: "Suspension chains carry a slender deck between masonry towers high over the tidal Avon Gorge. The bridge\u2019s anchorages meet the steep rocky sides of the gorge.",
+      descriptionSourceName: "Clifton Suspension Bridge Trust",
+      descriptionSource: "https://cliftonbridge.org.uk/"
+    },
+    korean: {
+      name: "\uD074\uB9AC\uD504\uD134 \uD604\uC218\uAD50",
+      country: "\uC601\uAD6D",
+      region: "\uBE0C\uB9AC\uC2A4\uD2C0 \uC5D0\uC774\uBC88 \uD611\uACE1",
+      description: "\uC870\uC218\uC758 \uC601\uD5A5\uC744 \uBC1B\uB294 \uC5D0\uC774\uBC88 \uD611\uACE1 \uC704 \uB192\uC740 \uACF3\uC5D0\uC11C \uC11D\uC870 \uC8FC\uD0D1 \uC0AC\uC774 \uD604\uC218 \uC0AC\uC2AC\uC774 \uAC00\uB290\uB2E4\uB780 \uC0C1\uD310\uC744 \uBC1B\uCE69\uB2C8\uB2E4. \uB2E4\uB9AC\uB97C \uACE0\uC815\uD558\uB294 \uC591\uCABD \uAD6C\uC870\uBB3C\uC774 \uD611\uACE1\uC758 \uAC00\uD30C\uB978 \uBC14\uC704 \uC0AC\uBA74\uACFC \uB9CC\uB0A9\uB2C8\uB2E4.",
+      descriptionSourceName: "\uD074\uB9AC\uD504\uD134 \uD604\uC218\uAD50 \uC7AC\uB2E8"
+    },
+    surface: "river",
+    visual: {
+      shape: "suspension",
+      height: 78,
+      width: 110,
+      spans: 2,
+      terrainHeight: 0,
+      actorX: 98,
+      color: "#629b9f",
+      motif: "walk"
+    },
+    scene: {
+      description: "Clifton Suspension Bridge: A visitor follows the crossing above the river.",
+      descriptionKo: "\uD074\uB9AC\uD504\uD134 \uD604\uC218\uAD50: \uAD00\uB78C\uAC1D\uC774 \uAC15 \uC704\uC758 \uB2E4\uB9AC\uB97C \uB530\uB77C \uAC77\uC2B5\uB2C8\uB2E4."
+    }
+  },
+  {
+    record: {
+      id: "gatesheadbridge",
+      name: "Gateshead Millennium Bridge",
+      country: "United Kingdom",
+      code: "GBR",
+      tier: "rare",
+      lat: 54.96944444,
+      lon: -1.59972222,
+      source: "https://wilkinsoneyre.com/projects/gateshead-millennium-bridge",
+      region: "Tyne",
+      description: "A curved pedestrian deck and its supporting arch tilt together so boats can pass along the Tyne. The single sweeping arch rises above a curved walking and cycling route.",
+      descriptionSourceName: "WilkinsonEyre",
+      descriptionSource: "https://wilkinsoneyre.com/projects/gateshead-millennium-bridge"
+    },
+    korean: {
+      name: "\uAC8C\uC774\uCE20\uD5E4\uB4DC \uBC00\uB808\uB2C8\uC5C4\uBE0C\uB9AC\uC9C0",
+      country: "\uC601\uAD6D",
+      region: "\uD0C0\uC778\uAC15",
+      description: "\uAD7D\uC740 \uBCF4\uD589 \uC0C1\uD310\uACFC \uC9C0\uC9C0 \uC544\uCE58\uAC00 \uD568\uAED8 \uAE30\uC6B8\uC5B4\uC838 \uD0C0\uC778\uAC15\uC744 \uB530\uB77C \uBC30\uAC00 \uC9C0\uB098\uAC08 \uACF5\uAC04\uC744 \uB9CC\uB4ED\uB2C8\uB2E4. \uD558\uB098\uC758 \uD070 \uC544\uCE58 \uC544\uB798\uB85C \uAD7D\uC740 \uBCF4\uD589\xB7\uC790\uC804\uAC70 \uAE38\uC774 \uC774\uC5B4\uC9D1\uB2C8\uB2E4.",
+      descriptionSourceName: "\uC70C\uD0A8\uC2A8\uC5D0\uC5B4 \uAC74\uCD95\uC0AC\uBB34\uC18C"
+    },
+    surface: "river",
+    visual: {
+      shape: "tiltingbridge",
+      height: 67,
+      width: 109,
+      spans: 1,
+      terrainHeight: 0,
+      actorX: 18,
+      color: "#d4b078",
+      motif: "walk"
+    },
+    scene: {
+      description: "Gateshead Millennium Bridge: A visitor follows the crossing above the river.",
+      descriptionKo: "\uAC8C\uC774\uCE20\uD5E4\uB4DC \uBC00\uB808\uB2C8\uC5C4\uBE0C\uB9AC\uC9C0: \uAD00\uB78C\uAC1D\uC774 \uAC15 \uC704\uC758 \uB2E4\uB9AC\uB97C \uB530\uB77C \uAC77\uC2B5\uB2C8\uB2E4."
+    }
+  },
+  {
+    record: {
+      id: "newriverbridge",
+      name: "New River Gorge Bridge",
+      country: "United States",
+      code: "USA",
+      tier: "rare",
+      lat: 38.06888889,
+      lon: -81.0825,
+      source: "https://www.nps.gov/neri/planyourvisit/nrgbridge.htm",
+      region: "New River, West Virginia",
+      description: "A great steel arch supports the road high above the New River, framing the wooded gorge beneath it. The miniature keeps the steel arch below the roadway, above the river.",
+      descriptionSourceName: "National Park Service",
+      descriptionSource: "https://www.nps.gov/neri/planyourvisit/nrgbridge.htm"
+    },
+    korean: {
+      name: "\uB274\uB9AC\uBC84\uACE0\uC9C0 \uB2E4\uB9AC",
+      country: "\uBBF8\uAD6D",
+      region: "\uC6E8\uC2A4\uD2B8\uBC84\uC9C0\uB2C8\uC544 \uB274\uB9AC\uBC84",
+      description: "\uAC70\uB300\uD55C \uAC15\uCCA0 \uC544\uCE58\uAC00 \uB274\uB9AC\uBC84 \uB192\uC740 \uACF3\uC5D0\uC11C \uB3C4\uB85C\uB97C \uBC1B\uCE58\uBA70, \uADF8 \uC544\uB798\uB85C \uC232\uC774 \uC6B0\uAC70\uC9C4 \uD611\uACE1\uC774 \uD3BC\uCCD0\uC9D1\uB2C8\uB2E4. \uBAA8\uD615\uC5D0\uC11C\uB3C4 \uAC15\uACFC \uB3C4\uB85C \uC0AC\uC774\uC5D0 \uAC15\uCCA0 \uC544\uCE58\uB97C \uB193\uC558\uC2B5\uB2C8\uB2E4.",
+      descriptionSourceName: "\uBBF8\uAD6D \uAD6D\uB9BD\uACF5\uC6D0\uAD00\uB9AC\uCCAD"
+    },
+    surface: "river",
+    visual: {
+      shape: "steelarch",
+      height: 79,
+      width: 113,
+      spans: 1,
+      terrainHeight: 0,
+      actorX: 100,
+      color: "#839b70",
+      motif: "walk"
+    },
+    scene: {
+      description: "New River Gorge Bridge: A visitor follows the crossing above the river.",
+      descriptionKo: "\uB274\uB9AC\uBC84\uACE0\uC9C0 \uB2E4\uB9AC: \uAD00\uB78C\uAC1D\uC774 \uAC15 \uC704\uC758 \uB2E4\uB9AC\uB97C \uB530\uB77C \uAC77\uC2B5\uB2C8\uB2E4."
+    }
+  },
+  {
+    record: {
+      id: "howrahbridge",
+      name: "Howrah Bridge",
+      country: "India",
+      code: "IND",
+      tier: "rare",
+      lat: 22.5850528,
+      lon: 88.3469761,
+      source: "https://www.wbtourism.gov.in/district/detail/Howrah",
+      region: "Hooghly, Kolkata",
+      description: "A cantilevered steel truss spans the Hooghly between Kolkata and Howrah without river piers in its main span.",
+      descriptionSourceName: "West Bengal Tourism",
+      descriptionSource: "https://www.wbtourism.gov.in/district/detail/Howrah"
+    },
+    korean: {
+      name: "\uD558\uC6B0\uB77C \uB2E4\uB9AC",
+      country: "\uC778\uB3C4",
+      region: "\uCF5C\uCE74\uD0C0 \uD6C4\uAE00\uB9AC\uAC15",
+      description: "\uCE94\uD2F8\uB808\uBC84\uC2DD \uAC15\uCCA0 \uD2B8\uB7EC\uC2A4\uAC00 \uCF5C\uCE74\uD0C0\uC640 \uD558\uC6B0\uB77C \uC0AC\uC774 \uD6C4\uAE00\uB9AC\uAC15\uC744 \uAC00\uB85C\uC9C0\uB974\uBA70 \uC8FC \uACBD\uAC04 \uC548\uC5D0\uB294 \uAC15\uBC14\uB2E5 \uAD50\uAC01\uC774 \uC5C6\uC2B5\uB2C8\uB2E4.",
+      descriptionSourceName: "\uC11C\uBCB5\uACE8 \uAD00\uAD11\uCCAD"
+    },
+    surface: "river",
+    visual: {
+      shape: "cantilever",
+      height: 70,
+      width: 111,
+      spans: 2,
+      terrainHeight: 0,
+      actorX: 18,
+      color: "#93a8b0",
+      motif: "walk"
+    },
+    scene: {
+      description: "Howrah Bridge: A visitor follows the crossing above the river.",
+      descriptionKo: "\uD558\uC6B0\uB77C \uB2E4\uB9AC: \uAD00\uB78C\uAC1D\uC774 \uAC15 \uC704\uC758 \uB2E4\uB9AC\uB97C \uB530\uB77C \uAC77\uC2B5\uB2C8\uB2E4."
+    }
+  },
+  {
+    record: {
+      id: "chengyangbridge",
+      name: "Chengyang Wind and Rain Bridge",
+      country: "China",
+      code: "CHN",
+      tier: "rare",
+      lat: 25.9004032,
+      lon: 109.6380668,
+      source: "https://sjfw.mct.gov.cn/site/dataservice/culdetails?curId=10&id=35025",
+      region: "Linxi River, Guangxi",
+      description: "Multiple timber pavilions and covered walkways stand above stone piers across the Linxi River in a Dong community landscape.",
+      descriptionSourceName: "Ministry of Culture and Tourism of China",
+      descriptionSource: "https://sjfw.mct.gov.cn/site/dataservice/culdetails?curId=10&id=35025"
+    },
+    korean: {
+      name: "\uCCAD\uC591 \uD48D\uC6B0\uAD50",
+      country: "\uC911\uAD6D",
+      region: "\uAD11\uC2DC \uB9B0\uC2DC\uAC15",
+      description: "\uB465\uC871 \uB9C8\uC744 \uACBD\uAD00 \uC18D \uB9B0\uC2DC\uAC15\uC744 \uAC74\uB108\uB294 \uC11D\uC870 \uAD50\uAC01 \uC704\uC5D0 \uC5EC\uB7EC \uBAA9\uC870 \uB204\uAC01\uACFC \uC9C0\uBD95 \uC788\uB294 \uBCF4\uD589\uB85C\uAC00 \uC774\uC5B4\uC9D1\uB2C8\uB2E4.",
+      descriptionSourceName: "\uC911\uAD6D \uBB38\uD654\uC5EC\uC720\uBD80"
+    },
+    surface: "river",
+    visual: {
+      shape: "coveredpagoda",
+      height: 50,
+      width: 108,
+      spans: 5,
+      terrainHeight: 0,
+      actorX: 99,
+      color: "#b79889",
+      motif: "walk"
+    },
+    scene: {
+      description: "Chengyang Wind and Rain Bridge: A visitor follows the crossing above the river.",
+      descriptionKo: "\uCCAD\uC591 \uD48D\uC6B0\uAD50: \uAD00\uB78C\uAC1D\uC774 \uAC15 \uC704\uC758 \uB2E4\uB9AC\uB97C \uB530\uB77C \uAC77\uC2B5\uB2C8\uB2E4."
+    }
+  },
+  {
+    record: {
+      id: "zhaozhoubridge",
+      name: "Zhaozhou Bridge",
+      country: "China",
+      code: "CHN",
+      tier: "rare",
+      lat: 37.7202212,
+      lon: 114.7632736,
+      source: "https://www.sjz.gov.cn/english/columns/19e5d37f-e324-41da-826a-bf5ccaa8c428/201706/08/2a04ae55-b98f-4be7-8f71-a0fb4c638069.html",
+      region: "Xiao River, Hebei",
+      description: "A broad segmental stone arch crosses the Xiao River, with smaller open arches reducing the weight above its shoulders.",
+      descriptionSourceName: "Shijiazhuang Municipal Government",
+      descriptionSource: "https://www.sjz.gov.cn/english/columns/19e5d37f-e324-41da-826a-bf5ccaa8c428/201706/08/2a04ae55-b98f-4be7-8f71-a0fb4c638069.html"
+    },
+    korean: {
+      name: "\uC790\uC624\uC800\uC6B0 \uB2E4\uB9AC",
+      country: "\uC911\uAD6D",
+      region: "\uD5C8\uBCA0\uC774 \uC0E4\uC624\uD5C8\uAC15",
+      description: "\uC0E4\uC624\uD5C8\uAC15\uC744 \uAC74\uB108\uB294 \uB113\uACE0 \uB0AE\uC740 \uC11D\uC870 \uC544\uCE58 \uC591\uCABD \uC5B4\uAE68\uC5D0 \uC791\uC740 \uC5F4\uB9B0 \uC544\uCE58\uB4E4\uC744 \uB450\uC5B4 \uBB34\uAC8C\uB97C \uC904\uC600\uC2B5\uB2C8\uB2E4.",
+      descriptionSourceName: "\uC2A4\uC790\uC8A1\uC2DC \uC778\uBBFC\uC815\uBD80"
+    },
+    surface: "river",
+    visual: {
+      shape: "openarch",
+      height: 28,
+      width: 111,
+      spans: 1,
+      terrainHeight: 0,
+      actorX: 18,
+      color: "#c88b73",
+      motif: "walk"
+    },
+    scene: {
+      description: "Zhaozhou Bridge: A visitor follows the crossing above the river.",
+      descriptionKo: "\uC790\uC624\uC800\uC6B0 \uB2E4\uB9AC: \uAD00\uB78C\uAC1D\uC774 \uAC15 \uC704\uC758 \uB2E4\uB9AC\uB97C \uB530\uB77C \uAC77\uC2B5\uB2C8\uB2E4."
+    }
+  },
+  {
+    record: {
+      id: "ludingbridge",
+      name: "Luding Bridge",
+      country: "China",
+      code: "CHN",
+      tier: "common",
+      lat: 29.9144973,
+      lon: 102.2302051,
+      source: "https://www.luding.gov.cn/lsyg/article/682783",
+      region: "Dadu River, Sichuan",
+      description: "Iron chains span the Dadu River beneath a plank walkway, with anchoring structures at the two riverbanks.",
+      descriptionSourceName: "Luding County Government",
+      descriptionSource: "https://www.luding.gov.cn/lsyg/article/682783"
+    },
+    korean: {
+      name: "\uB8E8\uB529\uAD50",
+      country: "\uC911\uAD6D",
+      region: "\uC4F0\uCD28 \uB2E4\uB450\uD5C8\uAC15",
+      description: "\uB2E4\uB450\uD5C8\uAC15 \uC704\uB85C \uBED7\uC740 \uCCA0\uC81C \uC0AC\uC2AC\uC774 \uB110\uD310 \uBCF4\uD589\uB85C\uB97C \uBC1B\uCE58\uBA70 \uC591\uCABD \uAC15\uBCC0\uC5D0 \uACE0\uC815 \uAD6C\uC870\uBB3C\uC774 \uC790\uB9AC\uD569\uB2C8\uB2E4.",
+      descriptionSourceName: "\uB8E8\uB529\uD604 \uC778\uBBFC\uC815\uBD80"
+    },
+    surface: "river",
+    visual: {
+      shape: "chainfootbridge",
+      height: 52,
+      width: 107,
+      spans: 2,
+      terrainHeight: 0,
+      actorX: 98,
+      color: "#629b9f",
+      motif: "walk"
+    },
+    scene: {
+      description: "Luding Bridge: A visitor follows the crossing above the river.",
+      descriptionKo: "\uB8E8\uB529\uAD50: \uAD00\uB78C\uAC1D\uC774 \uAC15 \uC704\uC758 \uB2E4\uB9AC\uB97C \uB530\uB77C \uAC77\uC2B5\uB2C8\uB2E4."
+    }
+  },
+  {
+    record: {
+      id: "kintaibridge",
+      name: "Kintai Bridge",
+      country: "Japan",
+      code: "JPN",
+      tier: "rare",
+      lat: 34.1676435,
+      lon: 132.1783208,
+      source: "https://kintaikyo.iwakuni-city.net/en/summary.html",
+      region: "Nishiki River, Iwakuni",
+      description: "Five timber arches cross the Nishiki River on stone piers, creating a repeated wave-like profile below Iwakuni\u2019s hills.",
+      descriptionSourceName: "Iwakuni City",
+      descriptionSource: "https://kintaikyo.iwakuni-city.net/en/summary.html"
+    },
+    korean: {
+      name: "\uAE34\uD0C0\uC774\uAD50",
+      country: "\uC77C\uBCF8",
+      region: "\uC774\uC640\uCFE0\uB2C8 \uB2C8\uC2DC\uD0A4\uAC15",
+      description: "\uC11D\uC870 \uAD50\uAC01 \uC704 \uB2E4\uC12F \uBAA9\uC870 \uC544\uCE58\uAC00 \uB2C8\uC2DC\uD0A4\uAC15\uC744 \uAC74\uB108\uBA70 \uC774\uC640\uCFE0\uB2C8 \uC0B0\uC790\uB77D \uC544\uB798 \uBB3C\uACB0 \uAC19\uC740 \uC724\uACFD\uC744 \uB9CC\uB4ED\uB2C8\uB2E4.",
+      descriptionSourceName: "\uC774\uC640\uCFE0\uB2C8\uC2DC"
+    },
+    surface: "river",
+    visual: {
+      shape: "fivearch",
+      height: 58,
+      width: 109,
+      spans: 5,
+      terrainHeight: 0,
+      actorX: 21,
+      color: "#d4b078",
+      motif: "walk"
+    },
+    scene: {
+      description: "Kintai Bridge: A visitor follows the crossing above the river.",
+      descriptionKo: "\uAE34\uD0C0\uC774\uAD50: \uAD00\uB78C\uAC1D\uC774 \uAC15 \uC704\uC758 \uB2E4\uB9AC\uB97C \uB530\uB77C \uAC77\uC2B5\uB2C8\uB2E4."
+    }
+  },
+  {
+    record: {
+      id: "banpobridge",
+      name: "Banpo Bridge Rainbow Fountain",
+      country: "South Korea",
+      code: "KOR",
+      tier: "common",
+      lat: 37.514556,
+      lon: 126.9965074,
+      source: "https://english.visitseoul.net/attractions/Banpodaegyo-Bridge-Moonlight-Rainbow-Fountain_/2222",
+      region: "Hangang, Seoul",
+      description: "Rows of water jets extend from the bridge sides toward the Han River, combining a working crossing with a large fountain.",
+      descriptionSourceName: "Seoul Tourism Organization",
+      descriptionSource: "https://english.visitseoul.net/attractions/Banpodaegyo-Bridge-Moonlight-Rainbow-Fountain_/2222"
+    },
+    korean: {
+      name: "\uBC18\uD3EC\uB300\uAD50 \uB2EC\uBE5B\uBB34\uC9C0\uAC1C\uBD84\uC218",
+      country: "\uB300\uD55C\uBBFC\uAD6D",
+      region: "\uC11C\uC6B8 \uD55C\uAC15",
+      description: "\uB2E4\uB9AC \uC591\uC606\uC758 \uBD84\uC0AC\uAD6C\uC5D0\uC11C \uD55C\uAC15\uC744 \uD5A5\uD574 \uBB3C\uC904\uAE30\uAC00 \uBED7\uC5B4 \uB098\uC640 \uAD50\uB7C9\uACFC \uD070 \uBD84\uC218\uAC00 \uD55C \uAD6C\uC870\uBB3C\uC5D0 \uC5B4\uC6B0\uB7EC\uC9D1\uB2C8\uB2E4.",
+      descriptionSourceName: "\uC11C\uC6B8\uAD00\uAD11\uC7AC\uB2E8"
+    },
+    surface: "river",
+    visual: {
+      shape: "fountainbridge",
+      height: 26,
+      width: 115,
+      spans: 1,
+      terrainHeight: 0,
+      actorX: 100,
+      color: "#839b70",
+      motif: "fountain"
+    },
+    scene: {
+      description: "Banpo Bridge Rainbow Fountain: Arcs of water fall from the bridge sides.",
+      descriptionKo: "\uBC18\uD3EC\uB300\uAD50 \uB2EC\uBE5B\uBB34\uC9C0\uAC1C\uBD84\uC218: \uB2E4\uB9AC \uC591\uC606\uC5D0\uC11C \uBB3C\uC904\uAE30\uAC00 \uD3EC\uBB3C\uC120\uC744 \uADF8\uB9AC\uBA70 \uB5A8\uC5B4\uC9D1\uB2C8\uB2E4."
+    }
+  },
+  {
+    record: {
+      id: "seungilbridge",
+      name: "Seungil Bridge",
+      country: "South Korea",
+      code: "KOR",
+      tier: "common",
+      lat: 38.1870538,
+      lon: 127.3003263,
+      source: "https://english.visitkorea.or.kr/svc/whereToGo/locIntrdn/rgnContentsView.do?vcontsId=66587",
+      region: "Hantangang, Cheorwon",
+      description: "Concrete arches carry the old crossing above the Hantangang\u2019s volcanic gorge near Cheorwon. Its construction history connects work undertaken before and after the Korean War.",
+      descriptionSourceName: "Korea Tourism Organization",
+      descriptionSource: "https://english.visitkorea.or.kr/svc/whereToGo/locIntrdn/rgnContentsView.do?vcontsId=66587"
+    },
+    korean: {
+      name: "\uC2B9\uC77C\uAD50",
+      country: "\uB300\uD55C\uBBFC\uAD6D",
+      region: "\uCCA0\uC6D0 \uD55C\uD0C4\uAC15",
+      description: "\uCCA0\uC6D0 \uADFC\uCC98 \uD55C\uD0C4\uAC15\uC758 \uD654\uC0B0 \uD611\uACE1 \uC704\uC5D0 \uCF58\uD06C\uB9AC\uD2B8 \uC544\uCE58\uAC00 \uC61B \uB2E4\uB9AC\uB97C \uBC1B\uCE58\uACE0 \uC788\uC2B5\uB2C8\uB2E4. \uD55C\uAD6D\uC804\uC7C1 \uC804\uD6C4\uC5D0 \uB098\uB204\uC5B4 \uC774\uB8E8\uC5B4\uC9C4 \uACF5\uC0AC \uACFC\uC815\uC774 \uB2E4\uB9AC\uC758 \uC5ED\uC0AC\uC5D0 \uB0A8\uC544 \uC788\uC2B5\uB2C8\uB2E4.",
+      descriptionSourceName: "\uD55C\uAD6D\uAD00\uAD11\uACF5\uC0AC"
+    },
+    surface: "river",
+    visual: {
+      shape: "concretearch",
+      height: 51,
+      width: 108,
+      spans: 3,
+      terrainHeight: 0,
+      actorX: 18,
+      color: "#93a8b0",
+      motif: "walk"
+    },
+    scene: {
+      description: "Seungil Bridge: A visitor follows the crossing above the river.",
+      descriptionKo: "\uC2B9\uC77C\uAD50: \uAD00\uB78C\uAC1D\uC774 \uAC15 \uC704\uC758 \uB2E4\uB9AC\uB97C \uB530\uB77C \uAC77\uC2B5\uB2C8\uB2E4."
+    }
+  },
+  {
+    record: {
+      id: "panamacanal",
+      name: "Panama Canal",
+      country: "Panama",
+      code: "PAN",
+      tier: "legendary",
+      lat: 9.0620248,
+      lon: -79.664308,
+      source: "https://pancanal.com/en/",
+      region: "Isthmus of Panama",
+      description: "Lock chambers lift ships between sea level and an inland waterway across the isthmus, connecting Atlantic and Pacific routes.",
+      descriptionSourceName: "Panama Canal Authority",
+      descriptionSource: "https://pancanal.com/en/"
+    },
+    korean: {
+      name: "\uD30C\uB098\uB9C8 \uC6B4\uD558",
+      country: "\uD30C\uB098\uB9C8",
+      region: "\uD30C\uB098\uB9C8 \uC9C0\uD611",
+      description: "\uAC11\uBB38\uC774 \uBC30\uB97C \uD574\uC218\uBA74\uACFC \uB0B4\uB959 \uC218\uB85C \uC0AC\uC774\uB85C \uC62C\uB9AC\uACE0 \uB0B4\uB824 \uD30C\uB098\uB9C8 \uC9C0\uD611\uC744 \uAC00\uB85C\uC9C8\uB7EC \uB300\uC11C\uC591\uACFC \uD0DC\uD3C9\uC591 \uD56D\uB85C\uB97C \uC787\uC2B5\uB2C8\uB2E4.",
+      descriptionSourceName: "\uD30C\uB098\uB9C8 \uC6B4\uD558\uCCAD"
+    },
+    surface: "river",
+    visual: {
+      shape: "lock",
+      height: 44,
+      width: 106,
+      spans: 3,
+      terrainHeight: 0,
+      actorX: 99,
+      color: "#b79889",
+      motif: "lock"
+    },
+    scene: {
+      description: "Panama Canal: A little vessel waits between the lock gates.",
+      descriptionKo: "\uD30C\uB098\uB9C8 \uC6B4\uD558: \uC791\uC740 \uBC30\uAC00 \uAC11\uBB38 \uBB38 \uC0AC\uC774\uC5D0\uC11C \uAE30\uB2E4\uB9BD\uB2C8\uB2E4."
+    }
+  },
+  {
+    record: {
+      id: "suezcanal",
+      name: "Suez Canal",
+      country: "Egypt",
+      code: "EGY",
+      tier: "common",
+      lat: 30.6052767,
+      lon: 32.3331003,
+      source: "https://www.suezcanal.gov.eg/English/About/SuezCanal/Pages/CanalCharacteristics.aspx",
+      region: "Isthmus of Suez",
+      description: "A sea-level shipping canal cuts through the Suez isthmus, linking Mediterranean and Red Sea routes without lock lifts.",
+      descriptionSourceName: "Suez Canal Authority",
+      descriptionSource: "https://www.suezcanal.gov.eg/English/About/SuezCanal/Pages/CanalCharacteristics.aspx"
+    },
+    korean: {
+      name: "\uC218\uC5D0\uC988 \uC6B4\uD558",
+      country: "\uC774\uC9D1\uD2B8",
+      region: "\uC218\uC5D0\uC988 \uC9C0\uD611",
+      description: "\uD574\uC218\uBA74 \uB192\uC774\uC758 \uC218\uB85C\uAC00 \uC218\uC5D0\uC988 \uC9C0\uD611\uC744 \uAC00\uB974\uBA70 \uAC11\uBB38 \uC2B9\uAC15 \uC5C6\uC774 \uC9C0\uC911\uD574\uC640 \uD64D\uD574 \uD56D\uB85C\uB97C \uC787\uC2B5\uB2C8\uB2E4.",
+      descriptionSourceName: "\uC218\uC5D0\uC988 \uC6B4\uD558\uCCAD"
+    },
+    surface: "river",
+    visual: {
+      shape: "shipcanal",
+      height: 22,
+      width: 102,
+      spans: 1,
+      terrainHeight: 0,
+      actorX: 19,
+      color: "#c88b73",
+      motif: "canalship"
+    },
+    scene: {
+      description: "Suez Canal: A small ship proceeds between the canal banks.",
+      descriptionKo: "\uC218\uC5D0\uC988 \uC6B4\uD558: \uC791\uC740 \uBC30\uAC00 \uC6B4\uD558\uC758 \uC591\uCABD \uB451 \uC0AC\uC774\uB85C \uB098\uC544\uAC11\uB2C8\uB2E4."
+    }
+  },
+  {
+    record: {
+      id: "corinthcanal",
+      name: "Corinth Canal",
+      country: "Greece",
+      code: "GRC",
+      tier: "common",
+      lat: 37.9341193,
+      lon: 22.9846912,
+      source: "https://corinthcanal.com/",
+      region: "Isthmus of Corinth",
+      description: "A narrow straight waterway cuts between steep rock walls across the isthmus separating the Peloponnese from mainland Greece.",
+      descriptionSourceName: "Corinth Canal Authority",
+      descriptionSource: "https://corinthcanal.com/"
+    },
+    korean: {
+      name: "\uCF54\uB9B0\uD1A0\uC2A4 \uC6B4\uD558",
+      country: "\uADF8\uB9AC\uC2A4",
+      region: "\uCF54\uB9B0\uD1A0\uC2A4 \uC9C0\uD611",
+      description: "\uD3A0\uB85C\uD3F0\uB124\uC18C\uC2A4\uC640 \uADF8\uB9AC\uC2A4 \uBCF8\uD1A0 \uC0AC\uC774 \uC9C0\uD611\uC744 \uAC00\uD30C\uB978 \uBC14\uC704\uBCBD \uC0AC\uC774\uC758 \uC881\uACE0 \uACE7\uC740 \uC218\uB85C\uAC00 \uAC00\uB85C\uC9C0\uB985\uB2C8\uB2E4.",
+      descriptionSourceName: "\uCF54\uB9B0\uD1A0\uC2A4 \uC6B4\uD558\uCCAD"
+    },
+    surface: "river",
+    visual: {
+      shape: "cutcanal",
+      height: 66,
+      width: 103,
+      spans: 1,
+      terrainHeight: 0,
+      actorX: 98,
+      color: "#629b9f",
+      motif: "canalship"
+    },
+    scene: {
+      description: "Corinth Canal: A small ship proceeds between the canal banks.",
+      descriptionKo: "\uCF54\uB9B0\uD1A0\uC2A4 \uC6B4\uD558: \uC791\uC740 \uBC30\uAC00 \uC6B4\uD558\uC758 \uC591\uCABD \uB451 \uC0AC\uC774\uB85C \uB098\uC544\uAC11\uB2C8\uB2E4."
+    }
+  },
+  {
+    record: {
+      id: "kielcanal",
+      name: "Kiel Canal",
+      country: "Germany",
+      code: "DEU",
+      tier: "common",
+      lat: 54.2081189,
+      lon: 9.5721775,
+      source: "https://initiative-kiel-canal.de/en/technical-data/",
+      region: "Schleswig-Holstein",
+      description: "An inland shipping canal links North Sea and Baltic approaches, with locks at its ends and bridges above the channel.",
+      descriptionSourceName: "Initiative Kiel Canal",
+      descriptionSource: "https://initiative-kiel-canal.de/en/technical-data/"
+    },
+    korean: {
+      name: "\uD0AC \uC6B4\uD558",
+      country: "\uB3C5\uC77C",
+      region: "\uC290\uB808\uC2A4\uBE44\uD788\uD640\uC288\uD0C0\uC778",
+      description: "\uB0B4\uB959 \uC218\uB85C\uAC00 \uBD81\uD574\uC640 \uBC1C\uD2B8\uD574 \uD56D\uB85C\uB97C \uC787\uACE0, \uC6B4\uD558 \uC591\uB05D\uC758 \uAC11\uBB38\uACFC \uC218\uB85C \uC704 \uB2E4\uB9AC\uB4E4\uC774 \uC120\uBC15 \uD1B5\uD589\uC744 \uB3D5\uC2B5\uB2C8\uB2E4.",
+      descriptionSourceName: "\uD0AC \uC6B4\uD558 \uD611\uD68C"
+    },
+    surface: "river",
+    visual: {
+      shape: "shipcanal",
+      height: 41,
+      width: 108,
+      spans: 2,
+      terrainHeight: 0,
+      actorX: 20,
+      color: "#d4b078",
+      motif: "canalship"
+    },
+    scene: {
+      description: "Kiel Canal: A small ship proceeds between the canal banks.",
+      descriptionKo: "\uD0AC \uC6B4\uD558: \uC791\uC740 \uBC30\uAC00 \uC6B4\uD558\uC758 \uC591\uCABD \uB451 \uC0AC\uC774\uB85C \uB098\uC544\uAC11\uB2C8\uB2E4."
+    }
+  },
+  {
+    record: {
+      id: "canaldumidi",
+      name: "Canal du Midi",
+      country: "France",
+      code: "FRA",
+      tier: "rare",
+      lat: 43.61,
+      lon: 1.416,
+      source: "https://whc.unesco.org/en/list/770/",
+      region: "Occitanie",
+      description: "Canal channels, locks, aqueducts and bridges form a historic engineered waterway across southern France.",
+      descriptionSourceName: "UNESCO World Heritage Centre",
+      descriptionSource: "https://whc.unesco.org/en/list/770/"
+    },
+    korean: {
+      name: "\uBBF8\uB514 \uC6B4\uD558",
+      country: "\uD504\uB791\uC2A4",
+      region: "\uC625\uC2DC\uD0C0\uB2C8",
+      description: "\uD504\uB791\uC2A4 \uB0A8\uBD80\uB97C \uAC00\uB85C\uC9C0\uB974\uB294 \uC5ED\uC0AC\uC801\uC778 \uC218\uB85C\uC5D0 \uC6B4\uD558\uC640 \uAC11\uBB38, \uC218\uB85C\uAD50\uC640 \uB2E4\uB9AC\uAC00 \uD558\uB098\uC758 \uC2DC\uC124\uB85C \uC774\uC5B4\uC9D1\uB2C8\uB2E4.",
+      descriptionSourceName: "\uC720\uB124\uC2A4\uCF54 \uC138\uACC4\uC720\uC0B0\uC13C\uD130"
+    },
+    surface: "river",
+    visual: {
+      shape: "lock",
+      height: 44,
+      width: 104,
+      spans: 4,
+      terrainHeight: 0,
+      actorX: 96,
+      color: "#839b70",
+      motif: "lock"
+    },
+    scene: {
+      description: "Canal du Midi: A little vessel waits between the lock gates.",
+      descriptionKo: "\uBBF8\uB514 \uC6B4\uD558: \uC791\uC740 \uBC30\uAC00 \uAC11\uBB38 \uBB38 \uC0AC\uC774\uC5D0\uC11C \uAE30\uB2E4\uB9BD\uB2C8\uB2E4."
+    }
+  },
+  {
+    record: {
+      id: "canalcentre",
+      name: "Canal du Centre Boat Lifts",
+      country: "Belgium",
+      code: "BEL",
+      tier: "epic",
+      lat: 50.48111,
+      lon: 4.13722,
+      source: "https://whc.unesco.org/en/list/856/",
+      region: "Hainaut",
+      description: "Four historic hydraulic boat lifts raise and lower vessels between canal levels in Belgium\u2019s industrial waterway landscape.",
+      descriptionSourceName: "UNESCO World Heritage Centre",
+      descriptionSource: "https://whc.unesco.org/en/list/856/"
+    },
+    korean: {
+      name: "\uC0C1\uD2B8\uB974 \uC6B4\uD558 \uBCF4\uD2B8 \uB9AC\uD504\uD2B8",
+      country: "\uBCA8\uAE30\uC5D0",
+      region: "\uC5D0\uB178",
+      description: "\uBCA8\uAE30\uC5D0\uC758 \uC0B0\uC5C5 \uC218\uB85C \uACBD\uAD00 \uC18D \uC5ED\uC0AC\uC801\uC778 \uC218\uC555\uC2DD \uBCF4\uD2B8 \uB9AC\uD504\uD2B8 \uB124 \uACF3\uC774 \uBC30\uB97C \uC6B4\uD558\uC758 \uC11C\uB85C \uB2E4\uB978 \uB192\uC774\uB85C \uC62E\uAE41\uB2C8\uB2E4.",
+      descriptionSourceName: "\uC720\uB124\uC2A4\uCF54 \uC138\uACC4\uC720\uC0B0\uC13C\uD130"
+    },
+    surface: "river",
+    visual: {
+      shape: "boatlift",
+      height: 78,
+      width: 107,
+      spans: 2,
+      terrainHeight: 0,
+      actorX: 20,
+      color: "#93a8b0",
+      motif: "lift"
+    },
+    scene: {
+      description: "Canal du Centre Boat Lifts: A boat container rises beside the canal frame.",
+      descriptionKo: "\uC0C1\uD2B8\uB974 \uC6B4\uD558 \uBCF4\uD2B8 \uB9AC\uD504\uD2B8: \uBC30\uB97C \uB2F4\uC740 \uC6B4\uBC18\uD568\uC774 \uC6B4\uD558 \uAD6C\uC870\uBB3C \uACC1\uC5D0\uC11C \uC62C\uB77C\uAC11\uB2C8\uB2E4."
+    }
+  },
+  {
+    record: {
+      id: "falkirkwheel",
+      name: "Falkirk Wheel",
+      country: "United Kingdom",
+      code: "GBR",
+      tier: "rare",
+      lat: 56.0003559,
+      lon: -3.841725,
+      source: "https://www.scottishcanals.co.uk/visit/canals/visit-the-forth-clyde-canal/attractions/the-falkirk-wheel",
+      region: "Forth and Clyde Canal",
+      description: "Two water-filled gondolas rotate around a central axle to move boats between canal levels near Falkirk.",
+      descriptionSourceName: "Scottish Canals",
+      descriptionSource: "https://www.scottishcanals.co.uk/visit/canals/visit-the-forth-clyde-canal/attractions/the-falkirk-wheel"
+    },
+    korean: {
+      name: "\uD3F4\uCEE4\uD06C \uD720",
+      country: "\uC601\uAD6D",
+      region: "\uD3EC\uC2A4\uC564\uB4DC\uD074\uB77C\uC774\uB4DC \uC6B4\uD558",
+      description: "\uBB3C\uC744 \uCC44\uC6B4 \uB450 \uACE4\uB3CC\uB77C\uAC00 \uC911\uC2EC\uCD95\uC744 \uB3CC\uC544 \uD3F4\uCEE4\uD06C \uC778\uADFC \uC6B4\uD558\uC758 \uC11C\uB85C \uB2E4\uB978 \uB192\uC774 \uC0AC\uC774\uB85C \uBC30\uB97C \uC62E\uAE41\uB2C8\uB2E4.",
+      descriptionSourceName: "\uC2A4\uCF54\uD2C0\uB79C\uB4DC \uC6B4\uD558\uAD00\uB9AC\uCCAD"
+    },
+    surface: "river",
+    visual: {
+      shape: "rotatinglift",
+      height: 65,
+      width: 106,
+      spans: 2,
+      terrainHeight: 0,
+      actorX: 97,
+      color: "#b79889",
+      motif: "wheel"
+    },
+    scene: {
+      description: "Falkirk Wheel: The paired boat containers turn around their axle.",
+      descriptionKo: "\uD3F4\uCEE4\uD06C \uD720: \uD55C \uC30D\uC758 \uBC30 \uC6B4\uBC18\uD568\uC774 \uC911\uC2EC\uCD95\uC744 \uB3D5\uB2C8\uB2E4."
+    }
+  },
+  {
+    record: {
+      id: "andertonlift",
+      name: "Anderton Boat Lift",
+      country: "United Kingdom",
+      code: "GBR",
+      tier: "rare",
+      lat: 53.2729693,
+      lon: -2.53069879,
+      source: "https://canalrivertrust.org.uk/things-to-do/museums-and-attractions/anderton-boat-lift-and-visitor-centre-cheshire",
+      region: "River Weaver",
+      description: "A pair of water-filled caissons lifts boats between the River Weaver and the higher Trent and Mersey Canal.",
+      descriptionSourceName: "Canal and River Trust",
+      descriptionSource: "https://canalrivertrust.org.uk/things-to-do/museums-and-attractions/anderton-boat-lift-and-visitor-centre-cheshire"
+    },
+    korean: {
+      name: "\uC564\uB354\uD134 \uBCF4\uD2B8 \uB9AC\uD504\uD2B8",
+      country: "\uC601\uAD6D",
+      region: "\uC704\uBC84\uAC15",
+      description: "\uBB3C\uC744 \uCC44\uC6B4 \uD55C \uC30D\uC758 \uCF00\uC774\uC2A8\uC774 \uC704\uBC84\uAC15\uACFC \uB354 \uB192\uC740 \uD2B8\uB80C\uD2B8\uC564\uB4DC\uBA38\uC9C0 \uC6B4\uD558 \uC0AC\uC774\uB85C \uBC30\uB97C \uB4E4\uC5B4 \uC62C\uB9BD\uB2C8\uB2E4.",
+      descriptionSourceName: "\uC601\uAD6D \uC6B4\uD558\uD558\uCC9C\uC7AC\uB2E8"
+    },
+    surface: "river",
+    visual: {
+      shape: "boatlift",
+      height: 49,
+      width: 105,
+      spans: 5,
+      terrainHeight: 0,
+      actorX: 19,
+      color: "#c88b73",
+      motif: "lift"
+    },
+    scene: {
+      description: "Anderton Boat Lift: A boat container rises beside the canal frame.",
+      descriptionKo: "\uC564\uB354\uD134 \uBCF4\uD2B8 \uB9AC\uD504\uD2B8: \uBC30\uB97C \uB2F4\uC740 \uC6B4\uBC18\uD568\uC774 \uC6B4\uD558 \uAD6C\uC870\uBB3C \uACC1\uC5D0\uC11C \uC62C\uB77C\uAC11\uB2C8\uB2E4."
+    }
+  },
+  {
+    record: {
+      id: "bingleylocks",
+      name: "Bingley Five Rise Locks",
+      country: "United Kingdom",
+      code: "GBR",
+      tier: "common",
+      lat: 53.856254,
+      lon: -1.8381464,
+      source: "https://canalrivertrust.org.uk/news-and-views/media-centre/filming-and-photography/our-filming-and-photography-locations/bingley-five-rise-locks-leeds-and-liverpool-canal",
+      region: "Leeds and Liverpool Canal",
+      description: "Five adjoining lock chambers form a steep staircase for boats on the Leeds and Liverpool Canal. The upper gate of one chamber also serves the chamber above it.",
+      descriptionSourceName: "Canal and River Trust",
+      descriptionSource: "https://canalrivertrust.org.uk/news-and-views/media-centre/filming-and-photography/our-filming-and-photography-locations/bingley-five-rise-locks-leeds-and-liverpool-canal"
+    },
+    korean: {
+      name: "\uBE59\uB9AC \uD30C\uC774\uBE0C\uB77C\uC774\uC988 \uAC11\uBB38",
+      country: "\uC601\uAD6D",
+      region: "\uB9AC\uC988\uC564\uB4DC\uB9AC\uBC84\uD480 \uC6B4\uD558",
+      description: "\uB9AC\uC988\uC564\uB4DC\uB9AC\uBC84\uD480 \uC6B4\uD558\uC5D0\uC11C \uC11C\uB85C \uB9DE\uBD99\uC740 \uAC11\uBB38\uC2E4 \uB2E4\uC12F \uAC1C\uAC00 \uBC30\uB97C \uC62E\uAE30\uB294 \uAC00\uD30C\uB978 \uACC4\uB2E8\uC744 \uC774\uB8F9\uB2C8\uB2E4. \uD55C \uAC11\uBB38\uC2E4\uC758 \uC717\uBB38\uC744 \uBC14\uB85C \uC704 \uAC11\uBB38\uC2E4\uC774 \uD568\uAED8 \uC0AC\uC6A9\uD569\uB2C8\uB2E4.",
+      descriptionSourceName: "\uC601\uAD6D \uC6B4\uD558\uD558\uCC9C\uC7AC\uB2E8"
+    },
+    surface: "river",
+    visual: {
+      shape: "stairlock",
+      height: 36,
+      width: 103,
+      spans: 1,
+      terrainHeight: 0,
+      actorX: 99,
+      color: "#629b9f",
+      motif: "lock"
+    },
+    scene: {
+      description: "Bingley Five Rise Locks: A little vessel waits between the lock gates.",
+      descriptionKo: "\uBE59\uB9AC \uD30C\uC774\uBE0C\uB77C\uC774\uC988 \uAC11\uBB38: \uC791\uC740 \uBC30\uAC00 \uAC11\uBB38 \uBB38 \uC0AC\uC774\uC5D0\uC11C \uAE30\uB2E4\uB9BD\uB2C8\uB2E4."
+    }
+  },
+  {
+    record: {
+      id: "briareaqueduct",
+      name: "Briare Aqueduct",
+      country: "France",
+      code: "FRA",
+      tier: "common",
+      lat: 47.6311883,
+      lon: 2.734394,
+      source: "https://www.terresdeloireetcanaux.com/patrimoine-culturel/pont-canal-de-briare/",
+      region: "Loire, Briare",
+      description: "An iron water trough carries canal boats above the Loire, with decorated lamp posts lining the aqueduct\u2019s walkway.",
+      descriptionSourceName: "Briare Tourist Office",
+      descriptionSource: "https://www.terresdeloireetcanaux.com/patrimoine-culturel/pont-canal-de-briare/"
+    },
+    korean: {
+      name: "\uBE0C\uB9AC\uC544\uB974 \uC218\uB85C\uAD50",
+      country: "\uD504\uB791\uC2A4",
+      region: "\uBE0C\uB9AC\uC544\uB974 \uB8E8\uC544\uB974\uAC15",
+      description: "\uCCA0\uC81C \uC218\uB85C\uAC00 \uB8E8\uC544\uB974\uAC15 \uC704\uB85C \uC6B4\uD558 \uC120\uBC15\uC744 \uB098\uB974\uACE0, \uC218\uB85C\uAD50 \uBCF4\uD589\uB85C\uC5D0\uB294 \uC7A5\uC2DD \uAC00\uB85C\uB4F1\uC774 \uB298\uC5B4\uC11C \uC788\uC2B5\uB2C8\uB2E4.",
+      descriptionSourceName: "\uBE0C\uB9AC\uC544\uB974 \uAD00\uAD11\uCCAD"
+    },
+    surface: "river",
+    visual: {
+      shape: "waterbridge",
+      height: 53,
+      width: 109,
+      spans: 3,
+      terrainHeight: 0,
+      actorX: 18,
+      color: "#d4b078",
+      motif: "walk"
+    },
+    scene: {
+      description: "Briare Aqueduct: A visitor follows the crossing above the river.",
+      descriptionKo: "\uBE0C\uB9AC\uC544\uB974 \uC218\uB85C\uAD50: \uAD00\uB78C\uAC1D\uC774 \uAC15 \uC704\uC758 \uB2E4\uB9AC\uB97C \uB530\uB77C \uAC77\uC2B5\uB2C8\uB2E4."
+    }
+  },
+  {
+    record: {
+      id: "gotacanal",
+      name: "G\xF6ta Canal",
+      country: "Sweden",
+      code: "SWE",
+      tier: "common",
+      lat: 58.5587698,
+      lon: 15.0965535,
+      source: "https://www.gotakanal.se/en",
+      region: "G\xF6ta Canal",
+      description: "Locks and hand-worked waterways connect inland stretches across southern Sweden, represented by a stepped lock and towpath.",
+      descriptionSourceName: "G\xF6ta Canal Company",
+      descriptionSource: "https://www.gotakanal.se/en"
+    },
+    korean: {
+      name: "\uC608\uD0C0 \uC6B4\uD558",
+      country: "\uC2A4\uC6E8\uB374",
+      region: "\uC608\uD0C0 \uC6B4\uD558",
+      description: "\uC2A4\uC6E8\uB374 \uB0A8\uBD80\uC758 \uB0B4\uB959 \uAD6C\uAC04\uB4E4\uC744 \uAC11\uBB38\uACFC \uC218\uB85C\uAC00 \uC774\uC73C\uBA70, \uBAA8\uD615\uC740 \uACC4\uB2E8\uC2DD \uAC11\uBB38\uACFC \uC608\uC778\uB85C\uB97C \uD45C\uD604\uD569\uB2C8\uB2E4.",
+      descriptionSourceName: "\uC608\uD0C0 \uC6B4\uD558 \uC6B4\uC601\uC0AC"
+    },
+    surface: "river",
+    visual: {
+      shape: "lock",
+      height: 38,
+      width: 101,
+      spans: 3,
+      terrainHeight: 0,
+      actorX: 97,
+      color: "#839b70",
+      motif: "lock"
+    },
+    scene: {
+      description: "G\xF6ta Canal: A little vessel waits between the lock gates.",
+      descriptionKo: "\uC608\uD0C0 \uC6B4\uD558: \uC791\uC740 \uBC30\uAC00 \uAC11\uBB38 \uBB38 \uC0AC\uC774\uC5D0\uC11C \uAE30\uB2E4\uB9BD\uB2C8\uB2E4."
+    }
+  },
+  {
+    record: {
+      id: "rhinefalls",
+      name: "Rhine Falls",
+      country: "Switzerland",
+      code: "CHE",
+      tier: "common",
+      lat: 47.6783615,
+      lon: 8.6148706,
+      source: "https://rheinfall.ch/en/",
+      region: "Rhine, Schaffhausen",
+      description: "The Rhine tumbles over a broad rocky ledge near Schaffhausen, splitting around rocks that stand within the falling water.",
+      descriptionSourceName: "Rhine Falls Association",
+      descriptionSource: "https://rheinfall.ch/en/"
+    },
+    korean: {
+      name: "\uB77C\uC778 \uD3ED\uD3EC",
+      country: "\uC2A4\uC704\uC2A4",
+      region: "\uC0E4\uD504\uD558\uC6B0\uC820 \uB77C\uC778\uAC15",
+      description: "\uC0E4\uD504\uD558\uC6B0\uC820 \uC778\uADFC\uC5D0\uC11C \uB77C\uC778\uAC15\uC774 \uB113\uC740 \uBC14\uC704 \uD131\uC744 \uB118\uC5B4 \uC3DF\uC544\uC9C0\uBA70, \uD3ED\uD3EC \uD55C\uAC00\uC6B4\uB370 \uC19F\uC740 \uBC14\uC704\uB97C \uAC08\uB77C \uD750\uB985\uB2C8\uB2E4.",
+      descriptionSourceName: "\uB77C\uC778 \uD3ED\uD3EC \uD611\uD68C"
+    },
+    surface: "river",
+    visual: {
+      shape: "widefalls",
+      height: 38,
+      width: 111,
+      spans: 3,
+      terrainHeight: 0,
+      actorX: 20,
+      color: "#93a8b0",
+      motif: "cascade"
+    },
+    scene: {
+      description: "Rhine Falls: Foam descends along the different river ledges.",
+      descriptionKo: "\uB77C\uC778 \uD3ED\uD3EC: \uAC15\uC758 \uBC14\uC704 \uD131\uC744 \uB530\uB77C \uBB3C\uAC70\uD488\uC774 \uD758\uB7EC\uB0B4\uB9BD\uB2C8\uB2E4."
+    }
+  },
+  {
+    record: {
+      id: "gullfoss",
+      name: "Gullfoss",
+      country: "Iceland",
+      code: "ISL",
+      tier: "rare",
+      lat: 64.327316,
+      lon: -20.1191026,
+      source: "https://ust.is/english/visiting-iceland/protected-areas/south/gullfoss/",
+      region: "Hv\xEDt\xE1",
+      description: "The Hv\xEDt\xE1 drops in two stages before entering a narrow canyon, making a stepped waterfall in southern Iceland.",
+      descriptionSourceName: "Environment Agency of Iceland",
+      descriptionSource: "https://ust.is/english/visiting-iceland/protected-areas/south/gullfoss/"
+    },
+    korean: {
+      name: "\uAD74\uD3EC\uC2A4",
+      country: "\uC544\uC774\uC2AC\uB780\uB4DC",
+      region: "\uD750\uBE44\uD0C0\uAC15",
+      description: "\uC544\uC774\uC2AC\uB780\uB4DC \uB0A8\uBD80\uC5D0\uC11C \uD750\uBE44\uD0C0\uAC15\uC774 \uB450 \uB2E8\uC73C\uB85C \uB5A8\uC5B4\uC9C4 \uB4A4 \uC881\uC740 \uD611\uACE1\uC73C\uB85C \uB4E4\uC5B4\uAC00 \uACC4\uB2E8\uD615 \uD3ED\uD3EC\uB97C \uC774\uB8F9\uB2C8\uB2E4.",
+      descriptionSourceName: "\uC544\uC774\uC2AC\uB780\uB4DC \uD658\uACBD\uCCAD"
+    },
+    surface: "river",
+    visual: {
+      shape: "tieredfalls",
+      height: 63,
+      width: 108,
+      spans: 2,
+      terrainHeight: 0,
+      actorX: 98,
+      color: "#b79889",
+      motif: "cascade"
+    },
+    scene: {
+      description: "Gullfoss: Foam descends along the different river ledges.",
+      descriptionKo: "\uAD74\uD3EC\uC2A4: \uAC15\uC758 \uBC14\uC704 \uD131\uC744 \uB530\uB77C \uBB3C\uAC70\uD488\uC774 \uD758\uB7EC\uB0B4\uB9BD\uB2C8\uB2E4."
+    }
+  },
+  {
+    record: {
+      id: "dettifoss",
+      name: "Dettifoss",
+      country: "Iceland",
+      code: "ISL",
+      tier: "common",
+      lat: 65.8143509,
+      lon: -16.3844911,
+      source: "https://www.vatnajokulsthjodgardur.is/en/areas/jokulsargljufur",
+      region: "J\xF6kuls\xE1 \xE1 Fj\xF6llum",
+      description: "A powerful broad waterfall pours into the J\xF6kuls\xE1rglj\xFAfur canyon, carrying glacier-fed river water through dark rock.",
+      descriptionSourceName: "Vatnaj\xF6kull National Park",
+      descriptionSource: "https://www.vatnajokulsthjodgardur.is/en/areas/jokulsargljufur"
+    },
+    korean: {
+      name: "\uB370\uD2F0\uD3EC\uC2A4",
+      country: "\uC544\uC774\uC2AC\uB780\uB4DC",
+      region: "\uC694\uCFE8\uC0AC\uC544\uD53C\uC69C\uB8F8\uAC15",
+      description: "\uBE59\uD558\uC5D0\uC11C \uD758\uB7EC\uC628 \uAC15\uBB3C\uC774 \uC5B4\uB450\uC6B4 \uBC14\uC704\uB97C \uC9C0\uB098 \uC694\uCFE8\uC0AC\uB974\uAE00\uB9AC\uC6B0\uD478\uB974 \uD611\uACE1\uC73C\uB85C \uB113\uACE0 \uD798\uCC28\uAC8C \uC3DF\uC544\uC9D1\uB2C8\uB2E4.",
+      descriptionSourceName: "\uBC14\uD2B8\uB098\uC694\uCFE8 \uAD6D\uB9BD\uACF5\uC6D0"
+    },
+    surface: "river",
+    visual: {
+      shape: "widefalls",
+      height: 68,
+      width: 111,
+      spans: 1,
+      terrainHeight: 0,
+      actorX: 18,
+      color: "#c88b73",
+      motif: "cascade"
+    },
+    scene: {
+      description: "Dettifoss: Foam descends along the different river ledges.",
+      descriptionKo: "\uB370\uD2F0\uD3EC\uC2A4: \uAC15\uC758 \uBC14\uC704 \uD131\uC744 \uB530\uB77C \uBB3C\uAC70\uD488\uC774 \uD758\uB7EC\uB0B4\uB9BD\uB2C8\uB2E4."
+    }
+  },
+  {
+    record: {
+      id: "kaieteur",
+      name: "Kaieteur Falls",
+      country: "Guyana",
+      code: "GUY",
+      tier: "epic",
+      lat: 5.1749417,
+      lon: -59.4806521,
+      source: "https://guyanatourism.com/kaieteur-falls/",
+      region: "Potaro River",
+      description: "The Potaro River drops in a single great plunge over a sandstone escarpment surrounded by forest. The miniature keeps the unbroken drop separate from the surrounding cliff.",
+      descriptionSourceName: "Guyana Tourism Authority",
+      descriptionSource: "https://guyanatourism.com/kaieteur-falls/"
+    },
+    korean: {
+      name: "\uCE74\uC774\uC5D0\uD22C\uB974 \uD3ED\uD3EC",
+      country: "\uAC00\uC774\uC544\uB098",
+      region: "\uD3EC\uD0C0\uB85C\uAC15",
+      description: "\uC232\uC73C\uB85C \uB458\uB7EC\uC2F8\uC778 \uC0AC\uC554 \uC808\uBCBD\uC5D0\uC11C \uD3EC\uD0C0\uB85C\uAC15\uC774 \uD55C \uBC88\uC5D0 \uD06C\uAC8C \uB5A8\uC5B4\uC838 \uD3ED\uD3EC\uB97C \uC774\uB8F9\uB2C8\uB2E4. \uBAA8\uD615\uC5D0\uC11C\uB294 \uB04A\uAE30\uC9C0 \uC54A\uACE0 \uB5A8\uC5B4\uC9C0\uB294 \uBB3C\uC904\uAE30\uC640 \uC8FC\uBCC0 \uC808\uBCBD\uC744 \uAD6C\uBD84\uD588\uC2B5\uB2C8\uB2E4.",
+      descriptionSourceName: "\uAC00\uC774\uC544\uB098 \uAD00\uAD11\uCCAD"
+    },
+    surface: "river",
+    visual: {
+      shape: "plungefalls",
+      height: 91,
+      width: 69,
+      spans: 1,
+      terrainHeight: 0,
+      actorX: 100,
+      color: "#629b9f",
+      motif: "cascade"
+    },
+    scene: {
+      description: "Kaieteur Falls: Foam descends along the different river ledges.",
+      descriptionKo: "\uCE74\uC774\uC5D0\uD22C\uB974 \uD3ED\uD3EC: \uAC15\uC758 \uBC14\uC704 \uD131\uC744 \uB530\uB77C \uBB3C\uAC70\uD488\uC774 \uD758\uB7EC\uB0B4\uB9BD\uB2C8\uB2E4."
+    }
+  },
+  {
+    record: {
+      id: "khonefalls",
+      name: "Khone Phapheng Falls",
+      country: "Laos",
+      code: "LAO",
+      tier: "common",
+      lat: 13.9597676,
+      lon: 105.986526,
+      source: "https://www.tourismlaos.org/waterfalls/",
+      region: "Mekong, Champasak",
+      description: "The Mekong spreads through rocky channels and powerful rapids at Khone Phapheng near the southern border of Laos.",
+      descriptionSourceName: "Laos Tourism",
+      descriptionSource: "https://www.tourismlaos.org/waterfalls/"
+    },
+    korean: {
+      name: "\uCF58\uD30C\uD3AD \uD3ED\uD3EC",
+      country: "\uB77C\uC624\uC2A4",
+      region: "\uCC38\uD30C\uC0AD \uBA54\uCF69\uAC15",
+      description: "\uB77C\uC624\uC2A4 \uB0A8\uCABD \uAD6D\uACBD \uAC00\uAE4C\uC6B4 \uCF58\uD30C\uD3AD\uC5D0\uC11C \uBA54\uCF69\uAC15\uC774 \uBC14\uC704 \uC218\uB85C\uC640 \uAC70\uC13C \uAE09\uB958\uB85C \uB113\uAC8C \uAC08\uB77C\uC9D1\uB2C8\uB2E4.",
+      descriptionSourceName: "\uB77C\uC624\uC2A4 \uAD00\uAD11\uCCAD"
+    },
+    surface: "river",
+    visual: {
+      shape: "rapids",
+      height: 35,
+      width: 113,
+      spans: 6,
+      terrainHeight: 0,
+      actorX: 20,
+      color: "#d4b078",
+      motif: "cascade"
+    },
+    scene: {
+      description: "Khone Phapheng Falls: Foam descends along the different river ledges.",
+      descriptionKo: "\uCF58\uD30C\uD3AD \uD3ED\uD3EC: \uAC15\uC758 \uBC14\uC704 \uD131\uC744 \uB530\uB77C \uBB3C\uAC70\uD488\uC774 \uD758\uB7EC\uB0B4\uB9BD\uB2C8\uB2E4."
+    }
+  },
+  {
+    record: {
+      id: "bangiocfalls",
+      name: "Ban Gioc Waterfall",
+      country: "Vietnam",
+      code: "VNM",
+      tier: "rare",
+      lat: 22.8542722,
+      lon: 106.7233149,
+      source: "https://vietnam.travel/things-to-do/ban-gioc-waterfall-majestic-beauty-northern-border/",
+      region: "Qu\xE2y S\u01A1n River, Cao Bang",
+      description: "Broad tiers of water fall among green karst hills on the Qu\xE2y S\u01A1n River at the Vietnam\u2013China border. The miniature uses separate rock shelves for the stepped streams.",
+      descriptionSourceName: "Vietnam National Authority of Tourism",
+      descriptionSource: "https://vietnam.travel/things-to-do/ban-gioc-waterfall-majestic-beauty-northern-border/"
+    },
+    korean: {
+      name: "\uBC18\uC871 \uD3ED\uD3EC",
+      country: "\uBCA0\uD2B8\uB0A8",
+      region: "\uAE4C\uC624\uBC29 \uAFB8\uC5B4\uC774\uC120\uAC15",
+      description: "\uBCA0\uD2B8\uB0A8\uACFC \uC911\uAD6D \uAD6D\uACBD\uC758 \uAFB8\uC5B4\uC774\uC120\uAC15\uC5D0\uC11C \uD478\uB978 \uCE74\uB974\uC2A4\uD2B8 \uC5B8\uB355 \uC0AC\uC774\uB85C \uB113\uC740 \uBB3C\uC904\uAE30\uAC00 \uC5EC\uB7EC \uB2E8\uC744 \uC774\uB8E8\uC5B4 \uB5A8\uC5B4\uC9D1\uB2C8\uB2E4. \uBAA8\uD615\uC5D0\uC11C\uB294 \uCE35\uCE35\uC774 \uD750\uB974\uB294 \uBB3C\uC904\uAE30\uB9C8\uB2E4 \uBC14\uC704 \uD131\uC744 \uB530\uB85C \uD45C\uD604\uD588\uC2B5\uB2C8\uB2E4.",
+      descriptionSourceName: "\uBCA0\uD2B8\uB0A8 \uAD6D\uAC00\uAD00\uAD11\uCCAD"
+    },
+    surface: "river",
+    visual: {
+      shape: "tieredfalls",
+      height: 54,
+      width: 109,
+      spans: 3,
+      terrainHeight: 0,
+      actorX: 96,
+      color: "#839b70",
+      motif: "cascade"
+    },
+    scene: {
+      description: "Ban Gioc Waterfall: Foam descends along the different river ledges.",
+      descriptionKo: "\uBC18\uC871 \uD3ED\uD3EC: \uAC15\uC758 \uBC14\uC704 \uD131\uC744 \uB530\uB77C \uBB3C\uAC70\uD488\uC774 \uD758\uB7EC\uB0B4\uB9BD\uB2C8\uB2E4."
+    }
+  },
+  {
+    record: {
+      id: "huangguoshu",
+      name: "Huangguoshu Waterfall",
+      country: "China",
+      code: "CHN",
+      tier: "common",
+      lat: 25.992,
+      lon: 105.666,
+      source: "https://whc.unesco.org/en/tentativelists/6380/",
+      region: "Baishui River, Guizhou",
+      description: "A wide curtain of river water falls over a limestone ledge, with a passage known for running behind the waterfall.",
+      descriptionSourceName: "UNESCO Tentative Lists",
+      descriptionSource: "https://whc.unesco.org/en/tentativelists/6380/"
+    },
+    korean: {
+      name: "\uD669\uAD88\uC218 \uD3ED\uD3EC",
+      country: "\uC911\uAD6D",
+      region: "\uAD6C\uC774\uC800\uC6B0 \uBC14\uC774\uC218\uC774\uAC15",
+      description: "\uB113\uC740 \uAC15\uBB3C\uC774 \uC11D\uD68C\uC554 \uD131\uC5D0\uC11C \uC7A5\uB9C9\uCC98\uB7FC \uC3DF\uC544\uC9C0\uBA70, \uD3ED\uD3EC \uB4A4\uCABD\uC73C\uB85C \uC774\uC5B4\uC9C4 \uD1B5\uB85C\uAC00 \uC54C\uB824\uC838 \uC788\uC2B5\uB2C8\uB2E4.",
+      descriptionSourceName: "\uC720\uB124\uC2A4\uCF54 \uC138\uACC4\uC720\uC0B0 \uC7A0\uC815\uBAA9\uB85D"
+    },
+    surface: "river",
+    visual: {
+      shape: "curtainfalls",
+      height: 66,
+      width: 106,
+      spans: 1,
+      terrainHeight: 0,
+      actorX: 18,
+      color: "#93a8b0",
+      motif: "cascade"
+    },
+    scene: {
+      description: "Huangguoshu Waterfall: Foam descends along the different river ledges.",
+      descriptionKo: "\uD669\uAD88\uC218 \uD3ED\uD3EC: \uAC15\uC758 \uBC14\uC704 \uD131\uC744 \uB530\uB77C \uBB3C\uAC70\uD488\uC774 \uD758\uB7EC\uB0B4\uB9BD\uB2C8\uB2E4."
+    }
+  },
+  {
+    record: {
+      id: "shifenfalls",
+      name: "Shifen Waterfall",
+      country: "Taiwan",
+      code: "TWN",
+      tier: "common",
+      lat: 25.04897,
+      lon: 121.78746,
+      source: "https://newtaipei.travel/en/Attractions/Detail/111592",
+      region: "Keelung River, Pingxi",
+      description: "The Keelung River spreads across a curved rock ledge to form a broad horseshoe-shaped waterfall near Shifen.",
+      descriptionSourceName: "New Taipei City Tourism and Travel Department",
+      descriptionSource: "https://newtaipei.travel/en/Attractions/Detail/111592"
+    },
+    korean: {
+      name: "\uC2A4\uD380 \uD3ED\uD3EC",
+      country: "\uB300\uB9CC",
+      region: "\uD551\uC2DC \uC9C0\uB8FD\uAC15",
+      description: "\uC2A4\uD380 \uC778\uADFC\uC5D0\uC11C \uC9C0\uB8FD\uAC15\uC774 \uAD7D\uC740 \uBC14\uC704 \uD131 \uC704\uB85C \uD3BC\uCCD0\uC838 \uB113\uC740 \uB9D0\uAD7D \uBAA8\uC591 \uD3ED\uD3EC\uB97C \uC774\uB8F9\uB2C8\uB2E4.",
+      descriptionSourceName: "\uC2E0\uBCA0\uC774\uC2DC \uAD00\uAD11\uC5EC\uD589\uAD6D"
+    },
+    surface: "river",
+    visual: {
+      shape: "horseshoefalls",
+      height: 38,
+      width: 100,
+      spans: 4,
+      terrainHeight: 0,
+      actorX: 98,
+      color: "#b79889",
+      motif: "cascade"
+    },
+    scene: {
+      description: "Shifen Waterfall: Foam descends along the different river ledges.",
+      descriptionKo: "\uC2A4\uD380 \uD3ED\uD3EC: \uAC15\uC758 \uBC14\uC704 \uD131\uC744 \uB530\uB77C \uBB3C\uAC70\uD488\uC774 \uD758\uB7EC\uB0B4\uB9BD\uB2C8\uB2E4."
+    }
+  },
+  {
+    record: {
+      id: "hukoufalls",
+      name: "Hukou Waterfall",
+      country: "China",
+      code: "CHN",
+      tier: "common",
+      lat: 36.14722222,
+      lon: 110.44388889,
+      source: "https://english.www.gov.cn/news/202408/12/content_WS66b96ebbc6d0868f4e8e9da0.html",
+      region: "Yellow River, Shanxi\u2013Shaanxi",
+      description: "The Yellow River narrows sharply through a rocky opening, creating a forceful waterfall between Shanxi and Shaanxi.",
+      descriptionSourceName: "State Council of China",
+      descriptionSource: "https://english.www.gov.cn/news/202408/12/content_WS66b96ebbc6d0868f4e8e9da0.html"
+    },
+    korean: {
+      name: "\uD6C4\uCEE4\uC6B0 \uD3ED\uD3EC",
+      country: "\uC911\uAD6D",
+      region: "\uC0B0\uC2DC\xB7\uC0B0\uC2DC\uC131 \uACBD\uACC4 \uD669\uD5C8\uAC15",
+      description: "\uC0B0\uC2DC\uC131\uACFC \uC0B0\uC2DC\uC131 \uC0AC\uC774\uC5D0\uC11C \uD669\uD5C8\uAC15\uC774 \uBC14\uC704 \uD2C8\uC73C\uB85C \uAE09\uACA9\uD788 \uC881\uC544\uC9C0\uBA70 \uD798\uCC2C \uD3ED\uD3EC\uB97C \uB9CC\uB4ED\uB2C8\uB2E4.",
+      descriptionSourceName: "\uC911\uAD6D \uAD6D\uBB34\uC6D0"
+    },
+    surface: "river",
+    visual: {
+      shape: "gorgefalls",
+      height: 58,
+      width: 98,
+      spans: 1,
+      terrainHeight: 0,
+      actorX: 20,
+      color: "#c88b73",
+      motif: "cascade"
+    },
+    scene: {
+      description: "Hukou Waterfall: Foam descends along the different river ledges.",
+      descriptionKo: "\uD6C4\uCEE4\uC6B0 \uD3ED\uD3EC: \uAC15\uC758 \uBC14\uC704 \uD131\uC744 \uB530\uB77C \uBB3C\uAC70\uD488\uC774 \uD758\uB7EC\uB0B4\uB9BD\uB2C8\uB2E4."
+    }
+  },
+  {
+    record: {
+      id: "athirappilly",
+      name: "Athirappilly Falls",
+      country: "India",
+      code: "IND",
+      tier: "common",
+      lat: 10.28472222,
+      lon: 76.56861111,
+      source: "https://www.keralatourism.org/destination/athirappalli-vazhachal-waterfalls/79/",
+      region: "Chalakudy River, Kerala",
+      description: "The Chalakudy River drops over a broad rocky face in forested Kerala, breaking into several white streams.",
+      descriptionSourceName: "Kerala Tourism",
+      descriptionSource: "https://www.keralatourism.org/destination/athirappalli-vazhachal-waterfalls/79/"
+    },
+    korean: {
+      name: "\uC544\uD2F0\uB77C\uD544\uB9AC \uD3ED\uD3EC",
+      country: "\uC778\uB3C4",
+      region: "\uCF00\uB784\uB77C \uCC30\uB77C\uCFE0\uB514\uAC15",
+      description: "\uC232\uC774 \uC6B0\uAC70\uC9C4 \uCF00\uB784\uB77C\uC5D0\uC11C \uCC30\uB77C\uCFE0\uB514\uAC15\uC774 \uB113\uC740 \uBC14\uC704 \uC808\uBCBD\uC744 \uB118\uC5B4 \uC5EC\uB7EC \uD770 \uBB3C\uC904\uAE30\uB85C \uAC08\uB77C\uC838 \uB5A8\uC5B4\uC9D1\uB2C8\uB2E4.",
+      descriptionSourceName: "\uCF00\uB784\uB77C \uAD00\uAD11\uCCAD"
+    },
+    surface: "river",
+    visual: {
+      shape: "widefalls",
+      height: 47,
+      width: 111,
+      spans: 3,
+      terrainHeight: 0,
+      actorX: 99,
+      color: "#629b9f",
+      motif: "cascade"
+    },
+    scene: {
+      description: "Athirappilly Falls: Foam descends along the different river ledges.",
+      descriptionKo: "\uC544\uD2F0\uB77C\uD544\uB9AC \uD3ED\uD3EC: \uAC15\uC758 \uBC14\uC704 \uD131\uC744 \uB530\uB77C \uBB3C\uAC70\uD488\uC774 \uD758\uB7EC\uB0B4\uB9BD\uB2C8\uB2E4."
+    }
+  },
+  {
+    record: {
+      id: "tequendama",
+      name: "Tequendama Falls",
+      country: "Colombia",
+      code: "COL",
+      tier: "common",
+      lat: 4.57486111,
+      lon: -74.29338889,
+      source: "https://colombia.travel/en/cerca-de-bogota-soacha-guatavita-y-la-calera",
+      region: "Bogot\xE1 River, Cundinamarca",
+      description: "The Bogot\xE1 River plunges into a steep forest-lined gorge southwest of the Colombian capital. The miniature contrasts the narrow falling water with the tall rock walls.",
+      descriptionSourceName: "Colombia Travel",
+      descriptionSource: "https://colombia.travel/en/cerca-de-bogota-soacha-guatavita-y-la-calera"
+    },
+    korean: {
+      name: "\uD14C\uCF04\uB2E4\uB9C8 \uD3ED\uD3EC",
+      country: "\uCF5C\uB86C\uBE44\uC544",
+      region: "\uCFE4\uB514\uB098\uB9C8\uB974\uCE74 \uBCF4\uACE0\uD0C0\uAC15",
+      description: "\uCF5C\uB86C\uBE44\uC544 \uC218\uB3C4 \uB0A8\uC11C\uCABD\uC5D0\uC11C \uBCF4\uACE0\uD0C0\uAC15\uC774 \uC232\uC73C\uB85C \uB458\uB7EC\uC2F8\uC778 \uAC00\uD30C\uB978 \uD611\uACE1\uC73C\uB85C \uB5A8\uC5B4\uC9D1\uB2C8\uB2E4. \uBAA8\uD615\uC740 \uC881\uAC8C \uB5A8\uC5B4\uC9C0\uB294 \uBB3C\uC904\uAE30\uC640 \uB192\uC740 \uBC14\uC704\uBCBD\uC744 \uB300\uBE44\uD574 \uD45C\uD604\uD588\uC2B5\uB2C8\uB2E4.",
+      descriptionSourceName: "\uCF5C\uB86C\uBE44\uC544 \uAD00\uAD11\uCCAD"
+    },
+    surface: "river",
+    visual: {
+      shape: "plungefalls",
+      height: 87,
+      width: 72,
+      spans: 1,
+      terrainHeight: 0,
+      actorX: 19,
+      color: "#d4b078",
+      motif: "cascade"
+    },
+    scene: {
+      description: "Tequendama Falls: Foam descends along the different river ledges.",
+      descriptionKo: "\uD14C\uCF04\uB2E4\uB9C8 \uD3ED\uD3EC: \uAC15\uC758 \uBC14\uC704 \uD131\uC744 \uB530\uB77C \uBB3C\uAC70\uD488\uC774 \uD758\uB7EC\uB0B4\uB9BD\uB2C8\uB2E4."
+    }
+  },
+  {
+    record: {
+      id: "saltosmonday",
+      name: "Saltos del Monday",
+      country: "Paraguay",
+      code: "PRY",
+      tier: "common",
+      lat: -25.56194444,
+      lon: -54.63138889,
+      source: "https://visitparaguay.travel/places/saltos-del-monday",
+      region: "Monday River, Presidente Franco",
+      description: "Several strong river cascades descend through forest near Presidente Franco, separate from the nearby Iguaz\xFA Falls system.",
+      descriptionSourceName: "Paraguay National Tourism Secretariat",
+      descriptionSource: "https://visitparaguay.travel/places/saltos-del-monday"
+    },
+    korean: {
+      name: "\uBAAC\uB2E4\uC774 \uD3ED\uD3EC",
+      country: "\uD30C\uB77C\uACFC\uC774",
+      region: "\uD504\uB808\uC2DC\uB374\uD14C\uD504\uB791\uCF54 \uBAAC\uB2E4\uC774\uAC15",
+      description: "\uD504\uB808\uC2DC\uB374\uD14C\uD504\uB791\uCF54 \uADFC\uCC98 \uC232\uC18D\uC5D0\uC11C \uAC15\uBB3C\uC774 \uC5EC\uB7EC \uAD75\uC740 \uD3ED\uD3EC\uB85C \uB5A8\uC5B4\uC9C0\uBA70, \uAC00\uAE4C\uC6B4 \uC774\uAD6C\uC544\uC218 \uD3ED\uD3EC\uC640\uB294 \uB2E4\uB978 \uAC15\uC758 \uD3ED\uD3EC\uC785\uB2C8\uB2E4.",
+      descriptionSourceName: "\uD30C\uB77C\uACFC\uC774 \uAD6D\uAC00\uAD00\uAD11\uCCAD"
+    },
+    surface: "river",
+    visual: {
+      shape: "splitfalls",
+      height: 52,
+      width: 107,
+      spans: 3,
+      terrainHeight: 0,
+      actorX: 100,
+      color: "#839b70",
+      motif: "cascade"
+    },
+    scene: {
+      description: "Saltos del Monday: Foam descends along the different river ledges.",
+      descriptionKo: "\uBAAC\uB2E4\uC774 \uD3ED\uD3EC: \uAC15\uC758 \uBC14\uC704 \uD131\uC744 \uB530\uB77C \uBB3C\uAC70\uD488\uC774 \uD758\uB7EC\uB0B4\uB9BD\uB2C8\uB2E4."
+    }
+  }
+];
 
 // plugins/orcatopia/src/water-catalog.json
 var water_catalog_default = [
@@ -13105,6 +18309,30 @@ var catalog_600_default = [
 ];
 
 // plugins/orcatopia/src/water-themes.ts
+var marineMotifs = ["fish", "turtle", "whale", "seagrass"];
+var additionalWaterThemes = [
+  ...water_catalog_default.map((entry) => ({
+    id: entry.record.id,
+    placement: entry.surface,
+    gift: entry.surface === "river" ? "lotus" : entry.record.id === "bluehole" || entry.record.id === "geirangerfjord" ? "buoy" : "coral",
+    special: entry.surface === "river" ? entry.record.id === "middlerhine" ? "waterwheel" : "raft" : entry.record.id === "greatbarrierreef" ? "buoy" : "sailboat"
+  })),
+  ...catalog_600_default.filter((entry) => entry.placement !== "land").map((entry) => ({
+    id: entry.id,
+    placement: entry.placement,
+    gift: entry.placement === "river" ? "lotus" : "buoy",
+    special: entry.placement === "river" ? "raft" : "sailboat"
+  })),
+  ...catalog_700_default.map((entry) => ({
+    id: entry.record.id,
+    placement: entry.surface,
+    gift: entry.surface === "river" ? "lotus" : marineMotifs.includes(entry.visual.motif) ? "coral" : "buoy",
+    special: entry.surface === "river" ? ["lock", "lift", "wheel"].includes(entry.visual.motif) ? "waterwheel" : "raft" : marineMotifs.includes(entry.visual.motif) ? "buoy" : "sailboat"
+  }))
+];
+var expandedWaterIds = new Set(
+  additionalWaterThemes.map((theme) => theme.id)
+);
 var waterThemes = [
   { id: "halong", placement: "sea", gift: "buoy", special: "sailboat" },
   { id: "papahanaumokuakea", placement: "sea", gift: "coral", special: "buoy" },
@@ -13124,18 +18352,7 @@ var waterThemes = [
       special: ["kinderdijk", "dujiangyan"].includes(id) ? "waterwheel" : "raft"
     })
   ),
-  ...water_catalog_default.map((entry) => ({
-    id: entry.record.id,
-    placement: entry.surface,
-    gift: entry.surface === "river" ? "lotus" : entry.record.id === "bluehole" || entry.record.id === "geirangerfjord" ? "buoy" : "coral",
-    special: entry.surface === "river" ? entry.record.id === "middlerhine" ? "waterwheel" : "raft" : entry.record.id === "greatbarrierreef" ? "buoy" : "sailboat"
-  })),
-  ...catalog_600_default.filter((entry) => entry.placement !== "land").map((entry) => ({
-    id: entry.id,
-    placement: entry.placement,
-    gift: entry.placement === "river" ? "lotus" : "buoy",
-    special: entry.placement === "river" ? "raft" : "sailboat"
-  }))
+  ...additionalWaterThemes
 ];
 var byId2 = new Map(waterThemes.map((t) => [t.id, t]));
 var waterTheme = (id) => byId2.get(id.endsWith("+") ? id.slice(0, -1) : id);
@@ -13278,14 +18495,10 @@ var allowsSea = (id) => ["sea", "coastal"].includes(placementType(id));
 var allowsRiver = (id) => placementType(id) === "river";
 
 // plugins/orcatopia/src/water-decorations.ts
-var newIds = /* @__PURE__ */ new Set([
-  ...water_catalog_default.map((entry) => entry.record.id),
-  ...catalog_600_default.filter((entry) => entry.placement !== "land").map((entry) => entry.id)
-]);
 var waterDecorations = waterThemes.flatMap((theme) => {
   const landmark = landmarks_default.find((l) => l.id === theme.id);
   return [theme.gift, theme.special].map((shape, index) => ({
-    id: `${theme.id}-${newIds.has(theme.id) ? "" : "water-"}${index === 0 ? "gift" : "special"}`,
+    id: `${theme.id}-${expandedWaterIds.has(theme.id) ? "" : "water-"}${index === 0 ? "gift" : "special"}`,
     name: `${landmark.name} ${waterShapeNames[shape][0]}`,
     landmark: theme.id,
     cost: index === 0 ? 3 : 6,
@@ -18302,11 +23515,7 @@ var landmark_expansion_default = [
 ];
 
 // plugins/orcatopia/src/expanded-decorations.ts
-var waterIds = /* @__PURE__ */ new Set([
-  ...water_catalog_default.map((entry) => entry.record.id),
-  ...catalog_600_default.filter((entry) => entry.placement !== "land").map((entry) => entry.id)
-]);
-var expandedDecorations = landmark_expansion_default.filter((entry) => !waterIds.has(entry.id)).flatMap((entry) => {
+var expandedDecorations = landmark_expansion_default.filter((entry) => !expandedWaterIds.has(entry.id)).flatMap((entry) => {
   const nature = [
     "peaks",
     "forest",
