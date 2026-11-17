@@ -1,6 +1,85 @@
 import { assert, test } from 'orca/testing';
 import { createJiraClient, normalizeTask } from './jira';
 
+test('reads comments with a validated site/key and forwards cancellation', async () => {
+  const controller = new AbortController();
+  const client = createJiraClient(async (args, signal) => {
+    assert.deepEqual(args, ['comment', 'list', 'DEMO-1', '--site', 'site-a']);
+    assert.equal(signal, controller.signal);
+    return [
+      {
+        id: '42',
+        user: { displayName: 'Reviewer' },
+        createdAt: '2026-11-17T03:00:00Z',
+        body: '## Review\n\n- Looks good',
+      },
+    ];
+  });
+  const result = await client.comments(
+    { siteId: 'site-a', key: 'DEMO-1' },
+    controller.signal,
+  );
+  assert.equal(result.comments[0].author, 'Reviewer');
+  assert.equal(result.comments[0].createdAt, '2026-11-17T03:00:00Z');
+  assert.equal(result.comments[0].description, '## Review\n\n- Looks good');
+  assert.equal(result.limitReached, false);
+});
+
+test('rejects invalid comment requests and malformed responses', async () => {
+  let calls = 0;
+  const client = createJiraClient(async () => {
+    calls++;
+    return {};
+  });
+  for (const input of [
+    { siteId: '--help', key: 'DEMO-1' },
+    { siteId: 'site-a', key: '--help' },
+    { siteId: 'site-a', key: 'DEMO-1; rm' },
+  ])
+    await assert.rejects(() => client.comments(input));
+  assert.equal(calls, 0);
+  await assert.rejects(() =>
+    client.comments({ siteId: 'site-a', key: 'DEMO-1' }),
+  );
+  const failing = createJiraClient(async () => {
+    throw new Error('unavailable');
+  });
+  await assert.rejects(() =>
+    failing.comments({ siteId: 'site-a', key: 'DEMO-1' }),
+  );
+});
+
+test('bounds comment text, images and page size below the frame response limit', async () => {
+  const client = createJiraClient(async () =>
+    Array.from({ length: 101 }, (_, id) => ({
+      id: String(id),
+      body: '가'.repeat(30000),
+    })),
+  );
+  const result = await client.comments({ siteId: 'site-a', key: 'DEMO-1' });
+  assert.ok(result.comments.length > 0);
+  assert.equal(result.comments[0].description.length, 24000);
+  assert.equal(result.comments[0].descriptionTruncated, true);
+  assert.equal(result.comments[0].author, '');
+  assert.equal(result.limitReached, true);
+  assert.ok(Buffer.byteLength(JSON.stringify(result)) < 1024 * 1024);
+  const images = createJiraClient(async () =>
+    Array.from({ length: 10 }, () => ({
+      body: `![Image](data:image/png;base64,${'A'.repeat(500000)})`,
+    })),
+  );
+  const page = await images.comments({ siteId: 'site-a', key: 'DEMO-1' });
+  assert.equal(page.comments.length, 1);
+  assert.equal(page.limitReached, true);
+  assert.ok(page.comments[0].images?.[0].src.startsWith('data:image/png;'));
+  assert.ok(Buffer.byteLength(JSON.stringify(page)) < 1024 * 1024);
+  const empty = createJiraClient(async () => []);
+  assert.deepEqual(await empty.comments({ siteId: 'site-a', key: 'DEMO-1' }), {
+    comments: [],
+    limitReached: false,
+  });
+});
+
 test('uses only read commands, pins local site, and omits list descriptions', async () => {
   const calls: string[][] = [];
   const client = createJiraClient(async (args) => {

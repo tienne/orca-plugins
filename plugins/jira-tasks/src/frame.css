@@ -11,6 +11,26 @@ body {
   color: var(--orca-foreground);
   background: var(--orca-background);
 }
+.issue-comments {
+  margin-top: 24px;
+  border-top: 1px solid var(--orca-border);
+}
+.comment {
+  padding: 14px 0;
+  border-bottom: 1px solid var(--orca-border);
+  overflow-wrap: anywhere;
+}
+.comment-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 6px 12px;
+}
+.comment-meta time,
+.comment-meta > span {
+  color: var(--orca-muted-foreground);
+  font-size: 12px;
+}
 button,
 input,
 select {

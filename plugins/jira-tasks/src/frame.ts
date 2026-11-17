@@ -5,6 +5,7 @@ import type {
   TaskFilter,
   TaskPage,
   ChildOptions,
+  CommentPage,
 } from './protocol';
 import { en, ko } from './strings';
 import { resolveLocale, formatNumber } from './locale';
@@ -46,6 +47,10 @@ let appliedChildCriteria = '';
 let childPending: AbortController | undefined;
 let childOptionsLoaded = false;
 let navigationVersion = 0;
+let comments: CommentPage = { comments: [], limitReached: false };
+let commentsBusy = false;
+let commentsError = false;
+let commentsPending: AbortController | undefined;
 
 interface DetailSnapshot {
   task: JiraTask;
@@ -62,6 +67,9 @@ interface DetailSnapshot {
   options: ChildOptions;
   optionsLoaded: boolean;
   appliedCriteria: string;
+  comments: CommentPage;
+  commentsBusy: boolean;
+  commentsError: boolean;
 }
 const navigationHistory: DetailSnapshot[] = [];
 let listScrollY = 0;
@@ -99,6 +107,9 @@ function goBack(): void {
   childOptions = previous.options;
   childOptionsLoaded = previous.optionsLoaded;
   appliedChildCriteria = previous.appliedCriteria;
+  comments = previous.comments;
+  commentsBusy = previous.commentsBusy;
+  commentsError = previous.commentsError;
   render();
   const reload = previous.busy
     ? loadIssue(previous.task, true)
@@ -106,6 +117,8 @@ function goBack(): void {
       ? loadChildren(previous.task.key, pending.signal)
       : undefined;
   const request = pending;
+  if (!previous.busy && previous.commentsBusy)
+    void loadComments(previous.task.key, request.signal);
   const version = navigationVersion;
   const restoreScroll = () =>
     requestAnimationFrame(() => {
@@ -373,7 +386,10 @@ function imageFigure(image: { alt: string; src: string }): HTMLElement {
   figure.append(preview, el('figcaption', `${image.alt} · ${t.enlargeImage}`));
   return figure;
 }
-function description(task: JiraTask): HTMLElement {
+function description(
+  task: Pick<JiraTask, 'description' | 'images'>,
+  emptyMessage = t.noDescription,
+): HTMLElement {
   const root = el('div', '', 'description');
   let section = el('section');
   root.append(section);
@@ -454,8 +470,81 @@ function description(task: JiraTask): HTMLElement {
     }
   }
   flush();
-  if (!task.description) section.append(el('p', t.noDescription, 'muted'));
+  if (!task.description) section.append(el('p', emptyMessage, 'muted'));
   return root;
+}
+function renderComments(section: HTMLElement): void {
+  section.replaceChildren(el('h2', t.comments));
+  section.setAttribute('aria-label', t.comments);
+  section.setAttribute('aria-busy', String(commentsBusy));
+  if (commentsBusy) {
+    section.append(el('p', t.loadingComments, 'muted'));
+  } else if (commentsError) {
+    const message = el('p', t.commentsError, 'error');
+    message.setAttribute('role', 'alert');
+    section.append(
+      message,
+      button(t.retry, () => {
+        if (selected && pending)
+          return loadComments(selected.key, pending.signal);
+      }),
+    );
+  } else {
+    if (!comments.comments.length)
+      section.append(el('p', t.noComments, 'muted'));
+    for (const comment of comments.comments) {
+      const article = el('article', '', 'comment');
+      const meta = el('div', '', 'comment-meta');
+      meta.append(el('strong', comment.author || t.unknownAuthor));
+      if (Number.isFinite(Date.parse(comment.createdAt))) {
+        const time = el(
+          'time',
+          new Date(comment.createdAt).toLocaleString(uiLocale),
+        );
+        time.dateTime = new Date(comment.createdAt).toISOString();
+        meta.append(time);
+      } else meta.append(el('span', t.unknownTime));
+      article.append(meta, description(comment, t.noCommentBody));
+      if (comment.descriptionTruncated)
+        article.append(el('p', t.commentTruncated, 'muted'));
+      section.append(article);
+    }
+    if (comments.limitReached)
+      section.append(el('p', t.commentsLimit, 'muted'));
+  }
+}
+async function loadComments(key: string, signal: AbortSignal): Promise<void> {
+  commentsPending?.abort();
+  const request = new AbortController();
+  commentsPending = request;
+  const abort = () => request.abort();
+  signal.addEventListener('abort', abort, { once: true });
+  if (signal.aborted) request.abort();
+  commentsBusy = true;
+  commentsError = false;
+  const update = () => {
+    const section = document.querySelector<HTMLElement>('#issue-comments');
+    if (section) renderComments(section);
+  };
+  update();
+  try {
+    const result = await bridge.plugin.request(
+      'jira.comments',
+      { siteId, key },
+      { signal: request.signal },
+    );
+    if (request.signal.aborted || selected?.key !== key) return;
+    comments = result;
+  } catch {
+    if (request.signal.aborted || selected?.key !== key) return;
+    commentsError = true;
+  } finally {
+    signal.removeEventListener('abort', abort);
+    if (!request.signal.aborted && selected?.key === key) {
+      commentsBusy = false;
+      update();
+    }
+  }
 }
 function selectField(
   label: string,
@@ -942,6 +1031,10 @@ function render(): void {
       );
       if (selected.descriptionTruncated)
         app.append(el('p', t.truncated, 'muted'));
+      const commentSection = el('section', '', 'issue-comments');
+      commentSection.id = 'issue-comments';
+      renderComments(commentSection);
+      app.append(commentSection);
       const footer = el('footer', '', 'footer');
       if (selected.url) footer.append(link(t.fullIssue, selected.url));
       app.append(footer);
@@ -1081,6 +1174,9 @@ async function loadIssue(
         options: childOptions,
         optionsLoaded: childOptionsLoaded,
         appliedCriteria: appliedChildCriteria,
+        comments,
+        commentsBusy,
+        commentsError,
       });
       if (navigationHistory.length > 30) navigationHistory.shift();
     } else if (!selected) listScrollY = window.scrollY;
@@ -1097,11 +1193,15 @@ async function loadIssue(
   children = { tasks: [], limitReached: false };
   childrenBusy = true;
   childrenError = '';
+  comments = { comments: [], limitReached: false };
+  commentsBusy = true;
+  commentsError = false;
   busy = true;
   error = '';
   render();
   if (!preserveFilters) window.scrollTo(0, 0);
   void loadChildren(task.key, request.signal, true);
+  void loadComments(task.key, request.signal);
   try {
     const detail = await bridge.plugin.request(
       'jira.issue',

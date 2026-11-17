@@ -31,6 +31,18 @@ export interface TaskPage {
   tasks: JiraTask[];
   limitReached: boolean;
 }
+export interface JiraComment {
+  id: string;
+  author: string;
+  createdAt: string;
+  description: string;
+  descriptionTruncated: boolean;
+  images?: { alt: string; src: string }[];
+}
+export interface CommentPage {
+  comments: JiraComment[];
+  limitReached: boolean;
+}
 export interface ChildQueryInput {
   siteId: string;
   key: string;
@@ -60,5 +72,9 @@ declare module 'orca' {
       output: ChildPage;
     };
     'jira.issue': { input: { siteId: string; key: string }; output: JiraTask };
+    'jira.comments': {
+      input: { siteId: string; key: string };
+      output: CommentPage;
+    };
   }
 }
