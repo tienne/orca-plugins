@@ -356,131 +356,6 @@
       ]
     },
     {
-      "id": "tienne.jira-tasks",
-      "source": {
-        "kind": "git",
-        "url": "https://github.com/tienne/orca-plugins.git",
-        "ref": "release",
-        "path": "plugins/jira-tasks"
-      },
-      "description": "Keep Jira within reach in the Orca sidebar. Browse issues, follow parent and child tickets, and query children by status or assignee using your existing Jira connection.",
-      "categories": [
-        "developer-tools"
-      ],
-      "releases": [
-        {
-          "version": "0.1.1",
-          "commit": "d29f093e9473dc0d606b34597997b35484a822db",
-          "contentHash": "2968b3e08cb8d3424065768c5d5c9506447910489c3e30d10a803caa3dd33c31",
-          "execution": "trusted-worker",
-          "minimumOrca": "1.4.256",
-          "name": "Jira Tasks",
-          "contributes": [
-            {
-              "kind": "panels",
-              "name": "Jira Tasks"
-            },
-            {
-              "kind": "commands",
-              "name": "Open Jira Tasks"
-            },
-            {
-              "kind": "keybindings",
-              "name": "Mod+J",
-              "detail": "jira-tasks.open"
-            }
-          ],
-          "images": {
-            "icon": {
-              "path": "plugins/jira-tasks/assets/jira-tasks-icon.png",
-              "alt": "Jira Tasks",
-              "sha256": "1e1773e75dc9d78c33dca1f1d441214469414bb5165678a4eefc916fbeb8f2ea",
-              "width": 256,
-              "height": 256
-            },
-            "cover": {
-              "path": "plugins/jira-tasks/assets/jira-tasks-introduction.png",
-              "alt": "Jira Tasks — Keep Jira within reach, beside an English DEMO ticket detail view.",
-              "sha256": "20d3e2b6c2a0f7d684cee77ad76bff81203c6968c55ad6bb30a7ae55f4ed3d29",
-              "width": 1600,
-              "height": 1000
-            },
-            "screenshots": [
-              {
-                "path": "plugins/jira-tasks/assets/jira-tasks-dark.png",
-                "alt": "English DEMO issue list and ticket details in dark mode, with parent, assignee, reporter and child query controls.",
-                "sha256": "3304e7fee2f9886a622d91f6055ba1c65c0275ede8174142d3a7358c3d3f0376",
-                "width": 1600,
-                "height": 1000
-              },
-              {
-                "path": "plugins/jira-tasks/assets/jira-tasks-light.png",
-                "alt": "English DEMO issue list and ticket details in light mode, with parent, assignee, reporter and child query controls.",
-                "sha256": "c94b6151641cf2c36cbbc6d005f4a043be4eda14a4f0e9c7cdbc1bd057d573fc",
-                "width": 1600,
-                "height": 1000
-              }
-            ]
-          }
-        },
-        {
-          "version": "0.1.0",
-          "commit": "b302a9339f400ce174f3290614b86db98975fde3",
-          "contentHash": "8757f04579f4e231509439fd2fc8ee7a058b5bc15f68bf4d80f1028288f5a204",
-          "execution": "trusted-worker",
-          "minimumOrca": "1.4.256",
-          "name": "Jira Tasks",
-          "contributes": [
-            {
-              "kind": "panels",
-              "name": "Jira Tasks"
-            },
-            {
-              "kind": "commands",
-              "name": "Open Jira Tasks"
-            },
-            {
-              "kind": "keybindings",
-              "name": "Mod+J",
-              "detail": "jira-tasks.open"
-            }
-          ],
-          "images": {
-            "icon": {
-              "path": "plugins/jira-tasks/assets/jira-tasks-icon.png",
-              "alt": "Jira Tasks",
-              "sha256": "1e1773e75dc9d78c33dca1f1d441214469414bb5165678a4eefc916fbeb8f2ea",
-              "width": 256,
-              "height": 256
-            },
-            "cover": {
-              "path": "plugins/jira-tasks/assets/jira-tasks-introduction.png",
-              "alt": "Jira Tasks — Keep Jira within reach, beside an English DEMO ticket detail view.",
-              "sha256": "20d3e2b6c2a0f7d684cee77ad76bff81203c6968c55ad6bb30a7ae55f4ed3d29",
-              "width": 1600,
-              "height": 1000
-            },
-            "screenshots": [
-              {
-                "path": "plugins/jira-tasks/assets/jira-tasks-dark.png",
-                "alt": "English DEMO issue list and ticket details in dark mode, with parent, assignee, reporter and child query controls.",
-                "sha256": "3304e7fee2f9886a622d91f6055ba1c65c0275ede8174142d3a7358c3d3f0376",
-                "width": 1600,
-                "height": 1000
-              },
-              {
-                "path": "plugins/jira-tasks/assets/jira-tasks-light.png",
-                "alt": "English DEMO issue list and ticket details in light mode, with parent, assignee, reporter and child query controls.",
-                "sha256": "c94b6151641cf2c36cbbc6d005f4a043be4eda14a4f0e9c7cdbc1bd057d573fc",
-                "width": 1600,
-                "height": 1000
-              }
-            ]
-          }
-        }
-      ]
-    },
-    {
       "id": "tienne.landmark-island",
       "source": {
         "kind": "git",
@@ -1075,6 +950,186 @@
                 "sha256": "13ddbeb02536865cdd11015ba2e95de1adf8f42de807d742b137d068b0888915",
                 "width": 1280,
                 "height": 1423
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "tienne.jira-tasks",
+      "source": {
+        "kind": "git",
+        "url": "https://github.com/tienne/orca-plugins.git",
+        "ref": "release",
+        "path": "plugins/jira-tasks"
+      },
+      "description": "Keep Jira within reach in the Orca sidebar. Browse issues, follow parent and child tickets, and query children by status or assignee using your existing Jira connection.",
+      "categories": [
+        "developer-tools"
+      ],
+      "releases": [
+        {
+          "version": "0.2.0",
+          "commit": "403fdfbaaf55096c8d8b7db7bfcc32a5815de3b7",
+          "contentHash": "c41025bf40ba39cb5c068ec748cd677b02168be52253f6cd88cfe1a95fb46740",
+          "execution": "trusted-worker",
+          "minimumOrca": "1.4.256",
+          "name": "Jira Tasks",
+          "contributes": [
+            {
+              "kind": "panels",
+              "name": "Jira Tasks"
+            },
+            {
+              "kind": "commands",
+              "name": "Open Jira Tasks"
+            },
+            {
+              "kind": "keybindings",
+              "name": "Mod+J",
+              "detail": "jira-tasks.open"
+            }
+          ],
+          "images": {
+            "icon": {
+              "path": "plugins/jira-tasks/assets/jira-tasks-icon.png",
+              "alt": "Jira Tasks",
+              "sha256": "1e1773e75dc9d78c33dca1f1d441214469414bb5165678a4eefc916fbeb8f2ea",
+              "width": 256,
+              "height": 256
+            },
+            "cover": {
+              "path": "plugins/jira-tasks/assets/jira-tasks-introduction.png",
+              "alt": "Jira Tasks — Keep Jira within reach, beside an English DEMO ticket detail view.",
+              "sha256": "20d3e2b6c2a0f7d684cee77ad76bff81203c6968c55ad6bb30a7ae55f4ed3d29",
+              "width": 1600,
+              "height": 1000
+            },
+            "screenshots": [
+              {
+                "path": "plugins/jira-tasks/assets/jira-tasks-dark.png",
+                "alt": "English DEMO issue list and ticket details in dark mode, with parent, assignee, reporter and child query controls.",
+                "sha256": "3304e7fee2f9886a622d91f6055ba1c65c0275ede8174142d3a7358c3d3f0376",
+                "width": 1600,
+                "height": 1000
+              },
+              {
+                "path": "plugins/jira-tasks/assets/jira-tasks-light.png",
+                "alt": "English DEMO issue list and ticket details in light mode, with parent, assignee, reporter and child query controls.",
+                "sha256": "c94b6151641cf2c36cbbc6d005f4a043be4eda14a4f0e9c7cdbc1bd057d573fc",
+                "width": 1600,
+                "height": 1000
+              }
+            ]
+          }
+        },
+        {
+          "version": "0.1.1",
+          "commit": "d29f093e9473dc0d606b34597997b35484a822db",
+          "contentHash": "2968b3e08cb8d3424065768c5d5c9506447910489c3e30d10a803caa3dd33c31",
+          "execution": "trusted-worker",
+          "minimumOrca": "1.4.256",
+          "name": "Jira Tasks",
+          "contributes": [
+            {
+              "kind": "panels",
+              "name": "Jira Tasks"
+            },
+            {
+              "kind": "commands",
+              "name": "Open Jira Tasks"
+            },
+            {
+              "kind": "keybindings",
+              "name": "Mod+J",
+              "detail": "jira-tasks.open"
+            }
+          ],
+          "images": {
+            "icon": {
+              "path": "plugins/jira-tasks/assets/jira-tasks-icon.png",
+              "alt": "Jira Tasks",
+              "sha256": "1e1773e75dc9d78c33dca1f1d441214469414bb5165678a4eefc916fbeb8f2ea",
+              "width": 256,
+              "height": 256
+            },
+            "cover": {
+              "path": "plugins/jira-tasks/assets/jira-tasks-introduction.png",
+              "alt": "Jira Tasks — Keep Jira within reach, beside an English DEMO ticket detail view.",
+              "sha256": "20d3e2b6c2a0f7d684cee77ad76bff81203c6968c55ad6bb30a7ae55f4ed3d29",
+              "width": 1600,
+              "height": 1000
+            },
+            "screenshots": [
+              {
+                "path": "plugins/jira-tasks/assets/jira-tasks-dark.png",
+                "alt": "English DEMO issue list and ticket details in dark mode, with parent, assignee, reporter and child query controls.",
+                "sha256": "3304e7fee2f9886a622d91f6055ba1c65c0275ede8174142d3a7358c3d3f0376",
+                "width": 1600,
+                "height": 1000
+              },
+              {
+                "path": "plugins/jira-tasks/assets/jira-tasks-light.png",
+                "alt": "English DEMO issue list and ticket details in light mode, with parent, assignee, reporter and child query controls.",
+                "sha256": "c94b6151641cf2c36cbbc6d005f4a043be4eda14a4f0e9c7cdbc1bd057d573fc",
+                "width": 1600,
+                "height": 1000
+              }
+            ]
+          }
+        },
+        {
+          "version": "0.1.0",
+          "commit": "b302a9339f400ce174f3290614b86db98975fde3",
+          "contentHash": "8757f04579f4e231509439fd2fc8ee7a058b5bc15f68bf4d80f1028288f5a204",
+          "execution": "trusted-worker",
+          "minimumOrca": "1.4.256",
+          "name": "Jira Tasks",
+          "contributes": [
+            {
+              "kind": "panels",
+              "name": "Jira Tasks"
+            },
+            {
+              "kind": "commands",
+              "name": "Open Jira Tasks"
+            },
+            {
+              "kind": "keybindings",
+              "name": "Mod+J",
+              "detail": "jira-tasks.open"
+            }
+          ],
+          "images": {
+            "icon": {
+              "path": "plugins/jira-tasks/assets/jira-tasks-icon.png",
+              "alt": "Jira Tasks",
+              "sha256": "1e1773e75dc9d78c33dca1f1d441214469414bb5165678a4eefc916fbeb8f2ea",
+              "width": 256,
+              "height": 256
+            },
+            "cover": {
+              "path": "plugins/jira-tasks/assets/jira-tasks-introduction.png",
+              "alt": "Jira Tasks — Keep Jira within reach, beside an English DEMO ticket detail view.",
+              "sha256": "20d3e2b6c2a0f7d684cee77ad76bff81203c6968c55ad6bb30a7ae55f4ed3d29",
+              "width": 1600,
+              "height": 1000
+            },
+            "screenshots": [
+              {
+                "path": "plugins/jira-tasks/assets/jira-tasks-dark.png",
+                "alt": "English DEMO issue list and ticket details in dark mode, with parent, assignee, reporter and child query controls.",
+                "sha256": "3304e7fee2f9886a622d91f6055ba1c65c0275ede8174142d3a7358c3d3f0376",
+                "width": 1600,
+                "height": 1000
+              },
+              {
+                "path": "plugins/jira-tasks/assets/jira-tasks-light.png",
+                "alt": "English DEMO issue list and ticket details in light mode, with parent, assignee, reporter and child query controls.",
+                "sha256": "c94b6151641cf2c36cbbc6d005f4a043be4eda14a4f0e9c7cdbc1bd057d573fc",
+                "width": 1600,
+                "height": 1000
               }
             ]
           }
