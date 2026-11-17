@@ -1,4 +1,5 @@
 import expansion from './landmark-expansion.json';
+import { catalog700Art } from './catalog-700-art';
 import { catalog600Art } from './catalog-600-art';
 const entries = new Map(expansion.map((entry) => [entry.id, entry]));
 
@@ -7,6 +8,8 @@ export function expandedLandmarkArt(
   id: string,
   paint: (name: string) => string,
 ) {
+  const authoredWater = catalog700Art(id, paint);
+  if (authoredWater) return authoredWater;
   const entry = entries.get(id);
   if (!entry) return '';
   const authored = catalog600Art(entry, paint);

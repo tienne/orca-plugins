@@ -4198,5 +4198,705 @@
     "region": "유럽·북아메리카",
     "description": "테네리페섬의 용암 지대와 거대한 칼데라 위로 높은 화산체가 솟아 있습니다. 그림은 장소를 작게 재해석한 것이며, 지도에는 유네스코 유산이나 해당 구성 요소의 대표 위치를 표시합니다.",
     "descriptionSourceName": "유네스코 세계유산센터"
+  },
+  "eddystone": {
+    "name": "에디스톤 등대",
+    "country": "영국",
+    "region": "에디스톤 암초",
+    "description": "플리머스 앞바다 에디스톤 암초에 화강암 등대가 서 있고, 가까이에는 옛 등대의 밑부분이 남아 있습니다.",
+    "descriptionSourceName": "트리니티하우스"
+  },
+  "bishoprock": {
+    "name": "비숍록 등대",
+    "country": "영국",
+    "region": "실리 제도",
+    "description": "실리 제도 서쪽의 작은 대서양 암초 위에 높은 석조 등대가 솟아 있으며, 등롱 위로 착륙장이 놓여 있습니다.",
+    "descriptionSourceName": "트리니티하우스"
+  },
+  "wolfrock": {
+    "name": "울프록 등대",
+    "country": "영국",
+    "region": "콘월",
+    "description": "랜즈엔드와 실리 제도 사이 바다 한가운데, 화강암을 쌓아 올린 등대가 외따로 서 있습니다.",
+    "descriptionSourceName": "트리니티하우스"
+  },
+  "longships": {
+    "name": "롱십스 등대",
+    "country": "영국",
+    "region": "랜즈엔드",
+    "description": "롱십스 암초 중 가장 큰 바위에 세운 석조 등대가 랜즈엔드로 들어오는 바닷길을 알립니다.",
+    "descriptionSourceName": "트리니티하우스"
+  },
+  "needleslight": {
+    "name": "니들스 등대",
+    "country": "영국",
+    "region": "와이트섬",
+    "description": "붉고 흰 등대가 흰 백악 바위 기둥들이 바다로 뻗은 니들스 끝에서 솔런트 해협의 입구를 비춥니다.",
+    "descriptionSourceName": "트리니티하우스"
+  },
+  "smallslight": {
+    "name": "스몰스 등대",
+    "country": "영국",
+    "region": "펨브로크셔",
+    "description": "웨일스 앞바다의 외딴 스몰스 암초에는 옛 목조 등대를 대신한 화강암 등대가 서 있습니다.",
+    "descriptionSourceName": "트리니티하우스"
+  },
+  "bellrock": {
+    "name": "벨록 등대",
+    "country": "영국",
+    "region": "포스만 바깥 항로",
+    "description": "밀물이면 잠기는 암초 위에 가느다란 석조 등대를 세워 스코틀랜드 동해안의 배들을 안내합니다.",
+    "descriptionSourceName": "북부등대위원회"
+  },
+  "skerryvore": {
+    "name": "스케리보어 등대",
+    "country": "영국",
+    "region": "타이리섬 앞바다",
+    "description": "타이리섬 남서쪽 암초 위에 곡선형 화강암 등대가 높이 솟아 스코틀랜드 해상 등대 건축의 특징을 보여 줍니다.",
+    "descriptionSourceName": "북부등대위원회"
+  },
+  "dubhartach": {
+    "name": "두 아르타흐 등대",
+    "country": "영국",
+    "region": "이너헤브리디스 제도",
+    "description": "멀섬 남서쪽의 대서양 파도를 받는 암초에 붉은 띠를 두른 석조 등대가 서 있습니다.",
+    "descriptionSourceName": "북부등대위원회"
+  },
+  "chickenrock": {
+    "name": "치킨록 등대",
+    "country": "맨섬",
+    "region": "칼프오브맨 앞바다",
+    "description": "맨섬 남쪽 칼프오브맨 앞바다의 잠긴 암초를 외따로 선 화강암 등대가 알립니다.",
+    "descriptionSourceName": "북부등대위원회"
+  },
+  "fastnet": {
+    "name": "패스트넷 등대",
+    "country": "아일랜드",
+    "region": "코크주",
+    "description": "케이프클리어 남서쪽 패스트넷 암초 위에 대서양의 거센 파도를 견디도록 곡선형 화강암 등대를 세웠습니다.",
+    "descriptionSourceName": "아일랜드 등대위원회"
+  },
+  "tuskar": {
+    "name": "터스커 등대",
+    "country": "아일랜드",
+    "region": "웩스퍼드주",
+    "description": "웩스퍼드주 앞바다 터스커 암초의 흰 원형 등대가 아일랜드 남동쪽 해안으로 다가오는 배를 안내합니다.",
+    "descriptionSourceName": "아일랜드 등대위원회"
+  },
+  "rockabill": {
+    "name": "로커빌 등대",
+    "country": "아일랜드",
+    "region": "더블린주 앞바다",
+    "description": "더블린 앞바다의 작은 바위섬 두 개 중 한 곳에 검은 띠를 두른 흰 등대가 서 있습니다. 이웃한 두 바위섬이 바다 위에서 뚜렷한 한 쌍을 이룹니다.",
+    "descriptionSourceName": "아일랜드 등대위원회"
+  },
+  "kishbank": {
+    "name": "키시뱅크 등대",
+    "country": "아일랜드",
+    "region": "더블린만 바깥 항로",
+    "description": "더블린만으로 들어가는 항로의 키시뱅크 모래톱에 넓은 상부 플랫폼을 갖춘 케이슨식 등대가 서 있습니다.",
+    "descriptionSourceName": "아일랜드 등대위원회"
+  },
+  "beanrock": {
+    "name": "빈록 등대",
+    "country": "뉴질랜드",
+    "region": "와이테마타항",
+    "description": "오클랜드 와이테마타항의 암초 위에 철제 다리를 세우고 작은 목조 등대집을 얹었습니다.",
+    "descriptionSourceName": "뉴질랜드 국가유산청"
+  },
+  "brotherslight": {
+    "name": "브라더스 제도 등대",
+    "country": "뉴질랜드",
+    "region": "쿡 해협",
+    "description": "뉴질랜드의 두 큰 섬 사이 쿡 해협의 바위섬에 아담한 흰 등대와 관리 건물이 자리합니다.",
+    "descriptionSourceName": "뉴질랜드 해사청"
+  },
+  "dogisland": {
+    "name": "도그섬 등대",
+    "country": "뉴질랜드",
+    "region": "포보 해협",
+    "description": "뉴질랜드에서 가장 높은 등대가 밝은 탑에 굵은 검은 띠를 두르고 포보 해협 동쪽 입구를 알립니다.",
+    "descriptionSourceName": "뉴질랜드 해사청"
+  },
+  "oryukdolight": {
+    "name": "오륙도 등대",
+    "country": "대한민국",
+    "region": "부산",
+    "description": "부산 바닷길 입구에 늘어선 오륙도 바위섬 중 등대섬 꼭대기에 흰 등대가 서 있습니다.",
+    "descriptionSourceName": "한국관광공사"
+  },
+  "somaemuldolight": {
+    "name": "소매물도 등대",
+    "country": "대한민국",
+    "region": "통영",
+    "description": "소매물도 곁 등대섬 정상에 흰 등대가 서 있고, 두 섬 사이에는 물때에 따라 드러나는 바윗길이 이어집니다.",
+    "descriptionSourceName": "한국관광공사"
+  },
+  "gageodolight": {
+    "name": "가거도 등대",
+    "country": "대한민국",
+    "region": "신안",
+    "description": "가거도 북쪽의 높은 곶에 낮은 흰 벽돌 등대가 서서 동중국해 외해에서 다가오는 배에 육지의 위치를 알립니다.",
+    "descriptionSourceName": "목포지방해양수산청"
+  },
+  "bikiniatoll": {
+    "name": "비키니 환초",
+    "country": "마셜 제도",
+    "region": "비키니 환초",
+    "description": "환초의 석호에는 20세기 핵실험에 쓰인 침몰 선박 등 유산이 남아 있으며, 모형은 환초 안의 수중 선체를 표현합니다.",
+    "descriptionSourceName": "유네스코 세계유산센터"
+  },
+  "phoenixislands": {
+    "name": "피닉스 제도 보호구역",
+    "country": "키리바시",
+    "region": "피닉스 제도",
+    "description": "키리바시의 외딴 산호 환초와 암초, 깊은 바다 서식지가 태평양의 넓은 보호 해역을 이룹니다.",
+    "descriptionSourceName": "유네스코 세계유산센터"
+  },
+  "malpelo": {
+    "name": "말펠로 보호구역",
+    "country": "콜롬비아",
+    "region": "동태평양",
+    "description": "동태평양의 가파른 바위섬과 주변 보호 해역은 상어들이 큰 무리를 이루는 서식지입니다.",
+    "descriptionSourceName": "유네스코 세계유산센터"
+  },
+  "surtsey": {
+    "name": "쉬르트세이",
+    "country": "아이슬란드",
+    "region": "베스트만 제도",
+    "description": "1963년에 시작된 화산 분출로 생긴 어린 바다섬으로, 생물이 자연스럽게 정착하는 과정을 연구하도록 보호합니다.",
+    "descriptionSourceName": "유네스코 세계유산센터"
+  },
+  "goughislands": {
+    "name": "고프섬과 이너액세서블섬",
+    "country": "영국",
+    "region": "남대서양",
+    "description": "대륙에서 멀리 떨어진 남대서양의 가파른 화산섬들이 수많은 바닷새의 번식지가 됩니다.",
+    "descriptionSourceName": "유네스코 세계유산센터"
+  },
+  "newcaledonialagoons": {
+    "name": "누벨칼레도니 석호",
+    "country": "프랑스",
+    "region": "누벨칼레도니",
+    "description": "누벨칼레도니 주변 여섯 해역에 넓은 산호초와 석호가 보존되어 있으며, 모형은 그중 대표적인 산호초 물길을 표현합니다.",
+    "descriptionSourceName": "유네스코 세계유산센터"
+  },
+  "aporeef": {
+    "name": "아포리프 자연공원",
+    "country": "필리핀",
+    "region": "서민도로",
+    "description": "민도로 서쪽의 아포리프에는 얕은 산호초와 수로, 맑은 바다가 어우러진 보호 해역이 펼쳐집니다. 모형은 산호초의 테두리와 안쪽 물길을 구분해 표현합니다.",
+    "descriptionSourceName": "유네스코 세계유산 잠정목록"
+  },
+  "bunaken": {
+    "name": "부나켄 국립공원",
+    "country": "인도네시아",
+    "region": "북술라웨시",
+    "description": "북술라웨시 앞바다의 섬 둘레에 산호초와 가파른 수중 절벽이 발달해 다양한 해양 서식지를 이룹니다.",
+    "descriptionSourceName": "유네스코 세계유산 잠정목록"
+  },
+  "rajaampat": {
+    "name": "라자암팟 제도 해양공원",
+    "country": "인도네시아",
+    "region": "파푸아 남서부",
+    "description": "라자암팟의 산호초와 섬 주변 해역이 해양 서식지를 지키며, 모형에서는 석회암 작은 섬과 산호초 수로로 표현합니다.",
+    "descriptionSourceName": "쿠팡 국립해양보호구역관리사무소"
+  },
+  "wakatobi": {
+    "name": "와카토비 국립공원",
+    "country": "인도네시아",
+    "region": "술라웨시 남동부",
+    "description": "코랄트라이앵글 안쪽 와카토비 제도 주변의 산호초가 해양 국립공원을 이룹니다. 이름은 주요 네 섬인 왕이왕이, 칼레두파, 토미아, 비농코에서 따왔습니다.",
+    "descriptionSourceName": "유네스코 세계유산 잠정목록"
+  },
+  "sipadan": {
+    "name": "시파단섬 공원",
+    "country": "말레이시아",
+    "region": "사바",
+    "description": "깊은 바다 위로 작은 섬이 솟아 있으며, 가장자리에는 산호로 덮인 수중 절벽과 바다거북 서식지가 이어집니다.",
+    "descriptionSourceName": "사바 공원관리청"
+  },
+  "surin": {
+    "name": "수린 제도 국립공원",
+    "country": "태국",
+    "region": "팡응아",
+    "description": "수린 제도와 주변 안다만해의 산호초가 보호받는 열대 해양 경관을 이룹니다.",
+    "descriptionSourceName": "태국정부관광청"
+  },
+  "similan": {
+    "name": "시밀란 제도 국립공원",
+    "country": "태국",
+    "region": "팡응아",
+    "description": "둥근 화강암 바위가 청록빛 바다 위로 솟고, 시밀란 제도 주변 산호초에는 여러 해양 생물이 살아갑니다.",
+    "descriptionSourceName": "태국정부관광청"
+  },
+  "rasmohammed": {
+    "name": "라스모하메드 해양보호구역",
+    "country": "이집트",
+    "region": "남시나이",
+    "description": "수에즈만과 아카바만이 만나는 시나이반도 남단을 산호초가 둘러싸 독특한 수중 경관을 이룹니다.",
+    "descriptionSourceName": "이집트 국가정보청"
+  },
+  "bluebay": {
+    "name": "블루베이 해양공원",
+    "country": "모리셔스",
+    "region": "그랑포르",
+    "description": "모리셔스 남동쪽의 잔잔한 석호에 산호 군락과 얕은 바다 서식지가 자리합니다. 모형은 해안 시설이 아닌 산호초와 석호를 표현합니다.",
+    "descriptionSourceName": "람사르 습지정보서비스"
+  },
+  "sainteanne": {
+    "name": "생트안 해양국립공원",
+    "country": "세이셸",
+    "region": "마에섬 앞바다",
+    "description": "세이셸 마에섬 가까운 생트안 해양국립공원의 섬 주변 바다에는 산호초와 해초밭이 보호됩니다.",
+    "descriptionSourceName": "세이셸 공원정원관리청"
+  },
+  "watamu": {
+    "name": "와타무 해양국립공원",
+    "country": "케냐",
+    "region": "킬리피",
+    "description": "케냐의 인도양 해안에 산호초가 감싼 석호와 산호 정원이 이어져 물고기와 바다거북의 터전이 됩니다.",
+    "descriptionSourceName": "케냐 야생동물관리청"
+  },
+  "mafiaisland": {
+    "name": "마피아섬 해양공원",
+    "country": "탄자니아",
+    "region": "마피아 제도",
+    "description": "마피아섬 남쪽에 산호초와 맹그로브, 잔잔한 만이 서로 이어진 해양 경관이 펼쳐집니다.",
+    "descriptionSourceName": "탄자니아 해양공원보호구역관리청"
+  },
+  "biscayne": {
+    "name": "비스케인 국립공원",
+    "country": "미국",
+    "region": "플로리다",
+    "description": "플로리다 남쪽의 바다와 섬, 산호초를 보호하며 공원 대부분을 수중 서식지가 차지합니다.",
+    "descriptionSourceName": "미국 국립공원관리청"
+  },
+  "drytortugas": {
+    "name": "드라이토르투가스 국립공원",
+    "country": "미국",
+    "region": "플로리다키스",
+    "description": "드라이토르투가스의 맑은 바다와 산호초 사이 작은 섬에 포트제퍼슨의 벽돌 성벽이 서 있습니다.",
+    "descriptionSourceName": "미국 국립공원관리청"
+  },
+  "cabopulmo": {
+    "name": "카보풀모 국립공원",
+    "country": "멕시코",
+    "region": "바하칼리포르니아수르",
+    "description": "바하칼리포르니아수르 동쪽 캘리포니아만의 산호초 주변에 물고기 떼가 모여듭니다.",
+    "descriptionSourceName": "멕시코 자연보호구역위원회"
+  },
+  "abrolhos": {
+    "name": "아브롤류스 해양국립공원",
+    "country": "브라질",
+    "region": "바이아",
+    "description": "바이아 앞바다의 버섯 모양 산호와 섬 주변 바다가 해양 생물의 터전이며 혹등고래의 번식 해역이기도 합니다.",
+    "descriptionSourceName": "브라질 치쿠멘지스 생물다양성보전연구소"
+  },
+  "namena": {
+    "name": "나메나 해양보호구역",
+    "country": "피지",
+    "region": "블라이워터",
+    "description": "나메나 주변에는 지역 공동체가 조성한 채취 금지 보호구역이 있어 산호초와 해양 생물을 지킵니다.",
+    "descriptionSourceName": "야생동물보전협회 피지"
+  },
+  "exumacays": {
+    "name": "엑수마케이스 육해상공원",
+    "country": "바하마",
+    "region": "엑수마",
+    "description": "엑수마 제도에 얕은 청록빛 수로와 작은 섬, 해양 서식지가 어우러진 보호 경관이 펼쳐집니다.",
+    "descriptionSourceName": "바하마 내셔널트러스트"
+  },
+  "jardinesreina": {
+    "name": "하르디네스데라레이나",
+    "country": "쿠바",
+    "region": "쿠바 남쪽 해역",
+    "description": "쿠바 남쪽 해안 앞바다에 산호초와 맹그로브섬, 얕은 석호로 이루어진 해양 군도가 펼쳐집니다.",
+    "descriptionSourceName": "쿠바 관광청"
+  },
+  "flowergarden": {
+    "name": "플라워가든뱅크스 보호구역",
+    "country": "미국",
+    "region": "멕시코만 북서부",
+    "description": "멕시코만의 깊은 물속에서 솟은 해저 둔덕에 산호 군락과 해면 등 해양 생물이 자리합니다.",
+    "descriptionSourceName": "미국 해양대기청"
+  },
+  "stellwagen": {
+    "name": "스텔와겐뱅크 보호구역",
+    "country": "미국",
+    "region": "매사추세츠만",
+    "description": "매사추세츠만 입구의 얕은 해저 둔덕이 고래와 여러 해양 동물의 풍부한 먹이터가 됩니다.",
+    "descriptionSourceName": "미국 해양대기청"
+  },
+  "monitorwreck": {
+    "name": "USS 모니터 보호구역",
+    "country": "미국",
+    "region": "해터러스곶 앞바다",
+    "description": "철갑함 USS 모니터의 잔해가 해터러스곶 앞바다에 가라앉아 중요한 해양 고고학 유산으로 보호됩니다.",
+    "descriptionSourceName": "미국 해양대기청"
+  },
+  "portcros": {
+    "name": "포르크로 해양구역",
+    "country": "프랑스",
+    "region": "이에르 제도",
+    "description": "포르크로 주변 지중해 바다에는 해초밭과 바위 지형의 수중 생태계가 자리합니다.",
+    "descriptionSourceName": "포르크로 국립공원"
+  },
+  "sydneybridge": {
+    "name": "시드니 하버브리지",
+    "country": "호주",
+    "region": "포트잭슨",
+    "description": "넓은 강철 아치가 시드니항을 가로지르며, 석조 주탑과 매달린 상판이 오페라하우스와 다른 윤곽을 만듭니다.",
+    "descriptionSourceName": "호주 기후변화에너지환경수자원부"
+  },
+  "towerbridge": {
+    "name": "타워브리지",
+    "country": "영국",
+    "region": "런던 템스강",
+    "description": "석재로 감싼 두 탑 사이 중앙 상판이 열려 템스강을 지나는 큰 배에 길을 내줍니다.",
+    "descriptionSourceName": "타워브리지 공식 웹사이트"
+  },
+  "charlesbridge": {
+    "name": "카를교",
+    "country": "체코",
+    "region": "프라하 블타바강",
+    "description": "사암 아치가 프라하의 옛 강변 사이 블타바강을 가로지르며, 보행교를 따라 조각상들이 늘어서 있습니다.",
+    "descriptionSourceName": "프라하 공식 관광 안내"
+  },
+  "chainbridge": {
+    "name": "세체니 사슬교",
+    "country": "헝가리",
+    "region": "부다페스트 다뉴브강",
+    "description": "다뉴브강 위 석조 주탑 사이로 현수 사슬이 이어져 부다와 페스트 강변을 잇습니다. 문처럼 생긴 주탑이 사슬로 받친 구조의 특징을 드러냅니다.",
+    "descriptionSourceName": "헝가리 관광청"
+  },
+  "pontevecchio": {
+    "name": "베키오 다리",
+    "country": "이탈리아",
+    "region": "피렌체 아르노강",
+    "description": "아르노강을 건너는 넓은 아치 세 개 위에 상점들이 모여 있고, 그 위로 바사리 회랑이 이어집니다.",
+    "descriptionSourceName": "토스카나 관광청"
+  },
+  "alexandrebridge": {
+    "name": "알렉상드르 3세 다리",
+    "country": "프랑스",
+    "region": "파리 센강",
+    "description": "화려한 가로등과 금빛 조각상을 얹은 높은 기둥 사이로 낮은 금속 아치가 센강을 가로지릅니다.",
+    "descriptionSourceName": "파리 관광청"
+  },
+  "millauviaduct": {
+    "name": "미요 고가교",
+    "country": "프랑스",
+    "region": "타른 계곡",
+    "description": "가느다란 교각과 사장 케이블이 미요 근처 타른강 계곡 높은 곳에서 긴 상판을 받칩니다. 일곱 주 교각이 반복되는 가느다란 윤곽을 만듭니다.",
+    "descriptionSourceName": "에파주 미요 고가교 운영사"
+  },
+  "garabit": {
+    "name": "가라비 고가교",
+    "country": "프랑스",
+    "region": "트뤼예르 계곡",
+    "description": "붉은 금속 아치가 트뤼예르 계곡을 건너는 철도를 받치며, 귀스타브 에펠과 관련된 대표적인 토목 유산입니다.",
+    "descriptionSourceName": "생플루르 관광청"
+  },
+  "landwasser": {
+    "name": "란트바서 고가교",
+    "country": "스위스",
+    "region": "필리주어 란트바서강",
+    "description": "굽은 석조 철도교가 란트바서강 협곡을 건너 바위 절벽의 터널로 곧장 이어집니다.",
+    "descriptionSourceName": "레티셰 철도"
+  },
+  "chapelbridge": {
+    "name": "카펠교",
+    "country": "스위스",
+    "region": "루체른 로이스강",
+    "description": "팔각형 수탑 곁으로 지붕을 얹은 목조 다리가 로이스강을 건너며, 지붕 아래에는 그림 패널이 걸려 있습니다.",
+    "descriptionSourceName": "루체른 관광청"
+  },
+  "magdeburgbridge": {
+    "name": "마그데부르크 수로교",
+    "country": "독일",
+    "region": "마그데부르크 엘베강",
+    "description": "마그데부르크 수로 교차 지점에서 선박이 지나는 수로교가 엘베강 위를 건넙니다. 운하의 물과 강물이 서로 다른 높이로 지나갑니다.",
+    "descriptionSourceName": "마그데부르크 관광청"
+  },
+  "hohenzollernbridge": {
+    "name": "호엔촐레른 다리",
+    "country": "독일",
+    "region": "쾰른 라인강",
+    "description": "나란히 선 금속 아치들이 쾰른 도심 옆 라인강을 건너는 철로와 보행로를 받칩니다. 연속된 아치 묶음이 반복되는 곡선 윤곽을 만듭니다.",
+    "descriptionSourceName": "쾰른 관광청"
+  },
+  "glienickebridge": {
+    "name": "글리니케 다리",
+    "country": "독일",
+    "region": "포츠담 하펠강",
+    "description": "포츠담과 베를린 사이 하펠강을 건너는 강철 다리로, 냉전기의 교환 장소로도 기억됩니다.",
+    "descriptionSourceName": "포츠담시"
+  },
+  "regensburgbridge": {
+    "name": "레겐스부르크 석교",
+    "country": "독일",
+    "region": "레겐스부르크 다뉴브강",
+    "description": "레겐스부르크 구시가지 곁에서 중세 석조 아치가 길게 이어져 다뉴브강을 건넙니다. 다리는 강 건너 슈타트암호프와 구시가지를 잇습니다.",
+    "descriptionSourceName": "레겐스부르크 관광청"
+  },
+  "visegradbridge": {
+    "name": "메흐메드파샤 소콜로비치 다리",
+    "country": "보스니아 헤르체고비나",
+    "region": "비셰그라드 드리나강",
+    "description": "비셰그라드의 드리나강을 열한 개의 석조 아치가 가로지르며, 건축가 시난과 관련된 오스만 시대 다리입니다.",
+    "descriptionSourceName": "유네스코 세계유산센터"
+  },
+  "vizcayabridge": {
+    "name": "비스카야 다리",
+    "country": "스페인",
+    "region": "비스카야 네르비온강",
+    "description": "높은 철제 구조물에 매단 운반 곤돌라가 선박의 통행을 막지 않고 네르비온강 하구를 오갑니다.",
+    "descriptionSourceName": "유네스코 세계유산센터"
+  },
+  "alcantarabridge": {
+    "name": "알칸타라 로마 다리",
+    "country": "스페인",
+    "region": "엑스트레마두라 타호강",
+    "description": "큰 석조 아치와 중앙의 기념 아치를 갖춘 로마 다리가 알칸타라에서 타호강을 건넙니다.",
+    "descriptionSourceName": "스페인 관광청"
+  },
+  "pulteneybridge": {
+    "name": "펄트니 다리",
+    "country": "영국",
+    "region": "배스 에이번강",
+    "description": "배스 도심 에이번강의 굽은 보 곁에 세 아치 다리가 놓여 있고, 다리 양옆을 상점들이 채웁니다.",
+    "descriptionSourceName": "배스 관광청"
+  },
+  "cliftonbridge": {
+    "name": "클리프턴 현수교",
+    "country": "영국",
+    "region": "브리스틀 에이번 협곡",
+    "description": "조수의 영향을 받는 에이번 협곡 위 높은 곳에서 석조 주탑 사이 현수 사슬이 가느다란 상판을 받칩니다. 다리를 고정하는 양쪽 구조물이 협곡의 가파른 바위 사면과 만납니다.",
+    "descriptionSourceName": "클리프턴 현수교 재단"
+  },
+  "gatesheadbridge": {
+    "name": "게이츠헤드 밀레니엄브리지",
+    "country": "영국",
+    "region": "타인강",
+    "description": "굽은 보행 상판과 지지 아치가 함께 기울어져 타인강을 따라 배가 지나갈 공간을 만듭니다. 하나의 큰 아치 아래로 굽은 보행·자전거 길이 이어집니다.",
+    "descriptionSourceName": "윌킨슨에어 건축사무소"
+  },
+  "newriverbridge": {
+    "name": "뉴리버고지 다리",
+    "country": "미국",
+    "region": "웨스트버지니아 뉴리버",
+    "description": "거대한 강철 아치가 뉴리버 높은 곳에서 도로를 받치며, 그 아래로 숲이 우거진 협곡이 펼쳐집니다. 모형에서도 강과 도로 사이에 강철 아치를 놓았습니다.",
+    "descriptionSourceName": "미국 국립공원관리청"
+  },
+  "howrahbridge": {
+    "name": "하우라 다리",
+    "country": "인도",
+    "region": "콜카타 후글리강",
+    "description": "캔틸레버식 강철 트러스가 콜카타와 하우라 사이 후글리강을 가로지르며 주 경간 안에는 강바닥 교각이 없습니다.",
+    "descriptionSourceName": "서벵골 관광청"
+  },
+  "chengyangbridge": {
+    "name": "청양 풍우교",
+    "country": "중국",
+    "region": "광시 린시강",
+    "description": "둥족 마을 경관 속 린시강을 건너는 석조 교각 위에 여러 목조 누각과 지붕 있는 보행로가 이어집니다.",
+    "descriptionSourceName": "중국 문화여유부"
+  },
+  "zhaozhoubridge": {
+    "name": "자오저우 다리",
+    "country": "중국",
+    "region": "허베이 샤오허강",
+    "description": "샤오허강을 건너는 넓고 낮은 석조 아치 양쪽 어깨에 작은 열린 아치들을 두어 무게를 줄였습니다.",
+    "descriptionSourceName": "스자좡시 인민정부"
+  },
+  "ludingbridge": {
+    "name": "루딩교",
+    "country": "중국",
+    "region": "쓰촨 다두허강",
+    "description": "다두허강 위로 뻗은 철제 사슬이 널판 보행로를 받치며 양쪽 강변에 고정 구조물이 자리합니다.",
+    "descriptionSourceName": "루딩현 인민정부"
+  },
+  "kintaibridge": {
+    "name": "긴타이교",
+    "country": "일본",
+    "region": "이와쿠니 니시키강",
+    "description": "석조 교각 위 다섯 목조 아치가 니시키강을 건너며 이와쿠니 산자락 아래 물결 같은 윤곽을 만듭니다.",
+    "descriptionSourceName": "이와쿠니시"
+  },
+  "banpobridge": {
+    "name": "반포대교 달빛무지개분수",
+    "country": "대한민국",
+    "region": "서울 한강",
+    "description": "다리 양옆의 분사구에서 한강을 향해 물줄기가 뻗어 나와 교량과 큰 분수가 한 구조물에 어우러집니다.",
+    "descriptionSourceName": "서울관광재단"
+  },
+  "seungilbridge": {
+    "name": "승일교",
+    "country": "대한민국",
+    "region": "철원 한탄강",
+    "description": "철원 근처 한탄강의 화산 협곡 위에 콘크리트 아치가 옛 다리를 받치고 있습니다. 한국전쟁 전후에 나누어 이루어진 공사 과정이 다리의 역사에 남아 있습니다.",
+    "descriptionSourceName": "한국관광공사"
+  },
+  "panamacanal": {
+    "name": "파나마 운하",
+    "country": "파나마",
+    "region": "파나마 지협",
+    "description": "갑문이 배를 해수면과 내륙 수로 사이로 올리고 내려 파나마 지협을 가로질러 대서양과 태평양 항로를 잇습니다.",
+    "descriptionSourceName": "파나마 운하청"
+  },
+  "suezcanal": {
+    "name": "수에즈 운하",
+    "country": "이집트",
+    "region": "수에즈 지협",
+    "description": "해수면 높이의 수로가 수에즈 지협을 가르며 갑문 승강 없이 지중해와 홍해 항로를 잇습니다.",
+    "descriptionSourceName": "수에즈 운하청"
+  },
+  "corinthcanal": {
+    "name": "코린토스 운하",
+    "country": "그리스",
+    "region": "코린토스 지협",
+    "description": "펠로폰네소스와 그리스 본토 사이 지협을 가파른 바위벽 사이의 좁고 곧은 수로가 가로지릅니다.",
+    "descriptionSourceName": "코린토스 운하청"
+  },
+  "kielcanal": {
+    "name": "킬 운하",
+    "country": "독일",
+    "region": "슐레스비히홀슈타인",
+    "description": "내륙 수로가 북해와 발트해 항로를 잇고, 운하 양끝의 갑문과 수로 위 다리들이 선박 통행을 돕습니다.",
+    "descriptionSourceName": "킬 운하 협회"
+  },
+  "canaldumidi": {
+    "name": "미디 운하",
+    "country": "프랑스",
+    "region": "옥시타니",
+    "description": "프랑스 남부를 가로지르는 역사적인 수로에 운하와 갑문, 수로교와 다리가 하나의 시설로 이어집니다.",
+    "descriptionSourceName": "유네스코 세계유산센터"
+  },
+  "canalcentre": {
+    "name": "상트르 운하 보트 리프트",
+    "country": "벨기에",
+    "region": "에노",
+    "description": "벨기에의 산업 수로 경관 속 역사적인 수압식 보트 리프트 네 곳이 배를 운하의 서로 다른 높이로 옮깁니다.",
+    "descriptionSourceName": "유네스코 세계유산센터"
+  },
+  "falkirkwheel": {
+    "name": "폴커크 휠",
+    "country": "영국",
+    "region": "포스앤드클라이드 운하",
+    "description": "물을 채운 두 곤돌라가 중심축을 돌아 폴커크 인근 운하의 서로 다른 높이 사이로 배를 옮깁니다.",
+    "descriptionSourceName": "스코틀랜드 운하관리청"
+  },
+  "andertonlift": {
+    "name": "앤더턴 보트 리프트",
+    "country": "영국",
+    "region": "위버강",
+    "description": "물을 채운 한 쌍의 케이슨이 위버강과 더 높은 트렌트앤드머지 운하 사이로 배를 들어 올립니다.",
+    "descriptionSourceName": "영국 운하하천재단"
+  },
+  "bingleylocks": {
+    "name": "빙리 파이브라이즈 갑문",
+    "country": "영국",
+    "region": "리즈앤드리버풀 운하",
+    "description": "리즈앤드리버풀 운하에서 서로 맞붙은 갑문실 다섯 개가 배를 옮기는 가파른 계단을 이룹니다. 한 갑문실의 윗문을 바로 위 갑문실이 함께 사용합니다.",
+    "descriptionSourceName": "영국 운하하천재단"
+  },
+  "briareaqueduct": {
+    "name": "브리아르 수로교",
+    "country": "프랑스",
+    "region": "브리아르 루아르강",
+    "description": "철제 수로가 루아르강 위로 운하 선박을 나르고, 수로교 보행로에는 장식 가로등이 늘어서 있습니다.",
+    "descriptionSourceName": "브리아르 관광청"
+  },
+  "gotacanal": {
+    "name": "예타 운하",
+    "country": "스웨덴",
+    "region": "예타 운하",
+    "description": "스웨덴 남부의 내륙 구간들을 갑문과 수로가 이으며, 모형은 계단식 갑문과 예인로를 표현합니다.",
+    "descriptionSourceName": "예타 운하 운영사"
+  },
+  "rhinefalls": {
+    "name": "라인 폭포",
+    "country": "스위스",
+    "region": "샤프하우젠 라인강",
+    "description": "샤프하우젠 인근에서 라인강이 넓은 바위 턱을 넘어 쏟아지며, 폭포 한가운데 솟은 바위를 갈라 흐릅니다.",
+    "descriptionSourceName": "라인 폭포 협회"
+  },
+  "gullfoss": {
+    "name": "굴포스",
+    "country": "아이슬란드",
+    "region": "흐비타강",
+    "description": "아이슬란드 남부에서 흐비타강이 두 단으로 떨어진 뒤 좁은 협곡으로 들어가 계단형 폭포를 이룹니다.",
+    "descriptionSourceName": "아이슬란드 환경청"
+  },
+  "dettifoss": {
+    "name": "데티포스",
+    "country": "아이슬란드",
+    "region": "요쿨사아피욜룸강",
+    "description": "빙하에서 흘러온 강물이 어두운 바위를 지나 요쿨사르글리우푸르 협곡으로 넓고 힘차게 쏟아집니다.",
+    "descriptionSourceName": "바트나요쿨 국립공원"
+  },
+  "kaieteur": {
+    "name": "카이에투르 폭포",
+    "country": "가이아나",
+    "region": "포타로강",
+    "description": "숲으로 둘러싸인 사암 절벽에서 포타로강이 한 번에 크게 떨어져 폭포를 이룹니다. 모형에서는 끊기지 않고 떨어지는 물줄기와 주변 절벽을 구분했습니다.",
+    "descriptionSourceName": "가이아나 관광청"
+  },
+  "khonefalls": {
+    "name": "콘파펭 폭포",
+    "country": "라오스",
+    "region": "참파삭 메콩강",
+    "description": "라오스 남쪽 국경 가까운 콘파펭에서 메콩강이 바위 수로와 거센 급류로 넓게 갈라집니다.",
+    "descriptionSourceName": "라오스 관광청"
+  },
+  "bangiocfalls": {
+    "name": "반족 폭포",
+    "country": "베트남",
+    "region": "까오방 꾸어이선강",
+    "description": "베트남과 중국 국경의 꾸어이선강에서 푸른 카르스트 언덕 사이로 넓은 물줄기가 여러 단을 이루어 떨어집니다. 모형에서는 층층이 흐르는 물줄기마다 바위 턱을 따로 표현했습니다.",
+    "descriptionSourceName": "베트남 국가관광청"
+  },
+  "huangguoshu": {
+    "name": "황궈수 폭포",
+    "country": "중국",
+    "region": "구이저우 바이수이강",
+    "description": "넓은 강물이 석회암 턱에서 장막처럼 쏟아지며, 폭포 뒤쪽으로 이어진 통로가 알려져 있습니다.",
+    "descriptionSourceName": "유네스코 세계유산 잠정목록"
+  },
+  "shifenfalls": {
+    "name": "스펀 폭포",
+    "country": "대만",
+    "region": "핑시 지룽강",
+    "description": "스펀 인근에서 지룽강이 굽은 바위 턱 위로 펼쳐져 넓은 말굽 모양 폭포를 이룹니다.",
+    "descriptionSourceName": "신베이시 관광여행국"
+  },
+  "hukoufalls": {
+    "name": "후커우 폭포",
+    "country": "중국",
+    "region": "산시·산시성 경계 황허강",
+    "description": "산시성과 산시성 사이에서 황허강이 바위 틈으로 급격히 좁아지며 힘찬 폭포를 만듭니다.",
+    "descriptionSourceName": "중국 국무원"
+  },
+  "athirappilly": {
+    "name": "아티라필리 폭포",
+    "country": "인도",
+    "region": "케랄라 찰라쿠디강",
+    "description": "숲이 우거진 케랄라에서 찰라쿠디강이 넓은 바위 절벽을 넘어 여러 흰 물줄기로 갈라져 떨어집니다.",
+    "descriptionSourceName": "케랄라 관광청"
+  },
+  "tequendama": {
+    "name": "테켄다마 폭포",
+    "country": "콜롬비아",
+    "region": "쿤디나마르카 보고타강",
+    "description": "콜롬비아 수도 남서쪽에서 보고타강이 숲으로 둘러싸인 가파른 협곡으로 떨어집니다. 모형은 좁게 떨어지는 물줄기와 높은 바위벽을 대비해 표현했습니다.",
+    "descriptionSourceName": "콜롬비아 관광청"
+  },
+  "saltosmonday": {
+    "name": "몬다이 폭포",
+    "country": "파라과이",
+    "region": "프레시덴테프랑코 몬다이강",
+    "description": "프레시덴테프랑코 근처 숲속에서 강물이 여러 굵은 폭포로 떨어지며, 가까운 이구아수 폭포와는 다른 강의 폭포입니다.",
+    "descriptionSourceName": "파라과이 국가관광청"
   }
 }

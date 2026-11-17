@@ -25,7 +25,7 @@ test('the scene preview pauses offscreen and filtered landmarks while retaining 
           0,
         ),
       );
-  await expect(cards).toHaveCount(600);
+  await expect(cards).toHaveCount(700);
   await first.scrollIntoViewIfNeeded();
   await expect(first).toHaveAttribute('data-motion-visible', 'true');
   await expect.poll(() => running(first)).toBeGreaterThan(0);
@@ -53,7 +53,7 @@ test('the scene preview pauses offscreen and filtered landmarks while retaining 
   ).toBe(before);
 });
 
-test('the 600-landmark journal only animates visible cards across scrolling, filtering and rerenders', async ({
+test('the 700-landmark journal only animates visible cards across scrolling, filtering and rerenders', async ({
   page,
 }) => {
   test.setTimeout(60_000);
@@ -92,7 +92,7 @@ test('the 600-landmark journal only animates visible cards across scrolling, fil
           0,
         ),
       );
-  await expect(cards).toHaveCount(600);
+  await expect(cards).toHaveCount(700);
   await expect.poll(() => running(first)).toBe(0);
   await page.locator('[data-inventory="landmarks"]').click();
   await expect(first).toHaveAttribute('data-motion-visible', 'true');

@@ -1,3 +1,4 @@
+import { testCatalog700 } from './test-orcatopia-catalog-700.mjs';
 import { testTourism } from './test-orcatopia-tourism.mjs';
 import { testCollectionExploration } from './test-collection-exploration.mjs';
 import { testI18nCoverage } from './test-orcatopia-i18n.mjs';
@@ -25,6 +26,7 @@ try {
       'plugins/orcatopia/src/placement.ts',
       'plugins/orcatopia/src/terrain-art.ts',
       'plugins/orcatopia/src/art.ts',
+      'plugins/orcatopia/src/landmark-life.ts',
       'plugins/orcatopia/src/enhanced-effects.ts',
       'plugins/orcatopia/src/i18n.ts',
       'plugins/orcatopia/src/decorations.ts',
@@ -128,7 +130,7 @@ try {
     decodeBackup,
     landmarks,
   });
-  assert.equal(landmarks.length, 600);
+  assert.equal(landmarks.length, 700);
   assert.equal(
     createHash('sha256')
       .update(JSON.stringify(landmarks.slice(0, 306)))
@@ -141,9 +143,9 @@ try {
       .digest('hex'),
     (await readFile('scripts/data/orcatopia-legacy100.sha256', 'utf8')).trim(),
   );
-  assert.equal(new Set(landmarks.map((l) => l.id)).size, 600);
-  assert.equal(new Set(landmarks.map((l) => l.code)).size, 146);
-  assert.equal(decorations.length, 1839);
+  assert.equal(new Set(landmarks.map((l) => l.id)).size, 700);
+  assert.equal(new Set(landmarks.map((l) => l.code)).size, 153);
+  assert.equal(decorations.length, 2139);
   for (const code of ['KOR', 'SGP', 'ESP']) {
     const entries = landmarks.filter((l) => l.code === code);
     assert.ok(entries.length >= 2);
@@ -154,10 +156,10 @@ try {
     );
   }
   for (const [tier, count, roll] of [
-    ['common', 291, 0.35],
-    ['rare', 243, 0.8],
-    ['epic', 54, 0.95],
-    ['legendary', 12, 0.995],
+    ['common', 333, 0.35],
+    ['rare', 289, 0.8],
+    ['epic', 64, 0.95],
+    ['legendary', 14, 0.995],
   ]) {
     const pool = landmarks.filter((l) => l.tier === tier);
     assert.equal(pool.length, count);
@@ -170,9 +172,22 @@ try {
     }
   }
   const { art } = await import(pathToFileURL(join(dir, 'art.mjs')));
+  const { landmarkLife } = await import(
+    pathToFileURL(join(dir, 'landmark-life.mjs'))
+  );
   const { placementType } = await import(
     pathToFileURL(join(dir, 'placement.mjs'))
   );
+  await testCatalog700({
+    landmarks,
+    decorations,
+    art,
+    landmarkLife,
+    translate,
+    placementType,
+    canPlaceLandmark,
+    empty,
+  });
   await testCatalog600({
     landmarks,
     decorations,
@@ -204,7 +219,7 @@ try {
     );
   }
   console.log(
-    'PASS: every + illustration retains all 600 original buildings, actors, props and tier scenes; effects are additive layers',
+    'PASS: every + illustration retains all 700 original buildings, actors, props and tier scenes; effects are additive layers',
   );
   const illustrations = new Map();
   const repeatedGeometry = [];
@@ -226,13 +241,31 @@ try {
     illustrations.set(signature, entry.id);
   }
   assert.deepEqual(repeatedGeometry, []);
+  const waterSources = JSON.parse(
+    await readFile('scripts/data/orcatopia-water-100-sources.json', 'utf8'),
+  );
+  const officialWaterHosts = new Set(
+    waterSources.map((entry) => new URL(entry.officialUrl).hostname),
+  );
   for (const landmark of landmarks) {
     assert.ok(Number.isFinite(landmark.lat) && Math.abs(landmark.lat) <= 90);
     assert.ok(Number.isFinite(landmark.lon) && Math.abs(landmark.lon) <= 180);
     assert.match(
       landmark.source,
-      /^https:\/\/(?:www\.wikidata\.org\/wiki\/Q\d+|whc\.unesco\.org\/en\/list\/\d+\/)$/,
+      landmarks.indexOf(landmark) < 600
+        ? /^https:\/\/(?:www\.wikidata\.org\/wiki\/Q\d+|whc\.unesco\.org\/en\/list\/\d+\/)$/
+        : /^https:\/\/[a-z0-9.-]+\//,
     );
+    if (landmarks.indexOf(landmark) >= 600) {
+      for (const source of [landmark.source, landmark.descriptionSource]) {
+        const url = new URL(source);
+        assert.equal(url.protocol, 'https:', `${landmark.id}: HTTPS source`);
+        assert.ok(
+          officialWaterHosts.has(url.hostname),
+          `${landmark.id}: source host must match an audited institution`,
+        );
+      }
+    }
     assert.match(landmark.descriptionSource, /^https:\/\//);
     assert.ok(landmark.description.length > 100);
     const set = decorations.filter((d) => d.landmark === landmark.id);
@@ -939,7 +972,7 @@ try {
   for (const landmark of landmarks)
     assert.equal(decorationQuantity(fullCatalog, `${landmark.id}-gift`), 1);
   console.log(
-    'PASS: all 600 catalog draws across 146 countries, 1839 decorations, localized descriptions, full-catalog backup and preserved legacy land',
+    'PASS: all 700 catalog draws across 153 countries, 2139 decorations, localized descriptions, full-catalog backup and preserved legacy land',
   );
 
   // The four focal pieces use the same ownership and durable craft ledger.

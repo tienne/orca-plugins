@@ -2,6 +2,8 @@
 
 English · [한국어](orcatopia-600.ko.md)
 
+The current 700-place catalog is documented in the [100-place water expansion](orcatopia-700.md). Counts and simulations below remain the historical 600-place record.
+
 This records the development catalog, provenance and game contracts. It does not claim a public release or verification against actual user storage.
 
 There are 600 distinct normal places and 600 fusion-only + variants. The original 306 places are retained and 294 are added, increasing collection country groupings from 103 to 146. New places use distinct UNESCO properties and do not reuse an existing property's identifier or add an alias of an existing location. Country counts describe collection groupings, not legal status.

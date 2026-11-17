@@ -82,11 +82,11 @@ export async function testCollectionExploration(dir) {
   };
   assert.equal(
     landmarks.filter((l) => collectionTheme(l.id) === 'river').length,
-    41,
+    91,
   );
   assert.equal(
     landmarks.filter((l) => collectionTheme(l.id) === 'sea').length,
-    55,
+    105,
   );
   for (const [count, river, sea] of [
     [11, false, false],

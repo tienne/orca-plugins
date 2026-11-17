@@ -306,6 +306,27 @@ export async function testTourism({
     (await largeGame.snapshot()).tourism.coins,
     landmarks.length * 3,
   );
+  for (const landmark of landmarks.slice(600)) {
+    saved = empty();
+    for (let copy = 0; copy < 3; copy++) add(landmark.id);
+    saved.fusions.push({
+      id: `water700-${landmark.id}`,
+      landmark: landmark.id,
+      at: new Date(now).toISOString(),
+    });
+    saved.placements = [
+      { landmark: landmark.id, cell: 0 },
+      { landmark: `${landmark.id}+`, cell: 1 },
+    ];
+    const pair = makeGame();
+    await pair.snapshot();
+    now += minute;
+    assert.equal(
+      (await pair.snapshot()).tourism.coins,
+      1,
+      `${landmark.id}: normal/+ count as one tourism place`,
+    );
+  }
   large.tourism.coins = 999_999_999;
   now += minute * 3;
   assert.equal((await largeGame.snapshot()).tourism.coins, 1_000_000_000);

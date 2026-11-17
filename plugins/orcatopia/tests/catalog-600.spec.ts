@@ -3,7 +3,7 @@ import { empty, landmarks } from '../src/game';
 import additions from '../src/catalog-600.json';
 import korean from '../src/landmarks.ko.json';
 
-test('600-place journal keeps bilingual new-place details, fusion, gifts and map points compatible with an existing receipt', async ({
+test('700-place journal keeps the 600-place expansion’s bilingual new-place details, fusion, gifts and map points compatible with an existing receipt', async ({
   page,
 }) => {
   test.setTimeout(120_000);
@@ -33,9 +33,9 @@ test('600-place journal keeps bilingual new-place details, fusion, gifts and map
   const start = Date.now();
   await page.goto('/?lang=ko');
   await page.locator('[data-inventory="landmarks"]').click();
-  await expect(page.locator('.collection .card')).toHaveCount(600);
+  await expect(page.locator('.collection .card')).toHaveCount(700);
   await expect(page.locator('header .stats strong').first()).toContainText(
-    '/ 600',
+    '/ 700',
   );
   await page.locator('#inventory-search').fill('잠의 미나레트');
   await expect(page.locator('.collection .card:visible')).toHaveCount(1);
@@ -64,7 +64,7 @@ test('600-place journal keeps bilingual new-place details, fusion, gifts and map
   await expect(
     page.locator('.world circle title').filter({ hasText: '앤티가' }),
   ).toHaveCount(1);
-  await expect(page.locator('.countries > span')).toHaveCount(146);
+  await expect(page.locator('.countries > span')).toHaveCount(153);
   await test.info().attach('catalog600-journal-timing', {
     body: JSON.stringify({ throughFusionAndMapMs: Date.now() - start }),
     contentType: 'application/json',
@@ -78,7 +78,7 @@ test('600-place journal keeps bilingual new-place details, fusion, gifts and map
   ).toEqual(state.receipts);
 });
 
-test('all 294 new illustrations have readable bilingual contact sheets without touching a save', async ({
+test('all 294 illustrations from the 600-place expansion have readable bilingual contact sheets without touching a save', async ({
   page,
 }) => {
   test.setTimeout(180_000);
@@ -88,7 +88,7 @@ test('all 294 new illustrations have readable bilingual contact sheets without t
   page.on('pageerror', (error) => errors.push(error.message));
   const start = Date.now();
   await page.goto('/?preview=landmark-life&lang=en');
-  await expect(page.locator('.life-preview-card')).toHaveCount(600);
+  await expect(page.locator('.life-preview-card')).toHaveCount(700);
   expect(
     await page
       .locator('.life-preview-card .landmark-art')

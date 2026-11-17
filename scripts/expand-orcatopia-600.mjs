@@ -194,3 +194,7 @@ console.log(
     ),
   }),
 );
+// 기존 직접 실행은 700종을 유지하고 Nx는 두 단계를 명시적으로 실행한다.
+if (!process.argv.includes('--600-only')) {
+  await import('./sync-orcatopia-water-700.mjs');
+}

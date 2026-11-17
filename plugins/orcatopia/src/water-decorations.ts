@@ -1,20 +1,12 @@
 import landmarks from './landmarks.json';
-import waterCatalog from './water-catalog.json';
-import catalog600 from './catalog-600.json';
-import { waterThemes, waterShapeNames, type WaterShape } from './water-themes';
+import { expandedWaterIds, waterThemes, waterShapeNames, type WaterShape } from './water-themes';
 import type { Decoration } from './decorations';
 
-const newIds = new Set([
-  ...waterCatalog.map((entry) => entry.record.id),
-  ...catalog600
-    .filter((entry) => entry.placement !== 'land')
-    .map((entry) => entry.id),
-]);
 /** 기존 정원 장식을 보존하고 별도 ID로 물 전용 보상과 제작품을 추가한다. */
 export const waterDecorations: Decoration[] = waterThemes.flatMap((theme) => {
   const landmark = landmarks.find((l) => l.id === theme.id)!;
   return [theme.gift, theme.special].map((shape, index): Decoration => ({
-    id: `${theme.id}-${newIds.has(theme.id) ? '' : 'water-'}${index === 0 ? 'gift' : 'special'}`,
+    id: `${theme.id}-${expandedWaterIds.has(theme.id) ? '' : 'water-'}${index === 0 ? 'gift' : 'special'}`,
     name: `${landmark.name} ${waterShapeNames[shape][0]}`,
     landmark: theme.id,
     cost: index === 0 ? 3 : 6,

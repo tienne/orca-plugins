@@ -88,6 +88,17 @@
       "options": {
         "command": "node scripts/release-preflight.mjs --plugin landmark-island"
       }
+    },
+    "regenerate-catalog": {
+      "executor": "nx:run-commands",
+      "cache": false,
+      "options": {
+        "commands": [
+          "node scripts/expand-orcatopia-catalog.mjs --600-only",
+          "node scripts/sync-orcatopia-water-700.mjs"
+        ],
+        "parallel": false
+      }
     }
   }
 }

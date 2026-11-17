@@ -122,6 +122,6 @@ export async function testFusion({
     decodeBackup,
   });
   console.log(
-    'PASS: fusion atomicity, response loss, restart, concurrency, ownership, migration, backup and all 600 exclusive gifts',
+    'PASS: fusion atomicity, response loss, restart, concurrency, ownership, migration, backup and all 700 exclusive gifts',
   );
 }
