@@ -2,7 +2,7 @@
   "manifestVersion": 2,
   "id": "jira-tasks",
   "name": "Jira Tasks",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "Keep Jira within reach in the Orca sidebar. Browse issues, follow parent and child tickets, and query children by status or assignee using your existing Jira connection.",
   "engines": {
     "orca": ">=1.4.256"

@@ -15,7 +15,7 @@ Browse Jira issues in Orca's right sidebar using the Jira accounts already conne
 | Field                | Value                                                         |
 | -------------------- | ------------------------------------------------------------- |
 | Author               | [Tienne](https://github.com/tienne)                           |
-| Version              | 0.1.1                                                         |
+| Version              | 0.2.0                                                         |
 | License              | MIT                                                           |
 | Minimum Orca version | 1.4.256                                                       |
 | Default shortcut     | ⌘J on macOS; Ctrl+J elsewhere                                 |
@@ -27,7 +27,7 @@ Browse Jira issues in Orca's right sidebar using the Jira accounts already conne
 In Orca **Settings → Plugins**, search for **Jira Tasks** in the community catalog. The public directory is [orca.dev/plugins/tienne/jira-tasks](https://orca.dev/plugins/tienne/jira-tasks); a newly published version may take time to appear there. You can also install the tagged package directly:
 
 ```sh
-orca plugin install tienne/jira-tasks@v0.1.0 --json
+orca plugin install tienne/jira-tasks@v0.2.0 --json
 ```
 
 Review the publisher `tienne`, trusted-worker execution and the `Mod+J` shortcut when Orca asks for approval, then approve the exact fingerprint it returns. Configure your Jira account in Orca Tasks before opening the panel.
