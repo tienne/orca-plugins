@@ -24,4 +24,7 @@ export default function activate(orca: OrcaWorkerApi): void {
   orca.panels.handle('jira.issue', (input, { signal }) =>
     jira.issue(input, signal),
   );
+  orca.panels.handle('jira.comments', (input, { signal }) =>
+    jira.comments(input, signal),
+  );
 }

@@ -10,6 +10,8 @@ import type {
   TaskPage,
   ChildQueryInput,
   ChildPage,
+  CommentPage,
+  JiraComment,
 } from './protocol';
 
 const LIMIT = 100;
@@ -284,6 +286,44 @@ export function createJiraClient(run: Run = runCli, optionsBudgetMs = 15000) {
         await run(['issue', input.key, '--site', input.siteId], signal),
         true,
       );
+    },
+    async comments(
+      input: { siteId: string; key: string },
+      signal?: AbortSignal,
+    ): Promise<CommentPage> {
+      siteId(input?.siteId);
+      if (
+        typeof input.key !== 'string' ||
+        !/^[A-Z][A-Z0-9_]*-\d+$/.test(input.key) ||
+        input.key.length > 100
+      )
+        throw new Error('Invalid Jira issue key.');
+      const rows = await run(
+        ['comment', 'list', input.key, '--site', input.siteId],
+        signal,
+      );
+      if (!Array.isArray(rows)) throw new Error('Invalid Jira comment list.');
+      const comments: JiraComment[] = [];
+      let bytes = 0;
+      for (const value of rows.slice(0, LIMIT)) {
+        const row = record(value);
+        const body = extractDescription(row.body);
+        const description = body.text.slice(0, 24000);
+        const comment: JiraComment = {
+          id: text(row.id, 100),
+          author: text(optional(row.user).displayName, 200),
+          createdAt: text(row.createdAt, 100),
+          description,
+          descriptionTruncated: body.text.length > description.length,
+          images: body.images,
+        };
+        // 여러 댓글의 이미지와 본문을 합쳐도 프레임 응답의 1 MiB 제한을 지킨다.
+        const size = Buffer.byteLength(JSON.stringify(comment), 'utf8');
+        if (bytes + size > 900000) break;
+        bytes += size;
+        comments.push(comment);
+      }
+      return { comments, limitReached: comments.length < rows.length };
     },
   };
 }
